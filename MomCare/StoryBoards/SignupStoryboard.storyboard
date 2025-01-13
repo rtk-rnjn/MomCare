@@ -261,6 +261,9 @@
                                                         <backgroundConfiguration key="background" cornerRadius="15"/>
                                                         <color key="baseBackgroundColor" red="0.57254901960000004" green="0.26274509800000001" blue="0.31372549020000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     </buttonConfiguration>
+                                                    <connections>
+                                                        <segue destination="FaI-BI-46h" kind="show" id="Jvl-he-dDC"/>
+                                                    </connections>
                                                 </button>
                                             </subviews>
                                             <constraints>
@@ -284,6 +287,16 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Qu1-YN-pUw" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1701.5267175572519" y="-2.4647887323943665"/>
+        </scene>
+        <!--SignUpQuestionPage-->
+        <scene sceneID="Lm0-Fe-bhS">
+            <objects>
+                <viewControllerPlaceholder storyboardName="SignUpQuestionPage" id="FaI-BI-46h" sceneMemberID="viewController">
+                    <navigationItem key="navigationItem" id="uUA-ZU-U2Z"/>
+                </viewControllerPlaceholder>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="x8g-71-ZrR" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2372" y="-3"/>
         </scene>
     </scenes>
     <resources>
