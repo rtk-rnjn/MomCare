@@ -45,14 +45,14 @@
                                                             <rect key="frame" x="10" y="10" width="330" height="323"/>
                                                             <subviews>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Uth-Sx-6fO">
-                                                                    <rect key="frame" x="0.0" y="0.0" width="110" height="20.333333333333332"/>
+                                                                    <rect key="frame" x="0.0" y="0.0" width="330" height="20.333333333333332"/>
                                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                                     <nil key="textColor"/>
                                                                     <nil key="highlightedColor"/>
                                                                 </label>
                                                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="9hw-k8-ZBc">
-                                                                    <rect key="frame" x="0.0" y="20.333333333333343" width="110" height="302.66666666666663"/>
+                                                                    <rect key="frame" x="0.0" y="20.333333333333343" width="330" height="302.66666666666663"/>
                                                                 </imageView>
                                                             </subviews>
                                                         </stackView>
@@ -125,7 +125,7 @@
                 <viewControllerPlaceholder storyboardName="LoginStoryboard" id="y9S-cd-m8r" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="O3j-7n-FeJ" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="982" y="-83"/>
+            <point key="canvasLocation" x="974" y="-74"/>
         </scene>
         <!--SignupStoryboard-->
         <scene sceneID="Yg8-bt-13g">
@@ -133,7 +133,7 @@
                 <viewControllerPlaceholder storyboardName="SignupStoryboard" id="uDa-bt-jMV" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ehY-1H-Qot" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="989" y="4"/>
+            <point key="canvasLocation" x="975" y="82"/>
         </scene>
     </scenes>
 </document>
