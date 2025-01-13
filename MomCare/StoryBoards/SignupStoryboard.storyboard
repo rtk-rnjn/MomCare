@@ -8,7 +8,7 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--MomCare+-->
+        <!--Personal Details-->
         <scene sceneID="s0d-6b-0kx">
             <objects>
                 <viewController id="Y6W-OH-hqX" customClass="SignUpViewController" customModule="MomCare" customModuleProvider="target" sceneMemberID="viewController">
@@ -32,11 +32,11 @@
                             <constraint firstItem="vDu-zF-Fre" firstAttribute="trailing" secondItem="k1g-D8-T5T" secondAttribute="trailing" id="UBe-Cz-FBD"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="MomCare+" id="L03-xJ-0Ji"/>
+                    <navigationItem key="navigationItem" title="Personal Details" largeTitleDisplayMode="never" id="L03-xJ-0Ji"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ief-a0-LHa" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="969" y="-2"/>
+            <point key="canvasLocation" x="1895.4198473282443" y="-2.1126760563380285"/>
         </scene>
         <!--Table View Controller-->
         <scene sceneID="cSL-OF-Qll">
@@ -45,7 +45,7 @@
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="insetGrouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" estimatedSectionHeaderHeight="-1" sectionFooterHeight="18" estimatedSectionFooterHeight="-1" id="vqt-zx-vcn">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="793"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" red="0.94509803920000002" green="0.94901960780000005" blue="0.97254901959999995" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <sections>
                             <tableViewSection headerTitle="" id="fGm-3t-Awp">
                                 <cells>
@@ -58,7 +58,7 @@
                                             <subviews>
                                                 <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="First Name" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Ds9-IE-Erh">
                                                     <rect key="frame" x="20" y="0.0" width="330" height="50.333333333333336"/>
-                                                    <color key="backgroundColor" systemColor="systemGray5Color"/>
+                                                    <color key="backgroundColor" systemColor="systemGray6Color"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="50" id="COe-xg-pcO"/>
                                                     </constraints>
@@ -66,7 +66,7 @@
                                                     <textInputTraits key="textInputTraits"/>
                                                 </textField>
                                             </subviews>
-                                            <color key="backgroundColor" systemColor="systemGray5Color"/>
+                                            <color key="backgroundColor" systemColor="systemGray6Color"/>
                                             <constraints>
                                                 <constraint firstAttribute="bottom" secondItem="Ds9-IE-Erh" secondAttribute="bottom" id="OUx-0M-GTh"/>
                                                 <constraint firstItem="Ds9-IE-Erh" firstAttribute="top" secondItem="SJJ-pq-hTl" secondAttribute="top" id="Rrv-Qf-ztt"/>
@@ -84,7 +84,7 @@
                                             <subviews>
                                                 <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Last Name" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Wtv-Fl-XGg">
                                                     <rect key="frame" x="20" y="0.0" width="330" height="50.333333333333336"/>
-                                                    <color key="backgroundColor" systemColor="systemGray5Color"/>
+                                                    <color key="backgroundColor" systemColor="systemGray6Color"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="50" id="pqk-55-cVC"/>
                                                     </constraints>
@@ -92,7 +92,7 @@
                                                     <textInputTraits key="textInputTraits"/>
                                                 </textField>
                                             </subviews>
-                                            <color key="backgroundColor" systemColor="systemGray5Color"/>
+                                            <color key="backgroundColor" systemColor="systemGray6Color"/>
                                             <constraints>
                                                 <constraint firstAttribute="bottom" secondItem="Wtv-Fl-XGg" secondAttribute="bottom" id="M63-QO-5pf"/>
                                                 <constraint firstItem="Wtv-Fl-XGg" firstAttribute="top" secondItem="sLq-eq-poU" secondAttribute="top" id="Mlq-22-pxY"/>
@@ -114,7 +114,7 @@
                                             <subviews>
                                                 <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Email ID" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="zFs-5c-kbt">
                                                     <rect key="frame" x="20" y="0.0" width="330" height="50.333333333333336"/>
-                                                    <color key="backgroundColor" systemColor="systemGray5Color"/>
+                                                    <color key="backgroundColor" systemColor="systemGray6Color"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="50" id="zna-DI-G5n"/>
                                                     </constraints>
@@ -122,7 +122,7 @@
                                                     <textInputTraits key="textInputTraits"/>
                                                 </textField>
                                             </subviews>
-                                            <color key="backgroundColor" systemColor="systemGray5Color"/>
+                                            <color key="backgroundColor" systemColor="systemGray6Color"/>
                                             <constraints>
                                                 <constraint firstAttribute="trailing" secondItem="zFs-5c-kbt" secondAttribute="trailing" constant="3" id="AlH-0p-1qj"/>
                                                 <constraint firstItem="zFs-5c-kbt" firstAttribute="leading" secondItem="jey-ik-tBO" secondAttribute="leading" constant="20" id="HMq-6Y-NgH"/>
@@ -140,7 +140,7 @@
                                             <subviews>
                                                 <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Create Password" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Klb-XY-Bus">
                                                     <rect key="frame" x="20" y="0.0" width="330" height="50.333333333333336"/>
-                                                    <color key="backgroundColor" systemColor="systemGray5Color"/>
+                                                    <color key="backgroundColor" systemColor="systemGray6Color"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="50" id="l6d-sY-SbG"/>
                                                     </constraints>
@@ -148,7 +148,7 @@
                                                     <textInputTraits key="textInputTraits"/>
                                                 </textField>
                                             </subviews>
-                                            <color key="backgroundColor" systemColor="systemGray5Color"/>
+                                            <color key="backgroundColor" systemColor="systemGray6Color"/>
                                             <constraints>
                                                 <constraint firstAttribute="trailing" secondItem="Klb-XY-Bus" secondAttribute="trailing" constant="3" id="GzB-Y9-Qqr"/>
                                                 <constraint firstItem="Klb-XY-Bus" firstAttribute="leading" secondItem="bdP-y1-TYd" secondAttribute="leading" constant="20" id="HGu-cJ-ca1"/>
@@ -166,7 +166,7 @@
                                             <subviews>
                                                 <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Confirm Password" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Kek-BE-ZD0">
                                                     <rect key="frame" x="20" y="0.0" width="330" height="50.333333333333336"/>
-                                                    <color key="backgroundColor" systemColor="systemGray5Color"/>
+                                                    <color key="backgroundColor" systemColor="systemGray6Color"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="50" id="2FM-71-z5s"/>
                                                     </constraints>
@@ -174,7 +174,7 @@
                                                     <textInputTraits key="textInputTraits"/>
                                                 </textField>
                                             </subviews>
-                                            <color key="backgroundColor" systemColor="systemGray5Color"/>
+                                            <color key="backgroundColor" systemColor="systemGray6Color"/>
                                             <constraints>
                                                 <constraint firstAttribute="bottom" secondItem="Kek-BE-ZD0" secondAttribute="bottom" id="2F0-lu-Qfy"/>
                                                 <constraint firstItem="Kek-BE-ZD0" firstAttribute="top" secondItem="VaK-YD-YcS" secondAttribute="top" id="N2W-SW-9Ia"/>
@@ -196,7 +196,7 @@
                                             <subviews>
                                                 <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Country Code" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="h6V-8D-q5K">
                                                     <rect key="frame" x="20" y="0.0" width="333" height="50.333333333333336"/>
-                                                    <color key="backgroundColor" systemColor="systemGray5Color"/>
+                                                    <color key="backgroundColor" systemColor="systemGray6Color"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="50" id="Zad-3w-TTu"/>
                                                     </constraints>
@@ -204,7 +204,7 @@
                                                     <textInputTraits key="textInputTraits"/>
                                                 </textField>
                                             </subviews>
-                                            <color key="backgroundColor" systemColor="systemGray5Color"/>
+                                            <color key="backgroundColor" systemColor="systemGray6Color"/>
                                             <constraints>
                                                 <constraint firstItem="h6V-8D-q5K" firstAttribute="top" secondItem="Lfb-S5-v5q" secondAttribute="top" id="DAF-aU-UGM"/>
                                                 <constraint firstItem="h6V-8D-q5K" firstAttribute="leading" secondItem="Lfb-S5-v5q" secondAttribute="leading" constant="20" id="Kfc-J7-Fan"/>
@@ -222,7 +222,7 @@
                                             <subviews>
                                                 <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Mobile Number" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="UNi-7g-NYP">
                                                     <rect key="frame" x="20" y="0.0" width="333" height="50.333333333333336"/>
-                                                    <color key="backgroundColor" systemColor="systemGray5Color"/>
+                                                    <color key="backgroundColor" systemColor="systemGray6Color"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="50" id="JMc-ED-sgu"/>
                                                     </constraints>
@@ -230,7 +230,7 @@
                                                     <textInputTraits key="textInputTraits"/>
                                                 </textField>
                                             </subviews>
-                                            <color key="backgroundColor" systemColor="systemGray5Color"/>
+                                            <color key="backgroundColor" systemColor="systemGray6Color"/>
                                             <constraints>
                                                 <constraint firstItem="UNi-7g-NYP" firstAttribute="leading" secondItem="A1v-mu-PzU" secondAttribute="leading" constant="20" id="PC1-gZ-jzW"/>
                                                 <constraint firstItem="UNi-7g-NYP" firstAttribute="top" secondItem="A1v-mu-PzU" secondAttribute="top" id="PZc-To-KmB"/>
@@ -262,7 +262,7 @@
                                                         <color key="baseBackgroundColor" red="0.57254901960000004" green="0.26274509800000001" blue="0.31372549020000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     </buttonConfiguration>
                                                     <connections>
-                                                        <segue destination="5ZA-rb-NNw" kind="show" id="Chp-O4-X7J"/>
+                                                        <segue destination="5ZA-rb-NNw" kind="show" id="mNw-C4-D9R"/>
                                                     </connections>
                                                 </button>
                                             </subviews>
@@ -286,9 +286,9 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Qu1-YN-pUw" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1701.5267175572519" y="-2.4647887323943665"/>
+            <point key="canvasLocation" x="2628.2442748091603" y="-2.4647887323943665"/>
         </scene>
-        <!--Your details-->
+        <!--Details-->
         <scene sceneID="MUK-ai-gJU">
             <objects>
                 <viewController id="5ZA-rb-NNw" sceneMemberID="viewController">
@@ -312,11 +312,11 @@
                             <constraint firstItem="HVA-wJ-5Oy" firstAttribute="trailing" secondItem="zEP-a7-00v" secondAttribute="trailing" id="sJ9-Kw-Ph1"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="Your details" id="4j3-Dy-Cxi"/>
+                    <navigationItem key="navigationItem" title="Details" largeTitleDisplayMode="never" id="4j3-Dy-Cxi"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="kRl-Dd-5dC" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2482" y="-2"/>
+            <point key="canvasLocation" x="4332.06106870229" y="-2.4647887323943665"/>
         </scene>
         <!--Table View Controller-->
         <scene sceneID="cRh-NH-nLw">
@@ -632,7 +632,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Cr2-48-Jvf" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3265" y="-2"/>
+            <point key="canvasLocation" x="5113.740458015267" y="-2.4647887323943665"/>
         </scene>
     </scenes>
     <resources>
@@ -641,13 +641,10 @@
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
         <systemColor name="systemGray3Color">
-            <color red="0.7803921568627451" green="0.7803921568627451" blue="0.80000000000000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </systemColor>
-        <systemColor name="systemGray5Color">
-            <color red="0.89803921568627454" green="0.89803921568627454" blue="0.91764705882352937" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.78039215689999997" green="0.78039215689999997" blue="0.80000000000000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemGray6Color">
-            <color red="0.94901960784313721" green="0.94901960784313721" blue="0.96862745098039216" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.94901960780000005" green="0.94901960780000005" blue="0.96862745100000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>
