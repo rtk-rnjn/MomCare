@@ -24,10 +24,10 @@ struct Image {
 
 class FrontPageData {
     static var images: [Image] = [
-        .init(imageName: "FrontImage 1", heading: "Personalised plans curated just for you"),
-        .init(imageName: "FrontImage 2", heading: "Receive insights for every trimester"),
-        .init(imageName: "FrontImage 3", heading: "Track your progress effortlessly"),
-        .init(imageName: "FrontImage 4", heading: "Never miss a moment with reminders"),
+        .init(imageName: "Image", heading: "Personalised plans curated just for you"),
+        .init(imageName: "Image 1", heading: "Receive insights for every trimester"),
+        .init(imageName: "Image 2", heading: "Track your progress effortlessly"),
+        .init(imageName: "Image 3", heading: "Never miss a moment with reminders"),
     ]
 
     static func getImage(at indexPath: IndexPath) -> UIImage? {
