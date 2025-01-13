@@ -20,7 +20,7 @@
                                 <rect key="frame" x="20" y="143" width="353" height="655"/>
                                 <subviews>
                                     <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleAspectFit" alwaysBounceHorizontal="YES" pagingEnabled="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="cg8-04-ZUW">
-                                        <rect key="frame" x="0.0" y="0.0" width="353" height="545"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="353" height="509.33333333333331"/>
                                         <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="10" id="wCC-gj-8BD">
                                             <size key="itemSize" width="350" height="343"/>
                                             <size key="headerReferenceSize" width="0.0" height="0.0"/>
@@ -29,7 +29,7 @@
                                         </collectionViewFlowLayout>
                                         <cells>
                                             <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="slide" id="6p7-rn-kTA" customClass="FrontPageSliderCollectionViewCell" customModule="MomCare" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="101" width="350" height="343"/>
+                                                <rect key="frame" x="0.0" y="83" width="350" height="343"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="FL6-uN-iaQ">
                                                     <rect key="frame" x="0.0" y="0.0" width="350" height="343"/>
@@ -48,6 +48,7 @@
                                                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" adjustsImageSizeForAccessibilityContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="9hw-k8-ZBc">
                                                                     <rect key="frame" x="0.0" y="20.333333333333343" width="330" height="302.66666666666663"/>
                                                                     <constraints>
+                                                                        <constraint firstAttribute="width" constant="330" id="4Vz-UH-Tac"/>
                                                                         <constraint firstAttribute="width" secondItem="9hw-k8-ZBc" secondAttribute="height" multiplier="1:1" id="Vo6-p2-unj"/>
                                                                     </constraints>
                                                                 </imageView>
@@ -69,6 +70,11 @@
                                             </collectionViewCell>
                                         </cells>
                                     </collectionView>
+                                    <pageControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" numberOfPages="4" translatesAutoresizingMaskIntoConstraints="NO" id="JKd-t5-LGg">
+                                        <rect key="frame" x="0.0" y="519.33333333333337" width="353" height="25.666666666666629"/>
+                                        <color key="pageIndicatorTintColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <color key="currentPageIndicatorTintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    </pageControl>
                                     <stackView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" axis="vertical" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="1MY-St-4yS">
                                         <rect key="frame" x="0.0" y="555" width="353" height="100"/>
                                         <subviews>
@@ -123,6 +129,7 @@
                     <navigationItem key="navigationItem" title="MomCare+" largeTitleDisplayMode="always" id="vaL-Ae-w1w"/>
                     <connections>
                         <outlet property="collectionView" destination="cg8-04-ZUW" id="3nU-cL-4GL"/>
+                        <outlet property="pageControl" destination="JKd-t5-LGg" id="Dxc-Y1-c92"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>

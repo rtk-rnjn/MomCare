@@ -8,7 +8,10 @@
 import UIKit
 
 class FrontViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+
     @IBOutlet var collectionView: UICollectionView!
+    @IBOutlet var pageControl: UIPageControl!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -19,7 +22,11 @@ class FrontViewController: UIViewController, UICollectionViewDelegate, UICollect
     }
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return FrontPageData.images.count
+        let count = FrontPageData.images.count
+        
+        pageControl.numberOfPages = count
+        pageControl.isHidden = !(count > 1)
+        return count
     }
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
@@ -31,6 +38,8 @@ class FrontViewController: UIViewController, UICollectionViewDelegate, UICollect
 
         cell.imageView.image = FrontPageData.getImage(at: indexPath)
         cell.heading.text = FrontPageData.getHeading(at: indexPath)
+        
+        pageControl.currentPage = indexPath.row
 
         return cell
     }
