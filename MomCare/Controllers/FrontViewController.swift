@@ -1,5 +1,5 @@
 //
-//  ViewController.swift
+//  FrontViewController.swift
 //  MomCare
 //
 //  Created by Ritik Ranjan on 10/01/25.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-class ViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+class FrontViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     @IBOutlet var collectionView: UICollectionView!
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -29,8 +29,8 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "slide", for: indexPath) as! FrontPageSliderCollectionViewCell
 
-        cell.imageView.image = FrontPageData.images[indexPath.row].image
-        cell.heading.text = FrontPageData.images[indexPath.row].heading
+        cell.imageView.image = FrontPageData.getImage(at: indexPath)
+        cell.heading.text = FrontPageData.getHeading(at: indexPath)
 
         return cell
     }

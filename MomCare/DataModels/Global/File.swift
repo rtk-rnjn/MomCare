@@ -29,4 +29,12 @@ class FrontPageData {
         .init(imageName: "FrontImage 3", heading: "Track your progress effortlessly"),
         .init(imageName: "FrontImage 4", heading: "Never miss a moment with reminders"),
     ]
+
+    static func getImage(at indexPath: IndexPath) -> UIImage? {
+        return images[indexPath.row].image
+    }
+    
+    static func getHeading(at indexPath: IndexPath) -> String {
+        return images[indexPath.row].heading
+    }
 }
