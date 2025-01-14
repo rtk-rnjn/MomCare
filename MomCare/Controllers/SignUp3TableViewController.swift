@@ -11,12 +11,18 @@ class SignUp3TableViewController: UITableViewController {
 
     
     @IBOutlet weak var DueDatePopupButton: UIButton!
+    @IBOutlet weak var ExistingConditionPopupButton: UIButton!
+    @IBOutlet weak var FoodIntolerancePopupButton: UIButton!
+    @IBOutlet weak var DietaryPreferencePopupButton: UIButton!
     
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
         SetDueDatePopUpButton()
+        SetExistingConditionPopUpButton()
+        SetFoodIntolerancePopUpButton()
+        SetDietaryPreferencePopUpButton()
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
 
@@ -43,14 +49,61 @@ class SignUp3TableViewController: UITableViewController {
         DueDatePopupButton.changesSelectionAsPrimaryAction = true
     }
     
+    func SetExistingConditionPopUpButton(){
+        let optionClosure = {(action: UIAction) in print(action.title)}
+        ExistingConditionPopupButton.menu = UIMenu(children : [
+            UIAction(title : "None", state :.on , handler: optionClosure),
+            UIAction(title : "Diabetes (Type 1, Type 2, Gestational)", handler: optionClosure),
+            UIAction(title : "Hypertension", handler: optionClosure),
+            UIAction(title : "Polycystic Ovary Syndrome (PCOS)", handler: optionClosure),
+            UIAction(title : "Anemia", handler: optionClosure),
+            UIAction(title : "Asthma", handler: optionClosure),
+            UIAction(title : "Heart Disease", handler: optionClosure),
+            UIAction(title : "Kidney Disease", handler: optionClosure)
+        ])
+        
+        ExistingConditionPopupButton.showsMenuAsPrimaryAction = true
+        ExistingConditionPopupButton.changesSelectionAsPrimaryAction = true
+    }
+    
+    func SetFoodIntolerancePopUpButton(){
+        let optionClosure = {(action: UIAction) in print(action.title)}
+        FoodIntolerancePopupButton.menu = UIMenu(children : [
+            UIAction(title : "None", state :.on , handler: optionClosure),
+            UIAction(title : "Lactose Intolerance", handler: optionClosure),
+            UIAction(title : "Gluten Sensitivity", handler: optionClosure),
+            UIAction(title : "Egg Allergy", handler: optionClosure),
+            UIAction(title : "Seafood Allergy", handler: optionClosure),
+            UIAction(title : "Soy Allergy", handler: optionClosure),
+            UIAction(title : "Dairy Allergy", handler: optionClosure),
+            UIAction(title : "Wheat Allergy", handler: optionClosure),
+            UIAction(title : "Others", handler: optionClosure)
+        ])
+        
+        FoodIntolerancePopupButton.showsMenuAsPrimaryAction = true
+        FoodIntolerancePopupButton.changesSelectionAsPrimaryAction = true
+    }
     
     
-    
-    
-    
-    
-    
-    
+    func SetDietaryPreferencePopUpButton(){
+        let optionClosure = {(action: UIAction) in print(action.title)}
+        DietaryPreferencePopupButton.menu = UIMenu(children : [
+            UIAction(title : "None",attributes: [.disabled], state :.on , handler: optionClosure),
+            UIAction(title : "Vegetarian", handler: optionClosure),
+            UIAction(title : "Non-Vegetarian", handler: optionClosure),
+            UIAction(title : "Vegan", handler: optionClosure),
+            UIAction(title : "Pescatarian", handler: optionClosure),
+            UIAction(title : "Flexitarian", handler: optionClosure),
+            UIAction(title : "Gluten-Free", handler: optionClosure),
+            UIAction(title : "Low-Carb / Ketogenic", handler: optionClosure),
+            UIAction(title : "High-Protein", handler: optionClosure),
+            UIAction(title : "Dairy-Free", handler: optionClosure),
+            UIAction(title : "Low-Sodium", handler: optionClosure)
+        ])
+        
+        DietaryPreferencePopupButton.showsMenuAsPrimaryAction = true
+        DietaryPreferencePopupButton.changesSelectionAsPrimaryAction = true
+    }
     
     
     
@@ -58,7 +111,7 @@ class SignUp3TableViewController: UITableViewController {
 
     override func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
-        return 2
+        return 6
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
