@@ -37,7 +37,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ief-a0-LHa" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2482" y="-3"/>
+            <point key="canvasLocation" x="2514" y="-5"/>
         </scene>
         <!--Table View Controller-->
         <scene sceneID="cSL-OF-Qll">
@@ -263,7 +263,7 @@
                                                         <color key="baseBackgroundColor" red="0.57254901960000004" green="0.26274509800000001" blue="0.31372549020000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     </buttonConfiguration>
                                                     <connections>
-                                                        <segue destination="5ZA-rb-NNw" kind="show" id="mNw-C4-D9R"/>
+                                                        <segue destination="j28-Ag-RMC" kind="show" id="xeP-lZ-Pil"/>
                                                     </connections>
                                                 </button>
                                             </subviews>
@@ -288,36 +288,6 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Qu1-YN-pUw" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="3276" y="-3"/>
-        </scene>
-        <!--Details-->
-        <scene sceneID="MUK-ai-gJU">
-            <objects>
-                <viewController id="5ZA-rb-NNw" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="fa6-Vu-UcZ">
-                        <rect key="frame" x="0.0" y="0.0" width="393" height="783"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zEP-a7-00v">
-                                <rect key="frame" x="0.0" y="0.0" width="393" height="783"/>
-                                <connections>
-                                    <segue destination="j28-Ag-RMC" kind="embed" id="QRV-p8-btg"/>
-                                </connections>
-                            </containerView>
-                        </subviews>
-                        <viewLayoutGuide key="safeArea" id="HVA-wJ-5Oy"/>
-                        <color key="backgroundColor" red="0.91372549020000005" green="0.82745098039999998" blue="0.82745098039999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                        <constraints>
-                            <constraint firstItem="zEP-a7-00v" firstAttribute="leading" secondItem="HVA-wJ-5Oy" secondAttribute="leading" id="TLz-wH-xZR"/>
-                            <constraint firstAttribute="bottom" secondItem="zEP-a7-00v" secondAttribute="bottom" id="Vm6-nV-SkF"/>
-                            <constraint firstItem="zEP-a7-00v" firstAttribute="top" secondItem="HVA-wJ-5Oy" secondAttribute="top" id="nsb-1A-537"/>
-                            <constraint firstItem="HVA-wJ-5Oy" firstAttribute="trailing" secondItem="zEP-a7-00v" secondAttribute="trailing" id="sJ9-Kw-Ph1"/>
-                        </constraints>
-                    </view>
-                    <navigationItem key="navigationItem" title="Details" largeTitleDisplayMode="never" id="4j3-Dy-Cxi"/>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="kRl-Dd-5dC" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="4034" y="-3"/>
         </scene>
         <!--Table View Controller-->
         <scene sceneID="cRh-NH-nLw">
@@ -616,7 +586,7 @@
                                                         <color key="baseBackgroundColor" red="0.57254901960000004" green="0.26274509800000001" blue="0.31372549020000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     </buttonConfiguration>
                                                     <connections>
-                                                        <segue destination="K1W-ZR-KPM" kind="show" id="DKf-SG-9jo"/>
+                                                        <segue destination="8kZ-fK-sew" kind="show" id="9Rs-SJ-fNX"/>
                                                     </connections>
                                                 </button>
                                             </subviews>
@@ -636,17 +606,18 @@
                             <outlet property="delegate" destination="j28-Ag-RMC" id="aez-l3-J1b"/>
                         </connections>
                     </tableView>
+                    <navigationItem key="navigationItem" id="xHs-UZ-TJ4"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Cr2-48-Jvf" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4749" y="-3"/>
+            <point key="canvasLocation" x="4028" y="-3"/>
         </scene>
         <!--View Controller-->
         <scene sceneID="3hV-Ak-yjW">
             <objects>
                 <viewController id="51c-gM-3lN" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="mQj-2b-bpq">
-                        <rect key="frame" x="0.0" y="0.0" width="393" height="773"/>
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="783"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <pickerView contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="wyj-8h-pwX">
@@ -660,44 +631,14 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="GAp-0v-84x" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4749" y="650"/>
-        </scene>
-        <!--View Controller-->
-        <scene sceneID="yIv-Sa-c23">
-            <objects>
-                <viewController id="K1W-ZR-KPM" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="c3A-QU-ahu">
-                        <rect key="frame" x="0.0" y="0.0" width="393" height="773"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cyI-UN-exP">
-                                <rect key="frame" x="0.0" y="0.0" width="393" height="773"/>
-                                <connections>
-                                    <segue destination="8kZ-fK-sew" kind="embed" id="bxg-IG-saV"/>
-                                </connections>
-                            </containerView>
-                        </subviews>
-                        <viewLayoutGuide key="safeArea" id="g7q-9n-obV"/>
-                        <color key="backgroundColor" red="0.91372549020000005" green="0.82745098039999998" blue="0.82745098039999998" alpha="1" colorSpace="calibratedRGB"/>
-                        <constraints>
-                            <constraint firstItem="g7q-9n-obV" firstAttribute="trailing" secondItem="cyI-UN-exP" secondAttribute="trailing" id="3iO-ok-9gH"/>
-                            <constraint firstItem="cyI-UN-exP" firstAttribute="top" secondItem="g7q-9n-obV" secondAttribute="top" id="4A4-Fn-VGe"/>
-                            <constraint firstAttribute="bottom" secondItem="cyI-UN-exP" secondAttribute="bottom" id="Ez9-io-pqd"/>
-                            <constraint firstItem="cyI-UN-exP" firstAttribute="leading" secondItem="g7q-9n-obV" secondAttribute="leading" id="YY8-dZ-VvC"/>
-                        </constraints>
-                    </view>
-                    <navigationItem key="navigationItem" id="z0H-Hk-Ojn"/>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="P3l-Wz-QtE" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="5495" y="-3"/>
+            <point key="canvasLocation" x="4027" y="642"/>
         </scene>
         <!--Sign Up3 Table View Controller-->
         <scene sceneID="kmY-Xc-tGE">
             <objects>
                 <tableViewController id="8kZ-fK-sew" customClass="SignUp3TableViewController" customModule="MomCare" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="insetGrouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" estimatedSectionHeaderHeight="-1" sectionFooterHeight="18" estimatedSectionFooterHeight="-1" id="gib-4n-9Dd">
-                        <rect key="frame" x="0.0" y="0.0" width="393" height="773"/>
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="783"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <sections>
@@ -773,9 +714,6 @@
                                                                 <fontDescription key="titleFontDescription" style="UICTFontTextStyleSubhead"/>
                                                                 <color key="baseForegroundColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                             </buttonConfiguration>
-                                                            <connections>
-                                                                <action selector="PopUpButtonTapped:" destination="8kZ-fK-sew" eventType="touchUpInside" id="sNi-Aw-Q09"/>
-                                                            </connections>
                                                         </button>
                                                     </subviews>
                                                     <constraints>
@@ -860,11 +798,32 @@
                                                         </stackView>
                                                     </subviews>
                                                 </stackView>
+                                                <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="hzI-XG-Eyb">
+                                                    <rect key="frame" x="10" y="0.0" width="333" height="50.333333333333336"/>
+                                                    <subviews>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Due Date Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="i8f-ib-C4J">
+                                                            <rect key="frame" x="0.0" y="0.0" width="166.66666666666666" height="50.333333333333336"/>
+                                                            <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
+                                                            <nil key="textColor"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                        <datePicker contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" datePickerMode="date" translatesAutoresizingMaskIntoConstraints="NO" id="sWn-k7-Nh3">
+                                                            <rect key="frame" x="166.66666666666663" y="0.0" width="166.33333333333337" height="50.333333333333336"/>
+                                                        </datePicker>
+                                                    </subviews>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="50" id="TWs-PC-9xM"/>
+                                                    </constraints>
+                                                </stackView>
                                             </subviews>
                                             <color key="backgroundColor" systemColor="systemGray6Color"/>
                                             <constraints>
                                                 <constraint firstItem="Wet-qo-yLa" firstAttribute="top" secondItem="bAr-LN-9m1" secondAttribute="top" id="3aT-xd-Kwx"/>
+                                                <constraint firstAttribute="trailing" secondItem="hzI-XG-Eyb" secondAttribute="trailing" constant="10" id="IhW-CH-w7I"/>
+                                                <constraint firstAttribute="bottom" secondItem="hzI-XG-Eyb" secondAttribute="bottom" id="MkV-qE-BxK"/>
+                                                <constraint firstItem="hzI-XG-Eyb" firstAttribute="leading" secondItem="bAr-LN-9m1" secondAttribute="leading" constant="10" id="PgW-E3-Twt"/>
                                                 <constraint firstAttribute="trailing" secondItem="Wet-qo-yLa" secondAttribute="trailing" constant="10" id="VOh-jX-Tt6"/>
+                                                <constraint firstItem="hzI-XG-Eyb" firstAttribute="top" secondItem="bAr-LN-9m1" secondAttribute="top" id="k7X-W6-tap"/>
                                                 <constraint firstItem="Wet-qo-yLa" firstAttribute="leading" secondItem="bAr-LN-9m1" secondAttribute="leading" constant="10" id="tB0-uY-peA"/>
                                                 <constraint firstAttribute="bottom" secondItem="Wet-qo-yLa" secondAttribute="bottom" id="tsd-Ax-fRB"/>
                                             </constraints>
@@ -1072,17 +1031,21 @@
                     <navigationItem key="navigationItem" id="t6q-OZ-b1Z"/>
                     <connections>
                         <outlet property="DietaryPreferencePopupButton" destination="uZf-dz-n1s" id="P9j-ii-8MO"/>
+                        <outlet property="DueDateDatePicker" destination="sWn-k7-Nh3" id="kna-CS-qc1"/>
+                        <outlet property="DueDateInputLabel" destination="i8f-ib-C4J" id="BvR-hf-oQy"/>
                         <outlet property="DueDatePopupButton" destination="LTb-Md-BXu" id="xPl-8p-dmO"/>
                         <outlet property="ExistingConditionPopupButton" destination="5qb-oL-WkN" id="Ya1-5Y-Zpb"/>
                         <outlet property="FoodIntolerancePopupButton" destination="7rN-H1-Q1C" id="ht3-O1-7eo"/>
                         <outlet property="dayPullDownButton" destination="Cl4-Rn-c0j" id="bC5-jG-ejW"/>
+                        <outlet property="daysLabel" destination="WXv-ON-8vK" id="fRA-8i-miG"/>
                         <outlet property="secondRowCell" destination="mP2-Ho-nBd" id="fdl-6t-y1a"/>
                         <outlet property="weekPullDownButton" destination="eeg-LF-O2f" id="lAt-Si-HbZ"/>
+                        <outlet property="weeksLabel" destination="AKS-mr-PJs" id="cby-nM-afq"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="012-qh-L8t" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="6240" y="-3"/>
+            <point key="canvasLocation" x="4781" y="-3"/>
         </scene>
         <!--Dashboard-->
         <scene sceneID="uuu-1T-eXL">
@@ -1092,7 +1055,7 @@
                 </viewControllerPlaceholder>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="gPn-3X-aAx" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="6766" y="-4"/>
+            <point key="canvasLocation" x="5273" y="-4"/>
         </scene>
     </scenes>
     <resources>

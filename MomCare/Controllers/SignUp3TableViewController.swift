@@ -17,10 +17,15 @@ class SignUp3TableViewController: UITableViewController {
     
     @IBOutlet weak var weekPullDownButton: UIButton!
     @IBOutlet weak var dayPullDownButton: UIButton!
-    
-    
+    @IBOutlet weak var weeksLabel: UILabel!
+    @IBOutlet weak var daysLabel: UILabel!
     
     @IBOutlet weak var secondRowCell: UITableViewCell!
+    
+    @IBOutlet weak var DueDateInputLabel: UILabel!
+    @IBOutlet weak var DueDateDatePicker: UIDatePicker!
+    
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -32,6 +37,12 @@ class SignUp3TableViewController: UITableViewController {
         
         
         secondRowCell.isHidden = true
+        DueDateDatePicker.isHidden = true
+        DueDateInputLabel.isHidden = true
+        weeksLabel.isHidden = true
+        weekPullDownButton.isHidden = true
+        daysLabel.isHidden = true
+        dayPullDownButton.isHidden = true
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
 
@@ -46,10 +57,83 @@ class SignUp3TableViewController: UITableViewController {
         let optionClosure = { (action: UIAction) in
             print("Selected option: \(action.title)")
             
-            // Example: Toggling visibility of the second row when a specific option is selected
-            if action.title == "Estimated due date" {
+
+//            if action.title == "Estimated due date" || action.title == "Date of last menstrual period" || action.title == "Date of conception" || action.title == "Day 3 embryo transfer" || action.title == "Day 5 embryo transfer"{
+//                self.secondRowCell.isHidden = false
+//                self.DueDateDatePicker.isHidden = false
+//                self.DueDateInputLabel.isHidden = false
+//                self.DueDateInputLabel.text = action.title
+//            }
+//            if action.title == "Week pregnant" {
+//                self.secondRowCell.isHidden = false
+//                self.weeksLabel.isHidden = false
+//                self.weekPullDownButton.isHidden = false
+//                self.daysLabel.isHidden = false
+//                self.dayPullDownButton.isHidden = false
+//                
+//            }
+//            else {
+//                self.secondRowCell.isHidden = true
+//            }
+            
+            switch action.title {
+            case "Estimated due date":
                 self.secondRowCell.isHidden = false
-            } else {
+                self.DueDateDatePicker.isHidden = false
+                self.DueDateInputLabel.isHidden = false
+                self.weeksLabel.isHidden = true
+                self.weekPullDownButton.isHidden = true
+                self.daysLabel.isHidden = true
+                self.dayPullDownButton.isHidden = true
+                
+                self.DueDateInputLabel.text = action.title
+            case "Date of last menstrual period":
+                self.secondRowCell.isHidden = false
+                self.DueDateDatePicker.isHidden = false
+                self.DueDateInputLabel.isHidden = false
+                self.weeksLabel.isHidden = true
+                self.weekPullDownButton.isHidden = true
+                self.daysLabel.isHidden = true
+                self.dayPullDownButton.isHidden = true
+                self.DueDateInputLabel.text = action.title
+            case "Date of conception":
+                self.secondRowCell.isHidden = false
+                self.DueDateDatePicker.isHidden = false
+                self.DueDateInputLabel.isHidden = false
+                self.weeksLabel.isHidden = true
+                self.weekPullDownButton.isHidden = true
+                self.daysLabel.isHidden = true
+                self.dayPullDownButton.isHidden = true
+                self.DueDateInputLabel.text = action.title
+            case "Day 3 embryo transfer":
+                self.secondRowCell.isHidden = false
+                self.DueDateDatePicker.isHidden = false
+                self.DueDateInputLabel.isHidden = false
+                self.weeksLabel.isHidden = true
+                self.weekPullDownButton.isHidden = true
+                self.daysLabel.isHidden = true
+                self.dayPullDownButton.isHidden = true
+                self.DueDateInputLabel.text = action.title
+            case "Day 5 embryo transfer":
+                self.secondRowCell.isHidden = false
+                self.DueDateDatePicker.isHidden = false
+                self.DueDateInputLabel.isHidden = false
+                self.weeksLabel.isHidden = true
+                self.weekPullDownButton.isHidden = true
+                self.daysLabel.isHidden = true
+                self.dayPullDownButton.isHidden = true
+                self.DueDateInputLabel.text = action.title
+            case "Week pregnant":
+                self.secondRowCell.isHidden = false
+                self.DueDateDatePicker.isHidden = true
+                self.DueDateInputLabel.isHidden = true
+                self.weeksLabel.isHidden = false
+                self.weekPullDownButton.isHidden = false
+                self.daysLabel.isHidden = false
+                self.dayPullDownButton.isHidden = false
+                
+            
+            default:
                 self.secondRowCell.isHidden = true
             }
             
@@ -82,20 +166,13 @@ class SignUp3TableViewController: UITableViewController {
         return UITableView.automaticDimension
     }
 
-
-    
-    
-    @IBAction func PopUpButtonTapped(_ sender: UIButton) {
-        if sender.titleLabel?.text == "Estimated due date" {
-            secondRowCell.isHidden = false
-        } else {
-            secondRowCell.isHidden = true
-        }
-        tableView.beginUpdates()
-        tableView.endUpdates()
+    func DateOptionUpdate(){
+        
     }
     
-    
+    func WeekOptionUpdate(){
+        
+    }
     
     func SetExistingConditionPopUpButton(){
         let optionClosure = {(action: UIAction) in print(action.title)}
