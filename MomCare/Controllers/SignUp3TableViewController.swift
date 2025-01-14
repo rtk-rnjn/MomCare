@@ -15,7 +15,10 @@ class SignUp3TableViewController: UITableViewController {
     @IBOutlet weak var FoodIntolerancePopupButton: UIButton!
     @IBOutlet weak var DietaryPreferencePopupButton: UIButton!
     
+    @IBOutlet weak var weekPullDownButton: UIButton!
+    @IBOutlet weak var dayPullDownButton: UIButton!
     
+    var isAdditionalRowVisible = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -23,6 +26,11 @@ class SignUp3TableViewController: UITableViewController {
         SetExistingConditionPopUpButton()
         SetFoodIntolerancePopUpButton()
         SetDietaryPreferencePopUpButton()
+        
+        weekPullDownButton.isHidden = true
+        dayPullDownButton.isHidden = true
+        
+        
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
 
@@ -35,6 +43,7 @@ class SignUp3TableViewController: UITableViewController {
     
     func SetDueDatePopUpButton(){
         let optionClosure = {(action: UIAction) in print(action.title)}
+        
         DueDatePopupButton.menu = UIMenu(children : [
             UIAction(title : "None", attributes: [.disabled], state :.on , handler: optionClosure),
             UIAction(title : "Estimated due date", handler: optionClosure),
@@ -48,6 +57,7 @@ class SignUp3TableViewController: UITableViewController {
         DueDatePopupButton.showsMenuAsPrimaryAction = true
         DueDatePopupButton.changesSelectionAsPrimaryAction = true
     }
+
     
     func SetExistingConditionPopUpButton(){
         let optionClosure = {(action: UIAction) in print(action.title)}
@@ -104,9 +114,7 @@ class SignUp3TableViewController: UITableViewController {
         DietaryPreferencePopupButton.showsMenuAsPrimaryAction = true
         DietaryPreferencePopupButton.changesSelectionAsPrimaryAction = true
     }
-    
-    
-    
+
     // MARK: - Table view data source
 
     override func numberOfSections(in tableView: UITableView) -> Int {
