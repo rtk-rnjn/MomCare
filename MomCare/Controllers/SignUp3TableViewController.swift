@@ -18,19 +18,20 @@ class SignUp3TableViewController: UITableViewController {
     @IBOutlet weak var weekPullDownButton: UIButton!
     @IBOutlet weak var dayPullDownButton: UIButton!
     
-    var isAdditionalRowVisible = false
+    
+    
+    @IBOutlet weak var secondRowCell: UITableViewCell!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        SetDueDatePopUpButton()
+        setDueDatePopUpButton()
         SetExistingConditionPopUpButton()
         SetFoodIntolerancePopUpButton()
         SetDietaryPreferencePopUpButton()
         
-        weekPullDownButton.isHidden = true
-        dayPullDownButton.isHidden = true
         
         
+        secondRowCell.isHidden = true
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
 
@@ -41,23 +42,60 @@ class SignUp3TableViewController: UITableViewController {
     
     // MARK: - POPUP BUTTONS FUNCTION
     
-    func SetDueDatePopUpButton(){
-        let optionClosure = {(action: UIAction) in print(action.title)}
-        
-        DueDatePopupButton.menu = UIMenu(children : [
-            UIAction(title : "None", attributes: [.disabled], state :.on , handler: optionClosure),
-            UIAction(title : "Estimated due date", handler: optionClosure),
-            UIAction(title : "Date of last menstrual period", handler: optionClosure),
-            UIAction(title : "Date of conception", handler: optionClosure),
-            UIAction(title : "Week pregnant", handler: optionClosure),
-            UIAction(title : "Day 3 embryo transfer", handler: optionClosure),
-            UIAction(title : "Day 5 embryo transfer", handler: optionClosure)
+    func setDueDatePopUpButton() {
+        let optionClosure = { (action: UIAction) in
+            print("Selected option: \(action.title)")
+            
+            // Example: Toggling visibility of the second row when a specific option is selected
+            if action.title == "Estimated due date" {
+                self.secondRowCell.isHidden = false
+            } else {
+                self.secondRowCell.isHidden = true
+            }
+            
+            // Ensure the table view updates its layout
+            self.tableView.beginUpdates()
+            self.tableView.endUpdates()
+        }
+
+        // Configuring the popup button menu
+        DueDatePopupButton.menu = UIMenu(children: [
+            UIAction(title: "None", attributes: [.disabled], state: .on, handler: optionClosure),
+            UIAction(title: "Estimated due date", handler: optionClosure),
+            UIAction(title: "Date of last menstrual period", handler: optionClosure),
+            UIAction(title: "Date of conception", handler: optionClosure),
+            UIAction(title: "Week pregnant", handler: optionClosure),
+            UIAction(title: "Day 3 embryo transfer", handler: optionClosure),
+            UIAction(title: "Day 5 embryo transfer", handler: optionClosure)
         ])
-        
+
+        // Making the popup button interactive
         DueDatePopupButton.showsMenuAsPrimaryAction = true
         DueDatePopupButton.changesSelectionAsPrimaryAction = true
     }
+    
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        // Assuming the second row is in section 0 and index 1
+        if indexPath.section == 1 && indexPath.row == 1 {
+            return secondRowCell.isHidden ? 0 : UITableView.automaticDimension
+        }
+        return UITableView.automaticDimension
+    }
 
+
+    
+    
+    @IBAction func PopUpButtonTapped(_ sender: UIButton) {
+        if sender.titleLabel?.text == "Estimated due date" {
+            secondRowCell.isHidden = false
+        } else {
+            secondRowCell.isHidden = true
+        }
+        tableView.beginUpdates()
+        tableView.endUpdates()
+    }
+    
+    
     
     func SetExistingConditionPopUpButton(){
         let optionClosure = {(action: UIAction) in print(action.title)}
@@ -117,15 +155,15 @@ class SignUp3TableViewController: UITableViewController {
 
     // MARK: - Table view data source
 
-    override func numberOfSections(in tableView: UITableView) -> Int {
+    /*override func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
         return 6
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return 1
-    }
+        return secondRowCell.isHidden ? 1 : 2
+    }*/
 
     /*
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {

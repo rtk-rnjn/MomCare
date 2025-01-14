@@ -671,7 +671,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cyI-UN-exP">
-                                <rect key="frame" x="0.0" y="-79" width="393" height="773"/>
+                                <rect key="frame" x="0.0" y="0.0" width="393" height="773"/>
                                 <connections>
                                     <segue destination="8kZ-fK-sew" kind="embed" id="bxg-IG-saV"/>
                                 </connections>
@@ -773,6 +773,9 @@
                                                                 <fontDescription key="titleFontDescription" style="UICTFontTextStyleSubhead"/>
                                                                 <color key="baseForegroundColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                             </buttonConfiguration>
+                                                            <connections>
+                                                                <action selector="PopUpButtonTapped:" destination="8kZ-fK-sew" eventType="touchUpInside" id="sNi-Aw-Q09"/>
+                                                            </connections>
                                                         </button>
                                                     </subviews>
                                                     <constraints>
@@ -1073,6 +1076,7 @@
                         <outlet property="ExistingConditionPopupButton" destination="5qb-oL-WkN" id="Ya1-5Y-Zpb"/>
                         <outlet property="FoodIntolerancePopupButton" destination="7rN-H1-Q1C" id="ht3-O1-7eo"/>
                         <outlet property="dayPullDownButton" destination="Cl4-Rn-c0j" id="bC5-jG-ejW"/>
+                        <outlet property="secondRowCell" destination="mP2-Ho-nBd" id="fdl-6t-y1a"/>
                         <outlet property="weekPullDownButton" destination="eeg-LF-O2f" id="lAt-Si-HbZ"/>
                     </connections>
                 </tableViewController>
