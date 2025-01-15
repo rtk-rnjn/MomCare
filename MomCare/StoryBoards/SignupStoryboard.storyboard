@@ -358,13 +358,13 @@
                                                     <rect key="frame" x="10" y="0.0" width="333" height="50.333333333333336"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" text="Height" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jL5-yu-ALl">
-                                                            <rect key="frame" x="0.0" y="0.0" width="255" height="50.333333333333336"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="237.66666666666666" height="50.333333333333336"/>
                                                             <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0 cm" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Xrg-zJ-ljc">
-                                                            <rect key="frame" x="255.00000000000003" y="0.0" width="38.333333333333343" height="50.333333333333336"/>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="120 cm" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Xrg-zJ-ljc">
+                                                            <rect key="frame" x="237.66666666666666" y="0.0" width="55.666666666666657" height="50.333333333333336"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
@@ -595,7 +595,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <pickerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wyj-8h-pwX">
-                                <rect key="frame" x="37" y="296" width="320" height="250"/>
+                                <rect key="frame" x="36.666666666666657" y="296" width="320" height="250"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="250" id="HXk-Z5-9eG"/>
                                 </constraints>
@@ -604,7 +604,11 @@
                                 <rect key="frame" x="0.0" y="0.0" width="393" height="44"/>
                                 <items>
                                     <navigationItem title="Title" id="gvo-Iw-jIg">
-                                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="OdP-cH-ovv"/>
+                                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="OdP-cH-ovv">
+                                            <connections>
+                                                <segue destination="Nmy-Q4-mt8" kind="unwind" unwindAction="unwindToSignUpNoChange:" id="edm-kr-k5g"/>
+                                            </connections>
+                                        </barButtonItem>
                                         <barButtonItem key="rightBarButtonItem" systemItem="done" id="akd-75-PQD">
                                             <connections>
                                                 <segue destination="Nmy-Q4-mt8" kind="unwind" unwindAction="unwindToMainViewController:" id="q11-Lh-QtU"/>
