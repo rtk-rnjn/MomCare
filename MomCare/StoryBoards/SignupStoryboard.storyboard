@@ -1053,15 +1053,15 @@
             </objects>
             <point key="canvasLocation" x="5707.6335877862593" y="-3.5211267605633805"/>
         </scene>
-        <!--Dashboard-->
+        <!--InitialStoryboard-->
         <scene sceneID="uuu-1T-eXL">
             <objects>
-                <viewControllerPlaceholder storyboardName="Dashboard" id="x6Q-s6-GCY" sceneMemberID="viewController">
+                <viewControllerPlaceholder storyboardName="InitialStoryboard" id="x6Q-s6-GCY" sceneMemberID="viewController">
                     <navigationItem key="navigationItem" id="DZQ-m4-mpt"/>
                 </viewControllerPlaceholder>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="gPn-3X-aAx" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="6198.4732824427474" y="-4.2253521126760569"/>
+            <point key="canvasLocation" x="6240" y="-4"/>
         </scene>
     </scenes>
     <resources>
