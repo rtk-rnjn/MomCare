@@ -35,7 +35,6 @@ struct User {
     var country: Country = .india
     
     var dueDate: Date?
-    // swiftlint:disable:this todo
 }
 
 class MomCareUser {
