@@ -39,5 +39,17 @@ struct User {
 }
 
 class MomCareUser {
+    private var userDiet: UserDiet?
+    private var userExercise: UserExercise?
+
     static var shared: MomCareUser = MomCareUser()
+    
+    private init() {
+        update()
+    }
+    
+    private func update() {
+        UserDiet.shared.updateFromDatabase()
+        UserExercise.shared.updateFromDatabase()
+    }
 }
