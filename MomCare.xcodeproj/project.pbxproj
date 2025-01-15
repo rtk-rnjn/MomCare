@@ -29,6 +29,11 @@
 			path = MomCare;
 			sourceTree = "<group>";
 		};
+		05E7F8CB2D376B8200F4D81E /* .github */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = .github;
+			sourceTree = "<group>";
+		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -45,6 +50,7 @@
 		059C46742D30D12400B4A15A = {
 			isa = PBXGroup;
 			children = (
+				05E7F8CB2D376B8200F4D81E /* .github */,
 				059C467F2D30D12400B4A15A /* MomCare */,
 				059C467E2D30D12400B4A15A /* Products */,
 			);
@@ -75,6 +81,7 @@
 			);
 			fileSystemSynchronizedGroups = (
 				059C467F2D30D12400B4A15A /* MomCare */,
+				05E7F8CB2D376B8200F4D81E /* .github */,
 			);
 			name = MomCare;
 			packageProductDependencies = (
