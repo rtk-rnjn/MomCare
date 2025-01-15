@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import UIKit
 
 // MARK: Diet
 
@@ -31,15 +32,15 @@ struct MyPlanModel {
     var currentProteinIntake: Int = 0
     var currentCarbsIntake: Int = 0
     var currentFatIntake: Int = 0
-    
-    var breakfast: [FoodItem] = []
-    var lunch: [FoodItem] = []
-    var dinner: [FoodItem] = []
 }
 
 class UserDiet {
     private var plan: MyPlanModel?
-    
+
+    private var breakfast: [FoodItem] = []
+    private var lunch: [FoodItem] = []
+    private var dinner: [FoodItem] = []
+
     static var shared: UserDiet = UserDiet()
     
     private init() {
@@ -47,6 +48,9 @@ class UserDiet {
     }
 
     func updateFromDatabase() {
+    }
+
+    func updateToDatabase() {
     }
 }
 
@@ -65,6 +69,13 @@ struct Exercise {
     let tags: [String]
     
     let level: String = "Beginner"
+    
+    var exerciseImageName: String
+    var exerciseImage: UIImage? {
+        return UIImage(named: exerciseImageName)
+    }
+    
+    var durationCompleted: TimeInterval = 0
 }
 
 class UserExercise {
@@ -73,6 +84,8 @@ class UserExercise {
 
     private var plan: MyPlanModel?
     
+    private var exercises: [Exercise] = []
+    
     static var shared: UserExercise = UserExercise()
     
     private init() {
@@ -80,5 +93,8 @@ class UserExercise {
     }
 
     func updateFromDatabase() {
+    }
+    
+    func updateToDatabase() {
     }
 }

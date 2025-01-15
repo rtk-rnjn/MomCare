@@ -36,6 +36,26 @@ enum Intolerance: String, Codable {
     case wheat
 }
 
+enum DietaryPreference {
+    case vegetarian
+    case nonVegetarian
+    case vegan
+    case pescetarian
+    case flexitarian
+    case glutenFree
+    case ketogenic
+    case highProtein
+    case dairyFree
+    
+}
+
+enum Mood {
+    case happy
+    case sad
+    case stressed
+    case anger
+}
+
 struct User {
     var firstName: String
     var lastName: String?
@@ -60,8 +80,14 @@ struct User {
 }
 
 class MomCareUser {
-    private var userDiet: UserDiet?
-    private var userExercise: UserExercise?
+    private var diet: UserDiet = UserDiet.shared
+    private var exercise: UserExercise = UserExercise.shared
+    private var currentMood: Mood?
+
+    private var reminders: [TriTrackReminder] = []
+    private var events: [TriTrackEvent] = []
+
+    private var symptoms: [TriTrackSymptoms] = []
 
     static var shared: MomCareUser = MomCareUser()
     
@@ -72,5 +98,17 @@ class MomCareUser {
     private func update() {
         UserDiet.shared.updateFromDatabase()
         UserExercise.shared.updateFromDatabase()
+    }
+    
+    func addReminder(_ reminder: TriTrackReminder) {
+        reminders.append(reminder)
+    }
+    
+    func addEvent(_ event: TriTrackEvent) {
+        events.append(event)
+    }
+    
+    func addSymptom(_ symptom: TriTrackSymptoms) {
+        symptoms.append(symptom)
     }
 }
