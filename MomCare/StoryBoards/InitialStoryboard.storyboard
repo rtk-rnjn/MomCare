@@ -9,7 +9,7 @@
         <!--Dashboard-->
         <scene sceneID="fYG-2A-5CQ">
             <objects>
-                <viewControllerPlaceholder storyboardName="Dashboard" id="Glb-19-Aff" sceneMemberID="viewController">
+                <viewControllerPlaceholder storyboardIdentifier="Dashboard" storyboardName="Dashboard" id="Glb-19-Aff" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Dashboard" image="trophy.fill" catalog="system" id="lXN-91-oUc"/>
                 </viewControllerPlaceholder>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Em2-v4-5MU" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -19,7 +19,7 @@
         <!--MyPlan-->
         <scene sceneID="BSo-gr-QeU">
             <objects>
-                <viewControllerPlaceholder storyboardName="MyPlan" id="CNm-Oq-rjA" sceneMemberID="viewController">
+                <viewControllerPlaceholder storyboardIdentifier="MyPlan" storyboardName="MyPlan" id="CNm-Oq-rjA" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="MyPlan" image="list.bullet.clipboard.fill" catalog="system" id="ZPB-An-auW"/>
                 </viewControllerPlaceholder>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Qg6-yY-ZD4" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -29,7 +29,7 @@
         <!--TriTrack-->
         <scene sceneID="kIt-U4-JSE">
             <objects>
-                <viewControllerPlaceholder storyboardName="TriTrack" id="3Sc-Vy-wqG" sceneMemberID="viewController">
+                <viewControllerPlaceholder storyboardIdentifier="TriTrack" storyboardName="TriTrack" id="3Sc-Vy-wqG" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="TriTrack" image="calendar" catalog="system" id="c7v-AA-iFR"/>
                 </viewControllerPlaceholder>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="X4z-3x-lK2" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -39,7 +39,7 @@
         <!--MoodNest-->
         <scene sceneID="q2I-rC-sYe">
             <objects>
-                <viewControllerPlaceholder storyboardName="MoodNest" id="LnL-7V-6y9" sceneMemberID="viewController">
+                <viewControllerPlaceholder storyboardIdentifier="MoodNest" storyboardName="MoodNest" id="LnL-7V-6y9" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="MoodNest" image="face.dashed.fill" catalog="system" id="RpI-Xa-b7d"/>
                 </viewControllerPlaceholder>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Sws-0t-WZG" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -54,6 +54,12 @@
                         <rect key="frame" x="0.0" y="0.0" width="393" height="49"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="tintColor" red="0.57254901960000004" green="0.26274509800000001" blue="0.31372549020000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="barTintColor" red="0.57254901960000004" green="0.26274509800000001" blue="0.31372549020000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="selectedImageTintColor" red="0.57254901960000004" green="0.26274509800000001" blue="0.31372549020000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <tabBarAppearance key="scrollEdgeAppearance">
+                            <color key="selectionIndicatorTintColor" red="0.57254901960000004" green="0.26274509800000001" blue="0.31372549020000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        </tabBarAppearance>
                     </tabBar>
                     <connections>
                         <segue destination="Glb-19-Aff" kind="relationship" relationship="viewControllers" id="OG9-ES-mCE"/>
