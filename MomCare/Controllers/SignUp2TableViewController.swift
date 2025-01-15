@@ -8,16 +8,9 @@
 import UIKit
 
 class SignUp2TableViewController: UITableViewController {
-
-    
     
     @IBOutlet var recievedHeight: UILabel!
     var updatedHeight: Int?
-    
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-    }
     
     override func viewWillAppear(_ animated: Bool) {
         recievedHeight.text = "\(updatedHeight ?? 0) cm"

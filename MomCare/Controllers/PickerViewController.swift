@@ -7,11 +7,10 @@
 
 import UIKit
 
-class PickerViewController: UIViewController,UIPickerViewDelegate, UIPickerViewDataSource {
+class PickerViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSource {
 
     let heights = Array(120...200) // Heights in cm from 120 to 200
     var selectedHeight: Int = 120
-
     
     @IBOutlet var heightPickerView: UIPickerView!
     
