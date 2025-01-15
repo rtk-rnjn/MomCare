@@ -16,8 +16,43 @@
                 <rect key="frame" x="0.0" y="0.0" width="193" height="137"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="l4e-Ak-oA3">
+                        <rect key="frame" x="0.0" y="87" width="193" height="50"/>
+                        <subviews>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" alignment="top" translatesAutoresizingMaskIntoConstraints="NO" id="f6l-Qv-9NA">
+                                <rect key="frame" x="20" y="4" width="153" height="36"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="Day 49" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4hE-5Q-NoJ">
+                                        <rect key="frame" x="0.0" y="0.0" width="49.333333333333336" height="18"/>
+                                        <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Trimester 1" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wxO-xS-gha">
+                                        <rect key="frame" x="0.0" y="18" width="75.666666666666671" height="18"/>
+                                        <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                            </stackView>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="calendar" catalog="system" highlightedImage="calendar" id="exD-Zc-vm5">
+                                <rect key="frame" x="146" y="-13.333333333333343" width="27" height="23"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" red="0.91372549020000005" green="0.82745098039999998" blue="0.82745098039999998" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </imageView>
+                        </subviews>
+                        <color key="backgroundColor" red="0.91372549020000005" green="0.82745098039999998" blue="0.82745098039999998" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstAttribute="bottom" secondItem="f6l-Qv-9NA" secondAttribute="bottom" constant="10" id="JCn-Yt-1wq"/>
+                            <constraint firstAttribute="height" constant="50" id="fF9-pU-f8R"/>
+                            <constraint firstItem="f6l-Qv-9NA" firstAttribute="leading" secondItem="l4e-Ak-oA3" secondAttribute="leading" constant="20" id="nQp-YB-4y2"/>
+                            <constraint firstAttribute="trailing" secondItem="f6l-Qv-9NA" secondAttribute="trailing" constant="20" id="vEk-up-sas"/>
+                        </constraints>
+                    </view>
                     <stackView opaque="NO" contentMode="scaleToFill" spacing="18" translatesAutoresizingMaskIntoConstraints="NO" id="GBR-KI-ShU">
-                        <rect key="frame" x="20" y="10" width="153" height="50"/>
+                        <rect key="frame" x="20" y="18" width="153" height="50"/>
                         <subviews>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="momImageDashboard" translatesAutoresizingMaskIntoConstraints="NO" id="IuD-AO-bWl">
                                 <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
@@ -34,40 +69,14 @@
                             </label>
                         </subviews>
                     </stackView>
-                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" translatesAutoresizingMaskIntoConstraints="NO" id="8yr-ee-axz">
-                        <rect key="frame" x="0.0" y="92" width="193" height="45"/>
-                        <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="Day 49" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4hE-5Q-NoJ">
-                                <rect key="frame" x="0.0" y="0.0" width="49.333333333333336" height="27"/>
-                                <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Trimester 1" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wxO-xS-gha">
-                                <rect key="frame" x="0.0" y="27" width="75.666666666666671" height="18"/>
-                                <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                        </subviews>
-                        <color key="backgroundColor" red="0.9137254901960784" green="0.82745098039215681" blue="0.82745098039215681" alpha="1" colorSpace="calibratedRGB"/>
-                        <constraints>
-                            <constraint firstAttribute="height" constant="45" id="Gce-pm-c5m"/>
-                        </constraints>
-                    </stackView>
-                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="calendar" catalog="system" highlightedImage="calendar" id="exD-Zc-vm5">
-                        <rect key="frame" x="152" y="80.666666666666657" width="20.666666666666686" height="17.333333333333343"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <color key="backgroundColor" red="0.91372549020000005" green="0.82745098039999998" blue="0.82745098039999998" alpha="1" colorSpace="calibratedRGB"/>
-                        <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                    </imageView>
                 </subviews>
                 <constraints>
-                    <constraint firstAttribute="bottom" secondItem="8yr-ee-axz" secondAttribute="bottom" id="4xq-2B-TEp"/>
+                    <constraint firstItem="l4e-Ak-oA3" firstAttribute="leading" secondItem="R7i-Bs-XTB" secondAttribute="leading" id="2rW-DZ-8Eb"/>
                     <constraint firstItem="GBR-KI-ShU" firstAttribute="leading" secondItem="R7i-Bs-XTB" secondAttribute="leading" constant="20" id="9fb-nu-46b"/>
-                    <constraint firstItem="GBR-KI-ShU" firstAttribute="top" secondItem="R7i-Bs-XTB" secondAttribute="top" constant="10" id="9hD-wm-sgH"/>
-                    <constraint firstAttribute="trailing" secondItem="8yr-ee-axz" secondAttribute="trailing" id="Uud-PK-7UA"/>
-                    <constraint firstItem="8yr-ee-axz" firstAttribute="leading" secondItem="R7i-Bs-XTB" secondAttribute="leading" id="VIZ-UG-2ed"/>
+                    <constraint firstItem="GBR-KI-ShU" firstAttribute="top" secondItem="R7i-Bs-XTB" secondAttribute="top" constant="18" id="9hD-wm-sgH"/>
+                    <constraint firstAttribute="trailing" secondItem="l4e-Ak-oA3" secondAttribute="trailing" id="N1D-Ot-l0e"/>
+                    <constraint firstAttribute="bottom" secondItem="l4e-Ak-oA3" secondAttribute="bottom" id="gUU-eU-fOR"/>
+                    <constraint firstItem="l4e-Ak-oA3" firstAttribute="centerX" secondItem="R7i-Bs-XTB" secondAttribute="centerX" id="jj9-dd-uq5"/>
                     <constraint firstAttribute="trailing" secondItem="GBR-KI-ShU" secondAttribute="trailing" constant="20" id="mEr-Rh-cBB"/>
                 </constraints>
             </collectionViewCellContentView>
