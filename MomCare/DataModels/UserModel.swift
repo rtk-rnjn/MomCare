@@ -19,21 +19,21 @@ enum Country {
 struct User {
     var firstName: String
     var lastName: String?
-    
+
     var emailAddress: String
     var password: String
-    
+
     var countryCode: String = "+91"
     var phoneNumber: String
-    
+
     var dateOfBirth: Date
     var height: Double
     var prePregnancyWeight: Double
     var currentWeight: Double
-    
+
     var gender: Gender = .female
     var country: Country = .india
-    
+
     var dueDate: Date?
     // MARK: TODO FIX THIS SHIT
 }

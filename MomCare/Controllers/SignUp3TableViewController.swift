@@ -9,33 +9,28 @@ import UIKit
 
 class SignUp3TableViewController: UITableViewController {
 
-    
     @IBOutlet weak var DueDatePopupButton: UIButton!
     @IBOutlet weak var ExistingConditionPopupButton: UIButton!
     @IBOutlet weak var FoodIntolerancePopupButton: UIButton!
     @IBOutlet weak var DietaryPreferencePopupButton: UIButton!
-    
+
     @IBOutlet weak var weekPullDownButton: UIButton!
     @IBOutlet weak var dayPullDownButton: UIButton!
     @IBOutlet weak var weeksLabel: UILabel!
     @IBOutlet weak var daysLabel: UILabel!
-    
+
     @IBOutlet weak var secondRowCell: UITableViewCell!
-    
+
     @IBOutlet weak var DueDateInputLabel: UILabel!
     @IBOutlet weak var DueDateDatePicker: UIDatePicker!
-    
-    
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         setDueDatePopUpButton()
         SetExistingConditionPopUpButton()
         SetFoodIntolerancePopUpButton()
         SetDietaryPreferencePopUpButton()
-        
-        
-        
+
         secondRowCell.isHidden = true
         DueDateDatePicker.isHidden = true
         DueDateInputLabel.isHidden = true
@@ -50,13 +45,11 @@ class SignUp3TableViewController: UITableViewController {
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
     }
 
-    
     // MARK: - POPUP BUTTONS FUNCTION
-    
+
     func setDueDatePopUpButton() {
         let optionClosure = { (action: UIAction) in
             print("Selected option: \(action.title)")
-            
 
 //            if action.title == "Estimated due date" || action.title == "Date of last menstrual period" || action.title == "Date of conception" || action.title == "Day 3 embryo transfer" || action.title == "Day 5 embryo transfer"{
 //                self.secondRowCell.isHidden = false
@@ -75,7 +68,7 @@ class SignUp3TableViewController: UITableViewController {
 //            else {
 //                self.secondRowCell.isHidden = true
 //            }
-            
+
             switch action.title {
             case "Estimated due date":
                 self.secondRowCell.isHidden = false
@@ -85,7 +78,7 @@ class SignUp3TableViewController: UITableViewController {
                 self.weekPullDownButton.isHidden = true
                 self.daysLabel.isHidden = true
                 self.dayPullDownButton.isHidden = true
-                
+
                 self.DueDateInputLabel.text = action.title
             case "Date of last menstrual period":
                 self.secondRowCell.isHidden = false
@@ -131,12 +124,11 @@ class SignUp3TableViewController: UITableViewController {
                 self.weekPullDownButton.isHidden = false
                 self.daysLabel.isHidden = false
                 self.dayPullDownButton.isHidden = false
-                
-            
+
             default:
                 self.secondRowCell.isHidden = true
             }
-            
+
             // Ensure the table view updates its layout
             self.tableView.beginUpdates()
             self.tableView.endUpdates()
@@ -157,7 +149,7 @@ class SignUp3TableViewController: UITableViewController {
         DueDatePopupButton.showsMenuAsPrimaryAction = true
         DueDatePopupButton.changesSelectionAsPrimaryAction = true
     }
-    
+
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         // Assuming the second row is in section 0 and index 1
         if indexPath.section == 1 && indexPath.row == 1 {
@@ -166,66 +158,65 @@ class SignUp3TableViewController: UITableViewController {
         return UITableView.automaticDimension
     }
 
-    func DateOptionUpdate(){
-        
+    func DateOptionUpdate() {
+
     }
-    
-    func WeekOptionUpdate(){
-        
+
+    func WeekOptionUpdate() {
+
     }
-    
-    func SetExistingConditionPopUpButton(){
+
+    func SetExistingConditionPopUpButton() {
         let optionClosure = {(action: UIAction) in print(action.title)}
-        ExistingConditionPopupButton.menu = UIMenu(children : [
-            UIAction(title : "None", state :.on , handler: optionClosure),
-            UIAction(title : "Diabetes (Type 1, Type 2, Gestational)", handler: optionClosure),
-            UIAction(title : "Hypertension", handler: optionClosure),
-            UIAction(title : "Polycystic Ovary Syndrome (PCOS)", handler: optionClosure),
-            UIAction(title : "Anemia", handler: optionClosure),
-            UIAction(title : "Asthma", handler: optionClosure),
-            UIAction(title : "Heart Disease", handler: optionClosure),
-            UIAction(title : "Kidney Disease", handler: optionClosure)
+        ExistingConditionPopupButton.menu = UIMenu(children: [
+            UIAction(title: "None", state: .on, handler: optionClosure),
+            UIAction(title: "Diabetes (Type 1, Type 2, Gestational)", handler: optionClosure),
+            UIAction(title: "Hypertension", handler: optionClosure),
+            UIAction(title: "Polycystic Ovary Syndrome (PCOS)", handler: optionClosure),
+            UIAction(title: "Anemia", handler: optionClosure),
+            UIAction(title: "Asthma", handler: optionClosure),
+            UIAction(title: "Heart Disease", handler: optionClosure),
+            UIAction(title: "Kidney Disease", handler: optionClosure)
         ])
-        
+
         ExistingConditionPopupButton.showsMenuAsPrimaryAction = true
         ExistingConditionPopupButton.changesSelectionAsPrimaryAction = true
     }
-    
-    func SetFoodIntolerancePopUpButton(){
+
+    func SetFoodIntolerancePopUpButton() {
         let optionClosure = {(action: UIAction) in print(action.title)}
-        FoodIntolerancePopupButton.menu = UIMenu(children : [
-            UIAction(title : "None", state :.on , handler: optionClosure),
-            UIAction(title : "Lactose Intolerance", handler: optionClosure),
-            UIAction(title : "Gluten Sensitivity", handler: optionClosure),
-            UIAction(title : "Egg Allergy", handler: optionClosure),
-            UIAction(title : "Seafood Allergy", handler: optionClosure),
-            UIAction(title : "Soy Allergy", handler: optionClosure),
-            UIAction(title : "Dairy Allergy", handler: optionClosure),
-            UIAction(title : "Wheat Allergy", handler: optionClosure),
-            UIAction(title : "Others", handler: optionClosure)
+        FoodIntolerancePopupButton.menu = UIMenu(children: [
+            UIAction(title: "None", state: .on, handler: optionClosure),
+            UIAction(title: "Lactose Intolerance", handler: optionClosure),
+            UIAction(title: "Gluten Sensitivity", handler: optionClosure),
+            UIAction(title: "Egg Allergy", handler: optionClosure),
+            UIAction(title: "Seafood Allergy", handler: optionClosure),
+            UIAction(title: "Soy Allergy", handler: optionClosure),
+            UIAction(title: "Dairy Allergy", handler: optionClosure),
+            UIAction(title: "Wheat Allergy", handler: optionClosure),
+            UIAction(title: "Others", handler: optionClosure)
         ])
-        
+
         FoodIntolerancePopupButton.showsMenuAsPrimaryAction = true
         FoodIntolerancePopupButton.changesSelectionAsPrimaryAction = true
     }
-    
-    
-    func SetDietaryPreferencePopUpButton(){
+
+    func SetDietaryPreferencePopUpButton() {
         let optionClosure = {(action: UIAction) in print(action.title)}
-        DietaryPreferencePopupButton.menu = UIMenu(children : [
-            UIAction(title : "None",attributes: [.disabled], state :.on , handler: optionClosure),
-            UIAction(title : "Vegetarian", handler: optionClosure),
-            UIAction(title : "Non-Vegetarian", handler: optionClosure),
-            UIAction(title : "Vegan", handler: optionClosure),
-            UIAction(title : "Pescatarian", handler: optionClosure),
-            UIAction(title : "Flexitarian", handler: optionClosure),
-            UIAction(title : "Gluten-Free", handler: optionClosure),
-            UIAction(title : "Low-Carb / Ketogenic", handler: optionClosure),
-            UIAction(title : "High-Protein", handler: optionClosure),
-            UIAction(title : "Dairy-Free", handler: optionClosure),
-            UIAction(title : "Low-Sodium", handler: optionClosure)
+        DietaryPreferencePopupButton.menu = UIMenu(children: [
+            UIAction(title: "None", attributes: [.disabled], state: .on, handler: optionClosure),
+            UIAction(title: "Vegetarian", handler: optionClosure),
+            UIAction(title: "Non-Vegetarian", handler: optionClosure),
+            UIAction(title: "Vegan", handler: optionClosure),
+            UIAction(title: "Pescatarian", handler: optionClosure),
+            UIAction(title: "Flexitarian", handler: optionClosure),
+            UIAction(title: "Gluten-Free", handler: optionClosure),
+            UIAction(title: "Low-Carb / Ketogenic", handler: optionClosure),
+            UIAction(title: "High-Protein", handler: optionClosure),
+            UIAction(title: "Dairy-Free", handler: optionClosure),
+            UIAction(title: "Low-Sodium", handler: optionClosure)
         ])
-        
+
         DietaryPreferencePopupButton.showsMenuAsPrimaryAction = true
         DietaryPreferencePopupButton.changesSelectionAsPrimaryAction = true
     }
