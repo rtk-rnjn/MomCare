@@ -113,7 +113,9 @@
                                 </subviews>
                                 <constraints>
                                     <constraint firstAttribute="trailing" secondItem="1MY-St-4yS" secondAttribute="trailing" id="41q-cs-6On"/>
+                                    <constraint firstItem="cg8-04-ZUW" firstAttribute="leading" secondItem="3Bs-IZ-ED9" secondAttribute="leading" id="Rjz-m2-ad9"/>
                                     <constraint firstItem="1MY-St-4yS" firstAttribute="leading" secondItem="3Bs-IZ-ED9" secondAttribute="leading" id="Yo8-gf-pf2"/>
+                                    <constraint firstAttribute="trailing" secondItem="cg8-04-ZUW" secondAttribute="trailing" id="eZT-Bs-0aB"/>
                                 </constraints>
                             </stackView>
                         </subviews>
