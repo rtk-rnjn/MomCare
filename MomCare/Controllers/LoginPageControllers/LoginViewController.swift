@@ -1,5 +1,5 @@
 //
-//  loginViewController.swift
+//  LoginViewController.swift
 //  MomCare
 //
 //  Created by Batch - 2  on 13/01/25.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-class loginViewController: UIViewController {
+class LoginViewController: UIViewController {
 
     /*
     // MARK: - Navigation

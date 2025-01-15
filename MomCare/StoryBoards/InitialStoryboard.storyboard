@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="23504" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="UIi-PR-nnf">
+    <device id="retina6_12" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23506"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Dashboard-->
+        <scene sceneID="fYG-2A-5CQ">
+            <objects>
+                <viewControllerPlaceholder storyboardIdentifier="Dashboard" storyboardName="Dashboard" id="Glb-19-Aff" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Dashboard" image="trophy.fill" catalog="system" id="lXN-91-oUc"/>
+                </viewControllerPlaceholder>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Em2-v4-5MU" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-295" y="24"/>
+        </scene>
+        <!--MyPlan-->
+        <scene sceneID="BSo-gr-QeU">
+            <objects>
+                <viewControllerPlaceholder storyboardIdentifier="MyPlan" storyboardName="MyPlan" id="CNm-Oq-rjA" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="MyPlan" image="list.bullet.clipboard.fill" catalog="system" id="ZPB-An-auW"/>
+                </viewControllerPlaceholder>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Qg6-yY-ZD4" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="335" y="24"/>
+        </scene>
+        <!--TriTrack-->
+        <scene sceneID="kIt-U4-JSE">
+            <objects>
+                <viewControllerPlaceholder storyboardIdentifier="TriTrack" storyboardName="TriTrack" id="3Sc-Vy-wqG" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="TriTrack" image="calendar" catalog="system" id="c7v-AA-iFR"/>
+                </viewControllerPlaceholder>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="X4z-3x-lK2" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="880" y="24"/>
+        </scene>
+        <!--MoodNest-->
+        <scene sceneID="q2I-rC-sYe">
+            <objects>
+                <viewControllerPlaceholder storyboardIdentifier="MoodNest" storyboardName="MoodNest" id="LnL-7V-6y9" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="MoodNest" image="face.dashed.fill" catalog="system" id="RpI-Xa-b7d"/>
+                </viewControllerPlaceholder>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Sws-0t-WZG" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1541" y="24"/>
+        </scene>
+        <!--Tab Bar Controller-->
+        <scene sceneID="s3l-8a-RzW">
+            <objects>
+                <tabBarController id="UIi-PR-nnf" sceneMemberID="viewController">
+                    <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="jXQ-Nu-qRX">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="49"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="tintColor" red="0.57254901960000004" green="0.26274509800000001" blue="0.31372549020000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="barTintColor" red="0.57254901960000004" green="0.26274509800000001" blue="0.31372549020000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="selectedImageTintColor" red="0.57254901960000004" green="0.26274509800000001" blue="0.31372549020000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <tabBarAppearance key="scrollEdgeAppearance">
+                            <color key="selectionIndicatorTintColor" red="0.57254901960000004" green="0.26274509800000001" blue="0.31372549020000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        </tabBarAppearance>
+                    </tabBar>
+                    <connections>
+                        <segue destination="Glb-19-Aff" kind="relationship" relationship="viewControllers" id="OG9-ES-mCE"/>
+                        <segue destination="CNm-Oq-rjA" kind="relationship" relationship="viewControllers" id="0GN-xq-UwU"/>
+                        <segue destination="3Sc-Vy-wqG" kind="relationship" relationship="viewControllers" id="ZHd-HV-g7g"/>
+                        <segue destination="LnL-7V-6y9" kind="relationship" relationship="viewControllers" id="rnd-Wx-Qjm"/>
+                    </connections>
+                </tabBarController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="edj-3I-pNP" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="602" y="-463"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="calendar" catalog="system" width="128" height="107"/>
+        <image name="face.dashed.fill" catalog="system" width="128" height="123"/>
+        <image name="list.bullet.clipboard.fill" catalog="system" width="98" height="128"/>
+        <image name="trophy.fill" catalog="system" width="128" height="128"/>
+    </resources>
+</document>

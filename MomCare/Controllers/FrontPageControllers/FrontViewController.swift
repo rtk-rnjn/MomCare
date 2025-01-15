@@ -34,7 +34,9 @@ class FrontViewController: UIViewController, UICollectionViewDelegate, UICollect
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "slide", for: indexPath) as! FrontPageSliderCollectionViewCell
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "slide", for: indexPath) as? FrontPageSliderCollectionViewCell
+
+        guard let cell = cell else { return UICollectionViewCell() }
 
         cell.imageView.image = FrontPageData.getImage(at: indexPath)
         cell.heading.text = FrontPageData.getHeading(at: indexPath)
