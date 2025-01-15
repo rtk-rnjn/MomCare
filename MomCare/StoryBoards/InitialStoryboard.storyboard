@@ -6,41 +6,41 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Storyboard Reference-->
+        <!--Dashboard-->
         <scene sceneID="fYG-2A-5CQ">
             <objects>
-                <viewControllerPlaceholder id="Glb-19-Aff" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Item" id="lXN-91-oUc"/>
+                <viewControllerPlaceholder storyboardName="Dashboard" id="Glb-19-Aff" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Dashboard" image="trophy.fill" catalog="system" id="lXN-91-oUc"/>
                 </viewControllerPlaceholder>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Em2-v4-5MU" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-295" y="24"/>
         </scene>
-        <!--Storyboard Reference-->
+        <!--MyPlan-->
         <scene sceneID="BSo-gr-QeU">
             <objects>
-                <viewControllerPlaceholder id="CNm-Oq-rjA" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Item" id="ZPB-An-auW"/>
+                <viewControllerPlaceholder storyboardName="MyPlan" id="CNm-Oq-rjA" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="MyPlan" image="list.bullet.clipboard.fill" catalog="system" id="ZPB-An-auW"/>
                 </viewControllerPlaceholder>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Qg6-yY-ZD4" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="335" y="24"/>
         </scene>
-        <!--Storyboard Reference-->
+        <!--TriTrack-->
         <scene sceneID="kIt-U4-JSE">
             <objects>
-                <viewControllerPlaceholder id="3Sc-Vy-wqG" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Item" id="c7v-AA-iFR"/>
+                <viewControllerPlaceholder storyboardName="TriTrack" id="3Sc-Vy-wqG" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="TriTrack" image="calendar" catalog="system" id="c7v-AA-iFR"/>
                 </viewControllerPlaceholder>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="X4z-3x-lK2" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="880" y="24"/>
         </scene>
-        <!--Storyboard Reference-->
+        <!--MoodNest-->
         <scene sceneID="q2I-rC-sYe">
             <objects>
-                <viewControllerPlaceholder id="LnL-7V-6y9" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Item" id="RpI-Xa-b7d"/>
+                <viewControllerPlaceholder storyboardName="MoodNest" id="LnL-7V-6y9" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="MoodNest" image="face.dashed.fill" catalog="system" id="RpI-Xa-b7d"/>
                 </viewControllerPlaceholder>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Sws-0t-WZG" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
@@ -67,4 +67,10 @@
             <point key="canvasLocation" x="602" y="-463"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="calendar" catalog="system" width="128" height="107"/>
+        <image name="face.dashed.fill" catalog="system" width="128" height="123"/>
+        <image name="list.bullet.clipboard.fill" catalog="system" width="98" height="128"/>
+        <image name="trophy.fill" catalog="system" width="128" height="128"/>
+    </resources>
 </document>
