@@ -16,6 +16,26 @@ enum Country {
     case india
 }
 
+enum PreExistingCondition {
+    case diabetes
+    case hypertension
+    case pcos
+    case anemia
+    case asthma
+    case heartDisease
+    case kidneyDisease
+}
+
+enum Intolerance: String, Codable {
+    case gluten
+    case lactose
+    case egg
+    case seafood
+    case soy
+    case dairy
+    case wheat
+}
+
 struct User {
     var firstName: String
     var lastName: String?
@@ -35,6 +55,8 @@ struct User {
     var country: Country = .india
     
     var dueDate: Date?
+    var preExistingConditions: [PreExistingCondition] = []
+    var foodIntolerances: [Intolerance] = []
 }
 
 class MomCareUser {
