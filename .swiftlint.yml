@@ -1,0 +1,5 @@
+disabled_rules:
+   - trailing_whitespace
+   - force_cast
+   - force_unwrapping
+   - force_try
