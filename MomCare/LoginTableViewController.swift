@@ -1,5 +1,5 @@
 //
-//  loginTableViewController.swift
+//  LoginTableViewController.swift
 //  MomCare
 //
 //  Created by Batch - 2  on 13/01/25.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-class loginTableViewController: UITableViewController {
+class LoginTableViewController: UITableViewController {
 
     // MARK: - Table view data source
 
