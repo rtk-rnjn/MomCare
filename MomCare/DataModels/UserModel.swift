@@ -35,9 +35,20 @@ struct User {
     var country: Country = .india
     
     var dueDate: Date?
-    // swiftlint:disable:this todo
 }
 
 class MomCareUser {
+    private var userDiet: UserDiet?
+    private var userExercise: UserExercise?
+
     static var shared: MomCareUser = MomCareUser()
+    
+    private init() {
+        update()
+    }
+    
+    private func update() {
+        UserDiet.shared.updateFromDatabase()
+        UserExercise.shared.updateFromDatabase()
+    }
 }
