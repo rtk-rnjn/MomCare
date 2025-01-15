@@ -39,7 +39,7 @@ class PickerViewController: UIViewController, UIPickerViewDelegate, UIPickerView
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if let destinationVC = segue.destination as? SignUp2TableViewController {
+        if let destinationVC = segue.destination as? SignUpYourDetailsTableViewController {
             destinationVC.updatedHeight = selectedHeight
         }
     }

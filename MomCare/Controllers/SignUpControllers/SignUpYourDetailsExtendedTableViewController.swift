@@ -1,5 +1,5 @@
 //
-//  SignUp3TableViewController.swift
+//  SignUpYourDetailsExtendedTableViewController.swift
 //  MomCare
 //
 //  Created by Nupur on 14/01/25.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-class SignUp3TableViewController: UITableViewController {
+class SignUpYourDetailsExtendedTableViewController: UITableViewController {
 
     @IBOutlet weak var dueDatePopupButton: UIButton!
     @IBOutlet weak var existingConditionPopupButton: UIButton!
