@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="23504" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="Y6W-OH-hqX">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="23504" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="9Xi-l9-W8d">
     <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23506"/>
@@ -9,42 +9,12 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Personal Details-->
-        <scene sceneID="s0d-6b-0kx">
-            <objects>
-                <viewController id="Y6W-OH-hqX" customClass="SignUpViewController" customModule="MomCare" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="5EZ-qb-Rvc">
-                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="k1g-D8-T5T">
-                                <rect key="frame" x="0.0" y="59" width="393" height="793"/>
-                                <connections>
-                                    <segue destination="9Xi-l9-W8d" kind="embed" id="zc8-Ui-gl3"/>
-                                </connections>
-                            </containerView>
-                        </subviews>
-                        <viewLayoutGuide key="safeArea" id="vDu-zF-Fre"/>
-                        <color key="backgroundColor" red="0.9137254901960784" green="0.82745098039215681" blue="0.82745098039215681" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                        <constraints>
-                            <constraint firstItem="k1g-D8-T5T" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" id="JGB-ht-9Ri"/>
-                            <constraint firstAttribute="bottom" secondItem="k1g-D8-T5T" secondAttribute="bottom" id="Mal-Vt-fv2"/>
-                            <constraint firstItem="k1g-D8-T5T" firstAttribute="top" secondItem="vDu-zF-Fre" secondAttribute="top" id="Tsn-yv-fGd"/>
-                            <constraint firstItem="vDu-zF-Fre" firstAttribute="trailing" secondItem="k1g-D8-T5T" secondAttribute="trailing" id="UBe-Cz-FBD"/>
-                        </constraints>
-                    </view>
-                    <navigationItem key="navigationItem" title="Personal Details" largeTitleDisplayMode="never" id="L03-xJ-0Ji"/>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="Ief-a0-LHa" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="2514" y="-5"/>
-        </scene>
-        <!--Table View Controller-->
+        <!--Sign Up-->
         <scene sceneID="cSL-OF-Qll">
             <objects>
                 <tableViewController id="9Xi-l9-W8d" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="insetGrouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" estimatedSectionHeaderHeight="-1" sectionFooterHeight="18" estimatedSectionFooterHeight="-1" id="vqt-zx-vcn">
-                        <rect key="frame" x="0.0" y="0.0" width="393" height="793"/>
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <sections>
@@ -284,17 +254,18 @@
                             <outlet property="delegate" destination="9Xi-l9-W8d" id="Cga-Y6-Cnh"/>
                         </connections>
                     </tableView>
+                    <navigationItem key="navigationItem" title="Sign Up" id="Di2-bL-4g0"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Qu1-YN-pUw" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3276" y="-3"/>
+            <point key="canvasLocation" x="4202.2900763358775" y="-3.5211267605633805"/>
         </scene>
-        <!--Table View Controller-->
+        <!--Your Details-->
         <scene sceneID="cRh-NH-nLw">
             <objects>
-                <tableViewController id="j28-Ag-RMC" sceneMemberID="viewController">
+                <tableViewController id="j28-Ag-RMC" customClass="SignUp2TableViewController" customModule="MomCare" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="insetGrouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" estimatedSectionHeaderHeight="-1" sectionFooterHeight="18" estimatedSectionFooterHeight="-1" id="bPs-kZ-dsr">
-                        <rect key="frame" x="0.0" y="0.0" width="393" height="793"/>
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="842"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <sections>
@@ -387,13 +358,13 @@
                                                     <rect key="frame" x="10" y="0.0" width="333" height="50.333333333333336"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" text="Height" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jL5-yu-ALl">
-                                                            <rect key="frame" x="0.0" y="0.0" width="255" height="50.333333333333336"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="237.66666666666666" height="50.333333333333336"/>
                                                             <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0 cm" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Xrg-zJ-ljc">
-                                                            <rect key="frame" x="255.00000000000003" y="0.0" width="38.333333333333343" height="50.333333333333336"/>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="120 cm" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Xrg-zJ-ljc">
+                                                            <rect key="frame" x="237.66666666666666" y="0.0" width="55.666666666666657" height="50.333333333333336"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
@@ -606,39 +577,74 @@
                             <outlet property="delegate" destination="j28-Ag-RMC" id="aez-l3-J1b"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" id="xHs-UZ-TJ4"/>
+                    <navigationItem key="navigationItem" title="Your Details" largeTitleDisplayMode="never" id="xHs-UZ-TJ4"/>
+                    <connections>
+                        <outlet property="recievedHeight" destination="Xrg-zJ-ljc" id="Tzf-QW-O3x"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Cr2-48-Jvf" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4028" y="-3"/>
+            <point key="canvasLocation" x="4953.4351145038163" y="-3.5211267605633805"/>
         </scene>
-        <!--View Controller-->
+        <!--Picker View Controller-->
         <scene sceneID="3hV-Ak-yjW">
             <objects>
-                <viewController id="51c-gM-3lN" sceneMemberID="viewController">
+                <viewController id="51c-gM-3lN" customClass="PickerViewController" customModule="MomCare" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="mQj-2b-bpq">
-                        <rect key="frame" x="0.0" y="0.0" width="393" height="793"/>
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="842"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <pickerView contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="wyj-8h-pwX">
-                                <rect key="frame" x="0.0" y="270" width="393" height="162"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                            <pickerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wyj-8h-pwX">
+                                <rect key="frame" x="36.666666666666657" y="296" width="320" height="250"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="250" id="HXk-Z5-9eG"/>
+                                </constraints>
                             </pickerView>
+                            <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="on8-sy-OrP">
+                                <rect key="frame" x="0.0" y="0.0" width="393" height="44"/>
+                                <items>
+                                    <navigationItem title="Title" id="gvo-Iw-jIg">
+                                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="OdP-cH-ovv">
+                                            <connections>
+                                                <segue destination="Nmy-Q4-mt8" kind="unwind" unwindAction="unwindToSignUpNoChange:" id="edm-kr-k5g"/>
+                                            </connections>
+                                        </barButtonItem>
+                                        <barButtonItem key="rightBarButtonItem" systemItem="done" id="akd-75-PQD">
+                                            <connections>
+                                                <segue destination="Nmy-Q4-mt8" kind="unwind" unwindAction="unwindToMainViewController:" id="q11-Lh-QtU"/>
+                                            </connections>
+                                        </barButtonItem>
+                                    </navigationItem>
+                                </items>
+                            </navigationBar>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="MUg-Nv-wkj"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="on8-sy-OrP" firstAttribute="trailing" secondItem="MUg-Nv-wkj" secondAttribute="trailing" id="2Eb-gY-pHO"/>
+                            <constraint firstItem="on8-sy-OrP" firstAttribute="leading" secondItem="MUg-Nv-wkj" secondAttribute="leading" id="JuU-Dy-qi2"/>
+                            <constraint firstItem="wyj-8h-pwX" firstAttribute="centerX" secondItem="mQj-2b-bpq" secondAttribute="centerX" id="NZF-XR-aVp"/>
+                            <constraint firstItem="on8-sy-OrP" firstAttribute="top" secondItem="MUg-Nv-wkj" secondAttribute="top" id="not-e1-OCg"/>
+                            <constraint firstItem="wyj-8h-pwX" firstAttribute="centerY" secondItem="mQj-2b-bpq" secondAttribute="centerY" id="s7C-RN-mAh"/>
+                        </constraints>
                     </view>
+                    <toolbarItems/>
+                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
+                    <connections>
+                        <outlet property="heightPickerView" destination="wyj-8h-pwX" id="g7c-ol-2SY"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="GAp-0v-84x" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+                <exit id="Nmy-Q4-mt8" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="4027" y="642"/>
+            <point key="canvasLocation" x="4953" y="706"/>
         </scene>
-        <!--Sign Up3 Table View Controller-->
+        <!--Medical History-->
         <scene sceneID="kmY-Xc-tGE">
             <objects>
                 <tableViewController id="8kZ-fK-sew" customClass="SignUp3TableViewController" customModule="MomCare" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="insetGrouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" estimatedSectionHeaderHeight="-1" sectionFooterHeight="18" estimatedSectionFooterHeight="-1" id="gib-4n-9Dd">
-                        <rect key="frame" x="0.0" y="0.0" width="393" height="793"/>
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="842"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <sections>
@@ -1028,16 +1034,16 @@
                             <outlet property="delegate" destination="8kZ-fK-sew" id="dFa-4r-QpC"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" id="t6q-OZ-b1Z"/>
+                    <navigationItem key="navigationItem" title="Medical History" largeTitleDisplayMode="never" id="t6q-OZ-b1Z"/>
                     <connections>
+                        <outlet property="DietaryPreferencePopupButton" destination="uZf-dz-n1s" id="P9j-ii-8MO"/>
+                        <outlet property="DueDateDatePicker" destination="sWn-k7-Nh3" id="kna-CS-qc1"/>
+                        <outlet property="DueDateInputLabel" destination="i8f-ib-C4J" id="BvR-hf-oQy"/>
+                        <outlet property="DueDatePopupButton" destination="LTb-Md-BXu" id="xPl-8p-dmO"/>
+                        <outlet property="ExistingConditionPopupButton" destination="5qb-oL-WkN" id="Ya1-5Y-Zpb"/>
+                        <outlet property="FoodIntolerancePopupButton" destination="7rN-H1-Q1C" id="ht3-O1-7eo"/>
                         <outlet property="dayPullDownButton" destination="Cl4-Rn-c0j" id="bC5-jG-ejW"/>
                         <outlet property="daysLabel" destination="WXv-ON-8vK" id="fRA-8i-miG"/>
-                        <outlet property="dietaryPreferencePopupButton" destination="uZf-dz-n1s" id="P9j-ii-8MO"/>
-                        <outlet property="dueDateDatePicker" destination="sWn-k7-Nh3" id="kna-CS-qc1"/>
-                        <outlet property="dueDateInputLabel" destination="i8f-ib-C4J" id="BvR-hf-oQy"/>
-                        <outlet property="dueDatePopupButton" destination="LTb-Md-BXu" id="xPl-8p-dmO"/>
-                        <outlet property="existingConditionPopupButton" destination="5qb-oL-WkN" id="Ya1-5Y-Zpb"/>
-                        <outlet property="foodIntolerancePopupButton" destination="7rN-H1-Q1C" id="ht3-O1-7eo"/>
                         <outlet property="secondRowCell" destination="mP2-Ho-nBd" id="fdl-6t-y1a"/>
                         <outlet property="weekPullDownButton" destination="eeg-LF-O2f" id="lAt-Si-HbZ"/>
                         <outlet property="weeksLabel" destination="AKS-mr-PJs" id="cby-nM-afq"/>
@@ -1045,7 +1051,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="012-qh-L8t" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4781" y="-3"/>
+            <point key="canvasLocation" x="5707.6335877862593" y="-3.5211267605633805"/>
         </scene>
         <!--Dashboard-->
         <scene sceneID="uuu-1T-eXL">
@@ -1055,7 +1061,7 @@
                 </viewControllerPlaceholder>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="gPn-3X-aAx" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5273" y="-4"/>
+            <point key="canvasLocation" x="6198.4732824427474" y="-4.2253521126760569"/>
         </scene>
     </scenes>
     <resources>
@@ -1065,13 +1071,13 @@
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
         <systemColor name="systemGray2Color">
-            <color red="0.68235294120000001" green="0.68235294120000001" blue="0.69803921570000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.68235294117647061" green="0.68235294117647061" blue="0.69803921568627447" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemGray3Color">
-            <color red="0.78039215689999997" green="0.78039215689999997" blue="0.80000000000000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.7803921568627451" green="0.7803921568627451" blue="0.80000000000000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemGray6Color">
-            <color red="0.94901960780000005" green="0.94901960780000005" blue="0.96862745100000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.94901960784313721" green="0.94901960784313721" blue="0.96862745098039216" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>
