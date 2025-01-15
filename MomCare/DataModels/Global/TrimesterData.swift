@@ -31,4 +31,3 @@ struct TrimesterData {
     let babyTipText: String
     let momTipText: String
 }
-
