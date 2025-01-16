@@ -8,5 +8,9 @@
 import UIKit
 
 class Section1CollectionViewCell: UICollectionViewCell {
-    
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        self.contentView.layer.cornerRadius = 16
+        self.contentView.layer.masksToBounds = true
+    }
 }

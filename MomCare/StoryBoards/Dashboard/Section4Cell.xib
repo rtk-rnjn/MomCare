@@ -106,6 +106,12 @@
                     <constraint firstItem="vPd-ug-iHO" firstAttribute="centerY" secondItem="7iD-x9-pRT" secondAttribute="centerY" id="po9-UA-ShL"/>
                 </constraints>
             </collectionViewCellContentView>
+            <userDefinedRuntimeAttributes>
+                <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                    <integer key="value" value="16"/>
+                </userDefinedRuntimeAttribute>
+                <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
+            </userDefinedRuntimeAttributes>
             <point key="canvasLocation" x="221.37404580152671" y="-27.112676056338028"/>
         </collectionViewCell>
     </objects>
