@@ -8,7 +8,7 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Hi Sakshi-->
+        <!--Dashboard-->
         <scene sceneID="s0d-6b-0kx">
             <objects>
                 <viewController storyboardIdentifier="Dashboard" useStoryboardIdentifierAsRestorationIdentifier="YES" id="Y6W-OH-hqX" customClass="DashboardViewController" customModule="MomCare" customModuleProvider="target" sceneMemberID="viewController">
@@ -43,18 +43,18 @@
                             <constraint firstItem="vDu-zF-Fre" firstAttribute="trailing" secondItem="3fr-wh-mP1" secondAttribute="trailing" id="4kP-6F-9Tu"/>
                             <constraint firstItem="3fr-wh-mP1" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" id="Iwk-SE-2le"/>
                             <constraint firstItem="vDu-zF-Fre" firstAttribute="bottom" secondItem="3fr-wh-mP1" secondAttribute="bottom" id="hVj-w4-gz7"/>
-                            <constraint firstItem="3fr-wh-mP1" firstAttribute="top" secondItem="vDu-zF-Fre" secondAttribute="top" id="mgh-zT-m4T"/>
+                            <constraint firstItem="3fr-wh-mP1" firstAttribute="top" secondItem="vDu-zF-Fre" secondAttribute="top" id="tWE-LK-fKu"/>
                         </constraints>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Dashboard" image="trophy.fill" catalog="system" id="mHc-X0-qBY"/>
-                    <navigationItem key="navigationItem" title="Hi Sakshi" largeTitleDisplayMode="always" id="RFd-xC-QXo"/>
+                    <tabBarItem key="tabBarItem" title="Dashboard" image="trophy.fill" catalog="system" id="u5p-9j-pEP"/>
+                    <navigationItem key="navigationItem" largeTitleDisplayMode="never" id="Ujh-Pd-5Ms"/>
                     <connections>
                         <outlet property="collectionView" destination="3fr-wh-mP1" id="W6A-WM-eNG"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ief-a0-LHa" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2068" y="-26"/>
+            <point key="canvasLocation" x="3921.3740458015263" y="-26.056338028169016"/>
         </scene>
     </scenes>
     <resources>

@@ -26,42 +26,55 @@ class DashboardViewController: UIViewController, UICollectionViewDataSource {
         collectionView.collectionViewLayout = createLayout()
         collectionView.dataSource = self
         collectionView.dataSource = self
+        
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.navigationItem.hidesBackButton = true
     }
     
     func createLayout() -> UICollectionViewCompositionalLayout {
         return UICollectionViewCompositionalLayout { (sectionIndex, layoutEnvironment) -> NSCollectionLayoutSection? in
             switch sectionIndex {
             case 0: // Horizontal Section (Nib 1 and 2)
-                let itemSize = NSCollectionLayoutSize(widthDimension: .absolute(150), heightDimension: .absolute(150))
-                let item = NSCollectionLayoutItem(layoutSize: itemSize)
+                let itemSize1 = NSCollectionLayoutSize(widthDimension: .absolute(193), heightDimension: .absolute(137))
+                let itemSize2 = NSCollectionLayoutSize(widthDimension: .absolute(160), heightDimension: .absolute(137))
+                let item1 = NSCollectionLayoutItem(layoutSize: itemSize1)
+                let item2 = NSCollectionLayoutItem(layoutSize: itemSize2)
                 
-                let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(150))
-                let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
-                group.interItemSpacing = .fixed(10)
-                
+                let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(137))
+                let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item1,item2])
+                group.interItemSpacing = .fixed(15)
+//                group.contentInsets = NSDirectionalEdgeInsets(top: 10, leading: 15, bottom: 10, trailing: 15)
                 let section = NSCollectionLayoutSection(group: group)
+                section.contentInsets = NSDirectionalEdgeInsets(top: 5, leading: 15, bottom: 10, trailing: 15)
                 return section
                 
             case 1: // Vertical Section (Nib 3 and 4)
-                let itemSize = NSCollectionLayoutSize(widthDimension: .absolute(150), heightDimension: .absolute(150))
-                let item = NSCollectionLayoutItem(layoutSize: itemSize)
+                let itemSize1 = NSCollectionLayoutSize(widthDimension: .absolute(360), heightDimension: .absolute(67))
+                let itemSize2 = NSCollectionLayoutSize(widthDimension: .absolute(360), heightDimension: .absolute(179))
+                let item1 = NSCollectionLayoutItem(layoutSize: itemSize1)
+                let item2 = NSCollectionLayoutItem(layoutSize: itemSize2)
                 
-                let groupSize = NSCollectionLayoutSize(widthDimension: .absolute(150), heightDimension: .fractionalHeight(1.0))
-                let group = NSCollectionLayoutGroup.vertical(layoutSize: groupSize, subitems: [item])
-                group.interItemSpacing = .fixed(10)
-                
+                let groupSize = NSCollectionLayoutSize(widthDimension: .absolute(360), heightDimension: .fractionalHeight(1.0))
+                let group = NSCollectionLayoutGroup.vertical(layoutSize: groupSize, subitems: [item1,item2])
+                group.interItemSpacing = .fixed(15)
+//                group.contentInsets = NSDirectionalEdgeInsets(top: 10, leading: 15, bottom: 10, trailing: 15)
                 let section = NSCollectionLayoutSection(group: group)
+                section.contentInsets = NSDirectionalEdgeInsets(top: 10, leading: 15, bottom: 10, trailing: 15)
+    
                 return section
                 
             case 2: // Horizontal Section (Nib 5 and 6)
-                let itemSize = NSCollectionLayoutSize(widthDimension: .absolute(150), heightDimension: .absolute(150))
+                let itemSize = NSCollectionLayoutSize(widthDimension: .absolute(164), heightDimension: .absolute(154))
                 let item = NSCollectionLayoutItem(layoutSize: itemSize)
-                
-                let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(150))
+                let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(137))
                 let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
-                group.interItemSpacing = .fixed(10)
-                
+                group.interItemSpacing = .fixed(20)
+//                group.contentInsets = NSDirectionalEdgeInsets(top: 10, leading: 15, bottom: 10, trailing: 15)
                 let section = NSCollectionLayoutSection(group: group)
+                section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 25, bottom: 10, trailing: 5)
                 return section
                 
             default:
