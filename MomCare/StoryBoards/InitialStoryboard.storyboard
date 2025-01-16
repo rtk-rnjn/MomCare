@@ -46,10 +46,10 @@
             </objects>
             <point key="canvasLocation" x="1541" y="24"/>
         </scene>
-        <!--Tab Bar Controller-->
+        <!--Initial Tab Bar Controller-->
         <scene sceneID="s3l-8a-RzW">
             <objects>
-                <tabBarController id="UIi-PR-nnf" sceneMemberID="viewController">
+                <tabBarController id="UIi-PR-nnf" customClass="InitialTabBarController" customModule="MomCare" customModuleProvider="target" sceneMemberID="viewController">
                     <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="jXQ-Nu-qRX">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="49"/>
                         <autoresizingMask key="autoresizingMask"/>
