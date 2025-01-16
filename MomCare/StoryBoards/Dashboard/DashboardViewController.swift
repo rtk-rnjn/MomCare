@@ -21,8 +21,6 @@ class DashboardViewController: UIViewController, UICollectionViewDataSource {
         collectionView.register(UINib(nibName: "Section5Cell", bundle: nil), forCellWithReuseIdentifier: "Section5Cell")
         collectionView.register(UINib(nibName: "Section6Cell", bundle: nil), forCellWithReuseIdentifier: "Section6Cell")
         
-        
-        
         collectionView.collectionViewLayout = createLayout()
         collectionView.dataSource = self
         collectionView.dataSource = self
@@ -35,7 +33,7 @@ class DashboardViewController: UIViewController, UICollectionViewDataSource {
     }
     
     func createLayout() -> UICollectionViewCompositionalLayout {
-        return UICollectionViewCompositionalLayout { (sectionIndex, layoutEnvironment) -> NSCollectionLayoutSection? in
+        return UICollectionViewCompositionalLayout { (sectionIndex, _) -> NSCollectionLayoutSection? in
             switch sectionIndex {
             case 0: // Horizontal Section (Nib 1 and 2)
                 let itemSize1 = NSCollectionLayoutSize(widthDimension: .absolute(193), heightDimension: .absolute(137))
@@ -44,7 +42,7 @@ class DashboardViewController: UIViewController, UICollectionViewDataSource {
                 let item2 = NSCollectionLayoutItem(layoutSize: itemSize2)
                 
                 let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(137))
-                let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item1,item2])
+                let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item1, item2])
                 group.interItemSpacing = .fixed(15)
 //                group.contentInsets = NSDirectionalEdgeInsets(top: 10, leading: 15, bottom: 10, trailing: 15)
                 let section = NSCollectionLayoutSection(group: group)
@@ -58,7 +56,7 @@ class DashboardViewController: UIViewController, UICollectionViewDataSource {
                 let item2 = NSCollectionLayoutItem(layoutSize: itemSize2)
                 
                 let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .estimated(179))
-                let group = NSCollectionLayoutGroup.vertical(layoutSize: groupSize, subitems: [item1,item2])
+                let group = NSCollectionLayoutGroup.vertical(layoutSize: groupSize, subitems: [item1, item2])
                 group.interItemSpacing = .fixed(15)
 //                group.contentInsets = NSDirectionalEdgeInsets(top: 10, leading: 15, bottom: 10, trailing: 15)
                 let section = NSCollectionLayoutSection(group: group)
@@ -83,7 +81,6 @@ class DashboardViewController: UIViewController, UICollectionViewDataSource {
         }
     }
     
-    
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         switch indexPath.section {
         case 0:
@@ -104,10 +101,5 @@ class DashboardViewController: UIViewController, UICollectionViewDataSource {
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 3
     }
-    
-
-
-    
-
     
 }
