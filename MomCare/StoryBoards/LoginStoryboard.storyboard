@@ -50,39 +50,55 @@
                             <tableViewSection id="YJ5-rC-0Rb">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="18" id="cRS-bV-0pA">
-                                        <rect key="frame" x="20" y="18" width="353" height="43.666667938232422"/>
+                                        <rect key="frame" x="20" y="18" width="353" height="50.333332061767578"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="cRS-bV-0pA" id="6iM-ig-8aF">
-                                            <rect key="frame" x="0.0" y="0.0" width="353" height="43.666667938232422"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="353" height="50.333332061767578"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Email ID" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="4aN-5q-s6Z">
-                                                    <rect key="frame" x="10" y="9.9999999999999982" width="333" height="27.333333333333329"/>
-                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Email ID" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="4aN-5q-s6Z">
+                                                    <rect key="frame" x="20" y="0.0" width="313" height="50.333333333333336"/>
                                                     <color key="backgroundColor" systemColor="systemGray6Color"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="50" id="bN7-DB-d0Z"/>
+                                                    </constraints>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <textInputTraits key="textInputTraits"/>
                                                 </textField>
                                             </subviews>
                                             <color key="backgroundColor" systemColor="systemGray6Color"/>
+                                            <constraints>
+                                                <constraint firstItem="4aN-5q-s6Z" firstAttribute="leading" secondItem="6iM-ig-8aF" secondAttribute="leading" constant="20" id="5aD-cJ-dGr"/>
+                                                <constraint firstAttribute="bottom" secondItem="4aN-5q-s6Z" secondAttribute="bottom" id="Lhz-gz-lr5"/>
+                                                <constraint firstAttribute="trailing" secondItem="4aN-5q-s6Z" secondAttribute="trailing" constant="20" id="PJL-n8-dt1"/>
+                                                <constraint firstItem="4aN-5q-s6Z" firstAttribute="top" secondItem="6iM-ig-8aF" secondAttribute="top" id="aI9-ig-q2d"/>
+                                            </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="Lwx-fz-767">
-                                        <rect key="frame" x="20" y="61.666667938232422" width="353" height="43.666667938232422"/>
+                                        <rect key="frame" x="20" y="68.333332061767578" width="353" height="50.333332061767578"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Lwx-fz-767" id="X3W-KI-7f0">
-                                            <rect key="frame" x="0.0" y="0.0" width="353" height="43.666667938232422"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="353" height="50.333332061767578"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Password" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="OXr-LO-gII">
-                                                    <rect key="frame" x="10" y="9.9999999999999982" width="333" height="27.333333333333329"/>
-                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Password" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="OXr-LO-gII">
+                                                    <rect key="frame" x="20" y="0.0" width="313" height="50.333333333333336"/>
                                                     <color key="backgroundColor" systemColor="systemGray6Color"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="50" id="1JB-De-aKm"/>
+                                                    </constraints>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <textInputTraits key="textInputTraits"/>
                                                 </textField>
                                             </subviews>
                                             <color key="backgroundColor" systemColor="systemGray6Color"/>
+                                            <constraints>
+                                                <constraint firstAttribute="bottom" secondItem="OXr-LO-gII" secondAttribute="bottom" id="V6J-Xs-Cdn"/>
+                                                <constraint firstItem="OXr-LO-gII" firstAttribute="top" secondItem="X3W-KI-7f0" secondAttribute="top" id="dui-2G-4vT"/>
+                                                <constraint firstItem="OXr-LO-gII" firstAttribute="leading" secondItem="X3W-KI-7f0" secondAttribute="leading" constant="20" id="e7J-IJ-MoQ"/>
+                                                <constraint firstAttribute="trailing" secondItem="OXr-LO-gII" secondAttribute="trailing" constant="20" id="wfu-fK-Ycg"/>
+                                            </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                 </cells>
@@ -90,7 +106,7 @@
                             <tableViewSection id="8TK-jh-Gfq">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="X8T-Uv-fUu">
-                                        <rect key="frame" x="20" y="141.33333587646484" width="353" height="40.333332061767578"/>
+                                        <rect key="frame" x="20" y="154.66666412353516" width="353" height="40.333332061767578"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="X8T-Uv-fUu" id="vap-p9-pCm">
                                             <rect key="frame" x="0.0" y="0.0" width="353" height="40.333332061767578"/>
@@ -103,7 +119,7 @@
                                                     </constraints>
                                                     <color key="tintColor" red="0.1725490093" green="0.1725490093" blue="0.1647058874" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                                     <state key="normal" title="Button"/>
-                                                    <buttonConfiguration key="configuration" style="filled" title="Button">
+                                                    <buttonConfiguration key="configuration" style="filled" title="Sign In">
                                                         <color key="baseBackgroundColor" red="0.57254904510000004" green="0.26274511220000002" blue="0.31372550129999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                                     </buttonConfiguration>
                                                 </button>

@@ -1,5 +1,5 @@
 //
-//  SignUp2TableViewController.swift
+//  SignUpYourDetailsTableViewController.swift
 //  MomCare
 //
 //  Created by Batch-2 on 15/01/25.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-class SignUp2TableViewController: UITableViewController {
+class SignUpYourDetailsTableViewController: UITableViewController {
     
     @IBOutlet var recievedHeight: UILabel!
     var updatedHeight: Int?

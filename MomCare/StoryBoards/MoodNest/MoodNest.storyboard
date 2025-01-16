@@ -4,7 +4,6 @@
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23506"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
-        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -15,8 +14,29 @@
                     <view key="view" contentMode="scaleToFill" id="5EZ-qb-Rvc">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Hey, How are you feeling right now?" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" showsExpansionTextWhenTruncated="YES" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0uY-VA-NVF">
+                                <rect key="frame" x="10" y="119" width="383" height="67.666666666666686"/>
+                                <fontDescription key="fontDescription" style="UICTFontTextStyleTitle1"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <pageControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" numberOfPages="4" translatesAutoresizingMaskIntoConstraints="NO" id="b8o-t3-6ao">
+                                <rect key="frame" x="24" y="681" width="345" height="26"/>
+                                <color key="pageIndicatorTintColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <color key="currentPageIndicatorTintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </pageControl>
+                        </subviews>
                         <viewLayoutGuide key="safeArea" id="vDu-zF-Fre"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <color key="backgroundColor" red="0.9137254901960784" green="0.82745098039215681" blue="0.82745098039215681" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstItem="vDu-zF-Fre" firstAttribute="bottom" secondItem="b8o-t3-6ao" secondAttribute="bottom" constant="111" id="6Iz-t2-vng"/>
+                            <constraint firstAttribute="trailing" secondItem="0uY-VA-NVF" secondAttribute="trailing" id="LUy-IZ-4Wn"/>
+                            <constraint firstItem="0uY-VA-NVF" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" constant="10" id="WFA-3m-Vl8"/>
+                            <constraint firstItem="b8o-t3-6ao" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" constant="24" id="YAC-mz-w26"/>
+                            <constraint firstItem="vDu-zF-Fre" firstAttribute="trailing" secondItem="b8o-t3-6ao" secondAttribute="trailing" constant="24" id="otQ-Yx-vN3"/>
+                            <constraint firstItem="0uY-VA-NVF" firstAttribute="top" secondItem="vDu-zF-Fre" secondAttribute="top" constant="60" id="uGx-8V-5KP"/>
+                        </constraints>
                     </view>
                     <tabBarItem key="tabBarItem" title="Item" image="face.dashed.fill" catalog="system" id="d5t-s2-QuX"/>
                 </viewController>
@@ -27,8 +47,5 @@
     </scenes>
     <resources>
         <image name="face.dashed.fill" catalog="system" width="128" height="123"/>
-        <systemColor name="systemBackgroundColor">
-            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-        </systemColor>
     </resources>
 </document>
