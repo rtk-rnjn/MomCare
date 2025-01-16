@@ -52,17 +52,17 @@ class DashboardViewController: UIViewController, UICollectionViewDataSource {
                 return section
                 
             case 1: // Vertical Section (Nib 3 and 4)
-                let itemSize1 = NSCollectionLayoutSize(widthDimension: .absolute(360), heightDimension: .absolute(67))
-                let itemSize2 = NSCollectionLayoutSize(widthDimension: .absolute(360), heightDimension: .absolute(179))
+                let itemSize1 = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(67))
+                let itemSize2 = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(179))
                 let item1 = NSCollectionLayoutItem(layoutSize: itemSize1)
                 let item2 = NSCollectionLayoutItem(layoutSize: itemSize2)
                 
-                let groupSize = NSCollectionLayoutSize(widthDimension: .absolute(360), heightDimension: .fractionalHeight(1.0))
+                let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .estimated(179))
                 let group = NSCollectionLayoutGroup.vertical(layoutSize: groupSize, subitems: [item1,item2])
                 group.interItemSpacing = .fixed(15)
 //                group.contentInsets = NSDirectionalEdgeInsets(top: 10, leading: 15, bottom: 10, trailing: 15)
                 let section = NSCollectionLayoutSection(group: group)
-                section.contentInsets = NSDirectionalEdgeInsets(top: 10, leading: 15, bottom: 10, trailing: 15)
+                section.contentInsets = NSDirectionalEdgeInsets(top: 10, leading: 15, bottom: 25, trailing: 15)
     
                 return section
                 
