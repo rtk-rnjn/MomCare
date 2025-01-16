@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="23504" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_12" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23506"/>
+        <capability name="collection view cell content view" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="wUh-Pc-1tz" customClass="Section1CollectionViewCell" customModule="MomCare" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="193" height="137"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="R7i-Bs-XTB">
+                <rect key="frame" x="0.0" y="0.0" width="193" height="137"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="l4e-Ak-oA3">
+                        <rect key="frame" x="0.0" y="87" width="193" height="50"/>
+                        <subviews>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" alignment="top" translatesAutoresizingMaskIntoConstraints="NO" id="f6l-Qv-9NA">
+                                <rect key="frame" x="20" y="4" width="153" height="36"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="Day 49" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4hE-5Q-NoJ">
+                                        <rect key="frame" x="0.0" y="0.0" width="49.333333333333336" height="18"/>
+                                        <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Trimester 1" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wxO-xS-gha">
+                                        <rect key="frame" x="0.0" y="18" width="75.666666666666671" height="18"/>
+                                        <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                            </stackView>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="calendar" catalog="system" highlightedImage="calendar" id="exD-Zc-vm5">
+                                <rect key="frame" x="146" y="-13.333333333333332" width="27" height="24"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" red="0.91372549020000005" green="0.82745098039999998" blue="0.82745098039999998" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                        <integer key="value" value="16"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBound" value="YES"/>
+                                </userDefinedRuntimeAttributes>
+                            </imageView>
+                        </subviews>
+                        <color key="backgroundColor" red="0.91372549020000005" green="0.82745098039999998" blue="0.82745098039999998" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstAttribute="bottom" secondItem="f6l-Qv-9NA" secondAttribute="bottom" constant="10" id="JCn-Yt-1wq"/>
+                            <constraint firstAttribute="height" constant="50" id="fF9-pU-f8R"/>
+                            <constraint firstItem="f6l-Qv-9NA" firstAttribute="leading" secondItem="l4e-Ak-oA3" secondAttribute="leading" constant="20" id="nQp-YB-4y2"/>
+                            <constraint firstAttribute="trailing" secondItem="f6l-Qv-9NA" secondAttribute="trailing" constant="20" id="vEk-up-sas"/>
+                        </constraints>
+                    </view>
+                    <stackView opaque="NO" contentMode="scaleToFill" spacing="18" translatesAutoresizingMaskIntoConstraints="NO" id="GBR-KI-ShU">
+                        <rect key="frame" x="20" y="18" width="153" height="50"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="momImageDashboard" translatesAutoresizingMaskIntoConstraints="NO" id="IuD-AO-bWl">
+                                <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="50" id="Xbs-st-X2y"/>
+                                    <constraint firstAttribute="width" constant="50" id="s6U-8x-c74"/>
+                                </constraints>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Week 10" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Hs4-jE-uvO">
+                                <rect key="frame" x="68" y="0.0" width="85" height="50"/>
+                                <fontDescription key="fontDescription" style="UICTFontTextStyleTitle2"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                    </stackView>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="l4e-Ak-oA3" firstAttribute="leading" secondItem="R7i-Bs-XTB" secondAttribute="leading" id="2rW-DZ-8Eb"/>
+                    <constraint firstItem="GBR-KI-ShU" firstAttribute="leading" secondItem="R7i-Bs-XTB" secondAttribute="leading" constant="20" id="9fb-nu-46b"/>
+                    <constraint firstItem="GBR-KI-ShU" firstAttribute="top" secondItem="R7i-Bs-XTB" secondAttribute="top" constant="18" id="9hD-wm-sgH"/>
+                    <constraint firstAttribute="trailing" secondItem="l4e-Ak-oA3" secondAttribute="trailing" id="N1D-Ot-l0e"/>
+                    <constraint firstAttribute="bottom" secondItem="l4e-Ak-oA3" secondAttribute="bottom" id="gUU-eU-fOR"/>
+                    <constraint firstItem="l4e-Ak-oA3" firstAttribute="centerX" secondItem="R7i-Bs-XTB" secondAttribute="centerX" id="jj9-dd-uq5"/>
+                    <constraint firstAttribute="trailing" secondItem="GBR-KI-ShU" secondAttribute="trailing" constant="20" id="mEr-Rh-cBB"/>
+                </constraints>
+            </collectionViewCellContentView>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <size key="customSize" width="248" height="222"/>
+            <userDefinedRuntimeAttributes>
+                <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                    <integer key="value" value="16"/>
+                </userDefinedRuntimeAttribute>
+                <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
+            </userDefinedRuntimeAttributes>
+            <point key="canvasLocation" x="280.15267175572518" y="94.718309859154928"/>
+        </collectionViewCell>
+    </objects>
+    <resources>
+        <image name="calendar" catalog="system" width="128" height="107"/>
+        <image name="momImageDashboard" width="931" height="931"/>
+    </resources>
+</document>

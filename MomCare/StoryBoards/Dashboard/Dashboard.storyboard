@@ -4,24 +4,57 @@
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23506"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="collection view cell content view" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
         <!--Dashboard-->
         <scene sceneID="s0d-6b-0kx">
             <objects>
-                <viewController storyboardIdentifier="Dashboard" useStoryboardIdentifierAsRestorationIdentifier="YES" id="Y6W-OH-hqX" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="Dashboard" useStoryboardIdentifierAsRestorationIdentifier="YES" id="Y6W-OH-hqX" customClass="DashboardViewController" customModule="MomCare" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="5EZ-qb-Rvc">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="3fr-wh-mP1">
+                                <rect key="frame" x="0.0" y="59" width="393" height="759"/>
+                                <color key="backgroundColor" red="0.96256190539999997" green="0.96305698159999997" blue="0.97825354340000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <collectionViewFlowLayout key="collectionViewLayout" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="10" id="4ns-fZ-ftx">
+                                    <size key="itemSize" width="128" height="128"/>
+                                    <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                    <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                    <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                </collectionViewFlowLayout>
+                                <cells>
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="FOY-67-Cul">
+                                        <rect key="frame" x="0.0" y="0.0" width="127.99999999999997" height="128"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="eis-wR-7EV">
+                                            <rect key="frame" x="0.0" y="0.0" width="127.99999999999997" height="128"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                        </collectionViewCellContentView>
+                                    </collectionViewCell>
+                                </cells>
+                            </collectionView>
+                        </subviews>
                         <viewLayoutGuide key="safeArea" id="vDu-zF-Fre"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="backgroundColor" red="0.94901960784313721" green="0.94901960784313721" blue="0.96862745098039216" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstItem="vDu-zF-Fre" firstAttribute="trailing" secondItem="3fr-wh-mP1" secondAttribute="trailing" id="4kP-6F-9Tu"/>
+                            <constraint firstItem="3fr-wh-mP1" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" id="Iwk-SE-2le"/>
+                            <constraint firstItem="vDu-zF-Fre" firstAttribute="bottom" secondItem="3fr-wh-mP1" secondAttribute="bottom" id="hVj-w4-gz7"/>
+                            <constraint firstItem="3fr-wh-mP1" firstAttribute="top" secondItem="vDu-zF-Fre" secondAttribute="top" id="tWE-LK-fKu"/>
+                        </constraints>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Dashboard" image="trophy.fill" catalog="system" id="eb3-Jl-17Y"/>
+                    <tabBarItem key="tabBarItem" title="Dashboard" image="trophy.fill" catalog="system" id="u5p-9j-pEP"/>
+                    <navigationItem key="navigationItem" largeTitleDisplayMode="never" id="Ujh-Pd-5Ms"/>
+                    <connections>
+                        <outlet property="collectionView" destination="3fr-wh-mP1" id="W6A-WM-eNG"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ief-a0-LHa" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1492.3664122137404" y="-9.1549295774647899"/>
+            <point key="canvasLocation" x="3921.3740458015263" y="-26.056338028169016"/>
         </scene>
     </scenes>
     <resources>
