@@ -27,4 +27,3 @@ class Playlists {
         FeaturedPlaylist(image: UIImage(named: "I6")!, genre: Genre(name: "Spiritual"))
     ]
 }
-

@@ -8,12 +8,12 @@
 import Foundation
 import UIKit
 
-struct Mood{
+struct Mood {
     let image: UIImage
     let name: String
 }
 
-class AllMoods{
+class AllMoods {
     static var moods: [Mood] = [
         Mood(image: UIImage(named: "Happy")!, name: "Happy"),
         Mood(image: UIImage(named: "Sad")!, name: "Sad"),

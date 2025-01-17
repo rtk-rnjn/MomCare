@@ -59,5 +59,3 @@ extension MoodnestViewController: UICollectionViewDelegateFlowLayout {
 //            }
 //        }
 }
-
-
