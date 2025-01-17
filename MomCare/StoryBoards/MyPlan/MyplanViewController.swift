@@ -1,15 +1,17 @@
 //
-//  MyPlanViewController.swift
+//  MyplanViewController.swift
 //  MomCare
 //
-//  Created by Batch - 2  on 16/01/25.
+//  Created by Aryan Singh on 16/01/25.
 //
 
 import UIKit
 
-class MyPlanViewController: UIViewController {
+class MyplanViewController: UIViewController {
 
+    @IBOutlet var scrollView: UIScrollView!
     @IBOutlet var containerView: UIView!
+    @IBOutlet var segmentedControl: UISegmentedControl!
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -26,5 +28,8 @@ class MyPlanViewController: UIViewController {
         // Pass the selected object to the new view controller.
     }
     */
-
+    
+    @IBAction func segmentedControlChanged(_ sender: UISegmentedControl) {
+    }
+    
 }
