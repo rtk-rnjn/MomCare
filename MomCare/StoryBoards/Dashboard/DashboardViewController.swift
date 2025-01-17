@@ -15,6 +15,7 @@ class DashboardViewController: UIViewController, UICollectionViewDataSource {
         super.viewDidLoad()
         
         collectionView.register(UINib(nibName: "WelcomeHeaderCell", bundle: nil), forCellWithReuseIdentifier: "WelcomeHeaderCell")
+        collectionView.register(UINib(nibName: "SectionHeaderView", bundle: nil), forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "SectionHeaderView")
         collectionView.register(UINib(nibName: "Section1Cell", bundle: nil), forCellWithReuseIdentifier: "Section1Cell")
         collectionView.register(UINib(nibName: "Section2Cell", bundle: nil), forCellWithReuseIdentifier: "Section2Cell")
         collectionView.register(UINib(nibName: "Section3Cell", bundle: nil), forCellWithReuseIdentifier: "Section3Cell")
@@ -42,7 +43,7 @@ class DashboardViewController: UIViewController, UICollectionViewDataSource {
                 let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),heightDimension: .absolute(100))
                 let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
                 let section = NSCollectionLayoutSection(group: group)
-                section.contentInsets = NSDirectionalEdgeInsets(top: 10, leading: 15, bottom: 10, trailing: 15)
+                section.contentInsets = NSDirectionalEdgeInsets(top: 10, leading: 15, bottom: 5, trailing: 15)
                 return section
                 
             case 1: // Horizontal Section (Nib 1 and 2)
@@ -56,7 +57,7 @@ class DashboardViewController: UIViewController, UICollectionViewDataSource {
                 group.interItemSpacing = .fixed(15)
 //                group.contentInsets = NSDirectionalEdgeInsets(top: 10, leading: 15, bottom: 10, trailing: 15)
                 let section = NSCollectionLayoutSection(group: group)
-                section.contentInsets = NSDirectionalEdgeInsets(top: 5, leading: 15, bottom: 10, trailing: 15)
+                section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 15, bottom: 10, trailing: 15)
                 return section
                 
             case 2: // Vertical Section (Nib 3 and 4)
@@ -70,8 +71,12 @@ class DashboardViewController: UIViewController, UICollectionViewDataSource {
                 group.interItemSpacing = .fixed(15)
 //                group.contentInsets = NSDirectionalEdgeInsets(top: 10, leading: 15, bottom: 10, trailing: 15)
                 let section = NSCollectionLayoutSection(group: group)
-                section.contentInsets = NSDirectionalEdgeInsets(top: 10, leading: 15, bottom: 25, trailing: 15)
-    
+                section.contentInsets = NSDirectionalEdgeInsets(top: 10, leading: 15, bottom: 20, trailing: 15)
+
+                let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(50))
+                let header = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: headerSize, elementKind: UICollectionView.elementKindSectionHeader, alignment: .top)
+                section.boundarySupplementaryItems = [header]
+            
                 return section
                 
             case 3: // Horizontal Section (Nib 5 and 6)
@@ -82,7 +87,10 @@ class DashboardViewController: UIViewController, UICollectionViewDataSource {
                 group.interItemSpacing = .fixed(20)
 //                group.contentInsets = NSDirectionalEdgeInsets(top: 10, leading: 15, bottom: 10, trailing: 15)
                 let section = NSCollectionLayoutSection(group: group)
-                section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 25, bottom: 10, trailing: 5)
+                section.contentInsets = NSDirectionalEdgeInsets(top: 10, leading: 25, bottom: 20, trailing: 5)
+                let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(50))
+                let header = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: headerSize, elementKind: UICollectionView.elementKindSectionHeader, alignment: .top)
+                section.boundarySupplementaryItems = [header]
                 return section
                 
             default:
@@ -104,6 +112,15 @@ class DashboardViewController: UIViewController, UICollectionViewDataSource {
         default:
             fatalError("Unexpected section")
         }
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+        guard kind == UICollectionView.elementKindSectionHeader else {
+            fatalError("Unexpected element kind")
+        }
+        let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "SectionHeaderView", for: indexPath) as! SectionHeaderViewCollectionViewCell
+        headerView.titleLabel.text = (indexPath.section==2) ? "Progress" : "Daily Insights"
+        return headerView
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
