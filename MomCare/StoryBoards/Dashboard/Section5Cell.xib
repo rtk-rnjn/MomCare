@@ -30,21 +30,36 @@
                         </subviews>
                         <color key="backgroundColor" red="0.9137254901960784" green="0.82745098039215681" blue="0.82745098039215681" alpha="1" colorSpace="calibratedRGB"/>
                     </view>
-                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="target" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="TE2-O9-5sZ">
-                        <rect key="frame" x="111" y="83.666666666666657" width="27" height="25.666666666666664"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <color key="backgroundColor" red="0.91372549020000005" green="0.82745098039999998" blue="0.82745098039999998" alpha="1" colorSpace="calibratedRGB"/>
-                        <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                    </imageView>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Jot down three things you're grateful for today" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="10" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dwZ-Ju-E2Z">
-                        <rect key="frame" x="8" y="15" width="149" height="60"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Jot down three things you're grateful for today" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="10" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dwZ-Ju-E2Z">
+                        <rect key="frame" x="8" y="15" width="148" height="60"/>
                         <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
                     </label>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="25G-9k-5Vx">
+                        <rect key="frame" x="115" y="83" width="34" height="34"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="34" id="PTP-Oe-Rdh"/>
+                        </constraints>
+                        <color key="tintColor" red="0.91372549020000005" green="0.82745098039999998" blue="0.82745098039999998" alpha="1" colorSpace="calibratedRGB"/>
+                        <state key="normal" title="Button"/>
+                        <buttonConfiguration key="configuration" style="filled" image="target" catalog="system">
+                            <backgroundConfiguration key="background" cornerRadius="37"/>
+                            <color key="baseForegroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <color key="baseBackgroundColor" red="0.91372549020000005" green="0.82745098039999998" blue="0.82745098039999998" alpha="1" colorSpace="calibratedRGB"/>
+                        </buttonConfiguration>
+                    </button>
                 </subviews>
                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                <constraints>
+                    <constraint firstItem="25G-9k-5Vx" firstAttribute="top" secondItem="dwZ-Ju-E2Z" secondAttribute="bottom" constant="8" id="FSW-3r-mlD"/>
+                    <constraint firstItem="25G-9k-5Vx" firstAttribute="leading" secondItem="fHC-SX-wkN" secondAttribute="leading" constant="115" id="HcC-7b-HoI"/>
+                    <constraint firstItem="dwZ-Ju-E2Z" firstAttribute="leading" secondItem="fHC-SX-wkN" secondAttribute="leading" constant="8" id="Wfl-v4-1cl"/>
+                    <constraint firstAttribute="trailing" secondItem="dwZ-Ju-E2Z" secondAttribute="trailing" constant="8" id="a58-MI-bMG"/>
+                    <constraint firstItem="dwZ-Ju-E2Z" firstAttribute="top" secondItem="fHC-SX-wkN" secondAttribute="top" constant="15" id="acC-bd-b4I"/>
+                    <constraint firstAttribute="bottom" secondItem="25G-9k-5Vx" secondAttribute="bottom" constant="37" id="hP0-KQ-Iuh"/>
+                    <constraint firstAttribute="trailing" secondItem="25G-9k-5Vx" secondAttribute="trailing" constant="15" id="iiL-Sv-g1B"/>
+                </constraints>
             </collectionViewCellContentView>
             <userDefinedRuntimeAttributes>
                 <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">

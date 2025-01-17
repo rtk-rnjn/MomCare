@@ -40,16 +40,23 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="calendar.badge.clock" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="uVO-d0-mzg">
-                                <rect key="frame" x="120" y="-13.333333333333332" width="29.666666666666664" height="26.666666666666664"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" red="0.91372549020000005" green="0.82745098039999998" blue="0.82745098039999998" alpha="1" colorSpace="calibratedRGB"/>
-                                <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                            </imageView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jTz-A5-vnv">
+                                <rect key="frame" x="110" y="-22" width="35" height="35"/>
+                                <color key="tintColor" red="0.91372549020000005" green="0.82745098039999998" blue="0.82745098039999998" alpha="1" colorSpace="calibratedRGB"/>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="filled" image="calendar.badge.clock" catalog="system">
+                                    <backgroundConfiguration key="background" cornerRadius="37"/>
+                                    <color key="baseForegroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <color key="baseBackgroundColor" red="0.91372549020000005" green="0.82745098039999998" blue="0.82745098039999998" alpha="1" colorSpace="calibratedRGB"/>
+                                </buttonConfiguration>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" red="0.91372549020000005" green="0.82745098039999998" blue="0.82745098039999998" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="50" id="2aD-UM-Sfs"/>
+                            <constraint firstItem="jTz-A5-vnv" firstAttribute="leading" secondItem="iyF-9F-32h" secondAttribute="leading" constant="110" id="8GE-YW-a2e"/>
+                            <constraint firstAttribute="bottom" secondItem="jTz-A5-vnv" secondAttribute="bottom" constant="37" id="m6L-70-EIL"/>
+                            <constraint firstAttribute="trailing" secondItem="jTz-A5-vnv" secondAttribute="trailing" constant="15" id="r9t-Nk-lxt"/>
                         </constraints>
                     </view>
                 </subviews>
