@@ -44,7 +44,7 @@
                                 <rect key="frame" x="110" y="-22" width="35" height="35"/>
                                 <color key="tintColor" red="0.91372549020000005" green="0.82745098039999998" blue="0.82745098039999998" alpha="1" colorSpace="calibratedRGB"/>
                                 <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="filled" image="calendar" catalog="system">
+                                <buttonConfiguration key="configuration" style="filled" image="calendar.badge.clock" catalog="system">
                                     <backgroundConfiguration key="background" cornerRadius="37"/>
                                     <color key="baseForegroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <color key="baseBackgroundColor" red="0.91372549020000005" green="0.82745098039999998" blue="0.82745098039999998" alpha="1" colorSpace="calibratedRGB"/>
@@ -78,6 +78,6 @@
         </collectionViewCell>
     </objects>
     <resources>
-        <image name="calendar" catalog="system" width="128" height="107"/>
+        <image name="calendar.badge.clock" catalog="system" width="128" height="109"/>
     </resources>
 </document>
