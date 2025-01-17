@@ -48,8 +48,9 @@
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Xoi-Ub-x6e">
+                                                <imageView clipsSubviews="YES" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Xoi-Ub-x6e">
                                                     <rect key="frame" x="0.0" y="0.0" width="394" height="305"/>
+                                                    <gestureRecognizers/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="400" id="IVQ-GD-d1G"/>
                                                         <constraint firstAttribute="height" constant="350" id="KKU-jD-7sv"/>
@@ -108,11 +109,28 @@
                     <connections>
                         <outlet property="collectionView" destination="g69-AT-5ZJ" id="98M-3I-M22"/>
                         <outlet property="pageControl" destination="b8o-t3-6ao" id="BbI-pF-SxS"/>
+                        <segue destination="pwN-0J-bVZ" kind="show" id="h0b-4V-iWC"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ief-a0-LHa" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="872.51908396946567" y="5.6338028169014089"/>
+            <point key="canvasLocation" x="-352" y="-8"/>
+        </scene>
+        <!--MoodNest-->
+        <scene sceneID="Atk-Bq-QKr">
+            <objects>
+                <viewController id="pwN-0J-bVZ" customClass="GenresPageViewController" customModule="MomCare" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="6GO-uC-gbZ">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="842"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <viewLayoutGuide key="safeArea" id="T9W-Uf-yKU"/>
+                        <color key="backgroundColor" red="0.9137254901960784" green="0.82745098039215681" blue="0.82745098039215681" alpha="1" colorSpace="calibratedRGB"/>
+                    </view>
+                    <navigationItem key="navigationItem" title="MoodNest" largeTitleDisplayMode="never" id="iUd-me-Atv"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="1PR-rZ-1D4" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="778" y="-8"/>
         </scene>
     </scenes>
     <resources>
