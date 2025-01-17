@@ -6,9 +6,7 @@ struct Meal {
     var kcal: Int
 }
 
-
 class MealTableViewController: UITableViewController {
-    
     
     // Sample meal data
     var breakfastMeals: [Meal] = [
@@ -28,11 +26,10 @@ class MealTableViewController: UITableViewController {
 //        tableView.dataSource = self
 //                tableView.delegate = self
         
-         //Register custom cell class
+         // Register custom cell class
         tableView.register(MealHeaderTableViewCell.self, forCellReuseIdentifier: "MealHeaderCell")
         tableView.register(MealItemTableViewCell.self, forCellReuseIdentifier: "MealItemCell")
     }
-
 
     // MARK: - Table view data source
 
@@ -62,7 +59,6 @@ class MealTableViewController: UITableViewController {
                 // Handle the case where the cell couldn't be dequeued
                 return UITableViewCell() // Or a fallback cell
             }
-
             
         } else {
             // Return item cell
@@ -89,4 +85,3 @@ class MealTableViewController: UITableViewController {
         }
     }
 }
-

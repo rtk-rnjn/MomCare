@@ -12,12 +12,6 @@ class MyplanViewController: UIViewController {
     @IBOutlet var scrollView: UIScrollView!
     @IBOutlet var containerView: UIView!
     @IBOutlet var segmentedControl: UISegmentedControl!
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
-    }
-    
 
     /*
     // MARK: - Navigation

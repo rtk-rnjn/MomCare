@@ -7,7 +7,6 @@
 
 import UIKit
 
-
     class ProgressView: UIView {
         private var progressRing = UIProgressView(progressViewStyle: .default)
 
@@ -33,6 +32,3 @@ import UIKit
             progressRing.setProgress(value, animated: true)
         }
     }
-
-
-
