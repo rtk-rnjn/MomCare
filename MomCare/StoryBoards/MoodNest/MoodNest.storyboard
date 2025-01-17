@@ -4,6 +4,7 @@
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23506"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="collection view cell content view" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -109,12 +110,12 @@
                     <connections>
                         <outlet property="collectionView" destination="g69-AT-5ZJ" id="98M-3I-M22"/>
                         <outlet property="pageControl" destination="b8o-t3-6ao" id="BbI-pF-SxS"/>
-                        <segue destination="pwN-0J-bVZ" kind="show" id="h0b-4V-iWC"/>
+                        <segue destination="pwN-0J-bVZ" kind="show" identifier="ShowGenres" id="h0b-4V-iWC"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ief-a0-LHa" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-352" y="-8"/>
+            <point key="canvasLocation" x="-1767" y="1"/>
         </scene>
         <!--MoodNest-->
         <scene sceneID="Atk-Bq-QKr">
@@ -123,10 +124,69 @@
                     <view key="view" contentMode="scaleToFill" id="6GO-uC-gbZ">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="842"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Jw7-ls-mG9">
+                                <rect key="frame" x="0.0" y="0.0" width="393" height="56"/>
+                                <color key="backgroundColor" red="0.91372549020000005" green="0.82745098039999998" blue="0.82745098039999998" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="barTintColor" red="0.91372549020000005" green="0.82745098039999998" blue="0.82745098039999998" alpha="1" colorSpace="calibratedRGB"/>
+                                <items>
+                                    <navigationItem title="MoodNest" id="bvI-Xi-qFh"/>
+                                </items>
+                            </navigationBar>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="uM7-Kg-hxD">
+                                <rect key="frame" x="10" y="76" width="373" height="766"/>
+                                <subviews>
+                                    <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="daW-N7-FvE">
+                                        <rect key="frame" x="0.0" y="10" width="373" height="746"/>
+                                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                        <collectionViewFlowLayout key="collectionViewLayout" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="10" id="29g-fT-g6h">
+                                            <size key="itemSize" width="128" height="128"/>
+                                            <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                            <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                            <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                        </collectionViewFlowLayout>
+                                        <cells>
+                                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="vrM-gR-7M1">
+                                                <rect key="frame" x="0.0" y="0.0" width="128" height="128"/>
+                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="PEe-oL-2ul">
+                                                    <rect key="frame" x="0.0" y="0.0" width="128" height="128"/>
+                                                    <autoresizingMask key="autoresizingMask"/>
+                                                </collectionViewCellContentView>
+                                            </collectionViewCell>
+                                        </cells>
+                                    </collectionView>
+                                </subviews>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <constraints>
+                                    <constraint firstAttribute="trailing" secondItem="daW-N7-FvE" secondAttribute="trailing" id="NyC-Wn-O1V"/>
+                                    <constraint firstItem="daW-N7-FvE" firstAttribute="top" secondItem="uM7-Kg-hxD" secondAttribute="top" constant="10" id="gMz-vG-E3P"/>
+                                    <constraint firstItem="daW-N7-FvE" firstAttribute="leading" secondItem="uM7-Kg-hxD" secondAttribute="leading" id="oIJ-Ug-BhW"/>
+                                    <constraint firstAttribute="bottom" secondItem="daW-N7-FvE" secondAttribute="bottom" constant="10" id="rQC-ju-aMv"/>
+                                </constraints>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                        <integer key="value" value="20"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                            </view>
+                        </subviews>
                         <viewLayoutGuide key="safeArea" id="T9W-Uf-yKU"/>
                         <color key="backgroundColor" red="0.9137254901960784" green="0.82745098039215681" blue="0.82745098039215681" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstItem="T9W-Uf-yKU" firstAttribute="trailing" secondItem="uM7-Kg-hxD" secondAttribute="trailing" constant="10" id="Qbu-1k-Ab8"/>
+                            <constraint firstItem="uM7-Kg-hxD" firstAttribute="top" secondItem="Jw7-ls-mG9" secondAttribute="bottom" constant="20" id="Yrc-2K-ABv"/>
+                            <constraint firstItem="Jw7-ls-mG9" firstAttribute="trailing" secondItem="T9W-Uf-yKU" secondAttribute="trailing" id="bEA-ge-MOb"/>
+                            <constraint firstItem="Jw7-ls-mG9" firstAttribute="leading" secondItem="T9W-Uf-yKU" secondAttribute="leading" id="cGY-nK-kuB"/>
+                            <constraint firstAttribute="bottom" secondItem="uM7-Kg-hxD" secondAttribute="bottom" id="dAH-tY-Ehp"/>
+                            <constraint firstItem="Jw7-ls-mG9" firstAttribute="top" secondItem="T9W-Uf-yKU" secondAttribute="top" id="fQJ-a3-Blc"/>
+                            <constraint firstItem="uM7-Kg-hxD" firstAttribute="leading" secondItem="T9W-Uf-yKU" secondAttribute="leading" constant="10" id="vGT-9Z-hcl"/>
+                        </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="MoodNest" largeTitleDisplayMode="never" id="iUd-me-Atv"/>
+                    <connections>
+                        <outlet property="MoodnestCollectionView" destination="daW-N7-FvE" id="8fJ-yd-P9r"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="1PR-rZ-1D4" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
@@ -135,5 +195,8 @@
     </scenes>
     <resources>
         <image name="face.dashed.fill" catalog="system" width="128" height="123"/>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
     </resources>
 </document>
