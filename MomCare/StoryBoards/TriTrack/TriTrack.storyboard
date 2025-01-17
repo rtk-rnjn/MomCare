@@ -714,7 +714,7 @@
                         <outlet property="alertTimePopupButton" destination="Qzb-RM-8sG" id="7Wn-nH-L2N"/>
                         <outlet property="dateTimePicker" destination="gkn-y1-xk2" id="U08-Co-p9w"/>
                         <outlet property="literalEndsLabel" destination="Aq9-w1-AsA" id="DWf-ax-ouM"/>
-                        <outlet property="repeatPopupButton" destination="uSz-AB-krq" id="wMy-3r-a7p"/>
+                        <outlet property="repeatPopupButton" destination="ep1-bg-TXq" id="tVH-Du-3iQ"/>
                         <outlet property="travelTimePopupButton" destination="uSz-AB-krq" id="2EA-lI-5uR"/>
                     </connections>
                 </tableViewController>
