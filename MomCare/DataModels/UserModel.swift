@@ -49,12 +49,12 @@ enum DietaryPreference {
     
 }
 
-enum Mood {
-    case happy
-    case sad
-    case stressed
-    case anger
-}
+//enum Mood {
+//    case happy
+//    case sad
+//    case stressed
+//    case anger
+//}
 
 struct User {
     var firstName: String
