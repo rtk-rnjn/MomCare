@@ -7,14 +7,22 @@
 
 import UIKit
 
+enum ContainerType {
+    case meAndBaby
+    case events
+    case symptoms
+}
+
 class TriTrackViewController: UIViewController {
     @IBOutlet var triTrackInternalView: UIView!
 
     @IBOutlet var addButton: UIBarButtonItem!
     @IBOutlet var triTrackSegmentedControl: UISegmentedControl!
-    
-    var awaitedTitle: String?
 
+    @IBOutlet var meAndBabyContainerView: UIView!
+    @IBOutlet var eventsContainerView: UIView!
+    @IBOutlet var symptomsContainerView: UIView!
+    
     var currentSegmentIndex: Int = 0
 
     override func viewDidLoad() {
@@ -24,9 +32,20 @@ class TriTrackViewController: UIViewController {
         triTrackInternalView.layer.cornerRadius = 15
 
         prepareSegmentedControl()
+        updateView()
+    }
+    
+    func hideAllContainers(except: ContainerType) {
+        let allContainers: [ContainerType: UIView] = [
+            .meAndBaby: meAndBabyContainerView,
+            .events: eventsContainerView,
+            .symptoms: symptomsContainerView
+        ]
         
-        if currentSegmentIndex == 0 {
-            addButton.isEnabled = false
+        allContainers.values.forEach { $0.isHidden = true }
+        
+        if let container = allContainers[except] {
+            container.isHidden = false
         }
     }
 
@@ -55,29 +74,33 @@ class TriTrackViewController: UIViewController {
         triTrackSegmentedControl.setTitleTextAttributes(selectedTextAttribute, for: .selected)
     }
     
-    @IBAction func segmentTapped(_ sender: UISegmentedControl) {
-        let currentSegmentIndex = sender.selectedSegmentIndex
-        
+    func updateView() {
+        currentSegmentIndex = triTrackSegmentedControl.selectedSegmentIndex
+
         switch currentSegmentIndex {
         case 0:
             addButton.isEnabled = false
+            hideAllContainers(except: .meAndBaby)
         case 1:
             addButton.isEnabled = true
-            self.awaitedTitle = "Add Event"
+            hideAllContainers(except: .events)
         case 2:
             addButton.isEnabled = true
-            self.awaitedTitle = "Add Symptom"
+            hideAllContainers(except: .symptoms)
         default:
             // Should never happen
             fatalError()
         }
+    }
+
+    @IBAction func segmentTapped(_ sender: UISegmentedControl) {
+        updateView()
     }
     
     @IBAction func unwinToTriTrack(_ sender: UIStoryboardSegue) {
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-
         // Image using ChatGPT in production Code. sorry guys
 
         if segue.identifier == "segueTriTrack" {
