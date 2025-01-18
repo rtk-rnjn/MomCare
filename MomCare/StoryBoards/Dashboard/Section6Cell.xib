@@ -19,9 +19,8 @@
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8xu-6Q-LvC">
                         <rect key="frame" x="0.0" y="103" width="164" height="51"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Daily Tip" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pfc-RZ-dn4">
-                                <rect key="frame" x="8" y="0.0" width="107" height="51"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Daily Tip" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pfc-RZ-dn4">
+                                <rect key="frame" x="13" y="0.0" width="102" height="51"/>
                                 <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -43,8 +42,12 @@
                         </subviews>
                         <color key="backgroundColor" red="0.91372549020000005" green="0.82745098039999998" blue="0.82745098039999998" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
+                            <constraint firstAttribute="bottom" secondItem="pfc-RZ-dn4" secondAttribute="bottom" id="KuD-4d-S3Q"/>
+                            <constraint firstItem="I3B-On-C4c" firstAttribute="leading" secondItem="pfc-RZ-dn4" secondAttribute="trailing" id="W2x-zq-zHH"/>
                             <constraint firstAttribute="bottom" secondItem="I3B-On-C4c" secondAttribute="bottom" constant="37" id="eZT-Aw-xMu"/>
                             <constraint firstAttribute="trailing" secondItem="I3B-On-C4c" secondAttribute="trailing" constant="15" id="lEG-em-Yjz"/>
+                            <constraint firstItem="pfc-RZ-dn4" firstAttribute="top" secondItem="8xu-6Q-LvC" secondAttribute="top" id="nl5-m9-KJq"/>
+                            <constraint firstItem="pfc-RZ-dn4" firstAttribute="leading" secondItem="8xu-6Q-LvC" secondAttribute="leading" constant="13" id="t6F-fl-gs7"/>
                         </constraints>
                     </view>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="10" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="FcP-r5-JDa">

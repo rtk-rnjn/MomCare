@@ -19,17 +19,17 @@
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="l4e-Ak-oA3">
                         <rect key="frame" x="0.0" y="87" width="193" height="50"/>
                         <subviews>
-                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" alignment="top" translatesAutoresizingMaskIntoConstraints="NO" id="f6l-Qv-9NA">
-                                <rect key="frame" x="20" y="7" width="153" height="36"/>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" alignment="top" spacing="-2" translatesAutoresizingMaskIntoConstraints="NO" id="f6l-Qv-9NA">
+                                <rect key="frame" x="15" y="3" width="158" height="44"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="Day 49" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4hE-5Q-NoJ">
-                                        <rect key="frame" x="0.0" y="0.0" width="56.666666666666664" height="18"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="56.666666666666664" height="23"/>
                                         <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Trimester 1" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wxO-xS-gha">
-                                        <rect key="frame" x="0.0" y="18" width="88.666666666666671" height="18"/>
+                                        <rect key="frame" x="0.0" y="21" width="88.666666666666671" height="23"/>
                                         <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
@@ -50,12 +50,12 @@
                         <color key="backgroundColor" red="0.91372549020000005" green="0.82745098039999998" blue="0.82745098039999998" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstItem="0yG-xu-pgv" firstAttribute="leading" secondItem="l4e-Ak-oA3" secondAttribute="leading" constant="144" id="Dff-xU-CDT"/>
-                            <constraint firstItem="f6l-Qv-9NA" firstAttribute="top" secondItem="l4e-Ak-oA3" secondAttribute="top" constant="7" id="Ggw-FD-LI6"/>
-                            <constraint firstAttribute="bottom" secondItem="f6l-Qv-9NA" secondAttribute="bottom" constant="7" id="JCn-Yt-1wq"/>
+                            <constraint firstItem="f6l-Qv-9NA" firstAttribute="top" secondItem="l4e-Ak-oA3" secondAttribute="top" constant="3" id="Ggw-FD-LI6"/>
+                            <constraint firstAttribute="bottom" secondItem="f6l-Qv-9NA" secondAttribute="bottom" constant="3" id="JCn-Yt-1wq"/>
                             <constraint firstAttribute="trailing" secondItem="0yG-xu-pgv" secondAttribute="trailing" constant="15" id="f6F-cH-6Cz"/>
                             <constraint firstAttribute="height" constant="50" id="fF9-pU-f8R"/>
                             <constraint firstAttribute="bottom" secondItem="0yG-xu-pgv" secondAttribute="bottom" constant="37" id="iuF-y0-YLK"/>
-                            <constraint firstItem="f6l-Qv-9NA" firstAttribute="leading" secondItem="l4e-Ak-oA3" secondAttribute="leading" constant="20" id="nQp-YB-4y2"/>
+                            <constraint firstItem="f6l-Qv-9NA" firstAttribute="leading" secondItem="l4e-Ak-oA3" secondAttribute="leading" constant="15" id="nQp-YB-4y2"/>
                             <constraint firstAttribute="trailing" secondItem="f6l-Qv-9NA" secondAttribute="trailing" constant="20" id="vEk-up-sas"/>
                         </constraints>
                     </view>

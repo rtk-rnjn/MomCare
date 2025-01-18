@@ -16,26 +16,30 @@
                 <rect key="frame" x="0.0" y="0.0" width="164" height="154"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="gOD-lT-oaq">
-                        <rect key="frame" x="0.0" y="103" width="164" height="51"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Today's Focus" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="b4x-Go-GHK">
-                                <rect key="frame" x="10" y="-2" width="107" height="56"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                        </subviews>
-                        <color key="backgroundColor" red="0.9137254901960784" green="0.82745098039215681" blue="0.82745098039215681" alpha="1" colorSpace="calibratedRGB"/>
-                    </view>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Jot down three things you're grateful for today" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="10" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dwZ-Ju-E2Z">
                         <rect key="frame" x="8" y="15" width="148" height="60"/>
                         <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
                     </label>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gOD-lT-oaq">
+                        <rect key="frame" x="0.0" y="103" width="164" height="51"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Today's Focus" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="b4x-Go-GHK">
+                                <rect key="frame" x="13" y="0.0" width="121" height="51"/>
+                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" red="0.9137254901960784" green="0.82745098039215681" blue="0.82745098039215681" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="b4x-Go-GHK" secondAttribute="trailing" constant="30" id="GTr-sO-lOX"/>
+                            <constraint firstAttribute="bottom" secondItem="b4x-Go-GHK" secondAttribute="bottom" id="LeG-Mr-GGM"/>
+                            <constraint firstItem="b4x-Go-GHK" firstAttribute="leading" secondItem="gOD-lT-oaq" secondAttribute="leading" constant="13" id="oPY-GY-jUA"/>
+                            <constraint firstItem="b4x-Go-GHK" firstAttribute="top" secondItem="gOD-lT-oaq" secondAttribute="top" id="uMh-BT-ULK"/>
+                        </constraints>
+                    </view>
                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="25G-9k-5Vx">
                         <rect key="frame" x="115" y="83" width="34" height="34"/>
                         <constraints>
@@ -52,13 +56,18 @@
                 </subviews>
                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                 <constraints>
+                    <constraint firstItem="gOD-lT-oaq" firstAttribute="centerX" secondItem="fHC-SX-wkN" secondAttribute="centerX" id="26e-vl-GMd"/>
+                    <constraint firstAttribute="trailing" secondItem="gOD-lT-oaq" secondAttribute="trailing" id="4yO-KZ-lT9"/>
                     <constraint firstItem="25G-9k-5Vx" firstAttribute="top" secondItem="dwZ-Ju-E2Z" secondAttribute="bottom" constant="8" id="FSW-3r-mlD"/>
                     <constraint firstItem="25G-9k-5Vx" firstAttribute="leading" secondItem="fHC-SX-wkN" secondAttribute="leading" constant="115" id="HcC-7b-HoI"/>
+                    <constraint firstAttribute="bottom" secondItem="gOD-lT-oaq" secondAttribute="bottom" id="RnO-qF-C1V"/>
+                    <constraint firstItem="gOD-lT-oaq" firstAttribute="top" secondItem="dwZ-Ju-E2Z" secondAttribute="bottom" constant="28" id="VgZ-GS-xHM"/>
                     <constraint firstItem="dwZ-Ju-E2Z" firstAttribute="leading" secondItem="fHC-SX-wkN" secondAttribute="leading" constant="8" id="Wfl-v4-1cl"/>
                     <constraint firstAttribute="trailing" secondItem="dwZ-Ju-E2Z" secondAttribute="trailing" constant="8" id="a58-MI-bMG"/>
                     <constraint firstItem="dwZ-Ju-E2Z" firstAttribute="top" secondItem="fHC-SX-wkN" secondAttribute="top" constant="15" id="acC-bd-b4I"/>
                     <constraint firstAttribute="bottom" secondItem="25G-9k-5Vx" secondAttribute="bottom" constant="37" id="hP0-KQ-Iuh"/>
                     <constraint firstAttribute="trailing" secondItem="25G-9k-5Vx" secondAttribute="trailing" constant="15" id="iiL-Sv-g1B"/>
+                    <constraint firstItem="gOD-lT-oaq" firstAttribute="leading" secondItem="fHC-SX-wkN" secondAttribute="leading" id="pOD-eY-Y23"/>
                 </constraints>
             </collectionViewCellContentView>
             <userDefinedRuntimeAttributes>
