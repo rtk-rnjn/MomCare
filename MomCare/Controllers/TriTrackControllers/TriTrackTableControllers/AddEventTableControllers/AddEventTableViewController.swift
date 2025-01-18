@@ -76,7 +76,7 @@ class AddEventTableViewController: UITableViewController {
     }
     
     private func prepareRepeatPopup() {
-        repeatPopupButton.menu = UIMenu(children: AddEventTableViewController.repeatTimeOptions.map { title, interval in
+        repeatPopupButton.menu = UIMenu(children: AddEventTableViewController.repeatTimeOptions.map { title, _ in
             UIAction(title: title, handler: handleRepeatOption) })
         
         repeatPopupButton.showsMenuAsPrimaryAction = true
@@ -89,7 +89,7 @@ class AddEventTableViewController: UITableViewController {
     }
 
     private func prepareTravelTimePopup() {
-        travelTimePopupButton.menu = UIMenu(children: AddEventTableViewController.travelTimeOptions.map { title, interval in
+        travelTimePopupButton.menu = UIMenu(children: AddEventTableViewController.travelTimeOptions.map { title, _ in
             UIAction(title: title, handler: handleTravelTimeOption) })
         
         travelTimePopupButton.showsMenuAsPrimaryAction = true
@@ -102,7 +102,7 @@ class AddEventTableViewController: UITableViewController {
     }
     
     private func prepareAlertTimePopup() {
-        alertTimePopupButton.menu = UIMenu(children: AddEventTableViewController.alertTimeOptions.map { title, interval in
+        alertTimePopupButton.menu = UIMenu(children: AddEventTableViewController.alertTimeOptions.map { title, _ in
             UIAction(title: title, handler: handleAlertTimeOption) })
         
         alertTimePopupButton.showsMenuAsPrimaryAction = true

@@ -10,20 +10,12 @@ import UIKit
 class AppointmentsTableViewCell: UITableViewCell {
 
     @IBOutlet var titleLabel: UILabel!
-    @IBOutlet var notesLabel: UILabel!
+    @IBOutlet var locationLabel: UILabel!
     @IBOutlet var dateTime: UIDatePicker!
-
-    override func awakeFromNib() {
-        super.awakeFromNib()
-    }
-
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-    }
     
-    func updateElements(title: String, notes: String) {
-        self.titleLabel.text = title
-        self.notesLabel.text = notes
+    func updateElements(with event: TriTrackEvent) {
+        dateTime.date = event.startDate
+        titleLabel.text = event.title
     }
 
 }

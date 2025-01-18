@@ -8,7 +8,4 @@
 import UIKit
 
 class AddSymptomsTableViewController: UITableViewController {
-    override func viewDidLoad() {
-        super.viewDidLoad()
-    }
 }
