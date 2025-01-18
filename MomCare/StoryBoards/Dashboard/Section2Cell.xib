@@ -33,10 +33,9 @@
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iyF-9F-32h">
                         <rect key="frame" x="0.0" y="87" width="160" height="50"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Upcoming Events" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tWC-bN-iaa">
-                                <rect key="frame" x="5" y="11" width="160" height="21"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Upcoming Events" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tWC-bN-iaa">
+                                <rect key="frame" x="5" y="15" width="150" height="20"/>
+                                <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
@@ -57,6 +56,10 @@
                             <constraint firstItem="jTz-A5-vnv" firstAttribute="leading" secondItem="iyF-9F-32h" secondAttribute="leading" constant="110" id="8GE-YW-a2e"/>
                             <constraint firstAttribute="bottom" secondItem="jTz-A5-vnv" secondAttribute="bottom" constant="37" id="m6L-70-EIL"/>
                             <constraint firstAttribute="trailing" secondItem="jTz-A5-vnv" secondAttribute="trailing" constant="15" id="r9t-Nk-lxt"/>
+                            <constraint firstItem="tWC-bN-iaa" firstAttribute="top" secondItem="iyF-9F-32h" secondAttribute="top" constant="15" id="wtl-rV-IhZ"/>
+                            <constraint firstItem="tWC-bN-iaa" firstAttribute="leading" secondItem="iyF-9F-32h" secondAttribute="leading" constant="5" id="x5f-dO-Q9J"/>
+                            <constraint firstAttribute="bottom" secondItem="tWC-bN-iaa" secondAttribute="bottom" constant="15" id="x7j-3n-ckq"/>
+                            <constraint firstAttribute="trailing" secondItem="tWC-bN-iaa" secondAttribute="trailing" constant="5" id="yAh-dB-sFW"/>
                         </constraints>
                     </view>
                 </subviews>

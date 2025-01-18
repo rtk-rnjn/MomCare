@@ -7,95 +7,132 @@
 
 import UIKit
 
-class DashboardViewController: UIViewController, UICollectionViewDataSource {
+class DashboardViewController: UIViewController {
     
     @IBOutlet var collectionView: UICollectionView!
     
+    private let cellIdentifiers = ["WelcomeHeaderCell", "Section1Cell", "Section2Cell", "Section3Cell", "Section4Cell", "Section5Cell", "Section6Cell"]
+    private let headerIdentifier = "SectionHeaderView"
+    private let interItemSpacing: CGFloat = 15
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        collectionView.register(UINib(nibName: "WelcomeHeaderCell", bundle: nil), forCellWithReuseIdentifier: "WelcomeHeaderCell")
-        collectionView.register(UINib(nibName: "SectionHeaderView", bundle: nil), forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "SectionHeaderView")
-        collectionView.register(UINib(nibName: "Section1Cell", bundle: nil), forCellWithReuseIdentifier: "Section1Cell")
-        collectionView.register(UINib(nibName: "Section2Cell", bundle: nil), forCellWithReuseIdentifier: "Section2Cell")
-        collectionView.register(UINib(nibName: "Section3Cell", bundle: nil), forCellWithReuseIdentifier: "Section3Cell")
-        collectionView.register(UINib(nibName: "Section4Cell", bundle: nil), forCellWithReuseIdentifier: "Section4Cell")
-        collectionView.register(UINib(nibName: "Section5Cell", bundle: nil), forCellWithReuseIdentifier: "Section5Cell")
-        collectionView.register(UINib(nibName: "Section6Cell", bundle: nil), forCellWithReuseIdentifier: "Section6Cell")
-        
-        collectionView.collectionViewLayout = createLayout()
-        collectionView.dataSource = self
-        collectionView.dataSource = self
-        
+        setupCollectionView()
+        collectionView.showsVerticalScrollIndicator = false
+
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self.navigationItem.hidesBackButton = true
+        navigationItem.hidesBackButton = true
     }
     
-    func createLayout() -> UICollectionViewCompositionalLayout {
-        return UICollectionViewCompositionalLayout { (sectionIndex, _) -> NSCollectionLayoutSection? in
+    private func setupCollectionView() {
+        registerCells()
+        collectionView.collectionViewLayout = createLayout()
+        collectionView.dataSource = self
+    }
+    
+    private func registerCells() {
+        cellIdentifiers.forEach { cell in
+            collectionView.register(UINib(nibName: cell, bundle: nil), forCellWithReuseIdentifier: cell)
+        }
+        collectionView.register(UINib(nibName: headerIdentifier, bundle: nil), forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: headerIdentifier)
+    }
+    
+    private func createLayout() -> UICollectionViewCompositionalLayout {
+        UICollectionViewCompositionalLayout { [weak self] (sectionIndex, _) -> NSCollectionLayoutSection? in
+            guard let self = self else { return nil }
             switch sectionIndex {
-            case 0: // Horizontal Section (Nib 1 and 2)
-                let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(100))
-                let item = NSCollectionLayoutItem(layoutSize: itemSize)
-                let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(100))
-                let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
-                let section = NSCollectionLayoutSection(group: group)
-                section.contentInsets = NSDirectionalEdgeInsets(top: 10, leading: 15, bottom: 5, trailing: 15)
-                return section
-                
-            case 1: // Horizontal Section (Nib 1 and 2)
-                let itemSize1 = NSCollectionLayoutSize(widthDimension: .absolute(193), heightDimension: .absolute(137))
-                let itemSize2 = NSCollectionLayoutSize(widthDimension: .absolute(160), heightDimension: .absolute(137))
-                let item1 = NSCollectionLayoutItem(layoutSize: itemSize1)
-                let item2 = NSCollectionLayoutItem(layoutSize: itemSize2)
-                
-                let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(137))
-                let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item1, item2])
-                group.interItemSpacing = .fixed(15)
-//                group.contentInsets = NSDirectionalEdgeInsets(top: 10, leading: 15, bottom: 10, trailing: 15)
-                let section = NSCollectionLayoutSection(group: group)
-                section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 15, bottom: 10, trailing: 15)
-                return section
-                
-            case 2: // Vertical Section (Nib 3 and 4)
-                let itemSize1 = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(67))
-                let itemSize2 = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(179))
-                let item1 = NSCollectionLayoutItem(layoutSize: itemSize1)
-                let item2 = NSCollectionLayoutItem(layoutSize: itemSize2)
-                
-                let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .estimated(179))
-                let group = NSCollectionLayoutGroup.vertical(layoutSize: groupSize, subitems: [item1, item2])
-                group.interItemSpacing = .fixed(15)
-//                group.contentInsets = NSDirectionalEdgeInsets(top: 10, leading: 15, bottom: 10, trailing: 15)
-                let section = NSCollectionLayoutSection(group: group)
-                section.contentInsets = NSDirectionalEdgeInsets(top: 10, leading: 15, bottom: 20, trailing: 15)
-
-                let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(50))
-                let header = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: headerSize, elementKind: UICollectionView.elementKindSectionHeader, alignment: .top)
-                section.boundarySupplementaryItems = [header]
-            
-                return section
-                
-            case 3: // Horizontal Section (Nib 5 and 6)
-                let itemSize = NSCollectionLayoutSize(widthDimension: .absolute(164), heightDimension: .absolute(154))
-                let item = NSCollectionLayoutItem(layoutSize: itemSize)
-                let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(137))
-                let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
-                group.interItemSpacing = .fixed(20)
-//                group.contentInsets = NSDirectionalEdgeInsets(top: 10, leading: 15, bottom: 10, trailing: 15)
-                let section = NSCollectionLayoutSection(group: group)
-                section.contentInsets = NSDirectionalEdgeInsets(top: 10, leading: 25, bottom: 20, trailing: 5)
-                let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(50))
-                let header = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: headerSize, elementKind: UICollectionView.elementKindSectionHeader, alignment: .top)
-                section.boundarySupplementaryItems = [header]
-                return section
-                
+            case 0: // WelcomeHeaderCell
+                return self.createSingleItemSection()
+            case 1: // Section1Cell, Section2Cell (Horizontal)
+                return self.createTwoItemHorizontalSection()
+            case 2: // Section3Cell, Section4Cell (Vertical with header)
+                return self.createVerticalSectionWithHeader()
+            case 3: // Section5Cell, Section6Cell (Horizontal with header, equal sizes)
+                return self.createEqualSizeHorizontalSectionWithHeader()
             default:
                 return nil
             }
+        }
+    }
+    
+    private func createSingleItemSection() -> NSCollectionLayoutSection {
+        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(100))
+        let item = NSCollectionLayoutItem(layoutSize: itemSize)
+        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(100))
+        let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
+        let section = NSCollectionLayoutSection(group: group)
+        section.contentInsets = NSDirectionalEdgeInsets(top: 10, leading: 15, bottom: 5, trailing: 15)
+        return section
+        
+    }
+    
+    private func createTwoItemHorizontalSection() -> NSCollectionLayoutSection {
+        let itemSize1 = NSCollectionLayoutSize(widthDimension: .absolute(193), heightDimension: .absolute(137))
+        let itemSize2 = NSCollectionLayoutSize(widthDimension: .absolute(160), heightDimension: .absolute(137))
+        let item1 = NSCollectionLayoutItem(layoutSize: itemSize1)
+        let item2 = NSCollectionLayoutItem(layoutSize: itemSize2)
+        
+        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(137))
+        let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item1, item2])
+        group.interItemSpacing = .fixed(15)
+        //group.contentInsets = NSDirectionalEdgeInsets(top: 10, leading: 15, bottom: 10, trailing: 15)
+        let section = NSCollectionLayoutSection(group: group)
+        section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 15, bottom: 10, trailing: 15)
+        return section
+    }
+    
+    private func createVerticalSectionWithHeader() -> NSCollectionLayoutSection {
+        let itemSize1 = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(67))
+        let itemSize2 = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(179))
+        let item1 = NSCollectionLayoutItem(layoutSize: itemSize1)
+        let item2 = NSCollectionLayoutItem(layoutSize: itemSize2)
+        
+        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .estimated(179))
+        let group = NSCollectionLayoutGroup.vertical(layoutSize: groupSize, subitems: [item1, item2])
+        group.interItemSpacing = .fixed(15)
+        //group.contentInsets = NSDirectionalEdgeInsets(top: 10, leading: 15, bottom: 10, trailing: 15)
+        let section = NSCollectionLayoutSection(group: group)
+        section.contentInsets = NSDirectionalEdgeInsets(top: 10, leading: 15, bottom: 20, trailing: 15)
+        section.boundarySupplementaryItems = [createHeader()]
+        return section
+    }
+    
+    private func createEqualSizeHorizontalSectionWithHeader() -> NSCollectionLayoutSection {
+        let itemSize = NSCollectionLayoutSize(widthDimension: .absolute(164), heightDimension: .absolute(154))
+        let item = NSCollectionLayoutItem(layoutSize: itemSize)
+        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(137))
+        let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
+        group.interItemSpacing = .fixed(20)
+        //group.contentInsets = NSDirectionalEdgeInsets(top: 10, leading: 15, bottom: 10, trailing: 15)
+        let section = NSCollectionLayoutSection(group: group)
+        section.contentInsets = NSDirectionalEdgeInsets(top: 10, leading: 25, bottom: 20, trailing: 5)
+        section.boundarySupplementaryItems = [createHeader()]
+        return section
+    }
+    
+    private func createHeader() -> NSCollectionLayoutBoundarySupplementaryItem {
+        let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(50))
+        return NSCollectionLayoutBoundarySupplementaryItem(layoutSize: headerSize, elementKind: UICollectionView.elementKindSectionHeader, alignment: .top)
+    }
+}
+
+    // MARK: - UICollectionViewDataSource
+
+extension DashboardViewController: UICollectionViewDataSource {
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
+        4
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        switch section {
+        case 0: return 1 // Welcome
+        case 1: return 2 // Section1, Section2
+        case 2: return 2 // Section3, Section4
+        case 3: return 2 // Section5, Section6
+        default: return 0
         }
     }
     
@@ -122,13 +159,4 @@ class DashboardViewController: UIViewController, UICollectionViewDataSource {
         headerView.titleLabel.text = (indexPath.section==2) ? "Progress" : "Daily Insights"
         return headerView
     }
-    
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return section == 0 ? 1 : 2
-    }
-    
-    func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return 4
-    }
-    
 }
