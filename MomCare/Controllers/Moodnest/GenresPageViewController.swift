@@ -14,20 +14,18 @@ class GenresPageViewController: UIViewController, UICollectionViewDataSource, UI
     
     // Playlists images and labels outlets
     
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         outerView.layer.cornerRadius = 30
         MoodnestCollectionView.backgroundColor = .clear
         
-        
-        // MARK - NIB FIles Registred here
+        // MARK: - NIB FIles Registred here
         MoodnestCollectionView.register(UINib(nibName: "MainHeading", bundle: nil), forCellWithReuseIdentifier: "MainHeading")
         MoodnestCollectionView.register(UINib(nibName: "MainImage", bundle: nil), forCellWithReuseIdentifier: "MainImage")
         MoodnestCollectionView.register(UINib(nibName: "MoodNestMultipleImages", bundle: nil), forCellWithReuseIdentifier: "MoodNestMultipleImages")
         MoodnestCollectionView.register(SectionHeaderCollectionViewCell.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "SectionHeaderCollectionViewCell")
         
-        // MARK - DataSouce and Delegate
+        // MARK: - DataSouce and Delegate
         MoodnestCollectionView.dataSource = self
         MoodnestCollectionView.delegate = self
         MoodnestCollectionView.setCollectionViewLayout(generateLayout(), animated: true)
@@ -77,15 +75,14 @@ class GenresPageViewController: UIViewController, UICollectionViewDataSource, UI
             header.HeaderLabel.text = "Featured Playlists"
             header.HeaderLabel.font = UIFont.systemFont(ofSize: 24, weight: .semibold)
             return header
-        }
-        else{
+        } else {
             print("Error")
             return UICollectionReusableView()
         }
     }
     
     func generateLayout() -> UICollectionViewLayout {
-        let layout = UICollectionViewCompositionalLayout { (sectionIndex: Int, environment: NSCollectionLayoutEnvironment) -> NSCollectionLayoutSection? in
+        let layout = UICollectionViewCompositionalLayout { (sectionIndex: Int, _: NSCollectionLayoutEnvironment) -> NSCollectionLayoutSection? in
             let section: NSCollectionLayoutSection
             switch sectionIndex {
             case 0:
@@ -161,7 +158,5 @@ class GenresPageViewController: UIViewController, UICollectionViewDataSource, UI
         return section
     }
     
-    
 }
     
-

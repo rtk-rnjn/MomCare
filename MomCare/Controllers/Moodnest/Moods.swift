@@ -13,7 +13,7 @@ struct Mood {
     let name: String
 }
 
-struct Playlist{
+struct Playlist {
     let image: UIImage!
     let name: String
 }
@@ -27,7 +27,7 @@ class AllMoods {
     ]
 }
 
-class FeaturedPlaylists{
+class FeaturedPlaylists {
     static var playlists: [Playlist] = [
         Playlist(image: UIImage(named: "I1")!, name: "Relax"),
         Playlist(image: UIImage(named: "I2")!, name: "Sleep"),

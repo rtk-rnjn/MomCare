@@ -20,14 +20,14 @@ class SectionHeaderCollectionViewCell: UICollectionViewCell {
         updateSectionHeader()
     }
     
-    func updateSectionHeader(){
+    func updateSectionHeader() {
         HeaderLabel.translatesAutoresizingMaskIntoConstraints = false
         addSubview(HeaderLabel)
         NSLayoutConstraint.activate([
             HeaderLabel.topAnchor.constraint(equalTo: topAnchor),
             HeaderLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
             HeaderLabel.trailingAnchor.constraint(equalTo: trailingAnchor),
-            HeaderLabel.bottomAnchor.constraint(equalTo: bottomAnchor),
+            HeaderLabel.bottomAnchor.constraint(equalTo: bottomAnchor)
         ])
     }
 }
