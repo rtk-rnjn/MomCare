@@ -49,12 +49,12 @@ enum DietaryPreference {
     
 }
 
-//enum Mood {
+// enum Mood {
 //    case happy
 //    case sad
 //    case stressed
 //    case anger
-//}
+// }
 
 struct User {
     var firstName: String
@@ -92,12 +92,29 @@ class MomCareUser {
     static var shared: MomCareUser = MomCareUser()
     
     private init() {
-        update()
+        updateFromDatabase()
     }
     
-    private func update() {
+    func getEvents() -> [TriTrackEvent] {
+        return events
+    }
+    
+    func getReminders() -> [TriTrackReminder] {
+        return reminders
+    }
+    
+    func getSymptoms() -> [TriTrackSymptoms] {
+        return symptoms
+    }
+    
+    private func updateFromDatabase() {
         UserDiet.shared.updateFromDatabase()
         UserExercise.shared.updateFromDatabase()
+    }
+    
+    func updateToDatabase() {
+        UserDiet.shared.updateToDatabase()
+        UserExercise.shared.updateToDatabase()
     }
     
     func addReminder(_ reminder: TriTrackReminder) {

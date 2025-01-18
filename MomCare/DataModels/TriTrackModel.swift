@@ -13,7 +13,7 @@ struct TriTrackEvent {
     var videoLink: String?
     
     var allDay: Bool = false
-    var startDate: Date
+    var startDate: Date = Date()
     var endDate: Date?
     
     var travelTime: TimeInterval?
