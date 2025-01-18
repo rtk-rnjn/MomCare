@@ -71,15 +71,15 @@ class DashboardViewController: UIViewController {
     }
     
     private func createTwoItemHorizontalSection() -> NSCollectionLayoutSection {
-        let itemSize1 = NSCollectionLayoutSize(widthDimension: .absolute(193), heightDimension: .absolute(137))
-        let itemSize2 = NSCollectionLayoutSize(widthDimension: .absolute(160), heightDimension: .absolute(137))
+        let itemSize1 = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.55), heightDimension: .absolute(137))
+        let itemSize2 = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.45), heightDimension: .absolute(137))
         let item1 = NSCollectionLayoutItem(layoutSize: itemSize1)
         let item2 = NSCollectionLayoutItem(layoutSize: itemSize2)
         
         let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(137))
         let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item1, item2])
         group.interItemSpacing = .fixed(10)
-        group.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 8, bottom: 0, trailing: 5)
+        group.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 5, bottom: 0, trailing: 5)
         let section = NSCollectionLayoutSection(group: group)
         section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 10, bottom: 10, trailing: 10)
         return section
@@ -102,11 +102,11 @@ class DashboardViewController: UIViewController {
     }
     
     private func createEqualSizeHorizontalSectionWithHeader() -> NSCollectionLayoutSection {
-        let itemSize = NSCollectionLayoutSize(widthDimension: .absolute(164), heightDimension: .absolute(154))
+        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.5), heightDimension: .absolute(154))
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
         let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(137))
         let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
-        group.interItemSpacing = .fixed(30)
+        group.interItemSpacing = .fixed(20)
         group.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 5, bottom: 10, trailing: 5)
         let section = NSCollectionLayoutSection(group: group)
         section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 15, bottom: 45, trailing: 15)

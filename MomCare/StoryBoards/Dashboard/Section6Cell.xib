@@ -55,7 +55,7 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <string key="text">Did you know? 
 Staying active during pregnancy helps reduce discomfort</string>
-                        <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="15"/>
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
                     </label>
