@@ -7,6 +7,16 @@
 
 import UIKit
 
+enum TriTrackViewControlSegmentValue: Int {
+    case eventsReminderView = 1
+    case symptomsView = 2
+}
+
+enum TriTrackEventReminderViewControlSegmentValue: Int {
+    case event = 0
+    case reminder = 1
+}
+
 class TriTrackAddEventViewController: UIViewController {
     /*
      if value == 1:
@@ -16,14 +26,13 @@ class TriTrackAddEventViewController: UIViewController {
      else:
         Error(Something def. fucked up)
      */
-    var viewControllerValue: Int?
+    var viewControllerValue: TriTrackViewControlSegmentValue?
 
     @IBOutlet var reminderContainerView: UIView!
     @IBOutlet var eventContainerView: UIView!
     @IBOutlet var symptomsContainerView: UIView!
 
     @IBOutlet var eventReminderSegmentControl: UISegmentedControl!
-    var currentSegmentIndex: Int = 0
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -32,37 +41,33 @@ class TriTrackAddEventViewController: UIViewController {
     
     func prepareContainerView() {
         guard viewControllerValue != nil else { return }
-        switch viewControllerValue {
-        case 1:
+        switch viewControllerValue! {
+        case .eventsReminderView:
             prepareEventReminderContainerView()
-        case 2:
+        case .symptomsView:
             prepareSymptomsContainerView()
-        default:
-            fatalError("Help me God")
         }
     }
     
     func prepareEventReminderContainerView() {
         symptomsContainerView.isHidden = true
+        eventReminderSegmentControl.isHidden = false
 
-        switch currentSegmentIndex {
-        case 0:
+        switch TriTrackEventReminderViewControlSegmentValue(rawValue: eventReminderSegmentControl.selectedSegmentIndex)! {
+        case .event:
             eventContainerView.isHidden = false
             navigationItem.title = "Add Event"
-            
+
             reminderContainerView.isHidden = true
-        case 1:
+        case .reminder:
             reminderContainerView.isHidden = false
             navigationItem.title = "Add Reminder"
             
             eventContainerView.isHidden = true
-        default:
-            fatalError()
         }
     }
 
     @IBAction func eventReminderTapped(_ sender: UISegmentedControl) {
-        currentSegmentIndex = sender.selectedSegmentIndex
         prepareEventReminderContainerView()
     }
     

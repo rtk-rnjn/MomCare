@@ -12,7 +12,7 @@ class Converters {
     static func convertHexToUIColor(hex: String, alpha: CGFloat = 1.0) -> UIColor {
         var hexSanitized = hex.trimmingCharacters(in: .whitespacesAndNewlines)
         hexSanitized = hexSanitized.hasPrefix("#") ? String(hexSanitized.dropFirst()) : hexSanitized
-        
+
         var rgb: UInt64 = 0
         Scanner(string: hexSanitized).scanHexInt64(&rgb)
         
