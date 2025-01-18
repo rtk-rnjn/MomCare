@@ -105,10 +105,10 @@ class DashboardViewController: UIViewController {
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
         let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(137))
         let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
-        group.interItemSpacing = .fixed(20)
-        //group.contentInsets = NSDirectionalEdgeInsets(top: 10, leading: 15, bottom: 10, trailing: 15)
+        group.interItemSpacing = .fixed(22)
+        group.contentInsets = NSDirectionalEdgeInsets(top: 10, leading: 5, bottom: 10, trailing: 15)
         let section = NSCollectionLayoutSection(group: group)
-        section.contentInsets = NSDirectionalEdgeInsets(top: 10, leading: 25, bottom: 20, trailing: 5)
+        section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 15, bottom: 45, trailing: 15)
         section.boundarySupplementaryItems = [createHeader()]
         return section
     }

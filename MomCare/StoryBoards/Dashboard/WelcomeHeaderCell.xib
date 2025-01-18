@@ -17,7 +17,7 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <stackView opaque="NO" contentMode="scaleToFill" alignment="bottom" spacing="117" translatesAutoresizingMaskIntoConstraints="NO" id="pFJ-8G-WGK">
-                        <rect key="frame" x="0.0" y="28.666666666666671" width="393" height="43"/>
+                        <rect key="frame" x="5" y="28.666666666666671" width="388" height="43"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Hi! Sakshi" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Qhi-0w-wMZ">
                                 <rect key="frame" x="0.0" y="0.0" width="167" height="43"/>
@@ -26,7 +26,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="f8j-VO-yTK">
-                                <rect key="frame" x="284" y="8.6666666666666679" width="109" height="34.333333333333329"/>
+                                <rect key="frame" x="284" y="8.6666666666666679" width="104" height="34.333333333333329"/>
                                 <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <inset key="imageEdgeInsets" minX="5" minY="5" maxX="5" maxY="5"/>
                                 <state key="normal" title="Button"/>
@@ -37,9 +37,8 @@
                 </subviews>
                 <color key="backgroundColor" red="0.94901960784313721" green="0.94901960784313721" blue="0.96862745098039216" alpha="1" colorSpace="calibratedRGB"/>
                 <constraints>
-                    <constraint firstItem="pFJ-8G-WGK" firstAttribute="leading" secondItem="nAT-Pc-v1T" secondAttribute="leading" id="0s1-it-Ycb"/>
+                    <constraint firstItem="pFJ-8G-WGK" firstAttribute="leading" secondItem="nAT-Pc-v1T" secondAttribute="leading" constant="5" id="0s1-it-Ycb"/>
                     <constraint firstItem="pFJ-8G-WGK" firstAttribute="centerY" secondItem="nAT-Pc-v1T" secondAttribute="centerY" id="PhN-Nn-I1K"/>
-                    <constraint firstItem="pFJ-8G-WGK" firstAttribute="centerX" secondItem="nAT-Pc-v1T" secondAttribute="centerX" id="XO0-tG-iUG"/>
                     <constraint firstAttribute="trailing" secondItem="pFJ-8G-WGK" secondAttribute="trailing" id="kdS-H4-LlI"/>
                 </constraints>
             </collectionViewCellContentView>
