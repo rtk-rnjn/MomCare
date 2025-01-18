@@ -20,7 +20,7 @@
                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="akJ-rk-Qjc">
                         <rect key="frame" x="209" y="5" width="140" height="160"/>
                     </imageView>
-                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="15" translatesAutoresizingMaskIntoConstraints="NO" id="DCx-HD-2pe">
+                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="14" translatesAutoresizingMaskIntoConstraints="NO" id="DCx-HD-2pe">
                         <rect key="frame" x="20" y="20" width="169" height="130"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" spacing="7" translatesAutoresizingMaskIntoConstraints="NO" id="27w-7U-5td">
@@ -52,7 +52,7 @@
                                 </subviews>
                             </stackView>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="7O7-ri-zsE">
-                                <rect key="frame" x="0.0" y="50" width="169" height="80"/>
+                                <rect key="frame" x="0.0" y="49" width="169" height="81"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Exercise: Breathing" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mjp-wH-cYy">
                                         <rect key="frame" x="0.0" y="0.0" width="153.33333333333334" height="20.333333333333332"/>
@@ -61,13 +61,13 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalCompressionResistancePriority="751" text="10 min" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aQA-b1-cOt">
-                                        <rect key="frame" x="0.0" y="24.333333333333329" width="50" height="21.666666666666671"/>
+                                        <rect key="frame" x="0.0" y="24.333333333333329" width="50" height="22.666666666666671"/>
                                         <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="A0q-ws-QUv">
-                                        <rect key="frame" x="0.0" y="50" width="100" height="30"/>
+                                        <rect key="frame" x="0.0" y="51" width="100" height="30"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="100" id="Hab-pH-L5l"/>
                                             <constraint firstAttribute="height" constant="30" id="bK2-t1-crQ"/>
@@ -83,15 +83,27 @@
                             </stackView>
                         </subviews>
                     </stackView>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kPS-5A-zx9">
+                        <rect key="frame" x="334" y="30" width="5" height="5"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="5" id="HaN-8R-i08"/>
+                            <constraint firstAttribute="width" constant="5" id="pik-AB-YMC"/>
+                        </constraints>
+                        <color key="tintColor" red="0.32549019607843138" green="0.34509803921568627" blue="0.37254901960784315" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                        <state key="normal" title="Button"/>
+                        <buttonConfiguration key="configuration" style="plain" image="info.circle.fill" catalog="system"/>
+                    </button>
                 </subviews>
                 <constraints>
                     <constraint firstItem="akJ-rk-Qjc" firstAttribute="top" secondItem="JTZ-Un-ujN" secondAttribute="top" constant="5" id="69D-St-hoo"/>
                     <constraint firstItem="DCx-HD-2pe" firstAttribute="leading" secondItem="JTZ-Un-ujN" secondAttribute="leading" constant="20" id="9AP-u0-dB3"/>
+                    <constraint firstAttribute="trailing" secondItem="kPS-5A-zx9" secondAttribute="trailing" constant="20" id="9OU-3Y-cDF"/>
                     <constraint firstItem="akJ-rk-Qjc" firstAttribute="leading" secondItem="DCx-HD-2pe" secondAttribute="trailing" constant="20" id="C1F-gs-4lt"/>
                     <constraint firstAttribute="bottom" secondItem="akJ-rk-Qjc" secondAttribute="bottom" constant="5" id="Dr5-U6-WON"/>
                     <constraint firstItem="DCx-HD-2pe" firstAttribute="top" secondItem="JTZ-Un-ujN" secondAttribute="top" constant="20" id="Goy-4a-FLh"/>
                     <constraint firstAttribute="bottom" secondItem="DCx-HD-2pe" secondAttribute="bottom" constant="20" id="Jb7-yj-hma"/>
                     <constraint firstAttribute="trailing" secondItem="akJ-rk-Qjc" secondAttribute="trailing" constant="10" id="QFg-Uc-Fqc"/>
+                    <constraint firstItem="kPS-5A-zx9" firstAttribute="top" secondItem="JTZ-Un-ujN" secondAttribute="top" constant="30" id="zGk-4d-KCo"/>
                 </constraints>
             </collectionViewCellContentView>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -112,6 +124,7 @@
         </collectionViewCell>
     </objects>
     <resources>
+        <image name="info.circle.fill" catalog="system" width="128" height="123"/>
         <systemColor name="systemGray6Color">
             <color red="0.94901960784313721" green="0.94901960784313721" blue="0.96862745098039216" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
