@@ -122,6 +122,9 @@
                                                     <buttonConfiguration key="configuration" style="filled" title="Sign In">
                                                         <color key="baseBackgroundColor" red="0.57254904510000004" green="0.26274511220000002" blue="0.31372550129999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                                     </buttonConfiguration>
+                                                    <connections>
+                                                        <segue destination="GoU-9m-MW7" kind="show" id="AGz-CH-R2Z"/>
+                                                    </connections>
                                                 </button>
                                             </subviews>
                                             <constraints>
@@ -143,7 +146,17 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Us5-TY-eOA" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4008.3969465648852" y="-110.21126760563381"/>
+            <point key="canvasLocation" x="3972" y="-82"/>
+        </scene>
+        <!--InitialStoryboard-->
+        <scene sceneID="VsA-Ww-J6O">
+            <objects>
+                <viewControllerPlaceholder storyboardName="InitialStoryboard" id="GoU-9m-MW7" sceneMemberID="viewController">
+                    <navigationItem key="navigationItem" id="0jV-bj-YI6"/>
+                </viewControllerPlaceholder>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="D9b-wQ-49a" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="4740" y="-82"/>
         </scene>
     </scenes>
     <resources>

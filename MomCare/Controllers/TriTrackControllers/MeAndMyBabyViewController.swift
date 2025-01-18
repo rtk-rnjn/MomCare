@@ -20,11 +20,6 @@ class MeAndMyBabyViewController: UIViewController {
     @IBOutlet var literalWeightLabel: UILabel!
     @IBOutlet var weightLabel: UILabel!
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-    }
-
     func prepareImageView(for imageView: UIImageView) {
         imageView.layer.cornerRadius = 5
         imageView.clipsToBounds = true

@@ -33,7 +33,7 @@ class AddReminderTableViewController: UITableViewController {
     }
 
     private func prepareRepeatPopup() {
-        repeatPopupButton.menu = UIMenu(children: AddReminderTableViewController.options.map { title, interval in
+        repeatPopupButton.menu = UIMenu(children: AddReminderTableViewController.options.map { title, _ in
             UIAction(title: title, handler: handleRepeatOption) })
         
         repeatPopupButton.showsMenuAsPrimaryAction = true
