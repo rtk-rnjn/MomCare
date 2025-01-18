@@ -106,7 +106,7 @@ class TriTrackViewController: UIViewController {
         if segue.identifier == "segueTriTrack" {
             if let destinationVC = segue.destination as? UINavigationController {
                 let destinationVCTopController = destinationVC.topViewController as! TriTrackAddEventViewController
-                destinationVCTopController.viewControllerValue = triTrackSegmentedControl.selectedSegmentIndex
+                destinationVCTopController.viewControllerValue = TriTrackViewControlSegmentValue(rawValue: triTrackSegmentedControl.selectedSegmentIndex)
             }
         }
     }
