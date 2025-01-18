@@ -1,29 +1,52 @@
-//
-//  MyplanViewController.swift
-//  MomCare
-//
-//  Created by Aryan Singh on 16/01/25.
-//
-
 import UIKit
 
 class MyplanViewController: UIViewController {
 
-    @IBOutlet var scrollView: UIScrollView!
-    @IBOutlet var containerView: UIView!
-    @IBOutlet var segmentedControl: UISegmentedControl!
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
+    @IBOutlet weak var segmentedControl: UISegmentedControl!
+    @IBOutlet weak var containerView: UIView!
     
-    @IBAction func segmentedControlChanged(_ sender: UISegmentedControl) {
+    private var currentViewController: UIViewController?
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        switchToViewController(identifier: "DietVC")
+        let unselectedAttributes: [NSAttributedString.Key: Any] = [
+                .foregroundColor: UIColor.white,
+                .font: UIFont.systemFont(ofSize: 14, weight: .regular)]
+        let selectedAttributes: [NSAttributedString.Key: Any] = [
+            .foregroundColor: UIColor.black,
+                .font: UIFont.systemFont(ofSize: 14, weight: .bold)
+            ]
+        segmentedControl.setTitleTextAttributes(unselectedAttributes, for: .normal)
+        segmentedControl.setTitleTextAttributes(selectedAttributes, for: .selected)
     }
-    
+
+    @IBAction func segmentChanged(_ sender: UISegmentedControl) {
+        if sender.selectedSegmentIndex == 0 {
+            switchToViewController(identifier: "DietVC")
+        } else {
+            switchToViewController(identifier: "ExerciseVC")
+        }
+    }
+
+    private func switchToViewController(identifier: String) {
+        // Remove the current child view controller
+        if let currentVC = currentViewController {
+            currentVC.willMove(toParent: nil)
+            currentVC.view.removeFromSuperview()
+            currentVC.removeFromParent()
+        }
+
+        // Instantiate the new child view controller
+        let storyboard = UIStoryboard(name: "MyPlan", bundle: nil)
+        let newViewController = storyboard.instantiateViewController(withIdentifier: identifier)
+
+        // Add the new child view controller
+        addChild(newViewController)
+        newViewController.view.frame = containerView.bounds
+        containerView.addSubview(newViewController.view)
+        newViewController.didMove(toParent: self)
+
+        currentViewController = newViewController
+    }
 }
