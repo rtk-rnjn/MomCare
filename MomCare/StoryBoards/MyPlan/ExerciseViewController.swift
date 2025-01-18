@@ -7,23 +7,45 @@
 
 import UIKit
 
-class ExerciseViewController: UIViewController {
-
+class ExerciseViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource {
+    
+    
+    @IBOutlet weak var ExerciseCollectionView: UICollectionView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
+        
+        let nib1 = UINib(nibName: "WalkCellMyPlan", bundle: nil)
+        let nib2 = UINib(nibName: "NewExerciseMyPlanCell", bundle: nil)
+                
+        ExerciseCollectionView.register(nib1, forCellWithReuseIdentifier: "Cell1")
+        ExerciseCollectionView.register(nib2, forCellWithReuseIdentifier: "Cell2")
+        let layout = UICollectionViewFlowLayout()
+        layout.scrollDirection = .vertical
+        ExerciseCollectionView.collectionViewLayout = layout
+        layout.itemSize = CGSize(width: 365, height: 170)
+        ExerciseCollectionView.collectionViewLayout = layout
+        ExerciseCollectionView.showsVerticalScrollIndicator = false
+        ExerciseCollectionView.delegate = self
+        ExerciseCollectionView.dataSource = self
     }
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return 5
     }
-    */
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        if indexPath.item == 0 {
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell1", for: indexPath) as? WalkCellMyPlanCollectionViewCell else {
+                return UICollectionViewCell()
+            }
+                    return cell
+        } else {
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell2", for: indexPath) as? NewExerciseMyPlanCellCollectionViewCell else {
+                return UICollectionViewCell()
+            }
+            return cell
+        }
+    }
 
 }

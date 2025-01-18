@@ -187,6 +187,9 @@
                             <constraint firstAttribute="bottom" secondItem="Yt9-o6-ItS" secondAttribute="bottom" id="vSH-Tm-lj4"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="ExerciseCollectionView" destination="Yt9-o6-ItS" id="XIY-gV-QNv"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Rnh-hu-bAn" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
