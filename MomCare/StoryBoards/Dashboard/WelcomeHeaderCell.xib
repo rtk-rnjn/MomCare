@@ -22,21 +22,31 @@
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="f8j-VO-yTK">
-                        <rect key="frame" x="333.33333333333331" y="0.0" width="49.666666666666686" height="100"/>
-                        <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <inset key="imageEdgeInsets" minX="5" minY="5" maxX="5" maxY="5"/>
-                        <state key="normal" title="Button"/>
-                        <buttonConfiguration key="configuration" style="plain" image="person.crop.circle.fill" catalog="system"/>
-                    </button>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lDL-Rl-35y">
+                        <rect key="frame" x="293" y="0.0" width="100" height="100"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="person.crop.circle" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="BTE-tB-yMW">
+                                <rect key="frame" x="40" y="30.666666666666668" width="40" height="38.666666666666657"/>
+                                <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </imageView>
+                        </subviews>
+                        <color key="backgroundColor" red="0.96084600689999999" green="0.96065491439999995" blue="0.97647315260000001" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                        <constraints>
+                            <constraint firstItem="BTE-tB-yMW" firstAttribute="top" secondItem="lDL-Rl-35y" secondAttribute="top" constant="30" id="8fe-0g-f6Z"/>
+                            <constraint firstAttribute="trailing" secondItem="BTE-tB-yMW" secondAttribute="trailing" constant="20" id="GMy-5b-XZQ"/>
+                            <constraint firstAttribute="bottom" secondItem="BTE-tB-yMW" secondAttribute="bottom" constant="30" id="Wu6-K2-b9D"/>
+                            <constraint firstItem="BTE-tB-yMW" firstAttribute="leading" secondItem="lDL-Rl-35y" secondAttribute="leading" constant="40" id="ZjY-Lh-Kbj"/>
+                            <constraint firstAttribute="width" constant="100" id="pHt-Mg-uOM"/>
+                        </constraints>
+                    </view>
                 </subviews>
                 <color key="backgroundColor" red="0.94901960784313721" green="0.94901960784313721" blue="0.96862745098039216" alpha="1" colorSpace="calibratedRGB"/>
                 <constraints>
+                    <constraint firstAttribute="trailing" secondItem="lDL-Rl-35y" secondAttribute="trailing" id="Alk-mi-jVb"/>
                     <constraint firstItem="Qhi-0w-wMZ" firstAttribute="leading" secondItem="nAT-Pc-v1T" secondAttribute="leading" constant="5" id="HDl-Q9-Cu0"/>
-                    <constraint firstAttribute="bottom" secondItem="f8j-VO-yTK" secondAttribute="bottom" id="PcO-Qw-Ds2"/>
-                    <constraint firstAttribute="trailing" secondItem="f8j-VO-yTK" secondAttribute="trailing" constant="10" id="RZj-PI-BvA"/>
+                    <constraint firstItem="lDL-Rl-35y" firstAttribute="top" secondItem="nAT-Pc-v1T" secondAttribute="top" id="agG-di-0EA"/>
+                    <constraint firstAttribute="bottom" secondItem="lDL-Rl-35y" secondAttribute="bottom" id="biH-sy-pxF"/>
                     <constraint firstAttribute="bottom" secondItem="Qhi-0w-wMZ" secondAttribute="bottom" id="fYj-ZO-0i4"/>
-                    <constraint firstItem="f8j-VO-yTK" firstAttribute="top" secondItem="nAT-Pc-v1T" secondAttribute="top" id="tU6-QH-k8h"/>
                     <constraint firstItem="Qhi-0w-wMZ" firstAttribute="top" secondItem="nAT-Pc-v1T" secondAttribute="top" id="wzg-yn-4He"/>
                 </constraints>
             </collectionViewCellContentView>
@@ -45,6 +55,6 @@
         </collectionViewCell>
     </objects>
     <resources>
-        <image name="person.crop.circle.fill" catalog="system" width="128" height="123"/>
+        <image name="person.crop.circle" catalog="system" width="128" height="123"/>
     </resources>
 </document>
