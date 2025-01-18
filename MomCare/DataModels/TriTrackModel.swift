@@ -13,7 +13,7 @@ struct TriTrackEvent {
     var videoLink: String?
     
     var allDay: Bool = false
-    var startDate: Date = Date()
+    var startDate: Date
     var endDate: Date?
     
     var travelTime: TimeInterval?
@@ -25,7 +25,7 @@ struct TriTrackReminder {
     var title: String
     var notes: String?
     
-    var duration: TimeInterval?
+    var duration: TimeInterval
     
     var repeatAfter: TimeInterval?
 }
@@ -33,6 +33,6 @@ struct TriTrackReminder {
 struct TriTrackSymptoms {
     var title: String
     var notes: String?
-    
-    var atTime: Date?
+
+    var atTime: Date
 }
