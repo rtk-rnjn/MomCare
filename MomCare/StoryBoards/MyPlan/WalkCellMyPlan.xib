@@ -34,11 +34,11 @@
                         </subviews>
                     </stackView>
                     <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="gXw-fw-i8m">
-                        <rect key="frame" x="20" y="76" width="319" height="4"/>
+                        <rect key="frame" x="20" y="81" width="319" height="4"/>
                         <color key="tintColor" red="0.25882352941176467" green="0.25882352941176467" blue="0.25882352941176467" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                     </progressView>
                     <stackView opaque="NO" contentMode="scaleToFill" distribution="equalCentering" spacing="186" translatesAutoresizingMaskIntoConstraints="NO" id="i0G-2b-6MN">
-                        <rect key="frame" x="20" y="45.666666666666664" width="319" height="20.333333333333336"/>
+                        <rect key="frame" x="20" y="50.666666666666664" width="319" height="20.333333333333336"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="376 Steps" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="giz-Qg-uGU">
                                 <rect key="frame" x="0.0" y="0.0" width="81" height="20.333333333333332"/>
@@ -56,7 +56,7 @@
                     </stackView>
                 </subviews>
                 <constraints>
-                    <constraint firstAttribute="bottom" secondItem="gXw-fw-i8m" secondAttribute="bottom" constant="20" id="3QR-1Z-FnW"/>
+                    <constraint firstAttribute="bottom" secondItem="gXw-fw-i8m" secondAttribute="bottom" constant="15" id="3QR-1Z-FnW"/>
                     <constraint firstItem="i0G-2b-6MN" firstAttribute="leading" secondItem="XdG-gX-wgC" secondAttribute="leading" constant="20" id="9tX-gG-X7a"/>
                     <constraint firstItem="gXw-fw-i8m" firstAttribute="top" secondItem="i0G-2b-6MN" secondAttribute="bottom" constant="10" id="9v0-Mm-Mii"/>
                     <constraint firstAttribute="trailing" secondItem="gXw-fw-i8m" secondAttribute="trailing" constant="20" id="BXu-Ad-Ngl"/>
