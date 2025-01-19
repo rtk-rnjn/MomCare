@@ -567,7 +567,7 @@
                                                         <color key="baseBackgroundColor" red="0.57254901960000004" green="0.26274509800000001" blue="0.31372549020000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     </buttonConfiguration>
                                                     <connections>
-                                                        <segue destination="8kZ-fK-sew" kind="show" id="9Rs-SJ-fNX"/>
+                                                        <segue destination="8kZ-fK-sew" kind="show" identifier="showProgress" id="9Rs-SJ-fNX"/>
                                                     </connections>
                                                 </button>
                                             </subviews>
@@ -592,6 +592,7 @@
                         <outlet property="countryLabel" destination="G0A-CU-KzB" id="twB-gG-kIs"/>
                         <outlet property="currentWeight" destination="w2k-V0-LQd" id="w44-tn-t1v"/>
                         <outlet property="prePregnancyWeight" destination="y4e-zW-vMF" id="2ZA-XR-DNH"/>
+                        <outlet property="progressView" destination="Uti-rD-FWY" id="ujA-G8-OaU"/>
                         <outlet property="recievedHeight" destination="Xrg-zJ-ljc" id="Tzf-QW-O3x"/>
                     </connections>
                 </tableViewController>

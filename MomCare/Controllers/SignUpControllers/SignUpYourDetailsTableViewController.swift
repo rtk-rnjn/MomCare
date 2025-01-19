@@ -17,6 +17,14 @@ class SignUpYourDetailsTableViewController: UITableViewController {
     
     var updatedHeight: Int?
     
+    
+    @IBOutlet weak var progressView: UIProgressView!
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        progressView.progress = 0.5
+    }
+    
     override func viewWillAppear(_ animated: Bool) {
         recievedHeight.text = "\(updatedHeight ?? 0) cm"
         super.viewWillAppear(animated)
@@ -61,7 +69,16 @@ class SignUpYourDetailsTableViewController: UITableViewController {
         presentPickerViewController(withOptions: .country)
     }
     
-    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "showProgress" {
+            // Ensure that the destination view controller is the next one
+            if let destinationVC = segue.destination as? SignUpYourDetailsExtendedTableViewController {
+                // Pass the current progress value (50%)
+                destinationVC.progressValue = 0.5
+            }
+        }
+    }
+
     
     
     
