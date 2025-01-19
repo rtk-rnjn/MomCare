@@ -10,6 +10,10 @@ import UIKit
 class SignUpYourDetailsTableViewController: UITableViewController {
     
     @IBOutlet var recievedHeight: UILabel!
+    @IBOutlet weak var prePregnancyWeight: UILabel!
+    @IBOutlet weak var currentWeight: UILabel!
+    @IBOutlet weak var countryLabel: UILabel!
+    
     var updatedHeight: Int?
     
     override func viewWillAppear(_ animated: Bool) {
@@ -29,12 +33,15 @@ class SignUpYourDetailsTableViewController: UITableViewController {
         return 1
     }
     
+    @IBAction func buttonsPickerViewModally(_ sender: UIButton) {
+        performSegue(withIdentifier: "buttonsPresentModally", sender: nil)
+    }
+    
     @IBAction func unwindToMainViewController(_ segue: UIStoryboardSegue) {
         if let sourceVC = segue.source as? PickerViewController {
             recievedHeight.text = "\(sourceVC.selectedHeight) cm"
         }
     }
-
     /*
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
