@@ -8,34 +8,64 @@
 import UIKit
 
 class PickerViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSource {
-
-    let heights = Array(120...200) // Heights in cm from 120 to 200
-    var selectedHeight: Int = 120
     
-    @IBOutlet var heightPickerView: UIPickerView!
+    let heights = Array(120...200)
+    let weight = Array(30...200)
+    var selectedHeight: Int = 120
+    var selectedCountry: String = ""
+    
+    @IBOutlet var PickerView: UIPickerView!
+    var selectedOption: PickerOptions?
+    var currentOptions:[Any] = []
+    var suffix: String = ""
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        heightPickerView.delegate = self
-        heightPickerView.dataSource = self
-
-        // Do any additional setup after loading the view.
+        PickerView.delegate = self
+        PickerView.dataSource = self
+        
+        switch selectedOption {
+        case .height:
+            currentOptions = heights
+            suffix = "cm"
+        case .prePregnancyWeight:
+            currentOptions = weight
+            suffix = "Kg"
+        case .currentWeight:
+            currentOptions = weight
+            suffix = "Kg"
+        case .country:
+            currentOptions = countryList
+            suffix = ""
+        case .none:
+            break
+        }
+        
     }
+    
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
-        return 1 // Single column for height
+        return 1
     }
 
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        return heights.count
+        return currentOptions.count
     }
 
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        return "\(heights[row]) cm"
+        if let heightValue = currentOptions[row] as? Int {
+            return "\(heightValue) \(suffix)"
+        } else if let countryValue = currentOptions[row] as? String {
+            return countryValue
+        }
+        return nil
     }
-
+    
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        let selectedHeight = heights[row]
-        self.selectedHeight = selectedHeight
+        if let heightValue = currentOptions[row] as? Int {
+            selectedHeight = heightValue
+        } else if let countryValue = currentOptions[row] as? String {
+            selectedCountry = countryValue
+        }
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -43,20 +73,6 @@ class PickerViewController: UIViewController, UIPickerViewDelegate, UIPickerView
             destinationVC.updatedHeight = selectedHeight
         }
     }
-
-    @IBAction func unwindToSignUpNoChange(_ unwindSegue: UIStoryboardSegue) {
-        let sourceViewController = unwindSegue.source
-        // Use data from the view controller which initiated the unwind segue
-    }
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
+    
 
 }
