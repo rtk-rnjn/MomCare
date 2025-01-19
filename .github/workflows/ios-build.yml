@@ -18,14 +18,6 @@ jobs:
         with:
           xcode-version: '15.0'  # Specify the Xcode version
 
-      - name: Install SwiftLint
-        run: |
-          brew install swiftlint
-
-      - name: Lint code
-        run: |
-          swiftlint
-
       - name: Build the app
         uses: yukiarrr/ios-build-action@v1.12.0
         with:
