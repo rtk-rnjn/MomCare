@@ -24,14 +24,15 @@ class SignUpYourDetailsExtendedTableViewController: UITableViewController {
     @IBOutlet weak var dueDateInputLabel: UILabel!
     @IBOutlet weak var dueDateDatePicker: UIDatePicker!
 
-    var progressValue: Float?
+    @IBOutlet weak var progressView: UIProgressView!
+    var initialProgress: Float = 0.0
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        if let value = progressValue {
-            progressView.progress = value
+        progressView.progress = initialProgress
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+            self.progressView.setProgress(1.0, animated: true)
         }
-        progressView.setProgress(1.0, animated: true)
         setupPopUpButtons()
         hideInitialElements()
     }

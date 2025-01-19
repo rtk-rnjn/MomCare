@@ -74,7 +74,7 @@ class SignUpYourDetailsTableViewController: UITableViewController {
             // Ensure that the destination view controller is the next one
             if let destinationVC = segue.destination as? SignUpYourDetailsExtendedTableViewController {
                 // Pass the current progress value (50%)
-                destinationVC.progressValue = 0.5
+                destinationVC.initialProgress = progressView.progress
             }
         }
     }

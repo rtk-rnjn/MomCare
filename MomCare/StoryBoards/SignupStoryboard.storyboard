@@ -1058,6 +1058,7 @@
                         <outlet property="FoodIntolerancePopupButton" destination="7rN-H1-Q1C" id="ht3-O1-7eo"/>
                         <outlet property="dayPullDownButton" destination="Cl4-Rn-c0j" id="bC5-jG-ejW"/>
                         <outlet property="daysLabel" destination="WXv-ON-8vK" id="fRA-8i-miG"/>
+                        <outlet property="progressView" destination="yCq-TB-GpE" id="78C-jz-8z1"/>
                         <outlet property="secondRowCell" destination="mP2-Ho-nBd" id="fdl-6t-y1a"/>
                         <outlet property="weekPullDownButton" destination="eeg-LF-O2f" id="lAt-Si-HbZ"/>
                         <outlet property="weeksLabel" destination="AKS-mr-PJs" id="cby-nM-afq"/>
