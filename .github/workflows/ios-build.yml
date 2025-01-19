@@ -1,0 +1,36 @@
+name: iOS Build
+
+on:
+  pull_request:
+    branches:
+      - '**'  # Trigger the workflow on pull requests to any branch
+
+jobs:
+  build:
+    runs-on: macos-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Xcode
+        uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: '15.0'  # Specify the Xcode version
+
+      - name: Install SwiftLint
+        run: |
+          brew install swiftlint
+
+      - name: Lint code
+        run: |
+          swiftlint
+
+      - name: Build the app
+        uses: yukiarrr/ios-build-action@v1.12.0
+        with:
+          project-path: MomCare.xcodeproj  # Path to your Xcode project
+          scheme: MomCare  # Your app's scheme
+          configuration: Release
+          sdk: iphonesimulator
+          destination: 'platform=iOS Simulator,name=iPhone 14,OS=latest'
