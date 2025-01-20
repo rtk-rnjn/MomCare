@@ -1,7 +1,6 @@
 import UIKit
 
 class DietTableViewController: UITableViewController {
-
     
     @IBOutlet var DietTableView: UITableView!
     
