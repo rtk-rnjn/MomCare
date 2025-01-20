@@ -9,7 +9,7 @@ import UIKit
 
 class GenresPageViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate {
     
-    @IBOutlet weak var MoodnestCollectionView: UICollectionView!
+    @IBOutlet weak var moodnestCollectionView: UICollectionView!
     @IBOutlet weak var outerView: UIView!
     
     // Playlists images and labels outlets
@@ -17,18 +17,18 @@ class GenresPageViewController: UIViewController, UICollectionViewDataSource, UI
     override func viewDidLoad() {
         super.viewDidLoad()
         outerView.layer.cornerRadius = 30
-        MoodnestCollectionView.backgroundColor = .clear
+        moodnestCollectionView.backgroundColor = .clear
         
         // MARK: - NIB FIles Registred here
-        MoodnestCollectionView.register(UINib(nibName: "MainHeading", bundle: nil), forCellWithReuseIdentifier: "MainHeading")
-        MoodnestCollectionView.register(UINib(nibName: "MainImage", bundle: nil), forCellWithReuseIdentifier: "MainImage")
-        MoodnestCollectionView.register(UINib(nibName: "MoodNestMultipleImages", bundle: nil), forCellWithReuseIdentifier: "MoodNestMultipleImages")
-        MoodnestCollectionView.register(SectionHeaderCollectionViewCell.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "SectionHeaderCollectionViewCell")
+        moodnestCollectionView.register(UINib(nibName: "MainHeading", bundle: nil), forCellWithReuseIdentifier: "MainHeading")
+        moodnestCollectionView.register(UINib(nibName: "MainImage", bundle: nil), forCellWithReuseIdentifier: "MainImage")
+        moodnestCollectionView.register(UINib(nibName: "MoodNestMultipleImages", bundle: nil), forCellWithReuseIdentifier: "MoodNestMultipleImages")
+        moodnestCollectionView.register(SectionHeaderCollectionViewCell.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "SectionHeaderCollectionViewCell")
         
         // MARK: - DataSouce and Delegate
-        MoodnestCollectionView.dataSource = self
-        MoodnestCollectionView.delegate = self
-        MoodnestCollectionView.setCollectionViewLayout(generateLayout(), animated: true)
+        moodnestCollectionView.dataSource = self
+        moodnestCollectionView.delegate = self
+        moodnestCollectionView.setCollectionViewLayout(generateLayout(), animated: true)
         
     }
     
