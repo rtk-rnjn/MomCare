@@ -10,21 +10,21 @@ import UIKit
 class ExerciseViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     
     var exercises: Int = 5
-    @IBOutlet weak var ExerciseCollectionView: UICollectionView!
+    @IBOutlet weak var exerciseCollectionView: UICollectionView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        ExerciseCollectionView.register(UINib(nibName: "DietDateCell", bundle: nil), forCellWithReuseIdentifier: "DietDate")
-        ExerciseCollectionView.register(UINib(nibName: "WalkCellMyPlan", bundle: nil), forCellWithReuseIdentifier: "Cell1")
-        ExerciseCollectionView.register(UINib(nibName: "NewExerciseMyPlanCell", bundle: nil), forCellWithReuseIdentifier: "Cell2")
+        exerciseCollectionView.register(UINib(nibName: "DietDateCell", bundle: nil), forCellWithReuseIdentifier: "DietDate")
+        exerciseCollectionView.register(UINib(nibName: "WalkCellMyPlan", bundle: nil), forCellWithReuseIdentifier: "Cell1")
+        exerciseCollectionView.register(UINib(nibName: "NewExerciseMyPlanCell", bundle: nil), forCellWithReuseIdentifier: "Cell2")
 //        let layout = UICollectionViewFlowLayout()
 //        layout.scrollDirection = .vertical
 //        ExerciseCollectionView.collectionViewLayout = layout
 //        layout.itemSize = CGSize(width: 365, height: 170)
 //        ExerciseCollectionView.collectionViewLayout = layout
-        ExerciseCollectionView.showsVerticalScrollIndicator = false
-        ExerciseCollectionView.delegate = self
-        ExerciseCollectionView.dataSource = self
+        exerciseCollectionView.showsVerticalScrollIndicator = false
+        exerciseCollectionView.delegate = self
+        exerciseCollectionView.dataSource = self
     }
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         // Assuming you have an array of identifiers to determine the type of cell for each indexPath
