@@ -35,6 +35,18 @@ class AllMoods {
 class FeaturedPlaylists {
     static var playlists: [Playlist] = [
         Playlist(
+            image: UIImage(named: "I6")!,
+            name: "Lo-fi",
+            songs: [
+                Song(name: "Summe terrace", artist: "Casiio, Kainbeats", duration: 134.0),
+                Song(name: "Moonrise", artist: "Trixie", duration: 132.0),
+                Song(name: "Days Past", artist: "WanderLight", duration: 129.0),
+                Song(name: "Rent A Movie", artist: "Kilada", duration: 129.0),
+                Song(name: "Daydream", artist: "zakori", duration: 123.0),
+                Song(name: "Romance", artist: "Jazza Mazza", duration: 126.0)
+            ]
+        ),
+        Playlist(
             image: UIImage(named: "I1")!,
             name: "Relax",
             songs: [
@@ -94,17 +106,6 @@ class FeaturedPlaylists {
                 Song(name: "Native American Flute Music", artist: "R. Carlos Nakai", duration: 240.0)
             ]
         ),
-        Playlist(
-            image: UIImage(named: "I6")!,
-            name: "Lo-fi",
-            songs: [
-                Song(name: "Summertime", artist: "J Dilla", duration: 180.0),
-                Song(name: "Arabesque", artist: "Nujabes", duration: 210.0),
-                Song(name: "Re: Stacks", artist: "Madlib", duration: 195.0),
-                Song(name: "Midnight", artist: "Mac Miller", duration: 240.0),
-                Song(name: "Reflection Eternal", artist: "DJ Shadow", duration: 270.0),
-                Song(name: "Distant Lights", artist: "Bonobo", duration: 225.0)
-            ]
-        ),
+        
     ]
 }
