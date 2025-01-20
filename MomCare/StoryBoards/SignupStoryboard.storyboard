@@ -265,7 +265,7 @@
             <objects>
                 <tableViewController id="j28-Ag-RMC" customClass="SignUpYourDetailsTableViewController" customModule="MomCare" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="insetGrouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" estimatedSectionHeaderHeight="-1" sectionFooterHeight="18" estimatedSectionFooterHeight="-1" id="bPs-kZ-dsr">
-                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="842"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <sections>
@@ -375,6 +375,7 @@
                                                             <state key="normal" title="Button"/>
                                                             <buttonConfiguration key="configuration" style="plain" image="chevron.right" catalog="system"/>
                                                             <connections>
+                                                                <action selector="heightButtonTapped:" destination="j28-Ag-RMC" eventType="touchUpInside" id="Wwe-AX-BJr"/>
                                                                 <segue destination="51c-gM-3lN" kind="presentation" identifier="buttonsPresentModally" id="oKI-Bl-pRN"/>
                                                             </connections>
                                                         </button>
@@ -424,6 +425,9 @@
                                                             <color key="tintColor" systemColor="systemGray3Color"/>
                                                             <state key="normal" title="Button"/>
                                                             <buttonConfiguration key="configuration" style="plain" image="chevron.right" catalog="system"/>
+                                                            <connections>
+                                                                <action selector="prePregnancyButtonTapped:" destination="j28-Ag-RMC" eventType="touchUpInside" id="sEn-5d-Dz9"/>
+                                                            </connections>
                                                         </button>
                                                     </subviews>
                                                     <constraints>
@@ -471,6 +475,9 @@
                                                             <color key="tintColor" systemColor="systemGray3Color"/>
                                                             <state key="normal" title="Button"/>
                                                             <buttonConfiguration key="configuration" style="plain" image="chevron.right" catalog="system"/>
+                                                            <connections>
+                                                                <action selector="currentWeightButtonTapped:" destination="j28-Ag-RMC" eventType="touchUpInside" id="Qun-pc-ljy"/>
+                                                            </connections>
                                                         </button>
                                                     </subviews>
                                                     <constraints>
@@ -518,6 +525,9 @@
                                                             <color key="tintColor" systemColor="systemGray3Color"/>
                                                             <state key="normal" title="Button"/>
                                                             <buttonConfiguration key="configuration" style="plain" image="chevron.right" catalog="system"/>
+                                                            <connections>
+                                                                <action selector="countryButtonTapped:" destination="j28-Ag-RMC" eventType="touchUpInside" id="9lz-9X-O9q"/>
+                                                            </connections>
                                                         </button>
                                                     </subviews>
                                                     <constraints>
@@ -557,7 +567,7 @@
                                                         <color key="baseBackgroundColor" red="0.57254901960000004" green="0.26274509800000001" blue="0.31372549020000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     </buttonConfiguration>
                                                     <connections>
-                                                        <segue destination="8kZ-fK-sew" kind="show" id="9Rs-SJ-fNX"/>
+                                                        <segue destination="8kZ-fK-sew" kind="show" identifier="showProgress" id="9Rs-SJ-fNX"/>
                                                     </connections>
                                                 </button>
                                             </subviews>
@@ -579,6 +589,10 @@
                     </tableView>
                     <navigationItem key="navigationItem" title="Your Details" largeTitleDisplayMode="never" id="xHs-UZ-TJ4"/>
                     <connections>
+                        <outlet property="countryLabel" destination="G0A-CU-KzB" id="twB-gG-kIs"/>
+                        <outlet property="currentWeight" destination="w2k-V0-LQd" id="w44-tn-t1v"/>
+                        <outlet property="prePregnancyWeight" destination="y4e-zW-vMF" id="2ZA-XR-DNH"/>
+                        <outlet property="progressView" destination="Uti-rD-FWY" id="ujA-G8-OaU"/>
                         <outlet property="recievedHeight" destination="Xrg-zJ-ljc" id="Tzf-QW-O3x"/>
                     </connections>
                 </tableViewController>
@@ -589,9 +603,9 @@
         <!--Picker View Controller-->
         <scene sceneID="3hV-Ak-yjW">
             <objects>
-                <viewController id="51c-gM-3lN" customClass="PickerViewController" customModule="MomCare" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="pickerView" useStoryboardIdentifierAsRestorationIdentifier="YES" id="51c-gM-3lN" customClass="PickerViewController" customModule="MomCare" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="mQj-2b-bpq">
-                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="842"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <pickerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wyj-8h-pwX">
@@ -631,20 +645,20 @@
                     <toolbarItems/>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
-                        <outlet property="heightPickerView" destination="wyj-8h-pwX" id="g7c-ol-2SY"/>
+                        <outlet property="PickerView" destination="wyj-8h-pwX" id="1CW-gc-QfZ"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="GAp-0v-84x" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
                 <exit id="Nmy-Q4-mt8" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="4953" y="706"/>
+            <point key="canvasLocation" x="4953" y="732"/>
         </scene>
         <!--Medical History-->
         <scene sceneID="kmY-Xc-tGE">
             <objects>
                 <tableViewController id="8kZ-fK-sew" customClass="SignUpYourDetailsExtendedTableViewController" customModule="MomCare" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="insetGrouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" estimatedSectionHeaderHeight="-1" sectionFooterHeight="18" estimatedSectionFooterHeight="-1" id="gib-4n-9Dd">
-                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="842"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <sections>
@@ -1044,6 +1058,7 @@
                         <outlet property="FoodIntolerancePopupButton" destination="7rN-H1-Q1C" id="ht3-O1-7eo"/>
                         <outlet property="dayPullDownButton" destination="Cl4-Rn-c0j" id="bC5-jG-ejW"/>
                         <outlet property="daysLabel" destination="WXv-ON-8vK" id="fRA-8i-miG"/>
+                        <outlet property="progressView" destination="yCq-TB-GpE" id="78C-jz-8z1"/>
                         <outlet property="secondRowCell" destination="mP2-Ho-nBd" id="fdl-6t-y1a"/>
                         <outlet property="weekPullDownButton" destination="eeg-LF-O2f" id="lAt-Si-HbZ"/>
                         <outlet property="weeksLabel" destination="AKS-mr-PJs" id="cby-nM-afq"/>
@@ -1071,13 +1086,13 @@
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
         <systemColor name="systemGray2Color">
-            <color red="0.68235294120000001" green="0.68235294120000001" blue="0.69803921570000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.68235294117647061" green="0.68235294117647061" blue="0.69803921568627447" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemGray3Color">
-            <color red="0.78039215689999997" green="0.78039215689999997" blue="0.80000000000000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.7803921568627451" green="0.7803921568627451" blue="0.80000000000000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemGray6Color">
-            <color red="0.94901960780000005" green="0.94901960780000005" blue="0.96862745100000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.94901960784313721" green="0.94901960784313721" blue="0.96862745098039216" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>

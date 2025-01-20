@@ -24,43 +24,50 @@ class SignUpYourDetailsExtendedTableViewController: UITableViewController {
     @IBOutlet weak var dueDateInputLabel: UILabel!
     @IBOutlet weak var dueDateDatePicker: UIDatePicker!
 
+    @IBOutlet weak var progressView: UIProgressView!
+    var initialProgress: Float = 0.0
+    
     override func viewDidLoad() {
-            super.viewDidLoad()
-            setupPopUpButtons()
-            hideInitialElements()
+        super.viewDidLoad()
+        progressView.progress = initialProgress
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+            self.progressView.setProgress(1.0, animated: true)
         }
+        setupPopUpButtons()
+        hideInitialElements()
+    }
         
-        private func setupPopUpButtons() {
-            configureDueDatePopUpButton()
-            configureExistingConditionPopUpButton()
-            configureFoodIntolerancePopUpButton()
-            configureDietaryPreferencePopUpButton()
-        }
+    private func setupPopUpButtons() {
+        configureDueDatePopUpButton()
+        configureExistingConditionPopUpButton()
+        configureFoodIntolerancePopUpButton()
+        configureDietaryPreferencePopUpButton()
+    }
         
-        private func hideInitialElements() {
-            [secondRowCell, dueDateDatePicker, dueDateInputLabel,
-             weeksLabel, weekPullDownButton, daysLabel, dayPullDownButton]
-                .forEach { $0.isHidden = true }
-        }
+    private func hideInitialElements() {
+        [secondRowCell, dueDateDatePicker, dueDateInputLabel,
+         weeksLabel, weekPullDownButton, daysLabel, dayPullDownButton]
+            .forEach { $0.isHidden = true }
+    }
         
-        private func configureDueDatePopUpButton() {
-            let options = [
-                "None",
-                "Estimated due date",
-                "Date of last menstrual period",
-                "Date of conception",
-                "Week pregnant",
-                "Day 3 embryo transfer",
-                "Day 5 embryo transfer"
-            ]
-            
-            dueDatePopupButton.menu = UIMenu(children: options.map { title in
-                UIAction(title: title, handler: handleDueDateOption)
-            })
-            
-            dueDatePopupButton.showsMenuAsPrimaryAction = true
-            dueDatePopupButton.changesSelectionAsPrimaryAction = true
-        }
+    private func configureDueDatePopUpButton() {
+        let options = [
+            "None",
+            "Estimated due date",
+            "Date of last menstrual period",
+            "Date of conception",
+            "Week pregnant",
+            "Day 3 embryo transfer",
+            "Day 5 embryo transfer"
+        ]
+        
+        dueDatePopupButton.menu = UIMenu(children: options.map { title in
+            UIAction(title: title, handler: handleDueDateOption)
+        })
+        
+        dueDatePopupButton.showsMenuAsPrimaryAction = true
+        dueDatePopupButton.changesSelectionAsPrimaryAction = true
+    }
         
         private func handleDueDateOption(_ action: UIAction) {
             let showPicker = [

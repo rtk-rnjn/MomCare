@@ -16,31 +16,38 @@
                 <rect key="frame" x="0.0" y="0.0" width="393" height="100"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <stackView opaque="NO" contentMode="scaleToFill" alignment="bottom" spacing="117" translatesAutoresizingMaskIntoConstraints="NO" id="pFJ-8G-WGK">
-                        <rect key="frame" x="0.0" y="28.666666666666671" width="393" height="43"/>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Hi! Sakshi" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Qhi-0w-wMZ">
+                        <rect key="frame" x="5" y="0.0" width="167" height="100"/>
+                        <fontDescription key="fontDescription" type="boldSystem" pointSize="36"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lDL-Rl-35y">
+                        <rect key="frame" x="293" y="0.0" width="100" height="100"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Hi! Sakshi" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Qhi-0w-wMZ">
-                                <rect key="frame" x="0.0" y="0.0" width="167" height="43"/>
-                                <fontDescription key="fontDescription" type="boldSystem" pointSize="36"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="f8j-VO-yTK">
-                                <rect key="frame" x="284" y="8.6666666666666679" width="109" height="34.333333333333329"/>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="person.crop.circle" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="BTE-tB-yMW">
+                                <rect key="frame" x="40" y="30.666666666666668" width="40" height="38.666666666666657"/>
                                 <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <inset key="imageEdgeInsets" minX="5" minY="5" maxX="5" maxY="5"/>
-                                <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="plain" image="person.crop.circle.fill" catalog="system"/>
-                            </button>
+                            </imageView>
                         </subviews>
-                    </stackView>
+                        <color key="backgroundColor" red="0.96084600689999999" green="0.96065491439999995" blue="0.97647315260000001" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                        <constraints>
+                            <constraint firstItem="BTE-tB-yMW" firstAttribute="top" secondItem="lDL-Rl-35y" secondAttribute="top" constant="30" id="8fe-0g-f6Z"/>
+                            <constraint firstAttribute="trailing" secondItem="BTE-tB-yMW" secondAttribute="trailing" constant="20" id="GMy-5b-XZQ"/>
+                            <constraint firstAttribute="bottom" secondItem="BTE-tB-yMW" secondAttribute="bottom" constant="30" id="Wu6-K2-b9D"/>
+                            <constraint firstItem="BTE-tB-yMW" firstAttribute="leading" secondItem="lDL-Rl-35y" secondAttribute="leading" constant="40" id="ZjY-Lh-Kbj"/>
+                            <constraint firstAttribute="width" constant="100" id="pHt-Mg-uOM"/>
+                        </constraints>
+                    </view>
                 </subviews>
                 <color key="backgroundColor" red="0.94901960784313721" green="0.94901960784313721" blue="0.96862745098039216" alpha="1" colorSpace="calibratedRGB"/>
                 <constraints>
-                    <constraint firstItem="pFJ-8G-WGK" firstAttribute="leading" secondItem="nAT-Pc-v1T" secondAttribute="leading" id="0s1-it-Ycb"/>
-                    <constraint firstItem="pFJ-8G-WGK" firstAttribute="centerY" secondItem="nAT-Pc-v1T" secondAttribute="centerY" id="PhN-Nn-I1K"/>
-                    <constraint firstItem="pFJ-8G-WGK" firstAttribute="centerX" secondItem="nAT-Pc-v1T" secondAttribute="centerX" id="XO0-tG-iUG"/>
-                    <constraint firstAttribute="trailing" secondItem="pFJ-8G-WGK" secondAttribute="trailing" id="kdS-H4-LlI"/>
+                    <constraint firstAttribute="trailing" secondItem="lDL-Rl-35y" secondAttribute="trailing" id="Alk-mi-jVb"/>
+                    <constraint firstItem="Qhi-0w-wMZ" firstAttribute="leading" secondItem="nAT-Pc-v1T" secondAttribute="leading" constant="5" id="HDl-Q9-Cu0"/>
+                    <constraint firstItem="lDL-Rl-35y" firstAttribute="top" secondItem="nAT-Pc-v1T" secondAttribute="top" id="agG-di-0EA"/>
+                    <constraint firstAttribute="bottom" secondItem="lDL-Rl-35y" secondAttribute="bottom" id="biH-sy-pxF"/>
+                    <constraint firstAttribute="bottom" secondItem="Qhi-0w-wMZ" secondAttribute="bottom" id="fYj-ZO-0i4"/>
+                    <constraint firstItem="Qhi-0w-wMZ" firstAttribute="top" secondItem="nAT-Pc-v1T" secondAttribute="top" id="wzg-yn-4He"/>
                 </constraints>
             </collectionViewCellContentView>
             <size key="customSize" width="358" height="50"/>
@@ -48,6 +55,6 @@
         </collectionViewCell>
     </objects>
     <resources>
-        <image name="person.crop.circle.fill" catalog="system" width="128" height="123"/>
+        <image name="person.crop.circle" catalog="system" width="128" height="123"/>
     </resources>
 </document>
