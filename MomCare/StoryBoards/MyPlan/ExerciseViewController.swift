@@ -14,7 +14,7 @@ class ExerciseViewController: UIViewController, UICollectionViewDelegate, UIColl
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        ExerciseCollectionView.register(UINib(nibName: "DietDateCell", bundle: nil), forCellWithReuseIdentifier: "DietDate")
+        ExerciseCollectionView.register(UINib(nibName: "ExerciseDateCell", bundle: nil), forCellWithReuseIdentifier: "ExerciseDate")
         ExerciseCollectionView.register(UINib(nibName: "WalkCellMyPlan", bundle: nil), forCellWithReuseIdentifier: "Cell1")
         ExerciseCollectionView.register(UINib(nibName: "NewExerciseMyPlanCell", bundle: nil), forCellWithReuseIdentifier: "Cell2")
 //        let layout = UICollectionViewFlowLayout()
@@ -47,7 +47,7 @@ class ExerciseViewController: UIViewController, UICollectionViewDelegate, UIColl
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if indexPath.item == 0 {
             // Dequeue cell for NibFile1
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "DietDate", for: indexPath)
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ExerciseDate", for: indexPath)
             // Configure the cell
             return cell
         } else if indexPath.item == 1 {
