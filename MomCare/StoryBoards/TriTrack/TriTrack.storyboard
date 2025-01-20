@@ -882,6 +882,9 @@
                                                         <rect key="frame" x="333.33333333333331" y="0.0" width="39.666666666666686" height="25.666666666666668"/>
                                                         <state key="normal" title="Button"/>
                                                         <buttonConfiguration key="configuration" style="plain" image="chevron.right" catalog="system"/>
+                                                        <connections>
+                                                            <segue destination="OMf-GS-v4h" kind="show" id="rea-Sg-Hpd"/>
+                                                        </connections>
                                                     </button>
                                                 </subviews>
                                             </stackView>
@@ -916,6 +919,9 @@
                                                         <rect key="frame" x="333.33333333333331" y="0.0" width="39.666666666666686" height="25.333333333333332"/>
                                                         <state key="normal" title="Button"/>
                                                         <buttonConfiguration key="configuration" style="plain" image="chevron.right" catalog="system"/>
+                                                        <connections>
+                                                            <segue destination="uSM-ug-mOx" kind="show" id="ti9-nR-Be2"/>
+                                                        </connections>
                                                     </button>
                                                 </subviews>
                                             </stackView>
@@ -949,7 +955,27 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="6pl-xL-b4R" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-546" y="751"/>
+            <point key="canvasLocation" x="1569" y="751"/>
+        </scene>
+        <!--Appointments-->
+        <scene sceneID="vgp-qm-9Hz">
+            <objects>
+                <viewControllerPlaceholder storyboardName="Appointments" id="OMf-GS-v4h" sceneMemberID="viewController">
+                    <navigationItem key="navigationItem" id="TjA-Kw-Zfg"/>
+                </viewControllerPlaceholder>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Apj-qG-1fN" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1326" y="1112"/>
+        </scene>
+        <!--Reminders-->
+        <scene sceneID="96o-NZ-ZM5">
+            <objects>
+                <viewControllerPlaceholder storyboardName="Reminders" id="uSM-ug-mOx" sceneMemberID="viewController">
+                    <navigationItem key="navigationItem" id="II2-zp-AdV"/>
+                </viewControllerPlaceholder>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="29s-e6-gst" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1848" y="1112"/>
         </scene>
         <!--Appointments Table View Controller-->
         <scene sceneID="qSd-P7-hql">
@@ -1017,7 +1043,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="IkN-c7-Blq" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1100" y="1341.549295774648"/>
+            <point key="canvasLocation" x="2520" y="644"/>
         </scene>
         <!--Reminders Table View Controller-->
         <scene sceneID="jWf-PB-9cF">
@@ -1104,7 +1130,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="6gz-CS-roH" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-28.244274809160306" y="1341.549295774648"/>
+            <point key="canvasLocation" x="2520" y="873"/>
         </scene>
         <!--View Controller-->
         <scene sceneID="RG1-Hw-JN9">
@@ -1130,6 +1156,9 @@
                                                 <rect key="frame" x="333.33333333333331" y="0.0" width="39.666666666666686" height="23"/>
                                                 <state key="normal" title="Button"/>
                                                 <buttonConfiguration key="configuration" style="plain" image="chevron.right" catalog="system"/>
+                                                <connections>
+                                                    <segue destination="kfk-cN-2CA" kind="show" id="FcZ-9V-Obx"/>
+                                                </connections>
                                             </button>
                                         </subviews>
                                     </stackView>
@@ -1161,7 +1190,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ffp-66-VtL" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1036" y="751"/>
+            <point key="canvasLocation" x="-131" y="751"/>
         </scene>
         <!--MeAndMyBaby-->
         <scene sceneID="CWO-YE-CgP">
@@ -1223,7 +1252,17 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="CSS-8v-BXi" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1035.8778625954199" y="1385.2112676056338"/>
+            <point key="canvasLocation" x="654" y="751"/>
+        </scene>
+        <!--Symptoms-->
+        <scene sceneID="dao-74-fQo">
+            <objects>
+                <viewControllerPlaceholder storyboardName="Symptoms" id="kfk-cN-2CA" sceneMemberID="viewController">
+                    <navigationItem key="navigationItem" id="uFV-bd-hYW"/>
+                </viewControllerPlaceholder>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="52e-9j-BaI" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-132" y="1112"/>
         </scene>
     </scenes>
     <resources>
