@@ -19,10 +19,15 @@ class SignUpYourDetailsTableViewController: UITableViewController {
     
     
     @IBOutlet weak var progressView: UIProgressView!
+    var initialProgress: Float = 0.0
+
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        progressView.progress = 0.5
+        progressView.progress = initialProgress
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+            self.progressView.setProgress(0.5, animated: true)
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
