@@ -281,7 +281,7 @@
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="PlaylistSongLabel" destination="XKz-hh-2YU" id="Uff-cL-9Au"/>
+                        <outlet property="playlistSongLabel" destination="XKz-hh-2YU" id="Uff-cL-9Au"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Jsp-48-kRL" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
