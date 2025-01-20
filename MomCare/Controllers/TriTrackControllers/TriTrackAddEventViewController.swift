@@ -1,133 +1,109 @@
 //
-
 //  TriTrackAddEventViewController.swift
-
 //  MomCare
-
 //
-
 //  Created by Ritik Ranjan on 16/01/25.
-
 //
 
 import UIKit
 
-enum TriTrackViewControlSegmentValue: Int {
-
+public enum TriTrackViewControlSegmentValue: Int {
     case eventsReminderView = 1
-
     case symptomsView = 2
-
 }
 
-enum TriTrackEventReminderViewControlSegmentValue: Int {
-
-    case event = 0
-
-    case reminder = 1
-
+public enum TriTrackEventReminderViewControlSegmentValue: Int {
+    case eventView = 0
+    case reminderView = 1
 }
 
 class TriTrackAddEventViewController: UIViewController {
-
     /*
-
      if value == 1:
-
         show(eventReminderContainerView)
-
      elif value == 2:
-
         show(symptomsContainerView)
-
      else:
-
         Error(Something def. fucked up)
-
      */
-
     var viewControllerValue: TriTrackViewControlSegmentValue?
-
+    
     @IBOutlet var reminderContainerView: UIView!
-
     @IBOutlet var eventContainerView: UIView!
-
     @IBOutlet var symptomsContainerView: UIView!
 
     @IBOutlet var eventReminderSegmentControl: UISegmentedControl!
 
-    override func viewDidLoad() {
-
-        super.viewDidLoad()
-
+    var addReminderTableViewController: AddReminderTableViewController?
+    var addSymptomsTableViewController: AddSymptomsTableViewController?
+    var addEventTableViewController: AddEventTableViewController?
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         prepareContainerView()
-
     }
-
+    
     func prepareContainerView() {
-
         guard viewControllerValue != nil else { return }
-
         switch viewControllerValue! {
-
-        case .eventsReminderView: 
-
+        case .eventsReminderView:
             prepareEventReminderContainerView()
-
-        case .symptomsView: 
-
+        case .symptomsView:
             prepareSymptomsContainerView()
-
         }
-
     }
-
+    
     func prepareEventReminderContainerView() {
-
         symptomsContainerView.isHidden = true
-
         eventReminderSegmentControl.isHidden = false
 
-        switch TriTrackEventReminderViewControlSegmentValue(rawValue: eventReminderSegmentControl.selectedSegmentIndex)! {
-
-        case .event: 
-
+        switch TriTrackEventReminderViewControlSegmentValue(rawValue: eventReminderSegmentControl.selectedSegmentIndex) {
+        case .eventView:
             eventContainerView.isHidden = false
-
             navigationItem.title = "Add Event"
 
             reminderContainerView.isHidden = true
-
-        case .reminder: 
-
+        case .reminderView:
             reminderContainerView.isHidden = false
-
             navigationItem.title = "Add Reminder"
-
+            
             eventContainerView.isHidden = true
-
+        default:
+            fatalError("Something def. fucked up")
         }
-
     }
 
     @IBAction func eventReminderTapped(_ sender: UISegmentedControl) {
-
         prepareEventReminderContainerView()
-
     }
-
+    
     func prepareSymptomsContainerView() {
-
         eventContainerView.isHidden = true
-
         reminderContainerView.isHidden = true
-
         eventReminderSegmentControl.isHidden = true
-
+        
         symptomsContainerView.isHidden = false
-
+        
         navigationItem.title = "Add Symptoms"
-
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        switch segue.identifier {
+        case "embedSegueReminder":
+            addReminderTableViewController = segue.destination as? AddReminderTableViewController
+        case "embedSegueEvent":
+            addEventTableViewController = segue.destination as? AddEventTableViewController
+        case "embedSegueSymptoms":
+            addSymptomsTableViewController = segue.destination as? AddSymptomsTableViewController
+        default:
+            break
+            // OwO! What's this?
+        }
     }
 
+    func reloadAllTableViews() {
+        addReminderTableViewController?.tableView.reloadData()
+        addEventTableViewController?.tableView.reloadData()
+        addSymptomsTableViewController?.tableView.reloadData()
+    }
 }
