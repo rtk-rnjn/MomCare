@@ -140,7 +140,7 @@
             <objects>
                 <tableViewController id="yfR-4p-uCo" customClass="DietTableViewController" customModule="MomCare" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" id="eaD-eZ-Zte">
-                        <rect key="frame" x="0.0" y="0.0" width="353" height="632"/>
+                        <rect key="frame" x="0.0" y="0.0" width="353" height="642"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <prototypes>
@@ -159,7 +159,7 @@
                         </connections>
                     </tableView>
                     <connections>
-                        <outlet property="DietTableView" destination="eaD-eZ-Zte" id="GWc-0D-nfh"/>
+                        <outlet property="dietTableView" destination="eaD-eZ-Zte" id="GWc-0D-nfh"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="vs7-9e-Opw" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
