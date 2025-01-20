@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import FSCalendar
 
 enum ContainerType {
     case meAndBaby
@@ -22,6 +23,9 @@ class TriTrackViewController: UIViewController {
     @IBOutlet var meAndBabyContainerView: UIView!
     @IBOutlet var eventsContainerView: UIView!
     @IBOutlet var symptomsContainerView: UIView!
+    
+    @IBOutlet var calendarView: UIView!
+    var calendar: FSCalendar!
 
     var currentSegmentIndex: Int = 0
     
@@ -29,6 +33,11 @@ class TriTrackViewController: UIViewController {
         super.viewWillAppear(animated)
         triTrackInternalView.backgroundColor = .white
         triTrackInternalView.layer.cornerRadius = 15
+        
+        calendar = FSCalendar(frame: CGRect(x: 0, y: 0, width: calendarView.frame.width, height: calendarView.frame.height + 150))
+        calendar.scope = .week
+
+        calendarView.addSubview(calendar)
         
         prepareSegmentedControl()
         updateView()
