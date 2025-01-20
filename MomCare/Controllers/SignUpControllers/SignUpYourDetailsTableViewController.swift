@@ -7,7 +7,7 @@
 
 import UIKit
 
-class SignUpYourDetailsTableViewController: UITableViewController {
+class SignUpYourDetailsTableViewController: UITableViewController,UIViewControllerTransitioningDelegate {
     
     @IBOutlet var recievedHeight: UILabel!
     @IBOutlet weak var prePregnancyWeight: UILabel!
@@ -49,8 +49,8 @@ class SignUpYourDetailsTableViewController: UITableViewController {
         if let pickerVC = storyboard?.instantiateViewController(withIdentifier: "pickerView") as? PickerViewController {
             // Pass the options to the picker view controller
             pickerVC.selectedOption = options
-            // Present the picker view controller modally
-            pickerVC.modalPresentationStyle = .fullScreen
+            pickerVC.modalPresentationStyle = .custom
+            pickerVC.transitioningDelegate = self
             self.present(pickerVC, animated: true, completion: nil)
         }
     }
@@ -86,7 +86,9 @@ class SignUpYourDetailsTableViewController: UITableViewController {
             recievedHeight.text = "\(sourceVC.selectedHeight) cm"
         }
     }
-    
+    func presentationController(forPresented presented: UIViewController,presenting: UIViewController?,source: UIViewController) -> UIPresentationController? {
+        return HalfScreenPresentationController(presentedViewController: presented,presenting: presenting)
+    }
     /*
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
