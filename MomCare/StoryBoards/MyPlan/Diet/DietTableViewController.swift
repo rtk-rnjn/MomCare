@@ -27,6 +27,7 @@ class DietTableViewController: UITableViewController {
         DietTableView.delegate = self
         DietTableView.dataSource = self
         DietTableView.reloadData()
+        DietTableView.showsVerticalScrollIndicator = false
     }
 
     // MARK: - Table view data source
