@@ -18,7 +18,6 @@ class MoodnestViewController: UIViewController {
         collectionView.dataSource = self
         collectionView.delegate = self
         collectionView.showsHorizontalScrollIndicator = false
-
     }
 }
 
@@ -55,7 +54,8 @@ extension MoodnestViewController: UICollectionViewDelegateFlowLayout {
 //        if segue.identifier == "ShowGenres" {
 //            if let destinationVC = segue.destination as? GenresPageViewController,
 //               let selectedImage = sender as? UIImage {
-//                destinationVC.iconImage = selectedImage
+//                destinationVC.MoodIconImage = selectedImage
 //            }
 //        }
+//    }
 }
