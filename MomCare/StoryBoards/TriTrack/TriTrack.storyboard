@@ -882,6 +882,9 @@
                                                         <rect key="frame" x="333.33333333333331" y="0.0" width="39.666666666666686" height="25.666666666666668"/>
                                                         <state key="normal" title="Button"/>
                                                         <buttonConfiguration key="configuration" style="plain" image="chevron.right" catalog="system"/>
+                                                        <connections>
+                                                            <segue destination="OMf-GS-v4h" kind="show" id="rea-Sg-Hpd"/>
+                                                        </connections>
                                                     </button>
                                                 </subviews>
                                             </stackView>
@@ -916,6 +919,9 @@
                                                         <rect key="frame" x="333.33333333333331" y="0.0" width="39.666666666666686" height="25.333333333333332"/>
                                                         <state key="normal" title="Button"/>
                                                         <buttonConfiguration key="configuration" style="plain" image="chevron.right" catalog="system"/>
+                                                        <connections>
+                                                            <segue destination="uSM-ug-mOx" kind="show" id="ti9-nR-Be2"/>
+                                                        </connections>
                                                     </button>
                                                 </subviews>
                                             </stackView>
@@ -949,7 +955,27 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="6pl-xL-b4R" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-546" y="751"/>
+            <point key="canvasLocation" x="1569" y="751"/>
+        </scene>
+        <!--Appointments-->
+        <scene sceneID="vgp-qm-9Hz">
+            <objects>
+                <viewControllerPlaceholder storyboardName="Appointments" id="OMf-GS-v4h" sceneMemberID="viewController">
+                    <navigationItem key="navigationItem" id="TjA-Kw-Zfg"/>
+                </viewControllerPlaceholder>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Apj-qG-1fN" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1326" y="1112"/>
+        </scene>
+        <!--Reminders-->
+        <scene sceneID="96o-NZ-ZM5">
+            <objects>
+                <viewControllerPlaceholder storyboardName="Reminders" id="uSM-ug-mOx" sceneMemberID="viewController">
+                    <navigationItem key="navigationItem" id="II2-zp-AdV"/>
+                </viewControllerPlaceholder>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="29s-e6-gst" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1848" y="1112"/>
         </scene>
         <!--Appointments Table View Controller-->
         <scene sceneID="qSd-P7-hql">
@@ -1017,7 +1043,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="IkN-c7-Blq" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1100" y="1341.549295774648"/>
+            <point key="canvasLocation" x="2520" y="644"/>
         </scene>
         <!--Reminders Table View Controller-->
         <scene sceneID="jWf-PB-9cF">
@@ -1029,17 +1055,17 @@
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="ReminderCell" id="U8c-ZO-ma7" customClass="RemindersTableViewCell" customModule="MomCare" customModuleProvider="target">
-                                <rect key="frame" x="20" y="55.333332061767578" width="333" height="66.666664123535156"/>
+                                <rect key="frame" x="20" y="55.333332061767578" width="333" height="67"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="U8c-ZO-ma7" id="3t8-KG-73H">
-                                    <rect key="frame" x="0.0" y="0.0" width="333" height="66.666664123535156"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="333" height="67"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="KH0-fS-4Rt">
-                                            <rect key="frame" x="10" y="4.9999999999999964" width="313" height="56.666666666666657"/>
+                                            <rect key="frame" x="10" y="5" width="313" height="57"/>
                                             <subviews>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="I6h-hJ-l1H">
-                                                    <rect key="frame" x="0.0" y="0.0" width="156.66666666666666" height="56.666666666666664"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="156.66666666666666" height="57"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BYV-o8-20G">
                                                             <rect key="frame" x="44.333333333333329" y="18.333333333333336" width="41.333333333333329" height="20.333333333333336"/>
@@ -1060,7 +1086,6 @@
                                                             </buttonConfiguration>
                                                         </button>
                                                     </subviews>
-                                                    <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                                     <constraints>
                                                         <constraint firstItem="S7r-5C-8oi" firstAttribute="centerY" secondItem="I6h-hJ-l1H" secondAttribute="centerY" id="I5p-rj-RGv"/>
                                                         <constraint firstItem="S7r-5C-8oi" firstAttribute="leading" secondItem="I6h-hJ-l1H" secondAttribute="leading" id="RR6-Ib-EiO"/>
@@ -1069,7 +1094,7 @@
                                                     </constraints>
                                                 </view>
                                                 <datePicker userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" verticalHuggingPriority="1000" contentHorizontalAlignment="trailing" contentVerticalAlignment="center" datePickerMode="time" minuteInterval="1" translatesAutoresizingMaskIntoConstraints="NO" id="x1x-nd-kd4">
-                                                    <rect key="frame" x="156.66666666666663" y="0.0" width="156.33333333333337" height="56.666666666666664"/>
+                                                    <rect key="frame" x="156.66666666666663" y="0.0" width="156.33333333333337" height="57"/>
                                                 </datePicker>
                                             </subviews>
                                             <constraints>
@@ -1104,7 +1129,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="6gz-CS-roH" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-28.244274809160306" y="1341.549295774648"/>
+            <point key="canvasLocation" x="2520" y="873"/>
         </scene>
         <!--View Controller-->
         <scene sceneID="RG1-Hw-JN9">
@@ -1130,6 +1155,9 @@
                                                 <rect key="frame" x="333.33333333333331" y="0.0" width="39.666666666666686" height="23"/>
                                                 <state key="normal" title="Button"/>
                                                 <buttonConfiguration key="configuration" style="plain" image="chevron.right" catalog="system"/>
+                                                <connections>
+                                                    <segue destination="kfk-cN-2CA" kind="show" id="FcZ-9V-Obx"/>
+                                                </connections>
                                             </button>
                                         </subviews>
                                     </stackView>
@@ -1161,7 +1189,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ffp-66-VtL" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1036" y="751"/>
+            <point key="canvasLocation" x="-131" y="751"/>
         </scene>
         <!--MeAndMyBaby-->
         <scene sceneID="CWO-YE-CgP">
@@ -1223,7 +1251,17 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="CSS-8v-BXi" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1035.8778625954199" y="1385.2112676056338"/>
+            <point key="canvasLocation" x="654" y="751"/>
+        </scene>
+        <!--Symptoms-->
+        <scene sceneID="dao-74-fQo">
+            <objects>
+                <viewControllerPlaceholder storyboardName="Symptoms" id="kfk-cN-2CA" sceneMemberID="viewController">
+                    <navigationItem key="navigationItem" id="uFV-bd-hYW"/>
+                </viewControllerPlaceholder>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="52e-9j-BaI" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-132" y="1112"/>
         </scene>
     </scenes>
     <resources>
