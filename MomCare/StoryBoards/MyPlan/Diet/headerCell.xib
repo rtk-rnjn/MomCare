@@ -17,7 +17,7 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mES-YW-tkA">
-                        <rect key="frame" x="10" y="5" width="145.66666666666666" height="70"/>
+                        <rect key="frame" x="9" y="5" width="145.66666666666666" height="70"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Rfh-vd-Dqe">
                                 <rect key="frame" x="0.0" y="0.0" width="50" height="70"/>
@@ -50,7 +50,7 @@
                     </button>
                 </subviews>
                 <constraints>
-                    <constraint firstItem="mES-YW-tkA" firstAttribute="leading" secondItem="hxw-Iy-7Az" secondAttribute="leading" constant="10" id="Bfj-q2-45k"/>
+                    <constraint firstItem="mES-YW-tkA" firstAttribute="leading" secondItem="hxw-Iy-7Az" secondAttribute="leading" constant="9" id="Bfj-q2-45k"/>
                     <constraint firstAttribute="bottom" secondItem="mES-YW-tkA" secondAttribute="bottom" constant="5" id="IBR-qX-haa"/>
                     <constraint firstAttribute="bottom" secondItem="584-gF-Rke" secondAttribute="bottom" constant="5" id="XgH-6J-dj8"/>
                     <constraint firstAttribute="trailing" secondItem="584-gF-Rke" secondAttribute="trailing" constant="15" id="gUH-o0-k4k"/>
