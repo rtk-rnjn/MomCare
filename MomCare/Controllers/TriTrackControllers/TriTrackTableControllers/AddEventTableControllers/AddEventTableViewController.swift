@@ -108,7 +108,7 @@ class AddEventTableViewController: UITableViewController {
         alertTimePopupButton.showsMenuAsPrimaryAction = true
         alertTimePopupButton.changesSelectionAsPrimaryAction = true
     }
-    
+
     private func handleAlertTimeOption(action: UIAction) {
         alertTimePopupButton.setTitle(action.title, for: .normal)
         print(AddEventTableViewController.alertTimeOptions[action.title]!)

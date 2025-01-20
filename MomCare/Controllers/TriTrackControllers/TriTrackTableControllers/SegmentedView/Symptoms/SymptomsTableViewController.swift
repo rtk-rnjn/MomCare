@@ -13,7 +13,7 @@ class SymptomsTableViewController: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.data = MomCareUser.shared.getSymptoms()
+        self.data = MomCareUser.shared.symptoms
     }
 
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -48,4 +48,5 @@ class SymptomsTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
         return 3
     }
+
 }

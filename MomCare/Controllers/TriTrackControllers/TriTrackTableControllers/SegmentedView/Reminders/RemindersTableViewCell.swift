@@ -21,7 +21,7 @@ class RemindersTableViewCell: UITableViewCell {
 
     func updateElements(with reminder: TriTrackReminder) {
         titleLabel.text = reminder.title
-        dateTime.date = Date(timeIntervalSinceNow: reminder.duration ?? 0)
+        dateTime.date = Date(timeIntervalSinceNow: reminder.duration)
         
         prepareButton()
     }

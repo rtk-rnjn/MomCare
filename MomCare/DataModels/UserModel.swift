@@ -91,10 +91,10 @@ class MomCareUser {
     private var exercise: UserExercise = UserExercise.shared
     private var currentMood: Mood?
 
-    private var reminders: [TriTrackReminder] = []
-    private var events: [TriTrackEvent] = []
+    public private(set) var reminders: [TriTrackReminder] = []
+    public private(set) var events: [TriTrackEvent] = []
 
-    private var symptoms: [TriTrackSymptoms] = []
+    public private(set) var symptoms: [TriTrackSymptoms] = []
 
     static var shared: MomCareUser = MomCareUser()
     

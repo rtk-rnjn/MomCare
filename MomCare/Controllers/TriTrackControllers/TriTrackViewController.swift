@@ -22,7 +22,7 @@ class TriTrackViewController: UIViewController {
     @IBOutlet var meAndBabyContainerView: UIView!
     @IBOutlet var eventsContainerView: UIView!
     @IBOutlet var symptomsContainerView: UIView!
-    
+
     var currentSegmentIndex: Int = 0
 
     override func viewDidLoad() {
@@ -98,10 +98,24 @@ class TriTrackViewController: UIViewController {
     }
     
     @IBAction func unwinToTriTrack(_ sender: UIStoryboardSegue) {
+        switch sender.identifier {
+        case "unwindToTriTrackViaDone":
+            handleDoneButtonTapped(with: sender.source)
+        case "unwindToTriTrackViaCancel":
+            break
+        default:
+            fatalError()
+        }
     }
     
+    func handleDoneButtonTapped(with viewController: UIViewController) {
+        guard let viewController = viewController as? TriTrackAddEventViewController else { return }
+        
+        switch viewController.viewControllerValue {
+
+        }
+    }
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Image using ChatGPT in production Code. sorry guys
 
         if segue.identifier == "segueTriTrack" {
             if let destinationVC = segue.destination as? UINavigationController {
@@ -110,4 +124,6 @@ class TriTrackViewController: UIViewController {
             }
         }
     }
+    
+    
 }

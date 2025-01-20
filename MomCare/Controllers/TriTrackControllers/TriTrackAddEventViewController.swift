@@ -34,6 +34,10 @@ class TriTrackAddEventViewController: UIViewController {
 
     @IBOutlet var eventReminderSegmentControl: UISegmentedControl!
 
+    var addReminderTableViewController: AddReminderTableViewController?
+    var addSymptomsTableViewController: AddSymptomsTableViewController?
+    var addEventTableViewController: AddEventTableViewController?
+
     override func viewDidLoad() {
         super.viewDidLoad()
         prepareContainerView()
@@ -79,5 +83,18 @@ class TriTrackAddEventViewController: UIViewController {
         symptomsContainerView.isHidden = false
         
         navigationItem.title = "Add Symptoms"
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        switch segue.identifier {
+        case "embedSegueReminder":
+            addReminderTableViewController = segue.destination as? AddReminderTableViewController
+        case "embedSegueEvent":
+            addEventTableViewController = segue.destination as? AddEventTableViewController
+        case "embedSegueSymptoms":
+            addSymptomsTableViewController = segue.destination as? AddSymptomsTableViewController
+        default:
+            break
+        }
     }
 }
