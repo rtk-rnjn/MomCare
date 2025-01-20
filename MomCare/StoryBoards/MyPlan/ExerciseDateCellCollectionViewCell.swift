@@ -12,6 +12,6 @@
 
 import UIKit
 
-class DietDateCellCollectionViewCell: UICollectionViewCell {
+class ExerciseDateCellCollectionViewCell: UICollectionViewCell {
 
 }
