@@ -22,7 +22,7 @@ class ExerciseViewController: UIViewController, UICollectionViewDelegate, UIColl
 
         super.viewDidLoad()
 
-        exerciseCollectionView.register(UINib(nibName: "DietDateCell", bundle: nil), forCellWithReuseIdentifier: "DietDate")
+        exerciseCollectionView.register(UINib(nibName: "ExerciseDateCell", bundle: nil), forCellWithReuseIdentifier: "ExerciseDate")
 
         exerciseCollectionView.register(UINib(nibName: "WalkCellMyPlan", bundle: nil), forCellWithReuseIdentifier: "Cell1")
 
@@ -86,7 +86,7 @@ class ExerciseViewController: UIViewController, UICollectionViewDelegate, UIColl
 
             // Dequeue cell for NibFile1
 
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "DietDate", for: indexPath)
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ExerciseDate", for: indexPath)
 
             // Configure the cell
 

@@ -2,7 +2,7 @@ import UIKit
 
 class DietTableViewController: UITableViewController {
     
-    @IBOutlet var DietTableView: UITableView!
+    @IBOutlet var dietTableView: UITableView!
     
     let sectionsData: [(firstCellCount: Int, secondCellCount: Int)] = [
         (firstCellCount: 1, secondCellCount: 3), // Section 1: 1 first cell, 3 second cells
@@ -14,12 +14,12 @@ class DietTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        DietTableView.register(UINib(nibName: "headerCell", bundle: nil), forCellReuseIdentifier: "headerCell")
-        DietTableView.register(UINib(nibName: "contentCell", bundle: nil), forCellReuseIdentifier: "contentCell")
-        DietTableView.delegate = self
-        DietTableView.dataSource = self
-        DietTableView.reloadData()
-        DietTableView.showsVerticalScrollIndicator = false
+        dietTableView.register(UINib(nibName: "headerCell", bundle: nil), forCellReuseIdentifier: "headerCell")
+        dietTableView.register(UINib(nibName: "contentCell", bundle: nil), forCellReuseIdentifier: "contentCell")
+        dietTableView.delegate = self
+        dietTableView.dataSource = self
+        dietTableView.reloadData()
+        dietTableView.showsVerticalScrollIndicator = false
     }
 
     // MARK: - Table view data source
