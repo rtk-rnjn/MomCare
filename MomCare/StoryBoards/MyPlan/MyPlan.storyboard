@@ -85,7 +85,7 @@
                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="6" translatesAutoresizingMaskIntoConstraints="NO" id="81b-1P-OPU">
                                         <rect key="frame" x="0.0" y="0.0" width="353" height="170"/>
                                         <subviews>
-                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jPA-zR-mgt">
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jPA-zR-mgt" customClass="CircularProgressView" customModule="MomCare" customModuleProvider="target">
                                                 <rect key="frame" x="0.0" y="0.0" width="173.66666666666666" height="170"/>
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             </view>
@@ -239,6 +239,9 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="AJU-st-9bH"/>
+                    <connections>
+                        <outlet property="circularProgressView" destination="jPA-zR-mgt" id="zML-8U-lYy"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="sNv-1r-nCb" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
