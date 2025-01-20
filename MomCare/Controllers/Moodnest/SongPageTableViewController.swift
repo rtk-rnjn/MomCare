@@ -8,11 +8,10 @@
 import UIKit
 
 class SongPageTableViewController: UITableViewController {
-    var data: [Playlist] = []
+    var data: [Song] = FeaturedPlaylists.playlists[0].songs
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.data = FeaturedPlaylists.playlists
     }
 
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -30,8 +29,9 @@ class SongPageTableViewController: UITableViewController {
         guard let cell = cell else {
             fatalError("What is love?")
         }
-
         
+        let song = self.data[indexPath.row]
+        cell.updateElement(with: song)
 
         return cell
     }
