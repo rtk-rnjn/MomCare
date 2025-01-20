@@ -51,13 +51,15 @@ extension MoodnestViewController: UICollectionViewDataSource {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "FacesCollectionViewCell", for: indexPath) as! FacesCollectionViewCell
 
         cell.setup(with: AllMoods.moods[indexPath.item])
-
-        pageControl.currentPage = indexPath.row
-
         return cell
 
     }
-
+    
+    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        let pageWidth = collectionView.frame.width
+        let currentPage = Int((collectionView.contentOffset.x + pageWidth / 2) / pageWidth)
+        pageControl.currentPage = currentPage
+    }
 }
 
 extension MoodnestViewController: UICollectionViewDelegateFlowLayout {

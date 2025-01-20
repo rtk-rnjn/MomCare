@@ -12,7 +12,7 @@
 
 import UIKit
 
-class GenresPageViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate {
+class GenresPageViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
 
     @IBOutlet weak var moodnestCollectionView: UICollectionView!
 
@@ -262,6 +262,11 @@ class GenresPageViewController: UIViewController, UICollectionViewDataSource, UI
 
         return section
 
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let selectedPlaylist = FeaturedPlaylists.playlists[indexPath.item]
+        performSegue(withIdentifier: "songPageSegue", sender: selectedPlaylist)
     }
 
 }
