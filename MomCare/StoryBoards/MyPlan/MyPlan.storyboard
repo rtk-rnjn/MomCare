@@ -172,7 +172,7 @@
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="ExerciseCollectionView" destination="Yt9-o6-ItS" id="XIY-gV-QNv"/>
+                        <outlet property="exerciseCollectionView" destination="Yt9-o6-ItS" id="XIY-gV-QNv"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Rnh-hu-bAn" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
