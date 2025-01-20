@@ -17,7 +17,5 @@ class SongPageViewController: UIViewController {
         gradientLayer.colors = [UIColor.white.cgColor, UIColor.systemGray.cgColor]
         view.layer.insertSublayer(gradientLayer, at: 0)
     }
-    
-    
 
 }

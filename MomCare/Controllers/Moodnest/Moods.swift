@@ -105,6 +105,6 @@ class FeaturedPlaylists {
                 Song(name: "Reflection Eternal", artist: "DJ Shadow", duration: 270.0),
                 Song(name: "Distant Lights", artist: "Bonobo", duration: 225.0)
             ]
-        ),
+        )
     ]
 }
