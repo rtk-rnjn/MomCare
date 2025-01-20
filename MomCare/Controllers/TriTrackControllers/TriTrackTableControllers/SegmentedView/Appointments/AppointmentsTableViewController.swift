@@ -9,10 +9,10 @@ import UIKit
 
 class AppointmentsTableViewController: UITableViewController {
     var data: [TriTrackEvent] = []
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        self.data = MomCareUser.shared.getEvents()
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.data = MomCareUser.shared.events
     }
 
     override func numberOfSections(in tableView: UITableView) -> Int {

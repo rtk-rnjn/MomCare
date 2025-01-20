@@ -94,26 +94,14 @@ class MomCareUser {
     public private(set) var reminders: [TriTrackReminder] = []
     public private(set) var events: [TriTrackEvent] = []
 
-    public private(set) var symptoms: [TriTrackSymptoms] = []
+    public private(set) var symptoms: [TriTrackSymptom] = []
 
     static var shared: MomCareUser = MomCareUser()
     
     private init() {
         updateFromDatabase()
     }
-    
-    func getEvents() -> [TriTrackEvent] {
-        return events
-    }
-    
-    func getReminders() -> [TriTrackReminder] {
-        return reminders
-    }
-    
-    func getSymptoms() -> [TriTrackSymptoms] {
-        return symptoms
-    }
-    
+
     private func updateFromDatabase() {
         UserDiet.shared.updateFromDatabase()
         UserExercise.shared.updateFromDatabase()
@@ -132,7 +120,7 @@ class MomCareUser {
         events.append(event)
     }
     
-    func addSymptom(_ symptom: TriTrackSymptoms) {
+    func addSymptom(_ symptom: TriTrackSymptom) {
         symptoms.append(symptom)
     }
 }

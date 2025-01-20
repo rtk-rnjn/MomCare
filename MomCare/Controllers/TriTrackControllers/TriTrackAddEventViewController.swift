@@ -7,14 +7,14 @@
 
 import UIKit
 
-enum TriTrackViewControlSegmentValue: Int {
+public enum TriTrackViewControlSegmentValue: Int {
     case eventsReminderView = 1
     case symptomsView = 2
 }
 
-enum TriTrackEventReminderViewControlSegmentValue: Int {
-    case event = 0
-    case reminder = 1
+public enum TriTrackEventReminderViewControlSegmentValue: Int {
+    case eventView = 0
+    case reminderView = 1
 }
 
 class TriTrackAddEventViewController: UIViewController {
@@ -27,7 +27,7 @@ class TriTrackAddEventViewController: UIViewController {
         Error(Something def. fucked up)
      */
     var viewControllerValue: TriTrackViewControlSegmentValue?
-
+    
     @IBOutlet var reminderContainerView: UIView!
     @IBOutlet var eventContainerView: UIView!
     @IBOutlet var symptomsContainerView: UIView!
@@ -37,9 +37,9 @@ class TriTrackAddEventViewController: UIViewController {
     var addReminderTableViewController: AddReminderTableViewController?
     var addSymptomsTableViewController: AddSymptomsTableViewController?
     var addEventTableViewController: AddEventTableViewController?
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         prepareContainerView()
     }
     
@@ -57,17 +57,19 @@ class TriTrackAddEventViewController: UIViewController {
         symptomsContainerView.isHidden = true
         eventReminderSegmentControl.isHidden = false
 
-        switch TriTrackEventReminderViewControlSegmentValue(rawValue: eventReminderSegmentControl.selectedSegmentIndex)! {
-        case .event:
+        switch TriTrackEventReminderViewControlSegmentValue(rawValue: eventReminderSegmentControl.selectedSegmentIndex) {
+        case .eventView:
             eventContainerView.isHidden = false
             navigationItem.title = "Add Event"
 
             reminderContainerView.isHidden = true
-        case .reminder:
+        case .reminderView:
             reminderContainerView.isHidden = false
             navigationItem.title = "Add Reminder"
             
             eventContainerView.isHidden = true
+        default:
+            fatalError("Something def. fucked up")
         }
     }
 
@@ -95,6 +97,13 @@ class TriTrackAddEventViewController: UIViewController {
             addSymptomsTableViewController = segue.destination as? AddSymptomsTableViewController
         default:
             break
+            // OwO! What's this?
         }
+    }
+
+    func reloadAllTableViews() {
+        addReminderTableViewController?.tableView.reloadData()
+        addEventTableViewController?.tableView.reloadData()
+        addSymptomsTableViewController?.tableView.reloadData()
     }
 }

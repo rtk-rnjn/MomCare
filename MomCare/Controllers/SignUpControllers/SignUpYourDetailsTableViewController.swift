@@ -7,7 +7,7 @@
 
 import UIKit
 
-class SignUpYourDetailsTableViewController: UITableViewController,UIViewControllerTransitioningDelegate {
+class SignUpYourDetailsTableViewController: UITableViewController, UIViewControllerTransitioningDelegate {
     
     @IBOutlet var recievedHeight: UILabel!
     @IBOutlet weak var prePregnancyWeight: UILabel!
@@ -86,8 +86,8 @@ class SignUpYourDetailsTableViewController: UITableViewController,UIViewControll
             recievedHeight.text = "\(sourceVC.selectedHeight) cm"
         }
     }
-    func presentationController(forPresented presented: UIViewController,presenting: UIViewController?,source: UIViewController) -> UIPresentationController? {
-        return HalfScreenPresentationController(presentedViewController: presented,presenting: presenting)
+    func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
+        return HalfScreenPresentationController(presentedViewController: presented, presenting: presenting)
     }
     /*
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {

@@ -24,13 +24,12 @@ class TriTrackViewController: UIViewController {
     @IBOutlet var symptomsContainerView: UIView!
 
     var currentSegmentIndex: Int = 0
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         triTrackInternalView.backgroundColor = .white
         triTrackInternalView.layer.cornerRadius = 15
-
+        
         prepareSegmentedControl()
         updateView()
     }
@@ -56,15 +55,7 @@ class TriTrackViewController: UIViewController {
             .foregroundColor: UIColor.white
         ]
         
-        /* https://stackoverflow.com/questions/24263007/how-to-use-hex-color-values */
-
-        let rgbValue: UInt64 = 0
-        // Hex: 924350
-        let red = CGFloat((rgbValue & 0x920000) >> 16) / 255.0
-        let green = CGFloat((rgbValue & 0x004300) >> 8) / 255.0
-        let blue = CGFloat(rgbValue & 0x000050) / 255.0
-        
-        let selectedBackground = UIColor(red: red, green: green, blue: blue, alpha: 1.0)
+        let selectedBackground = Converters.convertHexToUIColor(hex: "924350")
 
         let selectedTextAttribute: [NSAttributedString.Key: Any] = [
             .foregroundColor: selectedBackground
@@ -89,7 +80,7 @@ class TriTrackViewController: UIViewController {
             hideAllContainers(except: .symptoms)
         default:
             // Should never happen
-            fatalError()
+            fatalError("love is beautiful thing")
         }
     }
 
@@ -98,24 +89,89 @@ class TriTrackViewController: UIViewController {
     }
     
     @IBAction func unwinToTriTrack(_ sender: UIStoryboardSegue) {
+        guard let sourceVC = sender.source as? TriTrackAddEventViewController else { return }
+
+        sourceVC.reloadAllTableViews()
+        
         switch sender.identifier {
         case "unwindToTriTrackViaDone":
-            handleDoneButtonTapped(with: sender.source)
+            handleDoneButtonTapped(with: sourceVC)
         case "unwindToTriTrackViaCancel":
             break
         default:
-            fatalError()
+            fatalError("love is a battlefield")
         }
     }
-    
+
     func handleDoneButtonTapped(with viewController: UIViewController) {
         guard let viewController = viewController as? TriTrackAddEventViewController else { return }
         
         switch viewController.viewControllerValue {
-        default:
-            break
+        case .eventsReminderView:
+            handleDoneButtonTappedForEventsReminders(with: viewController)
+        case .symptomsView:
+            handleDoneButtonTappedForSymptomsView(with: viewController)
+        case .none:
+            fatalError("what is love?")
         }
     }
+    
+    func handleDoneButtonTappedForEventsReminders(with viewController: TriTrackAddEventViewController) {
+        switch TriTrackEventReminderViewControlSegmentValue(rawValue: viewController.eventReminderSegmentControl.selectedSegmentIndex) {
+        case .eventView:
+            handleDoneButtonTappedForEventsView(with: viewController)
+        case .reminderView:
+            handleDoneButtonTappedForRemindersView(with: viewController)
+        default:
+            fatalError("Love is not what you think it is")
+        }
+    }
+    
+    // MARK: - Handlers for done button tapped
+
+    func handleDoneButtonTappedForSymptomsView(with viewController: TriTrackAddEventViewController) {
+        let title = viewController.addSymptomsTableViewController?.titleField.text
+        let notes = viewController.addSymptomsTableViewController?.notesField.text
+        let dateTime = viewController.addSymptomsTableViewController?.dateTime.date
+        
+        guard let title = title, let dateTime = dateTime else { return }
+        
+        let triTrackSymptom = TriTrackSymptom(title: title, notes: notes, atTime: dateTime)
+        MomCareUser.shared.addSymptom(triTrackSymptom)
+    }
+    
+    func handleDoneButtonTappedForEventsView(with viewController: TriTrackAddEventViewController) {
+        let title = viewController.addEventTableViewController?.titleField.text
+        let location = viewController.addEventTableViewController?.locationField.text
+        
+        let startDateTime = viewController.addEventTableViewController?.startDateTimePicker.date
+        let endDateTime = viewController.addEventTableViewController?.endDateTimePicker.date
+        
+        let repeatAfter = viewController.addEventTableViewController?.selectedRepeatOption
+        let travelTime = viewController.addEventTableViewController?.selectedTravelTimeOption
+        let alertTime = viewController.addEventTableViewController?.selectedAlertTimeOption
+        
+        let allDay = viewController.addEventTableViewController?.allDaySwitch.isOn ?? false
+        
+        guard let title = title, let startDateTime = startDateTime else { return }
+        
+        let triTrackEvent = TriTrackEvent(title: title, location: location, allDay: allDay, startDate: startDateTime, endDate: endDateTime, travelTime: travelTime, alertBefore: alertTime, repeatAfter: repeatAfter)
+        
+        MomCareUser.shared.addEvent(triTrackEvent)
+    }
+    
+    func handleDoneButtonTappedForRemindersView(with viewController: TriTrackAddEventViewController) {
+        let title = viewController.addReminderTableViewController?.titleField.text
+        let notes = viewController.addReminderTableViewController?.notesField.text
+        let dateTime = viewController.addReminderTableViewController?.dateTime.date
+        let timeInterval = viewController.addReminderTableViewController?.selectedRepeatOption
+
+        guard let title = title, let notes = notes, let dateTime = dateTime else { return }
+        
+        let triTrackReminder = TriTrackReminder(title: title, date: dateTime, notes: notes, repeatAfter: timeInterval)
+        MomCareUser.shared.addReminder(triTrackReminder)
+    }
+
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
 
         if segue.identifier == "segueTriTrack" {
@@ -125,6 +181,4 @@ class TriTrackViewController: UIViewController {
             }
         }
     }
-    
-    
 }

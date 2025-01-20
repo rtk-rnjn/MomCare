@@ -10,7 +10,6 @@ import Foundation
 struct TriTrackEvent {
     var title: String
     var location: String?
-    var videoLink: String?
     
     var allDay: Bool = false
     var startDate: Date
@@ -23,14 +22,13 @@ struct TriTrackEvent {
 
 struct TriTrackReminder {
     var title: String
+    var date: Date = Date()
     var notes: String?
-    
-    var duration: TimeInterval
     
     var repeatAfter: TimeInterval?
 }
 
-struct TriTrackSymptoms {
+struct TriTrackSymptom {
     var title: String
     var notes: String?
 
