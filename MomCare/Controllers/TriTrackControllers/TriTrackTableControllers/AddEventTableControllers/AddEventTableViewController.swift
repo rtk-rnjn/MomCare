@@ -44,27 +44,36 @@ class AddEventTableViewController: UITableViewController {
     ]
 
     @IBOutlet var literalEndsLabel: UILabel!
-    @IBOutlet var dateTimePicker: UIDatePicker!
+    @IBOutlet var startDateTimePicker: UIDatePicker!
+    @IBOutlet var endDateTimePicker: UIDatePicker!
 
+    @IBOutlet var allDaySwitch: UISwitch!
     @IBOutlet var repeatPopupButton: UIButton!
     @IBOutlet var travelTimePopupButton: UIButton!
     @IBOutlet var alertTimePopupButton: UIButton!
+
+    @IBOutlet var titleField: UITextField!
+    @IBOutlet var locationField: UITextField!
+    
+    var selectedRepeatOption: TimeInterval = -1
+    var selectedTravelTimeOption: TimeInterval = -1
+    var selectedAlertTimeOption: TimeInterval = -1
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        dateTimePicker.minimumDate = Date()
+        endDateTimePicker.minimumDate = Date()
         
         preparePopupButtons()
     }
 
     @IBAction func allDaySwitchTapped(_ sender: UISwitch) {
         if sender.isOn {
-            dateTimePicker.isUserInteractionEnabled = false
-            dateTimePicker.alpha = 0.5
+            endDateTimePicker.isUserInteractionEnabled = false
+            endDateTimePicker.alpha = 0.5
             literalEndsLabel.alpha = 0.5
         } else {
-            dateTimePicker.isUserInteractionEnabled = true
-            dateTimePicker.alpha = 1
+            endDateTimePicker.isUserInteractionEnabled = true
+            endDateTimePicker.alpha = 1
             literalEndsLabel.alpha = 1
         }
     }
@@ -85,7 +94,7 @@ class AddEventTableViewController: UITableViewController {
     
     private func handleRepeatOption(action: UIAction) {
         repeatPopupButton.setTitle(action.title, for: .normal)
-        print(AddEventTableViewController.repeatTimeOptions[action.title]!)
+        selectedRepeatOption = AddEventTableViewController.repeatTimeOptions[action.title]!
     }
 
     private func prepareTravelTimePopup() {
@@ -98,7 +107,7 @@ class AddEventTableViewController: UITableViewController {
     
     private func handleTravelTimeOption(action: UIAction) {
         travelTimePopupButton.setTitle(action.title, for: .normal)
-        print(AddEventTableViewController.travelTimeOptions[action.title]!)
+        selectedTravelTimeOption = AddEventTableViewController.travelTimeOptions[action.title]!
     }
     
     private func prepareAlertTimePopup() {
@@ -111,6 +120,6 @@ class AddEventTableViewController: UITableViewController {
 
     private func handleAlertTimeOption(action: UIAction) {
         alertTimePopupButton.setTitle(action.title, for: .normal)
-        print(AddEventTableViewController.alertTimeOptions[action.title]!)
+        selectedAlertTimeOption = AddEventTableViewController.alertTimeOptions[action.title]!
     }
 }

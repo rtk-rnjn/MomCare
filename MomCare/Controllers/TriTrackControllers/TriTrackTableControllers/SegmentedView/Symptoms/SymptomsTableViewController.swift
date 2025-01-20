@@ -9,10 +9,10 @@ import UIKit
 
 class SymptomsTableViewController: UITableViewController {
     
-    var data: [TriTrackSymptoms] = []
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
+    var data: [TriTrackSymptom] = []
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
         self.data = MomCareUser.shared.symptoms
     }
 

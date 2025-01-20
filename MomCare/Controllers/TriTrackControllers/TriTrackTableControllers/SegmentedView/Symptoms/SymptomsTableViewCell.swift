@@ -12,7 +12,7 @@ class SymptomsTableViewCell: UITableViewCell {
     @IBOutlet var dateTime: UIDatePicker!
     @IBOutlet var titleLabel: UILabel!
     
-    func updateElements(with symptom: TriTrackSymptoms) {
+    func updateElements(with symptom: TriTrackSymptom) {
         dateTime.date = symptom.atTime
         titleLabel.text = symptom.title
     }

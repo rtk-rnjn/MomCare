@@ -11,9 +11,9 @@ class RemindersTableViewController: UITableViewController {
 
     var data: [TriTrackReminder] = []
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        self.data = MomCareUser.shared.getReminders()
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.data = MomCareUser.shared.reminders
     }
 
     override func numberOfSections(in tableView: UITableView) -> Int {
