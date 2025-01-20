@@ -112,7 +112,8 @@ class TriTrackViewController: UIViewController {
         guard let viewController = viewController as? TriTrackAddEventViewController else { return }
         
         switch viewController.viewControllerValue {
-
+        default:
+            break
         }
     }
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
