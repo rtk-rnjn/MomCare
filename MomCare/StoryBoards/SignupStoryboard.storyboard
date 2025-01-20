@@ -645,7 +645,7 @@
                     <toolbarItems/>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
-                        <outlet property="PickerView" destination="wyj-8h-pwX" id="1CW-gc-QfZ"/>
+                        <outlet property="pickerView" destination="wyj-8h-pwX" id="1CW-gc-QfZ"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="GAp-0v-84x" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

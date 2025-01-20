@@ -8,7 +8,7 @@
 import UIKit
 
 class SectionHeaderCollectionViewCell: UICollectionViewCell {
-    var HeaderLabel = UILabel()
+    var headerLabel = UILabel()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -21,13 +21,13 @@ class SectionHeaderCollectionViewCell: UICollectionViewCell {
     }
     
     func updateSectionHeader() {
-        HeaderLabel.translatesAutoresizingMaskIntoConstraints = false
-        addSubview(HeaderLabel)
+        headerLabel.translatesAutoresizingMaskIntoConstraints = false
+        addSubview(headerLabel)
         NSLayoutConstraint.activate([
-            HeaderLabel.topAnchor.constraint(equalTo: topAnchor),
-            HeaderLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
-            HeaderLabel.trailingAnchor.constraint(equalTo: trailingAnchor),
-            HeaderLabel.bottomAnchor.constraint(equalTo: bottomAnchor)
+            headerLabel.topAnchor.constraint(equalTo: topAnchor),
+            headerLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
+            headerLabel.trailingAnchor.constraint(equalTo: trailingAnchor),
+            headerLabel.bottomAnchor.constraint(equalTo: bottomAnchor)
         ])
     }
 }

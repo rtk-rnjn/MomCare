@@ -14,15 +14,15 @@ class PickerViewController: UIViewController, UIPickerViewDelegate, UIPickerView
     var selectedHeight: Int = 120
     var selectedCountry: String = ""
     
-    @IBOutlet var PickerView: UIPickerView!
+    @IBOutlet var pickerView: UIPickerView!
     var selectedOption: PickerOptions?
     var currentOptions: [Any] = []
     var suffix: String = ""
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        PickerView.delegate = self
-        PickerView.dataSource = self
+        pickerView.delegate = self
+        pickerView.dataSource = self
         
         switch selectedOption {
         case .height:

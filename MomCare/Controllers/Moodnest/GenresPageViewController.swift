@@ -72,8 +72,8 @@ class GenresPageViewController: UIViewController, UICollectionViewDataSource, UI
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         if kind == UICollectionView.elementKindSectionHeader {
             let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "SectionHeaderCollectionViewCell", for: indexPath) as! SectionHeaderCollectionViewCell
-            header.HeaderLabel.text = "Featured Playlists"
-            header.HeaderLabel.font = UIFont.systemFont(ofSize: 24, weight: .semibold)
+            header.headerLabel.text = "Featured Playlists"
+            header.headerLabel.font = UIFont.systemFont(ofSize: 24, weight: .semibold)
             return header
         } else {
             print("Error")
