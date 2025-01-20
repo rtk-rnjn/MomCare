@@ -9,7 +9,6 @@ import UIKit
 
 class SignUpYourDetailsTableViewController: UITableViewController {
     
-    
     @IBOutlet var recievedHeight: UILabel!
     @IBOutlet weak var prePregnancyWeight: UILabel!
     @IBOutlet weak var currentWeight: UILabel!
@@ -17,10 +16,8 @@ class SignUpYourDetailsTableViewController: UITableViewController {
     
     var updatedHeight: Int?
     
-    
     @IBOutlet weak var progressView: UIProgressView!
     var initialProgress: Float = 0.0
-
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -83,30 +80,12 @@ class SignUpYourDetailsTableViewController: UITableViewController {
             }
         }
     }
-
-    
-    
-    
     
     @IBAction func unwindToMainViewController(_ segue: UIStoryboardSegue) {
         if let sourceVC = segue.source as? PickerViewController {
             recievedHeight.text = "\(sourceVC.selectedHeight) cm"
         }
     }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
     
     /*
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {

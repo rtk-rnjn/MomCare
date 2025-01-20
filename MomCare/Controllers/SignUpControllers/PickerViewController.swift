@@ -16,7 +16,7 @@ class PickerViewController: UIViewController, UIPickerViewDelegate, UIPickerView
     
     @IBOutlet var PickerView: UIPickerView!
     var selectedOption: PickerOptions?
-    var currentOptions:[Any] = []
+    var currentOptions: [Any] = []
     var suffix: String = ""
     
     override func viewDidLoad() {
@@ -73,6 +73,5 @@ class PickerViewController: UIViewController, UIPickerViewDelegate, UIPickerView
             destinationVC.updatedHeight = selectedHeight
         }
     }
-    
 
 }

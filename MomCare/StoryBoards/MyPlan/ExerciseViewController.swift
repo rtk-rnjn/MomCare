@@ -9,7 +9,7 @@ import UIKit
 
 class ExerciseViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     
-    var exercises:Int = 5
+    var exercises: Int = 5
     @IBOutlet weak var ExerciseCollectionView: UICollectionView!
     
     override func viewDidLoad() {
