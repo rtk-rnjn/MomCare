@@ -617,7 +617,7 @@
                             <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="on8-sy-OrP">
                                 <rect key="frame" x="0.0" y="0.0" width="393" height="44"/>
                                 <items>
-                                    <navigationItem title="Title" id="gvo-Iw-jIg">
+                                    <navigationItem id="gvo-Iw-jIg">
                                         <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="OdP-cH-ovv">
                                             <connections>
                                                 <segue destination="Nmy-Q4-mt8" kind="unwind" unwindAction="unwindToSignUpNoChange:" id="edm-kr-k5g"/>
@@ -641,6 +641,12 @@
                             <constraint firstItem="on8-sy-OrP" firstAttribute="top" secondItem="MUg-Nv-wkj" secondAttribute="top" id="not-e1-OCg"/>
                             <constraint firstItem="wyj-8h-pwX" firstAttribute="centerY" secondItem="mQj-2b-bpq" secondAttribute="centerY" id="s7C-RN-mAh"/>
                         </constraints>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                <integer key="value" value="20"/>
+                            </userDefinedRuntimeAttribute>
+                            <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
+                        </userDefinedRuntimeAttributes>
                     </view>
                     <toolbarItems/>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
