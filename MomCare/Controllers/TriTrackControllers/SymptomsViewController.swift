@@ -10,10 +10,6 @@ import UIKit
 class SymptomsViewController: UIViewController {
     var symptomsTableViewController: SymptomsTableViewController?
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
-    }
-
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         symptomsTableViewController?.refreshData()

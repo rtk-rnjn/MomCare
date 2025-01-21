@@ -1,4 +1,3 @@
-
 import UIKit
 
 class DietViewController: UIViewController {
@@ -10,13 +9,11 @@ class DietViewController: UIViewController {
     @IBOutlet var carbsProgressLabel: UILabel!
     @IBOutlet var fatsProgressLabel: UILabel!
     
-    
     // Progress Ring Outlets
     @IBOutlet var progressContainerView: UIView!
     @IBOutlet var caloricValueLabel: UILabel!
     private var backgroundLayer: CAShapeLayer!
     private var shapeLayer: CAShapeLayer!
-
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
@@ -63,7 +60,7 @@ class DietViewController: UIViewController {
         let radius: CGFloat = 60
         let lineWidth: CGFloat = 15
 
-        let circlePath = UIBezierPath(arcCenter: center,radius: radius,startAngle: -.pi / 2,endAngle: .pi * 3 / 2,clockwise: true)
+        let circlePath = UIBezierPath(arcCenter: center, radius: radius, startAngle: -.pi / 2, endAngle: .pi * 3 / 2, clockwise: true)
         
         backgroundLayer = CAShapeLayer()
         backgroundLayer.path = circlePath.cgPath
