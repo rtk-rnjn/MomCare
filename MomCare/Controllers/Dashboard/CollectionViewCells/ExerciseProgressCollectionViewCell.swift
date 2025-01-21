@@ -12,6 +12,6 @@
 
 import UIKit
 
-class Section4CollectionViewCell: UICollectionViewCell {
+class ExerciseProgressCollectionViewCell: UICollectionViewCell {
 
 }
