@@ -11,9 +11,15 @@ class SymptomsTableViewController: UITableViewController {
     
     var data: [TriTrackSymptom] = []
     
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        tableView.reloadData()
+    }
+
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         self.data = MomCareUser.shared.symptoms
+        tableView.reloadData()
     }
 
     override func numberOfSections(in tableView: UITableView) -> Int {

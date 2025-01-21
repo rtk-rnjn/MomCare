@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import FSCalendar
 
 enum ContainerType {
     case meAndBaby
@@ -13,7 +14,7 @@ enum ContainerType {
     case symptoms
 }
 
-class TriTrackViewController: UIViewController {
+class TriTrackViewController: UIViewController, FSCalendarDelegate, FSCalendarDataSource {
     @IBOutlet var triTrackInternalView: UIView!
 
     @IBOutlet var addButton: UIBarButtonItem!
@@ -22,8 +23,27 @@ class TriTrackViewController: UIViewController {
     @IBOutlet var meAndBabyContainerView: UIView!
     @IBOutlet var eventsContainerView: UIView!
     @IBOutlet var symptomsContainerView: UIView!
+    
+    @IBOutlet var calendarUIView: UIView!
+    var calendarView: FSCalendar!
 
     var currentSegmentIndex: Int = 0
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        calendarView = FSCalendar(frame: CGRect(x: 0, y: 0, width: calendarUIView.frame.width, height: calendarUIView.frame.height + 150))
+        calendarView.scope = .week
+        calendarView.select(Date())
+
+        calendarView.dataSource = self
+        calendarView.delegate = self
+    
+        calendarUIView.addSubview(calendarView)
+    }
+    
+    func calendar(_ calendar: FSCalendar, didSelect date: Date, at monthPosition: FSCalendarMonthPosition) {
+        print("Date selected: \(date)")
+    }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -138,6 +158,8 @@ class TriTrackViewController: UIViewController {
         
         let triTrackSymptom = TriTrackSymptom(title: title, notes: notes, atTime: dateTime)
         MomCareUser.shared.addSymptom(triTrackSymptom)
+        
+        viewController.addSymptomsTableViewController?.tableView.reloadData()
     }
     
     func handleDoneButtonTappedForEventsView(with viewController: TriTrackAddEventViewController) {
@@ -158,6 +180,8 @@ class TriTrackViewController: UIViewController {
         let triTrackEvent = TriTrackEvent(title: title, location: location, allDay: allDay, startDate: startDateTime, endDate: endDateTime, travelTime: travelTime, alertBefore: alertTime, repeatAfter: repeatAfter)
         
         MomCareUser.shared.addEvent(triTrackEvent)
+        
+        viewController.addEventTableViewController?.tableView.reloadData()
     }
     
     func handleDoneButtonTappedForRemindersView(with viewController: TriTrackAddEventViewController) {
@@ -170,6 +194,8 @@ class TriTrackViewController: UIViewController {
         
         let triTrackReminder = TriTrackReminder(title: title, date: dateTime, notes: notes, repeatAfter: timeInterval)
         MomCareUser.shared.addReminder(triTrackReminder)
+        
+        viewController.addReminderTableViewController?.tableView.reloadData()
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
