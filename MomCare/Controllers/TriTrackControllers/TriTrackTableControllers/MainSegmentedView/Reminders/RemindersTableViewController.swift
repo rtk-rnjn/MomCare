@@ -8,16 +8,14 @@
 import UIKit
 
 class RemindersTableViewController: UITableViewController {
-
     var data: [TriTrackReminder] = []
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        tableView.reloadData()
-    }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        refreshData()
+    }
+    
+    func refreshData() {
         self.data = MomCareUser.shared.reminders
         tableView.reloadData()
     }

@@ -55,7 +55,7 @@
                                     <containerView hidden="YES" opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="AVa-q4-rLC" userLabel="SymptomsContainerView">
                                         <rect key="frame" x="0.0" y="61" width="373" height="573"/>
                                         <connections>
-                                            <segue destination="CyI-l2-NOD" kind="embed" id="mrf-jO-ece"/>
+                                            <segue destination="CyI-l2-NOD" kind="embed" identifier="" id="mrf-jO-ece"/>
                                         </connections>
                                     </containerView>
                                 </subviews>
@@ -202,7 +202,7 @@
                         </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" style="plain" systemItem="done" id="EW7-7d-ok4">
                             <connections>
-                                <segue destination="JiF-16-ZFh" kind="unwind" identifier="unwindToTriTrackViaDone" unwindAction="unwinToTriTrack:" id="Xg2-GI-z3I"/>
+                                <segue destination="JiF-16-ZFh" kind="unwind" identifier="unwindToTriTrackViaDone" unwindAction="unwinToTriTrack:" id="cry-KS-tRA"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -866,10 +866,10 @@
             </objects>
             <point key="canvasLocation" x="2659" y="4"/>
         </scene>
-        <!--View Controller-->
+        <!--Events View Controller-->
         <scene sceneID="0vO-Cb-gsE">
             <objects>
-                <viewController id="dzv-zm-WHV" sceneMemberID="viewController">
+                <viewController id="dzv-zm-WHV" customClass="EventsViewController" customModule="MomCare" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="65w-PH-84r">
                         <rect key="frame" x="0.0" y="0.0" width="373" height="573"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -909,7 +909,7 @@
                                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qKN-fw-oqP">
                                                 <rect key="frame" x="0.0" y="34" width="373" height="245"/>
                                                 <connections>
-                                                    <segue destination="uzu-3k-7qw" kind="embed" id="5M3-AY-DFd"/>
+                                                    <segue destination="uzu-3k-7qw" kind="embed" identifier="embedShowAppointmentsTabelViewController" id="5M3-AY-DFd"/>
                                                 </connections>
                                             </containerView>
                                         </subviews>
@@ -946,7 +946,7 @@
                                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pGX-Rc-gde">
                                                 <rect key="frame" x="0.0" y="34" width="373" height="245"/>
                                                 <connections>
-                                                    <segue destination="WEG-uo-kp3" kind="embed" id="ihj-17-XEo"/>
+                                                    <segue destination="WEG-uo-kp3" kind="embed" identifier="embedShowRemindersTabelViewController" id="ihj-17-XEo"/>
                                                 </connections>
                                             </containerView>
                                         </subviews>
@@ -966,7 +966,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="6pl-xL-b4R" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1569" y="751"/>
+            <point key="canvasLocation" x="1601" y="750"/>
         </scene>
         <!--Appointments-->
         <scene sceneID="vgp-qm-9Hz">
@@ -1066,26 +1066,26 @@
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="ReminderCell" id="U8c-ZO-ma7" customClass="RemindersTableViewCell" customModule="MomCare" customModuleProvider="target">
-                                <rect key="frame" x="20" y="55.333332061767578" width="333" height="71.333335876464844"/>
+                                <rect key="frame" x="20" y="55.333332061767578" width="333" height="72"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="U8c-ZO-ma7" id="3t8-KG-73H">
-                                    <rect key="frame" x="0.0" y="0.0" width="333" height="71.333335876464844"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="333" height="72"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="KH0-fS-4Rt">
-                                            <rect key="frame" x="10" y="5.0000000000000036" width="313" height="61.333333333333343"/>
+                                            <rect key="frame" x="10" y="5" width="313" height="62"/>
                                             <subviews>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="I6h-hJ-l1H">
-                                                    <rect key="frame" x="0.0" y="0.0" width="156.66666666666666" height="61.333333333333336"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="156.66666666666666" height="62"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BYV-o8-20G">
-                                                            <rect key="frame" x="44.333333333333329" y="20.666666666666671" width="41.333333333333329" height="20.333333333333329"/>
+                                                            <rect key="frame" x="44.333333333333329" y="21" width="41.333333333333329" height="20.333333333333329"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <button opaque="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="S7r-5C-8oi">
-                                                            <rect key="frame" x="0.0" y="13.666666666666668" width="34.333333333333336" height="34.333333333333329"/>
+                                                            <rect key="frame" x="0.0" y="14" width="34.333333333333336" height="34.333333333333343"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="width" secondItem="S7r-5C-8oi" secondAttribute="height" id="eC4-uv-4gt"/>
                                                             </constraints>
@@ -1105,7 +1105,7 @@
                                                     </constraints>
                                                 </view>
                                                 <datePicker userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" verticalHuggingPriority="1000" contentHorizontalAlignment="trailing" contentVerticalAlignment="center" datePickerMode="time" minuteInterval="1" translatesAutoresizingMaskIntoConstraints="NO" id="x1x-nd-kd4">
-                                                    <rect key="frame" x="156.66666666666663" y="0.0" width="156.33333333333337" height="61.333333333333336"/>
+                                                    <rect key="frame" x="156.66666666666663" y="0.0" width="156.33333333333337" height="62"/>
                                                 </datePicker>
                                             </subviews>
                                             <constraints>
@@ -1142,10 +1142,10 @@
             </objects>
             <point key="canvasLocation" x="2520" y="873"/>
         </scene>
-        <!--View Controller-->
+        <!--Symptoms View Controller-->
         <scene sceneID="RG1-Hw-JN9">
             <objects>
-                <viewController id="CyI-l2-NOD" sceneMemberID="viewController">
+                <viewController id="CyI-l2-NOD" customClass="SymptomsViewController" customModule="MomCare" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="n5q-oD-6av">
                         <rect key="frame" x="0.0" y="0.0" width="373" height="573"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -1182,7 +1182,7 @@
                                     <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="33E-CX-Qv3">
                                         <rect key="frame" x="0.0" y="34" width="373" height="529"/>
                                         <connections>
-                                            <segue destination="f6P-AY-aDg" kind="embed" id="0oS-vp-Rrs"/>
+                                            <segue destination="f6P-AY-aDg" kind="embed" identifier="embedShowSymptomsTabelViewController" id="0oS-vp-Rrs"/>
                                         </connections>
                                     </containerView>
                                 </subviews>
@@ -1220,23 +1220,23 @@
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="SymptomsCell" id="5TP-nx-z19" customClass="SymptomsTableViewCell" customModule="MomCare" customModuleProvider="target">
-                                <rect key="frame" x="20" y="55.333332061767578" width="333" height="73.666664123535156"/>
+                                <rect key="frame" x="20" y="55.333332061767578" width="333" height="74.333335876464844"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="5TP-nx-z19" id="71T-NE-FGv">
-                                    <rect key="frame" x="0.0" y="0.0" width="333" height="73.666664123535156"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="333" height="74.333335876464844"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="K59-eh-h1s">
-                                            <rect key="frame" x="10" y="4.9999999999999964" width="313" height="63.666666666666657"/>
+                                            <rect key="frame" x="10" y="5" width="313" height="64.333333333333329"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZPh-5e-3jk">
-                                                    <rect key="frame" x="0.0" y="0.0" width="41.333333333333336" height="63.666666666666664"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="41.333333333333336" height="64.333333333333329"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <datePicker contentMode="scaleToFill" contentHorizontalAlignment="trailing" contentVerticalAlignment="center" datePickerMode="date" translatesAutoresizingMaskIntoConstraints="NO" id="pDA-ZC-EfM">
-                                                    <rect key="frame" x="41.333333333333343" y="0.0" width="271.66666666666663" height="63.666666666666664"/>
+                                                    <rect key="frame" x="41.333333333333343" y="0.0" width="271.66666666666663" height="64.333333333333329"/>
                                                 </datePicker>
                                             </subviews>
                                         </stackView>
@@ -1287,7 +1287,7 @@
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
         <systemColor name="systemGray6Color">
-            <color red="0.94901960784313721" green="0.94901960784313721" blue="0.96862745098039216" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.94901960780000005" green="0.94901960780000005" blue="0.96862745100000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>

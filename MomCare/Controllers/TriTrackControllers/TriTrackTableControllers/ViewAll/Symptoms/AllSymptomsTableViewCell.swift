@@ -9,4 +9,11 @@ import UIKit
 
 class AllSymptomsTableViewCell: UITableViewCell {
 
+    @IBOutlet var titleLabel: UILabel!
+    @IBOutlet var dateTimePicker: UIDatePicker!
+    
+    func updateElements(with symptom: TriTrackSymptom) {
+        titleLabel.text = symptom.title
+        dateTimePicker.date = symptom.atTime
+    }
 }

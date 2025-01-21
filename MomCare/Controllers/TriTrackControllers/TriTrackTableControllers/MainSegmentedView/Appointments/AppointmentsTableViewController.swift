@@ -9,14 +9,13 @@ import UIKit
 
 class AppointmentsTableViewController: UITableViewController {
     var data: [TriTrackEvent] = []
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        tableView.reloadData()
-    }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        refreshData()
+    }
+    
+    func refreshData() {
         self.data = MomCareUser.shared.events
         tableView.reloadData()
     }
@@ -53,4 +52,5 @@ class AppointmentsTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
         return 3
     }
+
 }
