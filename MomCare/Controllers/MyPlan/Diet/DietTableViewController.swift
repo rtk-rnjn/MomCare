@@ -14,8 +14,8 @@ class DietTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        dietTableView.register(UINib(nibName: "headerCell", bundle: nil), forCellReuseIdentifier: "headerCell")
-        dietTableView.register(UINib(nibName: "contentCell", bundle: nil), forCellReuseIdentifier: "contentCell")
+        dietTableView.register(UINib(nibName: "HeaderCell", bundle: nil), forCellReuseIdentifier: "HeaderCell")
+        dietTableView.register(UINib(nibName: "ContentCell", bundle: nil), forCellReuseIdentifier: "ContentCell")
         dietTableView.delegate = self
         dietTableView.dataSource = self
         dietTableView.reloadData()
@@ -40,12 +40,12 @@ class DietTableViewController: UITableViewController {
             
             if indexPath.row < sectionData.firstCellCount {
                 // Return the first nib cell (present once per section)
-                let cell = tableView.dequeueReusableCell(withIdentifier: "headerCell", for: indexPath) as! HeaderTableViewCell
+                let cell = tableView.dequeueReusableCell(withIdentifier: "HeaderCell", for: indexPath) as! HeaderTableViewCell
                 // Configure if needed
                 return cell
             } else {
                 // Return the second nib cell (variable number of times per section)
-                let cell = tableView.dequeueReusableCell(withIdentifier: "contentCell", for: indexPath) as! ContentTableViewCell
+                let cell = tableView.dequeueReusableCell(withIdentifier: "ContentCell", for: indexPath) as! ContentTableViewCell
                 // Configure if needed
                 return cell
             }
