@@ -13,7 +13,19 @@
 import UIKit
 
 class DietViewController: UIViewController {
-
+    
+    @IBOutlet var circularProgressView: CircularProgressView!
+    
+    
+    
+    
+    
+    override func viewDidLoad() {
+            super.viewDidLoad()
+            
+            // Set the initial progress
+            circularProgressView.progress = 0.75  // Display 75% progress for testing
+        }
     /*
 
     // MARK: - Navigation
