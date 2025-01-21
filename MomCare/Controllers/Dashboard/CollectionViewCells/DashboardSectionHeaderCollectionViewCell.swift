@@ -12,7 +12,7 @@
 
 import UIKit
 
-class SectionHeaderViewCollectionViewCell: UICollectionViewCell {
+class DashboardSectionHeaderCollectionViewCell: UICollectionViewCell {
 
     @IBOutlet var titleLabel: UILabel!
 
