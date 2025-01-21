@@ -13,6 +13,7 @@ class DietViewController: UIViewController {
     
     // Progress Ring Outlets
     @IBOutlet var progressContainerView: UIView!
+    @IBOutlet var caloricValueLabel: UILabel!
     private var backgroundLayer: CAShapeLayer!
     private var shapeLayer: CAShapeLayer!
 
@@ -30,8 +31,8 @@ class DietViewController: UIViewController {
         proteinProgressBar.clipsToBounds = true
         proteinProgressBar.subviews.forEach { subview in
             subview.layer.cornerRadius = 7
-                subview.clipsToBounds = true
-            }
+            subview.clipsToBounds = true
+        }
         carbsProgressBar.layer.cornerRadius = 7
         carbsProgressBar.clipsToBounds = true
         carbsProgressBar.subviews.forEach { subview in
