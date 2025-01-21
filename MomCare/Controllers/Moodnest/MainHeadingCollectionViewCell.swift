@@ -18,7 +18,7 @@ class MainHeadingCollectionViewCell: UICollectionViewCell {
 
     func updateSection1(with indexPath: IndexPath) {
 
-        mainHeadingLabel.text = "Take a moment to rewing with \"\(FeaturedPlaylists.playlists[indexPath.row].name)\" playlists"
+        mainHeadingLabel.text = "Take a moment to rewind with \"\(FeaturedPlaylists.playlists[indexPath.row].name)\" playlists"
 
     }
 

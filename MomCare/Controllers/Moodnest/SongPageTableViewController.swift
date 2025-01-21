@@ -12,6 +12,8 @@ class SongPageTableViewController: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        view.backgroundColor = .clear
     }
 
     override func numberOfSections(in tableView: UITableView) -> Int {
