@@ -2,8 +2,16 @@
 import UIKit
 
 class DietViewController: UIViewController {
+    // Progress Bars Outlets
+    @IBOutlet var proteinProgressBar: UIProgressView!
+    @IBOutlet var carbsProgressBar: UIProgressView!
+    @IBOutlet var fatsProgressBar: UIProgressView!
+    @IBOutlet var proteinProgressLabel: UILabel!
+    @IBOutlet var carbsProgressLabel: UILabel!
+    @IBOutlet var fatsProgressLabel: UILabel!
     
     
+    // Progress Ring Outlets
     @IBOutlet var progressContainerView: UIView!
     private var backgroundLayer: CAShapeLayer!
     private var shapeLayer: CAShapeLayer!
@@ -17,6 +25,23 @@ class DietViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupProgressRing()
+        
+        proteinProgressBar.layer.cornerRadius = proteinProgressBar.frame.height / 2
+        proteinProgressBar.clipsToBounds = true
+        proteinProgressBar.subviews.forEach { subview in
+            subview.layer.cornerRadius = proteinProgressBar.frame.height / 2
+                subview.clipsToBounds = true
+            }
+        
+        proteinProgressBar.transform = CGAffineTransform(scaleX: 1, y: 2)
+        carbsProgressBar.transform = CGAffineTransform(scaleX: 1, y: 2)
+        fatsProgressBar.transform = CGAffineTransform(scaleX: 1, y: 2)
+        proteinProgressBar.progress = 0.8
+        proteinProgressLabel.text = "120/150g"
+        carbsProgressBar.progress = 0.5
+        carbsProgressLabel.text = "75/150g"
+        fatsProgressBar.progress = 0.3
+        fatsProgressLabel.text = "45/150g"
     }
     
     private func setupProgressRing() {
