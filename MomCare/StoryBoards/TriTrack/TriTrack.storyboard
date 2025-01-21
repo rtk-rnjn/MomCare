@@ -26,7 +26,7 @@
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="5rT-SM-LqO">
-                                <rect key="frame" x="10" y="95" width="373" height="649"/>
+                                <rect key="frame" x="10" y="95" width="373" height="644"/>
                                 <subviews>
                                     <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="huh-qS-KT6">
                                         <rect key="frame" x="20" y="20" width="333" height="32"/>
@@ -41,19 +41,19 @@
                                         </connections>
                                     </segmentedControl>
                                     <containerView hidden="YES" opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cXJ-RZ-JqR" userLabel="MeAndBabyContainerView">
-                                        <rect key="frame" x="0.0" y="61" width="373" height="578"/>
+                                        <rect key="frame" x="0.0" y="61" width="373" height="573"/>
                                         <connections>
                                             <segue destination="AV1-XB-5IO" kind="embed" id="ghc-29-dNs"/>
                                         </connections>
                                     </containerView>
                                     <containerView hidden="YES" opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Whb-9z-qyg" userLabel="EventsContainerView">
-                                        <rect key="frame" x="0.0" y="61" width="373" height="578"/>
+                                        <rect key="frame" x="0.0" y="61" width="373" height="573"/>
                                         <connections>
                                             <segue destination="dzv-zm-WHV" kind="embed" id="aP2-vi-shQ"/>
                                         </connections>
                                     </containerView>
                                     <containerView hidden="YES" opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="AVa-q4-rLC" userLabel="SymptomsContainerView">
-                                        <rect key="frame" x="0.0" y="61" width="373" height="578"/>
+                                        <rect key="frame" x="0.0" y="61" width="373" height="573"/>
                                         <connections>
                                             <segue destination="CyI-l2-NOD" kind="embed" id="mrf-jO-ece"/>
                                         </connections>
@@ -61,34 +61,34 @@
                                 </subviews>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <constraints>
-                                    <constraint firstItem="huh-qS-KT6" firstAttribute="leading" secondItem="5rT-SM-LqO" secondAttribute="leading" constant="20" id="0hX-sS-X74"/>
-                                    <constraint firstAttribute="trailing" secondItem="AVa-q4-rLC" secondAttribute="trailing" id="3cG-tJ-apZ"/>
-                                    <constraint firstAttribute="trailing" secondItem="Whb-9z-qyg" secondAttribute="trailing" id="50x-Ir-3T0"/>
-                                    <constraint firstAttribute="bottom" secondItem="Whb-9z-qyg" secondAttribute="bottom" constant="10" id="8Gk-OQ-6R3"/>
-                                    <constraint firstAttribute="trailing" secondItem="huh-qS-KT6" secondAttribute="trailing" constant="20" id="L9v-0W-JOY"/>
-                                    <constraint firstItem="AVa-q4-rLC" firstAttribute="top" secondItem="huh-qS-KT6" secondAttribute="bottom" constant="10" id="QRd-0U-bTU"/>
-                                    <constraint firstAttribute="bottom" secondItem="AVa-q4-rLC" secondAttribute="bottom" constant="10" id="fdt-F6-gYf"/>
-                                    <constraint firstItem="Whb-9z-qyg" firstAttribute="leading" secondItem="5rT-SM-LqO" secondAttribute="leading" id="gSX-LC-yHr"/>
-                                    <constraint firstItem="Whb-9z-qyg" firstAttribute="top" secondItem="huh-qS-KT6" secondAttribute="bottom" constant="10" id="iY3-uF-aUT"/>
-                                    <constraint firstItem="cXJ-RZ-JqR" firstAttribute="leading" secondItem="5rT-SM-LqO" secondAttribute="leading" id="imm-to-cX3"/>
-                                    <constraint firstAttribute="bottom" secondItem="cXJ-RZ-JqR" secondAttribute="bottom" constant="10" id="iq1-lo-93B"/>
-                                    <constraint firstItem="huh-qS-KT6" firstAttribute="top" secondItem="5rT-SM-LqO" secondAttribute="top" constant="20" id="jkU-8u-AXL"/>
-                                    <constraint firstItem="AVa-q4-rLC" firstAttribute="leading" secondItem="5rT-SM-LqO" secondAttribute="leading" id="lSA-uY-r3K"/>
-                                    <constraint firstItem="cXJ-RZ-JqR" firstAttribute="top" secondItem="huh-qS-KT6" secondAttribute="bottom" constant="10" id="z45-AQ-ZL1"/>
-                                    <constraint firstAttribute="trailing" secondItem="cXJ-RZ-JqR" secondAttribute="trailing" id="zdj-gb-KJf"/>
+                                    <constraint firstItem="cXJ-RZ-JqR" firstAttribute="leading" secondItem="5rT-SM-LqO" secondAttribute="leading" id="EZd-Hp-hm8"/>
+                                    <constraint firstAttribute="trailing" secondItem="AVa-q4-rLC" secondAttribute="trailing" id="F2h-uF-6RX"/>
+                                    <constraint firstItem="AVa-q4-rLC" firstAttribute="top" secondItem="huh-qS-KT6" secondAttribute="bottom" constant="10" id="FyR-C9-4Of"/>
+                                    <constraint firstAttribute="bottom" secondItem="cXJ-RZ-JqR" secondAttribute="bottom" constant="10" id="GCT-bi-wAX"/>
+                                    <constraint firstItem="cXJ-RZ-JqR" firstAttribute="top" secondItem="huh-qS-KT6" secondAttribute="bottom" constant="10" id="GE5-8c-bfJ"/>
+                                    <constraint firstItem="AVa-q4-rLC" firstAttribute="leading" secondItem="5rT-SM-LqO" secondAttribute="leading" id="MKu-0C-MPo"/>
+                                    <constraint firstItem="huh-qS-KT6" firstAttribute="leading" secondItem="5rT-SM-LqO" secondAttribute="leading" constant="20" symbolic="YES" id="PRu-gY-22D"/>
+                                    <constraint firstItem="Whb-9z-qyg" firstAttribute="leading" secondItem="5rT-SM-LqO" secondAttribute="leading" id="RJp-AG-0sY"/>
+                                    <constraint firstAttribute="trailing" secondItem="cXJ-RZ-JqR" secondAttribute="trailing" id="WW4-wh-4yz"/>
+                                    <constraint firstAttribute="bottom" secondItem="AVa-q4-rLC" secondAttribute="bottom" constant="10" id="WWi-Is-i5j"/>
+                                    <constraint firstAttribute="bottom" secondItem="Whb-9z-qyg" secondAttribute="bottom" constant="10" id="Y1v-oO-xfv"/>
+                                    <constraint firstItem="huh-qS-KT6" firstAttribute="top" secondItem="5rT-SM-LqO" secondAttribute="top" constant="20" symbolic="YES" id="edA-kt-tXe"/>
+                                    <constraint firstItem="Whb-9z-qyg" firstAttribute="top" secondItem="huh-qS-KT6" secondAttribute="bottom" constant="10" id="ejX-58-n6G"/>
+                                    <constraint firstAttribute="trailing" secondItem="Whb-9z-qyg" secondAttribute="trailing" id="tTX-P9-kw1"/>
+                                    <constraint firstAttribute="trailing" secondItem="huh-qS-KT6" secondAttribute="trailing" constant="20" symbolic="YES" id="wFO-Eu-dRH"/>
                                 </constraints>
                             </view>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="vDu-zF-Fre"/>
                         <color key="backgroundColor" red="0.91372549020000005" green="0.82745098039999998" blue="0.82745098039999998" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
-                            <constraint firstItem="vDu-zF-Fre" firstAttribute="trailing" secondItem="W3X-Gk-qCf" secondAttribute="trailing" id="Euv-6B-aUT"/>
-                            <constraint firstAttribute="bottom" secondItem="5rT-SM-LqO" secondAttribute="bottom" constant="5" id="K68-cI-Xd7"/>
-                            <constraint firstItem="vDu-zF-Fre" firstAttribute="trailing" secondItem="5rT-SM-LqO" secondAttribute="trailing" constant="10" id="UdG-P8-Toi"/>
-                            <constraint firstItem="5rT-SM-LqO" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" constant="10" id="axu-es-sgz"/>
-                            <constraint firstItem="W3X-Gk-qCf" firstAttribute="top" secondItem="vDu-zF-Fre" secondAttribute="top" id="qMv-JW-s6P"/>
-                            <constraint firstItem="5rT-SM-LqO" firstAttribute="top" secondItem="W3X-Gk-qCf" secondAttribute="bottom" constant="5" id="rLf-qa-MMD"/>
-                            <constraint firstItem="W3X-Gk-qCf" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" id="xOd-KJ-Qsy"/>
+                            <constraint firstItem="W3X-Gk-qCf" firstAttribute="trailing" secondItem="vDu-zF-Fre" secondAttribute="trailing" id="4bG-P5-Rhw"/>
+                            <constraint firstItem="W3X-Gk-qCf" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" id="DvV-YY-FHZ"/>
+                            <constraint firstItem="5rT-SM-LqO" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" constant="10" id="J2l-gE-FTv"/>
+                            <constraint firstItem="vDu-zF-Fre" firstAttribute="trailing" secondItem="5rT-SM-LqO" secondAttribute="trailing" constant="10" id="KBr-ni-9hv"/>
+                            <constraint firstItem="5rT-SM-LqO" firstAttribute="top" secondItem="W3X-Gk-qCf" secondAttribute="bottom" constant="5" id="Mhn-NY-5de"/>
+                            <constraint firstItem="W3X-Gk-qCf" firstAttribute="top" secondItem="vDu-zF-Fre" secondAttribute="top" id="uce-Ry-rnl"/>
+                            <constraint firstAttribute="bottom" secondItem="5rT-SM-LqO" secondAttribute="bottom" constant="10" id="xj9-Z9-7yK"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="TriTrack" id="c7G-bw-x0Q">
@@ -100,7 +100,7 @@
                     </navigationItem>
                     <connections>
                         <outlet property="addButton" destination="0aU-xb-WS9" id="iaZ-eJ-F71"/>
-                        <outlet property="calendarView" destination="W3X-Gk-qCf" id="LWW-KF-t39"/>
+                        <outlet property="calendarUIView" destination="W3X-Gk-qCf" id="LWW-KF-t39"/>
                         <outlet property="eventsContainerView" destination="Whb-9z-qyg" id="4vr-RT-hEM"/>
                         <outlet property="meAndBabyContainerView" destination="cXJ-RZ-JqR" id="JEj-6T-kNP"/>
                         <outlet property="symptomsContainerView" destination="AVa-q4-rLC" id="z4P-Mu-mRy"/>
@@ -871,14 +871,14 @@
             <objects>
                 <viewController id="dzv-zm-WHV" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="65w-PH-84r">
-                        <rect key="frame" x="0.0" y="0.0" width="373" height="578"/>
+                        <rect key="frame" x="0.0" y="0.0" width="373" height="573"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="qR8-RI-IHD">
-                                <rect key="frame" x="0.0" y="10" width="373" height="568"/>
+                                <rect key="frame" x="0.0" y="10" width="373" height="563"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="wEr-zr-mK6">
-                                        <rect key="frame" x="0.0" y="0.0" width="373" height="281.66666666666669"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="373" height="279"/>
                                         <subviews>
                                             <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="WMk-uJ-eYx">
                                                 <rect key="frame" x="0.0" y="0.0" width="373" height="23"/>
@@ -907,7 +907,7 @@
                                                 </constraints>
                                             </view>
                                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qKN-fw-oqP">
-                                                <rect key="frame" x="0.0" y="33.999999999999986" width="373" height="247.66666666666663"/>
+                                                <rect key="frame" x="0.0" y="34" width="373" height="245"/>
                                                 <connections>
                                                     <segue destination="uzu-3k-7qw" kind="embed" id="5M3-AY-DFd"/>
                                                 </connections>
@@ -915,7 +915,7 @@
                                         </subviews>
                                     </stackView>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="idM-cQ-IIY">
-                                        <rect key="frame" x="0.0" y="286.66666666666674" width="373" height="281.33333333333326"/>
+                                        <rect key="frame" x="0.0" y="284" width="373" height="279"/>
                                         <subviews>
                                             <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pXQ-yP-CS6">
                                                 <rect key="frame" x="0.0" y="0.0" width="373" height="23"/>
@@ -944,7 +944,7 @@
                                                 </constraints>
                                             </view>
                                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pGX-Rc-gde">
-                                                <rect key="frame" x="0.0" y="34.000000000000014" width="373" height="247.33333333333337"/>
+                                                <rect key="frame" x="0.0" y="34" width="373" height="245"/>
                                                 <connections>
                                                     <segue destination="WEG-uo-kp3" kind="embed" id="ihj-17-XEo"/>
                                                 </connections>
@@ -993,7 +993,7 @@
             <objects>
                 <tableViewController id="uzu-3k-7qw" customClass="AppointmentsTableViewController" customModule="MomCare" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="insetGrouped" separatorStyle="none" sectionIndexMinimumDisplayRowCount="1" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="1" estimatedSectionFooterHeight="-1" id="lRt-Ci-B8t">
-                        <rect key="frame" x="0.0" y="0.0" width="373" height="247.66666666666666"/>
+                        <rect key="frame" x="0.0" y="0.0" width="373" height="245"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <prototypes>
@@ -1061,31 +1061,31 @@
             <objects>
                 <tableViewController id="WEG-uo-kp3" customClass="RemindersTableViewController" customModule="MomCare" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="insetGrouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" estimatedSectionHeaderHeight="-1" sectionFooterHeight="18" estimatedSectionFooterHeight="-1" id="EVQ-mH-9Kv">
-                        <rect key="frame" x="0.0" y="0.0" width="373" height="247.33333333333334"/>
+                        <rect key="frame" x="0.0" y="0.0" width="373" height="245"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="ReminderCell" id="U8c-ZO-ma7" customClass="RemindersTableViewCell" customModule="MomCare" customModuleProvider="target">
-                                <rect key="frame" x="20" y="55.333332061767578" width="333" height="70.333335876464844"/>
+                                <rect key="frame" x="20" y="55.333332061767578" width="333" height="71.333335876464844"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="U8c-ZO-ma7" id="3t8-KG-73H">
-                                    <rect key="frame" x="0.0" y="0.0" width="333" height="70.333335876464844"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="333" height="71.333335876464844"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="KH0-fS-4Rt">
-                                            <rect key="frame" x="10" y="5.0000000000000036" width="313" height="60.333333333333343"/>
+                                            <rect key="frame" x="10" y="5.0000000000000036" width="313" height="61.333333333333343"/>
                                             <subviews>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="I6h-hJ-l1H">
-                                                    <rect key="frame" x="0.0" y="0.0" width="156.66666666666666" height="60.333333333333336"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="156.66666666666666" height="61.333333333333336"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BYV-o8-20G">
-                                                            <rect key="frame" x="44.333333333333329" y="20" width="41.333333333333329" height="20.333333333333329"/>
+                                                            <rect key="frame" x="44.333333333333329" y="20.666666666666671" width="41.333333333333329" height="20.333333333333329"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <button opaque="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="S7r-5C-8oi">
-                                                            <rect key="frame" x="0.0" y="13" width="34.333333333333336" height="34.333333333333336"/>
+                                                            <rect key="frame" x="0.0" y="13.666666666666668" width="34.333333333333336" height="34.333333333333329"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="width" secondItem="S7r-5C-8oi" secondAttribute="height" id="eC4-uv-4gt"/>
                                                             </constraints>
@@ -1105,7 +1105,7 @@
                                                     </constraints>
                                                 </view>
                                                 <datePicker userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" verticalHuggingPriority="1000" contentHorizontalAlignment="trailing" contentVerticalAlignment="center" datePickerMode="time" minuteInterval="1" translatesAutoresizingMaskIntoConstraints="NO" id="x1x-nd-kd4">
-                                                    <rect key="frame" x="156.66666666666663" y="0.0" width="156.33333333333337" height="60.333333333333336"/>
+                                                    <rect key="frame" x="156.66666666666663" y="0.0" width="156.33333333333337" height="61.333333333333336"/>
                                                 </datePicker>
                                             </subviews>
                                             <constraints>
@@ -1147,11 +1147,11 @@
             <objects>
                 <viewController id="CyI-l2-NOD" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="n5q-oD-6av">
-                        <rect key="frame" x="0.0" y="0.0" width="373" height="578"/>
+                        <rect key="frame" x="0.0" y="0.0" width="373" height="573"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="iml-6n-71x">
-                                <rect key="frame" x="0.0" y="10" width="373" height="568"/>
+                                <rect key="frame" x="0.0" y="10" width="373" height="563"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yUL-iK-XXh">
                                         <rect key="frame" x="0.0" y="0.0" width="373" height="23"/>
@@ -1180,7 +1180,7 @@
                                         </constraints>
                                     </view>
                                     <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="33E-CX-Qv3">
-                                        <rect key="frame" x="0.0" y="34" width="373" height="534"/>
+                                        <rect key="frame" x="0.0" y="34" width="373" height="529"/>
                                         <connections>
                                             <segue destination="f6P-AY-aDg" kind="embed" id="0oS-vp-Rrs"/>
                                         </connections>
@@ -1215,28 +1215,28 @@
             <objects>
                 <tableViewController id="f6P-AY-aDg" customClass="SymptomsTableViewController" customModule="MomCare" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="insetGrouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" estimatedSectionHeaderHeight="-1" sectionFooterHeight="18" estimatedSectionFooterHeight="-1" id="3fR-3A-ydM">
-                        <rect key="frame" x="0.0" y="0.0" width="373" height="534"/>
+                        <rect key="frame" x="0.0" y="0.0" width="373" height="529"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="SymptomsCell" id="5TP-nx-z19" customClass="SymptomsTableViewCell" customModule="MomCare" customModuleProvider="target">
-                                <rect key="frame" x="20" y="55.333332061767578" width="333" height="72.666664123535156"/>
+                                <rect key="frame" x="20" y="55.333332061767578" width="333" height="73.666664123535156"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="5TP-nx-z19" id="71T-NE-FGv">
-                                    <rect key="frame" x="0.0" y="0.0" width="333" height="72.666664123535156"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="333" height="73.666664123535156"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="K59-eh-h1s">
-                                            <rect key="frame" x="10" y="4.9999999999999964" width="313" height="62.666666666666657"/>
+                                            <rect key="frame" x="10" y="4.9999999999999964" width="313" height="63.666666666666657"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZPh-5e-3jk">
-                                                    <rect key="frame" x="0.0" y="0.0" width="41.333333333333336" height="62.666666666666664"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="41.333333333333336" height="63.666666666666664"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <datePicker contentMode="scaleToFill" contentHorizontalAlignment="trailing" contentVerticalAlignment="center" datePickerMode="date" translatesAutoresizingMaskIntoConstraints="NO" id="pDA-ZC-EfM">
-                                                    <rect key="frame" x="41.333333333333343" y="0.0" width="271.66666666666663" height="62.666666666666664"/>
+                                                    <rect key="frame" x="41.333333333333343" y="0.0" width="271.66666666666663" height="63.666666666666664"/>
                                                 </datePicker>
                                             </subviews>
                                         </stackView>
