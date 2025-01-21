@@ -26,12 +26,24 @@ class DietViewController: UIViewController {
         super.viewDidLoad()
         setupProgressRing()
         
-        proteinProgressBar.layer.cornerRadius = proteinProgressBar.frame.height / 2
+        proteinProgressBar.layer.cornerRadius = 7
         proteinProgressBar.clipsToBounds = true
         proteinProgressBar.subviews.forEach { subview in
-            subview.layer.cornerRadius = proteinProgressBar.frame.height / 2
+            subview.layer.cornerRadius = 7
                 subview.clipsToBounds = true
             }
+        carbsProgressBar.layer.cornerRadius = 7
+        carbsProgressBar.clipsToBounds = true
+        carbsProgressBar.subviews.forEach { subview in
+            subview.layer.cornerRadius = 7
+            subview.clipsToBounds = true
+        }
+            fatsProgressBar.layer.cornerRadius = 7
+            fatsProgressBar.clipsToBounds = true
+        fatsProgressBar.subviews.forEach { subview in
+            subview.layer.cornerRadius = 7
+            subview.clipsToBounds = true
+        }
         
         proteinProgressBar.transform = CGAffineTransform(scaleX: 1, y: 2)
         carbsProgressBar.transform = CGAffineTransform(scaleX: 1, y: 2)
