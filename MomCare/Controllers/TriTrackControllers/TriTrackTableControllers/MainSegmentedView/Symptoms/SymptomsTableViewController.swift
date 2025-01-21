@@ -8,16 +8,14 @@
 import UIKit
 
 class SymptomsTableViewController: UITableViewController {
-    
     var data: [TriTrackSymptom] = []
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        tableView.reloadData()
-    }
 
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        refreshData()
+    }
+    
+    func refreshData() {
         self.data = MomCareUser.shared.symptoms
         tableView.reloadData()
     }

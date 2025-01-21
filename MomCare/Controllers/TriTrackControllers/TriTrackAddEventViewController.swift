@@ -100,10 +100,4 @@ class TriTrackAddEventViewController: UIViewController {
             // OwO! What's this?
         }
     }
-
-    func reloadAllTableViews() {
-        addReminderTableViewController?.tableView.reloadData()
-        addEventTableViewController?.tableView.reloadData()
-        addSymptomsTableViewController?.tableView.reloadData()
-    }
 }

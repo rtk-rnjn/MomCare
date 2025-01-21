@@ -9,25 +9,22 @@ import UIKit
 
 class AllRemindersTableViewController: UITableViewController {
     
-    var data: [TriTrackReminder] = []
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        self.data = MomCareUser.shared.reminders
-    }
+    var reminders: [TriTrackReminder] = []
 
     override func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return data.count
+        return reminders.count
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
-
-        // Configure the cell...
+        let cell = tableView.dequeueReusableCell(withIdentifier: "AllRemindersTableViewCell", for: indexPath) as? AllRemindersTableViewCell
+        
+        guard let cell = cell else { fatalError() }
+        
+        cell.updateElements(with: reminders[indexPath.row])
 
         return cell
     }
