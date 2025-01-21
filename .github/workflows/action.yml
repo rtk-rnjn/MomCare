@@ -1,28 +1,29 @@
-name: Block "Do Not Merge" PRs
+name: Block PR with "do-not-merge" Label
 
 on:
   pull_request:
     types: [labeled, unlabeled, synchronize, opened, reopened]
 
 jobs:
-  block_do_not_merge:
+  check-label:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Check for "do-not-merge" label
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          # Fetch the pull request details
-          PR_NUMBER=$(echo "${{ github.event.pull_request.number }}")
-          REPO="${{ github.repository }}"
-          PR_LABELS=$(curl -s -H "Authorization: Bearer $GITHUB_TOKEN" \
-                          "https://api.github.com/repos/$REPO/issues/$PR_NUMBER" | jq -r '.labels[].name')
+      # Checkout the repository
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-          # Block PR if "do-not-merge" label is present
-          if echo "$PR_LABELS" | grep -q "do-not-merge"; then
-            echo "❌ This PR is labeled with 'do-not-merge'. Please remove the label to proceed."
+      # Check for "do-not-merge" label
+      - name: Check for "do-not-merge" label
+        id: check-label
+        run: |
+          # Get the labels of the PR
+          labels=$(jq -r '.pull_request.labels[]?.name // empty' "$GITHUB_EVENT_PATH")
+
+          # Debug: print labels
+          echo "Labels on the PR: $labels"
+
+          # Check if "do-not-merge" exists in labels
+          if echo "$labels" | grep -q "do-not-merge"; then
+            echo "The PR is labeled as 'do-not-merge'. Failing the check."
             exit 1
-          else
-            echo "✅ This PR does not have the 'do-not-merge' label."
           fi
