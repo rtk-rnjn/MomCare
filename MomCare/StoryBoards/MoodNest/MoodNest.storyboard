@@ -340,16 +340,16 @@
                                                     </userDefinedRuntimeAttributes>
                                                 </imageView>
                                                 <stackView opaque="NO" contentMode="center" axis="vertical" spacing="-1" translatesAutoresizingMaskIntoConstraints="NO" id="pnI-vX-LZ3">
-                                                    <rect key="frame" x="54.999999999999993" y="0.0" width="82.333333333333314" height="46"/>
+                                                    <rect key="frame" x="54.999999999999993" y="0.0" width="80.333333333333314" height="46"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="TopLeft" horizontalHuggingPriority="251" verticalHuggingPriority="1000" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AvU-Fn-W3T">
-                                                            <rect key="frame" x="0.0" y="0.0" width="82.333333333333329" height="27"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="80.333333333333329" height="27"/>
                                                             <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                             <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <stackView opaque="NO" contentMode="left" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="0Xf-gb-Obs">
-                                                            <rect key="frame" x="0.0" y="26" width="82.333333333333329" height="20"/>
+                                                            <rect key="frame" x="0.0" y="26" width="80.333333333333329" height="20"/>
                                                             <subviews>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="1000" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0P1-w8-7a0">
                                                                     <rect key="frame" x="0.0" y="0.0" width="35.333333333333336" height="20"/>
@@ -358,14 +358,14 @@
                                                                     <nil key="highlightedColor"/>
                                                                 </label>
                                                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="circle.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="5lJ-Jt-qMk">
-                                                                    <rect key="frame" x="40.333333333333329" y="0.66666666666666607" width="7" height="18.666666666666671"/>
+                                                                    <rect key="frame" x="40.333333333333329" y="0.66666666666666607" width="5" height="18.666666666666671"/>
                                                                     <color key="tintColor" systemColor="systemGrayColor"/>
                                                                     <constraints>
-                                                                        <constraint firstAttribute="width" constant="7" id="Qqj-kh-aVi"/>
+                                                                        <constraint firstAttribute="width" constant="5" id="Qqj-kh-aVi"/>
                                                                     </constraints>
                                                                 </imageView>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="TopLeft" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="2:50" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="epl-2f-Y4X">
-                                                                    <rect key="frame" x="52.333333333333329" y="0.0" width="30" height="20"/>
+                                                                    <rect key="frame" x="50.333333333333329" y="0.0" width="30" height="20"/>
                                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                                     <color key="textColor" systemColor="systemGrayColor"/>
                                                                     <nil key="highlightedColor"/>
@@ -378,7 +378,7 @@
                                                     </subviews>
                                                 </stackView>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="trailing" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Bmy-bN-GBa">
-                                                    <rect key="frame" x="147.33333333333337" y="0.0" width="215.66666666666663" height="46"/>
+                                                    <rect key="frame" x="145.33333333333337" y="0.0" width="217.66666666666663" height="46"/>
                                                     <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <state key="normal" title="Button"/>
                                                     <buttonConfiguration key="configuration" style="plain" image="ellipsis" catalog="system"/>
