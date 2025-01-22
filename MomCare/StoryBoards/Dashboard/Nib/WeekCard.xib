@@ -109,6 +109,11 @@
                 </userDefinedRuntimeAttribute>
                 <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
             </userDefinedRuntimeAttributes>
+            <connections>
+                <outlet property="currentDayLabel" destination="4hE-5Q-NoJ" id="n6W-zQ-34S"/>
+                <outlet property="currentTrimesterLabel" destination="wxO-xS-gha" id="jpE-Bd-Cn3"/>
+                <outlet property="currentWeekLabel" destination="Hs4-jE-uvO" id="JmE-tm-Uvh"/>
+            </connections>
             <point key="canvasLocation" x="280.15267175572518" y="94.718309859154928"/>
         </collectionViewCell>
     </objects>
