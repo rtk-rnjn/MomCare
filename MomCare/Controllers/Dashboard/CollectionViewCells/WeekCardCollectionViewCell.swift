@@ -9,6 +9,11 @@ import UIKit
 
 class WeekCardCollectionViewCell: UICollectionViewCell {
 
+    
+    @IBOutlet weak var currentWeekLabel: UILabel!
+    @IBOutlet weak var currentDayLabel: UILabel!
+    @IBOutlet weak var currentTrimesterLabel: UILabel!
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         self.contentView.layer.cornerRadius = 16

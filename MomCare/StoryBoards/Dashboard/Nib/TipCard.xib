@@ -83,6 +83,9 @@ Staying active during pregnancy helps reduce discomfort</string>
                 </userDefinedRuntimeAttribute>
                 <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
             </userDefinedRuntimeAttributes>
+            <connections>
+                <outlet property="currentTipLabel" destination="FcP-r5-JDa" id="Dwa-f6-mEd"/>
+            </connections>
             <point key="canvasLocation" x="291.60305343511448" y="-6.3380281690140849"/>
         </collectionViewCell>
     </objects>
