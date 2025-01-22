@@ -179,7 +179,7 @@ struct Exercise {
 
 class UserExercise {
     public private(set) var exercises: [Exercise] = [
-        .init(exerciseType: .breathing, duration: 60, description: "Breathing exercise", tags: ["breathing"], exerciseImageName: "breathing"),
+        .init(exerciseType: .breathing, duration: 60, description: "Breathing exercise", tags: ["breathing"], exerciseImageName: "breathing")
     ]
     static var shared: UserExercise = UserExercise()
 

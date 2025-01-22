@@ -110,7 +110,7 @@ class FeaturedPlaylists {
                 Song(name: "Tibetan Singing Bowls", artist: "Various Artists", duration: 180.0),
                 Song(name: "Native American Flute Music", artist: "R. Carlos Nakai", duration: 240.0)
             ]
-        ),
+        )
         
     ]
 }

@@ -10,13 +10,5 @@ import UIKit
 class SongPageContainerViewController: UIViewController {
 
     @IBOutlet weak var playlistSongLabel: UILabel!
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-    }
-    
-
-    
 
 }
