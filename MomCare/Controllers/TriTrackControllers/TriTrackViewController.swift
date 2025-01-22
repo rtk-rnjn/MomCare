@@ -199,5 +199,4 @@ class TriTrackViewController: UIViewController, FSCalendarDelegate, FSCalendarDa
         }
     }
     
-    
 }

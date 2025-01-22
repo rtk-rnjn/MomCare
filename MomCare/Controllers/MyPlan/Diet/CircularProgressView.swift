@@ -46,9 +46,7 @@ class CircularProgressView: UIView {
         setupLayer()  // Redraw path with the correct size
     }
 
-
     private func updateProgress() {
         progressLayer.strokeEnd = progress
     }
 }
-

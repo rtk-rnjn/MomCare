@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		057CBC5D2D3E5FE300007B0E /* FSCalendar in Frameworks */ = {isa = PBXBuildFile; productRef = 057CBC5C2D3E5FE300007B0E /* FSCalendar */; };
+		053290F42D40AEC000295E58 /* FSCalendar in Frameworks */ = {isa = PBXBuildFile; productRef = 053290F32D40AEC000295E58 /* FSCalendar */; };
 		05E7F9672D37748E00F4D81E /* .swiftlint.yml in Resources */ = {isa = PBXBuildFile; fileRef = 05E7F9662D37748300F4D81E /* .swiftlint.yml */; };
 /* End PBXBuildFile section */
 
@@ -47,7 +47,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				057CBC5D2D3E5FE300007B0E /* FSCalendar in Frameworks */,
+				053290F42D40AEC000295E58 /* FSCalendar in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -93,7 +93,7 @@
 			);
 			name = MomCare;
 			packageProductDependencies = (
-				057CBC5C2D3E5FE300007B0E /* FSCalendar */,
+				053290F32D40AEC000295E58 /* FSCalendar */,
 			);
 			productName = MomCare;
 			productReference = 059C467D2D30D12400B4A15A /* MomCare.app */;
@@ -124,7 +124,7 @@
 			mainGroup = 059C46742D30D12400B4A15A;
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
-				057CBC5B2D3E5FE300007B0E /* XCRemoteSwiftPackageReference "FSCalendar" */,
+				053290F22D40AEC000295E58 /* XCRemoteSwiftPackageReference "FSCalendar" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 059C467E2D30D12400B4A15A /* Products */;
@@ -165,7 +165,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 6C5J9S87D2;
+				DEVELOPMENT_TEAM = 4MLB4J69LF;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = MomCare/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -178,7 +178,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = in.galgotias.MomCare.gu.1234;
+				PRODUCT_BUNDLE_IDENTIFIER = in.Team5Vision.MomCare;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -193,7 +193,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 6C5J9S87D2;
+				DEVELOPMENT_TEAM = 4MLB4J69LF;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = MomCare/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -206,7 +206,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = in.galgotias.MomCare.gu.1234;
+				PRODUCT_BUNDLE_IDENTIFIER = in.Team5Vision.MomCare;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -357,9 +357,9 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		057CBC5B2D3E5FE300007B0E /* XCRemoteSwiftPackageReference "FSCalendar" */ = {
+		053290F22D40AEC000295E58 /* XCRemoteSwiftPackageReference "FSCalendar" */ = {
 			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/WenchaoD/FSCalendar.git";
+			repositoryURL = "https://github.com/WenchaoD/FSCalendar";
 			requirement = {
 				kind = upToNextMajorVersion;
 				minimumVersion = 2.8.4;
@@ -368,9 +368,9 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		057CBC5C2D3E5FE300007B0E /* FSCalendar */ = {
+		053290F32D40AEC000295E58 /* FSCalendar */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 057CBC5B2D3E5FE300007B0E /* XCRemoteSwiftPackageReference "FSCalendar" */;
+			package = 053290F22D40AEC000295E58 /* XCRemoteSwiftPackageReference "FSCalendar" */;
 			productName = FSCalendar;
 		};
 /* End XCSwiftPackageProductDependency section */
