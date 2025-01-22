@@ -18,8 +18,8 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Hey, How are you feeling right now?" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" showsExpansionTextWhenTruncated="YES" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0uY-VA-NVF">
-                                <rect key="frame" x="5" y="153" width="393" height="79"/>
-                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="33"/>
+                                <rect key="frame" x="5" y="153" width="393" height="81.666666666666686"/>
+                                <fontDescription key="fontDescription" style="UICTFontTextStyleTitle0"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
@@ -45,7 +45,7 @@
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="40" id="c8u-wt-QeJ"/>
                                                     </constraints>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="30"/>
+                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleTitle2"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
@@ -83,7 +83,7 @@
                                 </cells>
                             </collectionView>
                             <pageControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" numberOfPages="4" translatesAutoresizingMaskIntoConstraints="NO" id="b8o-t3-6ao">
-                                <rect key="frame" x="10" y="728" width="373" height="10"/>
+                                <rect key="frame" x="10" y="738" width="373" height="10"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="10" id="ibs-Kf-4gz"/>
                                 </constraints>
@@ -94,7 +94,7 @@
                         <viewLayoutGuide key="safeArea" id="vDu-zF-Fre"/>
                         <color key="backgroundColor" red="0.9137254901960784" green="0.82745098039215681" blue="0.82745098039215681" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
-                            <constraint firstItem="vDu-zF-Fre" firstAttribute="bottom" secondItem="b8o-t3-6ao" secondAttribute="bottom" constant="80" id="1eO-er-6kC"/>
+                            <constraint firstItem="vDu-zF-Fre" firstAttribute="bottom" secondItem="b8o-t3-6ao" secondAttribute="bottom" constant="70" id="1eO-er-6kC"/>
                             <constraint firstItem="b8o-t3-6ao" firstAttribute="top" secondItem="g69-AT-5ZJ" secondAttribute="bottom" constant="10" id="6r1-pK-TYD"/>
                             <constraint firstItem="g69-AT-5ZJ" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" id="ALf-5p-svR"/>
                             <constraint firstItem="0uY-VA-NVF" firstAttribute="top" secondItem="vDu-zF-Fre" secondAttribute="top" constant="50" id="P4k-gk-ibo"/>
@@ -265,22 +265,23 @@
                                         </userDefinedRuntimeAttributes>
                                     </imageView>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="yHa-3I-src">
-                                        <rect key="frame" x="0.0" y="214.33333333333331" width="363" height="78.666666666666686"/>
+                                        <rect key="frame" x="0.0" y="218" width="363" height="75"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Meditation" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XKz-hh-2YU">
-                                                <rect key="frame" x="0.0" y="0.0" width="363" height="44.333333333333336"/>
-                                                <fontDescription key="fontDescription" type="boldSystem" pointSize="42"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="363" height="40.666666666666664"/>
+                                                <fontDescription key="fontDescription" style="UICTFontTextStyleTitle0"/>
                                                 <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <stackView opaque="NO" contentMode="scaleToFill" spacing="51" translatesAutoresizingMaskIntoConstraints="NO" id="EzO-zE-VBM">
-                                                <rect key="frame" x="0.0" y="44.333333333333371" width="363" height="34.333333333333343"/>
+                                                <rect key="frame" x="0.0" y="40.666666666666686" width="363" height="34.333333333333343"/>
                                                 <subviews>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SII-km-qBD">
                                                         <rect key="frame" x="0.0" y="0.0" width="156" height="34.333333333333336"/>
                                                         <state key="normal" title="Button"/>
                                                         <buttonConfiguration key="configuration" style="filled" image="play.fill" catalog="system" title=" Play">
                                                             <backgroundConfiguration key="background" cornerRadius="15"/>
+                                                            <fontDescription key="titleFontDescription" style="UICTFontTextStyleBody"/>
                                                             <color key="baseBackgroundColor" red="0.56862747670000002" green="0.26274511220000002" blue="0.31372550129999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                                         </buttonConfiguration>
                                                     </button>
@@ -289,6 +290,7 @@
                                                         <state key="normal" title="Button"/>
                                                         <buttonConfiguration key="configuration" style="filled" image="shuffle" catalog="system" title=" Shuffle">
                                                             <backgroundConfiguration key="background" cornerRadius="15"/>
+                                                            <fontDescription key="titleFontDescription" style="UICTFontTextStyleBody"/>
                                                             <color key="baseBackgroundColor" red="0.56862747670000002" green="0.26274511220000002" blue="0.31372550129999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                                         </buttonConfiguration>
                                                     </button>
