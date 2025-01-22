@@ -18,11 +18,11 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mES-YW-tkA">
-                        <rect key="frame" x="9" y="5" width="145.66666666666666" height="70"/>
+                        <rect key="frame" x="9" y="5" width="104.66666666666667" height="70"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Rfh-vd-Dqe">
                                 <rect key="frame" x="0.0" y="0.0" width="50" height="70"/>
-                                <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <color key="tintColor" red="0.57254901960000004" green="0.26274509800000001" blue="0.31372549020000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <state key="normal" title="Button"/>
                                 <buttonConfiguration key="configuration" style="plain">
                                     <imageReference key="image" image="circle" catalog="system" symbolScale="medium"/>
@@ -30,9 +30,12 @@
                                         <fontDescription key="fontDescription" style="UICTFontTextStyleTitle2"/>
                                     </preferredSymbolConfiguration>
                                 </buttonConfiguration>
+                                <connections>
+                                    <action selector="mealHeaderButtonTapped:" destination="kBj-Tz-aqb" eventType="touchUpInside" id="LgJ-ME-Qpg"/>
+                                </connections>
                             </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Breakfast" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Bng-Wu-HTn">
-                                <rect key="frame" x="50.000000000000007" y="0.0" width="95.666666666666686" height="70"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Bng-Wu-HTn">
+                                <rect key="frame" x="50" y="0.0" width="54.666666666666657" height="70"/>
                                 <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="22"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -64,6 +67,8 @@
             </tableViewCellContentView>
             <connections>
                 <outlet property="actionButton" destination="kic-HS-vTQ" id="fvI-rW-TEV"/>
+                <outlet property="mealHeaderButton" destination="Rfh-vd-Dqe" id="kyd-1O-BCy"/>
+                <outlet property="mealHeaderLabel" destination="Bng-Wu-HTn" id="MGn-20-9F2"/>
             </connections>
             <point key="canvasLocation" x="223.66412213740458" y="7.746478873239437"/>
         </tableViewCell>

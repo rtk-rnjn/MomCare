@@ -1,9 +1,8 @@
 import UIKit
 
-class MyplanViewController: UIViewController {
+class MyPlanViewController: UIViewController {
 
     @IBOutlet weak var segmentedControl: UISegmentedControl!
-
     @IBOutlet weak var containerView: UIView!
 
     private var currentViewController: UIViewController?

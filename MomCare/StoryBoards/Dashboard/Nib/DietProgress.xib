@@ -50,8 +50,8 @@
                                 <color key="tintColor" red="0.52156862749999999" green="0.68627450980000004" blue="0.68235294120000001" alpha="1" colorSpace="calibratedRGB"/>
                                 <color key="progressTintColor" red="0.52156862749999999" green="0.68627450980000004" blue="0.68235294120000001" alpha="1" colorSpace="calibratedRGB"/>
                             </progressView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="75%" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="oC4-rv-NSW">
-                                <rect key="frame" x="50" y="18" width="36.666666666666657" height="20.333333333333343"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="75%" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="oC4-rv-NSW">
+                                <rect key="frame" x="30" y="18" width="70" height="20"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
                                 <nil key="textColor"/>
@@ -81,6 +81,12 @@
                 </userDefinedRuntimeAttribute>
                 <userDefinedRuntimeAttribute type="boolean" keyPath="layer.maskToBounds" value="YES"/>
             </userDefinedRuntimeAttributes>
+            <connections>
+                <outlet property="caloriesGoalLabel" destination="HDe-29-iim" id="oa9-i5-Yym"/>
+                <outlet property="currentKcalLabel" destination="wzv-6C-eEy" id="Agf-Zm-bSV"/>
+                <outlet property="percentageLabel" destination="oC4-rv-NSW" id="wbc-ct-FN4"/>
+                <outlet property="progressBar" destination="7VZ-jj-DFi" id="OYa-fZ-YSP"/>
+            </connections>
             <point key="canvasLocation" x="91.603053435114504" y="-45.422535211267608"/>
         </collectionViewCell>
     </objects>

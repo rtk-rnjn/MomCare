@@ -1,18 +1,13 @@
 //
-
 //  DashboardViewController.swift
-
 //  MomCare
-
 //
-
 //  Created by Batch-2 on 15/01/25.
-
 //
 
 import UIKit
 
-class DashboardViewController: UIViewController {
+class DashboardViewController: UIViewController, UICollectionViewDataSource {
 
     @IBOutlet var collectionView: UICollectionView!
     private let cellIdentifiers = ["WelcomeHeaderCell", "WeekCard", "EventCard", "DietProgress", "ExerciseProgress", "FocusCard", "TipCard"]
@@ -28,6 +23,7 @@ class DashboardViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationItem.hidesBackButton = true
+        collectionView.reloadData()
     }
 
     private func setupCollectionView() {
@@ -137,10 +133,6 @@ class DashboardViewController: UIViewController {
         return NSCollectionLayoutBoundarySupplementaryItem(layoutSize: headerSize, elementKind: UICollectionView.elementKindSectionHeader, alignment: .top)
     }
 
-}
-
-extension DashboardViewController: UICollectionViewDataSource {
-
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 4
     }
@@ -156,16 +148,46 @@ extension DashboardViewController: UICollectionViewDataSource {
         switch indexPath.section {
 
         case 0:
-            return collectionView.dequeueReusableCell(withReuseIdentifier: "WelcomeHeaderCell", for: indexPath)
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "WelcomeHeaderCell", for: indexPath) as? WelcomeHeaderCollectionViewCell
+            
+            guard let cell = cell else { fatalError() }
+            cell.updateElements(with: "Hi, Khushi")
+            
+            return cell
         case 1:
+            if indexPath.row == 0 {
+                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "WeekCard", for: indexPath) as? WeekCardCollectionViewCell
+                
+                guard let cell = cell else { fatalError() }
+            
+                return cell
+            }
             return collectionView.dequeueReusableCell(withReuseIdentifier: indexPath.item == 0 ? "WeekCard" : "EventCard", for: indexPath)
         case 2:
-            return collectionView.dequeueReusableCell(withReuseIdentifier: indexPath.item == 0 ? "DietProgress" : "ExerciseProgress", for: indexPath)
+            if indexPath.row == 0 {
+                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "DietProgress", for: indexPath) as? DietProgressCollectionViewCell
+                
+                guard let cell = cell else { fatalError() }
+                cell.updateElements(with: MomCareUser.shared.diet)
+                
+                return cell
+            }
+            
+            if indexPath.row == 1 {
+                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ExerciseProgress", for: indexPath) as? ExerciseProgressCollectionViewCell
+                
+                guard let cell = cell else { fatalError() }
+                
+                return cell
+            }
+
         case 3:
             return collectionView.dequeueReusableCell(withReuseIdentifier: indexPath.item == 0 ? "FocusCard" : "TipCard", for: indexPath)
         default:
             fatalError("Unexpected section")
         }
+        
+        fatalError("Unexpected section")
     }
 
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {

@@ -4,6 +4,9 @@ class HeaderTableViewCell: UITableViewCell {
 
     @IBOutlet weak var actionButton: UIButton!
 
+    @IBOutlet var mealHeaderLabel: UILabel!
+    @IBOutlet var mealHeaderButton: UIButton!
+
     override func awakeFromNib() {
         super.awakeFromNib()
         configurePullDownMenu()
@@ -24,4 +27,13 @@ class HeaderTableViewCell: UITableViewCell {
         actionButton.setTitle(nil, for: .normal)
         actionButton.setImage(UIImage(systemName: "square.and.pencil"), for: .normal)
     }
+    
+    func updateTitle(with title: String) {
+        mealHeaderLabel.text = title
+    }
+    
+    @IBAction func mealHeaderButtonTapped(_ sender: UIButton) {
+        print("Meal Header Button Tapped")
+    }
+    
 }

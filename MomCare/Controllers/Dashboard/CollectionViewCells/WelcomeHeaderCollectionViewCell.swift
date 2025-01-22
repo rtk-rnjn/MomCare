@@ -8,4 +8,9 @@
 import UIKit
 
 class WelcomeHeaderCollectionViewCell: UICollectionViewCell {
+    @IBOutlet var titleLabel: UILabel!
+    
+    func updateElements(with title: String) {
+        titleLabel.text = title
+    }
 }

@@ -48,7 +48,7 @@ struct MyPlanModel {
     var currentFatIntake: Int = 0
 }
 
-public enum MealType {
+public enum MealType: Hashable {
     case breakfast
     case lunch
     case snacks
@@ -178,8 +178,6 @@ struct Exercise {
 }
 
 class UserExercise {
-    public private(set) var walkingGoal: Int?
-    public private(set) var stepsTaken: Int = 0
     public private(set) var exercises: [Exercise] = [
         .init(exerciseType: .breathing, duration: 60, description: "Breathing exercise", tags: ["breathing"], exerciseImageName: "breathing"),
     ]
@@ -195,9 +193,5 @@ class UserExercise {
 
     func updateToDatabase() {
 
-    }
-    
-    func incrementSteps() {
-        stepsTaken += 1
     }
 }

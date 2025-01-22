@@ -16,10 +16,7 @@ class DietViewController: UIViewController {
     private var backgroundLayer: CAShapeLayer!
     private var shapeLayer: CAShapeLayer!
     
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        animateKalcProgress(to: 0.55)
-    }
+    var dietTableViewController: DietTableViewController?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -49,6 +46,18 @@ class DietViewController: UIViewController {
         super.viewWillAppear(animated)
     
         setupProgressBars()
+        setupCaloricProgress()
+    }
+    
+    func refresh() {
+        setupProgressBars()
+        setupCaloricProgress()
+    }
+
+    private func setupCaloricProgress() {
+        animateKalcProgress(to: CGFloat((Float(MomCareUser.shared.diet.plan.currentCaloriesIntake) / Float(MomCareUser.shared.diet.plan.caloriesGoal!))))
+        
+        caloricValueLabel.text = String(MomCareUser.shared.diet.plan.currentCaloriesIntake) + "/" + String(MomCareUser.shared.diet.plan.caloriesGoal!)
     }
 
     private func setupProgressBars() {
@@ -116,5 +125,11 @@ class DietViewController: UIViewController {
         animation.timingFunction = CAMediaTimingFunction(name: .easeInEaseOut)
         shapeLayer.strokeEnd = value
         shapeLayer.add(animation, forKey: "progressAnimation")
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "embedShowDietTableViewController" {
+            dietTableViewController = segue.destination as? DietTableViewController
+        }
     }
 }
