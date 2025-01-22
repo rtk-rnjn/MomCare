@@ -1,8 +1,9 @@
 import UIKit
 
 class DietTableViewController: UITableViewController {
-    
     @IBOutlet var dietTableView: UITableView!
+
+    var dietViewController: DietViewController
 
     private var mealNames = ["Breakfast", "Lunch", "Snacks", "Dinner"]
     private var foodData: [[FoodItem]] = []
@@ -33,6 +34,15 @@ class DietTableViewController: UITableViewController {
         
         dietTableView.showsVerticalScrollIndicator = false
     }
+    
+    init?(coder: NSCoder, dietViewController: DietViewController) {
+        self.dietViewController = dietViewController
+        super.init(coder: coder)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 
     override func numberOfSections(in tableView: UITableView) -> Int {
         return foodData.count
@@ -54,7 +64,7 @@ class DietTableViewController: UITableViewController {
         guard let cell = cell else { fatalError() }
         
         let foodItem = getFoods(with: indexPath)
-        cell.updateElements(with: foodItem, at: indexPath)
+        cell.updateElements(with: foodItem, at: indexPath, of: dietViewController)
         
         return cell
     }

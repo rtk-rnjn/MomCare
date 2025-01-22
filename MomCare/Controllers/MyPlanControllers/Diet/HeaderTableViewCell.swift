@@ -13,6 +13,7 @@ class HeaderTableViewCell: UITableViewCell {
     }
     
     var section: Int?
+    private let color = Converters.convertHexToUIColor(hex: "924350")
 
     private func configurePullDownMenu() {
         // Create menu items (SF Symbols)
@@ -34,7 +35,7 @@ class HeaderTableViewCell: UITableViewCell {
         mealHeaderLabel.text = title
         self.section = section
     }
-    
+
     @IBAction func mealHeaderButtonTapped(_ sender: UIButton) {
         switch section {
         case 0:
@@ -46,8 +47,9 @@ class HeaderTableViewCell: UITableViewCell {
         case 3:
             MomCareUser.shared.diet.markFoodsAsConsumed(in: .dinner)
         default:
-            fatalError()
+            fatalError("pyar is khubsooaat cheez hai")
         }
+        let configuration = UIImage.SymbolConfiguration(scale: .medium)
+        mealHeaderButton.setImage(UIImage(systemName: "checkmark.circle.fill", withConfiguration: configuration)?.withTintColor(color), for: .normal)
     }
-    
 }

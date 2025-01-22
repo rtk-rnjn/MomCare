@@ -17,7 +17,7 @@ class DietViewController: UIViewController {
     private var shapeLayer: CAShapeLayer!
     
     var dietTableViewController: DietTableViewController?
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         setupProgressRing()
@@ -131,5 +131,9 @@ class DietViewController: UIViewController {
         if segue.identifier == "embedShowDietTableViewController" {
             dietTableViewController = segue.destination as? DietTableViewController
         }
+    }
+    
+    @IBSegueAction func test(_ coder: NSCoder) -> DietTableViewController? {
+        return DietTableViewController(coder: coder, dietViewController: self)
     }
 }

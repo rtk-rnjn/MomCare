@@ -19,9 +19,11 @@ class ContentTableViewCell: UITableViewCell {
     var foodItem: FoodItem?
     var indexPath: IndexPath?
     
+    private var dietViewController: DietViewController?
+    
     private let color = Converters.convertHexToUIColor(hex: "924350")
 
-    func updateElements(with foodItem: FoodItem, at indexPath: IndexPath?) {
+    func updateElements(with foodItem: FoodItem, at indexPath: IndexPath?, of view: DietViewController) {
         foodItemLabel.text = foodItem.name
         kalcLabel.text = "\(String(foodItem.calories)) cal."
         foodImageView.image = foodItem.image
@@ -33,6 +35,8 @@ class ContentTableViewCell: UITableViewCell {
             let configuration = UIImage.SymbolConfiguration(scale: .small)
             foodItemButton.setImage(UIImage(systemName: "checkmark.circle.fill", withConfiguration: configuration)?.withTintColor(color), for: .normal)
         }
+        
+        self.dietViewController = view
     }
 
     @IBAction func foodItemButtonTapped(_ sender: UIButton) {
@@ -50,5 +54,6 @@ class ContentTableViewCell: UITableViewCell {
         }
         let configuration = UIImage.SymbolConfiguration(scale: .small)
         foodItemButton.setImage(UIImage(systemName: "checkmark.circle.fill", withConfiguration: configuration)?.withTintColor(color), for: .normal)
+        dietViewController?.refresh()
     }
 }
