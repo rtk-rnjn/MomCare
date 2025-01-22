@@ -29,7 +29,7 @@ class SongPageTableViewController: UITableViewController {
         let cell = tableView.dequeueReusableCell(withIdentifier: "songCell", for: indexPath) as? SongPageTableViewCell
         
         guard let cell = cell else {
-            fatalError("What is love?")
+            fatalError("love is a fear of loss")
         }
         
         let song = self.data[indexPath.row]

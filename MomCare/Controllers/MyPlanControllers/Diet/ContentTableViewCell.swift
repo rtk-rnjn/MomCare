@@ -30,7 +30,7 @@ class ContentTableViewCell: UITableViewCell {
 
         self.foodItem = foodItem
         self.indexPath = indexPath
-        
+    
         if foodItem.consumed {
             let configuration = UIImage.SymbolConfiguration(scale: .small)
             foodItemButton.setImage(UIImage(systemName: "checkmark.circle.fill", withConfiguration: configuration)?.withTintColor(color), for: .normal)
