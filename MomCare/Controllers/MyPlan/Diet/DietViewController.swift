@@ -18,7 +18,7 @@ class DietViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        animateProgress(to: 0.55)
+        animateKalcProgress(to: 0.55)
     }
     
     override func viewDidLoad() {
@@ -37,22 +37,46 @@ class DietViewController: UIViewController {
             subview.layer.cornerRadius = 5
             subview.clipsToBounds = true
         }
-            fatsProgressBar.layer.cornerRadius = 5
-            fatsProgressBar.clipsToBounds = true
+        fatsProgressBar.layer.cornerRadius = 5
+        fatsProgressBar.clipsToBounds = true
         fatsProgressBar.subviews.forEach { subview in
             subview.layer.cornerRadius = 5
             subview.clipsToBounds = true
         }
-        
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+    
+        setupProgressBars()
+    }
+
+    private func setupProgressBars() {
         proteinProgressBar.transform = CGAffineTransform(scaleX: 1, y: 2)
         carbsProgressBar.transform = CGAffineTransform(scaleX: 1, y: 2)
         fatsProgressBar.transform = CGAffineTransform(scaleX: 1, y: 2)
-        proteinProgressBar.progress = 0.8
-        proteinProgressLabel.text = "120/150g"
-        carbsProgressBar.progress = 0.5
-        carbsProgressLabel.text = "75/150g"
-        fatsProgressBar.progress = 0.3
-        fatsProgressLabel.text = "45/150g"
+
+        proteinProgressBar.progress = Float(MomCareUser.shared.diet.plan.currentProteinIntake) / Float(MomCareUser.shared.diet.plan.proteinGoal!)
+        proteinProgressLabel.text = createProgressText(for: "protein")
+
+        carbsProgressBar.progress = Float(MomCareUser.shared.diet.plan.currentCarbsIntake) / Float(MomCareUser.shared.diet.plan.carbsGoal!)
+        carbsProgressLabel.text = createProgressText(for: "carbs")
+
+        fatsProgressBar.progress = Float(MomCareUser.shared.diet.plan.currentFatIntake) / Float(MomCareUser.shared.diet.plan.fatGoal!)
+        fatsProgressLabel.text = createProgressText(for: "fats")
+    }
+    
+    private func createProgressText(for macronutrients: String) -> String {
+        switch macronutrients {
+        case "protein":
+            return "\(MomCareUser.shared.diet.plan.currentProteinIntake)/\(MomCareUser.shared.diet.plan.proteinGoal!)g"
+        case "carbs":
+            return "\(MomCareUser.shared.diet.plan.currentCarbsIntake)/\(MomCareUser.shared.diet.plan.carbsGoal!)g"
+        case "fats":
+            return "\(MomCareUser.shared.diet.plan.currentFatIntake)/\(MomCareUser.shared.diet.plan.fatGoal!)g"
+        default:
+            return ""
+        }
     }
     
     private func setupProgressRing() {
@@ -83,7 +107,8 @@ class DietViewController: UIViewController {
         shapeLayer.strokeEnd = 0
         progressContainerView.layer.addSublayer(shapeLayer)
     }
-    private func animateProgress(to value: CGFloat) {
+
+    private func animateKalcProgress(to value: CGFloat) {
         let animation = CABasicAnimation(keyPath: "strokeEnd")
         animation.fromValue = shapeLayer.strokeEnd
         animation.toValue = value

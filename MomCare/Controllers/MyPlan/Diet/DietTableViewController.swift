@@ -37,17 +37,11 @@ class DietTableViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let sectionData = sectionsData[indexPath.section]
-            
-            if indexPath.row < sectionData.firstCellCount {
-                // Return the first nib cell (present once per section)
-                let cell = tableView.dequeueReusableCell(withIdentifier: "HeaderCell", for: indexPath) as! HeaderTableViewCell
-                // Configure if needed
-                return cell
-            } else {
-                // Return the second nib cell (variable number of times per section)
-                let cell = tableView.dequeueReusableCell(withIdentifier: "ContentCell", for: indexPath) as! ContentTableViewCell
-                // Configure if needed
-                return cell
-            }
+
+        if indexPath.row < sectionData.firstCellCount {
+            let cell = tableView.dequeueReusableCell(withIdentifier: "HeaderCell", for: indexPath) as! HeaderTableViewCell
+        } else {
+            let cell = tableView.dequeueReusableCell(withIdentifier: "ContentCell", for: indexPath) as! ContentTableViewCell
+        }
     }
 }

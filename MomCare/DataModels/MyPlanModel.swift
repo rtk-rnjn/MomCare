@@ -57,7 +57,7 @@ public enum MealType {
 
 class UserDiet {
     // MomCareUser.shared.diet.plan.addFoodItem(FOODITEM, to: .breakfast)
-    public private(set) var plan: MyPlanModel = MyPlanModel(caloriesGoal: 1200, proteinGoal: 120, carbsGoal: 350, fatGoal: 100)
+    public private(set) var plan: MyPlanModel = MyPlanModel(caloriesGoal: 1740, proteinGoal: 70, carbsGoal: 175, fatGoal: 60)
 
     public private(set) var breakfast: [FoodItem] = [
         FoodItem(name: "Moong Dal Cheela", imageName: "moong-dal-cheela", calories: 120, protein: 8, carbs: 15, fat: 2),
