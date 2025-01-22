@@ -8,9 +8,9 @@
 import UIKit
 
 class SongPageTableViewCell: UITableViewCell {
-    @IBOutlet weak var songLabel: UILabel!
-    @IBOutlet weak var artistOrAlbumLabel: UILabel!
-    @IBOutlet weak var songImageView: UIImageView!
+    @IBOutlet var songLabel: UILabel!
+    @IBOutlet var artistOrAlbumLabel: UILabel!
+    @IBOutlet var songImageView: UIImageView!
     
     func updateElement(with song: Song) {
         songLabel.text = song.name
