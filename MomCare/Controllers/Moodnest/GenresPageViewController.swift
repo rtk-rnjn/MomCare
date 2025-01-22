@@ -25,7 +25,7 @@ class GenresPageViewController: UIViewController, UICollectionViewDataSource, UI
         super.viewDidLoad()
 
         outerView.layer.cornerRadius = 30
-
+        moodnestCollectionView.showsVerticalScrollIndicator = false
         moodnestCollectionView.backgroundColor = .clear
 
         // MARK: - NIB FIles Registred here
