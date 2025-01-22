@@ -49,12 +49,12 @@ enum DietaryPreference {
     
 }
 
-// enum Mood {
-//    case happy
-//    case sad
-//    case stressed
-//    case anger
-// }
+public enum MoodType {
+   case happy
+   case sad
+   case stressed
+   case angery
+}
 
 struct User {
     var firstName: String
@@ -87,9 +87,9 @@ enum PickerOptions {
 }
 
 class MomCareUser {
-    private var diet: UserDiet = UserDiet.shared
-    private var exercise: UserExercise = UserExercise.shared
-    private var currentMood: Mood?
+    public private(set) var diet: UserDiet = UserDiet.shared
+    public private(set) var exercise: UserExercise = UserExercise.shared
+    public private(set) var currentMood: MoodType?
 
     public private(set) var reminders: [TriTrackReminder] = []
     public private(set) var events: [TriTrackEvent] = []
@@ -100,6 +100,10 @@ class MomCareUser {
     
     private init() {
         updateFromDatabase()
+    }
+
+    func setCurrentMood(as mood: MoodType) {
+        currentMood = mood
     }
 
     private func updateFromDatabase() {
