@@ -22,7 +22,7 @@ class FacesCollectionViewCell: UICollectionViewCell {
 
         faceImageView.image = mood.image
 
-        moodLabel.text = mood.name
+        moodLabel.text = mood.type.rawValue
 
     }
 

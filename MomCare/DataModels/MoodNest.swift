@@ -6,36 +6,41 @@ import Foundation
 import UIKit
 
 struct Mood {
-
-    let image: UIImage!
-    let name: String
+    let imageName: String
+    var image: UIImage? {
+        return UIImage(named: imageName)
+    }
+    let type: MoodType
 }
 
 struct Song {
     let name: String
     let artist: String
-    let duration: TimeInterval // You can use TimeInterval for duration
+    let duration: TimeInterval
 }
 
 struct Playlist {
-    let image: UIImage!
+    let imageName: String
+    var image: UIImage? {
+        return UIImage(named: imageName)
+    }
     let name: String
     let songs: [Song]
 }
 
 class AllMoods {
     static var moods: [Mood] = [
-        Mood(image: UIImage(named: "Happy")!, name: "Happy"),
-        Mood(image: UIImage(named: "Sad")!, name: "Sad"),
-        Mood(image: UIImage(named: "Stressed")!, name: "Stressed"),
-        Mood(image: UIImage(named: "Angry")!, name: "Angry")
+        Mood(imageName: "Happy", type: .happy),
+        Mood(imageName: "Sad", type: .sad),
+        Mood(imageName: "Stressed", type: .stressed),
+        Mood(imageName: "Angry", type: .angry)
     ]
 }
 
 class FeaturedPlaylists {
     static var playlists: [Playlist] = [
         Playlist(
-            image: UIImage(named: "I6")!,
+            imageName: "I6",
             name: "Lo-fi",
             songs: [
                 Song(name: "Summe terrace", artist: "Casiio, Kainbeats", duration: 134.0),
@@ -47,7 +52,7 @@ class FeaturedPlaylists {
             ]
         ),
         Playlist(
-            image: UIImage(named: "I1")!,
+            imageName: "I1",
             name: "Relax",
             songs: [
                 Song(name: "River", artist: "ODESZA", duration: 280.0),
@@ -59,7 +64,7 @@ class FeaturedPlaylists {
             ]
         ),
         Playlist(
-            image: UIImage(named: "I2")!,
+            imageName: "I2",
             name: "Sleep",
             songs: [
                 Song(name: "Nocturne No. 2 in E Flat Major", artist: "Frédéric Chopin", duration: 180.0),
@@ -71,7 +76,7 @@ class FeaturedPlaylists {
             ]
         ),
         Playlist(
-            image: UIImage(named: "I3")!,
+            imageName: "I3",
             name: "Meditation",
             songs: [
                 Song(name: "Enya - Only Time", artist: "Enya", duration: 240.0),
@@ -83,7 +88,7 @@ class FeaturedPlaylists {
             ]
         ),
         Playlist(
-            image: UIImage(named: "I4")!,
+            imageName: "I4",
             name: "Nature Melodies",
             songs: [
                 Song(name: "Bird Songs of the Amazon", artist: "Nature Sounds", duration: 240.0),
@@ -95,7 +100,7 @@ class FeaturedPlaylists {
             ]
         ),
         Playlist(
-            image: UIImage(named: "I5")!,
+            imageName: "I5",
             name: "Spiritual",
             songs: [
                 Song(name: "Om Namah Shivaya", artist: "Various Artists", duration: 120.0),

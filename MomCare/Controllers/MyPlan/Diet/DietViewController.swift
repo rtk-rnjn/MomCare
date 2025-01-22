@@ -12,6 +12,7 @@ class DietViewController: UIViewController {
     // Progress Ring Outlets
     @IBOutlet var progressContainerView: UIView!
     @IBOutlet var caloricValueLabel: UILabel!
+
     private var backgroundLayer: CAShapeLayer!
     private var shapeLayer: CAShapeLayer!
     

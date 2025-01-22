@@ -26,6 +26,9 @@ class TriTrackViewController: UIViewController, FSCalendarDelegate, FSCalendarDa
     
     @IBOutlet var calendarUIView: UIView!
     var calendarView: FSCalendar!
+    
+    var symptomsViewController: SymptomsViewController?
+    var eventsViewController: EventsViewController?
 
     var currentSegmentIndex: Int = 0
     
@@ -190,13 +193,28 @@ class TriTrackViewController: UIViewController, FSCalendarDelegate, FSCalendarDa
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-
-        if segue.identifier == "segueTriTrack" {
+        let identifier = segue.identifier
+        
+        guard let identifier = identifier else { return }
+        
+        switch identifier {
+        case "segueTriTrack":
             if let destinationVC = segue.destination as? UINavigationController {
                 let destinationVCTopController = destinationVC.topViewController as! TriTrackAddEventViewController
                 destinationVCTopController.viewControllerValue = TriTrackViewControlSegmentValue(rawValue: triTrackSegmentedControl.selectedSegmentIndex)
             }
+        case "embedShowSymptomsViewController":
+            if let destinationVC = segue.destination as? SymptomsViewController {
+                symptomsViewController = destinationVC
+            }
+        case "embedShowEventsViewController":
+            if let destinationVC = segue.destination as? EventsViewController {
+                eventsViewController = destinationVC
+            }
+        default:
+            break
         }
+        
     }
     
 }
