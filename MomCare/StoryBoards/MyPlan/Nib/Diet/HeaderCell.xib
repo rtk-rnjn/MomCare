@@ -4,12 +4,13 @@
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23506"/>
         <capability name="Image references" minToolsVersion="12.0"/>
+        <capability name="UIMenu" message="Requires Xcode 11 or later." minToolsVersion="11.0" requiredIntegratedClassName="UICommandDiff"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <tableViewCell clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" rowHeight="70" id="kBj-Tz-aqb" customClass="HeaderTableViewCell" customModule="MomCare" customModuleProvider="target">
+        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" rowHeight="70" id="kBj-Tz-aqb" customClass="HeaderTableViewCell" customModule="MomCare" customModuleProvider="target">
             <rect key="frame" x="0.0" y="0.0" width="393" height="80"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="kBj-Tz-aqb" id="hxw-Iy-7Az">
@@ -38,26 +39,32 @@
                             </label>
                         </subviews>
                     </stackView>
-                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="584-gF-Rke">
-                        <rect key="frame" x="327" y="5" width="51" height="70"/>
-                        <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <state key="normal" title="Button"/>
-                        <buttonConfiguration key="configuration" style="plain" image="square.and.pencil" catalog="system">
-                            <preferredSymbolConfiguration key="preferredSymbolConfigurationForImage" configurationType="font" weight="semibold">
-                                <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
-                            </preferredSymbolConfiguration>
-                        </buttonConfiguration>
+                    <button opaque="NO" contentMode="scaleToFill" showsMenuAsPrimaryAction="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kic-HS-vTQ">
+                        <rect key="frame" x="351.33333333333331" y="10" width="26.666666666666686" height="60"/>
+                        <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                        <menu key="menu" id="Oj2-Ux-trl">
+                            <children>
+                                <command title="Item 1" id="wLn-X8-Mvk"/>
+                                <command title="Item 2" id="Kl2-th-Qom"/>
+                            </children>
+                        </menu>
+                        <state key="normal" image="square.and.pencil" catalog="system">
+                            <preferredSymbolConfiguration key="preferredSymbolConfiguration" scale="large"/>
+                        </state>
                     </button>
                 </subviews>
                 <constraints>
+                    <constraint firstItem="kic-HS-vTQ" firstAttribute="top" secondItem="hxw-Iy-7Az" secondAttribute="top" constant="10" id="3NI-9s-RqY"/>
                     <constraint firstItem="mES-YW-tkA" firstAttribute="leading" secondItem="hxw-Iy-7Az" secondAttribute="leading" constant="9" id="Bfj-q2-45k"/>
                     <constraint firstAttribute="bottom" secondItem="mES-YW-tkA" secondAttribute="bottom" constant="5" id="IBR-qX-haa"/>
-                    <constraint firstAttribute="bottom" secondItem="584-gF-Rke" secondAttribute="bottom" constant="5" id="XgH-6J-dj8"/>
-                    <constraint firstAttribute="trailing" secondItem="584-gF-Rke" secondAttribute="trailing" constant="15" id="gUH-o0-k4k"/>
+                    <constraint firstAttribute="bottom" secondItem="kic-HS-vTQ" secondAttribute="bottom" constant="10" id="NSz-B4-9oY"/>
+                    <constraint firstAttribute="trailing" secondItem="kic-HS-vTQ" secondAttribute="trailing" constant="15" id="YfW-OP-jIR"/>
                     <constraint firstItem="mES-YW-tkA" firstAttribute="top" secondItem="hxw-Iy-7Az" secondAttribute="top" constant="5" id="hED-1d-0EF"/>
-                    <constraint firstItem="584-gF-Rke" firstAttribute="top" secondItem="hxw-Iy-7Az" secondAttribute="top" constant="5" id="zHJ-aU-o0c"/>
                 </constraints>
             </tableViewCellContentView>
+            <connections>
+                <outlet property="actionButton" destination="kic-HS-vTQ" id="fvI-rW-TEV"/>
+            </connections>
             <point key="canvasLocation" x="223.66412213740458" y="7.746478873239437"/>
         </tableViewCell>
     </objects>
