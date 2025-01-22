@@ -10,6 +10,12 @@ import UIKit
 class SongPageTableViewController: UITableViewController {
     var data: [Song] = FeaturedPlaylists.playlists[0].songs
 
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        view.backgroundColor = .clear
+    }
+
     override func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
         return 1
@@ -31,5 +37,6 @@ class SongPageTableViewController: UITableViewController {
 
         return cell
     }
+
 
 }
