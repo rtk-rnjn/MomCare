@@ -87,7 +87,6 @@ enum PickerOptions {
 }
 
 class MomCareUser {
-    
     // let plan = MomCareUser.shared.diet.plan
     // let exercise = MomCareUser.shared.exercise
     // let mood = MomCareUser.shared.currentMood

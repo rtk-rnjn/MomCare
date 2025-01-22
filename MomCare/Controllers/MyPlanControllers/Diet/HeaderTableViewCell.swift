@@ -11,6 +11,8 @@ class HeaderTableViewCell: UITableViewCell {
         super.awakeFromNib()
         configurePullDownMenu()
     }
+    
+    var section: Int?
 
     private func configurePullDownMenu() {
         // Create menu items (SF Symbols)
@@ -28,12 +30,24 @@ class HeaderTableViewCell: UITableViewCell {
         actionButton.setImage(UIImage(systemName: "square.and.pencil"), for: .normal)
     }
     
-    func updateTitle(with title: String) {
+    func updateTitle(with title: String, at section: Int) {
         mealHeaderLabel.text = title
+        self.section = section
     }
     
     @IBAction func mealHeaderButtonTapped(_ sender: UIButton) {
-        print("Meal Header Button Tapped")
+        switch section {
+        case 0:
+            MomCareUser.shared.diet.markFoodsAsConsumed(in: .breakfast)
+        case 1:
+            MomCareUser.shared.diet.markFoodsAsConsumed(in: .lunch)
+        case 2:
+            MomCareUser.shared.diet.markFoodsAsConsumed(in: .snacks)
+        case 3:
+            MomCareUser.shared.diet.markFoodsAsConsumed(in: .dinner)
+        default:
+            fatalError()
+        }
     }
     
 }

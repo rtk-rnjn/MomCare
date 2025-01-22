@@ -45,9 +45,7 @@ class SignUpYourDetailsTableViewController: UITableViewController, UIViewControl
     }
 
     func presentPickerViewController(withOptions options: PickerOptions) {
-        // Instantiate the picker view controller
         if let pickerVC = storyboard?.instantiateViewController(withIdentifier: "pickerView") as? PickerViewController {
-            // Pass the options to the picker view controller
             pickerVC.selectedOption = options
             pickerVC.modalPresentationStyle = .custom
             pickerVC.transitioningDelegate = self
@@ -73,9 +71,7 @@ class SignUpYourDetailsTableViewController: UITableViewController, UIViewControl
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "showProgress" {
-            // Ensure that the destination view controller is the next one
             if let destinationVC = segue.destination as? SignUpYourDetailsExtendedTableViewController {
-                // Pass the current progress value (50%)
                 destinationVC.initialProgress = progressView.progress
             }
         }

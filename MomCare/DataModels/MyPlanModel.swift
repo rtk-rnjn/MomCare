@@ -102,32 +102,32 @@ class UserDiet {
     func removeFoodItem(_ foodItem: FoodItem, from meal: MealType) {
         switch meal {
         case .breakfast:
-            breakfast.removeAll { $0.id == foodItem.id || $0.name == foodItem.name }
+            breakfast.removeAll { $0.id == foodItem.id }
         case .lunch:
-            lunch.removeAll { $0.id == foodItem.id || $0.name == foodItem.name }
+            lunch.removeAll { $0.id == foodItem.id }
         case .snacks:
-            snacks.removeAll { $0.id == foodItem.id || $0.name == foodItem.name }
+            snacks.removeAll { $0.id == foodItem.id }
         case .dinner:
-            dinner.removeAll { $0.id == foodItem.id || $0.name == foodItem.name }
+            dinner.removeAll { $0.id == foodItem.id }
         }
     }
     
     func markFoodAsConsumed(_ foodItem: FoodItem, in meal: MealType) {
         switch meal {
         case .breakfast:
-            if let index = breakfast.firstIndex(where: { $0.id == foodItem.id || $0.name == foodItem.name }) {
+            if let index = breakfast.firstIndex(where: { $0.id == foodItem.id }) {
                 breakfast[index].consumed = true
             }
         case .lunch:
-            if let index = lunch.firstIndex(where: { $0.id == foodItem.id || $0.name == foodItem.name }) {
+            if let index = lunch.firstIndex(where: { $0.id == foodItem.id }) {
                 lunch[index].consumed = true
             }
         case .snacks:
-            if let index = snacks.firstIndex(where: { $0.id == foodItem.id || $0.name == foodItem.name }) {
+            if let index = snacks.firstIndex(where: { $0.id == foodItem.id }) {
                 snacks[index].consumed = true
             }
         case .dinner:
-            if let index = dinner.firstIndex(where: { $0.id == foodItem.id || $0.name == foodItem.name }) {
+            if let index = dinner.firstIndex(where: { $0.id == foodItem.id }) {
                 dinner[index].consumed = true
             }
         }
@@ -136,6 +136,27 @@ class UserDiet {
         self.plan.currentProteinIntake += foodItem.protein
         self.plan.currentCarbsIntake += foodItem.carbs
         self.plan.currentFatIntake += foodItem.fat
+    }
+
+    func markFoodsAsConsumed(in meal: MealType) {
+        switch meal {
+        case .breakfast:
+            for index in 0..<breakfast.count {
+                markFoodAsConsumed(breakfast[index], in: .breakfast)
+            }
+        case .lunch:
+            for index in 0..<lunch.count {
+                markFoodAsConsumed(lunch[index], in: .lunch)
+            }
+        case .snacks:
+            for index in 0..<snacks.count {
+                markFoodAsConsumed(snacks[index], in: .snacks)
+            }
+        case .dinner:
+            for index in 0..<dinner.count {
+                markFoodAsConsumed(dinner[index], in: .dinner)
+            }
+        }
     }
 
     func updateFromDatabase() {

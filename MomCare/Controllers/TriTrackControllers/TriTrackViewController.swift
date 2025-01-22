@@ -158,6 +158,7 @@ class TriTrackViewController: UIViewController, FSCalendarDelegate, FSCalendarDa
         
         let triTrackSymptom = TriTrackSymptom(title: title, notes: notes, atTime: dateTime)
         MomCareUser.shared.addSymptom(triTrackSymptom)
+        symptomsViewController?.symptomsTableViewController?.refreshData()
     }
     
     func handleDoneButtonTappedForEventsView(with viewController: TriTrackAddEventViewController) {
@@ -178,6 +179,7 @@ class TriTrackViewController: UIViewController, FSCalendarDelegate, FSCalendarDa
         let triTrackEvent = TriTrackEvent(title: title, location: location, allDay: allDay, startDate: startDateTime, endDate: endDateTime, travelTime: travelTime, alertBefore: alertTime, repeatAfter: repeatAfter)
         
         MomCareUser.shared.addEvent(triTrackEvent)
+        eventsViewController?.appointmentsTableViewController?.refreshData()
     }
     
     func handleDoneButtonTappedForRemindersView(with viewController: TriTrackAddEventViewController) {
@@ -190,6 +192,7 @@ class TriTrackViewController: UIViewController, FSCalendarDelegate, FSCalendarDa
         
         let triTrackReminder = TriTrackReminder(title: title, date: dateTime, notes: notes, repeatAfter: timeInterval)
         MomCareUser.shared.addReminder(triTrackReminder)
+        eventsViewController?.remindersTableViewController?.refreshData()
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {

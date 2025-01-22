@@ -32,6 +32,9 @@
                             </segmentedControl>
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cVv-4T-ZaS">
                                 <rect key="frame" x="0.0" y="147" width="393" height="705"/>
+                                <connections>
+                                    <segue destination="L5f-CQ-P5j" kind="embed" id="Npz-ts-lBr"/>
+                                </connections>
                             </containerView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="ZwL-O6-p0v"/>
@@ -56,27 +59,12 @@
             </objects>
             <point key="canvasLocation" x="4048.0916030534349" y="106.33802816901409"/>
         </scene>
-        <!--View Controller-->
-        <scene sceneID="nxw-lH-bdB">
-            <objects>
-                <viewController id="QKh-TI-3S7" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="lzt-5N-ZCm">
-                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <viewLayoutGuide key="safeArea" id="qco-WH-Ea3"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                    </view>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="clp-D3-sNo" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="4050" y="806"/>
-        </scene>
         <!--Diet View Controller-->
         <scene sceneID="tQz-7Q-zBh">
             <objects>
                 <viewController storyboardIdentifier="DietVC" useStoryboardIdentifierAsRestorationIdentifier="YES" id="L5f-CQ-P5j" customClass="DietViewController" customModule="MomCare" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="K87-3x-RYs">
-                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="705"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="N2D-NN-8M1">
@@ -241,10 +229,10 @@
                                 </userDefinedRuntimeAttributes>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Q1t-dE-Hiu">
-                                <rect key="frame" x="20" y="210" width="353" height="642"/>
+                                <rect key="frame" x="20" y="210" width="353" height="495"/>
                                 <subviews>
                                     <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lha-9a-J2W">
-                                        <rect key="frame" x="0.0" y="0.0" width="353" height="642"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="353" height="495"/>
                                         <connections>
                                             <segue destination="yfR-4p-uCo" kind="embed" identifier="embedShowDietTableViewController" id="dvK-G8-sC0"/>
                                         </connections>
@@ -291,14 +279,14 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="sNv-1r-nCb" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4925.9541984732823" y="92.957746478873247"/>
+            <point key="canvasLocation" x="4924" y="107"/>
         </scene>
         <!--Diet Table View Controller-->
         <scene sceneID="4lV-iC-m2h">
             <objects>
                 <tableViewController id="yfR-4p-uCo" customClass="DietTableViewController" customModule="MomCare" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" id="eaD-eZ-Zte">
-                        <rect key="frame" x="0.0" y="0.0" width="353" height="642"/>
+                        <rect key="frame" x="0.0" y="0.0" width="353" height="495"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <prototypes>
@@ -322,7 +310,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="vs7-9e-Opw" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5648" y="93"/>
+            <point key="canvasLocation" x="5650" y="107"/>
         </scene>
         <!--Exercise View Controller-->
         <scene sceneID="0jC-xG-fUb">
@@ -378,34 +366,6 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Rnh-hu-bAn" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="6286" y="93"/>
-        </scene>
-        <!--Search Diet Table View Controller-->
-        <scene sceneID="5rP-Ln-0R4">
-            <objects>
-                <tableViewController id="vPJ-dU-Soa" customClass="SearchDietTableViewController" customModule="MomCare" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" id="gy2-Z0-hW8">
-                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                        <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="hYX-9w-E5k">
-                                <rect key="frame" x="0.0" y="50" width="393" height="43.666667938232422"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="hYX-9w-E5k" id="V5Y-74-UpA">
-                                    <rect key="frame" x="0.0" y="0.0" width="393" height="43.666667938232422"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                </tableViewCellContentView>
-                            </tableViewCell>
-                        </prototypes>
-                        <connections>
-                            <outlet property="dataSource" destination="vPJ-dU-Soa" id="acW-eD-B5p"/>
-                            <outlet property="delegate" destination="vPJ-dU-Soa" id="OQk-39-Hre"/>
-                        </connections>
-                    </tableView>
-                </tableViewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="yWc-Cz-Vdi" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="6940" y="93"/>
         </scene>
         <!--MyPlan-->
         <scene sceneID="FH3-ZF-28y">
