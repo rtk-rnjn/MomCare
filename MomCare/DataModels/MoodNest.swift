@@ -43,7 +43,7 @@ class FeaturedPlaylists {
             imageName: "I6",
             name: "Lo-fi",
             songs: [
-                Song(name: "Summe terrace", artist: "Casiio, Kainbeats", duration: 134.0),
+                Song(name: "Summe Terrace", artist: "Casiio, Kainbeats", duration: 134.0),
                 Song(name: "Moonrise", artist: "Trixie", duration: 132.0),
                 Song(name: "Days Past", artist: "WanderLight", duration: 129.0),
                 Song(name: "Rent A Movie", artist: "Kilada", duration: 129.0),
