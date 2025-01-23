@@ -8,7 +8,6 @@
 import UIKit
 
 class WeekCardCollectionViewCell: UICollectionViewCell {
-
     
     @IBOutlet weak var currentWeekLabel: UILabel!
     @IBOutlet weak var currentDayLabel: UILabel!
