@@ -10,7 +10,6 @@ import UIKit
 class SongPageTableViewController: UITableViewController {
     var data: [Song] = FeaturedPlaylists.playlists[0].songs
     
-    
     @IBOutlet var moodNestTableView: UITableView!
     override func viewDidLoad() {
         super.viewDidLoad()
