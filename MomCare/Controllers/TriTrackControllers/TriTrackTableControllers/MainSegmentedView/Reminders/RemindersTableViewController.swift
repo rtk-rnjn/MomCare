@@ -14,7 +14,7 @@ class RemindersTableViewController: UITableViewController {
         super.viewWillAppear(animated)
         refreshData()
     }
-    
+
     func refreshData() {
         self.data = MomCareUser.shared.reminders
         tableView.reloadData()
@@ -32,10 +32,10 @@ class RemindersTableViewController: UITableViewController {
         let cell = tableView.dequeueReusableCell(withIdentifier: "ReminderCell", for: indexPath) as? RemindersTableViewCell
 
         guard let cell = cell else { return UITableViewCell() }
-        
+
         cell.updateElements(with: data[indexPath.section])
         cell.showsReorderControl = false
-        
+
         /* config as per prototype */
         cell.backgroundColor = Converters.convertHexToUIColor(hex: "F2F2F7")
         cell.contentView.layer.cornerRadius = 10
@@ -48,7 +48,7 @@ class RemindersTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return 1
     }
-    
+
     override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
         return 3
     }

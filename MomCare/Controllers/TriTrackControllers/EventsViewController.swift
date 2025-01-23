@@ -9,23 +9,23 @@ import UIKit
 
 class EventsViewController: UIViewController {
     var appointmentsTableViewController: AppointmentsTableViewController?
-    var remindersTabelViewController: RemindersTableViewController?
-    
+    var remindersTableViewController: RemindersTableViewController?
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         appointmentsTableViewController?.refreshData()
-        remindersTabelViewController?.refreshData()
+        remindersTableViewController?.refreshData()
     }
-    
+
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         let appointmentIdentifier = "embedShowAppointmentsTabelViewController"
         let reminderIdentifier = "embedShowRemindersTabelViewController"
-        
+
         switch segue.identifier {
         case appointmentIdentifier:
             appointmentsTableViewController = segue.destination as? AppointmentsTableViewController
         case reminderIdentifier:
-            remindersTabelViewController = segue.destination as? RemindersTableViewController
+            remindersTableViewController = segue.destination as? RemindersTableViewController
         default:
             break
         }

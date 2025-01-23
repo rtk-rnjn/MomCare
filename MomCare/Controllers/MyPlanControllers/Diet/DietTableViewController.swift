@@ -1,32 +1,47 @@
 import UIKit
 
 class DietTableViewController: UITableViewController {
-    
     @IBOutlet var dietTableView: UITableView!
 
-    let foodData = [
-        MomCareUser.shared.diet.breakfast,
-        MomCareUser.shared.diet.lunch,
-        MomCareUser.shared.diet.snacks,
-        MomCareUser.shared.diet.dinner
-    ]
-    
+    var dietViewController: DietViewController
+
     private var mealNames = ["Breakfast", "Lunch", "Snacks", "Dinner"]
+    private var foodData: [[FoodItem]] = []
 
     private func getFoods(with indexPath: IndexPath) -> FoodItem {
         return foodData[indexPath.section][indexPath.row - 1]
     }
-    
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        foodData = [
+            MomCareUser.shared.diet.breakfast,
+            MomCareUser.shared.diet.lunch,
+            MomCareUser.shared.diet.snacks,
+            MomCareUser.shared.diet.dinner
+        ]
+        tableView.reloadData()
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         dietTableView.register(UINib(nibName: "HeaderCell", bundle: nil), forCellReuseIdentifier: "HeaderCell")
         dietTableView.register(UINib(nibName: "ContentCell", bundle: nil), forCellReuseIdentifier: "ContentCell")
 
         dietTableView.delegate = self
         dietTableView.dataSource = self
-        
+
         dietTableView.showsVerticalScrollIndicator = false
+    }
+
+    init?(coder: NSCoder, dietViewController: DietViewController) {
+        self.dietViewController = dietViewController
+        super.init(coder: coder)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
 
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -40,17 +55,18 @@ class DietTableViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if indexPath.row == 0 {
-            let cell = tableView.dequeueReusableCell(withIdentifier: "HeaderCell", for: indexPath) as! HeaderTableViewCell
-            cell.updateTitle(with: mealNames[indexPath.section])
+            let cell = tableView.dequeueReusableCell(withIdentifier: "HeaderCell", for: indexPath) as? HeaderTableViewCell
+            guard let cell = cell else { fatalError() }
+            cell.updateTitle(with: mealNames[indexPath.section], at: indexPath.section, of: self)
             return cell
         }
 
         let cell = tableView.dequeueReusableCell(withIdentifier: "ContentCell", for: indexPath) as? ContentTableViewCell
         guard let cell = cell else { fatalError() }
-        
+
         let foodItem = getFoods(with: indexPath)
-        cell.updateElements(with: foodItem, at: indexPath)
-        
+        cell.updateElements(with: foodItem, at: indexPath, of: self)
+
         return cell
     }
 }

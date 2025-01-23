@@ -27,11 +27,11 @@ class SongPageTableViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "songCell", for: indexPath) as? SongPageTableViewCell
-        
+
         guard let cell = cell else {
-            fatalError("What is love?")
+            fatalError("love is a fear of loss")
         }
-        
+
         let song = self.data[indexPath.row]
         cell.updateElement(with: song)
 

@@ -14,7 +14,7 @@ class AppointmentsTableViewController: UITableViewController {
         super.viewWillAppear(animated)
         refreshData()
     }
-    
+
     func refreshData() {
         self.data = MomCareUser.shared.events
         tableView.reloadData()
@@ -30,9 +30,9 @@ class AppointmentsTableViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "AppointmentCell", for: indexPath) as? AppointmentsTableViewCell
-        
+
         guard let cell = cell else { return UITableViewCell() }
-        
+
         cell.updateElements(with: data[indexPath.section])
         cell.showsReorderControl = false
 
@@ -44,11 +44,11 @@ class AppointmentsTableViewController: UITableViewController {
 
         return cell
     }
-    
+
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return 1
     }
-    
+
     override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
         return 3
     }

@@ -8,20 +8,20 @@ class DietViewController: UIViewController {
     @IBOutlet var proteinProgressLabel: UILabel!
     @IBOutlet var carbsProgressLabel: UILabel!
     @IBOutlet var fatsProgressLabel: UILabel!
-    
+
     // Progress Ring Outlets
     @IBOutlet var progressContainerView: UIView!
     @IBOutlet var caloricValueLabel: UILabel!
 
     private var backgroundLayer: CAShapeLayer!
     private var shapeLayer: CAShapeLayer!
-    
+
     var dietTableViewController: DietTableViewController?
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         setupProgressRing()
-        
+
         proteinProgressBar.layer.cornerRadius = 5
         proteinProgressBar.clipsToBounds = true
         proteinProgressBar.subviews.forEach { subview in
@@ -41,14 +41,14 @@ class DietViewController: UIViewController {
             subview.clipsToBounds = true
         }
     }
-    
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-    
+
         setupProgressBars()
         setupCaloricProgress()
     }
-    
+
     func refresh() {
         setupProgressBars()
         setupCaloricProgress()
@@ -56,7 +56,7 @@ class DietViewController: UIViewController {
 
     private func setupCaloricProgress() {
         animateKalcProgress(to: CGFloat((Float(MomCareUser.shared.diet.plan.currentCaloriesIntake) / Float(MomCareUser.shared.diet.plan.caloriesGoal!))))
-        
+
         caloricValueLabel.text = String(MomCareUser.shared.diet.plan.currentCaloriesIntake) + "/" + String(MomCareUser.shared.diet.plan.caloriesGoal!)
     }
 
@@ -74,7 +74,7 @@ class DietViewController: UIViewController {
         fatsProgressBar.progress = Float(MomCareUser.shared.diet.plan.currentFatIntake) / Float(MomCareUser.shared.diet.plan.fatGoal!)
         fatsProgressLabel.text = createProgressText(for: "fats")
     }
-    
+
     private func createProgressText(for macronutrients: String) -> String {
         switch macronutrients {
         case "protein":
@@ -87,7 +87,7 @@ class DietViewController: UIViewController {
             return ""
         }
     }
-    
+
     private func setupProgressRing() {
 
         let center = CGPoint(x: progressContainerView.bounds.midX, y: progressContainerView.bounds.midY)
@@ -95,7 +95,7 @@ class DietViewController: UIViewController {
         let lineWidth: CGFloat = 15
 
         let circlePath = UIBezierPath(arcCenter: center, radius: radius, startAngle: -.pi / 2, endAngle: .pi * 3 / 2, clockwise: true)
-        
+
         backgroundLayer = CAShapeLayer()
         backgroundLayer.path = circlePath.cgPath
         backgroundLayer.lineWidth = lineWidth
@@ -103,9 +103,9 @@ class DietViewController: UIViewController {
         backgroundLayer.fillColor = UIColor.clear.cgColor
         backgroundLayer.strokeStart = 0
         backgroundLayer.strokeEnd = 1
-        
+
         progressContainerView.layer.addSublayer(backgroundLayer)
-        
+
         shapeLayer = CAShapeLayer()
         shapeLayer.path = circlePath.cgPath
         shapeLayer.lineWidth = lineWidth
@@ -126,10 +126,14 @@ class DietViewController: UIViewController {
         shapeLayer.strokeEnd = value
         shapeLayer.add(animation, forKey: "progressAnimation")
     }
-    
+
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "embedShowDietTableViewController" {
             dietTableViewController = segue.destination as? DietTableViewController
         }
+    }
+
+    @IBSegueAction func test(_ coder: NSCoder) -> DietTableViewController? {
+        return DietTableViewController(coder: coder, dietViewController: self)
     }
 }
