@@ -35,20 +35,26 @@ class ContentTableViewCell: UITableViewCell {
     }
 
     @IBAction func foodItemButtonTapped(_ sender: UIButton) {
+        var consumed: Bool
         switch self.indexPath?.section {
         case 0:
-            MomCareUser.shared.diet.markFoodAsConsumed(self.foodItem!, in: MealType.breakfast)
+            consumed = MomCareUser.shared.diet.markFoodAsConsumed(self.foodItem!, in: MealType.breakfast)
         case 1:
-            MomCareUser.shared.diet.markFoodAsConsumed(self.foodItem!, in: MealType.lunch)
+            consumed = MomCareUser.shared.diet.markFoodAsConsumed(self.foodItem!, in: MealType.lunch)
         case 2:
-            MomCareUser.shared.diet.markFoodAsConsumed(self.foodItem!, in: MealType.snacks)
+            consumed = MomCareUser.shared.diet.markFoodAsConsumed(self.foodItem!, in: MealType.snacks)
         case 3:
-            MomCareUser.shared.diet.markFoodAsConsumed(self.foodItem!, in: MealType.dinner)
+            consumed = MomCareUser.shared.diet.markFoodAsConsumed(self.foodItem!, in: MealType.dinner)
         default:
-            break
+            fatalError()
         }
         let configuration = UIImage.SymbolConfiguration(scale: .small)
-        foodItemButton.setImage(UIImage(systemName: "checkmark.circle.fill", withConfiguration: configuration)?.withTintColor(color), for: .normal)
+        if consumed {
+            sender.setImage(UIImage(systemName: "checkmark.circle.fill", withConfiguration: configuration)?.withTintColor(color), for: .normal)
+        }
+        else {
+            sender.setImage(UIImage(systemName: "circle", withConfiguration: configuration)?.withTintColor(color), for: .normal)
+        }
         dietTableViewController?.dietViewController.refresh()
     }
 }

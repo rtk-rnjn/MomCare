@@ -112,7 +112,7 @@ class UserDiet {
         }
     }
     
-    func markFoodAsConsumed(_ foodItem: FoodItem, in meal: MealType) {
+    func markFoodAsConsumed(_ foodItem: FoodItem, in meal: MealType) -> Bool {
         var multiplier = 1
 
         switch meal {
@@ -142,6 +142,8 @@ class UserDiet {
         self.plan.currentProteinIntake += foodItem.protein * multiplier
         self.plan.currentCarbsIntake += foodItem.carbs * multiplier
         self.plan.currentFatIntake += foodItem.fat * multiplier
+        
+        return multiplier == 1
     }
 
     func markFoodsAsConsumed(in meal: MealType) {

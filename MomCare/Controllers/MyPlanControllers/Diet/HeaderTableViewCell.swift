@@ -51,7 +51,7 @@ class HeaderTableViewCell: UITableViewCell {
             fatalError("pyar is khubsooaat cheez hai")
         }
         let configuration = UIImage.SymbolConfiguration(scale: .medium)
-        mealHeaderButton.setImage(UIImage(systemName: "checkmark.circle.fill", withConfiguration: configuration)?.withTintColor(color), for: .normal)
+        sender.setImage(UIImage(systemName: "checkmark.circle.fill", withConfiguration: configuration)?.withTintColor(color), for: .normal)
 
         dietTableViewController?.dietViewController.refresh()
     }
