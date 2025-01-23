@@ -22,12 +22,12 @@ struct FoodItem {
     var protein: Int = 0
     var carbs: Int = 0
     var fat: Int = 0
-    
+
     var consumed: Bool = false
-    
+
     init(name: String, imageName: String, calories: Int, protein: Int, carbs: Int, fat: Int) {
         self.name = name
-        
+
         self.imageName = imageName
         self.calories = calories
         self.protein = protein
@@ -79,13 +79,13 @@ class UserDiet {
         FoodItem(name: "Aloo Paratha", imageName: "aloo-paratha", calories: 280, protein: 6, carbs: 40, fat: 10),
         FoodItem(name: "Aloo Matar", imageName: "aloo-matar", calories: 200, protein: 6, carbs: 30, fat: 5)
     ]
-    
+
     static var shared: UserDiet = UserDiet()
-    
+
     private init() {
         updateFromDatabase()
     }
-    
+
     func addFoodItem(_ foodItem: FoodItem, to meal: MealType) {
         switch meal {
         case .breakfast:
@@ -98,7 +98,7 @@ class UserDiet {
             dinner.append(foodItem)
         }
     }
-    
+
     func removeFoodItem(_ foodItem: FoodItem, from meal: MealType) {
         switch meal {
         case .breakfast:
@@ -111,7 +111,7 @@ class UserDiet {
             dinner.removeAll { $0.id == foodItem.id }
         }
     }
-    
+
     func markFoodAsConsumed(_ foodItem: FoodItem, in meal: MealType) -> Bool {
         var multiplier = 1
 
@@ -142,7 +142,7 @@ class UserDiet {
         self.plan.currentProteinIntake += foodItem.protein * multiplier
         self.plan.currentCarbsIntake += foodItem.carbs * multiplier
         self.plan.currentFatIntake += foodItem.fat * multiplier
-        
+
         return multiplier == 1
     }
 

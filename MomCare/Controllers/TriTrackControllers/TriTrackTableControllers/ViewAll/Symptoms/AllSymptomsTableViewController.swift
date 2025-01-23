@@ -22,9 +22,9 @@ class AllSymptomsTableViewController: UITableViewController {
         let cell = tableView.dequeueReusableCell(withIdentifier: "AllSymptomsTableViewCell", for: indexPath) as? AllSymptomsTableViewCell
 
         guard let cell = cell else { fatalError() }
-        
+
         cell.updateElements(with: symptoms[indexPath.row])
-    
+
         return cell
     }
 

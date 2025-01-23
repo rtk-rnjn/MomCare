@@ -24,24 +24,24 @@ class AddReminderTableViewController: UITableViewController {
     @IBOutlet var notesField: UITextField!
 
     @IBOutlet var repeatPopupButton: UIButton!
-    
+
     var selectedRepeatOption: TimeInterval = -1
 
     override func viewDidLoad() {
         super.viewDidLoad()
         dateTime.minimumDate = Date()
-    
+
         prepareRepeatPopup()
     }
 
     private func prepareRepeatPopup() {
         repeatPopupButton.menu = UIMenu(children: AddReminderTableViewController.options.map { title, _ in
             UIAction(title: title, handler: handleRepeatOption) })
-        
+
         repeatPopupButton.showsMenuAsPrimaryAction = true
         repeatPopupButton.changesSelectionAsPrimaryAction = true
     }
-    
+
     private func handleRepeatOption(action: UIAction) {
         repeatPopupButton.setTitle(action.title, for: .normal)
         selectedRepeatOption = AddReminderTableViewController.options[action.title]!

@@ -27,7 +27,7 @@ class TriTrackAddEventViewController: UIViewController {
         Error(Something def. fucked up)
      */
     var viewControllerValue: TriTrackViewControlSegmentValue?
-    
+
     @IBOutlet var reminderContainerView: UIView!
     @IBOutlet var eventContainerView: UIView!
     @IBOutlet var symptomsContainerView: UIView!
@@ -37,12 +37,12 @@ class TriTrackAddEventViewController: UIViewController {
     var addReminderTableViewController: AddReminderTableViewController?
     var addSymptomsTableViewController: AddSymptomsTableViewController?
     var addEventTableViewController: AddEventTableViewController?
-    
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         prepareContainerView()
     }
-    
+
     private func prepareContainerView() {
         guard viewControllerValue != nil else { return }
         switch viewControllerValue! {
@@ -52,7 +52,7 @@ class TriTrackAddEventViewController: UIViewController {
             prepareSymptomsContainerView()
         }
     }
-    
+
     private func prepareEventReminderContainerView() {
         symptomsContainerView.isHidden = true
         eventReminderSegmentControl.isHidden = false
@@ -66,7 +66,7 @@ class TriTrackAddEventViewController: UIViewController {
         case .reminderView:
             reminderContainerView.isHidden = false
             navigationItem.title = "Add Reminder"
-            
+
             eventContainerView.isHidden = true
         default:
             fatalError("Something def. fucked up")
@@ -76,17 +76,17 @@ class TriTrackAddEventViewController: UIViewController {
     @IBAction func eventReminderTapped(_ sender: UISegmentedControl) {
         prepareEventReminderContainerView()
     }
-    
+
     private func prepareSymptomsContainerView() {
         eventContainerView.isHidden = true
         reminderContainerView.isHidden = true
         eventReminderSegmentControl.isHidden = true
-        
+
         symptomsContainerView.isHidden = false
-        
+
         navigationItem.title = "Add Symptoms"
     }
-    
+
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         switch segue.identifier {
         case "embedSegueReminder":

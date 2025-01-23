@@ -23,10 +23,10 @@ class TriTrackViewController: UIViewController, FSCalendarDelegate, FSCalendarDa
     @IBOutlet var meAndBabyContainerView: UIView!
     @IBOutlet var eventsContainerView: UIView!
     @IBOutlet var symptomsContainerView: UIView!
-    
+
     @IBOutlet var calendarUIView: UIView!
     private var calendarView: FSCalendar!
-    
+
     private var symptomsViewController: SymptomsViewController?
     private var eventsViewController: EventsViewController?
 
@@ -40,10 +40,10 @@ class TriTrackViewController: UIViewController, FSCalendarDelegate, FSCalendarDa
 
         calendarView.dataSource = self
         calendarView.delegate = self
-    
+
         calendarUIView.addSubview(calendarView)
     }
-    
+
     func calendar(_ calendar: FSCalendar, didSelect date: Date, at monthPosition: FSCalendarMonthPosition) {
         print("Date selected: \(date)")
     }
@@ -77,7 +77,7 @@ class TriTrackViewController: UIViewController, FSCalendarDelegate, FSCalendarDa
         let normalTextAttribute: [NSAttributedString.Key: Any] = [
             .foregroundColor: UIColor.white
         ]
-        
+
         let selectedBackground = Converters.convertHexToUIColor(hex: "924350")
 
         let selectedTextAttribute: [NSAttributedString.Key: Any] = [
@@ -87,7 +87,7 @@ class TriTrackViewController: UIViewController, FSCalendarDelegate, FSCalendarDa
         triTrackSegmentedControl.setTitleTextAttributes(normalTextAttribute, for: .normal)
         triTrackSegmentedControl.setTitleTextAttributes(selectedTextAttribute, for: .selected)
     }
-    
+
     private func updateView() {
         currentSegmentIndex = triTrackSegmentedControl.selectedSegmentIndex
 
@@ -110,10 +110,10 @@ class TriTrackViewController: UIViewController, FSCalendarDelegate, FSCalendarDa
     @IBAction func segmentTapped(_ sender: UISegmentedControl) {
         updateView()
     }
-    
+
     @IBAction func unwinToTriTrack(_ sender: UIStoryboardSegue) {
         guard let sourceVC = sender.source as? TriTrackAddEventViewController else { return }
-        
+
         switch sender.identifier {
         case "unwindToTriTrackViaDone":
             handleDoneButtonTapped(with: sourceVC)
@@ -123,7 +123,7 @@ class TriTrackViewController: UIViewController, FSCalendarDelegate, FSCalendarDa
             fatalError("love is a battlefield")
         }
     }
-            
+
     private func handleDoneButtonTapped(with viewController: TriTrackAddEventViewController) {
 
         switch viewController.viewControllerValue {
@@ -135,7 +135,7 @@ class TriTrackViewController: UIViewController, FSCalendarDelegate, FSCalendarDa
             fatalError("what is love?")
         }
     }
-    
+
     private func handleDoneButtonTappedForEventsReminders(with viewController: TriTrackAddEventViewController) {
         switch TriTrackEventReminderViewControlSegmentValue(rawValue: viewController.eventReminderSegmentControl.selectedSegmentIndex) {
         case .eventView:
@@ -146,42 +146,42 @@ class TriTrackViewController: UIViewController, FSCalendarDelegate, FSCalendarDa
             fatalError("Love is not what you think it is")
         }
     }
-    
+
     // MARK: - Handlers for done button tapped
 
     private func handleDoneButtonTappedForSymptomsView(with viewController: TriTrackAddEventViewController) {
         let title = viewController.addSymptomsTableViewController?.titleField.text
         let notes = viewController.addSymptomsTableViewController?.notesField.text
         let dateTime = viewController.addSymptomsTableViewController?.dateTime.date
-        
+
         guard let title = title, let dateTime = dateTime else { return }
-        
+
         let triTrackSymptom = TriTrackSymptom(title: title, notes: notes, atTime: dateTime)
         MomCareUser.shared.addSymptom(triTrackSymptom)
         symptomsViewController?.symptomsTableViewController?.refreshData()
     }
-    
+
     private func handleDoneButtonTappedForEventsView(with viewController: TriTrackAddEventViewController) {
         let title = viewController.addEventTableViewController?.titleField.text
         let location = viewController.addEventTableViewController?.locationField.text
-        
+
         let startDateTime = viewController.addEventTableViewController?.startDateTimePicker.date
         let endDateTime = viewController.addEventTableViewController?.endDateTimePicker.date
-        
+
         let repeatAfter = viewController.addEventTableViewController?.selectedRepeatOption
         let travelTime = viewController.addEventTableViewController?.selectedTravelTimeOption
         let alertTime = viewController.addEventTableViewController?.selectedAlertTimeOption
-        
+
         let allDay = viewController.addEventTableViewController?.allDaySwitch.isOn ?? false
-        
+
         guard let title = title, let startDateTime = startDateTime else { return }
-        
+
         let triTrackEvent = TriTrackEvent(title: title, location: location, allDay: allDay, startDate: startDateTime, endDate: endDateTime, travelTime: travelTime, alertBefore: alertTime, repeatAfter: repeatAfter)
-        
+
         MomCareUser.shared.addEvent(triTrackEvent)
         eventsViewController?.appointmentsTableViewController?.refreshData()
     }
-    
+
     private func handleDoneButtonTappedForRemindersView(with viewController: TriTrackAddEventViewController) {
         let title = viewController.addReminderTableViewController?.titleField.text
         let notes = viewController.addReminderTableViewController?.notesField.text
@@ -189,7 +189,7 @@ class TriTrackViewController: UIViewController, FSCalendarDelegate, FSCalendarDa
         let timeInterval = viewController.addReminderTableViewController?.selectedRepeatOption
 
         guard let title = title, let notes = notes, let dateTime = dateTime else { return }
-        
+
         let triTrackReminder = TriTrackReminder(title: title, date: dateTime, notes: notes, repeatAfter: timeInterval)
         MomCareUser.shared.addReminder(triTrackReminder)
         eventsViewController?.remindersTableViewController?.refreshData()
@@ -197,9 +197,9 @@ class TriTrackViewController: UIViewController, FSCalendarDelegate, FSCalendarDa
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         let identifier = segue.identifier
-        
+
         guard let identifier = identifier else { return }
-        
+
         switch identifier {
         case "segueTriTrack":
             if let destinationVC = segue.destination as? UINavigationController {

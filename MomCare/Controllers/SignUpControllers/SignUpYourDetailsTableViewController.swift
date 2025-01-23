@@ -8,17 +8,17 @@
 import UIKit
 
 class SignUpYourDetailsTableViewController: UITableViewController, UIViewControllerTransitioningDelegate {
-    
+
     @IBOutlet var recievedHeight: UILabel!
     @IBOutlet weak var prePregnancyWeight: UILabel!
     @IBOutlet weak var currentWeight: UILabel!
     @IBOutlet weak var countryLabel: UILabel!
-    
+
     var updatedHeight: Int?
-    
+
     @IBOutlet weak var progressView: UIProgressView!
     var initialProgress: Float = 0.0
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         progressView.progress = initialProgress
@@ -26,7 +26,7 @@ class SignUpYourDetailsTableViewController: UITableViewController, UIViewControl
             self.progressView.setProgress(0.5, animated: true)
         }
     }
-    
+
     override func viewWillAppear(_ animated: Bool) {
         recievedHeight.text = "\(updatedHeight ?? 0) cm"
         super.viewWillAppear(animated)
@@ -52,23 +52,23 @@ class SignUpYourDetailsTableViewController: UITableViewController, UIViewControl
             self.present(pickerVC, animated: true, completion: nil)
         }
     }
-    
+
     @IBAction func heightButtonTapped(_ sender: Any) {
         presentPickerViewController(withOptions: .height)
     }
-    
+
     @IBAction func prePregnancyButtonTapped(_ sender: Any) {
         presentPickerViewController(withOptions: .prePregnancyWeight)
     }
-    
+
     @IBAction func currentWeightButtonTapped(_ sender: Any) {
         presentPickerViewController(withOptions: .currentWeight)
     }
-    
+
     @IBAction func countryButtonTapped(_ sender: Any) {
         presentPickerViewController(withOptions: .country)
     }
-    
+
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "showProgress" {
             if let destinationVC = segue.destination as? SignUpYourDetailsExtendedTableViewController {
@@ -76,7 +76,7 @@ class SignUpYourDetailsTableViewController: UITableViewController, UIViewControl
             }
         }
     }
-    
+
     @IBAction func unwindToMainViewController(_ segue: UIStoryboardSegue) {
         if let sourceVC = segue.source as? PickerViewController {
             recievedHeight.text = "\(sourceVC.selectedHeight) cm"

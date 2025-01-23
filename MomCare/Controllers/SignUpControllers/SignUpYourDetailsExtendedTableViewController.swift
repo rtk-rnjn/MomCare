@@ -83,7 +83,7 @@ class SignUpYourDetailsExtendedTableViewController: UITableViewController {
         let options = [
             "None", "Diabetes (Type 1, Type 2, Gestational)", "Hypertension", "Polycystic Ovary Syndrome (PCOS)", "Anemia", "Asthma", "Heart Disease", "Kidney Disease"
         ]
-        
+
         configurePopUpButton(existingConditionPopupButton, options: options)
     }
 
@@ -121,8 +121,7 @@ class SignUpYourDetailsExtendedTableViewController: UITableViewController {
         }
         return UITableView.automaticDimension
     }
-    
-    
+
     @IBAction func finishButtonTapped(_ sender: UIButton) {
         UserDefaults.standard.set(true, forKey: "userCompletedOnBoarding")
     }

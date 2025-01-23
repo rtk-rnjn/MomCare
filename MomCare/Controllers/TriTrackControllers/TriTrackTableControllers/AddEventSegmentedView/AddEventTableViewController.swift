@@ -54,15 +54,15 @@ class AddEventTableViewController: UITableViewController {
 
     @IBOutlet var titleField: UITextField!
     @IBOutlet var locationField: UITextField!
-    
+
     var selectedRepeatOption: TimeInterval = -1
     var selectedTravelTimeOption: TimeInterval = -1
     var selectedAlertTimeOption: TimeInterval = -1
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         endDateTimePicker.minimumDate = Date()
-        
+
         preparePopupButtons()
     }
 
@@ -77,21 +77,21 @@ class AddEventTableViewController: UITableViewController {
             literalEndsLabel.alpha = 1
         }
     }
-    
+
     private func preparePopupButtons() {
         prepareRepeatPopup()
         prepareTravelTimePopup()
         prepareAlertTimePopup()
     }
-    
+
     private func prepareRepeatPopup() {
         repeatPopupButton.menu = UIMenu(children: AddEventTableViewController.repeatTimeOptions.map { title, _ in
             UIAction(title: title, handler: handleRepeatOption) })
-        
+
         repeatPopupButton.showsMenuAsPrimaryAction = true
         repeatPopupButton.changesSelectionAsPrimaryAction = true
     }
-    
+
     private func handleRepeatOption(action: UIAction) {
         repeatPopupButton.setTitle(action.title, for: .normal)
         selectedRepeatOption = AddEventTableViewController.repeatTimeOptions[action.title]!
@@ -100,20 +100,20 @@ class AddEventTableViewController: UITableViewController {
     private func prepareTravelTimePopup() {
         travelTimePopupButton.menu = UIMenu(children: AddEventTableViewController.travelTimeOptions.map { title, _ in
             UIAction(title: title, handler: handleTravelTimeOption) })
-        
+
         travelTimePopupButton.showsMenuAsPrimaryAction = true
         travelTimePopupButton.changesSelectionAsPrimaryAction = true
     }
-    
+
     private func handleTravelTimeOption(action: UIAction) {
         travelTimePopupButton.setTitle(action.title, for: .normal)
         selectedTravelTimeOption = AddEventTableViewController.travelTimeOptions[action.title]!
     }
-    
+
     private func prepareAlertTimePopup() {
         alertTimePopupButton.menu = UIMenu(children: AddEventTableViewController.alertTimeOptions.map { title, _ in
             UIAction(title: title, handler: handleAlertTimeOption) })
-        
+
         alertTimePopupButton.showsMenuAsPrimaryAction = true
         alertTimePopupButton.changesSelectionAsPrimaryAction = true
     }

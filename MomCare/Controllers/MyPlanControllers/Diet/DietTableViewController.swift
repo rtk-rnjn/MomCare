@@ -25,16 +25,16 @@ class DietTableViewController: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         dietTableView.register(UINib(nibName: "HeaderCell", bundle: nil), forCellReuseIdentifier: "HeaderCell")
         dietTableView.register(UINib(nibName: "ContentCell", bundle: nil), forCellReuseIdentifier: "ContentCell")
 
         dietTableView.delegate = self
         dietTableView.dataSource = self
-        
+
         dietTableView.showsVerticalScrollIndicator = false
     }
-    
+
     init?(coder: NSCoder, dietViewController: DietViewController) {
         self.dietViewController = dietViewController
         super.init(coder: coder)
@@ -66,7 +66,7 @@ class DietTableViewController: UITableViewController {
 
         let foodItem = getFoods(with: indexPath)
         cell.updateElements(with: foodItem, at: indexPath, of: self)
-        
+
         return cell
     }
 }

@@ -12,7 +12,7 @@ class AllAppointmentsTableViewCell: UITableViewCell {
     @IBOutlet var titleLabel: UILabel!
     @IBOutlet var notesLabel: UILabel!
     @IBOutlet var dateTimePicker: UIDatePicker!
-    
+
     func updateElements(with appointment: TriTrackEvent) {
         titleLabel.text = appointment.title
         notesLabel.text = appointment.location

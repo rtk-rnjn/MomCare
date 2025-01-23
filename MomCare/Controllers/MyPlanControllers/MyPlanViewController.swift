@@ -18,7 +18,7 @@ class MyPlanViewController: UIViewController {
         super.viewDidLoad()
         updateView()
     }
-    
+
     private func hideAllViews(except view: MyPlanViewControlSegmentValue?) {
         switch view {
         case .dietContainerView:
@@ -35,11 +35,11 @@ class MyPlanViewController: UIViewController {
     @IBAction func segmentChanged(_ sender: UISegmentedControl) {
         updateView()
     }
-    
+
     func updateView() {
         currentSegmentValue = segmentedControl.selectedSegmentIndex
         let segmentControlView = MyPlanViewControlSegmentValue(rawValue: currentSegmentValue)
-        
+
         hideAllViews(except: segmentControlView)
     }
 }

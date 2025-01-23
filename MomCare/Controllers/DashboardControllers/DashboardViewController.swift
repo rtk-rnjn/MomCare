@@ -65,24 +65,24 @@ class DashboardViewController: UIViewController, UICollectionViewDataSource {
     private func createLayoutForHeading() -> NSCollectionLayoutSection {
         let userHeadingLayoutSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(100))
         let userHeading = NSCollectionLayoutItem(layoutSize: userHeadingLayoutSize)
-        
+
         let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(100))
         let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [userHeading])
-        
+
         group.contentInsets = NSDirectionalEdgeInsets(top: 5, leading: 0, bottom: 5, trailing: 0)
         let section = NSCollectionLayoutSection(group: group)
         section.contentInsets = NSDirectionalEdgeInsets(top: 10, leading: 15, bottom: 5, trailing: 15)
-        
+
         return section
     }
 
     private func createLayoutForWeekEventCard() -> NSCollectionLayoutSection {
         let weekCardLayoutSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.55), heightDimension: .absolute(137))
         let eventCardLayoutSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.45), heightDimension: .absolute(137))
-        
+
         let weekCard = NSCollectionLayoutItem(layoutSize: weekCardLayoutSize)
         let eventCard = NSCollectionLayoutItem(layoutSize: eventCardLayoutSize)
-        
+
         let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(137))
         let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [weekCard, eventCard])
 
@@ -100,7 +100,7 @@ class DashboardViewController: UIViewController, UICollectionViewDataSource {
         let exerciseLayoutSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(179))
         let dietProgress = NSCollectionLayoutItem(layoutSize: dietLayoutSize)
         let exerciseProgress = NSCollectionLayoutItem(layoutSize: exerciseLayoutSize)
-        
+
         let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .estimated(179))
         let group = NSCollectionLayoutGroup.vertical(layoutSize: groupSize, subitems: [dietProgress, exerciseProgress])
 
@@ -166,11 +166,11 @@ class DashboardViewController: UIViewController, UICollectionViewDataSource {
             fatalError("Unexpected section")
         }
     }
-    
+
     private func prepareDietExersiceCell(at indexPath: IndexPath) -> UICollectionViewCell {
         if indexPath.row == 0 {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "DietProgress", for: indexPath) as? DietProgressCollectionViewCell
-            
+
             guard let cell = cell else { fatalError() }
             cell.updateElements(with: MomCareUser.shared.diet)
             return cell
@@ -181,16 +181,16 @@ class DashboardViewController: UIViewController, UICollectionViewDataSource {
             guard let cell = cell else { fatalError() }
             return cell
         }
-        
+
         fatalError()
     }
-    
+
     private func prepareWelcomeHeaderCell(at indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "WelcomeHeaderCell", for: indexPath) as? WelcomeHeaderCollectionViewCell
-        
+
         guard let cell = cell else { fatalError() }
         cell.updateElements(with: "Hi, Khushi")
-        
+
         return cell
     }
 
@@ -201,7 +201,7 @@ class DashboardViewController: UIViewController, UICollectionViewDataSource {
         }
 
         let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "SectionHeaderView", for: indexPath) as? DashboardSectionHeaderCollectionViewCell
-        
+
         guard let headerView = headerView else { fatalError() }
 
         headerView.titleLabel.text = (indexPath.section == 2) ? "Progress" : "Daily Insights"

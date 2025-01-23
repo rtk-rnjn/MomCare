@@ -16,7 +16,7 @@ class BabyStatsViewController: UIViewController {
         super.viewDidLoad()
         scaleImage.layer.cornerRadius = 14
         scaleImage.layer.masksToBounds = true
-        
+
         heightImage.layer.cornerRadius = 14
         heightImage.layer.masksToBounds = true
     }

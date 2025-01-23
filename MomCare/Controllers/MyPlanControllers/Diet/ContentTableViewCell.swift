@@ -13,14 +13,14 @@ class ContentTableViewCell: UITableViewCell {
     @IBOutlet var foodItemLabel: UILabel!
     @IBOutlet var kalcLabel: UILabel!
     @IBOutlet var foodImageView: UIImageView!
-    
+
     @IBOutlet var foodItemButton: UIButton!
 
     var foodItem: FoodItem?
     var indexPath: IndexPath?
-    
+
     private var dietTableViewController: DietTableViewController?
-    
+
     private let color = Converters.convertHexToUIColor(hex: "924350")
 
     func updateElements(with foodItem: FoodItem, at indexPath: IndexPath?, of view: DietTableViewController) {
@@ -30,7 +30,7 @@ class ContentTableViewCell: UITableViewCell {
 
         self.foodItem = foodItem
         self.indexPath = indexPath
-        
+
         self.dietTableViewController = view
     }
 
@@ -51,8 +51,7 @@ class ContentTableViewCell: UITableViewCell {
         let configuration = UIImage.SymbolConfiguration(scale: .small)
         if consumed {
             sender.setImage(UIImage(systemName: "checkmark.circle.fill", withConfiguration: configuration)?.withTintColor(color), for: .normal)
-        }
-        else {
+        } else {
             sender.setImage(UIImage(systemName: "circle", withConfiguration: configuration)?.withTintColor(color), for: .normal)
         }
         dietTableViewController?.dietViewController.refresh()
