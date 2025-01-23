@@ -25,16 +25,16 @@ class DietTableViewController: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         dietTableView.register(UINib(nibName: "HeaderCell", bundle: nil), forCellReuseIdentifier: "HeaderCell")
         dietTableView.register(UINib(nibName: "ContentCell", bundle: nil), forCellReuseIdentifier: "ContentCell")
 
         dietTableView.delegate = self
         dietTableView.dataSource = self
-        
+
         dietTableView.showsVerticalScrollIndicator = false
     }
-    
+
     init?(coder: NSCoder, dietViewController: DietViewController) {
         self.dietViewController = dietViewController
         super.init(coder: coder)
@@ -55,17 +55,18 @@ class DietTableViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if indexPath.row == 0 {
-            let cell = tableView.dequeueReusableCell(withIdentifier: "HeaderCell", for: indexPath) as! HeaderTableViewCell
-            cell.updateTitle(with: mealNames[indexPath.section], at: indexPath.section)
+            let cell = tableView.dequeueReusableCell(withIdentifier: "HeaderCell", for: indexPath) as? HeaderTableViewCell
+            guard let cell = cell else { fatalError() }
+            cell.updateTitle(with: mealNames[indexPath.section], at: indexPath.section, of: self)
             return cell
         }
 
         let cell = tableView.dequeueReusableCell(withIdentifier: "ContentCell", for: indexPath) as? ContentTableViewCell
         guard let cell = cell else { fatalError() }
-        
+
         let foodItem = getFoods(with: indexPath)
-        cell.updateElements(with: foodItem, at: indexPath, of: dietViewController)
-        
+        cell.updateElements(with: foodItem, at: indexPath, of: self)
+
         return cell
     }
 }

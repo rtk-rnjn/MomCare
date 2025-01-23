@@ -46,7 +46,7 @@ enum DietaryPreference {
     case ketogenic
     case highProtein
     case dairyFree
-    
+
 }
 
 public enum MoodType: String {
@@ -73,7 +73,7 @@ struct User {
 
     var gender: Gender = .female
     var country: Country = .india
-    
+
     var dueDate: Date?
     var preExistingConditions: [PreExistingCondition] = []
     var foodIntolerances: [Intolerance] = []
@@ -114,20 +114,20 @@ class MomCareUser {
         UserDiet.shared.updateFromDatabase()
         UserExercise.shared.updateFromDatabase()
     }
-    
+
     func updateToDatabase() {
         UserDiet.shared.updateToDatabase()
         UserExercise.shared.updateToDatabase()
     }
-    
+
     func addReminder(_ reminder: TriTrackReminder) {
         reminders.append(reminder)
     }
-    
+
     func addEvent(_ event: TriTrackEvent) {
         events.append(event)
     }
-    
+
     func addSymptom(_ symptom: TriTrackSymptom) {
         symptoms.append(symptom)
     }

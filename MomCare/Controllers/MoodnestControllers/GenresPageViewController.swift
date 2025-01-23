@@ -58,19 +58,19 @@ class GenresPageViewController: UIViewController, UICollectionViewDataSource, UI
 
         switch section {
 
-        case 0: 
+        case 0:
 
             return 1
 
-        case 1: 
+        case 1:
 
             return 1
 
-        case 2: 
+        case 2:
 
             return 6
 
-        default: 
+        default:
 
             return 0
 
@@ -82,7 +82,7 @@ class GenresPageViewController: UIViewController, UICollectionViewDataSource, UI
 
         switch indexPath.section {
 
-        case 0: 
+        case 0:
 
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "MainHeading", for: indexPath) as! MainHeadingCollectionViewCell
 
@@ -92,7 +92,7 @@ class GenresPageViewController: UIViewController, UICollectionViewDataSource, UI
 
             return cell
 
-        case 1: 
+        case 1:
 
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "MainImage", for: indexPath) as! MainImageCollectionViewCell
 
@@ -102,7 +102,7 @@ class GenresPageViewController: UIViewController, UICollectionViewDataSource, UI
 
             return cell
 
-        default: 
+        default:
 
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "MoodNestMultipleImages", for: indexPath) as! MoodNestMultipleImagesCollectionViewCell
 
@@ -146,15 +146,15 @@ class GenresPageViewController: UIViewController, UICollectionViewDataSource, UI
 
             switch sectionIndex {
 
-            case 0: 
+            case 0:
 
                 section = self.generateSection1Layout()
 
-            case 1: 
+            case 1:
 
                 section = self.generateSection2Layout()
 
-            case 2: 
+            case 2:
 
                 section = self.generateSection3Layout()
 
@@ -170,7 +170,7 @@ class GenresPageViewController: UIViewController, UICollectionViewDataSource, UI
 
                 section.boundarySupplementaryItems = [header]
 
-            default: 
+            default:
 
                 print("Invalid section index")
 
@@ -263,11 +263,10 @@ class GenresPageViewController: UIViewController, UICollectionViewDataSource, UI
         return section
 
     }
-    
+
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let selectedPlaylist = FeaturedPlaylists.playlists[indexPath.item]
         performSegue(withIdentifier: "songPageSegue", sender: selectedPlaylist)
     }
 
 }
-    

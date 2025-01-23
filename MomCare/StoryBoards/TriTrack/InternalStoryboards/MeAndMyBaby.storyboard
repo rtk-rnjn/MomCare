@@ -16,17 +16,20 @@
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="6jf-2I-5pA">
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="6jf-2I-5pA">
                                 <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                                 <subviews>
-                                    <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aGr-Se-l3b">
-                                        <rect key="frame" x="0.0" y="0.0" width="393" height="425"/>
+                                    <containerView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="aGr-Se-l3b">
+                                        <rect key="frame" x="0.0" y="0.0" width="393" height="250"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="250" id="mNn-cQ-ygz"/>
+                                        </constraints>
                                         <connections>
                                             <segue destination="jC5-F0-ycI" kind="embed" id="seh-0c-8xr"/>
                                         </connections>
                                     </containerView>
                                     <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Emh-9T-5Vk">
-                                        <rect key="frame" x="0.0" y="427" width="393" height="425"/>
+                                        <rect key="frame" x="0.0" y="252" width="393" height="600"/>
                                         <connections>
                                             <segue destination="wGc-dr-JYr" kind="embed" id="rfg-cJ-AF6"/>
                                         </connections>
@@ -53,11 +56,11 @@
             <objects>
                 <viewController id="jC5-F0-ycI" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="eo0-IJ-CGf">
-                        <rect key="frame" x="0.0" y="0.0" width="393" height="425"/>
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="250"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="23" translatesAutoresizingMaskIntoConstraints="NO" id="Nlp-Ei-UCG">
-                                <rect key="frame" x="16" y="69" width="361" height="312"/>
+                                <rect key="frame" x="16" y="69" width="361" height="147"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="nux-U4-nVO">
                                         <rect key="frame" x="0.0" y="0.0" width="361" height="23"/>
@@ -77,7 +80,7 @@
                                         </subviews>
                                     </stackView>
                                     <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="EEN-7L-OqU">
-                                        <rect key="frame" x="0.0" y="46" width="361" height="266"/>
+                                        <rect key="frame" x="0.0" y="46" width="361" height="101"/>
                                         <connections>
                                             <segue destination="exA-3n-zZ4" kind="embed" id="txC-FX-peW"/>
                                         </connections>
@@ -89,7 +92,7 @@
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstAttribute="trailingMargin" secondItem="Nlp-Ei-UCG" secondAttribute="trailing" id="K3l-MU-RBp"/>
-                            <constraint firstAttribute="bottomMargin" secondItem="Nlp-Ei-UCG" secondAttribute="bottom" constant="10" id="Sax-z5-Wcm"/>
+                            <constraint firstAttribute="bottomMargin" secondItem="Nlp-Ei-UCG" secondAttribute="bottom" id="Sax-z5-Wcm"/>
                             <constraint firstItem="Nlp-Ei-UCG" firstAttribute="leading" secondItem="eo0-IJ-CGf" secondAttribute="leadingMargin" id="Try-7Y-xMe"/>
                             <constraint firstItem="Nlp-Ei-UCG" firstAttribute="top" secondItem="eo0-IJ-CGf" secondAttribute="topMargin" constant="10" id="W9B-uZ-Yjm"/>
                         </constraints>
@@ -104,7 +107,7 @@
             <objects>
                 <viewController id="wGc-dr-JYr" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="MMG-0n-a47">
-                        <rect key="frame" x="0.0" y="0.0" width="393" height="425"/>
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cz6-iJ-8fj" userLabel="DividerView">
@@ -115,7 +118,7 @@
                                 </constraints>
                             </view>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="sFS-00-EZe">
-                                <rect key="frame" x="0.0" y="1" width="393" height="424"/>
+                                <rect key="frame" x="0.0" y="1" width="393" height="599"/>
                                 <subviews>
                                     <containerView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="ZBL-mR-uI9">
                                         <rect key="frame" x="0.0" y="0.0" width="393" height="75"/>
@@ -127,7 +130,7 @@
                                         </connections>
                                     </containerView>
                                     <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Jwm-qL-4b5">
-                                        <rect key="frame" x="0.0" y="75" width="393" height="349"/>
+                                        <rect key="frame" x="0.0" y="75" width="393" height="524"/>
                                         <connections>
                                             <segue destination="QJj-Wh-XkK" kind="embed" id="Srj-JP-7Ox"/>
                                         </connections>
@@ -157,11 +160,11 @@
             <objects>
                 <viewController id="exA-3n-zZ4" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Avf-2p-BjB">
-                        <rect key="frame" x="0.0" y="0.0" width="361" height="266"/>
+                        <rect key="frame" x="0.0" y="0.0" width="361" height="101"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" distribution="fillProportionally" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="viy-Rn-IPr">
-                                <rect key="frame" x="50" y="79" width="261" height="96.333333333333314"/>
+                                <rect key="frame" x="50" y="58.999999999999993" width="261" height="96.333333333333314"/>
                                 <subviews>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="apple-fruit-svgrepo-com" translatesAutoresizingMaskIntoConstraints="NO" id="5i1-cG-aJe" userLabel="Left Image View">
                                         <rect key="frame" x="0.0" y="0.0" width="96.333333333333329" height="96.333333333333329"/>
@@ -186,7 +189,7 @@
                                 </subviews>
                             </stackView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="“I’m currently the size of an Apple”" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3Ee-xq-r4C">
-                                <rect key="frame" x="0.0" y="215.33333333333334" width="361" height="20.333333333333343"/>
+                                <rect key="frame" x="0.0" y="195.33333333333334" width="361" height="20.333333333333343"/>
                                 <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -199,7 +202,7 @@
                             <constraint firstAttribute="trailing" secondItem="viy-Rn-IPr" secondAttribute="trailing" constant="50" id="Qx5-99-KdI"/>
                             <constraint firstItem="3Ee-xq-r4C" firstAttribute="leading" secondItem="MRX-ky-DOU" secondAttribute="leading" id="Rbe-gK-yfP"/>
                             <constraint firstItem="3Ee-xq-r4C" firstAttribute="top" secondItem="viy-Rn-IPr" secondAttribute="bottom" constant="40" id="pFA-mA-PPB"/>
-                            <constraint firstItem="viy-Rn-IPr" firstAttribute="top" secondItem="Avf-2p-BjB" secondAttribute="topMargin" constant="20" id="qmm-vE-K3A"/>
+                            <constraint firstItem="viy-Rn-IPr" firstAttribute="top" secondItem="Avf-2p-BjB" secondAttribute="topMargin" id="qmm-vE-K3A"/>
                             <constraint firstItem="viy-Rn-IPr" firstAttribute="leading" secondItem="Avf-2p-BjB" secondAttribute="leading" constant="50" id="sAE-VW-IUW"/>
                             <constraint firstItem="viy-Rn-IPr" firstAttribute="centerX" secondItem="Avf-2p-BjB" secondAttribute="centerX" id="uJQ-oU-g1M"/>
                         </constraints>
@@ -303,26 +306,26 @@
             <objects>
                 <viewController id="QJj-Wh-XkK" customClass="BabyMomTipViewController" customModule="MomCare" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8Yq-Xw-RZo">
-                        <rect key="frame" x="0.0" y="0.0" width="393" height="349"/>
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="524"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="KHH-Sa-mEg">
-                                <rect key="frame" x="0.0" y="0.0" width="393" height="305"/>
+                            <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="KHH-Sa-mEg">
+                                <rect key="frame" x="0.0" y="0.0" width="393" height="480"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9WW-DE-trn">
-                                        <rect key="frame" x="0.0" y="0.0" width="191.66666666666666" height="305"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="194" height="480"/>
                                         <subviews>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="ERZ-Ax-Crg">
-                                                <rect key="frame" x="10" y="20" width="171.66666666666666" height="285"/>
+                                                <rect key="frame" x="10" y="20" width="174" height="460"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Baby" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6hy-Uf-rll">
-                                                        <rect key="frame" x="0.0" y="0.0" width="171.66666666666666" height="21.666666666666668"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="174" height="21.666666666666668"/>
                                                         <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
                                                         <nil key="textColor"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" text="In week 8, the embryo looks more like a human, instead of an alien. The facial features become more defined..." textAlignment="natural" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iKK-Vy-Poh">
-                                                        <rect key="frame" x="0.0" y="21.666666666666657" width="171.66666666666666" height="263.33333333333337"/>
+                                                        <rect key="frame" x="0.0" y="21.666666666666657" width="174" height="438.33333333333337"/>
                                                         <color key="textColor" systemColor="labelColor"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                         <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
@@ -339,19 +342,19 @@
                                         </constraints>
                                     </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cVF-Jf-H0B">
-                                        <rect key="frame" x="201.66666666666663" y="0.0" width="191.33333333333337" height="305"/>
+                                        <rect key="frame" x="199" y="0.0" width="194" height="480"/>
                                         <subviews>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="LZJ-0W-xTD">
-                                                <rect key="frame" x="10" y="20" width="171.33333333333334" height="285"/>
+                                                <rect key="frame" x="10" y="20" width="174" height="460"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Mom" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="po0-Q1-J4d">
-                                                        <rect key="frame" x="0.0" y="0.0" width="171.33333333333334" height="21.666666666666668"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="174" height="21.666666666666668"/>
                                                         <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
                                                         <nil key="textColor"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" text="Stay hydrated and combat nausea. Many women experience morning sickness and it can be challenging…" textAlignment="natural" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RRB-rF-KHN">
-                                                        <rect key="frame" x="0.0" y="21.666666666666657" width="171.33333333333334" height="263.33333333333337"/>
+                                                        <rect key="frame" x="0.0" y="21.666666666666657" width="174" height="438.33333333333337"/>
                                                         <color key="textColor" systemColor="labelColor"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                         <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
@@ -401,7 +404,7 @@
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
         <systemColor name="systemGray6Color">
-            <color red="0.94901960780000005" green="0.94901960780000005" blue="0.96862745100000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.94901960784313721" green="0.94901960784313721" blue="0.96862745098039216" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>

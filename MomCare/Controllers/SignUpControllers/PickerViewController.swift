@@ -30,23 +30,23 @@ class PickerViewController: UIViewController, UIPickerViewDelegate, UIPickerView
         pickerView.dataSource = self
 
         switch selectedOption {
-        case .height: 
+        case .height:
             currentOptions = heights
             suffix = "cm"
 
-        case .prePregnancyWeight: 
+        case .prePregnancyWeight:
             currentOptions = weight
             suffix = "Kg"
 
-        case .currentWeight: 
+        case .currentWeight:
             currentOptions = weight
             suffix = "Kg"
 
-        case .country: 
+        case .country:
             currentOptions = countryList
             suffix = ""
 
-        case .none: 
+        case .none:
             break
         }
     }

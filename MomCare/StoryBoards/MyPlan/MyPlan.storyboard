@@ -30,10 +30,16 @@
                                     <action selector="segmentChanged:" destination="BWs-Gh-cPC" eventType="valueChanged" id="CmT-s7-b12"/>
                                 </connections>
                             </segmentedControl>
-                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cVv-4T-ZaS" userLabel="DietViewContainerView">
+                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cVv-4T-ZaS" userLabel="DietContainerView">
                                 <rect key="frame" x="0.0" y="147" width="393" height="705"/>
                                 <connections>
                                     <segue destination="L5f-CQ-P5j" kind="embed" id="Npz-ts-lBr"/>
+                                </connections>
+                            </containerView>
+                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vt0-6x-Baf" userLabel="ExerciseContainerView">
+                                <rect key="frame" x="0.0" y="147" width="393" height="705"/>
+                                <connections>
+                                    <segue destination="hUU-Mi-xvp" kind="embed" id="gh2-qE-A38"/>
                                 </connections>
                             </containerView>
                         </subviews>
@@ -43,15 +49,20 @@
                             <constraint firstAttribute="bottom" secondItem="cVv-4T-ZaS" secondAttribute="bottom" id="28Q-cn-5xK"/>
                             <constraint firstItem="t7W-2s-Nfw" firstAttribute="top" secondItem="ZwL-O6-p0v" secondAttribute="top" constant="10" id="2BR-uE-1uL"/>
                             <constraint firstItem="ZwL-O6-p0v" firstAttribute="trailing" secondItem="t7W-2s-Nfw" secondAttribute="trailing" constant="20" id="4jx-z2-n4M"/>
+                            <constraint firstItem="vt0-6x-Baf" firstAttribute="trailing" secondItem="ZwL-O6-p0v" secondAttribute="trailing" id="4wC-bD-4Ru"/>
                             <constraint firstItem="t7W-2s-Nfw" firstAttribute="leading" secondItem="ZwL-O6-p0v" secondAttribute="leading" constant="20" id="7Yn-V5-4ye"/>
+                            <constraint firstItem="vt0-6x-Baf" firstAttribute="top" secondItem="t7W-2s-Nfw" secondAttribute="bottom" constant="3" id="alP-2k-zgx"/>
+                            <constraint firstItem="vt0-6x-Baf" firstAttribute="leading" secondItem="ZwL-O6-p0v" secondAttribute="leading" id="cil-TK-gQw"/>
                             <constraint firstItem="ZwL-O6-p0v" firstAttribute="trailing" secondItem="cVv-4T-ZaS" secondAttribute="trailing" id="g7s-YC-0jf"/>
+                            <constraint firstAttribute="bottom" secondItem="vt0-6x-Baf" secondAttribute="bottom" id="k0b-9p-oP0"/>
                             <constraint firstItem="cVv-4T-ZaS" firstAttribute="leading" secondItem="ZwL-O6-p0v" secondAttribute="leading" id="rtA-Dl-1aH"/>
                             <constraint firstItem="cVv-4T-ZaS" firstAttribute="top" secondItem="t7W-2s-Nfw" secondAttribute="bottom" constant="3" id="zEn-WE-hDg"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="My Plan" id="3Dq-O0-ktw"/>
                     <connections>
-                        <outlet property="containerView" destination="cVv-4T-ZaS" id="Ha8-m7-14Q"/>
+                        <outlet property="dietContainerView" destination="cVv-4T-ZaS" id="Ha8-m7-14Q"/>
+                        <outlet property="exerciseContainerView" destination="vt0-6x-Baf" id="W1Y-JM-FJ5"/>
                         <outlet property="segmentedControl" destination="t7W-2s-Nfw" id="i3j-6X-RHi"/>
                     </connections>
                 </viewController>
@@ -62,7 +73,7 @@
         <!--Diet View Controller-->
         <scene sceneID="tQz-7Q-zBh">
             <objects>
-                <viewController storyboardIdentifier="DietVC" useStoryboardIdentifierAsRestorationIdentifier="YES" id="L5f-CQ-P5j" customClass="DietViewController" customModule="MomCare" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController useStoryboardIdentifierAsRestorationIdentifier="YES" id="L5f-CQ-P5j" customClass="DietViewController" customModule="MomCare" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="K87-3x-RYs">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="705"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -279,7 +290,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="sNv-1r-nCb" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4924" y="107"/>
+            <point key="canvasLocation" x="4987" y="-144"/>
         </scene>
         <!--Diet Table View Controller-->
         <scene sceneID="4lV-iC-m2h">
@@ -310,14 +321,14 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="vs7-9e-Opw" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5630" y="107"/>
+            <point key="canvasLocation" x="5857" y="-144"/>
         </scene>
         <!--Exercise View Controller-->
         <scene sceneID="0jC-xG-fUb">
             <objects>
-                <viewController storyboardIdentifier="ExerciseVC" useStoryboardIdentifierAsRestorationIdentifier="YES" id="hUU-Mi-xvp" customClass="ExerciseViewController" customModule="MomCare" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController useStoryboardIdentifierAsRestorationIdentifier="YES" id="hUU-Mi-xvp" customClass="ExerciseViewController" customModule="MomCare" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="nDF-vx-plM">
-                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="705"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Week 10" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZcW-2a-cQK">
@@ -327,7 +338,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="Yt9-o6-ItS">
-                                <rect key="frame" x="0.0" y="53" width="393" height="799"/>
+                                <rect key="frame" x="0.0" y="53" width="393" height="652"/>
                                 <color key="backgroundColor" red="0.89777654409999996" green="0.83144223689999996" blue="0.82744789119999995" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="10" id="4FT-Kr-kbq">
                                     <size key="itemSize" width="128" height="128"/>
@@ -365,7 +376,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Rnh-hu-bAn" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="6286" y="93"/>
+            <point key="canvasLocation" x="4985" y="418"/>
         </scene>
         <!--MyPlan-->
         <scene sceneID="FH3-ZF-28y">

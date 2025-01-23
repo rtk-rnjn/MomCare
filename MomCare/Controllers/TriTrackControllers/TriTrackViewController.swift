@@ -8,10 +8,10 @@
 import UIKit
 import FSCalendar
 
-enum ContainerType {
-    case meAndBaby
-    case events
-    case symptoms
+enum TriTrackContainerViewType: Int {
+    case meAndBabyContainerView = 0
+    case eventsContainerView = 1
+    case symptomsContainerView = 2
 }
 
 class TriTrackViewController: UIViewController, FSCalendarDelegate, FSCalendarDataSource {
@@ -23,15 +23,15 @@ class TriTrackViewController: UIViewController, FSCalendarDelegate, FSCalendarDa
     @IBOutlet var meAndBabyContainerView: UIView!
     @IBOutlet var eventsContainerView: UIView!
     @IBOutlet var symptomsContainerView: UIView!
-    
-    @IBOutlet var calendarUIView: UIView!
-    var calendarView: FSCalendar!
-    
-    var symptomsViewController: SymptomsViewController?
-    var eventsViewController: EventsViewController?
 
-    var currentSegmentIndex: Int = 0
-    
+    @IBOutlet var calendarUIView: UIView!
+    private var calendarView: FSCalendar!
+
+    private var symptomsViewController: SymptomsViewController?
+    private var eventsViewController: EventsViewController?
+
+    private var currentSegmentIndex: Int = 0
+
     override func viewDidLoad() {
         super.viewDidLoad()
         calendarView = FSCalendar(frame: CGRect(x: 0, y: 0, width: calendarUIView.frame.width, height: calendarUIView.frame.height + 150))
@@ -40,10 +40,10 @@ class TriTrackViewController: UIViewController, FSCalendarDelegate, FSCalendarDa
 
         calendarView.dataSource = self
         calendarView.delegate = self
-    
+
         calendarUIView.addSubview(calendarView)
     }
-    
+
     func calendar(_ calendar: FSCalendar, didSelect date: Date, at monthPosition: FSCalendarMonthPosition) {
         print("Date selected: \(date)")
     }
@@ -57,11 +57,11 @@ class TriTrackViewController: UIViewController, FSCalendarDelegate, FSCalendarDa
         updateView()
     }
 
-    func hideAllContainers(except: ContainerType) {
-        let allContainers: [ContainerType: UIView] = [
-            .meAndBaby: meAndBabyContainerView,
-            .events: eventsContainerView,
-            .symptoms: symptomsContainerView
+    private func hideAllContainers(except: TriTrackContainerViewType) {
+        let allContainers: [TriTrackContainerViewType: UIView] = [
+            .meAndBabyContainerView: meAndBabyContainerView,
+            .eventsContainerView: eventsContainerView,
+            .symptomsContainerView: symptomsContainerView
         ]
 
         allContainers.values.forEach { $0.isHidden = true }
@@ -71,13 +71,13 @@ class TriTrackViewController: UIViewController, FSCalendarDelegate, FSCalendarDa
         }
     }
 
-    func prepareSegmentedControl() {
+    private func prepareSegmentedControl() {
         triTrackSegmentedControl.selectedSegmentIndex = currentSegmentIndex
 
         let normalTextAttribute: [NSAttributedString.Key: Any] = [
             .foregroundColor: UIColor.white
         ]
-        
+
         let selectedBackground = Converters.convertHexToUIColor(hex: "924350")
 
         let selectedTextAttribute: [NSAttributedString.Key: Any] = [
@@ -87,20 +87,20 @@ class TriTrackViewController: UIViewController, FSCalendarDelegate, FSCalendarDa
         triTrackSegmentedControl.setTitleTextAttributes(normalTextAttribute, for: .normal)
         triTrackSegmentedControl.setTitleTextAttributes(selectedTextAttribute, for: .selected)
     }
-    
-    func updateView() {
+
+    private func updateView() {
         currentSegmentIndex = triTrackSegmentedControl.selectedSegmentIndex
 
         switch currentSegmentIndex {
         case 0:
             addButton.isEnabled = false
-            hideAllContainers(except: .meAndBaby)
+            hideAllContainers(except: .meAndBabyContainerView)
         case 1:
             addButton.isEnabled = true
-            hideAllContainers(except: .events)
+            hideAllContainers(except: .eventsContainerView)
         case 2:
             addButton.isEnabled = true
-            hideAllContainers(except: .symptoms)
+            hideAllContainers(except: .symptomsContainerView)
         default:
             // Should never happen
             fatalError("love is beautiful thing")
@@ -110,10 +110,10 @@ class TriTrackViewController: UIViewController, FSCalendarDelegate, FSCalendarDa
     @IBAction func segmentTapped(_ sender: UISegmentedControl) {
         updateView()
     }
-    
+
     @IBAction func unwinToTriTrack(_ sender: UIStoryboardSegue) {
         guard let sourceVC = sender.source as? TriTrackAddEventViewController else { return }
-        
+
         switch sender.identifier {
         case "unwindToTriTrackViaDone":
             handleDoneButtonTapped(with: sourceVC)
@@ -123,8 +123,8 @@ class TriTrackViewController: UIViewController, FSCalendarDelegate, FSCalendarDa
             fatalError("love is a battlefield")
         }
     }
-            
-    func handleDoneButtonTapped(with viewController: TriTrackAddEventViewController) {
+
+    private func handleDoneButtonTapped(with viewController: TriTrackAddEventViewController) {
 
         switch viewController.viewControllerValue {
         case .eventsReminderView:
@@ -135,8 +135,8 @@ class TriTrackViewController: UIViewController, FSCalendarDelegate, FSCalendarDa
             fatalError("what is love?")
         }
     }
-    
-    func handleDoneButtonTappedForEventsReminders(with viewController: TriTrackAddEventViewController) {
+
+    private func handleDoneButtonTappedForEventsReminders(with viewController: TriTrackAddEventViewController) {
         switch TriTrackEventReminderViewControlSegmentValue(rawValue: viewController.eventReminderSegmentControl.selectedSegmentIndex) {
         case .eventView:
             handleDoneButtonTappedForEventsView(with: viewController)
@@ -146,50 +146,50 @@ class TriTrackViewController: UIViewController, FSCalendarDelegate, FSCalendarDa
             fatalError("Love is not what you think it is")
         }
     }
-    
+
     // MARK: - Handlers for done button tapped
 
-    func handleDoneButtonTappedForSymptomsView(with viewController: TriTrackAddEventViewController) {
+    private func handleDoneButtonTappedForSymptomsView(with viewController: TriTrackAddEventViewController) {
         let title = viewController.addSymptomsTableViewController?.titleField.text
         let notes = viewController.addSymptomsTableViewController?.notesField.text
         let dateTime = viewController.addSymptomsTableViewController?.dateTime.date
-        
+
         guard let title = title, let dateTime = dateTime else { return }
-        
+
         let triTrackSymptom = TriTrackSymptom(title: title, notes: notes, atTime: dateTime)
         MomCareUser.shared.addSymptom(triTrackSymptom)
         symptomsViewController?.symptomsTableViewController?.refreshData()
     }
-    
-    func handleDoneButtonTappedForEventsView(with viewController: TriTrackAddEventViewController) {
+
+    private func handleDoneButtonTappedForEventsView(with viewController: TriTrackAddEventViewController) {
         let title = viewController.addEventTableViewController?.titleField.text
         let location = viewController.addEventTableViewController?.locationField.text
-        
+
         let startDateTime = viewController.addEventTableViewController?.startDateTimePicker.date
         let endDateTime = viewController.addEventTableViewController?.endDateTimePicker.date
-        
+
         let repeatAfter = viewController.addEventTableViewController?.selectedRepeatOption
         let travelTime = viewController.addEventTableViewController?.selectedTravelTimeOption
         let alertTime = viewController.addEventTableViewController?.selectedAlertTimeOption
-        
+
         let allDay = viewController.addEventTableViewController?.allDaySwitch.isOn ?? false
-        
+
         guard let title = title, let startDateTime = startDateTime else { return }
-        
+
         let triTrackEvent = TriTrackEvent(title: title, location: location, allDay: allDay, startDate: startDateTime, endDate: endDateTime, travelTime: travelTime, alertBefore: alertTime, repeatAfter: repeatAfter)
-        
+
         MomCareUser.shared.addEvent(triTrackEvent)
         eventsViewController?.appointmentsTableViewController?.refreshData()
     }
-    
-    func handleDoneButtonTappedForRemindersView(with viewController: TriTrackAddEventViewController) {
+
+    private func handleDoneButtonTappedForRemindersView(with viewController: TriTrackAddEventViewController) {
         let title = viewController.addReminderTableViewController?.titleField.text
         let notes = viewController.addReminderTableViewController?.notesField.text
         let dateTime = viewController.addReminderTableViewController?.dateTime.date
         let timeInterval = viewController.addReminderTableViewController?.selectedRepeatOption
 
         guard let title = title, let notes = notes, let dateTime = dateTime else { return }
-        
+
         let triTrackReminder = TriTrackReminder(title: title, date: dateTime, notes: notes, repeatAfter: timeInterval)
         MomCareUser.shared.addReminder(triTrackReminder)
         eventsViewController?.remindersTableViewController?.refreshData()
@@ -197,9 +197,9 @@ class TriTrackViewController: UIViewController, FSCalendarDelegate, FSCalendarDa
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         let identifier = segue.identifier
-        
+
         guard let identifier = identifier else { return }
-        
+
         switch identifier {
         case "segueTriTrack":
             if let destinationVC = segue.destination as? UINavigationController {
@@ -217,7 +217,5 @@ class TriTrackViewController: UIViewController, FSCalendarDelegate, FSCalendarDa
         default:
             break
         }
-        
     }
-    
 }

@@ -111,6 +111,6 @@ class FeaturedPlaylists {
                 Song(name: "Native American Flute Music", artist: "R. Carlos Nakai", duration: 240.0)
             ]
         )
-        
+
     ]
 }

@@ -8,9 +8,9 @@
 import UIKit
 
 class AddSymptomsTableViewController: UITableViewController {
-    
+
     @IBOutlet var titleField: UITextField!
     @IBOutlet var notesField: UITextField!
     @IBOutlet var dateTime: UIDatePicker!
-    
+
 }

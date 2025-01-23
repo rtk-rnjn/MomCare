@@ -8,7 +8,7 @@
 import UIKit
 
 class FocusCardCollectionViewCell: UICollectionViewCell {
-    
+
     @IBOutlet weak var currentFocusLabel: UILabel!
-    
+
 }

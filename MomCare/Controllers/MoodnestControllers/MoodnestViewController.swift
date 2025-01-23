@@ -54,7 +54,7 @@ extension MoodnestViewController: UICollectionViewDataSource {
         return cell
 
     }
-    
+
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         let pageWidth = collectionView.frame.width
         let currentPage = Int((collectionView.contentOffset.x + pageWidth / 2) / pageWidth)
