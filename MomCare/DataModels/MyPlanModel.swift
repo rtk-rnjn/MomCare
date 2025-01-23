@@ -113,29 +113,35 @@ class UserDiet {
     }
     
     func markFoodAsConsumed(_ foodItem: FoodItem, in meal: MealType) {
+        var multiplier = 1
+
         switch meal {
         case .breakfast:
             if let index = breakfast.firstIndex(where: { $0.id == foodItem.id }) {
-                breakfast[index].consumed = true
+                breakfast[index].consumed = !breakfast[index].consumed
+                multiplier = breakfast[index].consumed ? 1 : -1
             }
         case .lunch:
             if let index = lunch.firstIndex(where: { $0.id == foodItem.id }) {
-                lunch[index].consumed = true
+                lunch[index].consumed = !lunch[index].consumed
+                multiplier = lunch[index].consumed ? 1 : -1
             }
         case .snacks:
             if let index = snacks.firstIndex(where: { $0.id == foodItem.id }) {
-                snacks[index].consumed = true
+                snacks[index].consumed = !snacks[index].consumed
+                multiplier = snacks[index].consumed ? 1 : -1
             }
         case .dinner:
             if let index = dinner.firstIndex(where: { $0.id == foodItem.id }) {
-                dinner[index].consumed = true
+                dinner[index].consumed = !dinner[index].consumed
+                multiplier = dinner[index].consumed ? 1 : -1
             }
         }
 
-        self.plan.currentCaloriesIntake += foodItem.calories
-        self.plan.currentProteinIntake += foodItem.protein
-        self.plan.currentCarbsIntake += foodItem.carbs
-        self.plan.currentFatIntake += foodItem.fat
+        self.plan.currentCaloriesIntake += foodItem.calories * multiplier
+        self.plan.currentProteinIntake += foodItem.protein * multiplier
+        self.plan.currentCarbsIntake += foodItem.carbs * multiplier
+        self.plan.currentFatIntake += foodItem.fat * multiplier
     }
 
     func markFoodsAsConsumed(in meal: MealType) {

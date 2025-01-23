@@ -11,6 +11,7 @@ class BabyStatsViewController: UIViewController {
 
     @IBOutlet var heightImage: UIImageView!
     @IBOutlet var scaleImage: UIImageView!
+
     override func viewDidLoad() {
         super.viewDidLoad()
         scaleImage.layer.cornerRadius = 14

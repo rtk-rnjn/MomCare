@@ -11,6 +11,7 @@ class BabyMomTipViewController: UIViewController {
 
     @IBOutlet var babyStack: UIStackView!
     @IBOutlet var momStack: UIStackView!
+
     override func viewDidLoad() {
         super.viewDidLoad()
         

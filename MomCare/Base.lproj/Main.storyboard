@@ -158,10 +158,10 @@
             </objects>
             <point key="canvasLocation" x="1840" y="-93"/>
         </scene>
-        <!--Navigation Controller-->
+        <!--Front Page Navigation Controller-->
         <scene sceneID="0rv-Ef-5cF">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="KmQ-gG-auq" sceneMemberID="viewController">
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="KmQ-gG-auq" customClass="FrontPageNavigationController" customModule="MomCare" customModuleProvider="target" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" largeTitles="YES" id="4D1-ei-0Ai">
                         <rect key="frame" x="0.0" y="59" width="393" height="96"/>

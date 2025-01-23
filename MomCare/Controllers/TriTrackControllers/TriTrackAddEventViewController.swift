@@ -43,7 +43,7 @@ class TriTrackAddEventViewController: UIViewController {
         prepareContainerView()
     }
     
-    func prepareContainerView() {
+    private func prepareContainerView() {
         guard viewControllerValue != nil else { return }
         switch viewControllerValue! {
         case .eventsReminderView:
@@ -53,7 +53,7 @@ class TriTrackAddEventViewController: UIViewController {
         }
     }
     
-    func prepareEventReminderContainerView() {
+    private func prepareEventReminderContainerView() {
         symptomsContainerView.isHidden = true
         eventReminderSegmentControl.isHidden = false
 
@@ -77,7 +77,7 @@ class TriTrackAddEventViewController: UIViewController {
         prepareEventReminderContainerView()
     }
     
-    func prepareSymptomsContainerView() {
+    private func prepareSymptomsContainerView() {
         eventContainerView.isHidden = true
         reminderContainerView.isHidden = true
         eventReminderSegmentControl.isHidden = true

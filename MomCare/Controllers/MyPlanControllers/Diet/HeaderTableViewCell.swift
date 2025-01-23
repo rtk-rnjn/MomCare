@@ -13,10 +13,10 @@ class HeaderTableViewCell: UITableViewCell {
     }
     
     var section: Int?
+    var dietTableViewController: DietTableViewController?
     private let color = Converters.convertHexToUIColor(hex: "924350")
 
     private func configurePullDownMenu() {
-        // Create menu items (SF Symbols)
         let addItem = UIAction(title: "Add Item", image: UIImage(systemName: "plus")) { _ in
             print("Add Item selected")
         }
@@ -31,9 +31,10 @@ class HeaderTableViewCell: UITableViewCell {
         actionButton.setImage(UIImage(systemName: "square.and.pencil"), for: .normal)
     }
     
-    func updateTitle(with title: String, at section: Int) {
+    func updateTitle(with title: String, at section: Int, of view: DietTableViewController) {
         mealHeaderLabel.text = title
         self.section = section
+        self.dietTableViewController = view
     }
 
     @IBAction func mealHeaderButtonTapped(_ sender: UIButton) {
@@ -51,5 +52,7 @@ class HeaderTableViewCell: UITableViewCell {
         }
         let configuration = UIImage.SymbolConfiguration(scale: .medium)
         mealHeaderButton.setImage(UIImage(systemName: "checkmark.circle.fill", withConfiguration: configuration)?.withTintColor(color), for: .normal)
+
+        dietTableViewController?.dietViewController.refresh()
     }
 }

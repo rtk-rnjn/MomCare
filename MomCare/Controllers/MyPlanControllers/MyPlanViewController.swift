@@ -1,53 +1,45 @@
 import UIKit
 
+enum MyPlanViewControlSegmentValue: Int {
+    case dietContainerView = 0
+    case exerciseContainerView = 1
+}
+
 class MyPlanViewController: UIViewController {
 
-    @IBOutlet weak var segmentedControl: UISegmentedControl!
-    @IBOutlet weak var containerView: UIView!
+    @IBOutlet var segmentedControl: UISegmentedControl!
 
-    private var currentViewController: UIViewController?
+    @IBOutlet var dietContainerView: UIView!
+    @IBOutlet var exerciseContainerView: UIView!
+
+    private var currentSegmentValue = 0
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        switchToViewController(identifier: "DietVC")
-
-        let unselectedAttributes: [NSAttributedString.Key: Any] = [
-            .foregroundColor: UIColor.white, .font: UIFont.systemFont(ofSize: 14, weight: .regular)
-        ]
-
-        let selectedAttributes: [NSAttributedString.Key: Any] = [
-            .foregroundColor: UIColor.black, .font: UIFont.systemFont(ofSize: 14, weight: .bold)
-        ]
-
-        segmentedControl.setTitleTextAttributes(unselectedAttributes, for: .normal)
-        segmentedControl.setTitleTextAttributes(selectedAttributes, for: .selected)
-
+        updateView()
+    }
+    
+    private func hideAllViews(except view: MyPlanViewControlSegmentValue?) {
+        switch view {
+        case .dietContainerView:
+            exerciseContainerView.isHidden = true
+            dietContainerView.isHidden = false
+        case .exerciseContainerView:
+            exerciseContainerView.isHidden = false
+            dietContainerView.isHidden = true
+        default:
+            fatalError("someone said, love is boring")
+        }
     }
 
     @IBAction func segmentChanged(_ sender: UISegmentedControl) {
-        if sender.selectedSegmentIndex == 0 {
-            switchToViewController(identifier: "DietVC")
-        } else {
-            switchToViewController(identifier: "ExerciseVC")
-        }
+        updateView()
     }
-
-    private func switchToViewController(identifier: String) {
-        if let currentVC = currentViewController {
-            currentVC.willMove(toParent: nil)
-            currentVC.view.removeFromSuperview()
-            currentVC.removeFromParent()
-        }
-
-        let storyboard = UIStoryboard(name: "MyPlan", bundle: nil)
-        let newViewController = storyboard.instantiateViewController(withIdentifier: identifier)
-
-        addChild(newViewController)
-        newViewController.view.frame = containerView.bounds
-        containerView.addSubview(newViewController.view)
-        newViewController.didMove(toParent: self)
-        currentViewController = newViewController
-
+    
+    func updateView() {
+        currentSegmentValue = segmentedControl.selectedSegmentIndex
+        let segmentControlView = MyPlanViewControlSegmentValue(rawValue: currentSegmentValue)
+        
+        hideAllViews(except: segmentControlView)
     }
-
 }

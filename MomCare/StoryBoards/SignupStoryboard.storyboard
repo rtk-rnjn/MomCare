@@ -1034,7 +1034,8 @@
                                                         <color key="baseBackgroundColor" red="0.57254901960000004" green="0.26274509800000001" blue="0.31372549020000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     </buttonConfiguration>
                                                     <connections>
-                                                        <segue destination="x6Q-s6-GCY" kind="show" id="DEE-WW-Ooe"/>
+                                                        <action selector="finishButtonTapped:" destination="8kZ-fK-sew" eventType="touchUpInside" id="p1h-08-spj"/>
+                                                        <segue destination="x6Q-s6-GCY" kind="show" identifier="segueShowInitialTabBarController" id="DEE-WW-Ooe"/>
                                                     </connections>
                                                 </button>
                                             </subviews>
