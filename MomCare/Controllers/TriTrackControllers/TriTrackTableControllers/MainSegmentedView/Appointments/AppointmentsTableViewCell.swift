@@ -16,7 +16,6 @@ class AppointmentsTableViewCell: UITableViewCell {
     func updateElements(with event: TriTrackEvent) {
         dateTime.date = event.startDate
         titleLabel.text = event.title
-
+        locationLabel.text = event.location
     }
-
 }
