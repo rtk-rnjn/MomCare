@@ -91,8 +91,8 @@
                 <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
             </userDefinedRuntimeAttributes>
             <connections>
-                <outlet property="incomingEventDateLabel" destination="8P2-eC-JoP" id="SnM-rb-phs"/>
-                <outlet property="incomingEventNameLabel" destination="LpH-hz-lI4" id="vVF-gF-A8D"/>
+                <outlet property="upcomingEventDateLabel" destination="8P2-eC-JoP" id="SnM-rb-phs"/>
+                <outlet property="upcomingEventLabel" destination="LpH-hz-lI4" id="vVF-gF-A8D"/>
             </connections>
             <point key="canvasLocation" x="386.25954198473283" y="29.929577464788736"/>
         </collectionViewCell>

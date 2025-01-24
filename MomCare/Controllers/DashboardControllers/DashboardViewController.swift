@@ -77,8 +77,8 @@ class DashboardViewController: UIViewController, UICollectionViewDataSource {
     }
 
     private func createLayoutForWeekEventCard() -> NSCollectionLayoutSection {
-        let weekCardLayoutSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.55), heightDimension: .absolute(137))
-        let eventCardLayoutSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.45), heightDimension: .absolute(137))
+        let weekCardLayoutSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.5), heightDimension: .absolute(137))
+        let eventCardLayoutSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.5), heightDimension: .absolute(137))
 
         let weekCard = NSCollectionLayoutItem(layoutSize: weekCardLayoutSize)
         let eventCard = NSCollectionLayoutItem(layoutSize: eventCardLayoutSize)
@@ -138,10 +138,7 @@ class DashboardViewController: UIViewController, UICollectionViewDataSource {
     }
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        switch section {
-        case 0: return 1
-        default: return 2
-        }
+        return section == 0 ? 1 : 2
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -151,38 +148,74 @@ class DashboardViewController: UIViewController, UICollectionViewDataSource {
             let cell = prepareWelcomeHeaderCell(at: indexPath)
             return cell
         case 1:
-            if indexPath.row == 0 {
-                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "WeekCard", for: indexPath) as? WeekCardCollectionViewCell
-                guard let cell = cell else { fatalError() }
-                return cell
-            }
-            return collectionView.dequeueReusableCell(withReuseIdentifier: indexPath.item == 0 ? "WeekCard" : "EventCard", for: indexPath)
+            let cell = prepareWeekEventCell(at: indexPath)
+            return cell
         case 2:
             let cell = prepareDietExersiceCell(at: indexPath)
             return cell
         case 3:
-            return collectionView.dequeueReusableCell(withReuseIdentifier: indexPath.item == 0 ? "FocusCard" : "TipCard", for: indexPath)
+            let cell = prepareFocusTipCell(at: indexPath)
+            return cell
         default:
-            fatalError("Unexpected section")
+            fatalError("i love this error")
+        }
+    }
+    
+    private func prepareFocusTipCell(at indexPath: IndexPath) -> UICollectionViewCell {
+        switch indexPath.row {
+        case 0:
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "FocusCard", for: indexPath) as? FocusCardCollectionViewCell
+            guard let cell = cell else { fatalError() }
+            
+            return cell
+        
+        case 1:
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "TipCard", for: indexPath) as? TipCardCollectionViewCell
+            guard let cell = cell else { fatalError() }
+            
+            return cell
+        
+        default:
+            fatalError()
+        }
+    }
+    
+    private func prepareWeekEventCell(at indexPath: IndexPath) -> UICollectionViewCell {
+        switch indexPath.row {
+        case 0:
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "WeekCard", for: indexPath) as? WeekCardCollectionViewCell
+            guard let cell = cell else { fatalError() }
+            
+            return cell
+
+        case 1:
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "EventCard", for: indexPath) as? EventCardCollectionViewCell
+            guard let cell = cell else { fatalError() }
+
+            return cell
+
+        default:
+            fatalError()
         }
     }
 
     private func prepareDietExersiceCell(at indexPath: IndexPath) -> UICollectionViewCell {
-        if indexPath.row == 0 {
+        switch indexPath.row {
+        case 0:
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "DietProgress", for: indexPath) as? DietProgressCollectionViewCell
 
             guard let cell = cell else { fatalError() }
             cell.updateElements(with: MomCareUser.shared.diet)
             return cell
-        }
-
-        if indexPath.row == 1 {
+        
+        case 1:
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ExerciseProgress", for: indexPath) as? ExerciseProgressCollectionViewCell
             guard let cell = cell else { fatalError() }
             return cell
+            
+        default:
+            fatalError()
         }
-
-        fatalError()
     }
 
     private func prepareWelcomeHeaderCell(at indexPath: IndexPath) -> UICollectionViewCell {
@@ -195,10 +228,6 @@ class DashboardViewController: UIViewController, UICollectionViewDataSource {
     }
 
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-
-        guard kind == UICollectionView.elementKindSectionHeader else {
-            fatalError("Unexpected element kind")
-        }
 
         let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "SectionHeaderView", for: indexPath) as? DashboardSectionHeaderCollectionViewCell
 

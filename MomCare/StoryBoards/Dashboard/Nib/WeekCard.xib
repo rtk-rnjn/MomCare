@@ -72,7 +72,7 @@
                             <constraint firstAttribute="trailing" secondItem="f6l-Qv-9NA" secondAttribute="trailing" constant="20" id="vEk-up-sas"/>
                         </constraints>
                     </view>
-                    <stackView opaque="NO" contentMode="scaleToFill" spacing="18" translatesAutoresizingMaskIntoConstraints="NO" id="GBR-KI-ShU">
+                    <stackView opaque="NO" contentMode="scaleToFill" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="GBR-KI-ShU">
                         <rect key="frame" x="20" y="18" width="153" height="50"/>
                         <subviews>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="momImageDashboard" translatesAutoresizingMaskIntoConstraints="NO" id="IuD-AO-bWl">
@@ -83,7 +83,7 @@
                                 </constraints>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Week 10" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Hs4-jE-uvO">
-                                <rect key="frame" x="68" y="0.0" width="85" height="50"/>
+                                <rect key="frame" x="55" y="0.0" width="98" height="50"/>
                                 <fontDescription key="fontDescription" style="UICTFontTextStyleTitle2"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
