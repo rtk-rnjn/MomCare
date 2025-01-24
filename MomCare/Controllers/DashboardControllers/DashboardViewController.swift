@@ -160,32 +160,32 @@ class DashboardViewController: UIViewController, UICollectionViewDataSource {
             fatalError("i love this error")
         }
     }
-    
+
     private func prepareFocusTipCell(at indexPath: IndexPath) -> UICollectionViewCell {
         switch indexPath.row {
         case 0:
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "FocusCard", for: indexPath) as? FocusCardCollectionViewCell
             guard let cell = cell else { fatalError() }
-            
+
             return cell
-        
+
         case 1:
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "TipCard", for: indexPath) as? TipCardCollectionViewCell
             guard let cell = cell else { fatalError() }
-            
+
             return cell
-        
+
         default:
             fatalError()
         }
     }
-    
+
     private func prepareWeekEventCell(at indexPath: IndexPath) -> UICollectionViewCell {
         switch indexPath.row {
         case 0:
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "WeekCard", for: indexPath) as? WeekCardCollectionViewCell
             guard let cell = cell else { fatalError() }
-            
+
             return cell
 
         case 1:
@@ -207,12 +207,12 @@ class DashboardViewController: UIViewController, UICollectionViewDataSource {
             guard let cell = cell else { fatalError() }
             cell.updateElements(with: MomCareUser.shared.diet)
             return cell
-        
+
         case 1:
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ExerciseProgress", for: indexPath) as? ExerciseProgressCollectionViewCell
             guard let cell = cell else { fatalError() }
             return cell
-            
+
         default:
             fatalError()
         }

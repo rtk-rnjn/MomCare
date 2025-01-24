@@ -37,15 +37,15 @@ class TriTrackViewController: UIViewController, FSCalendarDelegate, FSCalendarDa
         super.viewDidLoad()
         prepareCalendar()
     }
-    
+
     private func prepareCalendar() {
         calendarView = FSCalendar(frame: CGRect(x: 0, y: 0, width: calendarUIView.frame.width, height: calendarUIView.frame.height + 150))
         calendarView.scope = .week
         calendarView.select(Date())
-        
+
         calendarView.dataSource = self
         calendarView.delegate = self
-        
+
         calendarUIView.addSubview(calendarView)
     }
 

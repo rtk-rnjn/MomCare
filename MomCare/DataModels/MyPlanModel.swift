@@ -150,19 +150,19 @@ class UserDiet {
         switch meal {
         case .breakfast:
             for index in 0..<breakfast.count {
-                let _ = markFoodAsConsumed(breakfast[index], in: .breakfast)
+                _ = markFoodAsConsumed(breakfast[index], in: .breakfast)
             }
         case .lunch:
             for index in 0..<lunch.count {
-                let _ = markFoodAsConsumed(lunch[index], in: .lunch)
+                _ = markFoodAsConsumed(lunch[index], in: .lunch)
             }
         case .snacks:
             for index in 0..<snacks.count {
-                let _ = markFoodAsConsumed(snacks[index], in: .snacks)
+                _ = markFoodAsConsumed(snacks[index], in: .snacks)
             }
         case .dinner:
             for index in 0..<dinner.count {
-                let _ = markFoodAsConsumed(dinner[index], in: .dinner)
+                _ = markFoodAsConsumed(dinner[index], in: .dinner)
             }
         }
     }
