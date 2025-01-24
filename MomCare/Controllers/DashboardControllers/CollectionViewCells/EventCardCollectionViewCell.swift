@@ -8,10 +8,10 @@
 import UIKit
 
 class EventCardCollectionViewCell: UICollectionViewCell {
-    var tapHandler: (() -> Void)?
-
     @IBOutlet weak var upcomingEventLabel: UILabel!
     @IBOutlet weak var upcomingEventDateLabel: UILabel!
+
+    var tapHandler: (() -> Void)?
 
     override init(frame: CGRect) {
         super.init(frame: frame)

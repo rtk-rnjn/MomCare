@@ -43,7 +43,7 @@ extension DashboardViewController {
             return cell
 
         default:
-            fatalError()
+            fatalError("i love you baby <3")
         }
     }
 
@@ -52,17 +52,18 @@ extension DashboardViewController {
         case 0:
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "WeekCard", for: indexPath) as? WeekCardCollectionViewCell
             guard let cell = cell else { fatalError() }
+            cell.updateElements(with: MomCareUser.shared.user, tapHandler: weekCardTapped)
 
             return cell
 
         case 1:
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "EventCard", for: indexPath) as? EventCardCollectionViewCell
             guard let cell = cell else { fatalError() }
-            cell.updateElements(with: nil, tapHandler: nil)
+            cell.updateElements(with: nil, tapHandler: eventCardTapped)
             return cell
 
         default:
-            fatalError()
+            fatalError("kiss kiss")
         }
     }
 
@@ -72,16 +73,18 @@ extension DashboardViewController {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "DietProgress", for: indexPath) as? DietProgressCollectionViewCell
 
             guard let cell = cell else { fatalError() }
-            cell.updateElements(with: MomCareUser.shared.diet)
+            cell.updateElements(with: MomCareUser.shared.diet, tapHandler: dietCardTapped)
             return cell
 
         case 1:
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ExerciseProgress", for: indexPath) as? ExerciseProgressCollectionViewCell
             guard let cell = cell else { fatalError() }
+
+            cell.updateElements(with: MomCareUser.shared.exercise, tapHandler: exersiceCardTapped)
             return cell
 
         default:
-            fatalError()
+            fatalError("the moon is beautiful, isn't it?")
         }
     }
 
@@ -92,5 +95,25 @@ extension DashboardViewController {
         cell.updateElements(with: "Hi, Khushi")
 
         return cell
+    }
+}
+
+// MARK: - Event Handlers (When tapped on cards)
+// TODO: Implement the event handlers for the cards
+
+extension DashboardViewController {
+    func eventCardTapped() {
+        if let tabcontroller = self.tabBarController as? InitialTabBarController {
+            tabcontroller.selectedIndex = 2
+        }
+    }
+
+    func weekCardTapped() {
+    }
+
+    func exersiceCardTapped() {
+    }
+
+    func dietCardTapped() {
     }
 }

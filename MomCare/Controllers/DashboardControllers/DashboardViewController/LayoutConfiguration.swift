@@ -23,7 +23,7 @@ extension DashboardViewController {
             case 3:
                 return self.createLayoutForDailyInsights()
             default:
-                fatalError()
+                fatalError("the sunset is beautiful, ins't it?")
             }
         }
     }
