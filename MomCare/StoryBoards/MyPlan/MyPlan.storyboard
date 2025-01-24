@@ -17,7 +17,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="bar" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="t7W-2s-Nfw">
+                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" segmentControlStyle="bar" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="t7W-2s-Nfw">
                                 <rect key="frame" x="20" y="113" width="353" height="32"/>
                                 <color key="backgroundColor" red="0.5725490196078431" green="0.2627450980392157" blue="0.31372549019607843" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <segments>
@@ -63,7 +63,7 @@
                     <connections>
                         <outlet property="dietContainerView" destination="cVv-4T-ZaS" id="Ha8-m7-14Q"/>
                         <outlet property="exerciseContainerView" destination="vt0-6x-Baf" id="W1Y-JM-FJ5"/>
-                        <outlet property="segmentedControl" destination="t7W-2s-Nfw" id="i3j-6X-RHi"/>
+                        <outlet property="myPlanSegmentedControl" destination="t7W-2s-Nfw" id="i3j-6X-RHi"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7py-Lx-oJY" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

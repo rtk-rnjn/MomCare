@@ -7,7 +7,7 @@ enum MyPlanViewControlSegmentValue: Int {
 
 class MyPlanViewController: UIViewController {
 
-    @IBOutlet var segmentedControl: UISegmentedControl!
+    @IBOutlet var myPlanSegmentedControl: UISegmentedControl!
 
     @IBOutlet var dietContainerView: UIView!
     @IBOutlet var exerciseContainerView: UIView!
@@ -17,6 +17,7 @@ class MyPlanViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         updateView()
+        prepareSegmentedControl()
     }
 
     private func hideAllViews(except view: MyPlanViewControlSegmentValue?) {
@@ -36,10 +37,27 @@ class MyPlanViewController: UIViewController {
         updateView()
     }
 
-    func updateView() {
-        currentSegmentValue = segmentedControl.selectedSegmentIndex
+    private func updateView() {
+        currentSegmentValue = myPlanSegmentedControl.selectedSegmentIndex
         let segmentControlView = MyPlanViewControlSegmentValue(rawValue: currentSegmentValue)
 
         hideAllViews(except: segmentControlView)
+    }
+
+    private func prepareSegmentedControl() {
+        myPlanSegmentedControl.selectedSegmentIndex = currentSegmentValue
+
+        let normalTextAttribute: [NSAttributedString.Key: Any] = [
+            .foregroundColor: UIColor.white
+        ]
+
+        let selectedBackground = Converters.convertHexToUIColor(hex: "924350")
+
+        let selectedTextAttribute: [NSAttributedString.Key: Any] = [
+            .foregroundColor: selectedBackground
+        ]
+
+        myPlanSegmentedControl.setTitleTextAttributes(normalTextAttribute, for: .normal)
+        myPlanSegmentedControl.setTitleTextAttributes(selectedTextAttribute, for: .selected)
     }
 }
