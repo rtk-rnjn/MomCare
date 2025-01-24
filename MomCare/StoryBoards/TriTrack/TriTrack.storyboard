@@ -241,7 +241,7 @@
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="50" id="GNg-BC-MqI"/>
                                                     </constraints>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <textInputTraits key="textInputTraits"/>
                                                 </textField>
                                             </subviews>
@@ -266,7 +266,7 @@
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="50" id="AAO-AG-IlF"/>
                                                     </constraints>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <textInputTraits key="textInputTraits"/>
                                                 </textField>
                                             </subviews>
@@ -579,7 +579,7 @@
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="50" id="pDs-Xb-Wi4"/>
                                                     </constraints>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <textInputTraits key="textInputTraits"/>
                                                 </textField>
                                             </subviews>
@@ -608,7 +608,7 @@
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="50" id="rdD-mY-vEE"/>
                                                     </constraints>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <textInputTraits key="textInputTraits"/>
                                                 </textField>
                                             </subviews>
@@ -700,7 +700,7 @@
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="50" id="MrQ-KA-VuS"/>
                                                     </constraints>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <textInputTraits key="textInputTraits"/>
                                                 </textField>
                                             </subviews>
@@ -729,7 +729,7 @@
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="50" id="rCh-aK-Nkd"/>
                                                     </constraints>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <textInputTraits key="textInputTraits"/>
                                                 </textField>
                                             </subviews>
