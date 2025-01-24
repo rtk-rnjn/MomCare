@@ -57,8 +57,15 @@ public enum MoodType: String {
 }
 
 struct User {
+    var id: UUID = UUID()
+
     var firstName: String
     var lastName: String?
+
+    var fullName: String {
+        let fullName = "\(firstName) \(lastName ?? "")"
+        return fullName.trimmingCharacters(in: .whitespaces)
+    }
 
     var emailAddress: String
     var password: String
@@ -94,6 +101,7 @@ class MomCareUser {
     public private(set) var diet: UserDiet = UserDiet.shared
     public private(set) var exercise: UserExercise = UserExercise.shared
     public private(set) var currentMood: MoodType?
+    public private(set) var user: User?
 
     public private(set) var reminders: [TriTrackReminder] = []
     public private(set) var events: [TriTrackEvent] = []

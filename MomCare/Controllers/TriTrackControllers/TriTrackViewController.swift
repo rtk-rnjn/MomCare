@@ -30,10 +30,15 @@ class TriTrackViewController: UIViewController, FSCalendarDelegate, FSCalendarDa
     private var symptomsViewController: SymptomsViewController?
     private var eventsViewController: EventsViewController?
 
-    private var currentSegmentIndex: Int = 0
+    private var currentSegmentValue: Int = 0
+    private var currentDateSelected = Date()
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        prepareCalendar()
+    }
+
+    private func prepareCalendar() {
         calendarView = FSCalendar(frame: CGRect(x: 0, y: 0, width: calendarUIView.frame.width, height: calendarUIView.frame.height + 150))
         calendarView.scope = .week
         calendarView.select(Date())
@@ -45,7 +50,7 @@ class TriTrackViewController: UIViewController, FSCalendarDelegate, FSCalendarDa
     }
 
     func calendar(_ calendar: FSCalendar, didSelect date: Date, at monthPosition: FSCalendarMonthPosition) {
-        print("Date selected: \(date)")
+        currentDateSelected = date
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -72,7 +77,7 @@ class TriTrackViewController: UIViewController, FSCalendarDelegate, FSCalendarDa
     }
 
     private func prepareSegmentedControl() {
-        triTrackSegmentedControl.selectedSegmentIndex = currentSegmentIndex
+        triTrackSegmentedControl.selectedSegmentIndex = currentSegmentValue
 
         let normalTextAttribute: [NSAttributedString.Key: Any] = [
             .foregroundColor: UIColor.white
@@ -89,17 +94,17 @@ class TriTrackViewController: UIViewController, FSCalendarDelegate, FSCalendarDa
     }
 
     private func updateView() {
-        currentSegmentIndex = triTrackSegmentedControl.selectedSegmentIndex
+        currentSegmentValue = triTrackSegmentedControl.selectedSegmentIndex
 
-        switch currentSegmentIndex {
+        switch currentSegmentValue {
         case 0:
-            addButton.isEnabled = false
+            addButton.isHidden = true
             hideAllContainers(except: .meAndBabyContainerView)
         case 1:
-            addButton.isEnabled = true
+            addButton.isHidden = false
             hideAllContainers(except: .eventsContainerView)
         case 2:
-            addButton.isEnabled = true
+            addButton.isHidden = false
             hideAllContainers(except: .symptomsContainerView)
         default:
             // Should never happen
