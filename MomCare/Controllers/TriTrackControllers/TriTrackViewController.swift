@@ -98,13 +98,13 @@ class TriTrackViewController: UIViewController, FSCalendarDelegate, FSCalendarDa
 
         switch currentSegmentValue {
         case 0:
-            addButton.isEnabled = false
+            addButton.isHidden = true
             hideAllContainers(except: .meAndBabyContainerView)
         case 1:
-            addButton.isEnabled = true
+            addButton.isHidden = false
             hideAllContainers(except: .eventsContainerView)
         case 2:
-            addButton.isEnabled = true
+            addButton.isHidden = false
             hideAllContainers(except: .symptomsContainerView)
         default:
             // Should never happen
