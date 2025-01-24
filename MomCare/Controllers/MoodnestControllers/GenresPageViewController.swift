@@ -85,7 +85,7 @@ class GenresPageViewController: UIViewController, UICollectionViewDataSource, UI
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
 
         let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "SectionHeaderCollectionViewCell", for: indexPath) as? SectionHeaderCollectionViewCell
-        
+
         guard let header = header else { fatalError() }
         header.headerLabel.text = "Featured Playlists"
         header.headerLabel.font = UIFont.systemFont(ofSize: 24, weight: .semibold)
@@ -115,7 +115,7 @@ class GenresPageViewController: UIViewController, UICollectionViewDataSource, UI
 
                 section.boundarySupplementaryItems = [header]
 
-            default: 
+            default:
                 fatalError()
 
             }
@@ -159,7 +159,7 @@ class GenresPageViewController: UIViewController, UICollectionViewDataSource, UI
         let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalWidth(0.4))
         let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
 
-        group.interItemSpacing = .fixed(8) 
+        group.interItemSpacing = .fixed(8)
 
         let section = NSCollectionLayoutSection(group: group)
 
@@ -168,11 +168,10 @@ class GenresPageViewController: UIViewController, UICollectionViewDataSource, UI
 
         return section
     }
-    
+
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let selectedPlaylist = FeaturedPlaylists.playlists[indexPath.item]
         performSegue(withIdentifier: "songPageSegue", sender: selectedPlaylist)
     }
 
 }
-    

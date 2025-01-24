@@ -8,8 +8,8 @@
 import UIKit
 
 class EventCardCollectionViewCell: UICollectionViewCell {
-    
+
     @IBOutlet weak var incomingEventNameLabel: UILabel!
     @IBOutlet weak var incomingEventDateLabel: UILabel!
-    
+
 }
