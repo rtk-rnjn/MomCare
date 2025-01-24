@@ -8,8 +8,39 @@
 import UIKit
 
 class EventCardCollectionViewCell: UICollectionViewCell {
+    var tapHandler: (() -> Void)?
 
     @IBOutlet weak var upcomingEventLabel: UILabel!
     @IBOutlet weak var upcomingEventDateLabel: UILabel!
 
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        setupGesture()
+    }
+
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
+        setupGesture()
+    }
+
+    private func setupGesture() {
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap))
+        self.contentView.addGestureRecognizer(tapGesture)
+    }
+
+    @objc private func handleTap() {
+        guard let tapHandler = tapHandler else { return }
+        tapHandler()
+    }
+
+    func updateElements(with event: TriTrackEvent?, tapHandler: (() -> Void)?) {
+        if let event = event {
+            upcomingEventLabel.text = event.title
+
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "dd MMMM"
+            upcomingEventDateLabel.text = dateFormatter.string(from: event.startDate)
+        }
+        self.tapHandler = tapHandler
+    }
 }

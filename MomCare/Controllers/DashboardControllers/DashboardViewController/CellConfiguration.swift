@@ -1,0 +1,96 @@
+//
+//  CellConfiguration.swift
+//  MomCare
+//
+//  Created by Ritik Ranjan on 24/01/25.
+//
+
+import UIKit
+
+extension DashboardViewController {
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        switch indexPath.section {
+
+        case 0:
+            let cell = prepareWelcomeHeaderCell(at: indexPath)
+            return cell
+        case 1:
+            let cell = prepareWeekEventCell(at: indexPath)
+            return cell
+        case 2:
+            let cell = prepareDietExersiceCell(at: indexPath)
+            return cell
+        case 3:
+            let cell = prepareFocusTipCell(at: indexPath)
+            return cell
+        default:
+            fatalError("i love this error")
+        }
+    }
+
+    private func prepareFocusTipCell(at indexPath: IndexPath) -> UICollectionViewCell {
+        switch indexPath.row {
+        case 0:
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "FocusCard", for: indexPath) as? FocusCardCollectionViewCell
+            guard let cell = cell else { fatalError() }
+
+            return cell
+
+        case 1:
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "TipCard", for: indexPath) as? TipCardCollectionViewCell
+            guard let cell = cell else { fatalError() }
+
+            return cell
+
+        default:
+            fatalError()
+        }
+    }
+
+    private func prepareWeekEventCell(at indexPath: IndexPath) -> UICollectionViewCell {
+        switch indexPath.row {
+        case 0:
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "WeekCard", for: indexPath) as? WeekCardCollectionViewCell
+            guard let cell = cell else { fatalError() }
+
+            return cell
+
+        case 1:
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "EventCard", for: indexPath) as? EventCardCollectionViewCell
+            guard let cell = cell else { fatalError() }
+            cell.updateElements(with: nil, tapHandler: nil)
+            return cell
+
+        default:
+            fatalError()
+        }
+    }
+
+    private func prepareDietExersiceCell(at indexPath: IndexPath) -> UICollectionViewCell {
+        switch indexPath.row {
+        case 0:
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "DietProgress", for: indexPath) as? DietProgressCollectionViewCell
+
+            guard let cell = cell else { fatalError() }
+            cell.updateElements(with: MomCareUser.shared.diet)
+            return cell
+
+        case 1:
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ExerciseProgress", for: indexPath) as? ExerciseProgressCollectionViewCell
+            guard let cell = cell else { fatalError() }
+            return cell
+
+        default:
+            fatalError()
+        }
+    }
+
+    private func prepareWelcomeHeaderCell(at indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "WelcomeHeaderCell", for: indexPath) as? WelcomeHeaderCollectionViewCell
+
+        guard let cell = cell else { fatalError() }
+        cell.updateElements(with: "Hi, Khushi")
+
+        return cell
+    }
+}
