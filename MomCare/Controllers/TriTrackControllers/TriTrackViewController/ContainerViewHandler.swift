@@ -38,9 +38,15 @@ extension TriTrackViewController {
             container.isHidden = false
         }
     }
-
-    func updateView() {
-        currentSegmentValue = triTrackSegmentedControl.selectedSegmentIndex
+    
+    private func updateMainView(with index: Int?) {
+        if index != nil {
+            currentSegmentValue = index!
+            triTrackSegmentedControl.selectedSegmentIndex = index!
+            triTrackSegmentedControl.sendActions(for: .valueChanged)
+        } else {
+            currentSegmentValue = triTrackSegmentedControl.selectedSegmentIndex
+        }
 
         switch currentSegmentValue {
         case 0:
@@ -56,5 +62,13 @@ extension TriTrackViewController {
             // Should never happen
             fatalError("love is beautiful thing")
         }
+    }
+
+    func updateView() {
+        updateMainView(with: nil)
+    }
+    
+    func updateView(with index: Int) {
+        updateMainView(with: index)
     }
 }

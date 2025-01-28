@@ -59,7 +59,7 @@ class TriTrackViewController: UIViewController, FSCalendarDelegate, FSCalendarDa
         triTrackInternalView.layer.cornerRadius = 15
 
         prepareSegmentedControl()
-        updateView()
+        updateView(with: currentSegmentValue)
     }
 
     @IBAction func segmentTapped(_ sender: UISegmentedControl) {
