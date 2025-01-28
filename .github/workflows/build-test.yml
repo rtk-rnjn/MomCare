@@ -1,0 +1,29 @@
+name: Build MomCare App
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: macos-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Xcode
+      run: sudo xcode-select -switch /Applications/Xcode_16.2.0.app
+
+    - name: Build and test MomCare app
+      run: |
+        xcodebuild -project MomCare.xcodeproj -scheme MomCare -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone 16 Pro' clean build
+        if [ $? -ne 0 ]; then
+          echo "Build failed"
+          exit 1
+        fi
+      continue-on-error: false
