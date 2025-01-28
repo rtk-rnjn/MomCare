@@ -38,7 +38,7 @@ extension TriTrackViewController {
             container.isHidden = false
         }
     }
-    
+
     private func updateMainView(with index: Int?) {
         if index != nil {
             currentSegmentValue = index!
@@ -67,7 +67,7 @@ extension TriTrackViewController {
     func updateView() {
         updateMainView(with: nil)
     }
-    
+
     func updateView(with index: Int) {
         updateMainView(with: index)
     }
