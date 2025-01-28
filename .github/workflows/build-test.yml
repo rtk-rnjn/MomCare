@@ -21,18 +21,19 @@ jobs:
         sudo xcode-select -s /Applications/Xcode.app/Contents/Developer
         sudo xcodebuild -runFirstLaunch
 
-    - name: Install missing iOS Simulators
+    - name: Install required simulator
       run: |
-        sudo xcode-select --switch /Applications/Xcode_16.2.app/Contents/Developer
-        sudo xcodebuild -runFirstLaunch
-        # This ensures that simulators are installed
-        xcodebuild -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone 16 Pro' -list
+        xcrun simctl list devices
+        sudo xcode-select --switch /Applications/Xcode.app/Contents/Developer
+        sudo xcrun simctl create "iPhone 14" com.apple.CoreSimulator.SimDeviceType.iPhone-14 com.apple.CoreSimulator.SimRuntime.iOS-16-2
+        xcrun simctl boot "iPhone 14"
 
     - name: Build and test MomCare app
       run: |
-        xcodebuild -project MomCare.xcodeproj -scheme MomCare -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone 16 Pro' clean build
-        if [ $? -ne 0 ]; then
-          echo "Build failed"
-          exit 1
-        fi
-      continue-on-error: false
+        xcodebuild -project MomCare.xcodeproj \
+          -scheme MomCare \
+          -sdk iphonesimulator \
+          -destination 'platform=iOS Simulator,name=iPhone 14,OS=16.2' \
+          clean build
+      env:
+        DEVELOPER_DIR: /Applications/Xcode.app/Contents/Developer
