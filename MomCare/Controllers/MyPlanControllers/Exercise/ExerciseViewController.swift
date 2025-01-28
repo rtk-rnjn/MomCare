@@ -61,4 +61,5 @@ class ExerciseViewController: UIViewController, UICollectionViewDelegate, UIColl
             return cell
         }
     }
+
 }
