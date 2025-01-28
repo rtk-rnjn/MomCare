@@ -42,8 +42,9 @@ class WeekCardCollectionViewCell: UICollectionViewCell {
     }
 
     func updateElements(with userData: User?, tapHandler: (() -> Void)?) {
-        if let userData = userData {
-        }
+//        if let userData = userData {
+//
+//        }
         self.tapHandler = tapHandler
     }
 }
