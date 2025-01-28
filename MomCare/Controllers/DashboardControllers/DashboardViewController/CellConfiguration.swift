@@ -99,12 +99,15 @@ extension DashboardViewController {
 }
 
 // MARK: - Event Handlers (When tapped on cards)
-// TODO: Implement the event handlers for the cards
 
 extension DashboardViewController {
     func eventCardTapped() {
-        if let tabcontroller = self.tabBarController as? InitialTabBarController {
-            tabcontroller.selectedIndex = 2
+        if let tabController = self.tabBarController as? InitialTabBarController {
+            tabController.selectedIndex = 2
+
+            if let destinationVC = (tabController.viewControllers?[2] as? UINavigationController)?.topViewController as? TriTrackViewController {
+                destinationVC.currentSegmentValue = 1
+            }
         }
     }
 
