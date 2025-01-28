@@ -23,7 +23,7 @@ class AllAppointmentsTableViewController: UITableViewController {
         let cell = tableView.dequeueReusableCell(withIdentifier: "AllAppointmentsTableViewCell", for: indexPath) as? AllAppointmentsTableViewCell
 
         let appointment = appointments[indexPath.row]
-        guard let cell = cell else { return UITableViewCell() }
+        guard let cell else { return UITableViewCell() }
         cell.updateElements(with: appointment)
 
         return cell

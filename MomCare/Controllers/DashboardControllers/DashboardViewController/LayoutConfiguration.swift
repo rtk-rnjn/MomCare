@@ -11,7 +11,7 @@ extension DashboardViewController {
     func createLayout() -> UICollectionViewCompositionalLayout {
         UICollectionViewCompositionalLayout { [weak self] (sectionIndex, _) -> NSCollectionLayoutSection? in
 
-            guard let self = self else { return nil }
+            guard let self else { return nil }
 
             switch sectionIndex {
             case 0:

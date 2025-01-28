@@ -2,7 +2,7 @@ import UIKit
 
 class HalfScreenPresentationController: UIPresentationController {
     override var frameOfPresentedViewInContainerView: CGRect {
-        guard let containerView = containerView else { return .zero }
+        guard let containerView else { return .zero }
 
         let height = containerView.bounds.height / 2
         let width = containerView.bounds.width
@@ -18,7 +18,7 @@ class HalfScreenPresentationController: UIPresentationController {
     }()
 
     override func presentationTransitionWillBegin() {
-        guard let containerView = containerView else { return }
+        guard let containerView else { return }
         containerView.insertSubview(dimmingView, at: 0)
         presentedViewController.transitionCoordinator?.animate(alongsideTransition: { _ in
             self.dimmingView.alpha = 1

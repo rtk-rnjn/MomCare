@@ -28,7 +28,7 @@ class SongPageTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "songCell", for: indexPath) as? SongPageTableViewCell
 
-        guard let cell = cell else {
+        guard let cell else {
             fatalError("love is a fear of loss")
         }
 

@@ -29,12 +29,12 @@ class EventCardCollectionViewCell: UICollectionViewCell {
     }
 
     @objc private func handleTap() {
-        guard let tapHandler = tapHandler else { return }
+        guard let tapHandler else { return }
         tapHandler()
     }
 
     func updateElements(with event: TriTrackEvent?, tapHandler: (() -> Void)?) {
-        if let event = event {
+        if let event {
             upcomingEventLabel.text = event.title
 
             let dateFormatter = DateFormatter()

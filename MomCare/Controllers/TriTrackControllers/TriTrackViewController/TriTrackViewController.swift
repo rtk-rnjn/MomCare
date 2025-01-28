@@ -69,7 +69,7 @@ class TriTrackViewController: UIViewController, FSCalendarDelegate, FSCalendarDa
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         let identifier = segue.identifier
 
-        guard let identifier = identifier else { return }
+        guard let identifier else { return }
 
         switch identifier {
         case "segueTriTrack":

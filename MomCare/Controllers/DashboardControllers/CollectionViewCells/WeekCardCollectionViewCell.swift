@@ -37,7 +37,7 @@ class WeekCardCollectionViewCell: UICollectionViewCell {
     }
 
     @objc private func handleTap() {
-        guard let tapHandler = tapHandler else { return }
+        guard let tapHandler else { return }
         tapHandler()
     }
 

@@ -31,7 +31,7 @@ class SymptomsTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "SymptomsCell", for: indexPath) as? SymptomsTableViewCell
 
-        guard let cell = cell else { return UITableViewCell() }
+        guard let cell else { return UITableViewCell() }
 
         cell.updateElements(with: data[indexPath.section])
         cell.showsReorderControl = false

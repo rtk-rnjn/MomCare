@@ -53,7 +53,7 @@ class DashboardViewController: UIViewController, UICollectionViewDataSource {
 
         let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "SectionHeaderView", for: indexPath) as? DashboardSectionHeaderCollectionViewCell
 
-        guard let headerView = headerView else { fatalError() }
+        guard let headerView else { fatalError() }
 
         headerView.titleLabel.text = (indexPath.section == 2) ? "Progress" : "Daily Insights"
 

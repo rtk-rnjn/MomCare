@@ -49,7 +49,7 @@ extension TriTrackViewController {
         let notes = viewController.addSymptomsTableViewController?.notesField.text
         let dateTime = viewController.addSymptomsTableViewController?.dateTime.date
 
-        guard let title = title, let dateTime = dateTime else { return }
+        guard let title, let dateTime else { return }
 
         let triTrackSymptom = TriTrackSymptom(title: title, notes: notes, atTime: dateTime)
         MomCareUser.shared.addSymptom(triTrackSymptom)
@@ -69,7 +69,7 @@ extension TriTrackViewController {
 
         let allDay = viewController.addEventTableViewController?.allDaySwitch.isOn ?? false
 
-        guard let title = title, let startDateTime = startDateTime else { return }
+        guard let title, let startDateTime else { return }
 
         let triTrackEvent = TriTrackEvent(title: title, location: location, allDay: allDay, startDate: startDateTime, endDate: endDateTime, travelTime: travelTime, alertBefore: alertTime, repeatAfter: repeatAfter)
 
@@ -83,7 +83,7 @@ extension TriTrackViewController {
         let dateTime = viewController.addReminderTableViewController?.dateTime.date
         let timeInterval = viewController.addReminderTableViewController?.selectedRepeatOption
 
-        guard let title = title, let notes = notes, let dateTime = dateTime else { return }
+        guard let title, let notes, let dateTime else { return }
 
         let triTrackReminder = TriTrackReminder(title: title, date: dateTime, notes: notes, repeatAfter: timeInterval)
         MomCareUser.shared.addReminder(triTrackReminder)
