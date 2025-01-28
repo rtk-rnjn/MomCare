@@ -122,8 +122,22 @@ extension DashboardViewController {
     }
 
     func exersiceCardTapped() {
+        if let tabController = self.tabBarController as? InitialTabBarController {
+            tabController.selectedIndex = 1
+
+            if let destinationVC = (tabController.viewControllers?[1] as? UINavigationController)?.topViewController as? MyPlanViewController {
+                destinationVC.currentSegmentValue = 1
+            }
+        }
     }
 
     func dietCardTapped() {
+        if let tabController = self.tabBarController as? InitialTabBarController {
+            tabController.selectedIndex = 1
+
+            if let destinationVC = (tabController.viewControllers?[1] as? UINavigationController)?.topViewController as? MyPlanViewController {
+                destinationVC.currentSegmentValue = 0
+            }
+        }
     }
 }
