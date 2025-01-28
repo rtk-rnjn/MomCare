@@ -22,7 +22,7 @@ class AllRemindersTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "AllRemindersTableViewCell", for: indexPath) as? AllRemindersTableViewCell
 
-        guard let cell = cell else { fatalError() }
+        guard let cell else { fatalError() }
 
         cell.updateElements(with: reminders[indexPath.row])
 

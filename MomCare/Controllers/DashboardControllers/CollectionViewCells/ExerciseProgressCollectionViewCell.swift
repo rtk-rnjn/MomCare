@@ -31,12 +31,12 @@ class ExerciseProgressCollectionViewCell: UICollectionViewCell {
     }
 
     @objc private func handleTap() {
-        guard let tapHandler = tapHandler else { return }
+        guard let tapHandler else { return }
         tapHandler()
     }
 
     func updateElements(with data: UserExercise?, tapHandler: (() -> Void)?) {
-        if let data = data {
+        if let data {
 
         }
         self.tapHandler = tapHandler

@@ -21,7 +21,7 @@ class AllSymptomsTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "AllSymptomsTableViewCell", for: indexPath) as? AllSymptomsTableViewCell
 
-        guard let cell = cell else { fatalError() }
+        guard let cell else { fatalError() }
 
         cell.updateElements(with: symptoms[indexPath.row])
 
