@@ -14,9 +14,9 @@ import UIKit
 
 class MainImageCollectionViewCell: UICollectionViewCell {
 
-    @IBOutlet weak var mainImageView: UIImageView!
+    @IBOutlet var mainImageView: UIImageView!
 
-    @IBOutlet weak var mainImageLabel: UILabel!
+    @IBOutlet var mainImageLabel: UILabel!
 
     func updateSection2(with indexPath: IndexPath) {
 

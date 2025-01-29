@@ -14,9 +14,9 @@ import UIKit
 
 class MoodNestMultipleImagesCollectionViewCell: UICollectionViewCell {
 
-    @IBOutlet weak var sideImagesView: UIImageView!
+    @IBOutlet var sideImagesView: UIImageView!
 
-    @IBOutlet weak var sideImagesLabel: UILabel!
+    @IBOutlet var sideImagesLabel: UILabel!
 
     func updateSection3(with indexPath: IndexPath) {
 

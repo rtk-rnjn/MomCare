@@ -9,6 +9,6 @@ import UIKit
 
 class SongPageContainerViewController: UIViewController {
 
-    @IBOutlet weak var playlistSongLabel: UILabel!
+    @IBOutlet var playlistSongLabel: UILabel!
 
 }

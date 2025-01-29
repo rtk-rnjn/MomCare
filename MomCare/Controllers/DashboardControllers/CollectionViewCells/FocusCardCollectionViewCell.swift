@@ -9,6 +9,6 @@ import UIKit
 
 class FocusCardCollectionViewCell: UICollectionViewCell {
 
-    @IBOutlet weak var currentFocusLabel: UILabel!
+    @IBOutlet var currentFocusLabel: UILabel!
 
 }

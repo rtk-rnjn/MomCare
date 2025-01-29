@@ -16,7 +16,7 @@ class RemindersTableViewController: UITableViewController {
     }
 
     func refreshData() {
-        self.data = MomCareUser.shared.reminders
+        data = MomCareUser.shared.reminders
         tableView.reloadData()
     }
 

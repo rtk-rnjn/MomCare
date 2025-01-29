@@ -9,6 +9,6 @@ import UIKit
 
 class TipCardCollectionViewCell: UICollectionViewCell {
 
-    @IBOutlet weak var currentTipLabel: UILabel!
+    @IBOutlet var currentTipLabel: UILabel!
 
 }

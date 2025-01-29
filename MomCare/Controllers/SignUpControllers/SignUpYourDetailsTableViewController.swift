@@ -10,13 +10,13 @@ import UIKit
 class SignUpYourDetailsTableViewController: UITableViewController, UIViewControllerTransitioningDelegate {
 
     @IBOutlet var recievedHeight: UILabel!
-    @IBOutlet weak var prePregnancyWeight: UILabel!
-    @IBOutlet weak var currentWeight: UILabel!
-    @IBOutlet weak var countryLabel: UILabel!
+    @IBOutlet var prePregnancyWeight: UILabel!
+    @IBOutlet var currentWeight: UILabel!
+    @IBOutlet var countryLabel: UILabel!
 
     var updatedHeight: Int?
 
-    @IBOutlet weak var progressView: UIProgressView!
+    @IBOutlet var progressView: UIProgressView!
     var initialProgress: Float = 0.0
 
     override func viewDidLoad() {
@@ -49,7 +49,7 @@ class SignUpYourDetailsTableViewController: UITableViewController, UIViewControl
             pickerVC.selectedOption = options
             pickerVC.modalPresentationStyle = .custom
             pickerVC.transitioningDelegate = self
-            self.present(pickerVC, animated: true, completion: nil)
+            present(pickerVC, animated: true, completion: nil)
         }
     }
 
@@ -111,7 +111,7 @@ class SignUpYourDetailsTableViewController: UITableViewController, UIViewControl
             tableView.deleteRows(at: [indexPath], with: .fade)
         } else if editingStyle == .insert {
             // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
+        }
     }
     */
 

@@ -8,8 +8,8 @@
 import UIKit
 
 class EventCardCollectionViewCell: UICollectionViewCell {
-    @IBOutlet weak var upcomingEventLabel: UILabel!
-    @IBOutlet weak var upcomingEventDateLabel: UILabel!
+    @IBOutlet var upcomingEventLabel: UILabel!
+    @IBOutlet var upcomingEventDateLabel: UILabel!
 
     var tapHandler: (() -> Void)?
 
@@ -25,7 +25,7 @@ class EventCardCollectionViewCell: UICollectionViewCell {
 
     private func setupGesture() {
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap))
-        self.contentView.addGestureRecognizer(tapGesture)
+        contentView.addGestureRecognizer(tapGesture)
     }
 
     @objc private func handleTap() {

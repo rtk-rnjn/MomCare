@@ -22,7 +22,7 @@ struct TriTrackEvent {
 
 struct TriTrackReminder {
     var title: String
-    var date: Date = Date()
+    var date: Date = .init()
     var notes: String?
 
     var repeatAfter: TimeInterval?

@@ -11,7 +11,7 @@ import UIKit
 // MARK: Diet
 
 struct FoodItem {
-    let id: UUID = UUID()
+    let id: UUID = .init()
     let name: String
     let imageName: String
     var image: UIImage? {
@@ -57,7 +57,7 @@ public enum MealType: Hashable {
 
 class UserDiet {
     // MomCareUser.shared.diet.plan.addFoodItem(FOODITEM, to: .breakfast)
-    public private(set) var plan: MyPlanModel = MyPlanModel(caloriesGoal: 1740, proteinGoal: 70, carbsGoal: 175, fatGoal: 60)
+    public private(set) var plan: MyPlanModel = .init(caloriesGoal: 1740, proteinGoal: 70, carbsGoal: 175, fatGoal: 60)
 
     public private(set) var breakfast: [FoodItem] = [
         FoodItem(name: "Moong Dal Cheela", imageName: "moong-dal-cheela", calories: 120, protein: 8, carbs: 15, fat: 2),
@@ -80,7 +80,7 @@ class UserDiet {
         FoodItem(name: "Aloo Matar", imageName: "aloo-matar", calories: 200, protein: 6, carbs: 30, fat: 5)
     ]
 
-    static var shared: UserDiet = UserDiet()
+    static var shared: UserDiet = .init()
 
     private init() {
         updateFromDatabase()
@@ -138,10 +138,10 @@ class UserDiet {
             }
         }
 
-        self.plan.currentCaloriesIntake += foodItem.calories * multiplier
-        self.plan.currentProteinIntake += foodItem.protein * multiplier
-        self.plan.currentCarbsIntake += foodItem.carbs * multiplier
-        self.plan.currentFatIntake += foodItem.fat * multiplier
+        plan.currentCaloriesIntake += foodItem.calories * multiplier
+        plan.currentProteinIntake += foodItem.protein * multiplier
+        plan.currentCarbsIntake += foodItem.carbs * multiplier
+        plan.currentFatIntake += foodItem.fat * multiplier
 
         return multiplier == 1
     }
@@ -210,7 +210,7 @@ class UserExercise {
     public private(set) var exercises: [Exercise] = [
         .init(exerciseType: .breathing, duration: 60, description: "Breathing exercise", tags: ["breathing"], exerciseImageName: "breathing")
     ]
-    static var shared: UserExercise = UserExercise()
+    static var shared: UserExercise = .init()
 
     private init() {
         updateFromDatabase()

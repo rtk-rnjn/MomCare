@@ -14,9 +14,9 @@ import UIKit
 
 class MoodnestViewController: UIViewController {
 
-    @IBOutlet weak var collectionView: UICollectionView!
+    @IBOutlet var collectionView: UICollectionView!
 
-    @IBOutlet weak var pageControl: UIPageControl!
+    @IBOutlet var pageControl: UIPageControl!
 
     override func viewDidLoad() {
 

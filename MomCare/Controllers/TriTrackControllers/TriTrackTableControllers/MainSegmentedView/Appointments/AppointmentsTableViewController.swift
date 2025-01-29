@@ -16,7 +16,7 @@ class AppointmentsTableViewController: UITableViewController {
     }
 
     func refreshData() {
-        self.data = MomCareUser.shared.events
+        data = MomCareUser.shared.events
         tableView.reloadData()
     }
 

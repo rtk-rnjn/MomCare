@@ -22,7 +22,7 @@ class SongPageTableViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.data.count
+        return data.count
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -32,7 +32,7 @@ class SongPageTableViewController: UITableViewController {
             fatalError("love is a fear of loss")
         }
 
-        let song = self.data[indexPath.row]
+        let song = data[indexPath.row]
         cell.updateElement(with: song)
 
         return cell

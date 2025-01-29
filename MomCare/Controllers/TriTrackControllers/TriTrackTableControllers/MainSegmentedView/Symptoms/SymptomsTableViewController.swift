@@ -16,7 +16,7 @@ class SymptomsTableViewController: UITableViewController {
     }
 
     func refreshData() {
-        self.data = MomCareUser.shared.symptoms
+        data = MomCareUser.shared.symptoms
         tableView.reloadData()
     }
 

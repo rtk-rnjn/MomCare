@@ -31,20 +31,20 @@ class ContentTableViewCell: UITableViewCell {
         self.foodItem = foodItem
         self.indexPath = indexPath
 
-        self.dietTableViewController = view
+        dietTableViewController = view
     }
 
     @IBAction func foodItemButtonTapped(_ sender: UIButton) {
         var consumed: Bool
-        switch self.indexPath?.section {
+        switch indexPath?.section {
         case 0:
-            consumed = MomCareUser.shared.diet.markFoodAsConsumed(self.foodItem!, in: MealType.breakfast)
+            consumed = MomCareUser.shared.diet.markFoodAsConsumed(foodItem!, in: MealType.breakfast)
         case 1:
-            consumed = MomCareUser.shared.diet.markFoodAsConsumed(self.foodItem!, in: MealType.lunch)
+            consumed = MomCareUser.shared.diet.markFoodAsConsumed(foodItem!, in: MealType.lunch)
         case 2:
-            consumed = MomCareUser.shared.diet.markFoodAsConsumed(self.foodItem!, in: MealType.snacks)
+            consumed = MomCareUser.shared.diet.markFoodAsConsumed(foodItem!, in: MealType.snacks)
         case 3:
-            consumed = MomCareUser.shared.diet.markFoodAsConsumed(self.foodItem!, in: MealType.dinner)
+            consumed = MomCareUser.shared.diet.markFoodAsConsumed(foodItem!, in: MealType.dinner)
         default:
             fatalError()
         }

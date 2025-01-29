@@ -9,8 +9,8 @@ import UIKit
 
 class FacesCollectionViewCell: UICollectionViewCell {
 
-    @IBOutlet weak var faceImageView: UIImageView!
-    @IBOutlet weak var moodLabel: UILabel!
+    @IBOutlet var faceImageView: UIImageView!
+    @IBOutlet var moodLabel: UILabel!
 
     func setup(with mood: Mood) {
         faceImageView.image = mood.image

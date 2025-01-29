@@ -23,7 +23,7 @@ class PlayerViewController: UIViewController {
 
     func updateGradientBackground(with color: UIColor) {
         let gradientLayer = CAGradientLayer()
-        gradientLayer.frame = self.view.bounds
+        gradientLayer.frame = view.bounds
 
         let lighterColor = color.withAlphaComponent(0.2).cgColor
         let darkerColor = color.withAlphaComponent(0.7).cgColor
@@ -32,7 +32,7 @@ class PlayerViewController: UIViewController {
         gradientLayer.startPoint = CGPoint(x: 0.5, y: 0.0)
         gradientLayer.endPoint = CGPoint(x: 0.5, y: 1.0)
 
-        self.view.layer.insertSublayer(gradientLayer, at: 0)
+        view.layer.insertSublayer(gradientLayer, at: 0)
     }
 
     func updateUIForNewSong(songImage: UIImage) {

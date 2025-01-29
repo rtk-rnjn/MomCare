@@ -57,7 +57,7 @@ public enum MoodType: String {
 }
 
 struct User {
-    var id: UUID = UUID()
+    var id: UUID = .init()
 
     var firstName: String
     var lastName: String?
@@ -98,8 +98,8 @@ class MomCareUser {
     // let exercise = MomCareUser.shared.exercise
     // let mood = MomCareUser.shared.currentMood
     // MomCareUser.shared.setCurrentMood(as: .happy)
-    public private(set) var diet: UserDiet = UserDiet.shared
-    public private(set) var exercise: UserExercise = UserExercise.shared
+    public private(set) var diet: UserDiet = .shared
+    public private(set) var exercise: UserExercise = .shared
     public private(set) var currentMood: MoodType?
     public private(set) var user: User?
 
@@ -108,7 +108,7 @@ class MomCareUser {
 
     public private(set) var symptoms: [TriTrackSymptom] = []
 
-    static var shared: MomCareUser = MomCareUser()
+    static var shared: MomCareUser = .init()
 
     private init() {
         updateFromDatabase()

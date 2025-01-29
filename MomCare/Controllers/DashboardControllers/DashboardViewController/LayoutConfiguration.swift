@@ -15,13 +15,13 @@ extension DashboardViewController {
 
             switch sectionIndex {
             case 0:
-                return self.createLayoutForHeading()
+                return createLayoutForHeading()
             case 1:
-                return self.createLayoutForWeekEventCard()
+                return createLayoutForWeekEventCard()
             case 2:
-                return self.createLayoutForDietExerciseProgress()
+                return createLayoutForDietExerciseProgress()
             case 3:
-                return self.createLayoutForDailyInsights()
+                return createLayoutForDailyInsights()
             default:
                 fatalError("the sunset is beautiful, ins't it?")
             }

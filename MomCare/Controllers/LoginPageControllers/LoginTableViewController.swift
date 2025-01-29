@@ -38,11 +38,7 @@ class LoginTableViewController: UITableViewController {
 
         let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
 
-
-
         // Configure the cell...
-
-
 
         return cell
 
@@ -80,7 +76,7 @@ class LoginTableViewController: UITableViewController {
 
             // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
 
-        }    
+        }
 
     }
 
@@ -91,8 +87,6 @@ class LoginTableViewController: UITableViewController {
     // Override to support rearranging the table view.
 
     override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
-
-
 
     }
 
@@ -115,8 +109,6 @@ class LoginTableViewController: UITableViewController {
     /*
 
     // MARK: - Navigation
-
-
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
 

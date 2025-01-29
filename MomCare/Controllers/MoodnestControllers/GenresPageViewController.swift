@@ -9,8 +9,8 @@ import UIKit
 
 class GenresPageViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
 
-    @IBOutlet weak var moodnestCollectionView: UICollectionView!
-    @IBOutlet weak var outerView: UIView!
+    @IBOutlet var moodnestCollectionView: UICollectionView!
+    @IBOutlet var outerView: UIView!
 
     override func viewDidLoad() {
 

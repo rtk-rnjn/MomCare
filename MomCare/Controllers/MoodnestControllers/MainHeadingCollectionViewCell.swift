@@ -2,7 +2,7 @@ import UIKit
 
 class MainHeadingCollectionViewCell: UICollectionViewCell {
 
-    @IBOutlet weak var mainHeadingLabel: UILabel!
+    @IBOutlet var mainHeadingLabel: UILabel!
 
     func updateSection1(with indexPath: IndexPath) {
         let text = "Take a moment to rewind with \"\(FeaturedPlaylists.playlists[indexPath.row].name)\" playlists"

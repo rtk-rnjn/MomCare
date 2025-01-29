@@ -2,7 +2,7 @@ import UIKit
 
 class HeaderTableViewCell: UITableViewCell {
 
-    @IBOutlet weak var actionButton: UIButton!
+    @IBOutlet var actionButton: UIButton!
 
     @IBOutlet var mealHeaderLabel: UILabel!
     @IBOutlet var mealHeaderButton: UIButton!
@@ -34,7 +34,7 @@ class HeaderTableViewCell: UITableViewCell {
     func updateTitle(with title: String, at section: Int, of view: DietTableViewController) {
         mealHeaderLabel.text = title
         self.section = section
-        self.dietTableViewController = view
+        dietTableViewController = view
     }
 
     @IBAction func mealHeaderButtonTapped(_ sender: UIButton) {

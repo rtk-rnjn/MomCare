@@ -9,14 +9,14 @@ import UIKit
 
 class WeekCardCollectionViewCell: UICollectionViewCell {
 
-    @IBOutlet weak var currentWeekLabel: UILabel!
-    @IBOutlet weak var currentDayLabel: UILabel!
-    @IBOutlet weak var currentTrimesterLabel: UILabel!
+    @IBOutlet var currentWeekLabel: UILabel!
+    @IBOutlet var currentDayLabel: UILabel!
+    @IBOutlet var currentTrimesterLabel: UILabel!
 
     override func awakeFromNib() {
         super.awakeFromNib()
-        self.contentView.layer.cornerRadius = 16
-        self.contentView.layer.masksToBounds = true
+        contentView.layer.cornerRadius = 16
+        contentView.layer.masksToBounds = true
     }
 
     var tapHandler: (() -> Void)?
@@ -33,7 +33,7 @@ class WeekCardCollectionViewCell: UICollectionViewCell {
 
     private func setupGesture() {
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap))
-        self.contentView.addGestureRecognizer(tapGesture)
+        contentView.addGestureRecognizer(tapGesture)
     }
 
     @objc private func handleTap() {

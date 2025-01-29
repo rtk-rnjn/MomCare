@@ -28,7 +28,7 @@ class DietProgressCollectionViewCell: UICollectionViewCell {
 
     private func setupGesture() {
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap))
-        self.contentView.addGestureRecognizer(tapGesture)
+        contentView.addGestureRecognizer(tapGesture)
     }
 
     @objc private func handleTap() {

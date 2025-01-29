@@ -8,9 +8,9 @@
 import UIKit
 
 class NewExerciseMyPlanCellCollectionViewCell: UICollectionViewCell {
-    @IBOutlet weak var exerciseLevel: UILabel!
-    @IBOutlet weak var exerciseName: UILabel!
-    @IBOutlet weak var exerciseTime: UILabel!
-    @IBOutlet weak var exerciseImage: UIImageView!
-    @IBOutlet weak var exerciseCompletionPercentage: UILabel!
+    @IBOutlet var exerciseLevel: UILabel!
+    @IBOutlet var exerciseName: UILabel!
+    @IBOutlet var exerciseTime: UILabel!
+    @IBOutlet var exerciseImage: UIImageView!
+    @IBOutlet var exerciseCompletionPercentage: UILabel!
 }

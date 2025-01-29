@@ -1,0 +1,20 @@
+# Disable all rules first
+--disable all
+
+# Enable specific rules
+--enable consecutiveBlankLines
+--enable elseOnSameLine
+--enable duplicateImports
+--enable enumNamespaces
+--enable spaceAroundBraces
+--enable spaceAroundComments
+--enable spaceAroundParens
+--enable spaceInsideBraces
+--enable strongOutlets
+--enable todos
+--enable trailingSpace
+--enable wrapEnumCases
+--enable wrapLoopBodies
+--enable redundantSelf
+--enable redundantType
+

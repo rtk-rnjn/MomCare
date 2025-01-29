@@ -9,18 +9,18 @@ import UIKit
 
 class SignUpYourDetailsExtendedTableViewController: UITableViewController {
 
-    @IBOutlet weak var dueDatePopupButton: UIButton!
-    @IBOutlet weak var existingConditionPopupButton: UIButton!
-    @IBOutlet weak var foodIntolerancePopupButton: UIButton!
-    @IBOutlet weak var dietaryPreferencePopupButton: UIButton!
-    @IBOutlet weak var weekPullDownButton: UIButton!
-    @IBOutlet weak var dayPullDownButton: UIButton!
-    @IBOutlet weak var weeksLabel: UILabel!
-    @IBOutlet weak var daysLabel: UILabel!
-    @IBOutlet weak var secondRowCell: UITableViewCell!
-    @IBOutlet weak var dueDateInputLabel: UILabel!
-    @IBOutlet weak var dueDateDatePicker: UIDatePicker!
-    @IBOutlet weak var progressView: UIProgressView!
+    @IBOutlet var dueDatePopupButton: UIButton!
+    @IBOutlet var existingConditionPopupButton: UIButton!
+    @IBOutlet var foodIntolerancePopupButton: UIButton!
+    @IBOutlet var dietaryPreferencePopupButton: UIButton!
+    @IBOutlet var weekPullDownButton: UIButton!
+    @IBOutlet var dayPullDownButton: UIButton!
+    @IBOutlet var weeksLabel: UILabel!
+    @IBOutlet var daysLabel: UILabel!
+    @IBOutlet var secondRowCell: UITableViewCell!
+    @IBOutlet var dueDateInputLabel: UILabel!
+    @IBOutlet var dueDateDatePicker: UIDatePicker!
+    @IBOutlet var progressView: UIProgressView!
 
     var initialProgress: Float = 0.0
 

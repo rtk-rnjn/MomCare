@@ -102,7 +102,7 @@ extension DashboardViewController {
 
 extension DashboardViewController {
     func eventCardTapped() {
-        if let tabController = self.tabBarController as? InitialTabBarController {
+        if let tabController = tabBarController as? InitialTabBarController {
             tabController.selectedIndex = 2
 
             if let destinationVC = (tabController.viewControllers?[2] as? UINavigationController)?.topViewController as? TriTrackViewController {
@@ -112,7 +112,7 @@ extension DashboardViewController {
     }
 
     func weekCardTapped() {
-        if let tabController = self.tabBarController as? InitialTabBarController {
+        if let tabController = tabBarController as? InitialTabBarController {
             tabController.selectedIndex = 2
 
             if let destinationVC = (tabController.viewControllers?[2] as? UINavigationController)?.topViewController as? TriTrackViewController {
@@ -122,7 +122,7 @@ extension DashboardViewController {
     }
 
     func exersiceCardTapped() {
-        if let tabController = self.tabBarController as? InitialTabBarController {
+        if let tabController = tabBarController as? InitialTabBarController {
             tabController.selectedIndex = 1
 
             if let destinationVC = (tabController.viewControllers?[1] as? UINavigationController)?.topViewController as? MyPlanViewController {
@@ -132,7 +132,7 @@ extension DashboardViewController {
     }
 
     func dietCardTapped() {
-        if let tabController = self.tabBarController as? InitialTabBarController {
+        if let tabController = tabBarController as? InitialTabBarController {
             tabController.selectedIndex = 1
 
             if let destinationVC = (tabController.viewControllers?[1] as? UINavigationController)?.topViewController as? MyPlanViewController {

@@ -11,7 +11,7 @@ class ExerciseViewController: UIViewController, UICollectionViewDelegate, UIColl
 
     var exercises: Int = 5
 
-    @IBOutlet weak var exerciseCollectionView: UICollectionView!
+    @IBOutlet var exerciseCollectionView: UICollectionView!
 
     override func viewDidLoad() {
         super.viewDidLoad()
