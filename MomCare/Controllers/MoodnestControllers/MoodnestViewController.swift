@@ -77,21 +77,4 @@ extension MoodnestViewController: UICollectionViewDelegateFlowLayout {
         performSegue(withIdentifier: "ShowGenres", sender: selectedImage)
 
     }
-
-//    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-
-//        if segue.identifier == "ShowGenres" {
-
-//            if let destinationVC = segue.destination as? GenresPageViewController,
-
-//               let selectedImage = sender as? UIImage {
-
-//                destinationVC.MoodIconImage = selectedImage
-
-//            }
-
-//        }
-
-//    }
-
 }

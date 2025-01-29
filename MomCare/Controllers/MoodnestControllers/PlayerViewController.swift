@@ -25,8 +25,8 @@ class PlayerViewController: UIViewController {
         let gradientLayer = CAGradientLayer()
         gradientLayer.frame = view.bounds
 
-        let lighterColor = color.withAlphaComponent(0.2).cgColor
-        let darkerColor = color.withAlphaComponent(0.7).cgColor
+        let lighterColor = color.withAlphaComponent(0.5).cgColor
+        let darkerColor = color.withAlphaComponent(0.9).cgColor
 
         gradientLayer.colors = [lighterColor, darkerColor]
         gradientLayer.startPoint = CGPoint(x: 0.5, y: 0.0)
