@@ -9,9 +9,7 @@ class SongPageViewController: UIViewController {
 
     @IBOutlet var upperContainer: UIView!
     @IBOutlet var lowerContainer: UIView!
-
     var playlist: Playlist!
-
     var songPageTableViewController: SongPageTableViewController?
     var songPageElementsViewController: SongPageElementsViewController?
 

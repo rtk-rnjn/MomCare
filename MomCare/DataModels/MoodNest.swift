@@ -55,7 +55,7 @@ class FeaturedPlaylists {
             imageName: "I1",
             name: "Relax",
             songs: [
-                Song(name: "River", artist: "ODESZA", duration: 280.0),
+                Song(name: "Treat You Better", artist: "Shawn Mendes", duration: 280.0),
                 Song(name: "Weightless", artist: "Marconi Union", duration: 240.0),
                 Song(name: "Clair de Lune", artist: "Claude Debussy", duration: 210.0),
                 Song(name: "Canon in D Major", artist: "Johann Pachelbel", duration: 180.0),
@@ -79,7 +79,7 @@ class FeaturedPlaylists {
             imageName: "I3",
             name: "Meditation",
             songs: [
-                Song(name: "Enya - Only Time", artist: "Enya", duration: 240.0),
+                Song(name: "Treat You Better", artist: "Sahwn Mendes", duration: 240.0),
                 Song(name: "Hans Zimmer - Time", artist: "Hans Zimmer", duration: 210.0),
                 Song(name: "Brian Eno - An Ending (Ascent)", artist: "Brian Eno", duration: 180.0),
                 Song(name: "Yiruma - River Flows In You", artist: "Yiruma", duration: 200.0),
