@@ -92,7 +92,7 @@ extension DashboardViewController {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "WelcomeHeaderCell", for: indexPath) as? WelcomeHeaderCollectionViewCell
 
         guard let cell else { fatalError() }
-        cell.updateElements(with: "Hi, Khushi")
+        cell.updateElements(with: MomCareUser.shared.user?.fullName ?? "User")
 
         return cell
     }

@@ -7,12 +7,7 @@
 
 import Foundation
 
-enum Gender: String, Codable {
-    case male
-    case female
-}
-
-enum Country {
+enum Country: String {
     case india
 }
 
@@ -46,7 +41,6 @@ enum DietaryPreference {
     case ketogenic
     case highProtein
     case dairyFree
-
 }
 
 public enum MoodType: String {
@@ -73,12 +67,17 @@ struct User {
     var countryCode: String = "+91"
     var phoneNumber: String
 
+    var userMedical: UserMedical?
+
+    var mood: MoodType?
+}
+
+struct UserMedical {
     var dateOfBirth: Date
     var height: Double
     var prePregnancyWeight: Double
     var currentWeight: Double
 
-    var gender: Gender = .female
     var country: Country = .india
 
     var dueDate: Date?
@@ -86,8 +85,6 @@ struct User {
     var foodIntolerances: [Intolerance] = []
 
     var dietaryPreferences: [DietaryPreference] = []
-
-    var mood: MoodType?
 }
 
 enum PickerOptions {
@@ -98,10 +95,6 @@ enum PickerOptions {
 }
 
 class MomCareUser {
-    // let plan = MomCareUser.shared.diet.plan
-    // let exercise = MomCareUser.shared.exercise
-    // let mood = MomCareUser.shared.currentMood
-    // MomCareUser.shared.setCurrentMood(as: .happy)
     public private(set) var diet: UserDiet = .shared
     public private(set) var exercise: UserExercise = .shared
     public private(set) var user: User?

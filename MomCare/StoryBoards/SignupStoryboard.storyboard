@@ -12,7 +12,7 @@
         <!--Sign Up-->
         <scene sceneID="cSL-OF-Qll">
             <objects>
-                <tableViewController id="9Xi-l9-W8d" sceneMemberID="viewController">
+                <tableViewController id="9Xi-l9-W8d" customClass="SignUpTableViewController" customModule="MomCare" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="insetGrouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" estimatedSectionHeaderHeight="-1" sectionFooterHeight="18" estimatedSectionFooterHeight="-1" id="vqt-zx-vcn">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -34,7 +34,11 @@
                                                         <constraint firstAttribute="height" constant="50" id="COe-xg-pcO"/>
                                                     </constraints>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                    <textInputTraits key="textInputTraits"/>
+                                                    <textInputTraits key="textInputTraits" spellCheckingType="no" textContentType="name"/>
+                                                    <connections>
+                                                        <action selector="editingChanged:" destination="9Xi-l9-W8d" eventType="editingChanged" id="z5j-TV-Evg"/>
+                                                        <action selector="editingChanged:" destination="9Xi-l9-W8d" eventType="editingDidEnd" id="z7c-Qk-vyt"/>
+                                                    </connections>
                                                 </textField>
                                             </subviews>
                                             <color key="backgroundColor" systemColor="systemGray6Color"/>
@@ -60,7 +64,11 @@
                                                         <constraint firstAttribute="height" constant="50" id="pqk-55-cVC"/>
                                                     </constraints>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                    <textInputTraits key="textInputTraits"/>
+                                                    <textInputTraits key="textInputTraits" spellCheckingType="no" textContentType="family-name"/>
+                                                    <connections>
+                                                        <action selector="editingChanged:" destination="9Xi-l9-W8d" eventType="editingChanged" id="86d-rn-zDd"/>
+                                                        <action selector="editingChanged:" destination="9Xi-l9-W8d" eventType="editingDidEnd" id="eVu-KM-phD"/>
+                                                    </connections>
                                                 </textField>
                                             </subviews>
                                             <color key="backgroundColor" systemColor="systemGray6Color"/>
@@ -90,7 +98,11 @@
                                                         <constraint firstAttribute="height" constant="50" id="zna-DI-G5n"/>
                                                     </constraints>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                    <textInputTraits key="textInputTraits"/>
+                                                    <textInputTraits key="textInputTraits" keyboardType="emailAddress" textContentType="email"/>
+                                                    <connections>
+                                                        <action selector="editingChanged:" destination="9Xi-l9-W8d" eventType="editingChanged" id="Q2V-J0-mKe"/>
+                                                        <action selector="editingChanged:" destination="9Xi-l9-W8d" eventType="editingDidEnd" id="svg-9S-mV7"/>
+                                                    </connections>
                                                 </textField>
                                             </subviews>
                                             <color key="backgroundColor" systemColor="systemGray6Color"/>
@@ -116,7 +128,11 @@
                                                         <constraint firstAttribute="height" constant="50" id="l6d-sY-SbG"/>
                                                     </constraints>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                    <textInputTraits key="textInputTraits"/>
+                                                    <textInputTraits key="textInputTraits" secureTextEntry="YES" textContentType="new-password"/>
+                                                    <connections>
+                                                        <action selector="editingChanged:" destination="9Xi-l9-W8d" eventType="editingChanged" id="IuE-Me-mVO"/>
+                                                        <action selector="editingChanged:" destination="9Xi-l9-W8d" eventType="editingDidEnd" id="Ldt-Kf-iiM"/>
+                                                    </connections>
                                                 </textField>
                                             </subviews>
                                             <color key="backgroundColor" systemColor="systemGray6Color"/>
@@ -142,7 +158,11 @@
                                                         <constraint firstAttribute="height" constant="50" id="2FM-71-z5s"/>
                                                     </constraints>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                    <textInputTraits key="textInputTraits"/>
+                                                    <textInputTraits key="textInputTraits" secureTextEntry="YES" textContentType="password"/>
+                                                    <connections>
+                                                        <action selector="editingChanged:" destination="9Xi-l9-W8d" eventType="editingDidEnd" id="Aq4-XZ-q9d"/>
+                                                        <action selector="editingChanged:" destination="9Xi-l9-W8d" eventType="editingChanged" id="Es3-qK-s72"/>
+                                                    </connections>
                                                 </textField>
                                             </subviews>
                                             <color key="backgroundColor" systemColor="systemGray6Color"/>
@@ -165,7 +185,7 @@
                                             <rect key="frame" x="0.0" y="0.0" width="353" height="50.333332061767578"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Country Code" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="h6V-8D-q5K">
+                                                <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" restorationIdentifier="countryCodeField" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Country Code" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="h6V-8D-q5K">
                                                     <rect key="frame" x="20" y="0.0" width="333" height="50.333333333333336"/>
                                                     <color key="backgroundColor" systemColor="systemGray6Color"/>
                                                     <constraints>
@@ -173,6 +193,12 @@
                                                     </constraints>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <textInputTraits key="textInputTraits"/>
+                                                    <connections>
+                                                        <action selector="countryCodeFieldTapped:" destination="9Xi-l9-W8d" eventType="editingDidBegin" id="b9e-Bl-B6S"/>
+                                                        <action selector="countryCodeFieldTapped:" destination="9Xi-l9-W8d" eventType="touchUpInside" id="ihw-DQ-xj5"/>
+                                                        <action selector="editingChanged:" destination="9Xi-l9-W8d" eventType="editingChanged" id="Aaq-Ma-GBE"/>
+                                                        <action selector="editingChanged:" destination="9Xi-l9-W8d" eventType="editingDidEnd" id="RMj-dJ-hFo"/>
+                                                    </connections>
                                                 </textField>
                                             </subviews>
                                             <color key="backgroundColor" systemColor="systemGray6Color"/>
@@ -198,7 +224,11 @@
                                                         <constraint firstAttribute="height" constant="50" id="JMc-ED-sgu"/>
                                                     </constraints>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                    <textInputTraits key="textInputTraits"/>
+                                                    <textInputTraits key="textInputTraits" keyboardType="phonePad" textContentType="tel"/>
+                                                    <connections>
+                                                        <action selector="editingChanged:" destination="9Xi-l9-W8d" eventType="editingChanged" id="AMb-w1-U3U"/>
+                                                        <action selector="editingChanged:" destination="9Xi-l9-W8d" eventType="editingDidEnd" id="Zay-NB-SmU"/>
+                                                    </connections>
                                                 </textField>
                                             </subviews>
                                             <color key="backgroundColor" systemColor="systemGray6Color"/>
@@ -228,11 +258,12 @@
                                                     </constraints>
                                                     <color key="tintColor" red="0.57254901960000004" green="0.26274509800000001" blue="0.31372549020000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <state key="normal" title="Button"/>
-                                                    <buttonConfiguration key="configuration" style="filled" title="Next">
+                                                    <buttonConfiguration key="configuration" style="filled" title="Create">
                                                         <backgroundConfiguration key="background" cornerRadius="15"/>
                                                         <color key="baseBackgroundColor" red="0.57254901960000004" green="0.26274509800000001" blue="0.31372549020000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     </buttonConfiguration>
                                                     <connections>
+                                                        <action selector="createButtonTapped:" destination="9Xi-l9-W8d" eventType="touchUpInside" id="vAz-Yq-l2H"/>
                                                         <segue destination="j28-Ag-RMC" kind="show" id="xeP-lZ-Pil"/>
                                                     </connections>
                                                 </button>
@@ -255,6 +286,17 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Sign Up" id="Di2-bL-4g0"/>
+                    <connections>
+                        <outlet property="confirmPasswordField" destination="Kek-BE-ZD0" id="ztb-tI-ke5"/>
+                        <outlet property="countryCodeField" destination="h6V-8D-q5K" id="tbM-LM-uGm"/>
+                        <outlet property="createButton" destination="PUM-qW-61f" id="zmH-2y-6GW"/>
+                        <outlet property="emailField" destination="zFs-5c-kbt" id="Xfu-xh-Vjb"/>
+                        <outlet property="firstNameField" destination="Ds9-IE-Erh" id="Hef-v9-Ogo"/>
+                        <outlet property="lastNameField" destination="Wtv-Fl-XGg" id="aYl-ec-UFt"/>
+                        <outlet property="mobileNumberField" destination="UNi-7g-NYP" id="6f9-5M-msE"/>
+                        <outlet property="passwordField" destination="Klb-XY-Bus" id="dl3-35-yDd"/>
+                        <segue destination="51c-gM-3lN" kind="presentation" id="zf3-jg-5xd"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Qu1-YN-pUw" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
@@ -263,7 +305,7 @@
         <!--Your Details-->
         <scene sceneID="cRh-NH-nLw">
             <objects>
-                <tableViewController id="j28-Ag-RMC" customClass="SignUpYourDetailsTableViewController" customModule="MomCare" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController id="j28-Ag-RMC" customClass="SignUpDetailsTableViewController" customModule="MomCare" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="insetGrouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" estimatedSectionHeaderHeight="-1" sectionFooterHeight="18" estimatedSectionFooterHeight="-1" id="bPs-kZ-dsr">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="842"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -369,14 +411,13 @@
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
-                                                        <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yuz-Eh-lKz">
+                                                        <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yuz-Eh-lKz" userLabel="HeightButton">
                                                             <rect key="frame" x="293.33333333333331" y="0.0" width="39.666666666666686" height="50.333333333333336"/>
                                                             <color key="tintColor" systemColor="systemGray3Color"/>
                                                             <state key="normal" title="Button"/>
                                                             <buttonConfiguration key="configuration" style="plain" image="chevron.right" catalog="system"/>
                                                             <connections>
-                                                                <action selector="heightButtonTapped:" destination="j28-Ag-RMC" eventType="touchUpInside" id="Wwe-AX-BJr"/>
-                                                                <segue destination="51c-gM-3lN" kind="presentation" identifier="buttonsPresentModally" id="oKI-Bl-pRN"/>
+                                                                <segue destination="51c-gM-3lN" kind="presentation" destinationCreationSelector="segueViaHeightButton:" id="Rd9-7D-dMb"/>
                                                             </connections>
                                                         </button>
                                                     </subviews>
@@ -420,13 +461,13 @@
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
-                                                        <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LHJ-Bq-WRf">
+                                                        <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LHJ-Bq-WRf" userLabel="PrePregnancyButton">
                                                             <rect key="frame" x="293.33333333333331" y="0.0" width="39.666666666666686" height="50.333333333333336"/>
                                                             <color key="tintColor" systemColor="systemGray3Color"/>
                                                             <state key="normal" title="Button"/>
                                                             <buttonConfiguration key="configuration" style="plain" image="chevron.right" catalog="system"/>
                                                             <connections>
-                                                                <action selector="prePregnancyButtonTapped:" destination="j28-Ag-RMC" eventType="touchUpInside" id="sEn-5d-Dz9"/>
+                                                                <segue destination="51c-gM-3lN" kind="presentation" destinationCreationSelector="segueViaPrePregnancyButton:" id="ASP-Ya-WHl"/>
                                                             </connections>
                                                         </button>
                                                     </subviews>
@@ -470,13 +511,13 @@
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
-                                                        <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="umW-2Q-89A">
+                                                        <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="umW-2Q-89A" userLabel="WeightButton">
                                                             <rect key="frame" x="293.33333333333331" y="0.0" width="39.666666666666686" height="50.333333333333336"/>
                                                             <color key="tintColor" systemColor="systemGray3Color"/>
                                                             <state key="normal" title="Button"/>
                                                             <buttonConfiguration key="configuration" style="plain" image="chevron.right" catalog="system"/>
                                                             <connections>
-                                                                <action selector="currentWeightButtonTapped:" destination="j28-Ag-RMC" eventType="touchUpInside" id="Qun-pc-ljy"/>
+                                                                <segue destination="51c-gM-3lN" kind="presentation" destinationCreationSelector="segueViaWeightButton:" id="GYF-i6-sjI"/>
                                                             </connections>
                                                         </button>
                                                     </subviews>
@@ -520,13 +561,13 @@
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
-                                                        <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZG6-Vf-Eaz">
+                                                        <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZG6-Vf-Eaz" userLabel="CountryButton">
                                                             <rect key="frame" x="293.33333333333331" y="0.0" width="39.666666666666686" height="50.333333333333336"/>
                                                             <color key="tintColor" systemColor="systemGray3Color"/>
                                                             <state key="normal" title="Button"/>
                                                             <buttonConfiguration key="configuration" style="plain" image="chevron.right" catalog="system"/>
                                                             <connections>
-                                                                <action selector="countryButtonTapped:" destination="j28-Ag-RMC" eventType="touchUpInside" id="9lz-9X-O9q"/>
+                                                                <segue destination="51c-gM-3lN" kind="presentation" destinationCreationSelector="segueViaCountryButton:" id="dxu-SB-WqG"/>
                                                             </connections>
                                                         </button>
                                                     </subviews>
@@ -567,7 +608,7 @@
                                                         <color key="baseBackgroundColor" red="0.57254901960000004" green="0.26274509800000001" blue="0.31372549020000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     </buttonConfiguration>
                                                     <connections>
-                                                        <segue destination="8kZ-fK-sew" kind="show" identifier="showProgress" id="9Rs-SJ-fNX"/>
+                                                        <segue destination="8kZ-fK-sew" kind="show" identifier="segueShowSignUpExtendedTableViewController" id="9Rs-SJ-fNX"/>
                                                     </connections>
                                                 </button>
                                             </subviews>
@@ -590,10 +631,10 @@
                     <navigationItem key="navigationItem" title="Your Details" largeTitleDisplayMode="never" id="xHs-UZ-TJ4"/>
                     <connections>
                         <outlet property="countryLabel" destination="G0A-CU-KzB" id="twB-gG-kIs"/>
-                        <outlet property="currentWeight" destination="w2k-V0-LQd" id="w44-tn-t1v"/>
-                        <outlet property="prePregnancyWeight" destination="y4e-zW-vMF" id="2ZA-XR-DNH"/>
+                        <outlet property="currentWeightLabel" destination="w2k-V0-LQd" id="w44-tn-t1v"/>
+                        <outlet property="heightLabel" destination="Xrg-zJ-ljc" id="Tzf-QW-O3x"/>
+                        <outlet property="prePregnancyWeightLabel" destination="y4e-zW-vMF" id="2ZA-XR-DNH"/>
                         <outlet property="progressView" destination="Uti-rD-FWY" id="ujA-G8-OaU"/>
-                        <outlet property="recievedHeight" destination="Xrg-zJ-ljc" id="Tzf-QW-O3x"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Cr2-48-Jvf" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -603,7 +644,7 @@
         <!--Picker View Controller-->
         <scene sceneID="3hV-Ak-yjW">
             <objects>
-                <viewController storyboardIdentifier="pickerView" useStoryboardIdentifierAsRestorationIdentifier="YES" id="51c-gM-3lN" customClass="PickerViewController" customModule="MomCare" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="PickerViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="51c-gM-3lN" customClass="PickerViewController" customModule="MomCare" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="mQj-2b-bpq">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="842"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -620,12 +661,12 @@
                                     <navigationItem id="gvo-Iw-jIg">
                                         <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="OdP-cH-ovv">
                                             <connections>
-                                                <segue destination="Nmy-Q4-mt8" kind="unwind" unwindAction="unwindToSignUpNoChange:" id="edm-kr-k5g"/>
+                                                <segue destination="Nmy-Q4-mt8" kind="unwind" identifier="unwindToSignUpTableViewControllerViaCancel" unwindAction="unwindToSignUpTableViewController:" id="z4S-gu-jQn"/>
                                             </connections>
                                         </barButtonItem>
                                         <barButtonItem key="rightBarButtonItem" systemItem="done" id="akd-75-PQD">
                                             <connections>
-                                                <segue destination="Nmy-Q4-mt8" kind="unwind" unwindAction="unwindToMainViewController:" id="q11-Lh-QtU"/>
+                                                <segue destination="Nmy-Q4-mt8" kind="unwind" identifier="unwindToSignUpTableViewControllerViaDone" unwindAction="unwindToSignUpTableViewController:" id="dQ6-0A-pRG"/>
                                             </connections>
                                         </barButtonItem>
                                     </navigationItem>
@@ -657,12 +698,12 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="GAp-0v-84x" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
                 <exit id="Nmy-Q4-mt8" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="4953" y="732"/>
+            <point key="canvasLocation" x="4982" y="735"/>
         </scene>
         <!--Medical History-->
         <scene sceneID="kmY-Xc-tGE">
             <objects>
-                <tableViewController id="8kZ-fK-sew" customClass="SignUpYourDetailsExtendedTableViewController" customModule="MomCare" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController id="8kZ-fK-sew" customClass="SignUpExtendedTableViewController" customModule="MomCare" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="insetGrouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" estimatedSectionHeaderHeight="-1" sectionFooterHeight="18" estimatedSectionFooterHeight="-1" id="gib-4n-9Dd">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="842"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -1086,6 +1127,9 @@
             <point key="canvasLocation" x="6279" y="-4"/>
         </scene>
     </scenes>
+    <inferredMetricsTieBreakers>
+        <segue reference="zf3-jg-5xd"/>
+    </inferredMetricsTieBreakers>
     <resources>
         <image name="chevron.right" catalog="system" width="97" height="128"/>
         <image name="chevron.up.chevron.down" catalog="system" width="109" height="128"/>

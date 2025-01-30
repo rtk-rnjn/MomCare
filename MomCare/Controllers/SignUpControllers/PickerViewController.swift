@@ -12,23 +12,26 @@ class PickerViewController: UIViewController, UIPickerViewDelegate, UIPickerView
     let heights = Array(120...200)
     let weight = Array(30...200)
 
-    var selectedHeight: Int = 120
-    var selectedCountry: String = ""
-
     @IBOutlet var pickerView: UIPickerView!
 
-    var selectedOption: PickerOptions?
-
+    var selectedOption: PickerOptions!
     var currentOptions: [Any] = []
 
+    var countryNames: [String] = []
+    var countryCodes: [String] = []
     var suffix: String = ""
+
+    var signUpDetailsTableViewController: SignUpDetailsTableViewController!
+    var signUpTableViewController: SignUpTableViewController!
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
         pickerView.delegate = self
         pickerView.dataSource = self
+    }
 
+    private func preparePickerView() {
         switch selectedOption {
         case .height:
             currentOptions = heights
@@ -43,12 +46,34 @@ class PickerViewController: UIViewController, UIPickerViewDelegate, UIPickerView
             suffix = "Kg"
 
         case .country:
-            currentOptions = countryList
+            currentOptions = CountryData.countryCodes.values.map { return String($0) }
             suffix = ""
 
         case .none:
-            break
+            fatalError()
         }
+    }
+
+    private func preparePickerView(with textField: UITextField) {
+        currentOptions = CountryData.countryCodes.keys.map { return "+\($0)" }
+    }
+
+    init?(coder: NSCoder, with selectedOption: PickerOptions, sender tableViewController: SignUpDetailsTableViewController) {
+        self.selectedOption = selectedOption
+        signUpDetailsTableViewController = tableViewController
+        super.init(coder: coder)
+        preparePickerView()
+    }
+
+    init?(coder: NSCoder, with textField: UITextField, sender tableViewController: SignUpTableViewController) {
+        signUpTableViewController = tableViewController
+
+        super.init(coder: coder)
+        preparePickerView(with: textField)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
 
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
@@ -60,26 +85,23 @@ class PickerViewController: UIViewController, UIPickerViewDelegate, UIPickerView
     }
 
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        if let heightValue = currentOptions[row] as? Int {
-            return "\(heightValue) \(suffix)"
-        } else if let countryValue = currentOptions[row] as? String {
-            return countryValue
-        }
-
-        return nil
+        var label = "\(currentOptions[row]) \(suffix)"
+        label = label.trimmingCharacters(in: .whitespaces)
+        return label
     }
 
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        if let heightValue = currentOptions[row] as? Int {
-            selectedHeight = heightValue
-        } else if let countryValue = currentOptions[row] as? String {
-            selectedCountry = countryValue
-        }
-    }
-
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if let destinationVC = segue.destination as? SignUpYourDetailsTableViewController {
-            destinationVC.updatedHeight = selectedHeight
+        switch selectedOption {
+        case .height:
+            signUpDetailsTableViewController.heightLabel.text = "\(currentOptions[row]) \(suffix)"
+        case .prePregnancyWeight:
+            signUpDetailsTableViewController.prePregnancyWeightLabel.text = "\(currentOptions[row]) \(suffix)"
+        case .currentWeight:
+            signUpDetailsTableViewController.currentWeightLabel.text = "\(currentOptions[row]) \(suffix)"
+        case .country:
+            signUpDetailsTableViewController.countryLabel.text = "\(currentOptions[row])"
+        case .none:
+            signUpTableViewController.countryCodeField.text = "\(currentOptions[row])"
         }
     }
 }
