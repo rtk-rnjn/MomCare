@@ -12,7 +12,7 @@ class FacesCollectionViewCell: UICollectionViewCell {
     @IBOutlet var faceImageView: UIImageView!
     @IBOutlet var moodLabel: UILabel!
 
-    func setup(with mood: Mood) {
+    func updateElements(with mood: Mood) {
         faceImageView.image = mood.image
         moodLabel.text = mood.type.rawValue
     }

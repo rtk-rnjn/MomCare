@@ -8,21 +8,27 @@
 import UIKit
 
 class SongPageTableViewController: UITableViewController {
-    var data: [Song] = FeaturedPlaylists.playlists[0].songs
+    var songs: [Song] = []
+    var playlist: Playlist!
 
     @IBOutlet var moodNestTableView: UITableView!
+
     override func viewDidLoad() {
         super.viewDidLoad()
         moodNestTableView.showsVerticalScrollIndicator = false
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        songs = playlist.songs
+    }
+
     override func numberOfSections(in tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
         return 1
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return data.count
+        return songs.count
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -32,14 +38,12 @@ class SongPageTableViewController: UITableViewController {
             fatalError("love is a fear of loss")
         }
 
-        let song = data[indexPath.row]
-        cell.updateElement(with: song)
+        let song = songs[indexPath.row]
+        cell.updateElements(with: song)
 
         return cell
     }
 
     @IBAction func unwindToSongPageViewController(_ segue: UIStoryboardSegue) {
-
     }
-
 }

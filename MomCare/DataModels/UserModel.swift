@@ -84,6 +84,10 @@ struct User {
     var dueDate: Date?
     var preExistingConditions: [PreExistingCondition] = []
     var foodIntolerances: [Intolerance] = []
+
+    var dietaryPreferences: [DietaryPreference] = []
+
+    var mood: MoodType?
 }
 
 enum PickerOptions {
@@ -100,7 +104,6 @@ class MomCareUser {
     // MomCareUser.shared.setCurrentMood(as: .happy)
     public private(set) var diet: UserDiet = .shared
     public private(set) var exercise: UserExercise = .shared
-    public private(set) var currentMood: MoodType?
     public private(set) var user: User?
 
     public private(set) var reminders: [TriTrackReminder] = []
@@ -115,7 +118,6 @@ class MomCareUser {
     }
 
     func setCurrentMood(as mood: MoodType) {
-        currentMood = mood
     }
 
     private func updateFromDatabase() {

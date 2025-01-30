@@ -12,7 +12,7 @@ class SongPageTableViewCell: UITableViewCell {
     @IBOutlet var artistOrAlbumLabel: UILabel!
     @IBOutlet var songImageView: UIImageView!
 
-    func updateElement(with song: Song) {
+    func updateElements(with song: Song) {
         songLabel.text = song.name
         artistOrAlbumLabel.text = song.artist
         songImageView = UIImageView(image: UIImage(named: song.name))
