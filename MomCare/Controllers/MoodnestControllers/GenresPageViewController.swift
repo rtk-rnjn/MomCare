@@ -66,7 +66,8 @@ class GenresPageViewController: UIViewController, UICollectionViewDataSource, UI
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "MainImage", for: indexPath) as? MainImageCollectionViewCell
             guard let cell else { fatalError() }
 
-            cell.updateSection2(with: indexPath)
+            let playlist = FeaturedPlaylists.playlists[indexPath.row]
+            cell.updateElements(with: playlist)
             cell.layer.cornerRadius = 20
 
             return cell
@@ -75,7 +76,8 @@ class GenresPageViewController: UIViewController, UICollectionViewDataSource, UI
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "MoodNestMultipleImages", for: indexPath) as? MoodNestMultipleImagesCollectionViewCell
             guard let cell else { fatalError() }
 
-            cell.updateSection3(with: indexPath)
+            let playlist = FeaturedPlaylists.playlists[indexPath.row]
+            cell.updateElements(with: playlist)
             cell.layer.cornerRadius = 20
 
             return cell
@@ -172,6 +174,12 @@ class GenresPageViewController: UIViewController, UICollectionViewDataSource, UI
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let selectedPlaylist = FeaturedPlaylists.playlists[indexPath.item]
         performSegue(withIdentifier: "songPageSegue", sender: selectedPlaylist)
+    }
+
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if let destinationVC = segue.destination as? SongPageViewController {
+            destinationVC.playlist = sender as? Playlist
+        }
     }
 
 }

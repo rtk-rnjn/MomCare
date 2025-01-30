@@ -15,11 +15,11 @@ class PlayerViewController: UIViewController {
 
     let gradientLayer = CAGradientLayer()
 
-        override func viewDidLoad() {
-            super.viewDidLoad()
+    override func viewDidLoad() {
+        super.viewDidLoad()
 
-            updateUIForNewSong(songImage: UIImage(named: "fantasize")!)
-        }
+        updateUIForNewSong(songImage: UIImage(named: "fantasize")!)
+    }
 
     func updateGradientBackground(with color: UIColor) {
         let gradientLayer = CAGradientLayer()
