@@ -17,6 +17,7 @@ class SignUpDetailsTableViewController: UITableViewController, UIViewControllerT
     var pickerOption: PickerOptions?
 
     @IBOutlet var progressView: UIProgressView!
+
     var initialProgress: Float = 0.0
 
     override func viewDidLoad() {
@@ -41,7 +42,7 @@ class SignUpDetailsTableViewController: UITableViewController, UIViewControllerT
         }
     }
 
-    @IBAction func unwindToSignUpTableViewController(_ segue: UIStoryboardSegue) {
+    @IBAction func unwindToSignUp(_ segue: UIStoryboardSegue) {
     }
 
     @IBSegueAction func segueViaHeightButton(_ coder: NSCoder) -> PickerViewController? {
@@ -59,5 +60,4 @@ class SignUpDetailsTableViewController: UITableViewController, UIViewControllerT
     @IBSegueAction func segueViaCountryButton(_ coder: NSCoder) -> PickerViewController? {
         return PickerViewController(coder: coder, with: .country, sender: self)
     }
-
 }

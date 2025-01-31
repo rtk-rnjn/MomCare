@@ -46,11 +46,11 @@ class PickerViewController: UIViewController, UIPickerViewDelegate, UIPickerView
             suffix = "Kg"
 
         case .country:
-            currentOptions = CountryData.countryCodes.values.map { return String($0) }
+            currentOptions = CountryData.countryCodes.values.map { $0 }
             suffix = ""
 
         case .none:
-            fatalError()
+            fatalError("tune o rangile kaisa jadu kiya 🎶")
         }
     }
 

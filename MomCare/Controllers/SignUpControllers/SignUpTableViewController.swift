@@ -64,11 +64,11 @@ class SignUpTableViewController: UITableViewController {
     @IBAction func countryCodeFieldTapped(_ sender: UITextField) {
         performSegue(withIdentifier: "segueShowPickerViewController", sender: nil)
     }
-
+    
     @IBSegueAction func segueViaCountryCodeField(_ coder: NSCoder) -> PickerViewController? {
         return PickerViewController(coder: coder, with: countryCodeField, sender: self)
     }
-
+    
     private func createErrorAlert(title: String, message: String) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
         let okAction = UIAlertAction(title: "OK", style: .default)
@@ -83,6 +83,6 @@ class SignUpTableViewController: UITableViewController {
         }
     }
 
-    @IBAction func unwindToSignUpTableViewController(_ segue: UIStoryboardSegue) {
+    @IBAction func unwindToSignUp(_ segue: UIStoryboardSegue) {
     }
 }
