@@ -73,7 +73,7 @@ class GenresPageViewController: UIViewController, UICollectionViewDataSource, UI
         switch indexPath.section {
         case 0:
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "MainHeading", for: indexPath) as? MainHeadingCollectionViewCell
-            guard let cell else { fatalError() }
+            guard let cell else { fatalError("'MainHeading' me dikkat hai") }
 
             cell.updateMainHeading(with: indexPath)
             cell.layer.cornerRadius = 20
@@ -82,7 +82,7 @@ class GenresPageViewController: UIViewController, UICollectionViewDataSource, UI
 
         case 1:
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "MainImage", for: indexPath) as? MainImageCollectionViewCell
-            guard let cell else { fatalError() }
+            guard let cell else { fatalError("'MainImage' me dikkat hai") }
 
             let playlist = FeaturedPlaylists.playlists[indexPath.row]
             cell.updateElements(with: playlist)
@@ -92,7 +92,7 @@ class GenresPageViewController: UIViewController, UICollectionViewDataSource, UI
 
         default:
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "MoodNestMultipleImages", for: indexPath) as? MoodNestMultipleImagesCollectionViewCell
-            guard let cell else { fatalError() }
+            guard let cell else { fatalError("'MoodNestMultipleImages' me dikkat hai") }
 
             let playlist = FeaturedPlaylists.playlists[indexPath.row]
             cell.updateElements(with: playlist)
@@ -106,7 +106,7 @@ class GenresPageViewController: UIViewController, UICollectionViewDataSource, UI
 
         let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "SectionHeaderCollectionViewCell", for: indexPath) as? SectionHeaderCollectionViewCell
 
-        guard let header else { fatalError() }
+        guard let header else { fatalError("the sunset is beautiful, isn't it?") }
         header.headerLabel.text = "Featured Playlists"
         header.headerLabel.font = UIFont.systemFont(ofSize: 24, weight: .semibold)
 

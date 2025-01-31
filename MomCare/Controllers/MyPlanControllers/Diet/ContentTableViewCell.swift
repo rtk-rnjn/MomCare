@@ -37,6 +37,7 @@ class ContentTableViewCell: UITableViewCell {
     @IBAction func foodItemButtonTapped(_ sender: UIButton) {
         var consumed: Bool
         switch indexPath?.section {
+        // fix: cases <Int> should be replaced with MealType enum cases
         case 0:
             consumed = MomCareUser.shared.diet.markFoodAsConsumed(foodItem!, in: MealType.breakfast)
         case 1:

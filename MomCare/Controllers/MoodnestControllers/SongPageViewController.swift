@@ -28,7 +28,7 @@ class SongPageViewController: UIViewController {
                 songPageElementsViewController?.playlist = playlist
             }
         case .none:
-            fatalError()
+            fatalError("should not happen, baby <3")
         }
     }
 }

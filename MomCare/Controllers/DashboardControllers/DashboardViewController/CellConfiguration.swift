@@ -32,13 +32,13 @@ extension DashboardViewController {
         switch indexPath.row {
         case 0:
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "FocusCard", for: indexPath) as? FocusCardCollectionViewCell
-            guard let cell else { fatalError() }
+            guard let cell else { fatalError("'FocusCard' not found") }
 
             return cell
 
         case 1:
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "TipCard", for: indexPath) as? TipCardCollectionViewCell
-            guard let cell else { fatalError() }
+            guard let cell else { fatalError("'TipCard' not found") }
 
             return cell
 
@@ -51,19 +51,19 @@ extension DashboardViewController {
         switch indexPath.row {
         case 0:
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "WeekCard", for: indexPath) as? WeekCardCollectionViewCell
-            guard let cell else { fatalError() }
+            guard let cell else { fatalError("'WeekCard' not found") }
             cell.updateElements(with: MomCareUser.shared.user, tapHandler: weekCardTapped)
 
             return cell
 
         case 1:
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "EventCard", for: indexPath) as? EventCardCollectionViewCell
-            guard let cell else { fatalError() }
+            guard let cell else { fatalError("'EventCard' not found") }
             cell.updateElements(with: nil, tapHandler: eventCardTapped)
             return cell
 
         default:
-            fatalError("kiss kiss")
+            fatalError("pyar kiya to darna kya")
         }
     }
 
@@ -72,13 +72,13 @@ extension DashboardViewController {
         case 0:
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "DietProgress", for: indexPath) as? DietProgressCollectionViewCell
 
-            guard let cell else { fatalError() }
+            guard let cell else { fatalError("'DietProgress' not found") }
             cell.updateElements(with: MomCareUser.shared.diet, tapHandler: dietCardTapped)
             return cell
 
         case 1:
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ExerciseProgress", for: indexPath) as? ExerciseProgressCollectionViewCell
-            guard let cell else { fatalError() }
+            guard let cell else { fatalError("'ExerciseProgress' not found") }
 
             cell.updateElements(with: MomCareUser.shared.exercise, tapHandler: exersiceCardTapped)
             return cell
@@ -91,7 +91,7 @@ extension DashboardViewController {
     private func prepareWelcomeHeaderCell(at indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "WelcomeHeaderCell", for: indexPath) as? WelcomeHeaderCollectionViewCell
 
-        guard let cell else { fatalError() }
+        guard let cell else { fatalError("'WelcomeHeaderCell' not found") }
         cell.updateElements(with: MomCareUser.shared.user?.fullName ?? "User")
 
         return cell

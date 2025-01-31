@@ -83,6 +83,6 @@ class SignUpTableViewController: UITableViewController {
         }
     }
 
-    @IBAction func unwindToSignUpTableViewController(_ segue: UIStoryboardSegue) {
+    @IBAction func unwindToSignUp(_ segue: UIStoryboardSegue) {
     }
 }

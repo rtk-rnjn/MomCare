@@ -56,13 +56,13 @@ class DietTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if indexPath.row == 0 {
             let cell = tableView.dequeueReusableCell(withIdentifier: "HeaderCell", for: indexPath) as? HeaderTableViewCell
-            guard let cell else { fatalError() }
+            guard let cell else { fatalError("'HeaderCell' not found") }
             cell.updateTitle(with: mealNames[indexPath.section], at: indexPath.section, of: self)
             return cell
         }
 
         let cell = tableView.dequeueReusableCell(withIdentifier: "ContentCell", for: indexPath) as? ContentTableViewCell
-        guard let cell else { fatalError() }
+        guard let cell else { fatalError("'ContentCell' not found") }
 
         let foodItem = getFoods(with: indexPath)
         cell.updateElements(with: foodItem, at: indexPath, of: self)
