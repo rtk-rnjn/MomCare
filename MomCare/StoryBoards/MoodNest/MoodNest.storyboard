@@ -341,7 +341,7 @@
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="Hi7-kb-mgg">
                                         <rect key="frame" x="0.0" y="70.000000000000028" width="353" height="45.666666666666657"/>
                                         <subviews>
-                                            <slider opaque="NO" contentMode="scaleToFill" semanticContentAttribute="playback" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="-0.5" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="RTe-jn-uhd">
+                                            <slider opaque="NO" contentMode="scaleToFill" semanticContentAttribute="playback" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="RTe-jn-uhd">
                                                 <rect key="frame" x="-2" y="0.0" width="357" height="31"/>
                                                 <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                                 <color key="minimumTrackTintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -447,7 +447,7 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="dxL-c1-VVo">
-                        <barButtonItem key="leftBarButtonItem" title="Item" image="chevron.left" catalog="system" style="plain" id="2u6-i2-6Bc">
+                        <barButtonItem key="leftBarButtonItem" title="Item" image="chevron.down" catalog="system" style="plain" id="2u6-i2-6Bc">
                             <connections>
                                 <segue destination="xtu-Zh-oNa" kind="unwind" unwindAction="unwindToSongPageViewController:" id="3JY-Rp-Ud6"/>
                             </connections>
@@ -556,7 +556,7 @@
                                         </stackView>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kmO-hs-iCs" userLabel="DividerView">
                                             <rect key="frame" x="75" y="60" width="318" height="1"/>
-                                            <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            <color key="backgroundColor" systemColor="opaqueSeparatorColor"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="1" id="KbB-Ps-tGI"/>
                                             </constraints>
@@ -635,7 +635,7 @@
     <resources>
         <image name="I3" width="896" height="1152"/>
         <image name="backward.end.fill" catalog="system" width="128" height="97"/>
-        <image name="chevron.left" catalog="system" width="97" height="128"/>
+        <image name="chevron.down" catalog="system" width="128" height="70"/>
         <image name="circle.fill" catalog="system" width="128" height="123"/>
         <image name="ellipsis" catalog="system" width="128" height="37"/>
         <image name="face.dashed.fill" catalog="system" width="128" height="123"/>
@@ -645,6 +645,9 @@
         <image name="play.fill" catalog="system" width="120" height="128"/>
         <image name="repeat" catalog="system" width="128" height="98"/>
         <image name="shuffle" catalog="system" width="128" height="95"/>
+        <systemColor name="opaqueSeparatorColor">
+            <color red="0.77647058820000003" green="0.77647058820000003" blue="0.7843137255" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>

@@ -8,9 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		053290F42D40AEC000295E58 /* FSCalendar in Frameworks */ = {isa = PBXBuildFile; productRef = 053290F32D40AEC000295E58 /* FSCalendar */; };
-		05C5E26D2D4CB0260075E776 /* SDWebImage in Frameworks */ = {isa = PBXBuildFile; productRef = 05C5E26C2D4CB0260075E776 /* SDWebImage */; };
-		05C5E26F2D4CB0260075E776 /* SDWebImageMapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 05C5E26E2D4CB0260075E776 /* SDWebImageMapKit */; };
-		05C5E2722D4CB0580075E776 /* SDWebImageWebPCoder in Frameworks */ = {isa = PBXBuildFile; productRef = 05C5E2712D4CB0580075E776 /* SDWebImageWebPCoder */; };
 		05E7F9672D37748E00F4D81E /* .swiftlint.yml in Resources */ = {isa = PBXBuildFile; fileRef = 05E7F9662D37748300F4D81E /* .swiftlint.yml */; };
 /* End PBXBuildFile section */
 
@@ -50,9 +47,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				05C5E26D2D4CB0260075E776 /* SDWebImage in Frameworks */,
-				05C5E26F2D4CB0260075E776 /* SDWebImageMapKit in Frameworks */,
-				05C5E2722D4CB0580075E776 /* SDWebImageWebPCoder in Frameworks */,
 				053290F42D40AEC000295E58 /* FSCalendar in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -100,9 +94,6 @@
 			name = MomCare;
 			packageProductDependencies = (
 				053290F32D40AEC000295E58 /* FSCalendar */,
-				05C5E26C2D4CB0260075E776 /* SDWebImage */,
-				05C5E26E2D4CB0260075E776 /* SDWebImageMapKit */,
-				05C5E2712D4CB0580075E776 /* SDWebImageWebPCoder */,
 			);
 			productName = MomCare;
 			productReference = 059C467D2D30D12400B4A15A /* MomCare.app */;
@@ -134,8 +125,6 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				053290F22D40AEC000295E58 /* XCRemoteSwiftPackageReference "FSCalendar" */,
-				05C5E26B2D4CB0260075E776 /* XCRemoteSwiftPackageReference "SDWebImage" */,
-				05C5E2702D4CB0580075E776 /* XCRemoteSwiftPackageReference "SDWebImageWebPCoder" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 059C467E2D30D12400B4A15A /* Products */;
@@ -376,22 +365,6 @@
 				minimumVersion = 2.8.4;
 			};
 		};
-		05C5E26B2D4CB0260075E776 /* XCRemoteSwiftPackageReference "SDWebImage" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/SDWebImage/SDWebImage.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 5.20.0;
-			};
-		};
-		05C5E2702D4CB0580075E776 /* XCRemoteSwiftPackageReference "SDWebImageWebPCoder" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/SDWebImage/SDWebImageWebPCoder.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 0.14.6;
-			};
-		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -399,21 +372,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 053290F22D40AEC000295E58 /* XCRemoteSwiftPackageReference "FSCalendar" */;
 			productName = FSCalendar;
-		};
-		05C5E26C2D4CB0260075E776 /* SDWebImage */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 05C5E26B2D4CB0260075E776 /* XCRemoteSwiftPackageReference "SDWebImage" */;
-			productName = SDWebImage;
-		};
-		05C5E26E2D4CB0260075E776 /* SDWebImageMapKit */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 05C5E26B2D4CB0260075E776 /* XCRemoteSwiftPackageReference "SDWebImage" */;
-			productName = SDWebImageMapKit;
-		};
-		05C5E2712D4CB0580075E776 /* SDWebImageWebPCoder */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 05C5E2702D4CB0580075E776 /* XCRemoteSwiftPackageReference "SDWebImageWebPCoder" */;
-			productName = SDWebImageWebPCoder;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
