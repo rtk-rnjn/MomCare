@@ -9,10 +9,12 @@ import UIKit
 import CoreImage
 
 class PlayerViewController: UIViewController {
-
     // MARK: - OUTLETS
     @IBOutlet var playerImageView: UIImageView!
     @IBOutlet var songTitleLabel: UILabel!
+    @IBOutlet var songArtistLabel: UILabel!
+    @IBOutlet var songDurationLabel: UILabel!
+    
     var song: Song?
     let gradientLayer = CAGradientLayer()
 
@@ -36,6 +38,13 @@ class PlayerViewController: UIViewController {
         updateUIForNewSong(songImage: song?.image)
         playerImageView.image = song?.image
         songTitleLabel.text = song?.name
+        songArtistLabel.text = song?.artist
+
+        let seconds = Int(song?.duration ?? 0)
+        let minutes = seconds / 60
+        let remainingSeconds = seconds % 60
+        let durationString = String(format: "%02d:%02d", minutes, remainingSeconds)
+        songDurationLabel.text = durationString
     }
 
     func updateGradientBackground(with color: UIColor) {

@@ -10,8 +10,7 @@ import UIKit
 class SongPageTableViewController: UITableViewController {
     var songs: [Song] = []
     var playlist: Playlist!
-    var selectedSong: Song?
-
+    var songPagePlayerNavigationController: SongPagePlayerNavigationController?
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.showsVerticalScrollIndicator = false
@@ -47,14 +46,12 @@ class SongPageTableViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        selectedSong = songs[indexPath.row]
+        performSegue(withIdentifier: "segueShowSongPagePlayerNavigationController", sender: songs[indexPath.row])
     }
     
-    
-    @IBSegueAction func segueToSongPageNavigationController(_ coder: NSCoder) -> SongPagePlayerNavigationController? {
-        let navController = SongPagePlayerNavigationController(coder: coder)
-        navController?.selectedSong = selectedSong
-        return navController
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if let destinationNav = segue.destination as? SongPagePlayerNavigationController {
+            destinationNav.selectedSong = sender as? Song
+        }
     }
-    
 }

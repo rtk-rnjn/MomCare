@@ -460,6 +460,8 @@
                     </userDefinedRuntimeAttributes>
                     <connections>
                         <outlet property="playerImageView" destination="ffI-4g-Pbr" id="FTh-Zr-kQ9"/>
+                        <outlet property="songArtistLabel" destination="cQb-az-aB2" id="CnN-WR-CLH"/>
+                        <outlet property="songDurationLabel" destination="LEN-LM-XRi" id="xLj-YK-Y21"/>
                         <outlet property="songTitleLabel" destination="ytK-KI-POo" id="pnx-yl-CKV"/>
                     </connections>
                 </viewController>
@@ -576,7 +578,6 @@
                                     <outlet property="durationLabel" destination="epl-2f-Y4X" id="TXA-6z-ynp"/>
                                     <outlet property="songImageView" destination="UM9-QK-Wtz" id="3Kt-Ph-U2H"/>
                                     <outlet property="songLabel" destination="AvU-Fn-W3T" id="0IE-t0-3ca"/>
-                                    <segue destination="6KC-Bt-B0W" kind="presentation" identifier="playlistToPlayerSegue" destinationCreationSelector="segueToSongPageNavigationController:" modalPresentationStyle="fullScreen" id="IMe-hM-ehg"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -585,6 +586,9 @@
                             <outlet property="delegate" destination="eev-1C-fby" id="15N-fd-nDJ"/>
                         </connections>
                     </tableView>
+                    <connections>
+                        <segue destination="6KC-Bt-B0W" kind="presentation" identifier="segueShowSongPagePlayerNavigationController" modalPresentationStyle="fullScreen" id="UZu-sZ-wIJ"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7dn-EB-iBW" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>

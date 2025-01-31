@@ -1,5 +1,5 @@
 {
-  "originHash" : "a8e3bdc8a575dc2e877d6db93487d01a5d367d09f87aa622f054d800bcea3b60",
+  "originHash" : "7aee30d3f9b009e44982db650bf3a4f33d58c919c4e51bbe96031ea685a7584e",
   "pins" : [
     {
       "identity" : "fscalendar",
@@ -8,6 +8,33 @@
       "state" : {
         "revision" : "0fbdec5172fccb90f707472eeaea4ffe095278f6",
         "version" : "2.8.4"
+      }
+    },
+    {
+      "identity" : "libwebp-xcode",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/SDWebImage/libwebp-Xcode.git",
+      "state" : {
+        "revision" : "b2b1d20a90b14d11f6ef4241da6b81c1d3f171e4",
+        "version" : "1.3.2"
+      }
+    },
+    {
+      "identity" : "sdwebimage",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/SDWebImage/SDWebImage.git",
+      "state" : {
+        "revision" : "10d06f6a33bafae8c164fbfd1f03391f6d4692b3",
+        "version" : "5.20.0"
+      }
+    },
+    {
+      "identity" : "sdwebimagewebpcoder",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/SDWebImage/SDWebImageWebPCoder.git",
+      "state" : {
+        "revision" : "f534cfe830a7807ecc3d0332127a502426cfa067",
+        "version" : "0.14.6"
       }
     }
   ],
