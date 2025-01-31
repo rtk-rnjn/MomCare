@@ -10,12 +10,10 @@ import UIKit
 class SongPageTableViewController: UITableViewController {
     var songs: [Song] = []
     var playlist: Playlist!
-
-    @IBOutlet var moodNestTableView: UITableView!
-
+    var songPagePlayerNavigationController: SongPagePlayerNavigationController?
     override func viewDidLoad() {
         super.viewDidLoad()
-        moodNestTableView.showsVerticalScrollIndicator = false
+        tableView.showsVerticalScrollIndicator = false
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -45,5 +43,15 @@ class SongPageTableViewController: UITableViewController {
     }
 
     @IBAction func unwindToSongPageViewController(_ segue: UIStoryboardSegue) {
+    }
+
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        performSegue(withIdentifier: "segueShowSongPagePlayerNavigationController", sender: songs[indexPath.row])
+    }
+
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if let destinationNav = segue.destination as? SongPagePlayerNavigationController {
+            destinationNav.selectedSong = sender as? Song
+        }
     }
 }
