@@ -10,7 +10,7 @@ import UIKit
 class SearchViewController: UIViewController {
     @IBOutlet var searchBar: UISearchBar!
     @IBOutlet var searchTableView: UITableView!
-    
+
     let allFoods = SampleFoodData.uniqueFoodItems
     var searchedFood: [FoodItem] = []
 
@@ -33,11 +33,11 @@ extension SearchViewController: UITableViewDelegate, UITableViewDataSource {
         cell.updateElements(with: searchedFood[indexPath.row])
         return cell
     }
-    
+
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return searchedFood.count
     }
-    
+
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
@@ -47,16 +47,16 @@ extension SearchViewController: UISearchBarDelegate {
     func prepareSearchBar() {
         searchBar.delegate = self
     }
-    
+
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         searchedFood = allFoods.filter { $0.name.lowercased().contains(searchText.lowercased()) }
         searchTableView.reloadData()
     }
-    
+
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         searchBar.resignFirstResponder()
     }
-    
+
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         searchBar.text = ""
         searchBar.resignFirstResponder()
