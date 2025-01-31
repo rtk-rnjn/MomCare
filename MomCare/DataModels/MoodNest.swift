@@ -17,6 +17,12 @@ struct Song {
     let name: String
     let artist: String
     let duration: TimeInterval
+    let imageName: String
+    var image: UIImage? {
+        return UIImage(named: imageName)
+    }
+    
+    var isPlaying: Bool = false
 }
 
 struct Playlist {
@@ -43,72 +49,72 @@ class FeaturedPlaylists {
             imageName: "I6",
             name: "Lo-fi",
             songs: [
-                Song(name: "Summe Terrace", artist: "Casiio, Kainbeats", duration: 134.0),
-                Song(name: "Moonrise", artist: "Trixie", duration: 132.0),
-                Song(name: "Days Past", artist: "WanderLight", duration: 129.0),
-                Song(name: "Rent A Movie", artist: "Kilada", duration: 129.0),
-                Song(name: "Daydream", artist: "zakori", duration: 123.0),
-                Song(name: "Romance", artist: "Jazza Mazza", duration: 126.0)
+                Song(name: "Him & I", artist: "G-Eazy, Halsey", duration: 134.0, imageName: "Him-&-I"),
+                Song(name: "Unstoppable", artist: "Sia", duration: 132.0, imageName: "Unstoppable"),
+                Song(name: "ABCDEFU", artist: "Gayle", duration: 129.0, imageName: "abcdefu"),
+                Song(name: "Stay", artist: "The Kid LAROI, justin Bieber", duration: 129.0, imageName: "Stay"),
+                Song(name: "Woman", artist: "Doja cat", duration: 123.0, imageName: "Woman"),
+                Song(name: "Daechwita", artist: "august D", duration: 126.0, imageName: "Daechwita")
             ]
         ),
         Playlist(
             imageName: "I1",
             name: "Relax",
             songs: [
-                Song(name: "Treat You Better", artist: "Shawn Mendes", duration: 280.0),
-                Song(name: "Weightless", artist: "Marconi Union", duration: 240.0),
-                Song(name: "Clair de Lune", artist: "Claude Debussy", duration: 210.0),
-                Song(name: "Canon in D Major", artist: "Johann Pachelbel", duration: 180.0),
-                Song(name: "Apashe - Triumph", artist: "Apashe", duration: 270.0),
-                Song(name: "Summer", artist: "Calvin Harris", duration: 225.0)
+                Song(name: "Deep End", artist: "Foushee", duration: 280.0, imageName: "Deep-End"),
+                Song(name: "Let It GO", artist: "James Bay", duration: 240.0, imageName: "Let-it-go"),
+                Song(name: "You Broke Me First", artist: "conor Manyard", duration: 210.0, imageName: "You-broke-me-first"),
+                Song(name: "Say Something", artist: "A Great Big World", duration: 180.0, imageName: "Say-something"),
+                Song(name: "Get You The Moon", artist: "Kina, Snow", duration: 270.0, imageName: "Get-you-the-moon"),
+                Song(name: "All Of Me", artist: "John Legend", duration: 225.0, imageName: "All-of-me")
             ]
         ),
         Playlist(
             imageName: "I2",
             name: "Sleep",
             songs: [
-                Song(name: "Nocturne No. 2 in E Flat Major", artist: "Frédéric Chopin", duration: 180.0),
-                Song(name: "Sleepyhead", artist: "Passion Pit", duration: 210.0),
-                Song(name: "Arban's Carnival of Venice", artist: "Jean-Baptiste Arban", duration: 240.0),
-                Song(name: "Stay Awake", artist: "Sia", duration: 200.0),
-                Song(name: "The Scientist", artist: "Coldplay", duration: 270.0),
-                Song(name: "All I Ask", artist: "Adele", duration: 240.0)
+                Song(name: "Lemonade", artist: "Beyoncé", duration: 180.0, imageName: "lemonade"),
+                Song(name: "Sweetener", artist: "Ariana Grande", duration: 210.0, imageName: "sweetener"),
+                Song(name: "The Dreaming", artist: "Kate Bush", duration: 240.0, imageName: "The-dreaming"),
+                Song(name: "Fela Kuti,", artist: "No Agreement", duration: 200.0, imageName: "No-agreement"),
+                Song(name: "Roberta Flack", artist: "First Take", duration: 270.0, imageName: "First-take"),
+                Song(name: "Indigo", artist: "RM", duration: 240.0, imageName: "Indigo")
             ]
         ),
         Playlist(
             imageName: "I3",
             name: "Meditation",
             songs: [
-                Song(name: "Treat You Better", artist: "Sahwn Mendes", duration: 240.0),
-                Song(name: "Hans Zimmer - Time", artist: "Hans Zimmer", duration: 210.0),
-                Song(name: "Brian Eno - An Ending (Ascent)", artist: "Brian Eno", duration: 180.0),
-                Song(name: "Yiruma - River Flows In You", artist: "Yiruma", duration: 200.0),
-                Song(name: "Deva Premal - Gayatri Mantra", artist: "Deva Premal", duration: 150.0),
-                Song(name: "Ambient Soundscapes - Ocean Waves", artist: "Ambient Soundscapes", duration: 180.0)
+                Song(name: "Treat You Better", artist: "Sahwn Mendes", duration: 240.0, imageName: "treat-you-better"),
+                Song(name: "Time", artist: "Hans Zimmer", duration: 210.0, imageName: "time"),
+                Song(name: "The Fame Monster", artist: "Lady Gaga", duration: 180.0, imageName: "the-fame-monster"),
+                Song(name: "River Flows In You", artist: "Yiruma", duration: 200.0, imageName: "River-flows-in-you"),
+                Song(name: "Gayatri Mantra", artist: "Deva Premal", duration: 150.0, imageName: "gayatri-mantra"),
+                Song(name: "Anti", artist: "Rihanna", duration: 180.0, imageName: "anti")
             ]
         ),
         Playlist(
             imageName: "I4",
             name: "Nature Melodies",
             songs: [
-                Song(name: "Bird Songs of the Amazon", artist: "Nature Sounds", duration: 240.0),
-                Song(name: "Sounds of the Rainforest", artist: "Nature Sounds", duration: 300.0),
-                Song(name: "Ocean Waves and Seagulls", artist: "Nature Sounds", duration: 270.0),
-                Song(name: "Wind Chimes and Gentle Breeze", artist: "Nature Sounds", duration: 180.0),
-                Song(name: "Cricket Chirping at Night", artist: "Nature Sounds", duration: 210.0),
-                Song(name: "Forest Stream Flowing", artist: "Nature Sounds", duration: 240.0)
+                Song(name: "Bird Songs of the Amazon", artist: "Nature Sounds", duration: 240.0, imageName: "bird-song-of-the-amazon"),
+                Song(name: "Sounds of the Rainforest", artist: "Nature Sounds", duration: 300.0, imageName: "sounds-of-the-rainforest"),
+                Song(name: "Ocean Waves and Seagulls", artist: "Nature Sounds", duration: 270.0, imageName: "ocean-waves-and-seagulls"),
+                Song(name: "Wind Chimes and Gentle Breeze", artist: "Nature Sounds", duration: 180.0, imageName: "wind-chimes-and-gentle-breeze"),
+                Song(name: "Cricket Chirping at Night", artist: "Nature Sounds", duration: 210.0, imageName: "crickets-chirping-at-night"),
+                Song(name: "Forest Stream Flowing", artist: "Nature Sounds", duration: 240.0, imageName: "forest-stream-flowing")
             ]
         ),
         Playlist(
             imageName: "I5",
             name: "Spiritual",
             songs: [
-                Song(name: "Om Namah Shivaya", artist: "Various Artists", duration: 120.0),
-                Song(name: "Sitar Melodies", artist: "Ravi Shankar", duration: 180.0),
-                Song(name: "Gregorian Chants", artist: "Various Artists", duration: 210.0),
-                Song(name: "Kirtan Music", artist: "Jai Uttal", duration: 150.0),
-                Song(name: "Tibetan Singing Bowls", artist: "Various Artists", duration: 180.0),
-                Song(name: "Native American Flute Music", artist: "R. Carlos Nakai", duration: 240.0)
+                Song(name: "Om Namah Shivaya", artist: "Various Artists", duration: 120.0, imageName: "om-namah-shivay"),
+                Song(name: "Sitar Melodies", artist: "Ravi Shankar", duration: 180.0, imageName: "sitar-melodies"),
+                Song(name: "Gregorian Chants", artist: "Various Artists", duration: 210.0, imageName: "gregorian-chants"),
+                Song(name: "Kirtan Music", artist: "Jai Uttal", duration: 150.0, imageName: "kirtan-music"),
+                Song(name: "Tibetan Singing Bowls", artist: "Various Artists", duration: 180.0, imageName: "tibetan-singing-bowls"),
+                Song(name: "Native American Flute Music", artist: "R. Carlos Nakai", duration: 240.0, imageName: "native-american-flute-music")
             ]
         )
 

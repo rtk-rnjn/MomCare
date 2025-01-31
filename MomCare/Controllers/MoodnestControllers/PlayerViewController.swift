@@ -11,14 +11,31 @@ import CoreImage
 class PlayerViewController: UIViewController {
 
     // MARK: - OUTLETS
-    @IBOutlet var playerImageViewOutlet: UIImageView!
-
+    @IBOutlet var playerImageView: UIImageView!
+    @IBOutlet var songTitleLabel: UILabel!
+    var song: Song?
     let gradientLayer = CAGradientLayer()
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        prepareSelectedSong()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        updateView()
+    }
 
-        updateUIForNewSong(songImage: UIImage(named: "fantasize")!)
+    private func prepareSelectedSong() {
+        let navController = navigationController as? SongPagePlayerNavigationController
+        guard let navController else { return }
+        song = navController.selectedSong
+    }
+    
+    private func updateView() {
+        updateUIForNewSong(songImage: song?.image)
+        playerImageView.image = song?.image
+        songTitleLabel.text = song?.name
     }
 
     func updateGradientBackground(with color: UIColor) {
@@ -35,7 +52,8 @@ class PlayerViewController: UIViewController {
         view.layer.insertSublayer(gradientLayer, at: 0)
     }
 
-    func updateUIForNewSong(songImage: UIImage) {
+    func updateUIForNewSong(songImage: UIImage?) {
+        guard let songImage else { return }
         if let dominantColor = songImage.dominantColor() {
             updateGradientBackground(with: dominantColor)
         }
