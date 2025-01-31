@@ -73,12 +73,12 @@ class FeaturedPlaylists {
             imageName: "I2",
             name: "Sleep",
             songs: [
-                Song(name: "Lemonade", artist: "Beyoncé", duration: 180.0, imageName: "lemonade"),
-                Song(name: "Sweetener", artist: "Ariana Grande", duration: 210.0, imageName: "sweetener"),
+                Song(name: "Hold Up", artist: "Beyoncé", duration: 180.0, imageName: "Hold-up"),
+                Song(name: "Sweetener", artist: "Ariana Grande", duration: 210.0, imageName: "Sweetener"),
                 Song(name: "The Dreaming", artist: "Kate Bush", duration: 240.0, imageName: "The-dreaming"),
-                Song(name: "Fela Kuti,", artist: "No Agreement", duration: 200.0, imageName: "No-agreement"),
-                Song(name: "Roberta Flack", artist: "First Take", duration: 270.0, imageName: "First-take"),
-                Song(name: "Indigo", artist: "RM", duration: 240.0, imageName: "Indigo")
+                Song(name: "No Agreement", artist: "Fela Kuti", duration: 200.0, imageName: "No-agreement"),
+                Song(name: "First Take", artist: "Roberta Flack", duration: 270.0, imageName: "First-take"),
+                Song(name: "Lonely", artist: "RM", duration: 240.0, imageName: "Lonely")
             ]
         ),
         Playlist(
@@ -87,17 +87,17 @@ class FeaturedPlaylists {
             songs: [
                 Song(name: "Treat You Better", artist: "Sahwn Mendes", duration: 240.0, imageName: "treat-you-better"),
                 Song(name: "Time", artist: "Hans Zimmer", duration: 210.0, imageName: "time"),
-                Song(name: "The Fame Monster", artist: "Lady Gaga", duration: 180.0, imageName: "the-fame-monster"),
+                Song(name: "The Fame Monster", artist: "Lady Gaga", duration: 180.0, imageName: "The-fame-monster"),
                 Song(name: "River Flows In You", artist: "Yiruma", duration: 200.0, imageName: "River-flows-in-you"),
                 Song(name: "Gayatri Mantra", artist: "Deva Premal", duration: 150.0, imageName: "gayatri-mantra"),
-                Song(name: "Anti", artist: "Rihanna", duration: 180.0, imageName: "anti")
+                Song(name: "Kiss It Better", artist: "Rihanna", duration: 180.0, imageName: "Kiss-it-better")
             ]
         ),
         Playlist(
             imageName: "I4",
             name: "Nature Melodies",
             songs: [
-                Song(name: "Bird Songs of the Amazon", artist: "Nature Sounds", duration: 240.0, imageName: "bird-song-of-the-amazon"),
+                Song(name: "Birds in the Amazon", artist: "Nature Sounds", duration: 240.0, imageName: "Bird-in-the-amazon"),
                 Song(name: "Sounds of the Rainforest", artist: "Nature Sounds", duration: 300.0, imageName: "sounds-of-the-rainforest"),
                 Song(name: "Ocean Waves and Seagulls", artist: "Nature Sounds", duration: 270.0, imageName: "ocean-waves-and-seagulls"),
                 Song(name: "Wind Chimes and Gentle Breeze", artist: "Nature Sounds", duration: 180.0, imageName: "wind-chimes-and-gentle-breeze"),
