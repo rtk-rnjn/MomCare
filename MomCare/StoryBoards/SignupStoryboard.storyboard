@@ -295,7 +295,7 @@
                         <outlet property="lastNameField" destination="Wtv-Fl-XGg" id="aYl-ec-UFt"/>
                         <outlet property="mobileNumberField" destination="UNi-7g-NYP" id="6f9-5M-msE"/>
                         <outlet property="passwordField" destination="Klb-XY-Bus" id="dl3-35-yDd"/>
-                        <segue destination="51c-gM-3lN" kind="presentation" id="zf3-jg-5xd"/>
+                        <segue destination="51c-gM-3lN" kind="presentation" identifier="segueShowPickerViewController" id="zf3-jg-5xd"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Qu1-YN-pUw" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

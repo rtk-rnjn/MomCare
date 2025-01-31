@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import UIKit
 
 struct TriTrackEvent {
     var title: String
@@ -33,4 +34,27 @@ struct TriTrackSymptom {
     var notes: String?
 
     var atTime: Date
+}
+
+struct TrimesterData {
+    let trimesterNumber: Int
+    let weekNumber: Int
+    let dayNumber: Int
+    let quote: String
+
+    let leftImageName: String
+    var leftImage: UIImage? {
+        UIImage(named: leftImageName)
+    }
+
+    let rightImageName: String
+    var rightImage: UIImage? {
+        UIImage(named: rightImageName)
+    }
+
+    let babyHeightInCentimeters: Double
+    let babyWeightInKilograms: Double
+
+    let babyTipText: String
+    let momTipText: String
 }
