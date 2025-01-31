@@ -14,7 +14,7 @@ class PlayerViewController: UIViewController {
     @IBOutlet var songTitleLabel: UILabel!
     @IBOutlet var songArtistLabel: UILabel!
     @IBOutlet var songDurationLabel: UILabel!
-    
+
     var song: Song?
     let gradientLayer = CAGradientLayer()
 
@@ -22,7 +22,7 @@ class PlayerViewController: UIViewController {
         super.viewDidLoad()
         prepareSelectedSong()
     }
-    
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         updateView()
@@ -33,7 +33,7 @@ class PlayerViewController: UIViewController {
         guard let navController else { return }
         song = navController.selectedSong
     }
-    
+
     private func updateView() {
         updateUIForNewSong(songImage: song?.image)
         playerImageView.image = song?.image

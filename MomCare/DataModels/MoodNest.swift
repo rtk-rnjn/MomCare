@@ -21,7 +21,7 @@ struct Song {
     var image: UIImage? {
         return UIImage(named: imageName)
     }
-    
+
     var isPlaying: Bool = false
 }
 

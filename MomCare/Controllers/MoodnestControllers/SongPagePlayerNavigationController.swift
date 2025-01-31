@@ -9,7 +9,4 @@ import UIKit
 
 class SongPagePlayerNavigationController: UINavigationController {
     var selectedSong: Song?
-    override func viewDidLoad() {
-        super.viewDidLoad()
-    }
 }

@@ -12,18 +12,18 @@ class GenresPageViewController: UIViewController, UICollectionViewDataSource, UI
     @IBOutlet var moodnestCollectionView: UICollectionView!
     @IBOutlet var outerView: UIView!
     var IconImageVar: UIImage?
-   
+
     override func viewDidLoad() {
         super.viewDidLoad()
         // Set the image for the bar button item with proper sizing
-        if let IconImageVar{
+        if let IconImageVar {
                 let button = UIButton(type: .custom)
                 button.setImage(IconImageVar, for: .normal)
                 button.frame = CGRect(x: 0, y: 0, width: 50, height: 50)
                 button.imageView?.contentMode = .scaleAspectFit
 
                 let barButtonItem = UIBarButtonItem(customView: button)
-                
+
                 // Constraints to prevent stretching
                 button.translatesAutoresizingMaskIntoConstraints = false
                 NSLayoutConstraint.activate([
@@ -33,7 +33,7 @@ class GenresPageViewController: UIViewController, UICollectionViewDataSource, UI
 
                 navigationItem.rightBarButtonItem = barButtonItem
             }
-        
+
         outerView.layer.cornerRadius = 30
         moodnestCollectionView.showsVerticalScrollIndicator = false
         moodnestCollectionView.backgroundColor = .clear

@@ -52,7 +52,7 @@ extension MoodnestViewController: UICollectionViewDelegateFlowLayout {
         let selectedImage = AllMoods.moods[indexPath.item].image
         performSegue(withIdentifier: "ShowGenres", sender: selectedImage)
     }
-    
+
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "ShowGenres" {
             if let destination = segue.destination as? GenresPageViewController,
@@ -61,5 +61,5 @@ extension MoodnestViewController: UICollectionViewDelegateFlowLayout {
             }
         }
     }
-    
+
 }
