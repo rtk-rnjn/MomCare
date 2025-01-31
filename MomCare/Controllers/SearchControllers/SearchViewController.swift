@@ -30,7 +30,7 @@ extension SearchViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "SearchTableViewCell", for: indexPath) as? SearchTableViewCell
         guard let cell else { fatalError("abhi na jao chhordke, ki dil abhi bhara nahi") }
-        cell.updateElements(with: searchedFood[indexPath.row])
+        cell.updateElements(with: searchedFood[indexPath.row], sender: self)
         return cell
     }
 
