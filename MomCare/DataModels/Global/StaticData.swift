@@ -9,7 +9,7 @@ import Foundation
 
 import UIKit
 
-struct Image {
+struct FrontPageImage {
     var imageName: String
     var heading: String
     var image: UIImage? {
@@ -23,7 +23,7 @@ struct Image {
 }
 
 class FrontPageData {
-    static var images: [Image] = [
+    static var images: [FrontPageImage] = [
         .init(imageName: "Image", heading: "Personalised plans curated just for you"),
         .init(imageName: "Image 1", heading: "Receive insights for every trimester"),
         .init(imageName: "Image 2", heading: "Track your progress effortlessly"),
@@ -32,15 +32,11 @@ class FrontPageData {
 
     static func getImage(at indexPath: IndexPath) -> UIImage? {
         return images[indexPath.row].image
-
     }
 
     static func getHeading(at indexPath: IndexPath) -> String {
-
         return images[indexPath.row].heading
-
     }
-
 }
 
 enum CountryData {
