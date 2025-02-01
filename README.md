@@ -1,4 +1,4 @@
-# MomCare+ ![Development](https://img.shields.io/badge/Development-Active-brightgreen) ![Platform](https://img.shields.io/badge/Platform-iOS-blue)
+# MomCare+ ![Development](https://img.shields.io/badge/Development-Active-brightgreen) ![Platform](https://img.shields.io/badge/Platform-iOS-blue) ![Static Badge](https://img.shields.io/badge/Active%20Branch-%22main%22-blue)
 
 A personalized prenatal care app designed for expecting mothers. Offers health plans, milestone tracking, and expert tips to ensure a smooth journey through pregnancy. 
 
