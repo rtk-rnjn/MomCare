@@ -56,28 +56,26 @@ public enum MealType: Hashable {
 }
 
 class UserDiet {
-    // MomCareUser.shared.diet.plan.addFoodItem(FOODITEM, to: .breakfast)
     public private(set) var plan: MyPlanModel = .init(caloriesGoal: 1740, proteinGoal: 70, carbsGoal: 175, fatGoal: 60)
 
-    public private(set) var breakfast: [FoodItem] = [
-        FoodItem(name: "Moong Dal Cheela", imageName: "moong-dal-cheela", calories: 120, protein: 8, carbs: 15, fat: 2),
-        FoodItem(name: "Anda Bhurji", imageName: "anda-bhurji", calories: 150, protein: 12, carbs: 2, fat: 10)
-    ]
-
-    public private(set) var lunch: [FoodItem] = [
-        FoodItem(name: "Chole Chawal", imageName: "chole-chawal", calories: 350, protein: 12, carbs: 50, fat: 8),
-        FoodItem(name: "Aloo Matar", imageName: "aloo-matar", calories: 200, protein: 6, carbs: 30, fat: 5),
-        FoodItem(name: "Amritsari Kulcha", imageName: "amritsari-kulcha", calories: 250, protein: 6, carbs: 40, fat: 8)
-    ]
-
-    public private(set) var snacks: [FoodItem] = [
-        FoodItem(name: "Aloo Chaat", imageName: "aloo-chaat", calories: 180, protein: 3, carbs: 25, fat: 8),
-        FoodItem(name: "Halwa", imageName: "halwa", calories: 300, protein: 4, carbs: 40, fat: 15)
-    ]
-
-    public private(set) var dinner: [FoodItem] = [
-        FoodItem(name: "Aloo Paratha", imageName: "aloo-paratha", calories: 280, protein: 6, carbs: 40, fat: 10),
-        FoodItem(name: "Aloo Matar", imageName: "aloo-matar", calories: 200, protein: 6, carbs: 30, fat: 5)
+    var meals: [MealType: [FoodItem]] = [
+        .breakfast: [
+            FoodItem(name: "Moong Dal Cheela", imageName: "moong-dal-cheela", calories: 120, protein: 8, carbs: 15, fat: 2),
+            FoodItem(name: "Anda Bhurji", imageName: "anda-bhurji", calories: 150, protein: 12, carbs: 2, fat: 10)
+        ],
+        .lunch: [
+            FoodItem(name: "Chole Chawal", imageName: "chole-chawal", calories: 350, protein: 12, carbs: 50, fat: 8),
+            FoodItem(name: "Aloo Matar", imageName: "aloo-matar", calories: 200, protein: 6, carbs: 30, fat: 5),
+            FoodItem(name: "Amritsari Kulcha", imageName: "amritsari-kulcha", calories: 250, protein: 6, carbs: 40, fat: 8)
+        ],
+        .snacks: [
+            FoodItem(name: "Aloo Chaat", imageName: "aloo-chaat", calories: 180, protein: 3, carbs: 25, fat: 8),
+            FoodItem(name: "Halwa", imageName: "halwa", calories: 300, protein: 4, carbs: 40, fat: 15)
+        ],
+        .dinner: [
+            FoodItem(name: "Aloo Paratha", imageName: "aloo-paratha", calories: 280, protein: 6, carbs: 40, fat: 10),
+            FoodItem(name: "Aloo Matar", imageName: "aloo-matar", calories: 200, protein: 6, carbs: 30, fat: 5)
+        ]
     ]
 
     static var shared: UserDiet = .init()
@@ -87,93 +85,36 @@ class UserDiet {
     }
 
     func addFoodItem(_ foodItem: FoodItem, to meal: MealType) {
-        switch meal {
-        case .breakfast:
-            breakfast.append(foodItem)
-        case .lunch:
-            lunch.append(foodItem)
-        case .snacks:
-            snacks.append(foodItem)
-        case .dinner:
-            dinner.append(foodItem)
-        }
+        meals[meal]?.append(foodItem)
     }
 
     func removeFoodItem(_ foodItem: FoodItem, from meal: MealType) {
-        switch meal {
-        case .breakfast:
-            breakfast.removeAll { $0.id == foodItem.id }
-        case .lunch:
-            lunch.removeAll { $0.id == foodItem.id }
-        case .snacks:
-            snacks.removeAll { $0.id == foodItem.id }
-        case .dinner:
-            dinner.removeAll { $0.id == foodItem.id }
-        }
+        meals[meal]?.removeAll { $0.id == foodItem.id }
     }
 
     func markFoodAsConsumed(_ foodItem: FoodItem, in meal: MealType) -> Bool {
-        var multiplier = 1
+        guard let index = meals[meal]?.firstIndex(where: { $0.id == foodItem.id }) else { return false }
 
-        switch meal {
-        case .breakfast:
-            if let index = breakfast.firstIndex(where: { $0.id == foodItem.id }) {
-                breakfast[index].consumed = !breakfast[index].consumed
-                multiplier = breakfast[index].consumed ? 1 : -1
-            }
-        case .lunch:
-            if let index = lunch.firstIndex(where: { $0.id == foodItem.id }) {
-                lunch[index].consumed = !lunch[index].consumed
-                multiplier = lunch[index].consumed ? 1 : -1
-            }
-        case .snacks:
-            if let index = snacks.firstIndex(where: { $0.id == foodItem.id }) {
-                snacks[index].consumed = !snacks[index].consumed
-                multiplier = snacks[index].consumed ? 1 : -1
-            }
-        case .dinner:
-            if let index = dinner.firstIndex(where: { $0.id == foodItem.id }) {
-                dinner[index].consumed = !dinner[index].consumed
-                multiplier = dinner[index].consumed ? 1 : -1
-            }
-        }
+        meals[meal]?[index].consumed.toggle()
+        let multiplier = meals[meal]?[index].consumed == true ? 1 : -1
 
-        plan.currentCaloriesIntake += foodItem.calories * multiplier
-        plan.currentProteinIntake += foodItem.protein * multiplier
-        plan.currentCarbsIntake += foodItem.carbs * multiplier
-        plan.currentFatIntake += foodItem.fat * multiplier
-
+        updatePlan(with: foodItem, multiplier: multiplier)
         return multiplier == 1
     }
 
     func markFoodsAsConsumed(in meal: MealType) {
-        switch meal {
-        case .breakfast:
-            for index in 0..<breakfast.count {
-                _ = markFoodAsConsumed(breakfast[index], in: .breakfast)
-            }
-        case .lunch:
-            for index in 0..<lunch.count {
-                _ = markFoodAsConsumed(lunch[index], in: .lunch)
-            }
-        case .snacks:
-            for index in 0..<snacks.count {
-                _ = markFoodAsConsumed(snacks[index], in: .snacks)
-            }
-        case .dinner:
-            for index in 0..<dinner.count {
-                _ = markFoodAsConsumed(dinner[index], in: .dinner)
-            }
-        }
+        meals[meal]?.forEach { _ = markFoodAsConsumed($0, in: meal) }
     }
 
-    func updateFromDatabase() {
-
+    private func updatePlan(with foodItem: FoodItem, multiplier: Int) {
+        plan.currentCaloriesIntake += foodItem.calories * multiplier
+        plan.currentProteinIntake += foodItem.protein * multiplier
+        plan.currentCarbsIntake += foodItem.carbs * multiplier
+        plan.currentFatIntake += foodItem.fat * multiplier
     }
 
-    func updateToDatabase() {
-
-    }
+    func updateFromDatabase() {}
+    func updateToDatabase() {}
 }
 
 // MARK: Exercise

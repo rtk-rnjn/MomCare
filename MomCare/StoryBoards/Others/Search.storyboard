@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="23504" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="Y6W-OH-hqX">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="23504" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="Lv2-ak-a3m">
     <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23506"/>
@@ -17,14 +17,14 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <searchBar contentMode="redraw" placeholder="Aloo Chaat" translatesAutoresizingMaskIntoConstraints="NO" id="4Bk-Ur-59O">
-                                <rect key="frame" x="0.0" y="59" width="393" height="56"/>
-                                <textInputTraits key="textInputTraits" returnKeyType="search"/>
+                                <rect key="frame" x="0.0" y="103" width="393" height="56"/>
+                                <textInputTraits key="textInputTraits" autocorrectionType="no" returnKeyType="search"/>
                                 <connections>
                                     <outlet property="delegate" destination="Y6W-OH-hqX" id="s5Y-Lz-A3w"/>
                                 </connections>
                             </searchBar>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="XNi-jM-IuX">
-                                <rect key="frame" x="0.0" y="115" width="393" height="703"/>
+                                <rect key="frame" x="0.0" y="159" width="393" height="659"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="SearchTableViewCell" id="gJQ-yo-rTk" customClass="SearchTableViewCell" customModule="MomCare" customModuleProvider="target">
@@ -111,13 +111,38 @@
                             <constraint firstItem="XNi-jM-IuX" firstAttribute="top" secondItem="4Bk-Ur-59O" secondAttribute="bottom" id="xUf-13-o4O"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" id="jLh-6u-h5O"/>
+                    <navigationItem key="navigationItem" id="jLh-6u-h5O">
+                        <barButtonItem key="leftBarButtonItem" style="plain" systemItem="cancel" id="61L-oU-K8T">
+                            <connections>
+                                <segue destination="amh-z7-d6a" kind="unwind" unwindAction="unwindToMyPlanDiet:" id="woA-kD-sqz"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
                         <outlet property="searchBar" destination="4Bk-Ur-59O" id="AAF-E2-TKm"/>
                         <outlet property="searchTableView" destination="XNi-jM-IuX" id="a0Z-Vk-wif"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ief-a0-LHa" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+                <exit id="amh-z7-d6a" userLabel="Exit" sceneMemberID="exit"/>
+            </objects>
+            <point key="canvasLocation" x="1990.0763358778624" y="3.5211267605633805"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="wpi-lw-w6e">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="Lv2-ak-a3m" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="r9g-J2-OYA">
+                        <rect key="frame" x="0.0" y="59" width="393" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="Y6W-OH-hqX" kind="relationship" relationship="rootViewController" id="CwE-mV-dTd"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="E9h-vc-m3y" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1063.3587786259541" y="3.5211267605633805"/>
         </scene>

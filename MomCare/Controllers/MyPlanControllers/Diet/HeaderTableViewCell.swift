@@ -1,5 +1,10 @@
 import UIKit
 
+enum MealEditType: String {
+    case addItem = "Add Item"
+    case replaceItem = "Replace Item"
+}
+
 class HeaderTableViewCell: UITableViewCell {
 
     @IBOutlet var actionButton: UIButton!
@@ -17,18 +22,21 @@ class HeaderTableViewCell: UITableViewCell {
     private let color = Converters.convertHexToUIColor(hex: "924350")
 
     private func configurePullDownMenu() {
-        let addItem = UIAction(title: "Add Item", image: UIImage(systemName: "plus")) { _ in
-            print("Add Item selected")
-        }
-        let replaceItem = UIAction(title: "Replace Item", image: UIImage(systemName: "repeat")) { _ in
-            print("Replace Item selected")
-
-        }
+        let addItem = UIAction(title: "Add Item", image: UIImage(systemName: "plus"), handler: addItemHandler)
+        let replaceItem = UIAction(title: "Replace Item", image: UIImage(systemName: "repeat"), handler: replaceItemHandler)
         actionButton.menu = UIMenu(title: "", children: [addItem, replaceItem])
         actionButton.showsMenuAsPrimaryAction = true
 
         actionButton.setTitle(nil, for: .normal)
         actionButton.setImage(UIImage(systemName: "square.and.pencil"), for: .normal)
+    }
+
+    private func addItemHandler(_ action: UIAction) {
+        dietTableViewController?.performSegueToSearch(with: MealEditType.addItem)
+    }
+
+    private func replaceItemHandler(_ action: UIAction) {
+        dietTableViewController?.performSegueToSearch(with: MealEditType.replaceItem)
     }
 
     func updateTitle(with title: String, at section: Int, of view: DietTableViewController) {

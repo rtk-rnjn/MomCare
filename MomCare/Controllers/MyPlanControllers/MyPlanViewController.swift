@@ -77,7 +77,6 @@ class MyPlanViewController: UIViewController {
         case 1:
             hideAllViews(except: .exerciseContainerView)
         default:
-            // Should never happen
             fatalError("love is beautiful thing")
         }
     }

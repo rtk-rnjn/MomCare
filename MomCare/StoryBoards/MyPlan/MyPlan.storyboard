@@ -317,11 +317,20 @@
                     </tableView>
                     <connections>
                         <outlet property="dietTableView" destination="eaD-eZ-Zte" id="GWc-0D-nfh"/>
+                        <segue destination="ARC-f2-eYg" kind="presentation" identifier="segueShowSearchViewController" id="wAR-dP-vgX"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="vs7-9e-Opw" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="5857" y="-144"/>
+        </scene>
+        <!--Search-->
+        <scene sceneID="cfR-7t-pCJ">
+            <objects>
+                <viewControllerPlaceholder storyboardName="Search" id="ARC-f2-eYg" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="tog-G5-Eq0" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="6442" y="-144"/>
         </scene>
         <!--Exercise View Controller-->
         <scene sceneID="0jC-xG-fUb">

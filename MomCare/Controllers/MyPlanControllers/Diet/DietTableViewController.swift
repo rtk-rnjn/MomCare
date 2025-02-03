@@ -15,10 +15,10 @@ class DietTableViewController: UITableViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         foodData = [
-            MomCareUser.shared.diet.breakfast,
-            MomCareUser.shared.diet.lunch,
-            MomCareUser.shared.diet.snacks,
-            MomCareUser.shared.diet.dinner
+            MomCareUser.shared.diet.meals[.breakfast] ?? [],
+            MomCareUser.shared.diet.meals[.lunch] ?? [],
+            MomCareUser.shared.diet.meals[.snacks] ?? [],
+            MomCareUser.shared.diet.meals[.dinner] ?? []
         ]
         tableView.reloadData()
     }
@@ -68,5 +68,12 @@ class DietTableViewController: UITableViewController {
         cell.updateElements(with: foodItem, at: indexPath, of: self)
 
         return cell
+    }
+
+    func performSegueToSearch(with: Any?) {
+        performSegue(withIdentifier: "segueShowSearchViewController", sender: nil)
+    }
+
+    @IBAction func unwindToMyPlanDiet(_ segue: UIStoryboardSegue) {
     }
 }

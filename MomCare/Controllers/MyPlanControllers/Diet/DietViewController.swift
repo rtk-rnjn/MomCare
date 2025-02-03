@@ -20,25 +20,19 @@ class DietViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupProgressRing()
+        prepareProgressRing()
 
-        proteinProgressBar.layer.cornerRadius = 5
-        proteinProgressBar.clipsToBounds = true
-        proteinProgressBar.subviews.forEach { subview in
-            subview.layer.cornerRadius = 5
-            subview.clipsToBounds = true
-        }
-        carbsProgressBar.layer.cornerRadius = 5
-        carbsProgressBar.clipsToBounds = true
-        carbsProgressBar.subviews.forEach { subview in
-            subview.layer.cornerRadius = 5
-            subview.clipsToBounds = true
-        }
-        fatsProgressBar.layer.cornerRadius = 5
-        fatsProgressBar.clipsToBounds = true
-        fatsProgressBar.subviews.forEach { subview in
-            subview.layer.cornerRadius = 5
-            subview.clipsToBounds = true
+        prepareProgressBars([proteinProgressBar, carbsProgressBar, fatsProgressBar])
+    }
+
+    private func prepareProgressBars(_ progressBars: [UIProgressView]) {
+        progressBars.forEach { progressBar in
+            progressBar.layer.cornerRadius = 5
+            progressBar.clipsToBounds = true
+            progressBar.subviews.forEach { subview in
+                subview.layer.cornerRadius = 5
+                subview.clipsToBounds = true
+            }
         }
     }
 
@@ -88,7 +82,7 @@ class DietViewController: UIViewController {
         }
     }
 
-    private func setupProgressRing() {
+    private func prepareProgressRing() {
 
         let center = CGPoint(x: progressContainerView.bounds.midX, y: progressContainerView.bounds.midY)
         let radius: CGFloat = 60
@@ -103,7 +97,6 @@ class DietViewController: UIViewController {
         backgroundLayer.fillColor = UIColor.clear.cgColor
         backgroundLayer.strokeStart = 0
         backgroundLayer.strokeEnd = 1
-
         progressContainerView.layer.addSublayer(backgroundLayer)
 
         shapeLayer = CAShapeLayer()
@@ -135,5 +128,8 @@ class DietViewController: UIViewController {
 
     @IBSegueAction func test(_ coder: NSCoder) -> DietTableViewController? {
         return DietTableViewController(coder: coder, dietViewController: self)
+    }
+
+    @IBAction func unwindToMyPlanDiet(_ segue: UIStoryboardSegue) {
     }
 }
