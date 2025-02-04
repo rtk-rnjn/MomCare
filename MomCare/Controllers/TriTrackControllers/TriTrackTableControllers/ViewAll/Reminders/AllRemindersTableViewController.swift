@@ -9,7 +9,7 @@ import UIKit
 
 class AllRemindersTableViewController: UITableViewController {
 
-    var reminders: [TriTrackReminder] = MomCareUser.shared.reminders
+    var reminders: [TriTrackReminder] = []
 
     override func numberOfSections(in tableView: UITableView) -> Int {
         return 1

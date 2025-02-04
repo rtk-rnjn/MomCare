@@ -7,8 +7,9 @@
 
 import Foundation
 import UIKit
+import EventKit
 
-struct TriTrackEvent {
+struct TriTrackEvent: Codable {
     var title: String
     var location: String?
 
@@ -21,7 +22,7 @@ struct TriTrackEvent {
     var repeatAfter: TimeInterval?
 }
 
-struct TriTrackReminder {
+struct TriTrackReminder: Codable {
     var title: String
     var date: Date = .init()
     var notes: String?
@@ -29,7 +30,7 @@ struct TriTrackReminder {
     var repeatAfter: TimeInterval?
 }
 
-struct TriTrackSymptom {
+struct TriTrackSymptom: Codable {
     var title: String
     var notes: String?
 

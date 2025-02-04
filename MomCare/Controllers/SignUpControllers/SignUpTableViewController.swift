@@ -22,41 +22,58 @@ class SignUpTableViewController: UITableViewController {
     @IBOutlet var mobileNumberField: UITextField!
 
     @IBAction func createButtonTapped(_ sender: UIButton) {
-        guard let firstName = firstNameField.text, !firstName.isEmpty else {
-            createErrorAlert(title: "First Name Required", message: "Please enter your first name.")
-            return
+        let requiredFields: [(UITextField, String, String)] = [
+            (firstNameField, "First Name Required", "Please enter your first name."),
+            (emailField, "Email Required", "Please enter your email."),
+            (passwordField, "Password Required", "Please enter your password."),
+            (confirmPasswordField, "Confirm Password Required", "Please confirm your password."),
+            (countryCodeField, "Country Code Required", "Please enter your country code."),
+            (mobileNumberField, "Mobile Number Required", "Please enter your mobile number.")
+        ]
+        
+        var errors: [[String]] = []
+        
+        for (field, title, message) in requiredFields where (field.text ?? "").isEmpty {
+            errors.append([title, message])
         }
-
-        guard let email = emailField.text, !email.isEmpty else {
-            createErrorAlert(title: "Email Required", message: "Please enter your email.")
-            return
+        
+        if let password = passwordField.text, let confirmPassword = confirmPasswordField.text, password != confirmPassword {
+            errors.append(["Passwords Do Not Match", "Please ensure your passwords match."])
         }
-
-        guard let password = passwordField.text, !password.isEmpty else {
-            createErrorAlert(title: "Password Required", message: "Please enter your password.")
-            return
+        
+        if !errors.isEmpty {
+            createErrorAlert(with: errors)
         }
+        
+        let user = User(
+            firstName: firstNameField.text ?? "",
+            lastName: lastNameField.text,
+            emailAddress: emailField.text ?? "",
+            password: passwordField.text ?? "",
+            countryCode: countryCodeField.text ?? "+91",
+            phoneNumber: mobileNumberField.text ?? ""
+        )
 
-        guard let confirmPassword = confirmPasswordField.text, !confirmPassword.isEmpty else {
-            createErrorAlert(title: "Confirm Password Required", message: "Please confirm your password.")
-            return
-        }
-
-        guard let password = passwordField.text, let confirmPassword = confirmPasswordField.text, password == confirmPassword else {
-            createErrorAlert(title: "Passwords Do Not Match", message: "Please make sure your passwords match.")
-            return
-        }
-
-        guard let countryCode = countryCodeField.text, !countryCode.isEmpty else {
-            createErrorAlert(title: "Country Code Required", message: "Please enter your country code.")
-            return
-        }
-
-        guard let mobileNumber = mobileNumberField.text, !mobileNumber.isEmpty else {
-            createErrorAlert(title: "Mobile Number Required", message: "Please enter your mobile number.")
-            return
+        let userCreated = MomCareUser.shared.createNewUser(user)
+        if !userCreated {
+            createErrorAlert(title: "User Creation Failed", message: "An error occurred while creating your account. Please try again.")
         }
     }
+
+    private func createErrorAlert(with errors: [[String]]) {
+        let title = errors.count == 1 ? errors[0][0] : "Errors"
+
+        var message: String
+
+        if errors.count == 1 {
+            message = "\(errors[0][0]): \(errors[0][1])"
+        } else {
+            message = errors.map { "\($0[0])" }.joined(separator: "\n")
+        }
+        
+        createErrorAlert(title: title, message: message)
+    }
+
 
     @IBAction func editingChanged(_ sender: UITextField) {
     }

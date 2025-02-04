@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import EventKit
 
 extension TriTrackViewController {
     @IBAction func unwinToTriTrack(_ sender: UIStoryboardSegue) {
@@ -51,8 +52,7 @@ extension TriTrackViewController {
 
         guard let title, let dateTime else { return }
 
-        let triTrackSymptom = TriTrackSymptom(title: title, notes: notes, atTime: dateTime)
-        MomCareUser.shared.addSymptom(triTrackSymptom)
+        // TODO: 
         symptomsViewController?.symptomsTableViewController?.refreshData()
     }
 
@@ -70,23 +70,84 @@ extension TriTrackViewController {
         let allDay = viewController.addEventTableViewController?.allDaySwitch.isOn ?? false
 
         guard let title, let startDateTime else { return }
+        
+        let event = EKEvent(eventStore: eventStore)
+        event.title = title
+        event.startDate = startDateTime
 
-        let triTrackEvent = TriTrackEvent(title: title, location: location, allDay: allDay, startDate: startDateTime, endDate: endDateTime, travelTime: travelTime, alertBefore: alertTime, repeatAfter: repeatAfter)
+        event.location = location
+        event.isAllDay = allDay
+        if let repeatAfter = repeatAfter {
+            event.recurrenceRules = createRecurrenceRule(for: repeatAfter)
+        }
+        if let alertTime = alertTime {
+            event.addAlarm(EKAlarm(relativeOffset: -alertTime))
+        }
+        if let travelTime = travelTime {
+            if let endDateTime = endDateTime?.addingTimeInterval(travelTime) {
+                event.endDate = endDateTime
+            }
+        }
+        event.calendar = createOrGetEvent()
 
-        MomCareUser.shared.addEvent(triTrackEvent)
+        try? eventStore.save(event, span: .thisEvent)
+
         eventsViewController?.appointmentsTableViewController?.refreshData()
     }
 
     private func handleDoneButtonTappedForRemindersView(with viewController: TriTrackAddEventViewController) {
         let title = viewController.addReminderTableViewController?.titleField.text
         let notes = viewController.addReminderTableViewController?.notesField.text
-        let dateTime = viewController.addReminderTableViewController?.dateTime.date
-        let timeInterval = viewController.addReminderTableViewController?.selectedRepeatOption
+        let dueDate = viewController.addReminderTableViewController?.dateTime.date
+        let repeatAfter = viewController.addReminderTableViewController?.selectedRepeatOption
 
-        guard let title, let notes, let dateTime else { return }
+        guard let title, let notes, let dueDate else { return }
 
-        let triTrackReminder = TriTrackReminder(title: title, date: dateTime, notes: notes, repeatAfter: timeInterval)
-        MomCareUser.shared.addReminder(triTrackReminder)
+        let reminder = EKReminder(eventStore: eventStore)
+        reminder.title = title
+        reminder.notes = notes
+        
+        let dueDateComponents = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute], from: dueDate)
+        reminder.dueDateComponents = dueDateComponents
+        reminder.calendar = createOrGetReminder()
+        reminder.recurrenceRules = createRecurrenceRule(for: repeatAfter)
+
+        try? eventStore.save(reminder, commit: true)
         eventsViewController?.remindersTableViewController?.refreshData()
+    }
+    
+    private func createRecurrenceRule(for interval: TimeInterval?) -> [EKRecurrenceRule] {
+        guard let interval = interval, interval > 0 else { return [] }
+        
+        var recurrenceFrequency: EKRecurrenceFrequency = .daily
+        var intervalValue: Int = 1
+        
+        switch interval {
+        case 24 * 60 * 60:
+            recurrenceFrequency = .daily
+            intervalValue = 1
+        case 24 * 60 * 60 * 7:
+            recurrenceFrequency = .weekly
+            intervalValue = 1
+        case 24 * 60 * 60 * 7 * 2:
+            recurrenceFrequency = .weekly
+            intervalValue = 2
+        case 24 * 60 * 60 * 7 * 30:
+            recurrenceFrequency = .monthly
+            intervalValue = 1
+        case 24 * 60 * 60 * 7 * 30 * 12:
+            recurrenceFrequency = .yearly
+            intervalValue = 1
+        default:
+            return []
+        }
+        
+        let rule = EKRecurrenceRule(
+            recurrenceWith: recurrenceFrequency,
+            interval: intervalValue,
+            end: nil
+        )
+
+        return [rule]
     }
 }

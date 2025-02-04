@@ -6,9 +6,11 @@
 //
 
 import UIKit
+import EventKit
 
 class AppointmentsTableViewController: UITableViewController {
     var data: [TriTrackEvent] = []
+    let store = EKEventStore()
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -16,8 +18,27 @@ class AppointmentsTableViewController: UITableViewController {
     }
 
     func refreshData() {
-        data = MomCareUser.shared.events
+        data = fetchEvents()
         tableView.reloadData()
+    }
+    
+    private func fetchEvents() -> [TriTrackEvent] {
+        let startDate = Date()
+        let endDate = Calendar.current.date(byAdding: .month, value: 1, to: startDate)!
+        let ekCalendars = getCalendar(with: "TriTrackEvent")
+
+        let predicate = store.predicateForEvents(withStart: startDate, end: endDate, calendars: ekCalendars)
+        let events = store.events(matching: predicate)
+        
+        return events.map { TriTrackEvent(title: $0.title, startDate: $0.startDate) }
+    }
+    
+    private func getCalendar(with identifierKey: String) -> [EKCalendar]? {
+        if let identifier = UserDefaults.standard.string(forKey: identifierKey), let calendar = store.calendar(withIdentifier: identifier) {
+            return [calendar]
+        }
+
+        return []
     }
 
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -31,7 +52,7 @@ class AppointmentsTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "AppointmentCell", for: indexPath) as? AppointmentsTableViewCell
 
-        guard let cell else { return UITableViewCell() }
+        guard let cell else { fatalError("mere rang me rangne wali 🎶") }
 
         cell.updateElements(with: data[indexPath.section])
         cell.showsReorderControl = false
