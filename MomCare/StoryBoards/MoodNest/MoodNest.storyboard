@@ -32,32 +32,88 @@
                                     <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gWP-Ok-oor">
                                         <rect key="frame" x="0.0" y="0.0" width="1572" height="445"/>
                                         <subviews>
-                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Happy" translatesAutoresizingMaskIntoConstraints="NO" id="yIS-mW-Bg9">
+                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="qDb-BR-MEb" userLabel="Happy Stack View">
                                                 <rect key="frame" x="0.0" y="0.0" width="393" height="445"/>
-                                            </imageView>
-                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Happy" translatesAutoresizingMaskIntoConstraints="NO" id="Jdk-NM-iVH">
+                                                <subviews>
+                                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Happy" translatesAutoresizingMaskIntoConstraints="NO" id="yIS-mW-Bg9">
+                                                        <rect key="frame" x="0.0" y="0.0" width="393" height="395"/>
+                                                    </imageView>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Happy" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YwT-0I-E2j">
+                                                        <rect key="frame" x="0.0" y="395" width="393" height="50"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="height" constant="50" id="ASg-Db-ace"/>
+                                                        </constraints>
+                                                        <fontDescription key="fontDescription" style="UICTFontTextStyleTitle1"/>
+                                                        <nil key="textColor"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                </subviews>
+                                            </stackView>
+                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="XFN-5e-Gfx" userLabel="Sad Stack View">
                                                 <rect key="frame" x="393" y="0.0" width="393" height="445"/>
-                                            </imageView>
-                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Happy" translatesAutoresizingMaskIntoConstraints="NO" id="0Rw-Iv-JfL">
+                                                <subviews>
+                                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Sad" translatesAutoresizingMaskIntoConstraints="NO" id="VEK-fX-0qx">
+                                                        <rect key="frame" x="0.0" y="0.0" width="393" height="395"/>
+                                                    </imageView>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Sad" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dC1-UQ-xy8">
+                                                        <rect key="frame" x="0.0" y="395" width="393" height="50"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="height" constant="50" id="hy5-d1-DS7"/>
+                                                        </constraints>
+                                                        <fontDescription key="fontDescription" style="UICTFontTextStyleTitle0"/>
+                                                        <nil key="textColor"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                </subviews>
+                                            </stackView>
+                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="fAT-nM-ker" userLabel="Stressed Stack View">
                                                 <rect key="frame" x="786" y="0.0" width="393" height="445"/>
-                                            </imageView>
-                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Happy" translatesAutoresizingMaskIntoConstraints="NO" id="Rnq-Fr-pGl">
+                                                <subviews>
+                                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Stressed" translatesAutoresizingMaskIntoConstraints="NO" id="W59-lv-3BK">
+                                                        <rect key="frame" x="0.0" y="0.0" width="393" height="395"/>
+                                                    </imageView>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Stressed" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8rb-Ec-UlR">
+                                                        <rect key="frame" x="0.0" y="395" width="393" height="50"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="height" constant="50" id="zsK-5r-oVF"/>
+                                                        </constraints>
+                                                        <fontDescription key="fontDescription" style="UICTFontTextStyleTitle0"/>
+                                                        <nil key="textColor"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                </subviews>
+                                            </stackView>
+                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="VEh-uN-aSU" userLabel="Angry Stack View">
                                                 <rect key="frame" x="1179" y="0.0" width="393" height="445"/>
-                                            </imageView>
+                                                <subviews>
+                                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Angry" translatesAutoresizingMaskIntoConstraints="NO" id="uUe-6M-K8Z">
+                                                        <rect key="frame" x="0.0" y="0.0" width="393" height="395"/>
+                                                    </imageView>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Angry" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="quG-9W-UKf">
+                                                        <rect key="frame" x="0.0" y="395" width="393" height="50"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="height" constant="50" id="ZMX-RJ-tXC"/>
+                                                        </constraints>
+                                                        <fontDescription key="fontDescription" style="UICTFontTextStyleTitle0"/>
+                                                        <nil key="textColor"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                </subviews>
+                                            </stackView>
                                         </subviews>
                                     </stackView>
                                 </subviews>
                                 <constraints>
+                                    <constraint firstItem="qDb-BR-MEb" firstAttribute="width" secondItem="dHH-DJ-vEK" secondAttribute="width" id="D3W-hn-kO8"/>
+                                    <constraint firstItem="VEh-uN-aSU" firstAttribute="width" secondItem="dHH-DJ-vEK" secondAttribute="width" id="GOd-Zf-zzP"/>
                                     <constraint firstItem="gWP-Ok-oor" firstAttribute="leading" secondItem="oLj-JA-0zk" secondAttribute="leading" id="U3g-1D-JUg"/>
-                                    <constraint firstItem="yIS-mW-Bg9" firstAttribute="width" secondItem="dHH-DJ-vEK" secondAttribute="width" id="WOy-lH-Dfy"/>
                                     <constraint firstItem="gWP-Ok-oor" firstAttribute="bottom" secondItem="oLj-JA-0zk" secondAttribute="bottom" id="WUV-pi-Ng1"/>
                                     <constraint firstItem="gWP-Ok-oor" firstAttribute="width" secondItem="dHH-DJ-vEK" secondAttribute="width" multiplier="4" id="Xl0-eD-ebL"/>
                                     <constraint firstItem="gWP-Ok-oor" firstAttribute="trailing" secondItem="oLj-JA-0zk" secondAttribute="trailing" id="bWm-td-kte"/>
-                                    <constraint firstItem="Rnq-Fr-pGl" firstAttribute="width" secondItem="dHH-DJ-vEK" secondAttribute="width" id="k0X-6e-R5j"/>
+                                    <constraint firstItem="fAT-nM-ker" firstAttribute="width" secondItem="dHH-DJ-vEK" secondAttribute="width" id="ciA-9K-NaJ"/>
                                     <constraint firstItem="gWP-Ok-oor" firstAttribute="height" secondItem="dHH-DJ-vEK" secondAttribute="height" id="mOr-4u-fQt"/>
                                     <constraint firstItem="gWP-Ok-oor" firstAttribute="top" secondItem="oLj-JA-0zk" secondAttribute="top" id="pXE-hO-hiQ"/>
-                                    <constraint firstItem="Jdk-NM-iVH" firstAttribute="width" secondItem="dHH-DJ-vEK" secondAttribute="width" id="t7O-Sq-7wU"/>
-                                    <constraint firstItem="0Rw-Iv-JfL" firstAttribute="width" secondItem="dHH-DJ-vEK" secondAttribute="width" id="zaw-VP-nqS"/>
+                                    <constraint firstItem="XFN-5e-Gfx" firstAttribute="width" secondItem="dHH-DJ-vEK" secondAttribute="width" id="zvv-5k-lQ6"/>
                                 </constraints>
                                 <viewLayoutGuide key="contentLayoutGuide" id="oLj-JA-0zk"/>
                                 <viewLayoutGuide key="frameLayoutGuide" id="dHH-DJ-vEK"/>
@@ -612,8 +668,11 @@
         </scene>
     </scenes>
     <resources>
+        <image name="Angry" width="570" height="570"/>
         <image name="Happy" width="570" height="570"/>
         <image name="I3" width="896" height="1152"/>
+        <image name="Sad" width="570" height="570"/>
+        <image name="Stressed" width="570" height="570"/>
         <image name="backward.end.fill" catalog="system" width="128" height="97"/>
         <image name="chevron.down" catalog="system" width="128" height="70"/>
         <image name="circle.fill" catalog="system" width="128" height="123"/>
