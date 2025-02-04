@@ -23,6 +23,7 @@ class SignUpExtendedTableViewController: UITableViewController {
     @IBOutlet var progressView: UIProgressView!
 
     var initialProgress: Float = 0.0
+    var signUpDetailsTableViewController: SignUpDetailsTableViewController?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -117,12 +118,19 @@ class SignUpExtendedTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         if indexPath.section == 1 && indexPath.row == 1 {
             return secondRowCell.isHidden ? 0 : UITableView.automaticDimension
-
         }
         return UITableView.automaticDimension
     }
 
     @IBAction func finishButtonTapped(_ sender: UIButton) {
-        UserDefaults.standard.set(true, forKey: "SignedUp")
+        guard let signUpDetailsTableViewController else { fatalError("yeh kya hua, kaise hua... kab hua") }
+        let dateOfBirth = signUpDetailsTableViewController.dateOfBirthPicker.date
+        let height = signUpDetailsTableViewController.height
+        let currentWeight = signUpDetailsTableViewController.currentWeight
+        let prePregnancyWeight = signUpDetailsTableViewController.prePregnancyWeight
+
+        let userMedical = UserMedical(dateOfBirth: dateOfBirth, height: Double(height), prePregnancyWeight: Double(prePregnancyWeight), currentWeight: Double(currentWeight))
+        MomCareUser.shared.updateUser(with: userMedical)
+        Utils.save(key: "SignedUp", value: true)
     }
 }

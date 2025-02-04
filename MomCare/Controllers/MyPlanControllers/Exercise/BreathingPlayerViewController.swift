@@ -33,7 +33,6 @@ class BreathingPlayerViewController: UIViewController {
         Task {
             await exrciseDurationSetup()
         }
-
     }
 
     func updateGradientBackground() {
@@ -49,6 +48,7 @@ class BreathingPlayerViewController: UIViewController {
             middleColor.withAlphaComponent(1.0).cgColor,
             bottomColor.withAlphaComponent(1.0).cgColor
         ]
+
         gradientLayer.startPoint = CGPoint(x: 0.5, y: 0.0)
         gradientLayer.endPoint = CGPoint(x: 0.5, y: 1.0)
 
@@ -293,8 +293,5 @@ class BreathingPlayerViewController: UIViewController {
     }
 
     @IBAction func breathingStopButtonTapped(_ sender: UIButton) {
-        var remainingTime: Double = remainingMinSec
-        print("Completed Time: ", totalBreathingTime - remainingTime)
-        print("Completed Percentage: ", (totalBreathingTime - remainingTime) / totalBreathingTime * 100)
     }
 }

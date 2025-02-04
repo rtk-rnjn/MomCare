@@ -17,7 +17,6 @@ class NewExerciseMyPlanCellCollectionViewCell: UICollectionViewCell {
     var segueHandler: (() -> Void)?
 
     @IBAction func startButtonTapped(_ sender: Any) {
-
         if let segueHandler {
             segueHandler()
         }

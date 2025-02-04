@@ -55,10 +55,7 @@ class GenresPageViewController: UIViewController, UICollectionViewDataSource, UI
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         switch section {
-        case 0:
-            return 1
-
-        case 1:
+        case 0, 1:
             return 1
 
         case 2:
@@ -103,7 +100,6 @@ class GenresPageViewController: UIViewController, UICollectionViewDataSource, UI
     }
 
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-
         let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "SectionHeaderCollectionViewCell", for: indexPath) as? SectionHeaderCollectionViewCell
 
         guard let header else { fatalError("the sunset is beautiful, isn't it?") }
@@ -136,8 +132,7 @@ class GenresPageViewController: UIViewController, UICollectionViewDataSource, UI
                 section.boundarySupplementaryItems = [header]
 
             default:
-                fatalError()
-
+                fatalError("dekha hai pehli baar, saajan ki aankhon mein pyaar")
             }
             return section
         }

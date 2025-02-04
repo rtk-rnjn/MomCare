@@ -81,6 +81,7 @@ struct UserMedical: Codable {
     var country: Country = .india
 
     var dueDate: Date?
+
     var preExistingConditions: [PreExistingCondition] = []
     var foodIntolerances: [Intolerance] = []
 

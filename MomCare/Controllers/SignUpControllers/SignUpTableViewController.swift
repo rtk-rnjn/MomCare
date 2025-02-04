@@ -88,9 +88,7 @@ class SignUpTableViewController: UITableViewController {
     }
 
     private func createErrorAlert(title: String, message: String) {
-        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        let okAction = UIAlertAction(title: "OK", style: .default)
-        alert.addAction(okAction)
+        let alert = Utils.getAlert(type: .ok, title: title, message: message)
         present(alert, animated: true)
     }
 

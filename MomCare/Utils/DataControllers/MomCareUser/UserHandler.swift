@@ -21,13 +21,13 @@ extension MomCareUser {
 
     func saveUser(_ user: User) {
         if let encoded = try? JSONEncoder().encode(user) {
-            UserDefaults.standard.set(encoded, forKey: "user")
+            UserDefaults.standard.set(encoded, forKey: "User")
         }
     }
 
     func getCurrentUser() -> User? {
         guard let currentUser = user,
-              let userData = UserDefaults.standard.data(forKey: "user"),
+              let userData = UserDefaults.standard.data(forKey: "User"),
               let savedUser = try? JSONDecoder().decode(User.self, from: userData),
               currentUser.id == savedUser.id else {
             return nil
@@ -44,5 +44,6 @@ extension MomCareUser {
 
     func updateUser(with medicalData: UserMedical) {
         user?.medicalData = medicalData
+        saveUser(user!)
     }
 }

@@ -94,10 +94,13 @@ class PickerViewController: UIViewController, UIPickerViewDelegate, UIPickerView
         switch selectedOption {
         case .height:
             signUpDetailsTableViewController.heightLabel.text = "\(currentOptions[row]) \(suffix)"
+            signUpDetailsTableViewController.height = currentOptions[row] as! Int
         case .prePregnancyWeight:
             signUpDetailsTableViewController.prePregnancyWeightLabel.text = "\(currentOptions[row]) \(suffix)"
+            signUpDetailsTableViewController.prePregnancyWeight = currentOptions[row] as! Int
         case .currentWeight:
             signUpDetailsTableViewController.currentWeightLabel.text = "\(currentOptions[row]) \(suffix)"
+            signUpDetailsTableViewController.currentWeight = currentOptions[row] as! Int
         case .country:
             signUpDetailsTableViewController.countryLabel.text = "\(currentOptions[row])"
         case .none:
