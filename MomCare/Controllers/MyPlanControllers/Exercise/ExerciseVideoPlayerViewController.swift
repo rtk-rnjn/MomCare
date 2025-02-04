@@ -6,7 +6,9 @@ class ExerciseVideoPlayerViewController: UIViewController {
     private var circleLayers: [CAShapeLayer] = []
     private var isInhaling = true
     private let instructionLabel = UILabel()
-    private let breathingTime = UILabel()
+    private let timerLabel = UILabel()  // New timer label
+    private var timer: Timer?           // Timer for updating countdown
+    private var currentCount = 0
     
     // Configuration
     private let numberOfPetals = 6
@@ -19,6 +21,7 @@ class ExerciseVideoPlayerViewController: UIViewController {
         updateGradientBackground()
         setupCircleLayers()
         setupInstructionLabel()
+        setupTimerLabel()
         startBreathingAnimation()
     }
     
@@ -47,13 +50,44 @@ class ExerciseVideoPlayerViewController: UIViewController {
         
         NSLayoutConstraint.activate([
             instructionLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            instructionLabel.bottomAnchor.constraint(equalTo: view.centerYAnchor, constant: -120)
+            instructionLabel.topAnchor.constraint(equalTo: view.topAnchor, constant: 120),
         ])
         
         instructionLabel.textColor = .white
         instructionLabel.font = .systemFont(ofSize: 24, weight: .medium)
         instructionLabel.text = "Inhale"
     }
+    
+    private func setupTimerLabel() {
+            timerLabel.translatesAutoresizingMaskIntoConstraints = false
+            view.addSubview(timerLabel)
+            
+            NSLayoutConstraint.activate([
+                timerLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+                timerLabel.topAnchor.constraint(equalTo: instructionLabel.bottomAnchor, constant: 20)
+            ])
+            
+            timerLabel.textColor = .white
+            timerLabel.font = .systemFont(ofSize: 20, weight: .regular)
+            timerLabel.text = ""
+        }
+    
+    private func startTimer() {
+            // Reset and invalidate existing timer if any
+            timer?.invalidate()
+            currentCount = 4
+            
+            // Start new timer
+            timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] _ in
+                guard let self = self else { return }
+                
+                if self.currentCount <= Int(self.animationDuration) {
+                    // Update timer label with current count
+                    self.timerLabel.text = "\(self.currentCount)"
+                }
+                self.currentCount -= 1
+            }
+        }
     
     private func setupCircleLayers() {
         // Setup container
@@ -63,7 +97,7 @@ class ExerciseVideoPlayerViewController: UIViewController {
         view.layer.addSublayer(circlesContainer)
         
         // Create all circles (center + petals)
-        for i in 0...numberOfPetals {
+        for _ in 0...numberOfPetals {
             let circle = createCircleLayer()
             // All circles start at center
             circle.position = CGPoint(x: circlesContainer.bounds.midX, y: circlesContainer.bounds.midY)
@@ -98,6 +132,7 @@ class ExerciseVideoPlayerViewController: UIViewController {
             instructionLabel.text = "Inhale"
             animateFlowerFormation {
                 self.instructionLabel.text = "Hold"
+                self.startTimer()
                 DispatchQueue.main.asyncAfter(deadline: .now() + self.animationDuration) {
                     self.isInhaling = false
                     self.animateBreathCycle()
@@ -107,7 +142,7 @@ class ExerciseVideoPlayerViewController: UIViewController {
             instructionLabel.text = "Exhale"
             animateFlowerCollapse {
                 self.isInhaling = true
-                DispatchQueue.main.asyncAfter(deadline: .now() + self.animationDuration) {
+                DispatchQueue.main.asyncAfter(deadline: .now()) {
                     self.animateBreathCycle()
                 }
             }
@@ -167,4 +202,10 @@ class ExerciseVideoPlayerViewController: UIViewController {
         
         CATransaction.commit()
     }
+    
+    // Cleanup timer when view is dismissed
+        deinit {
+            timer?.invalidate()
+            timer = nil
+        }
 }
