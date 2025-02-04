@@ -381,7 +381,7 @@
                     </view>
                     <connections>
                         <outlet property="exerciseCollectionView" destination="Yt9-o6-ItS" id="XIY-gV-QNv"/>
-                        <segue destination="pSF-KE-uVj" kind="show" identifier="segueShowBreathingPlayer" id="qUh-Ct-XyP"/>
+                        <segue destination="pSF-KE-uVj" kind="presentation" identifier="segueShowBreathingPlayer" modalPresentationStyle="fullScreen" id="qUh-Ct-XyP"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Rnh-hu-bAn" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

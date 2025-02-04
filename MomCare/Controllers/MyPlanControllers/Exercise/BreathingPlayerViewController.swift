@@ -120,7 +120,7 @@ class BreathingPlayerViewController: UIViewController {
             ])
             
             timerLabel.textColor = .white
-            timerLabel.font = .systemFont(ofSize: 20, weight: .regular)
+            timerLabel.font = .systemFont(ofSize: 30, weight: .regular)
             timerLabel.text = ""
             timerLabel.isHidden = true
         }
