@@ -18,28 +18,31 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Hey, How are you feeling right now?" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" showsExpansionTextWhenTruncated="YES" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0uY-VA-NVF">
-                                <rect key="frame" x="5" y="153" width="393" height="0.0"/>
+                                <rect key="frame" x="5" y="133" width="393" height="100"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="100" id="kod-Ke-bKK"/>
+                                </constraints>
                                 <fontDescription key="fontDescription" style="UICTFontTextStyleTitle0"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" pagingEnabled="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fob-TJ-aa2">
-                                <rect key="frame" x="0.0" y="203" width="393" height="485"/>
+                                <rect key="frame" x="0.0" y="243" width="393" height="445"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gWP-Ok-oor">
-                                        <rect key="frame" x="0.0" y="0.0" width="1572" height="485"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="1572" height="445"/>
                                         <subviews>
                                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Happy" translatesAutoresizingMaskIntoConstraints="NO" id="yIS-mW-Bg9">
-                                                <rect key="frame" x="0.0" y="0.0" width="393" height="485"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="393" height="445"/>
                                             </imageView>
                                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Happy" translatesAutoresizingMaskIntoConstraints="NO" id="Jdk-NM-iVH">
-                                                <rect key="frame" x="393" y="0.0" width="393" height="485"/>
+                                                <rect key="frame" x="393" y="0.0" width="393" height="445"/>
                                             </imageView>
                                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Happy" translatesAutoresizingMaskIntoConstraints="NO" id="0Rw-Iv-JfL">
-                                                <rect key="frame" x="786" y="0.0" width="393" height="485"/>
+                                                <rect key="frame" x="786" y="0.0" width="393" height="445"/>
                                             </imageView>
                                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Happy" translatesAutoresizingMaskIntoConstraints="NO" id="Rnq-Fr-pGl">
-                                                <rect key="frame" x="1179" y="0.0" width="393" height="485"/>
+                                                <rect key="frame" x="1179" y="0.0" width="393" height="445"/>
                                             </imageView>
                                         </subviews>
                                     </stackView>
@@ -72,7 +75,7 @@
                         <color key="backgroundColor" red="0.9137254901960784" green="0.82745098039215681" blue="0.82745098039215681" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstItem="vDu-zF-Fre" firstAttribute="bottom" secondItem="b8o-t3-6ao" secondAttribute="bottom" constant="70" id="1eO-er-6kC"/>
-                            <constraint firstItem="0uY-VA-NVF" firstAttribute="top" secondItem="vDu-zF-Fre" secondAttribute="top" constant="50" id="P4k-gk-ibo"/>
+                            <constraint firstItem="0uY-VA-NVF" firstAttribute="top" secondItem="vDu-zF-Fre" secondAttribute="top" constant="30" id="P4k-gk-ibo"/>
                             <constraint firstItem="b8o-t3-6ao" firstAttribute="top" secondItem="fob-TJ-aa2" secondAttribute="bottom" constant="50" id="PF3-FK-7eo"/>
                             <constraint firstItem="fob-TJ-aa2" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" id="Qtm-y5-zca"/>
                             <constraint firstItem="vDu-zF-Fre" firstAttribute="trailing" secondItem="b8o-t3-6ao" secondAttribute="trailing" constant="10" id="SFQ-ua-2rr"/>
@@ -81,7 +84,7 @@
                             <constraint firstItem="0uY-VA-NVF" firstAttribute="trailing" secondItem="vDu-zF-Fre" secondAttribute="trailing" constant="5" id="dA2-xo-uDl"/>
                             <constraint firstItem="fob-TJ-aa2" firstAttribute="trailing" secondItem="vDu-zF-Fre" secondAttribute="trailing" id="ecr-AG-kzL"/>
                             <constraint firstItem="b8o-t3-6ao" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" constant="10" id="lBw-n9-OSq"/>
-                            <constraint firstItem="fob-TJ-aa2" firstAttribute="top" secondItem="0uY-VA-NVF" secondAttribute="bottom" constant="50" id="tnM-sj-Ysa"/>
+                            <constraint firstItem="fob-TJ-aa2" firstAttribute="top" secondItem="0uY-VA-NVF" secondAttribute="bottom" constant="10" id="tnM-sj-Ysa"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="mls-LA-dau"/>
