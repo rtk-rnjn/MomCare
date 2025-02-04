@@ -146,6 +146,7 @@
                     <navigationItem key="navigationItem" id="mls-LA-dau"/>
                     <connections>
                         <outlet property="angryImageView" destination="uUe-6M-K8Z" id="gVp-dO-nfl"/>
+                        <outlet property="emotionsScrollView" destination="fob-TJ-aa2" id="KBp-O4-1gN"/>
                         <outlet property="happyImageView" destination="yIS-mW-Bg9" id="zFx-re-9bJ"/>
                         <outlet property="pageControl" destination="b8o-t3-6ao" id="BbI-pF-SxS"/>
                         <outlet property="sadImageView" destination="VEK-fX-0qx" id="J9c-98-Z62"/>

@@ -7,9 +7,11 @@
 
 import UIKit
 
-class MoodnestViewController: UIViewController {
+class MoodnestViewController: UIViewController, UIScrollViewDelegate {
     
     @IBOutlet var pageControl: UIPageControl!
+    @IBOutlet weak var emotionsScrollView: UIScrollView!
+    
     @IBOutlet weak var happyImageView: UIImageView!
     @IBOutlet weak var sadImageView: UIImageView!
     @IBOutlet weak var stressedImageView: UIImageView!
@@ -18,6 +20,11 @@ class MoodnestViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        emotionsScrollView.delegate = self
+        emotionsScrollView.isPagingEnabled = true
+        pageControl.numberOfPages = 4
+        pageControl.currentPage = 0
         
         happyImageView.isUserInteractionEnabled = true
         sadImageView.isUserInteractionEnabled = true
@@ -29,6 +36,11 @@ class MoodnestViewController: UIViewController {
         addTapGesture(to: stressedImageView)
         addTapGesture(to: angryImageView)
 
+    }
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        let pageIndex = round(emotionsScrollView.contentOffset.x / emotionsScrollView.frame.width)
+        pageControl.currentPage = Int(pageIndex)
     }
     
     func addTapGesture(to imageView: UIImageView) {
