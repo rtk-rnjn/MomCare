@@ -8,7 +8,7 @@
 import UIKit
 
 class AllSymptomsTableViewController: UITableViewController {
-    var symptoms: [TriTrackSymptom] = MomCareUser.shared.symptoms
+    var symptoms: [TriTrackSymptom] = []
 
     override func numberOfSections(in tableView: UITableView) -> Int {
         return 1

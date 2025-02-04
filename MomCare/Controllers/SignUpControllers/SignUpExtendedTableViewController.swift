@@ -123,6 +123,6 @@ class SignUpExtendedTableViewController: UITableViewController {
     }
 
     @IBAction func finishButtonTapped(_ sender: UIButton) {
-        UserDefaults.standard.set(true, forKey: "userCompletedOnBoarding")
+        UserDefaults.standard.set(true, forKey: "SignedUp")
     }
 }
