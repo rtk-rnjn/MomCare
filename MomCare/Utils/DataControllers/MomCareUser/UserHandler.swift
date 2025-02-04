@@ -26,14 +26,14 @@ extension MomCareUser {
     }
 
     func getCurrentUser() -> User? {
-        guard let currentUser = self.user,
+        guard let currentUser = user,
               let userData = UserDefaults.standard.data(forKey: "user"),
               let savedUser = try? JSONDecoder().decode(User.self, from: userData),
               currentUser.id == savedUser.id else {
             return nil
         }
 
-        self.user = savedUser
+        user = savedUser
         return savedUser
     }
 

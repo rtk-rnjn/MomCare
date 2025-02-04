@@ -10,12 +10,12 @@ import UIKit
 class MoodnestViewController: UIViewController, UIScrollViewDelegate {
 
     @IBOutlet var pageControl: UIPageControl!
-    @IBOutlet weak var emotionsScrollView: UIScrollView!
+    @IBOutlet var emotionsScrollView: UIScrollView!
 
-    @IBOutlet weak var happyImageView: UIImageView!
-    @IBOutlet weak var sadImageView: UIImageView!
-    @IBOutlet weak var stressedImageView: UIImageView!
-    @IBOutlet weak var angryImageView: UIImageView!
+    @IBOutlet var happyImageView: UIImageView!
+    @IBOutlet var sadImageView: UIImageView!
+    @IBOutlet var stressedImageView: UIImageView!
+    @IBOutlet var angryImageView: UIImageView!
 
     override func viewDidLoad() {
         super.viewDidLoad()

@@ -22,6 +22,7 @@ class SignUpTableViewController: UITableViewController {
     @IBOutlet var mobileNumberField: UITextField!
 
     @IBAction func createButtonTapped(_ sender: UIButton) {
+        // swiftlint:disable large_tuple
         let requiredFields: [(UITextField, String, String)] = [
             (firstNameField, "First Name Required", "Please enter your first name."),
             (emailField, "Email Required", "Please enter your email."),
@@ -30,6 +31,7 @@ class SignUpTableViewController: UITableViewController {
             (countryCodeField, "Country Code Required", "Please enter your country code."),
             (mobileNumberField, "Mobile Number Required", "Please enter your mobile number.")
         ]
+        // swiftlint:enable large_tuple
 
         var errors: [[String]] = []
 

@@ -18,12 +18,12 @@ class NewExerciseMyPlanCellCollectionViewCell: UICollectionViewCell {
 
     @IBAction func startButtonTapped(_ sender: Any) {
 
-        if let segueHandler = segueHandler {
+        if let segueHandler {
             segueHandler()
         }
     }
 
     func updateElements(with handler: (() -> Void)?) {
-        self.segueHandler = handler
+        segueHandler = handler
     }
 }

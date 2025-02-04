@@ -58,7 +58,7 @@ class ExerciseViewController: UIViewController, UICollectionViewDelegate, UIColl
 
         } else {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell2", for: indexPath) as? NewExerciseMyPlanCellCollectionViewCell
-            guard let cell else { fatalError("error aa gaya gys")}
+            guard let cell else { fatalError("error aa gaya gys") }
 
             cell.updateElements(with: segueHandler)
             return cell

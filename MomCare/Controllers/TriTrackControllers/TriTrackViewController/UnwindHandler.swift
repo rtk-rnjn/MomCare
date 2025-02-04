@@ -52,7 +52,7 @@ extension TriTrackViewController {
 
         guard let title, let dateTime else { return }
 
-        // TODO: 
+        // TODO:
         symptomsViewController?.symptomsTableViewController?.refreshData()
     }
 
@@ -120,7 +120,7 @@ extension TriTrackViewController {
         guard let interval = interval, interval > 0 else { return [] }
 
         var recurrenceFrequency: EKRecurrenceFrequency = .daily
-        var intervalValue: Int = 1
+        var intervalValue = 1
 
         switch interval {
         case 24 * 60 * 60:

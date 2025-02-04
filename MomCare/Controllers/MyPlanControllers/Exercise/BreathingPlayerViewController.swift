@@ -134,13 +134,13 @@ class BreathingPlayerViewController: UIViewController {
 
             // Start new timer
             timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] _ in
-                guard let self = self else { return }
+                guard let self else { return }
 
-                if self.currentCount <= Int(self.animationDuration) {
+                if currentCount <= Int(animationDuration) {
                     // Update timer label with current count
-                    self.timerLabel.text = "\(self.currentCount)"
+                    timerLabel.text = "\(currentCount)"
                 }
-                self.currentCount -= 1
+                currentCount -= 1
             }
         }
 
@@ -293,7 +293,7 @@ class BreathingPlayerViewController: UIViewController {
     }
 
     @IBAction func breathingStopButtonTapped(_ sender: UIButton) {
-        var remainingTime: Double = self.remainingMinSec
+        var remainingTime: Double = remainingMinSec
         print("Completed Time: ", totalBreathingTime - remainingTime)
         print("Completed Percentage: ", (totalBreathingTime - remainingTime) / totalBreathingTime * 100)
     }

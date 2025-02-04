@@ -57,10 +57,8 @@ struct User: Codable {
     var lastName: String?
 
     var fullName: String {
-        get {
-            let fullName = "\(firstName) \(lastName ?? "")"
-            return fullName.trimmingCharacters(in: .whitespaces)
-        }
+        let fullName = "\(firstName) \(lastName ?? "")"
+        return fullName.trimmingCharacters(in: .whitespaces)
     }
 
     var emailAddress: String
