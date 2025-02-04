@@ -145,8 +145,12 @@
                     </view>
                     <navigationItem key="navigationItem" id="mls-LA-dau"/>
                     <connections>
+                        <outlet property="angryImageView" destination="uUe-6M-K8Z" id="gVp-dO-nfl"/>
+                        <outlet property="happyImageView" destination="yIS-mW-Bg9" id="zFx-re-9bJ"/>
                         <outlet property="pageControl" destination="b8o-t3-6ao" id="BbI-pF-SxS"/>
-                        <segue destination="pwN-0J-bVZ" kind="show" identifier="ShowGenres" id="h0b-4V-iWC"/>
+                        <outlet property="sadImageView" destination="VEK-fX-0qx" id="J9c-98-Z62"/>
+                        <outlet property="stressedImageView" destination="W59-lv-3BK" id="gga-dS-j86"/>
+                        <segue destination="pwN-0J-bVZ" kind="show" identifier="ShowGenres" destinationCreationSelector="segueToGenresPage:" id="h0b-4V-iWC"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ief-a0-LHa" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -156,7 +160,7 @@
         <!--MoodNest-->
         <scene sceneID="Atk-Bq-QKr">
             <objects>
-                <viewController id="pwN-0J-bVZ" customClass="GenresPageViewController" customModule="MomCare" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="genresPageView" useStoryboardIdentifierAsRestorationIdentifier="YES" id="pwN-0J-bVZ" customClass="GenresPageViewController" customModule="MomCare" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="6GO-uC-gbZ">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
