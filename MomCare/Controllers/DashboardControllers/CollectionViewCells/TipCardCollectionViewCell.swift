@@ -1,5 +1,5 @@
 //
-//  Section6CollectionViewCell.swift
+//  TipCardCollectionViewCell.swift
 //  MomCare
 //
 //  Created by Batch-2 on 16/01/25.

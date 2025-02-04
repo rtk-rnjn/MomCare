@@ -8,7 +8,8 @@
 import UIKit
 
 class SectionHeaderCollectionViewCell: UICollectionViewCell {
-    var headerLabel = UILabel()
+
+    // MARK: Lifecycle
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -19,6 +20,10 @@ class SectionHeaderCollectionViewCell: UICollectionViewCell {
         super.init(coder: coder)
         updateSectionHeader()
     }
+
+    // MARK: Internal
+
+    var headerLabel: UILabel = .init()
 
     func updateSectionHeader() {
         headerLabel.translatesAutoresizingMaskIntoConstraints = false

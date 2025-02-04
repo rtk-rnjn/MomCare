@@ -8,13 +8,8 @@
 import UIKit
 
 class CircularProgressView: UIView {
-    private let progressLayer = CAShapeLayer()
 
-    var progress: CGFloat = 0.0 {
-        didSet {
-            updateProgress()
-        }
-    }
+    // MARK: Lifecycle
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -26,9 +21,27 @@ class CircularProgressView: UIView {
         setupLayer()
     }
 
+    // MARK: Internal
+
+    var progress: CGFloat = 0.0 {
+        didSet {
+            updateProgress()
+        }
+    }
+
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        layer.sublayers?.forEach { $0.removeFromSuperlayer() } // Remove old layers
+        setupLayer() // Redraw path with the correct size
+    }
+
+    // MARK: Private
+
+    private let progressLayer: CAShapeLayer = .init()
+
     private func setupLayer() {
         let circlePath = UIBezierPath(arcCenter: CGPoint(x: bounds.midX, y: bounds.midY),
-                                                       radius: min(bounds.width, bounds.height) / 2 - 5,  // Adjust radius
+                                                       radius: min(bounds.width, bounds.height) / 2 - 5, // Adjust radius
                                                        startAngle: -.pi / 2,
                                                        endAngle: 1.5 * .pi,
                                                        clockwise: true)
@@ -39,11 +52,6 @@ class CircularProgressView: UIView {
         progressLayer.fillColor = UIColor.clear.cgColor
         progressLayer.strokeEnd = 0
         layer.addSublayer(progressLayer)
-    }
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        layer.sublayers?.forEach { $0.removeFromSuperlayer() }  // Remove old layers
-        setupLayer()  // Redraw path with the correct size
     }
 
     private func updateProgress() {

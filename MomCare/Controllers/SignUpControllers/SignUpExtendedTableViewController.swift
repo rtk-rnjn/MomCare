@@ -9,6 +9,8 @@ import UIKit
 
 class SignUpExtendedTableViewController: UITableViewController {
 
+    // MARK: Internal
+
     @IBOutlet var dueDatePopupButton: UIButton!
     @IBOutlet var existingConditionPopupButton: UIButton!
     @IBOutlet var foodIntolerancePopupButton: UIButton!
@@ -35,6 +37,27 @@ class SignUpExtendedTableViewController: UITableViewController {
         setupPopUpButtons()
         hideInitialElements()
     }
+
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        if indexPath.section == 1 && indexPath.row == 1 {
+            return secondRowCell.isHidden ? 0 : UITableView.automaticDimension
+        }
+        return UITableView.automaticDimension
+    }
+
+    @IBAction func finishButtonTapped(_ sender: UIButton) {
+        guard let signUpDetailsTableViewController else { fatalError("yeh kya hua, kaise hua... kab hua") }
+        let dateOfBirth = signUpDetailsTableViewController.dateOfBirthPicker.date
+        let height = signUpDetailsTableViewController.height
+        let currentWeight = signUpDetailsTableViewController.currentWeight
+        let prePregnancyWeight = signUpDetailsTableViewController.prePregnancyWeight
+
+        let userMedical = UserMedical(dateOfBirth: dateOfBirth, height: Double(height), prePregnancyWeight: Double(prePregnancyWeight), currentWeight: Double(currentWeight))
+        MomCareUser.shared.updateUser(with: userMedical)
+        Utils.save(key: "SignedUp", value: true)
+    }
+
+    // MARK: Private
 
     private func setupPopUpButtons() {
         configureDueDatePopUpButton()
@@ -115,22 +138,4 @@ class SignUpExtendedTableViewController: UITableViewController {
 
     }
 
-    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        if indexPath.section == 1 && indexPath.row == 1 {
-            return secondRowCell.isHidden ? 0 : UITableView.automaticDimension
-        }
-        return UITableView.automaticDimension
-    }
-
-    @IBAction func finishButtonTapped(_ sender: UIButton) {
-        guard let signUpDetailsTableViewController else { fatalError("yeh kya hua, kaise hua... kab hua") }
-        let dateOfBirth = signUpDetailsTableViewController.dateOfBirthPicker.date
-        let height = signUpDetailsTableViewController.height
-        let currentWeight = signUpDetailsTableViewController.currentWeight
-        let prePregnancyWeight = signUpDetailsTableViewController.prePregnancyWeight
-
-        let userMedical = UserMedical(dateOfBirth: dateOfBirth, height: Double(height), prePregnancyWeight: Double(prePregnancyWeight), currentWeight: Double(currentWeight))
-        MomCareUser.shared.updateUser(with: userMedical)
-        Utils.save(key: "SignedUp", value: true)
-    }
 }

@@ -44,18 +44,19 @@ struct TrimesterData {
     let quote: String
 
     let leftImageName: String
-    var leftImage: UIImage? {
-        UIImage(named: leftImageName)
-    }
-
     let rightImageName: String
-    var rightImage: UIImage? {
-        UIImage(named: rightImageName)
-    }
-
     let babyHeightInCentimeters: Double
     let babyWeightInKilograms: Double
 
     let babyTipText: String
     let momTipText: String
+
+    var leftImage: UIImage? {
+        UIImage(named: leftImageName)
+    }
+
+    var rightImage: UIImage? {
+        UIImage(named: rightImageName)
+    }
+
 }

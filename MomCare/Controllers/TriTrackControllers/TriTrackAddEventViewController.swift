@@ -18,14 +18,15 @@ public enum TriTrackEventReminderViewControlSegmentValue: Int {
 }
 
 class TriTrackAddEventViewController: UIViewController {
-    /*
-     if value == 1:
-        show(eventReminderContainerView)
-     elif value == 2:
-        show(symptomsContainerView)
-     else:
-        Error(Something def. fucked up)
-     */
+
+    // MARK: Internal
+
+    // if value == 1:
+    //   show(eventReminderContainerView)
+    // elif value == 2:
+    //   show(symptomsContainerView)
+    // else:
+    //   Error(Something def. fucked up)
     var viewControllerValue: TriTrackViewControlSegmentValue?
 
     @IBOutlet var reminderContainerView: UIView!
@@ -42,6 +43,26 @@ class TriTrackAddEventViewController: UIViewController {
         super.viewWillAppear(animated)
         prepareContainerView()
     }
+
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        switch segue.identifier {
+        case "embedSegueReminder":
+            addReminderTableViewController = segue.destination as? AddReminderTableViewController
+        case "embedSegueEvent":
+            addEventTableViewController = segue.destination as? AddEventTableViewController
+        case "embedSegueSymptoms":
+            addSymptomsTableViewController = segue.destination as? AddSymptomsTableViewController
+        default:
+            break
+            // OwO! What's this?
+        }
+    }
+
+    @IBAction func eventReminderTapped(_ sender: UISegmentedControl) {
+        prepareEventReminderContainerView()
+    }
+
+    // MARK: Private
 
     private func prepareContainerView() {
         guard viewControllerValue != nil else { return }
@@ -63,18 +84,16 @@ class TriTrackAddEventViewController: UIViewController {
             navigationItem.title = "Add Event"
 
             reminderContainerView.isHidden = true
+
         case .reminderView:
             reminderContainerView.isHidden = false
             navigationItem.title = "Add Reminder"
 
             eventContainerView.isHidden = true
+
         default:
             fatalError("Something def. fucked up")
         }
-    }
-
-    @IBAction func eventReminderTapped(_ sender: UISegmentedControl) {
-        prepareEventReminderContainerView()
     }
 
     private func prepareSymptomsContainerView() {
@@ -87,17 +106,4 @@ class TriTrackAddEventViewController: UIViewController {
         navigationItem.title = "Add Symptoms"
     }
 
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        switch segue.identifier {
-        case "embedSegueReminder":
-            addReminderTableViewController = segue.destination as? AddReminderTableViewController
-        case "embedSegueEvent":
-            addEventTableViewController = segue.destination as? AddEventTableViewController
-        case "embedSegueSymptoms":
-            addSymptomsTableViewController = segue.destination as? AddSymptomsTableViewController
-        default:
-            break
-            // OwO! What's this?
-        }
-    }
 }

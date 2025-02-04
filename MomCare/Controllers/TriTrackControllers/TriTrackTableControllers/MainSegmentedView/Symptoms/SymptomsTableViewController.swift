@@ -15,11 +15,6 @@ class SymptomsTableViewController: UITableViewController {
         refreshData()
     }
 
-    func refreshData() {
-        data = []
-        tableView.reloadData()
-    }
-
     override func numberOfSections(in tableView: UITableView) -> Int {
         return data.count
     }
@@ -36,7 +31,7 @@ class SymptomsTableViewController: UITableViewController {
         cell.updateElements(with: data[indexPath.section])
         cell.showsReorderControl = false
 
-        /* config as per prototype */
+        // config as per prototype
         cell.backgroundColor = Converters.convertHexToUIColor(hex: "F2F2F7")
         cell.contentView.layer.cornerRadius = 10
         cell.contentView.layer.masksToBounds = true
@@ -51,6 +46,11 @@ class SymptomsTableViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
         return 3
+    }
+
+    func refreshData() {
+        data = []
+        tableView.reloadData()
     }
 
 }

@@ -10,16 +10,23 @@ import Foundation
 import UIKit
 
 struct FrontPageImage {
-    var imageName: String
-    var heading: String
-    var image: UIImage? {
-        UIImage(named: imageName)
-    }
+
+    // MARK: Lifecycle
 
     init(imageName: String, heading: String) {
         self.imageName = imageName
         self.heading = heading
     }
+
+    // MARK: Internal
+
+    var imageName: String
+    var heading: String
+
+    var image: UIImage? {
+        UIImage(named: imageName)
+    }
+
 }
 
 enum FrontPageData {

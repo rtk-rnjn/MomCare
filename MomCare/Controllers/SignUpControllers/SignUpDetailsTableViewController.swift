@@ -14,7 +14,7 @@ class SignUpDetailsTableViewController: UITableViewController, UIViewControllerT
     @IBOutlet var prePregnancyWeightLabel: UILabel!
     @IBOutlet var currentWeightLabel: UILabel!
     @IBOutlet var countryLabel: UILabel!
-    
+
     var height: Int = 0
     var prePregnancyWeight: Int = 0
     var currentWeight: Int = 0
@@ -40,6 +40,7 @@ class SignUpDetailsTableViewController: UITableViewController, UIViewControllerT
                 destinationTableViewController.initialProgress = progressView.progress
                 destinationTableViewController.signUpDetailsTableViewController = self
             }
+
         default:
             if let destination = segue.destination as? PickerViewController, let presentationController = destination.presentationController as? UISheetPresentationController {
                 presentationController.detents = [.medium()]
@@ -48,8 +49,7 @@ class SignUpDetailsTableViewController: UITableViewController, UIViewControllerT
         }
     }
 
-    @IBAction func unwindToSignUp(_ segue: UIStoryboardSegue) {
-    }
+    @IBAction func unwindToSignUp(_ segue: UIStoryboardSegue) {}
 
     @IBSegueAction func segueViaHeightButton(_ coder: NSCoder) -> PickerViewController? {
         return PickerViewController(coder: coder, with: .height, sender: self)

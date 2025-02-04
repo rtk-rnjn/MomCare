@@ -1,6 +1,9 @@
 import UIKit
 
 class DietViewController: UIViewController {
+
+    // MARK: Internal
+
     // Progress Bars Outlets
     @IBOutlet var proteinProgressBar: UIProgressView!
     @IBOutlet var carbsProgressBar: UIProgressView!
@@ -13,9 +16,6 @@ class DietViewController: UIViewController {
     @IBOutlet var progressContainerView: UIView!
     @IBOutlet var caloricValueLabel: UILabel!
 
-    private var backgroundLayer: CAShapeLayer!
-    private var shapeLayer: CAShapeLayer!
-
     var dietTableViewController: DietTableViewController?
 
     override func viewDidLoad() {
@@ -25,17 +25,6 @@ class DietViewController: UIViewController {
         prepareProgressBars([proteinProgressBar, carbsProgressBar, fatsProgressBar])
     }
 
-    private func prepareProgressBars(_ progressBars: [UIProgressView]) {
-        progressBars.forEach { progressBar in
-            progressBar.layer.cornerRadius = 5
-            progressBar.clipsToBounds = true
-            progressBar.subviews.forEach { subview in
-                subview.layer.cornerRadius = 5
-                subview.clipsToBounds = true
-            }
-        }
-    }
-
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
@@ -43,13 +32,41 @@ class DietViewController: UIViewController {
         setupCaloricProgress()
     }
 
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "embedShowDietTableViewController" {
+            dietTableViewController = segue.destination as? DietTableViewController
+        }
+    }
+
     func refresh() {
         setupProgressBars()
         setupCaloricProgress()
     }
 
+    @IBSegueAction func test(_ coder: NSCoder) -> DietTableViewController? {
+        return DietTableViewController(coder: coder, dietViewController: self)
+    }
+
+    @IBAction func unwindToMyPlanDiet(_ segue: UIStoryboardSegue) {}
+
+    // MARK: Private
+
+    private var backgroundLayer: CAShapeLayer!
+    private var shapeLayer: CAShapeLayer!
+
+    private func prepareProgressBars(_ progressBars: [UIProgressView]) {
+        for progressBar in progressBars {
+            progressBar.layer.cornerRadius = 5
+            progressBar.clipsToBounds = true
+            for subview in progressBar.subviews {
+                subview.layer.cornerRadius = 5
+                subview.clipsToBounds = true
+            }
+        }
+    }
+
     private func setupCaloricProgress() {
-        animateKalcProgress(to: CGFloat((Float(MomCareUser.shared.diet.plan.currentCaloriesIntake) / Float(MomCareUser.shared.diet.plan.caloriesGoal!))))
+        animateKalcProgress(to: CGFloat(Float(MomCareUser.shared.diet.plan.currentCaloriesIntake) / Float(MomCareUser.shared.diet.plan.caloriesGoal!)))
 
         caloricValueLabel.text = String(MomCareUser.shared.diet.plan.currentCaloriesIntake) + "/" + String(MomCareUser.shared.diet.plan.caloriesGoal!)
     }
@@ -120,16 +137,4 @@ class DietViewController: UIViewController {
         shapeLayer.add(animation, forKey: "progressAnimation")
     }
 
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "embedShowDietTableViewController" {
-            dietTableViewController = segue.destination as? DietTableViewController
-        }
-    }
-
-    @IBSegueAction func test(_ coder: NSCoder) -> DietTableViewController? {
-        return DietTableViewController(coder: coder, dietViewController: self)
-    }
-
-    @IBAction func unwindToMyPlanDiet(_ segue: UIStoryboardSegue) {
-    }
 }

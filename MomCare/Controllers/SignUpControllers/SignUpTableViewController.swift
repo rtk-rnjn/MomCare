@@ -9,6 +9,8 @@ import UIKit
 
 class SignUpTableViewController: UITableViewController {
 
+    // MARK: Internal
+
     @IBOutlet var createButton: UIButton!
 
     @IBOutlet var firstNameField: UITextField!
@@ -20,6 +22,13 @@ class SignUpTableViewController: UITableViewController {
 
     @IBOutlet var countryCodeField: UITextField!
     @IBOutlet var mobileNumberField: UITextField!
+
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "segueShowPickerViewController", let destination = segue.destination as? PickerViewController, let presentationController = destination.presentationController as? UISheetPresentationController {
+            presentationController.detents = [.medium()]
+            present(destination, animated: true)
+        }
+    }
 
     @IBAction func createButtonTapped(_ sender: UIButton) {
         // swiftlint:disable large_tuple
@@ -62,6 +71,20 @@ class SignUpTableViewController: UITableViewController {
         }
     }
 
+    @IBAction func editingChanged(_ sender: UITextField) {}
+
+    @IBAction func countryCodeFieldTapped(_ sender: UITextField) {
+        performSegue(withIdentifier: "segueShowPickerViewController", sender: nil)
+    }
+
+    @IBSegueAction func segueViaCountryCodeField(_ coder: NSCoder) -> PickerViewController? {
+        return PickerViewController(coder: coder, with: countryCodeField, sender: self)
+    }
+
+    @IBAction func unwindToSignUp(_ segue: UIStoryboardSegue) {}
+
+    // MARK: Private
+
     private func createErrorAlert(with errors: [[String]]) {
         let title = errors.count == 1 ? errors[0][0] : "Errors"
 
@@ -76,29 +99,9 @@ class SignUpTableViewController: UITableViewController {
         createErrorAlert(title: title, message: message)
     }
 
-    @IBAction func editingChanged(_ sender: UITextField) {
-    }
-
-    @IBAction func countryCodeFieldTapped(_ sender: UITextField) {
-        performSegue(withIdentifier: "segueShowPickerViewController", sender: nil)
-    }
-
-    @IBSegueAction func segueViaCountryCodeField(_ coder: NSCoder) -> PickerViewController? {
-        return PickerViewController(coder: coder, with: countryCodeField, sender: self)
-    }
-
     private func createErrorAlert(title: String, message: String) {
         let alert = Utils.getAlert(type: .ok, title: title, message: message)
         present(alert, animated: true)
     }
 
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "segueShowPickerViewController", let destination = segue.destination as? PickerViewController, let presentationController = destination.presentationController as? UISheetPresentationController {
-            presentationController.detents = [.medium()]
-            present(destination, animated: true)
-        }
-    }
-
-    @IBAction func unwindToSignUp(_ segue: UIStoryboardSegue) {
-    }
 }

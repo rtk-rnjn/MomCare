@@ -56,11 +56,6 @@ struct User: Codable {
     var firstName: String
     var lastName: String?
 
-    var fullName: String {
-        let fullName = "\(firstName) \(lastName ?? "")"
-        return fullName.trimmingCharacters(in: .whitespaces)
-    }
-
     var emailAddress: String
     var password: String
 
@@ -70,6 +65,12 @@ struct User: Codable {
     var medicalData: UserMedical?
 
     var mood: MoodType?
+
+    var fullName: String {
+        let fullName = "\(firstName) \(lastName ?? "")"
+        return fullName.trimmingCharacters(in: .whitespaces)
+    }
+
 }
 
 struct UserMedical: Codable {

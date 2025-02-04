@@ -49,6 +49,12 @@ class GenresPageViewController: UIViewController, UICollectionViewDataSource, UI
         moodnestCollectionView.setCollectionViewLayout(generateLayout(), animated: true)
     }
 
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if let destinationVC = segue.destination as? SongPageViewController {
+            destinationVC.playlist = sender as? Playlist
+        }
+    }
+
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 3
     }
@@ -110,7 +116,7 @@ class GenresPageViewController: UIViewController, UICollectionViewDataSource, UI
     }
 
     func generateLayout() -> UICollectionViewLayout {
-        let layout = UICollectionViewCompositionalLayout { (sectionIndex: Int, _: NSCollectionLayoutEnvironment) -> NSCollectionLayoutSection? in
+        return UICollectionViewCompositionalLayout { (sectionIndex: Int, _: NSCollectionLayoutEnvironment) -> NSCollectionLayoutSection? in
             let section: NSCollectionLayoutSection
 
             switch sectionIndex {
@@ -136,7 +142,6 @@ class GenresPageViewController: UIViewController, UICollectionViewDataSource, UI
             }
             return section
         }
-        return layout
     }
 
     func generateMainHeadingLayout() -> NSCollectionLayoutSection {
@@ -187,12 +192,6 @@ class GenresPageViewController: UIViewController, UICollectionViewDataSource, UI
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let selectedPlaylist = FeaturedPlaylists.playlists[indexPath.item]
         performSegue(withIdentifier: "songPageSegue", sender: selectedPlaylist)
-    }
-
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if let destinationVC = segue.destination as? SongPageViewController {
-            destinationVC.playlist = sender as? Playlist
-        }
     }
 
 }

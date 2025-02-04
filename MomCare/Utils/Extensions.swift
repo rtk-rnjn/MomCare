@@ -7,7 +7,6 @@
 
 import Foundation
 import UIKit
-import CoreImage
 import CoreImage.CIFilterBuiltins
 
 extension String {
@@ -15,12 +14,12 @@ extension String {
         let emailRegex = "^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]+$"
         return NSPredicate(format: "SELF MATCHES %@", emailRegex).evaluate(with: self)
     }
-    
+
     func isValidPhoneNumber() -> Bool {
         let phoneRegex = "^[0-9]{10}$"
         return NSPredicate(format: "SELF MATCHES %@", phoneRegex).evaluate(with: self)
     }
-    
+
     func isNumeric() -> Bool {
         return Double(self) != nil
     }
@@ -31,14 +30,14 @@ extension UIImage {
 
     func dominantColor() -> UIColor? {
         guard let inputImage = CIImage(image: self) else { return nil }
-        
+
         let filter = CIFilter.areaAverage()
         filter.inputImage = inputImage
         filter.extent = inputImage.extent // Use CGRect directly
-        
+
         let context = CIContext()
         guard let outputImage = filter.outputImage else { return nil }
-        
+
         var bitmap = [UInt8](repeating: 0, count: 4) // RGBA format
         context.render(
             outputImage,
@@ -48,7 +47,7 @@ extension UIImage {
             format: .RGBA8,
             colorSpace: CGColorSpaceCreateDeviceRGB()
         )
-        
+
         return UIColor(
             red: CGFloat(bitmap[0]) / 255.0,
             green: CGFloat(bitmap[1]) / 255.0,
@@ -62,8 +61,7 @@ extension Encodable {
     func toDictionary() -> [String: Any]? {
         let encoder = JSONEncoder()
         guard let data = try? encoder.encode(self) else { return nil }
-        
-        let dictionary = try? JSONSerialization.jsonObject(with: data, options: .allowFragments) as? [String: Any]
-        return dictionary
+
+        return try? JSONSerialization.jsonObject(with: data, options: .allowFragments) as? [String: Any]
     }
 }

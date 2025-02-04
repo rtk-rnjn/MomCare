@@ -9,7 +9,7 @@ import UIKit
 
 extension DashboardViewController {
     func createLayout() -> UICollectionViewCompositionalLayout {
-        UICollectionViewCompositionalLayout { [weak self] (sectionIndex, _) -> NSCollectionLayoutSection? in
+        UICollectionViewCompositionalLayout { [weak self] sectionIndex, _ -> NSCollectionLayoutSection? in
 
             guard let self else { return nil }
 

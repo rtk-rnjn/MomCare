@@ -2,25 +2,19 @@ import UIKit
 
 class BreathingPlayerViewController: UIViewController {
 
+    // MARK: Lifecycle
+
+    // Cleanup timer when view is dismissed
+        deinit {
+            timer?.invalidate()
+            timer = nil
+        }
+
+    // MARK: Internal
+
     @IBOutlet var totalBreatingDuration: UILabel!
 
-    private var circlesContainer = CALayer()
-    private var circleLayers: [CAShapeLayer] = []
-    private var isInhaling = true
-    private let instructionLabel = UILabel()
-    private let timerLabel = UILabel()  // New timer label
-    private var timer: Timer?           // Timer for updating countdown
-    private var currentCount = 0
     var remainingMinSec: Double = 0.0
-
-    // Configuration
-    private let numberOfPetals = 6
-    private let circleSize: CGFloat = 100
-    private let animationDuration: TimeInterval = 4.0
-    private let spreadDistance: CGFloat = 50  // How far circles spread to form the flower
-    private let textAnimationDuration: TimeInterval = 0.5 //
-    private let transitionLabel = UILabel() //
-    private let totalBreathingTime: Double = 300
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -54,6 +48,45 @@ class BreathingPlayerViewController: UIViewController {
 
         view.layer.insertSublayer(gradientLayer, at: 0)
     }
+
+    func exrciseDurationSetup() async {
+        var i = 0
+
+        while 5 * 60 - i > 0 {
+            try! await Task.sleep(nanoseconds: 1_000_000_000)
+            DispatchQueue.main.async {
+                i += 1
+                let remainingSeconds = 5 * 60 - i
+
+                let remainingMinutes = remainingSeconds / 60
+                let remainingSecondsPart = remainingSeconds % 60
+                self.remainingMinSec = Double(remainingMinutes) * 60 + Double(remainingSecondsPart)
+
+                self.totalBreatingDuration.text = String(format: "%02d:%02d", remainingMinutes, remainingSecondsPart)
+            }
+        }
+    }
+
+    @IBAction func breathingStopButtonTapped(_ sender: UIButton) {}
+
+    // MARK: Private
+
+    private var circlesContainer: CALayer = .init()
+    private var circleLayers: [CAShapeLayer] = []
+    private var isInhaling = true
+    private let instructionLabel: UILabel = .init()
+    private let timerLabel: UILabel = .init() // New timer label
+    private var timer: Timer? // Timer for updating countdown
+    private var currentCount = 0
+
+    // Configuration
+    private let numberOfPetals = 6
+    private let circleSize: CGFloat = 100
+    private let animationDuration: TimeInterval = 4.0
+    private let spreadDistance: CGFloat = 50 // How far circles spread to form the flower
+    private let textAnimationDuration: TimeInterval = 0.5 //
+    private let transitionLabel: UILabel = .init() //
+    private let totalBreathingTime: Double = 300
 
     private func setupInstructionLabel() {
         instructionLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -268,30 +301,4 @@ class BreathingPlayerViewController: UIViewController {
         CATransaction.commit()
     }
 
-    // Cleanup timer when view is dismissed
-        deinit {
-            timer?.invalidate()
-            timer = nil
-        }
-
-    func exrciseDurationSetup() async {
-        var i = 0
-
-        while 5 * 60 - i > 0 {
-            try! await Task.sleep(nanoseconds: 1_000_000_000)
-            DispatchQueue.main.async {
-                i += 1
-                let remainingSeconds = 5 * 60 - i
-
-                let remainingMinutes = remainingSeconds / 60
-                let remainingSecondsPart = remainingSeconds % 60
-                self.remainingMinSec = Double(remainingMinutes) * 60 + Double(remainingSecondsPart)
-
-                self.totalBreatingDuration.text = String(format: "%02d:%02d", remainingMinutes, remainingSecondsPart)
-            }
-        }
-    }
-
-    @IBAction func breathingStopButtonTapped(_ sender: UIButton) {
-    }
 }

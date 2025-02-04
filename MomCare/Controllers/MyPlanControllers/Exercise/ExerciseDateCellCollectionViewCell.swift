@@ -12,6 +12,4 @@
 
 import UIKit
 
-class ExerciseDateCellCollectionViewCell: UICollectionViewCell {
-
-}
+class ExerciseDateCellCollectionViewCell: UICollectionViewCell {}

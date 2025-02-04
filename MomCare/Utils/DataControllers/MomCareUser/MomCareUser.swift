@@ -8,12 +8,8 @@
 import Foundation
 
 class MomCareUser {
-    public private(set) var diet: UserDiet = .shared
-    public private(set) var exercise: UserExercise = .shared
 
-    var user: User?
-
-    static var shared: MomCareUser = .init()
+    // MARK: Lifecycle
 
     private init() {
         updateFromDatabase()
@@ -22,17 +18,31 @@ class MomCareUser {
         _ = getCurrentUser()
     }
 
+    // MARK: Public
+
+    public private(set) var diet: UserDiet = .shared
+    public private(set) var exercise: UserExercise = .shared
+
+    // MARK: Internal
+
+    static var shared: MomCareUser = .init()
+
+    var user: User?
+
     func setCurrentMood(as mood: MoodType) {
         user?.mood = mood
-    }
-
-    private func updateFromDatabase() {
-        UserDiet.shared.updateFromDatabase()
-        UserExercise.shared.updateFromDatabase()
     }
 
     func updateToDatabase() {
         UserDiet.shared.updateToDatabase()
         UserExercise.shared.updateToDatabase()
     }
+
+    // MARK: Private
+
+    private func updateFromDatabase() {
+        UserDiet.shared.updateFromDatabase()
+        UserExercise.shared.updateFromDatabase()
+    }
+
 }

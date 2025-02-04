@@ -9,6 +9,8 @@ import UIKit
 
 class SearchTableViewCell: UITableViewCell {
 
+    // MARK: Internal
+
     @IBOutlet var foodImageView: UIImageView!
     @IBOutlet var foodLabel: UILabel!
     @IBOutlet var foodMetadata: UILabel!
@@ -29,6 +31,8 @@ class SearchTableViewCell: UITableViewCell {
         self.foodItem = foodItem
         self.viewController = viewController
     }
+
+    // MARK: Private
 
     private func confirmAlert(title: String, message: String, with button: UIButton) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)

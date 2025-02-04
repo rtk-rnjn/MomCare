@@ -7,6 +7,4 @@
 
 import UIKit
 
-class WalkCellMyPlanCollectionViewCell: UICollectionViewCell {
-
-}
+class WalkCellMyPlanCollectionViewCell: UICollectionViewCell {}

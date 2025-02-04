@@ -19,7 +19,7 @@ let dimViewTag = 100
 enum Utils {
     public static func getAlert(type: AlertType, title: String, message: String, okHandler: ((UIAlertAction) -> Void)? = nil, cancelHandler: ((UIAlertAction) -> Void)? = nil) -> UIAlertController {
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        
+
         switch type {
         case .ok:
             alert.addAction(UIAlertAction(title: "OK", style: .default, handler: okHandler))
@@ -27,7 +27,7 @@ enum Utils {
             alert.addAction(UIAlertAction(title: "OK", style: .default, handler: okHandler))
             alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: cancelHandler))
         }
-        
+
         return alert
     }
 
@@ -41,7 +41,7 @@ enum Utils {
             viewController.view.viewWithTag(dimViewTag)?.removeFromSuperview()
         }
     }
-    
+
     public static func isConnectedToNetwork() -> Bool {
         // https://stackoverflow.com/a/55039596
 
@@ -52,15 +52,15 @@ enum Utils {
     }
 
     // MARK: - User Defaults
-    
+
     public static func save<T>(key: String, value: T) {
         return UserDefaults.standard.set(value, forKey: key)
     }
-    
+
     public static func get<T>(key: String, defaultValue: T) -> T {
         return UserDefaults.standard.value(forKey: key) as? T ?? defaultValue
     }
-    
+
     public static func remove(key: String) {
         UserDefaults.standard.removeObject(forKey: key)
     }

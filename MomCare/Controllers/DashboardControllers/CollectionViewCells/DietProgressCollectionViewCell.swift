@@ -1,5 +1,5 @@
 //
-//  Section3CollectionViewCell.swift
+//  DietProgressCollectionViewCell.swift
 //  MomCare
 //
 //  Created by Batch-2 on 15/01/25.
@@ -9,12 +9,7 @@ import UIKit
 
 class DietProgressCollectionViewCell: UICollectionViewCell {
 
-    @IBOutlet var currentKcalLabel: UILabel!
-    @IBOutlet var caloriesGoalLabel: UILabel!
-    @IBOutlet var progressBar: UIProgressView!
-    @IBOutlet var percentageLabel: UILabel!
-
-    var tapHandler: (() -> Void)?
+    // MARK: Lifecycle
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -26,15 +21,14 @@ class DietProgressCollectionViewCell: UICollectionViewCell {
         setupGesture()
     }
 
-    private func setupGesture() {
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap))
-        contentView.addGestureRecognizer(tapGesture)
-    }
+    // MARK: Internal
 
-    @objc private func handleTap() {
-        guard let tapHandler else { return }
-        tapHandler()
-    }
+    @IBOutlet var currentKcalLabel: UILabel!
+    @IBOutlet var caloriesGoalLabel: UILabel!
+    @IBOutlet var progressBar: UIProgressView!
+    @IBOutlet var percentageLabel: UILabel!
+
+    var tapHandler: (() -> Void)?
 
     func updateElements(with dietProgress: UserDiet, tapHandler: (() -> Void)?) {
         currentKcalLabel.text = "\(dietProgress.plan.currentCaloriesIntake)"
@@ -46,4 +40,17 @@ class DietProgressCollectionViewCell: UICollectionViewCell {
 
         self.tapHandler = tapHandler
     }
+
+    // MARK: Private
+
+    private func setupGesture() {
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap))
+        contentView.addGestureRecognizer(tapGesture)
+    }
+
+    @objc private func handleTap() {
+        guard let tapHandler else { return }
+        tapHandler()
+    }
+
 }

@@ -9,6 +9,8 @@ import UIKit
 
 class ContentTableViewCell: UITableViewCell {
 
+    // MARK: Internal
+
     @IBOutlet var qualtityLabel: UILabel!
     @IBOutlet var foodItemLabel: UILabel!
     @IBOutlet var kalcLabel: UILabel!
@@ -18,10 +20,6 @@ class ContentTableViewCell: UITableViewCell {
 
     var foodItem: FoodItem?
     var indexPath: IndexPath?
-
-    private var dietTableViewController: DietTableViewController?
-
-    private let color = Converters.convertHexToUIColor(hex: "924350")
 
     func updateElements(with foodItem: FoodItem, at indexPath: IndexPath?, of view: DietTableViewController) {
         foodItemLabel.text = foodItem.name
@@ -57,4 +55,11 @@ class ContentTableViewCell: UITableViewCell {
         }
         dietTableViewController?.dietViewController.refresh()
     }
+
+    // MARK: Private
+
+    private var dietTableViewController: DietTableViewController?
+
+    private let color: UIColor = Converters.convertHexToUIColor(hex: "924350")
+
 }

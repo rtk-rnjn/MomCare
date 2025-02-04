@@ -1,5 +1,5 @@
 //
-//  MoodnestMultipleImagesCollectionViewCell.swift
+//  MoodNestMultipleImagesCollectionViewCell.swift
 //  MomCare
 //
 //  Created by Batch - 2  on 18/01/25.

@@ -1,5 +1,5 @@
 //
-//  Section1CollectionViewCell.swift
+//  WeekCardCollectionViewCell.swift
 //  MomCare
 //
 //  Created by Batch-2 on 15/01/25.
@@ -9,17 +9,7 @@ import UIKit
 
 class WeekCardCollectionViewCell: UICollectionViewCell {
 
-    @IBOutlet var currentWeekLabel: UILabel!
-    @IBOutlet var currentDayLabel: UILabel!
-    @IBOutlet var currentTrimesterLabel: UILabel!
-
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        contentView.layer.cornerRadius = 16
-        contentView.layer.masksToBounds = true
-    }
-
-    var tapHandler: (() -> Void)?
+    // MARK: Lifecycle
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -31,6 +21,29 @@ class WeekCardCollectionViewCell: UICollectionViewCell {
         setupGesture()
     }
 
+    // MARK: Internal
+
+    @IBOutlet var currentWeekLabel: UILabel!
+    @IBOutlet var currentDayLabel: UILabel!
+    @IBOutlet var currentTrimesterLabel: UILabel!
+
+    var tapHandler: (() -> Void)?
+
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        contentView.layer.cornerRadius = 16
+        contentView.layer.masksToBounds = true
+    }
+
+    func updateElements(with userData: User?, tapHandler: (() -> Void)?) {
+//        if let userData = userData {
+//
+//        }
+        self.tapHandler = tapHandler
+    }
+
+    // MARK: Private
+
     private func setupGesture() {
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap))
         contentView.addGestureRecognizer(tapGesture)
@@ -41,10 +54,4 @@ class WeekCardCollectionViewCell: UICollectionViewCell {
         tapHandler()
     }
 
-    func updateElements(with userData: User?, tapHandler: (() -> Void)?) {
-//        if let userData = userData {
-//
-//        }
-        self.tapHandler = tapHandler
-    }
 }

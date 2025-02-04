@@ -35,7 +35,6 @@ class ExerciseViewController: UIViewController, UICollectionViewDelegate, UIColl
 
         default:
             return CGSize(width: 365, height: 170)
-
         }
 
     }
@@ -49,12 +48,10 @@ class ExerciseViewController: UIViewController, UICollectionViewDelegate, UIColl
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
 
         if indexPath.item == 0 {
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ExerciseDate", for: indexPath)
-            return cell
+            return collectionView.dequeueReusableCell(withReuseIdentifier: "ExerciseDate", for: indexPath)
 
         } else if indexPath.item == 1 {
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell1", for: indexPath)
-            return cell
+            return collectionView.dequeueReusableCell(withReuseIdentifier: "Cell1", for: indexPath)
 
         } else {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell2", for: indexPath) as? NewExerciseMyPlanCellCollectionViewCell

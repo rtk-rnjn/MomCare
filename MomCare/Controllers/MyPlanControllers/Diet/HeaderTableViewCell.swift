@@ -7,36 +7,19 @@ enum MealEditType: String {
 
 class HeaderTableViewCell: UITableViewCell {
 
+    // MARK: Internal
+
     @IBOutlet var actionButton: UIButton!
 
     @IBOutlet var mealHeaderLabel: UILabel!
     @IBOutlet var mealHeaderButton: UIButton!
 
+    var section: Int?
+    var dietTableViewController: DietTableViewController?
+
     override func awakeFromNib() {
         super.awakeFromNib()
         configurePullDownMenu()
-    }
-
-    var section: Int?
-    var dietTableViewController: DietTableViewController?
-    private let color = Converters.convertHexToUIColor(hex: "924350")
-
-    private func configurePullDownMenu() {
-        let addItem = UIAction(title: "Add Item", image: UIImage(systemName: "plus"), handler: addItemHandler)
-        let replaceItem = UIAction(title: "Replace Item", image: UIImage(systemName: "repeat"), handler: replaceItemHandler)
-        actionButton.menu = UIMenu(title: "", children: [addItem, replaceItem])
-        actionButton.showsMenuAsPrimaryAction = true
-
-        actionButton.setTitle(nil, for: .normal)
-        actionButton.setImage(UIImage(systemName: "square.and.pencil"), for: .normal)
-    }
-
-    private func addItemHandler(_ action: UIAction) {
-        dietTableViewController?.performSegueToSearch(with: MealEditType.addItem)
-    }
-
-    private func replaceItemHandler(_ action: UIAction) {
-        dietTableViewController?.performSegueToSearch(with: MealEditType.replaceItem)
     }
 
     func updateTitle(with title: String, at section: Int, of view: DietTableViewController) {
@@ -63,4 +46,27 @@ class HeaderTableViewCell: UITableViewCell {
 
         dietTableViewController?.dietViewController.refresh()
     }
+
+    // MARK: Private
+
+    private let color: UIColor = Converters.convertHexToUIColor(hex: "924350")
+
+    private func configurePullDownMenu() {
+        let addItem = UIAction(title: "Add Item", image: UIImage(systemName: "plus"), handler: addItemHandler)
+        let replaceItem = UIAction(title: "Replace Item", image: UIImage(systemName: "repeat"), handler: replaceItemHandler)
+        actionButton.menu = UIMenu(title: "", children: [addItem, replaceItem])
+        actionButton.showsMenuAsPrimaryAction = true
+
+        actionButton.setTitle(nil, for: .normal)
+        actionButton.setImage(UIImage(systemName: "square.and.pencil"), for: .normal)
+    }
+
+    private func addItemHandler(_ action: UIAction) {
+        dietTableViewController?.performSegueToSearch(with: MealEditType.addItem)
+    }
+
+    private func replaceItemHandler(_ action: UIAction) {
+        dietTableViewController?.performSegueToSearch(with: MealEditType.replaceItem)
+    }
+
 }

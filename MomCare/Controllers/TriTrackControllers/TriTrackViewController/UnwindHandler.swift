@@ -77,13 +77,13 @@ extension TriTrackViewController {
 
         event.location = location
         event.isAllDay = allDay
-        if let repeatAfter = repeatAfter {
+        if let repeatAfter {
             event.recurrenceRules = createRecurrenceRule(for: repeatAfter)
         }
-        if let alertTime = alertTime {
+        if let alertTime {
             event.addAlarm(EKAlarm(relativeOffset: -alertTime))
         }
-        if let travelTime = travelTime {
+        if let travelTime {
             if let endDateTime = endDateTime?.addingTimeInterval(travelTime) {
                 event.endDate = endDateTime
             }
@@ -117,27 +117,32 @@ extension TriTrackViewController {
     }
 
     private func createRecurrenceRule(for interval: TimeInterval?) -> [EKRecurrenceRule] {
-        guard let interval = interval, interval > 0 else { return [] }
+        guard let interval, interval > 0 else { return [] }
 
-        var recurrenceFrequency: EKRecurrenceFrequency = .daily
+        var recurrenceFrequency = EKRecurrenceFrequency.daily
         var intervalValue = 1
 
         switch interval {
         case 24 * 60 * 60:
             recurrenceFrequency = .daily
             intervalValue = 1
+
         case 24 * 60 * 60 * 7:
             recurrenceFrequency = .weekly
             intervalValue = 1
+
         case 24 * 60 * 60 * 7 * 2:
             recurrenceFrequency = .weekly
             intervalValue = 2
+
         case 24 * 60 * 60 * 7 * 30:
             recurrenceFrequency = .monthly
             intervalValue = 1
+
         case 24 * 60 * 60 * 7 * 30 * 12:
             recurrenceFrequency = .yearly
             intervalValue = 1
+
         default:
             return []
         }

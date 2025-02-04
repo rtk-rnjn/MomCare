@@ -9,6 +9,8 @@ import UIKit
 
 class AddEventTableViewController: UITableViewController {
 
+    // MARK: Internal
+
     static let repeatTimeOptions: [String: TimeInterval] = [
         "Never": 0,
         "Every Day": 24 * 60 * 60,
@@ -76,6 +78,8 @@ class AddEventTableViewController: UITableViewController {
             literalEndsLabel.alpha = 1
         }
     }
+
+    // MARK: Private
 
     private func preparePopupButtons() {
         prepareRepeatPopup()

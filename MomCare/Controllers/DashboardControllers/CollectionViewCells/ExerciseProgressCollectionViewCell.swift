@@ -1,5 +1,5 @@
 //
-//  Section4CollectionViewCell.swift
+//  ExerciseProgressCollectionViewCell.swift
 //  MomCare
 //
 //  Created by Batch-2 on 15/01/25.
@@ -8,7 +8,8 @@
 import UIKit
 
 class ExerciseProgressCollectionViewCell: UICollectionViewCell {
-    var tapHandler: (() -> Void)?
+
+    // MARK: Lifecycle
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -20,6 +21,17 @@ class ExerciseProgressCollectionViewCell: UICollectionViewCell {
         setupGesture()
     }
 
+    // MARK: Internal
+
+    var tapHandler: (() -> Void)?
+
+    func updateElements(with data: UserExercise?, tapHandler: (() -> Void)?) {
+        if let data {}
+        self.tapHandler = tapHandler
+    }
+
+    // MARK: Private
+
     private func setupGesture() {
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap))
         contentView.addGestureRecognizer(tapGesture)
@@ -30,10 +42,4 @@ class ExerciseProgressCollectionViewCell: UICollectionViewCell {
         tapHandler()
     }
 
-    func updateElements(with data: UserExercise?, tapHandler: (() -> Void)?) {
-        if let data {
-
-        }
-        self.tapHandler = tapHandler
-    }
 }
