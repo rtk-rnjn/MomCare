@@ -30,21 +30,21 @@ class SignUpTableViewController: UITableViewController {
             (countryCodeField, "Country Code Required", "Please enter your country code."),
             (mobileNumberField, "Mobile Number Required", "Please enter your mobile number.")
         ]
-        
+
         var errors: [[String]] = []
-        
+
         for (field, title, message) in requiredFields where (field.text ?? "").isEmpty {
             errors.append([title, message])
         }
-        
+
         if let password = passwordField.text, let confirmPassword = confirmPasswordField.text, password != confirmPassword {
             errors.append(["Passwords Do Not Match", "Please ensure your passwords match."])
         }
-        
+
         if !errors.isEmpty {
             createErrorAlert(with: errors)
         }
-        
+
         let user = User(
             firstName: firstNameField.text ?? "",
             lastName: lastNameField.text,
@@ -70,10 +70,9 @@ class SignUpTableViewController: UITableViewController {
         } else {
             message = errors.map { "\($0[0])" }.joined(separator: "\n")
         }
-        
+
         createErrorAlert(title: title, message: message)
     }
-
 
     @IBAction func editingChanged(_ sender: UITextField) {
     }

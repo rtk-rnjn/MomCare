@@ -15,7 +15,7 @@ enum Utils {
 
         return alert
     }
-    
+
     public static func getAlertOKCancel(title: String, message: String, okHandler: @escaping (UIAlertAction) -> Void) -> UIAlertController {
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "OK", style: .default, handler: okHandler))

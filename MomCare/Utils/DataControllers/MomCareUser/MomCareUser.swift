@@ -7,7 +7,6 @@
 
 import Foundation
 
-
 class MomCareUser {
     public private(set) var diet: UserDiet = .shared
     public private(set) var exercise: UserExercise = .shared
@@ -18,7 +17,7 @@ class MomCareUser {
 
     private init() {
         updateFromDatabase()
-        
+
         // TODO: Remove this
         _ = getCurrentUser()
     }

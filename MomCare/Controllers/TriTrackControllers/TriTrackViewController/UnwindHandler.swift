@@ -70,7 +70,7 @@ extension TriTrackViewController {
         let allDay = viewController.addEventTableViewController?.allDaySwitch.isOn ?? false
 
         guard let title, let startDateTime else { return }
-        
+
         let event = EKEvent(eventStore: eventStore)
         event.title = title
         event.startDate = startDateTime
@@ -106,7 +106,7 @@ extension TriTrackViewController {
         let reminder = EKReminder(eventStore: eventStore)
         reminder.title = title
         reminder.notes = notes
-        
+
         let dueDateComponents = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute], from: dueDate)
         reminder.dueDateComponents = dueDateComponents
         reminder.calendar = createOrGetReminder()
@@ -115,13 +115,13 @@ extension TriTrackViewController {
         try? eventStore.save(reminder, commit: true)
         eventsViewController?.remindersTableViewController?.refreshData()
     }
-    
+
     private func createRecurrenceRule(for interval: TimeInterval?) -> [EKRecurrenceRule] {
         guard let interval = interval, interval > 0 else { return [] }
-        
+
         var recurrenceFrequency: EKRecurrenceFrequency = .daily
         var intervalValue: Int = 1
-        
+
         switch interval {
         case 24 * 60 * 60:
             recurrenceFrequency = .daily
@@ -141,7 +141,7 @@ extension TriTrackViewController {
         default:
             return []
         }
-        
+
         let rule = EKRecurrenceRule(
             recurrenceWith: recurrenceFrequency,
             interval: intervalValue,

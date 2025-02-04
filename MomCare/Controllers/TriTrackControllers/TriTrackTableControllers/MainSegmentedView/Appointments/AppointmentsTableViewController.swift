@@ -21,7 +21,7 @@ class AppointmentsTableViewController: UITableViewController {
         data = fetchEvents()
         tableView.reloadData()
     }
-    
+
     private func fetchEvents() -> [TriTrackEvent] {
         let startDate = Date()
         let endDate = Calendar.current.date(byAdding: .month, value: 1, to: startDate)!
@@ -29,10 +29,10 @@ class AppointmentsTableViewController: UITableViewController {
 
         let predicate = store.predicateForEvents(withStart: startDate, end: endDate, calendars: ekCalendars)
         let events = store.events(matching: predicate)
-        
+
         return events.map { TriTrackEvent(title: $0.title, startDate: $0.startDate) }
     }
-    
+
     private func getCalendar(with identifierKey: String) -> [EKCalendar]? {
         if let identifier = UserDefaults.standard.string(forKey: identifierKey), let calendar = store.calendar(withIdentifier: identifier) {
             return [calendar]

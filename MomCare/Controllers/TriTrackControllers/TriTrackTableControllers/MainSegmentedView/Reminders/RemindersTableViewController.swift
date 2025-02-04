@@ -20,23 +20,23 @@ class RemindersTableViewController: UITableViewController {
     func refreshData() {
         fetchReminders()
     }
-    
+
     private func fetchReminders() {
         let ekCalendars = getCalendar(with: "TriTrackReminder")
 
         let predicate = store.predicateForReminders(in: ekCalendars)
         let something = store.fetchReminders(matching: predicate, completion: reminderCompletionHandler)
     }
-    
-    private func reminderCompletionHandler(reminders: [EKReminder]?){
+
+    private func reminderCompletionHandler(reminders: [EKReminder]?) {
         guard let reminders else { return }
         data = reminders.map { TriTrackReminder(title: $0.title, date: $0.dueDateComponents?.date ?? Date()) }
-        
+
         DispatchQueue.main.async {
             self.tableView.reloadData()
         }
     }
-    
+
     private func getCalendar(with identifierKey: String) -> [EKCalendar]? {
         if let identifier = UserDefaults.standard.string(forKey: identifierKey), let calendar = store.calendar(withIdentifier: identifier) {
             return [calendar]

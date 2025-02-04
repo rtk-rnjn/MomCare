@@ -34,7 +34,7 @@ class TriTrackViewController: UIViewController, FSCalendarDelegate, FSCalendarDa
 
     var currentSegmentValue: Int = 0
     private var currentDateSelected = Date()
-    
+
     let eventStore = EKEventStore()
 
     override func viewDidLoad() {
@@ -96,7 +96,7 @@ class TriTrackViewController: UIViewController, FSCalendarDelegate, FSCalendarDa
             break
         }
     }
-    
+
     @IBAction func refreshButtonTapped(_ sender: UIBarButtonItem) {
         symptomsViewController?.symptomsTableViewController?.refreshData()
         eventsViewController?.appointmentsTableViewController?.refreshData()

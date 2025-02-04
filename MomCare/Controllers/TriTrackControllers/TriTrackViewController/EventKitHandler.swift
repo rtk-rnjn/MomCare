@@ -12,7 +12,7 @@ import EventKit
 extension TriTrackViewController {
     func requestAccessToCalendar() {
         let status = EKEventStore.authorizationStatus(for: .event)
-        
+
         switch status {
         case .denied, .restricted, .notDetermined:
             eventStore.requestFullAccessToEvents(completion: eventRequestAccessHandler)
@@ -35,24 +35,24 @@ extension TriTrackViewController {
             break
         }
     }
-    
+
     private func eventRequestAccessHandler(success: Bool, error: Error?) {
         if success {
             _ = createOrGetEvent()
         }
     }
-    
+
     private func reminderRequestAccessHandler(success: Bool, error: Error?) {
         if success {
             _ = createOrGetReminder()
         }
     }
-    
+
     private func createOrGetCalendar(identifierKey: String, eventType: EKEntityType, title: String, defaultCalendar: EKCalendar?) -> EKCalendar? {
         if let identifier = UserDefaults.standard.string(forKey: identifierKey) {
             return eventStore.calendar(withIdentifier: identifier)
         }
-        
+
         let newCalendar = EKCalendar(for: eventType, eventStore: eventStore)
         newCalendar.title = title
         if let localSource = eventStore.sources.filter({ $0.sourceType == .local }).first {
@@ -60,11 +60,11 @@ extension TriTrackViewController {
         } else {
             newCalendar.source = defaultCalendar?.source
         }
-        
+
         UserDefaults.standard.set(newCalendar.calendarIdentifier, forKey: identifierKey)
-        
+
         try? eventStore.saveCalendar(newCalendar, commit: true)
-        
+
         return newCalendar
     }
 
