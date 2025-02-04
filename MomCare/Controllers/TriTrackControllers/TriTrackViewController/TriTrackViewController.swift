@@ -7,6 +7,7 @@
 
 import UIKit
 import FSCalendar
+import EventKit
 
 enum TriTrackContainerViewType: Int {
     case meAndBabyContainerView = 0
@@ -18,6 +19,7 @@ class TriTrackViewController: UIViewController, FSCalendarDelegate, FSCalendarDa
     @IBOutlet var triTrackInternalView: UIView!
 
     @IBOutlet var addButton: UIBarButtonItem!
+    @IBOutlet var refreshButton: UIBarButtonItem!
     @IBOutlet var triTrackSegmentedControl: UISegmentedControl!
 
     @IBOutlet var meAndBabyContainerView: UIView!
@@ -33,9 +35,14 @@ class TriTrackViewController: UIViewController, FSCalendarDelegate, FSCalendarDa
     var currentSegmentValue: Int = 0
     private var currentDateSelected = Date()
 
+    let eventStore = EKEventStore()
+
     override func viewDidLoad() {
         super.viewDidLoad()
         prepareCalendar()
+
+        requestAccessToCalendar()
+        requestAccessToReminders()
     }
 
     private func prepareCalendar() {
@@ -74,8 +81,8 @@ class TriTrackViewController: UIViewController, FSCalendarDelegate, FSCalendarDa
         switch identifier {
         case "segueTriTrack":
             if let destinationVC = segue.destination as? UINavigationController {
-                let destinationVCTopController = destinationVC.topViewController as! TriTrackAddEventViewController
-                destinationVCTopController.viewControllerValue = TriTrackViewControlSegmentValue(rawValue: triTrackSegmentedControl.selectedSegmentIndex)
+                let destinationVCTopController = destinationVC.topViewController as? TriTrackAddEventViewController
+                destinationVCTopController?.viewControllerValue = TriTrackViewControlSegmentValue(rawValue: triTrackSegmentedControl.selectedSegmentIndex)
             }
         case "embedShowSymptomsViewController":
             if let destinationVC = segue.destination as? SymptomsViewController {
@@ -88,5 +95,11 @@ class TriTrackViewController: UIViewController, FSCalendarDelegate, FSCalendarDa
         default:
             break
         }
+    }
+
+    @IBAction func refreshButtonTapped(_ sender: UIBarButtonItem) {
+        symptomsViewController?.symptomsTableViewController?.refreshData()
+        eventsViewController?.appointmentsTableViewController?.refreshData()
+        eventsViewController?.remindersTableViewController?.refreshData()
     }
 }

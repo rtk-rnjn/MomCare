@@ -6,9 +6,11 @@
 //
 
 import UIKit
+import EventKit
 
 class RemindersTableViewController: UITableViewController {
     var data: [TriTrackReminder] = []
+    let store = EKEventStore()
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -16,8 +18,31 @@ class RemindersTableViewController: UITableViewController {
     }
 
     func refreshData() {
-        data = MomCareUser.shared.reminders
-        tableView.reloadData()
+        fetchReminders()
+    }
+
+    private func fetchReminders() {
+        let ekCalendars = getCalendar(with: "TriTrackReminder")
+
+        let predicate = store.predicateForReminders(in: ekCalendars)
+        let something = store.fetchReminders(matching: predicate, completion: reminderCompletionHandler)
+    }
+
+    private func reminderCompletionHandler(reminders: [EKReminder]?) {
+        guard let reminders else { return }
+        data = reminders.map { TriTrackReminder(title: $0.title, date: $0.dueDateComponents?.date ?? Date()) }
+
+        DispatchQueue.main.async {
+            self.tableView.reloadData()
+        }
+    }
+
+    private func getCalendar(with identifierKey: String) -> [EKCalendar]? {
+        if let identifier = UserDefaults.standard.string(forKey: identifierKey), let calendar = store.calendar(withIdentifier: identifier) {
+            return [calendar]
+        }
+
+        return []
     }
 
     override func numberOfSections(in tableView: UITableView) -> Int {

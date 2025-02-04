@@ -92,17 +92,25 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="TriTrack" id="c7G-bw-x0Q">
-                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="0aU-xb-WS9">
-                            <connections>
-                                <segue destination="NWv-1C-IJ6" kind="presentation" identifier="segueTriTrack" id="o6w-7A-riG"/>
-                            </connections>
-                        </barButtonItem>
+                        <rightBarButtonItems>
+                            <barButtonItem systemItem="add" id="0aU-xb-WS9">
+                                <connections>
+                                    <segue destination="NWv-1C-IJ6" kind="presentation" identifier="segueTriTrack" id="o6w-7A-riG"/>
+                                </connections>
+                            </barButtonItem>
+                            <barButtonItem systemItem="refresh" id="FiT-8b-dc4">
+                                <connections>
+                                    <action selector="refreshButtonTapped:" destination="Y6W-OH-hqX" id="bGx-6p-eit"/>
+                                </connections>
+                            </barButtonItem>
+                        </rightBarButtonItems>
                     </navigationItem>
                     <connections>
                         <outlet property="addButton" destination="0aU-xb-WS9" id="iaZ-eJ-F71"/>
                         <outlet property="calendarUIView" destination="W3X-Gk-qCf" id="LWW-KF-t39"/>
                         <outlet property="eventsContainerView" destination="Whb-9z-qyg" id="4vr-RT-hEM"/>
                         <outlet property="meAndBabyContainerView" destination="cXJ-RZ-JqR" id="JEj-6T-kNP"/>
+                        <outlet property="refreshButton" destination="FiT-8b-dc4" id="nLk-HO-WbN"/>
                         <outlet property="symptomsContainerView" destination="AVa-q4-rLC" id="z4P-Mu-mRy"/>
                         <outlet property="triTrackInternalView" destination="5rT-SM-LqO" id="CIJ-AU-aIu"/>
                         <outlet property="triTrackSegmentedControl" destination="huh-qS-KT6" id="TvR-Od-AL8"/>
@@ -110,7 +118,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ief-a0-LHa" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1035.8778625954199" y="3.5211267605633805"/>
+            <point key="canvasLocation" x="1021" y="4"/>
         </scene>
         <!--TriTrack-->
         <scene sceneID="epM-uM-HGE">
@@ -1066,26 +1074,26 @@
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="ReminderCell" id="U8c-ZO-ma7" customClass="RemindersTableViewCell" customModule="MomCare" customModuleProvider="target">
-                                <rect key="frame" x="20" y="55.333332061767578" width="333" height="74.666664123535156"/>
+                                <rect key="frame" x="20" y="55.333332061767578" width="333" height="75.333335876464844"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="U8c-ZO-ma7" id="3t8-KG-73H">
-                                    <rect key="frame" x="0.0" y="0.0" width="333" height="74.666664123535156"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="333" height="75.333335876464844"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="KH0-fS-4Rt">
-                                            <rect key="frame" x="10" y="5" width="313" height="64.666666666666671"/>
+                                            <rect key="frame" x="10" y="5" width="313" height="65.333333333333329"/>
                                             <subviews>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="I6h-hJ-l1H">
-                                                    <rect key="frame" x="0.0" y="0.0" width="156.66666666666666" height="64.666666666666671"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="156.66666666666666" height="65.333333333333329"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BYV-o8-20G">
-                                                            <rect key="frame" x="44.333333333333329" y="22.333333333333336" width="41.333333333333329" height="20.333333333333336"/>
+                                                            <rect key="frame" x="44.333333333333329" y="22.666666666666671" width="41.333333333333329" height="20.333333333333329"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <button opaque="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="S7r-5C-8oi">
-                                                            <rect key="frame" x="0.0" y="15.333333333333332" width="34.333333333333336" height="34.333333333333343"/>
+                                                            <rect key="frame" x="0.0" y="15.666666666666668" width="34.333333333333336" height="34.333333333333329"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="width" secondItem="S7r-5C-8oi" secondAttribute="height" id="eC4-uv-4gt"/>
                                                             </constraints>
@@ -1105,7 +1113,7 @@
                                                     </constraints>
                                                 </view>
                                                 <datePicker userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" verticalHuggingPriority="1000" contentHorizontalAlignment="trailing" contentVerticalAlignment="center" datePickerMode="time" minuteInterval="1" translatesAutoresizingMaskIntoConstraints="NO" id="x1x-nd-kd4">
-                                                    <rect key="frame" x="156.66666666666663" y="0.0" width="156.33333333333337" height="64.666666666666671"/>
+                                                    <rect key="frame" x="156.66666666666663" y="0.0" width="156.33333333333337" height="65.333333333333329"/>
                                                 </datePicker>
                                             </subviews>
                                             <constraints>
@@ -1220,23 +1228,23 @@
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="SymptomsCell" id="5TP-nx-z19" customClass="SymptomsTableViewCell" customModule="MomCare" customModuleProvider="target">
-                                <rect key="frame" x="20" y="55.333332061767578" width="333" height="77"/>
+                                <rect key="frame" x="20" y="55.333332061767578" width="333" height="77.666664123535156"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="5TP-nx-z19" id="71T-NE-FGv">
-                                    <rect key="frame" x="0.0" y="0.0" width="333" height="77"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="333" height="77.666664123535156"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="K59-eh-h1s">
-                                            <rect key="frame" x="10" y="5" width="313" height="67"/>
+                                            <rect key="frame" x="10" y="5" width="313" height="67.666666666666671"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZPh-5e-3jk">
-                                                    <rect key="frame" x="0.0" y="0.0" width="41.333333333333336" height="67"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="41.333333333333336" height="67.666666666666671"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <datePicker contentMode="scaleToFill" contentHorizontalAlignment="trailing" contentVerticalAlignment="center" datePickerMode="date" translatesAutoresizingMaskIntoConstraints="NO" id="pDA-ZC-EfM">
-                                                    <rect key="frame" x="41.333333333333343" y="0.0" width="271.66666666666663" height="67"/>
+                                                    <rect key="frame" x="41.333333333333343" y="0.0" width="271.66666666666663" height="67.666666666666671"/>
                                                 </datePicker>
                                             </subviews>
                                         </stackView>

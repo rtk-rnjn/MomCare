@@ -7,59 +7,49 @@
 
 import UIKit
 
-class MoodnestViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate {
-    @IBOutlet var collectionView: UICollectionView!
+class MoodnestViewController: UIViewController, UIScrollViewDelegate {
+
     @IBOutlet var pageControl: UIPageControl!
+    @IBOutlet var emotionsScrollView: UIScrollView!
+
+    @IBOutlet var happyImageView: UIImageView!
+    @IBOutlet var sadImageView: UIImageView!
+    @IBOutlet var stressedImageView: UIImageView!
+    @IBOutlet var angryImageView: UIImageView!
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        collectionView.dataSource = self
-        collectionView.delegate = self
-        collectionView.showsHorizontalScrollIndicator = false
+        emotionsScrollView.delegate = self
+        emotionsScrollView.isPagingEnabled = true
+        pageControl.numberOfPages = 4
+        pageControl.currentPage = 0
+
+        happyImageView.isUserInteractionEnabled = true
+        sadImageView.isUserInteractionEnabled = true
+        stressedImageView.isUserInteractionEnabled = true
+        angryImageView.isUserInteractionEnabled = true
+
+        addTapGesture(to: happyImageView)
+        addTapGesture(to: sadImageView)
+        addTapGesture(to: stressedImageView)
+        addTapGesture(to: angryImageView)
+
     }
 
-    func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return 1
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        let pageIndex = round(emotionsScrollView.contentOffset.x / emotionsScrollView.frame.width)
+        pageControl.currentPage = Int(pageIndex)
     }
 
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return AllMoods.moods.count
+    func addTapGesture(to imageView: UIImageView) {
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(imageTapped(_:)))
+        imageView.addGestureRecognizer(tapGesture)
     }
 
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "FacesCollectionViewCell", for: indexPath) as? FacesCollectionViewCell
-
-        guard let cell else { fatalError() }
-
-        cell.updateElements(with: AllMoods.moods[indexPath.item])
-        return cell
-    }
-
-    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
-        let pageWidth = collectionView.frame.width
-        let currentPage = Int((collectionView.contentOffset.x + pageWidth / 2) / pageWidth)
-        pageControl.currentPage = currentPage
-    }
-}
-
-extension MoodnestViewController: UICollectionViewDelegateFlowLayout {
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: 200, height: 200)
-    }
-
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let selectedImage = AllMoods.moods[indexPath.item].image
-        performSegue(withIdentifier: "ShowGenres", sender: selectedImage)
-    }
-
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "ShowGenres" {
-            if let destination = segue.destination as? GenresPageViewController,
-               let selectedImage = sender as? UIImage {
-                destination.IconImageVar = selectedImage
-            }
+    @objc func imageTapped(_ sender: UITapGestureRecognizer) {
+        if let destinationVC = storyboard?.instantiateViewController(withIdentifier: "genresPageView") as? GenresPageViewController {
+            navigationController?.pushViewController(destinationVC, animated: true)
         }
     }
-
 }

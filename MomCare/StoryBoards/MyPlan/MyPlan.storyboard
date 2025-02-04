@@ -335,7 +335,7 @@
         <!--Exercise View Controller-->
         <scene sceneID="0jC-xG-fUb">
             <objects>
-                <viewController useStoryboardIdentifierAsRestorationIdentifier="YES" id="hUU-Mi-xvp" customClass="ExerciseViewController" customModule="MomCare" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="exerciseView" useStoryboardIdentifierAsRestorationIdentifier="YES" id="hUU-Mi-xvp" customClass="ExerciseViewController" customModule="MomCare" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="nDF-vx-plM">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="705"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -381,11 +381,22 @@
                     </view>
                     <connections>
                         <outlet property="exerciseCollectionView" destination="Yt9-o6-ItS" id="XIY-gV-QNv"/>
+                        <segue destination="pSF-KE-uVj" kind="show" identifier="segueShowBreathingPlayer" id="qUh-Ct-XyP"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Rnh-hu-bAn" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="4985" y="418"/>
+        </scene>
+        <!--BreathingPlayer-->
+        <scene sceneID="bNb-s2-oPK">
+            <objects>
+                <viewControllerPlaceholder storyboardName="BreathingPlayer" id="pSF-KE-uVj" sceneMemberID="viewController">
+                    <navigationItem key="navigationItem" id="cb6-Fh-J3v"/>
+                </viewControllerPlaceholder>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="KJy-bn-Be1" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="5952" y="418"/>
         </scene>
         <!--MyPlan-->
         <scene sceneID="FH3-ZF-28y">
