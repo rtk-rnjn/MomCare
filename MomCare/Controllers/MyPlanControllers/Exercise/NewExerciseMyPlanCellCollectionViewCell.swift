@@ -13,4 +13,17 @@ class NewExerciseMyPlanCellCollectionViewCell: UICollectionViewCell {
     @IBOutlet var exerciseTime: UILabel!
     @IBOutlet var exerciseImage: UIImageView!
     @IBOutlet var exerciseCompletionPercentage: UILabel!
+    
+    var segueHandler: (() -> Void)?
+
+    @IBAction func startButtonTapped(_ sender: Any) {
+        
+        if let segueHandler = segueHandler {
+            segueHandler()
+        }
+    }
+    
+    func updateElements(with handler: (() -> Void)?) {
+        self.segueHandler = handler
+    }
 }

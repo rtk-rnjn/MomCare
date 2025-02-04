@@ -1,6 +1,8 @@
 import UIKit
 
-class ExerciseVideoPlayerViewController: UIViewController {
+class BreathingPlayerViewController: UIViewController {
+    
+    @IBOutlet var totalBreatingDuration: UILabel!
     
     private var circlesContainer = CALayer()
     private var circleLayers: [CAShapeLayer] = []
@@ -9,12 +11,16 @@ class ExerciseVideoPlayerViewController: UIViewController {
     private let timerLabel = UILabel()  // New timer label
     private var timer: Timer?           // Timer for updating countdown
     private var currentCount = 0
+    var remainingMinSec: Double = 0.0
     
     // Configuration
     private let numberOfPetals = 6
     private let circleSize: CGFloat = 100
     private let animationDuration: TimeInterval = 4.0
     private let spreadDistance: CGFloat = 50  // How far circles spread to form the flower
+    private let textAnimationDuration: TimeInterval = 0.5 //
+    private let transitionLabel = UILabel() //
+    private let totalBreathingTime: Double = 300
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -23,6 +29,11 @@ class ExerciseVideoPlayerViewController: UIViewController {
         setupInstructionLabel()
         setupTimerLabel()
         startBreathingAnimation()
+        
+        Task {
+            await exrciseDurationSetup()
+        }
+        
     }
     
     func updateGradientBackground() {
@@ -54,9 +65,50 @@ class ExerciseVideoPlayerViewController: UIViewController {
         ])
         
         instructionLabel.textColor = .white
-        instructionLabel.font = .systemFont(ofSize: 24, weight: .medium)
+        instructionLabel.font = .systemFont(ofSize: 30, weight: .medium)
         instructionLabel.text = "Inhale"
+        instructionLabel.alpha = 1
     }
+    
+    private func setupTransitionLabel() {
+            transitionLabel.translatesAutoresizingMaskIntoConstraints = false
+            view.addSubview(transitionLabel)
+            
+            // Position it exactly over the instruction label
+            NSLayoutConstraint.activate([
+                transitionLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+                transitionLabel.bottomAnchor.constraint(equalTo: view.centerYAnchor, constant: -120)
+            ])
+            
+            transitionLabel.textColor = .white
+            transitionLabel.font = .systemFont(ofSize: 24, weight: .medium)
+            transitionLabel.alpha = 0 // Start invisible
+        } //
+    
+    private func animateInstructionChange(to newText: String) {
+                // Setup transition label with new text
+                transitionLabel.text = newText
+                transitionLabel.transform = CGAffineTransform(translationX: 0, y: 0)
+                transitionLabel.alpha = 0
+                
+                // Animate old text up and fade out
+            UIView.animate(withDuration: textAnimationDuration, delay: 0, options: .curveLinear) {
+                    self.instructionLabel.transform = CGAffineTransform(translationX: 0, y: 0)
+                    self.instructionLabel.alpha = 0
+                }
+                
+                // Animate new text up and fade in
+            UIView.animate(withDuration: textAnimationDuration, delay: 0, options: .curveLinear) {
+                    self.transitionLabel.transform = .identity
+                    self.transitionLabel.alpha = 1
+                } completion: { _ in
+                    // Reset for next transition
+                    self.instructionLabel.text = newText
+                    self.instructionLabel.transform = .identity
+                    self.instructionLabel.alpha = 1
+                    self.transitionLabel.alpha = 0
+                }
+            }
     
     private func setupTimerLabel() {
             timerLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -70,12 +122,15 @@ class ExerciseVideoPlayerViewController: UIViewController {
             timerLabel.textColor = .white
             timerLabel.font = .systemFont(ofSize: 20, weight: .regular)
             timerLabel.text = ""
+            timerLabel.isHidden = true
         }
     
     private func startTimer() {
             // Reset and invalidate existing timer if any
             timer?.invalidate()
             currentCount = 4
+        
+            timerLabel.isHidden = false
             
             // Start new timer
             timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] _ in
@@ -106,6 +161,13 @@ class ExerciseVideoPlayerViewController: UIViewController {
         }
     }
     
+    private func hideTimer() {
+            timer?.invalidate()
+            timer = nil
+            timerLabel.isHidden = true
+            timerLabel.text = ""
+    }
+    
     private func createCircleLayer() -> CAShapeLayer {
         let layer = CAShapeLayer()
         layer.frame = CGRect(x: -circleSize/2, y: -circleSize/2, width: circleSize, height: circleSize)
@@ -129,17 +191,20 @@ class ExerciseVideoPlayerViewController: UIViewController {
     
     private func animateBreathCycle() {
         if isInhaling {
-            instructionLabel.text = "Inhale"
+            animateInstructionChange(to: "Inhale") //
+            hideTimer()
             animateFlowerFormation {
-                self.instructionLabel.text = "Hold"
+                self.animateInstructionChange(to: "Hold") //
                 self.startTimer()
                 DispatchQueue.main.asyncAfter(deadline: .now() + self.animationDuration) {
-                    self.isInhaling = false
-                    self.animateBreathCycle()
+                self.isInhaling = false
+                self.animateBreathCycle()
                 }
             }
         } else {
-            instructionLabel.text = "Exhale"
+            currentCount = 4
+            animateInstructionChange(to: "Exhale") //
+            hideTimer()
             animateFlowerCollapse {
                 self.isInhaling = true
                 DispatchQueue.main.asyncAfter(deadline: .now()) {
@@ -208,4 +273,29 @@ class ExerciseVideoPlayerViewController: UIViewController {
             timer?.invalidate()
             timer = nil
         }
+    
+    func exrciseDurationSetup() async {
+        var i = 0
+
+        while 5 * 60 - i > 0 {
+            try! await Task.sleep(nanoseconds: 1_000_000_000)
+            DispatchQueue.main.async {
+                i += 1
+                let remainingSeconds = 5 * 60 - i
+                
+                let remainingMinutes = remainingSeconds / 60
+                let remainingSecondsPart = remainingSeconds % 60
+                self.remainingMinSec = Double(remainingMinutes) * 60 + Double(remainingSecondsPart)
+                
+                self.totalBreatingDuration.text = String(format: "%02d:%02d", remainingMinutes, remainingSecondsPart)
+            }
+        }
+    }
+    
+    
+    @IBAction func breathingStopButtonTapped(_ sender: UIButton) {
+        var remainingTime: Double = self.remainingMinSec
+        print("Completed Time: ", totalBreathingTime - remainingTime)
+        print("Completed Percentage: ", (totalBreathingTime - remainingTime) / totalBreathingTime * 100)
+    }
 }
