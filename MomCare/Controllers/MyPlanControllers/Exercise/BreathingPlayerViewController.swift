@@ -58,7 +58,7 @@ class BreathingPlayerViewController: UIViewController {
         var i = 0
 
         while 5 * 60 - i > 0 {
-            try! await Task.sleep(nanoseconds: 1_000_000_000)
+            try? await Task.sleep(nanoseconds: 1_000_000_000)
             DispatchQueue.main.async {
                 i += 1
                 let remainingSeconds = 5 * 60 - i
