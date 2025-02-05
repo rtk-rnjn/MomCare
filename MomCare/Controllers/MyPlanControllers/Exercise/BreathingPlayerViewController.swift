@@ -12,6 +12,7 @@ class BreathingPlayerViewController: UIViewController {
     private var timer: Timer?           // Timer for updating countdown
     private var currentCount = 0
     var remainingMinSec: Double = 0.0
+    var completedPercentage: Double = 0.0
     
     // Configuration
     private let numberOfPetals = 6
@@ -299,11 +300,9 @@ class BreathingPlayerViewController: UIViewController {
     
     @IBAction func breathingStopButtonTapped(_ sender: UIButton) {
         let remainingTime: Double = self.remainingMinSec
-        print("Completed Time: ", totalBreathingTime - remainingTime)
-        print("Completed Percentage: ", (totalBreathingTime - remainingTime) / totalBreathingTime * 100)
-        dismiss(animated: true, completion: nil)
-    }
-    
+        let completedTime: Double = totalBreathingTime - remainingTime
+        completedPercentage = ((completedTime) / totalBreathingTime * 100)
+    }    
 }
     
 

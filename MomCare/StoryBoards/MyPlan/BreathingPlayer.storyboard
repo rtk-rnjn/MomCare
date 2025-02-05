@@ -50,7 +50,7 @@
                                                 </buttonConfiguration>
                                                 <connections>
                                                     <action selector="breathingStopButtonTapped:" destination="Y6W-OH-hqX" eventType="touchUpInside" id="og6-mK-RqN"/>
-                                                    <segue destination="9z3-j2-v26" kind="unwind" unwindAction="unwindToExerciseViewController:" id="kpl-A8-bFK"/>
+                                                    <segue destination="9z3-j2-v26" kind="unwind" unwindAction="unwindToMyPlanExercisePageWithSegue:" id="7tw-dF-BqA"/>
                                                 </connections>
                                             </button>
                                         </subviews>
