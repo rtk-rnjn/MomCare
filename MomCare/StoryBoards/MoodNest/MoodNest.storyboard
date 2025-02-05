@@ -35,7 +35,7 @@
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="qDb-BR-MEb" userLabel="Happy Stack View">
                                                 <rect key="frame" x="0.0" y="0.0" width="393" height="445"/>
                                                 <subviews>
-                                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Happy" translatesAutoresizingMaskIntoConstraints="NO" id="yIS-mW-Bg9">
+                                                    <imageView clipsSubviews="YES" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Happy" translatesAutoresizingMaskIntoConstraints="NO" id="yIS-mW-Bg9">
                                                         <rect key="frame" x="0.0" y="0.0" width="393" height="395"/>
                                                     </imageView>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Happy" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YwT-0I-E2j">
@@ -52,7 +52,7 @@
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="XFN-5e-Gfx" userLabel="Sad Stack View">
                                                 <rect key="frame" x="393" y="0.0" width="393" height="445"/>
                                                 <subviews>
-                                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Sad" translatesAutoresizingMaskIntoConstraints="NO" id="VEK-fX-0qx">
+                                                    <imageView clipsSubviews="YES" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Sad" translatesAutoresizingMaskIntoConstraints="NO" id="VEK-fX-0qx">
                                                         <rect key="frame" x="0.0" y="0.0" width="393" height="395"/>
                                                     </imageView>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Sad" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dC1-UQ-xy8">
@@ -69,7 +69,7 @@
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="fAT-nM-ker" userLabel="Stressed Stack View">
                                                 <rect key="frame" x="786" y="0.0" width="393" height="445"/>
                                                 <subviews>
-                                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Stressed" translatesAutoresizingMaskIntoConstraints="NO" id="W59-lv-3BK">
+                                                    <imageView clipsSubviews="YES" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Stressed" translatesAutoresizingMaskIntoConstraints="NO" id="W59-lv-3BK">
                                                         <rect key="frame" x="0.0" y="0.0" width="393" height="395"/>
                                                     </imageView>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Stressed" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8rb-Ec-UlR">
@@ -86,7 +86,7 @@
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="VEh-uN-aSU" userLabel="Angry Stack View">
                                                 <rect key="frame" x="1179" y="0.0" width="393" height="445"/>
                                                 <subviews>
-                                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Angry" translatesAutoresizingMaskIntoConstraints="NO" id="uUe-6M-K8Z">
+                                                    <imageView clipsSubviews="YES" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Angry" translatesAutoresizingMaskIntoConstraints="NO" id="uUe-6M-K8Z">
                                                         <rect key="frame" x="0.0" y="0.0" width="393" height="395"/>
                                                     </imageView>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Angry" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="quG-9W-UKf">
@@ -151,7 +151,7 @@
                         <outlet property="pageControl" destination="b8o-t3-6ao" id="BbI-pF-SxS"/>
                         <outlet property="sadImageView" destination="VEK-fX-0qx" id="J9c-98-Z62"/>
                         <outlet property="stressedImageView" destination="W59-lv-3BK" id="gga-dS-j86"/>
-                        <segue destination="pwN-0J-bVZ" kind="show" identifier="ShowGenres" destinationCreationSelector="segueToGenresPage:" id="h0b-4V-iWC"/>
+                        <segue destination="pwN-0J-bVZ" kind="show" identifier="segueShowGenresPageViewController" destinationCreationSelector="segueToGenresPage:" id="h0b-4V-iWC"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ief-a0-LHa" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -161,7 +161,7 @@
         <!--MoodNest-->
         <scene sceneID="Atk-Bq-QKr">
             <objects>
-                <viewController storyboardIdentifier="genresPageView" useStoryboardIdentifierAsRestorationIdentifier="YES" id="pwN-0J-bVZ" customClass="GenresPageViewController" customModule="MomCare" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="GenresPageViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="pwN-0J-bVZ" customClass="GenresPageViewController" customModule="MomCare" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="6GO-uC-gbZ">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -219,7 +219,7 @@
                     <connections>
                         <outlet property="moodnestCollectionView" destination="daW-N7-FvE" id="8fJ-yd-P9r"/>
                         <outlet property="outerView" destination="uM7-Kg-hxD" id="Po0-98-y14"/>
-                        <segue destination="h1m-vL-n6M" kind="show" identifier="songPageSegue" id="I33-Da-O8y"/>
+                        <segue destination="h1m-vL-n6M" kind="show" identifier="segueShowSongPageViewController" id="I33-Da-O8y"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="1PR-rZ-1D4" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -521,7 +521,7 @@
                         <color key="separatorColor" red="0.96078431369999995" green="0.96470588239999999" blue="0.97647058819999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <color key="sectionIndexBackgroundColor" red="0.96078431372549022" green="0.96470588235294119" blue="0.97647058823529409" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="songCell" id="qpz-hX-S7l" customClass="SongPageTableViewCell" customModule="MomCare" customModuleProvider="target">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="songPageTableViewCell" id="qpz-hX-S7l" customClass="SongPageTableViewCell" customModule="MomCare" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="50" width="393" height="66"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="qpz-hX-S7l" id="ekD-HA-I2u">

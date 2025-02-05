@@ -46,11 +46,11 @@ class TriTrackAddEventViewController: UIViewController {
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         switch segue.identifier {
-        case "embedSegueReminder":
+        case "embedShowAddReminderTableViewController":
             addReminderTableViewController = segue.destination as? AddReminderTableViewController
-        case "embedSegueEvent":
+        case "embedShowAddEventTableViewController":
             addEventTableViewController = segue.destination as? AddEventTableViewController
-        case "embedSegueSymptoms":
+        case "embedShowAddSymptomsTableViewController":
             addSymptomsTableViewController = segue.destination as? AddSymptomsTableViewController
         default:
             break

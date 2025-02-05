@@ -59,10 +59,10 @@ class TriTrackViewController: UIViewController, FSCalendarDelegate, FSCalendarDa
         guard let identifier else { return }
 
         switch identifier {
-        case "segueTriTrack":
-            if let destinationVC = segue.destination as? UINavigationController {
-                let destinationVCTopController = destinationVC.topViewController as? TriTrackAddEventViewController
-                destinationVCTopController?.viewControllerValue = TriTrackViewControlSegmentValue(rawValue: triTrackSegmentedControl.selectedSegmentIndex)
+        case "segueShowTriTrackAddEventViewController":
+            if let navController = segue.destination as? UINavigationController {
+                let triTrackAddEventViewController = navController.topViewController as? TriTrackAddEventViewController
+                triTrackAddEventViewController?.viewControllerValue = TriTrackViewControlSegmentValue(rawValue: triTrackSegmentedControl.selectedSegmentIndex)
             }
 
         case "embedShowSymptomsViewController":

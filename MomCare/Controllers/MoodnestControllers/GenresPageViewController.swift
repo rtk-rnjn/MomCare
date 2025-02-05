@@ -17,22 +17,22 @@ class GenresPageViewController: UIViewController, UICollectionViewDataSource, UI
         super.viewDidLoad()
         // Set the image for the bar button item with proper sizing
         if let IconImageVar {
-                let button = UIButton(type: .custom)
-                button.setImage(IconImageVar, for: .normal)
-                button.frame = CGRect(x: 0, y: 0, width: 50, height: 50)
-                button.imageView?.contentMode = .scaleAspectFit
+            let button = UIButton(type: .custom)
+            button.setImage(IconImageVar, for: .normal)
+            button.frame = CGRect(x: 0, y: 0, width: 50, height: 50)
+            button.imageView?.contentMode = .scaleAspectFit
 
-                let barButtonItem = UIBarButtonItem(customView: button)
+            let barButtonItem = UIBarButtonItem(customView: button)
 
-                // Constraints to prevent stretching
-                button.translatesAutoresizingMaskIntoConstraints = false
-                NSLayoutConstraint.activate([
-                    button.widthAnchor.constraint(equalToConstant: 50),
-                    button.heightAnchor.constraint(equalToConstant: 50)
-                ])
+            // Constraints to prevent stretching
+            button.translatesAutoresizingMaskIntoConstraints = false
+            NSLayoutConstraint.activate([
+                button.widthAnchor.constraint(equalToConstant: 50),
+                button.heightAnchor.constraint(equalToConstant: 50)
+            ])
 
-                navigationItem.rightBarButtonItem = barButtonItem
-            }
+            navigationItem.rightBarButtonItem = barButtonItem
+        }
 
         outerView.layer.cornerRadius = 30
         moodnestCollectionView.showsVerticalScrollIndicator = false
@@ -191,7 +191,7 @@ class GenresPageViewController: UIViewController, UICollectionViewDataSource, UI
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let selectedPlaylist = FeaturedPlaylists.playlists[indexPath.item]
-        performSegue(withIdentifier: "songPageSegue", sender: selectedPlaylist)
+        performSegue(withIdentifier: "segueShowSongPageViewController", sender: selectedPlaylist)
     }
 
 }

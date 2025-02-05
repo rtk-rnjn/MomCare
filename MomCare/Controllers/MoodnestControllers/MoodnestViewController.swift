@@ -25,16 +25,10 @@ class MoodnestViewController: UIViewController, UIScrollViewDelegate {
         pageControl.numberOfPages = 4
         pageControl.currentPage = 0
 
-        happyImageView.isUserInteractionEnabled = true
-        sadImageView.isUserInteractionEnabled = true
-        stressedImageView.isUserInteractionEnabled = true
-        angryImageView.isUserInteractionEnabled = true
-
         addTapGesture(to: happyImageView)
         addTapGesture(to: sadImageView)
         addTapGesture(to: stressedImageView)
         addTapGesture(to: angryImageView)
-
     }
 
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
@@ -48,8 +42,7 @@ class MoodnestViewController: UIViewController, UIScrollViewDelegate {
     }
 
     @objc func imageTapped(_ sender: UITapGestureRecognizer) {
-        if let destinationVC = storyboard?.instantiateViewController(withIdentifier: "genresPageView") as? GenresPageViewController {
-            navigationController?.pushViewController(destinationVC, animated: true)
-        }
+        // storyboard.instance.instantiate... is garbage
+        performSegue(withIdentifier: "segueShowGenresPageViewController", sender: nil)
     }
 }

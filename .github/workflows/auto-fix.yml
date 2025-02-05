@@ -1,0 +1,47 @@
+name: SwiftLint & SwiftFormat
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  lint:
+    name: Autofix - SwiftLint & SwiftFormat
+    runs-on: macos-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Install SwiftLint & SwiftFormat
+        run: |
+          brew install swiftlint swiftformat
+
+      - name: Run SwiftLint Fix
+        run: swiftlint --fix
+
+      - name: Run SwiftFormat Fix
+        run: swiftformat .
+
+      - name: Check for changes
+        id: git-diff
+        run: echo "CHANGED=$(git status --porcelain | wc -l)" >> $GITHUB_ENV
+
+      - name: Commit & Push Changes
+        if: env.CHANGED != '0'
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add .
+          git commit -m "Auto-fix SwiftLint & SwiftFormat issues"
+          git push
+
+      - name: Run SwiftLint in Lint Mode
+        run: swiftlint lint --strict --quiet --reporter github-actions-logging
+
+      - name: Run SwiftFormat in Lint Mode
+        run: swiftformat --quiet --strict --reporter github-actions-log --lint .
