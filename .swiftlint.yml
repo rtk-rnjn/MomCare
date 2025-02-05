@@ -8,8 +8,6 @@ excluded:
 
 disabled_rules:
   - line_length
-  - force_cast
-  - force_try
   - todo
   - file_length
   - identifier_name
@@ -19,8 +17,5 @@ type_body_length:
   warning: 300
   error: 400
 
-reporter: "xcode" # Options: xcode, json, csv, checkstyle, junit, html
-
-# Strict mode (optional)
+reporter: "github-actions-logging"
 strict: true
-

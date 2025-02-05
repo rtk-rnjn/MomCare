@@ -1,4 +1,4 @@
-name: SwiftLint
+name: Swiftformat
 
 on:
   push:
@@ -11,18 +11,18 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  SwiftLint:
-    name: Lint with swiftlint, fail if any errors
+  Swiftformat:
+    name: Lint with swiftformat, fail if any errors
     runs-on: macos-latest
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
         
-      - name: Install SwiftLint
+      - name: Install Swiftformat
         run: |
-          brew install swiftlint
+          brew install swiftformat
 
-      - name: Run SwiftLint
+      - name: Run Swiftformat
         run: |
-          swiftlint lint --strict --quiet --reporter github-actions-logging
+          swiftformat --quiet --strict --reporter github-actions-log --lint .
