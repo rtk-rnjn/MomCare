@@ -65,4 +65,19 @@ class ExerciseViewController: UIViewController, UICollectionViewDelegate, UIColl
     func segueHandler() {
         performSegue(withIdentifier: "segueShowBreathingPlayer", sender: nil)
     }
+
+    func updateExerciseCardItems(buttonValue: String, completedPercent: Double) {
+        if let cell = exerciseCollectionView.cellForItem(at: IndexPath(item: 2, section: 0)) as? NewExerciseMyPlanCellCollectionViewCell {
+            cell.exerciseStartButton.setTitle(buttonValue, for: .normal)
+            cell.exerciseCompletionPercentage.text = "\(Int(completedPercent))% completed"
+        }
+    }
+
+    @IBAction func unwindToMyPlanExercisePage(segue: UIStoryboardSegue) {
+        if let sourceVC = segue.source as? BreathingPlayerViewController {
+            if sourceVC.completedPercentage < 100 {
+                updateExerciseCardItems(buttonValue: "Continue", completedPercent: sourceVC.completedPercentage)
+            }
+        }
+    }
 }

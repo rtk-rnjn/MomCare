@@ -5,16 +5,17 @@ class BreathingPlayerViewController: UIViewController {
     // MARK: Lifecycle
 
     // Cleanup timer when view is dismissed
-        deinit {
-            timer?.invalidate()
-            timer = nil
-        }
+    deinit {
+        timer?.invalidate()
+        timer = nil
+    }
 
     // MARK: Internal
 
     @IBOutlet var totalBreatingDuration: UILabel!
 
     var remainingMinSec: Double = 0.0
+    var completedPercentage: Double = 0.0
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -22,11 +23,16 @@ class BreathingPlayerViewController: UIViewController {
         setupCircleLayers()
         setupInstructionLabel()
         setupTimerLabel()
-        startBreathingAnimation()
 
         Task {
             await exrciseDurationSetup()
         }
+
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        startBreathingAnimation() // starting animation when the screen is fully loaded
     }
 
     func updateGradientBackground() {
@@ -42,7 +48,6 @@ class BreathingPlayerViewController: UIViewController {
             middleColor.withAlphaComponent(1.0).cgColor,
             bottomColor.withAlphaComponent(1.0).cgColor
         ]
-
         gradientLayer.startPoint = CGPoint(x: 0.5, y: 0.0)
         gradientLayer.endPoint = CGPoint(x: 0.5, y: 1.0)
 
@@ -67,7 +72,11 @@ class BreathingPlayerViewController: UIViewController {
         }
     }
 
-    @IBAction func breathingStopButtonTapped(_ sender: UIButton) {}
+    @IBAction func breathingStopButtonTapped(_ sender: UIButton) {
+        let remainingTime: Double = remainingMinSec
+        let completedTime: Double = totalBreathingTime - remainingTime
+        completedPercentage = (completedTime / totalBreathingTime * 100)
+    }
 
     // MARK: Private
 
@@ -104,78 +113,78 @@ class BreathingPlayerViewController: UIViewController {
     }
 
     private func setupTransitionLabel() {
-            transitionLabel.translatesAutoresizingMaskIntoConstraints = false
-            view.addSubview(transitionLabel)
+        transitionLabel.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(transitionLabel)
 
-            // Position it exactly over the instruction label
-            NSLayoutConstraint.activate([
-                transitionLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-                transitionLabel.bottomAnchor.constraint(equalTo: view.centerYAnchor, constant: -120)
-            ])
+        // Position it exactly over the instruction label
+        NSLayoutConstraint.activate([
+            transitionLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            transitionLabel.bottomAnchor.constraint(equalTo: view.centerYAnchor, constant: -120)
+        ])
 
-            transitionLabel.textColor = .white
-            transitionLabel.font = .systemFont(ofSize: 24, weight: .medium)
-            transitionLabel.alpha = 0 // Start invisible
-        } //
+        transitionLabel.textColor = .white
+        transitionLabel.font = .systemFont(ofSize: 24, weight: .medium)
+        transitionLabel.alpha = 0 // Start invisible
+    } //
 
     private func animateInstructionChange(to newText: String) {
-                // Setup transition label with new text
-                transitionLabel.text = newText
-                transitionLabel.transform = CGAffineTransform(translationX: 0, y: 0)
-                transitionLabel.alpha = 0
+        // Setup transition label with new text
+        transitionLabel.text = newText
+        transitionLabel.transform = CGAffineTransform(translationX: 0, y: 0)
+        transitionLabel.alpha = 0
 
-                // Animate old text up and fade out
-            UIView.animate(withDuration: textAnimationDuration, delay: 0, options: .curveLinear) {
-                    self.instructionLabel.transform = CGAffineTransform(translationX: 0, y: 0)
-                    self.instructionLabel.alpha = 0
-                }
+        // Animate old text up and fade out
+        UIView.animate(withDuration: textAnimationDuration, delay: 0, options: .curveLinear) {
+            self.instructionLabel.transform = CGAffineTransform(translationX: 0, y: 0)
+            self.instructionLabel.alpha = 0
+        }
 
-                // Animate new text up and fade in
-            UIView.animate(withDuration: textAnimationDuration, delay: 0, options: .curveLinear) {
-                    self.transitionLabel.transform = .identity
-                    self.transitionLabel.alpha = 1
-                } completion: { _ in
-                    // Reset for next transition
-                    self.instructionLabel.text = newText
-                    self.instructionLabel.transform = .identity
-                    self.instructionLabel.alpha = 1
-                    self.transitionLabel.alpha = 0
-                }
-            }
+        // Animate new text up and fade in
+        UIView.animate(withDuration: textAnimationDuration, delay: 0, options: .curveLinear) {
+            self.transitionLabel.transform = .identity
+            self.transitionLabel.alpha = 1
+        } completion: { _ in
+            // Reset for next transition
+            self.instructionLabel.text = newText
+            self.instructionLabel.transform = .identity
+            self.instructionLabel.alpha = 1
+            self.transitionLabel.alpha = 0
+        }
+    }
 
     private func setupTimerLabel() {
-            timerLabel.translatesAutoresizingMaskIntoConstraints = false
-            view.addSubview(timerLabel)
+        timerLabel.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(timerLabel)
 
-            NSLayoutConstraint.activate([
-                timerLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-                timerLabel.topAnchor.constraint(equalTo: instructionLabel.bottomAnchor, constant: 20)
-            ])
+        NSLayoutConstraint.activate([
+            timerLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            timerLabel.topAnchor.constraint(equalTo: instructionLabel.bottomAnchor, constant: 20)
+        ])
 
-            timerLabel.textColor = .white
-            timerLabel.font = .systemFont(ofSize: 20, weight: .regular)
-            timerLabel.text = ""
-            timerLabel.isHidden = true
-        }
+        timerLabel.textColor = .white
+        timerLabel.font = .systemFont(ofSize: 30, weight: .regular)
+        timerLabel.text = ""
+        timerLabel.isHidden = true
+    }
 
     private func startTimer() {
-            // Reset and invalidate existing timer if any
-            timer?.invalidate()
-            currentCount = 4
+        // Reset and invalidate existing timer if any
+        timer?.invalidate()
+        currentCount = 4
 
-            timerLabel.isHidden = false
+        timerLabel.isHidden = false
 
-            // Start new timer
-            timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] _ in
-                guard let self else { return }
+        // Start new timer
+        timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] _ in
+            guard let self else { return }
 
-                if currentCount <= Int(animationDuration) {
-                    // Update timer label with current count
-                    timerLabel.text = "\(currentCount)"
-                }
-                currentCount -= 1
+            if currentCount <= Int(animationDuration) {
+                // Update timer label with current count
+                timerLabel.text = "\(currentCount)"
             }
+            currentCount -= 1
         }
+    }
 
     private func setupCircleLayers() {
         // Setup container
@@ -195,10 +204,10 @@ class BreathingPlayerViewController: UIViewController {
     }
 
     private func hideTimer() {
-            timer?.invalidate()
-            timer = nil
-            timerLabel.isHidden = true
-            timerLabel.text = ""
+        timer?.invalidate()
+        timer = nil
+        timerLabel.isHidden = true
+        timerLabel.text = ""
     }
 
     private func createCircleLayer() -> CAShapeLayer {
@@ -230,8 +239,8 @@ class BreathingPlayerViewController: UIViewController {
                 self.animateInstructionChange(to: "Hold") //
                 self.startTimer()
                 DispatchQueue.main.asyncAfter(deadline: .now() + self.animationDuration) {
-                self.isInhaling = false
-                self.animateBreathCycle()
+                    self.isInhaling = false
+                    self.animateBreathCycle()
                 }
             }
         } else {

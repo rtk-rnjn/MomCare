@@ -25,10 +25,26 @@ class MoodnestViewController: UIViewController, UIScrollViewDelegate {
         pageControl.numberOfPages = 4
         pageControl.currentPage = 0
 
+        happyImageView.isUserInteractionEnabled = true
+        sadImageView.isUserInteractionEnabled = true
+        stressedImageView.isUserInteractionEnabled = true
+        angryImageView.isUserInteractionEnabled = true
+
         addTapGesture(to: happyImageView)
         addTapGesture(to: sadImageView)
         addTapGesture(to: stressedImageView)
         addTapGesture(to: angryImageView)
+
+    }
+
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+
+        if segue.identifier == "segueShowGenresPageViewController" {
+            if let destination = segue.destination as? GenresPageViewController,
+               let selectedImageView = sender as? UIImageView {
+                destination.IconImageVar = selectedImageView.image
+            }
+        }
     }
 
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
@@ -41,8 +57,15 @@ class MoodnestViewController: UIViewController, UIScrollViewDelegate {
         imageView.addGestureRecognizer(tapGesture)
     }
 
+//    @objc func imageTapped(_ sender: UITapGestureRecognizer) {
+//        if let destinationVC = storyboard?.instantiateViewController(withIdentifier: "genresPageView") as? GenresPageViewController {
+//            navigationController?.pushViewController(destinationVC, animated: true)
+//        }
+//    }
     @objc func imageTapped(_ sender: UITapGestureRecognizer) {
-        // storyboard.instance.instantiate... is garbage
-        performSegue(withIdentifier: "segueShowGenresPageViewController", sender: nil)
+        if let tappedImageView = sender.view as? UIImageView {
+            performSegue(withIdentifier: "segueShowGenresPageViewController", sender: tappedImageView)
+        }
     }
+
 }

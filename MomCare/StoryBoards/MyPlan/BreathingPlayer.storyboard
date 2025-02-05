@@ -16,20 +16,20 @@
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillProportionally" alignment="center" spacing="30" translatesAutoresizingMaskIntoConstraints="NO" id="sIN-rK-h4F">
-                                <rect key="frame" x="50" y="688.66666666666663" width="293" height="114.33333333333337"/>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" alignment="center" spacing="30" translatesAutoresizingMaskIntoConstraints="NO" id="sIN-rK-h4F">
+                                <rect key="frame" x="20" y="663" width="353" height="130"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Tfx-SB-n5l">
-                                        <rect key="frame" x="121.66666666666666" y="0.0" width="50" height="50"/>
+                                        <rect key="frame" x="151.66666666666666" y="0.0" width="50" height="50"/>
                                         <fontDescription key="fontDescription" style="UICTFontTextStyleTitle1"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" alignment="center" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="k6D-z1-ff8">
-                                        <rect key="frame" x="0.0" y="80" width="293" height="34.333333333333343"/>
+                                        <rect key="frame" x="0.0" y="80" width="353" height="50"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oA1-Hh-kLH">
-                                                <rect key="frame" x="0.0" y="0.0" width="141.66666666666666" height="34.333333333333336"/>
+                                                <rect key="frame" x="0.0" y="8" width="171.66666666666666" height="34.333333333333336"/>
                                                 <color key="tintColor" red="0.16078431369999999" green="0.17254901959999999" blue="0.34901960780000002" alpha="1" colorSpace="calibratedRGB"/>
                                                 <state key="normal" title="Button"/>
                                                 <buttonConfiguration key="configuration" style="filled" title="Pause" cornerStyle="capsule">
@@ -41,7 +41,7 @@
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="R1Y-RI-HSj">
-                                                <rect key="frame" x="151.66666666666663" y="0.0" width="141.33333333333337" height="34.333333333333336"/>
+                                                <rect key="frame" x="181.66666666666663" y="8" width="171.33333333333337" height="34.333333333333336"/>
                                                 <color key="tintColor" red="0.16078431372549018" green="0.17254901960784313" blue="0.34901960784313724" alpha="1" colorSpace="calibratedRGB"/>
                                                 <state key="normal" title="Button"/>
                                                 <buttonConfiguration key="configuration" style="filled" title="Stop" cornerStyle="capsule">
@@ -50,6 +50,7 @@
                                                 </buttonConfiguration>
                                                 <connections>
                                                     <action selector="breathingStopButtonTapped:" destination="Y6W-OH-hqX" eventType="touchUpInside" id="og6-mK-RqN"/>
+                                                    <segue destination="9z3-j2-v26" kind="unwind" unwindAction="unwindToMyPlanExercisePageWithSegue:" id="7tw-dF-BqA"/>
                                                 </connections>
                                             </button>
                                         </subviews>
@@ -64,9 +65,9 @@
                         <viewLayoutGuide key="safeArea" id="vDu-zF-Fre"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="vDu-zF-Fre" firstAttribute="bottom" secondItem="sIN-rK-h4F" secondAttribute="bottom" constant="15" id="7Fh-AD-syd"/>
-                            <constraint firstItem="vDu-zF-Fre" firstAttribute="trailing" secondItem="sIN-rK-h4F" secondAttribute="trailing" constant="50" id="CoV-Xl-liQ"/>
-                            <constraint firstItem="sIN-rK-h4F" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" constant="50" id="fGz-0L-UMO"/>
+                            <constraint firstItem="vDu-zF-Fre" firstAttribute="bottom" secondItem="sIN-rK-h4F" secondAttribute="bottom" constant="25" id="7Fh-AD-syd"/>
+                            <constraint firstItem="vDu-zF-Fre" firstAttribute="trailing" secondItem="sIN-rK-h4F" secondAttribute="trailing" constant="20" id="CoV-Xl-liQ"/>
+                            <constraint firstItem="sIN-rK-h4F" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" constant="20" id="fGz-0L-UMO"/>
                             <constraint firstItem="sIN-rK-h4F" firstAttribute="centerX" secondItem="5EZ-qb-Rvc" secondAttribute="centerX" id="o1m-0Q-JP5"/>
                         </constraints>
                     </view>
@@ -75,6 +76,7 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ief-a0-LHa" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+                <exit id="9z3-j2-v26" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
             <point key="canvasLocation" x="-329" y="-2"/>
         </scene>
