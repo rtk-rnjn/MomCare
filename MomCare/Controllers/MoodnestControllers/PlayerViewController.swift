@@ -14,7 +14,7 @@ class PlayerViewController: UIViewController {
 
     var audioPlayer: AVAudioPlayer!
     var currentSongIndex: Int = 0
-    
+
     // MARK: - OUTLETS
     @IBOutlet var playerImageView: UIImageView!
     @IBOutlet var songTitleLabel: UILabel!
@@ -23,7 +23,7 @@ class PlayerViewController: UIViewController {
     @IBOutlet var audioSlider: UISlider!
     @IBOutlet var playPauseButton: UIButton!
     @IBOutlet var repeatButton: UIButton!
-    
+
     var song: Song?
     let gradientLayer: CAGradientLayer = .init()
 
@@ -81,7 +81,7 @@ class PlayerViewController: UIViewController {
         let durationString = String(format: "%02d:%02d", minutes, remainingSeconds)
         songDurationLabel.text = durationString
     }
-    
+
     // MARK: AVPLAYER SECTION
     func loadCurrentSong() {
         guard let audioData = NSDataAsset(name: mp3Songs[currentSongIndex])?.data else {
@@ -96,10 +96,10 @@ class PlayerViewController: UIViewController {
         } catch {
             print("Error initializing player: \(error.localizedDescription)")
         }
-        
+
         setupSlider()
     }
-    
+
     @IBAction func playPauseTapped(_ sender: UIButton) {
         if audioPlayer.isPlaying {
             audioPlayer.pause()
@@ -109,30 +109,30 @@ class PlayerViewController: UIViewController {
             sender.setImage(UIImage(systemName: "pause.circle.fill"), for: .normal)
         }
     }
-    
+
     @IBAction func forwardTapped(_ sender: UIButton) {
         currentSongIndex = (currentSongIndex + 1) % mp3Songs.count
         loadCurrentSong()
         updateView()
     }
-    
+
     @IBAction func backwardTapped(_ sender: UIButton) {
         currentSongIndex = (currentSongIndex - 1 + mp3Songs.count) % mp3Songs.count
         loadCurrentSong()
         updateView()
     }
-    
+
     @IBAction func repeatTapped(_ sender: UIButton) {
         audioPlayer.numberOfLoops = audioPlayer.numberOfLoops == 0 ? -1 : 0
         let imageName = audioPlayer.numberOfLoops == -1 ? "repeat.circle.fill" : "repeat.circle"
         sender.setImage(UIImage(systemName: imageName), for: .normal)
     }
-    
+
     func setupSlider() {
         audioSlider.minimumValue = 0
         audioSlider.maximumValue = Float(audioPlayer.duration)
-        
-        Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { timer in
+
+        Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { _ in
             self.audioSlider.value = Float(self.audioPlayer.currentTime)
         }
     }
