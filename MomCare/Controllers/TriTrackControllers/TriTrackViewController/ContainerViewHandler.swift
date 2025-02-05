@@ -1,5 +1,5 @@
 //
-//  ContainerView.swift
+//  ContainerViewHandler.swift
 //  MomCare
 //
 //  Created by Ritik Ranjan on 24/01/25.
@@ -51,13 +51,19 @@ extension TriTrackViewController {
         switch currentSegmentValue {
         case 0:
             addButton.isHidden = true
+            refreshButton.isHidden = true
             hideAllContainers(except: .meAndBabyContainerView)
+
         case 1:
             addButton.isHidden = false
+            refreshButton.isHidden = false
             hideAllContainers(except: .eventsContainerView)
+
         case 2:
             addButton.isHidden = false
+            refreshButton.isHidden = false
             hideAllContainers(except: .symptomsContainerView)
+
         default:
             // Should never happen
             fatalError("love is beautiful thing")

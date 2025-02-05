@@ -1,16 +1,23 @@
 import UIKit
 
 class DietTableViewController: UITableViewController {
+
+    // MARK: Lifecycle
+
+    init?(coder: NSCoder, dietViewController: DietViewController) {
+        self.dietViewController = dietViewController
+        super.init(coder: coder)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+    // MARK: Internal
+
     @IBOutlet var dietTableView: UITableView!
 
     var dietViewController: DietViewController
-
-    private var mealNames = ["Breakfast", "Lunch", "Snacks", "Dinner"]
-    private var foodData: [[FoodItem]] = []
-
-    private func getFoods(with indexPath: IndexPath) -> FoodItem {
-        return foodData[indexPath.section][indexPath.row - 1]
-    }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -33,15 +40,6 @@ class DietTableViewController: UITableViewController {
         dietTableView.dataSource = self
 
         dietTableView.showsVerticalScrollIndicator = false
-    }
-
-    init?(coder: NSCoder, dietViewController: DietViewController) {
-        self.dietViewController = dietViewController
-        super.init(coder: coder)
-    }
-
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
     }
 
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -74,6 +72,15 @@ class DietTableViewController: UITableViewController {
         performSegue(withIdentifier: "segueShowSearchViewController", sender: nil)
     }
 
-    @IBAction func unwindToMyPlanDiet(_ segue: UIStoryboardSegue) {
+    @IBAction func unwindToMyPlanDiet(_ segue: UIStoryboardSegue) {}
+
+    // MARK: Private
+
+    private var mealNames = ["Breakfast", "Lunch", "Snacks", "Dinner"]
+    private var foodData: [[FoodItem]] = []
+
+    private func getFoods(with indexPath: IndexPath) -> FoodItem {
+        return foodData[indexPath.section][indexPath.row - 1]
     }
+
 }

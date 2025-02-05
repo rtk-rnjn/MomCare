@@ -6,18 +6,18 @@
 //
 
 import UIKit
+import EventKit
 
 class RemindersTableViewController: UITableViewController {
+
+    // MARK: Internal
+
     var data: [TriTrackReminder] = []
+    let store: EKEventStore = .init()
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         refreshData()
-    }
-
-    func refreshData() {
-        data = MomCareUser.shared.reminders
-        tableView.reloadData()
     }
 
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -36,7 +36,7 @@ class RemindersTableViewController: UITableViewController {
         cell.updateElements(with: data[indexPath.section])
         cell.showsReorderControl = false
 
-        /* config as per prototype */
+        // config as per prototype
         cell.backgroundColor = Converters.convertHexToUIColor(hex: "F2F2F7")
         cell.contentView.layer.cornerRadius = 10
         cell.contentView.layer.masksToBounds = true
@@ -52,4 +52,35 @@ class RemindersTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
         return 3
     }
+
+    func refreshData() {
+        fetchReminders()
+    }
+
+    // MARK: Private
+
+    private func fetchReminders() {
+        let ekCalendars = getCalendar(with: "TriTrackReminder")
+
+        let predicate = store.predicateForReminders(in: ekCalendars)
+        store.fetchReminders(matching: predicate, completion: reminderCompletionHandler)
+    }
+
+    private func reminderCompletionHandler(reminders: [EKReminder]?) {
+        guard let reminders else { return }
+        data = reminders.map { TriTrackReminder(title: $0.title, date: $0.dueDateComponents?.date ?? Date()) }
+
+        DispatchQueue.main.async {
+            self.tableView.reloadData()
+        }
+    }
+
+    private func getCalendar(with identifierKey: String) -> [EKCalendar]? {
+        if let identifier = UserDefaults.standard.string(forKey: identifierKey), let calendar = store.calendar(withIdentifier: identifier) {
+            return [calendar]
+        }
+
+        return []
+    }
+
 }

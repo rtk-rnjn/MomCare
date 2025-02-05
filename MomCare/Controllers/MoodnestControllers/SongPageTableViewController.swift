@@ -11,6 +11,7 @@ class SongPageTableViewController: UITableViewController {
     var songs: [Song] = []
     var playlist: Playlist!
     var songPagePlayerNavigationController: SongPagePlayerNavigationController?
+
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.showsVerticalScrollIndicator = false
@@ -30,7 +31,7 @@ class SongPageTableViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "songCell", for: indexPath) as? SongPageTableViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "songPageTableViewCell", for: indexPath) as? SongPageTableViewCell
 
         guard let cell else {
             fatalError("love is a fear of loss")
@@ -42,9 +43,6 @@ class SongPageTableViewController: UITableViewController {
         return cell
     }
 
-    @IBAction func unwindToSongPageViewController(_ segue: UIStoryboardSegue) {
-    }
-
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         performSegue(withIdentifier: "segueShowSongPagePlayerNavigationController", sender: songs[indexPath.row])
     }
@@ -54,4 +52,7 @@ class SongPageTableViewController: UITableViewController {
             destinationNav.selectedSong = sender as? Song
         }
     }
+
+    @IBAction func unwindToSongPageViewController(_ segue: UIStoryboardSegue) {}
+
 }

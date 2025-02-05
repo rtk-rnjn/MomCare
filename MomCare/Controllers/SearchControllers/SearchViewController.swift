@@ -11,7 +11,7 @@ class SearchViewController: UIViewController {
     @IBOutlet var searchBar: UISearchBar!
     @IBOutlet var searchTableView: UITableView!
 
-    let allFoods = SampleFoodData.uniqueFoodItems
+    let allFoods: [FoodItem] = SampleFoodData.uniqueFoodItems
     var searchedFood: [FoodItem] = []
 
     override func viewDidLoad() {

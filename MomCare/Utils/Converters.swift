@@ -8,9 +8,9 @@
 import Foundation
 import UIKit
 
-class Converters {
-    static func convertHexToUIColor(hex: String, alpha: CGFloat = 1.0) -> UIColor {
-        /* https://stackoverflow.com/questions/24263007/how-to-use-hex-color-values */
+enum Converters {
+    public static func convertHexToUIColor(hex: String, alpha: CGFloat = 1.0) -> UIColor {
+        // https://stackoverflow.com/questions/24263007/how-to-use-hex-color-values
 
         var hexSanitized = hex.trimmingCharacters(in: .whitespacesAndNewlines)
         hexSanitized = hexSanitized.hasPrefix("#") ? String(hexSanitized.dropFirst()) : hexSanitized

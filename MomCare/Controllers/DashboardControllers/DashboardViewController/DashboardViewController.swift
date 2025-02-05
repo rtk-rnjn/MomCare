@@ -9,10 +9,9 @@ import UIKit
 
 class DashboardViewController: UIViewController, UICollectionViewDataSource {
 
+    // MARK: Internal
+
     @IBOutlet var collectionView: UICollectionView!
-    private let cellIdentifiers = ["WelcomeHeaderCell", "WeekCard", "EventCard", "DietProgress", "ExerciseProgress", "FocusCard", "TipCard"]
-    private let headerIdentifier = "SectionHeaderView"
-    private let interItemSpacing: CGFloat = 15
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -24,21 +23,6 @@ class DashboardViewController: UIViewController, UICollectionViewDataSource {
         super.viewWillAppear(animated)
         navigationItem.hidesBackButton = true
         collectionView.reloadData()
-    }
-
-    private func setupCollectionView() {
-        registerCells()
-
-        collectionView.collectionViewLayout = createLayout()
-        collectionView.dataSource = self
-    }
-
-    private func registerCells() {
-        cellIdentifiers.forEach { cell in
-            collectionView.register(UINib(nibName: cell, bundle: nil), forCellWithReuseIdentifier: cell)
-        }
-
-        collectionView.register(UINib(nibName: headerIdentifier, bundle: nil), forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: headerIdentifier)
     }
 
     func numberOfSections(in collectionView: UICollectionView) -> Int {
@@ -59,4 +43,26 @@ class DashboardViewController: UIViewController, UICollectionViewDataSource {
 
         return headerView
     }
+
+    // MARK: Private
+
+    private let cellIdentifiers = ["WelcomeHeaderCell", "WeekCard", "EventCard", "DietProgress", "ExerciseProgress", "FocusCard", "TipCard"]
+    private let headerIdentifier = "SectionHeaderView"
+    private let interItemSpacing: CGFloat = 15
+
+    private func setupCollectionView() {
+        registerCells()
+
+        collectionView.collectionViewLayout = createLayout()
+        collectionView.dataSource = self
+    }
+
+    private func registerCells() {
+        for cell in cellIdentifiers {
+            collectionView.register(UINib(nibName: cell, bundle: nil), forCellWithReuseIdentifier: cell)
+        }
+
+        collectionView.register(UINib(nibName: headerIdentifier, bundle: nil), forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: headerIdentifier)
+    }
+
 }

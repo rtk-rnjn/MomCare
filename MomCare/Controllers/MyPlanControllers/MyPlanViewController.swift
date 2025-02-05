@@ -7,6 +7,8 @@ enum MyPlanViewControlSegmentValue: Int {
 
 class MyPlanViewController: UIViewController {
 
+    // MARK: Internal
+
     @IBOutlet var myPlanSegmentedControl: UISegmentedControl!
 
     @IBOutlet var dietContainerView: UIView!
@@ -49,14 +51,26 @@ class MyPlanViewController: UIViewController {
         myPlanSegmentedControl.setTitleTextAttributes(selectedTextAttribute, for: .selected)
     }
 
+    func updateView() {
+        updateMainView(with: nil)
+    }
+
+    func updateView(with index: Int) {
+        updateMainView(with: index)
+    }
+
+    // MARK: Private
+
     private func hideAllViews(except view: MyPlanViewControlSegmentValue?) {
         switch view {
         case .dietContainerView:
             exerciseContainerView.isHidden = true
             dietContainerView.isHidden = false
+
         case .exerciseContainerView:
             exerciseContainerView.isHidden = false
             dietContainerView.isHidden = true
+
         default:
             fatalError("someone said, love is boring")
         }
@@ -79,14 +93,6 @@ class MyPlanViewController: UIViewController {
         default:
             fatalError("love is beautiful thing")
         }
-    }
-
-    func updateView() {
-        updateMainView(with: nil)
-    }
-
-    func updateView(with index: Int) {
-        updateMainView(with: index)
     }
 
 }

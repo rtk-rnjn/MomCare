@@ -22,11 +22,13 @@ class SongPageViewController: UIViewController {
                 songPageTableViewController = destination
                 songPageTableViewController?.playlist = playlist
             }
+
         case .songPageElementsVC:
             if let destination = segue.destination as? SongPageElementsViewController {
                 songPageElementsViewController = destination
                 songPageElementsViewController?.playlist = playlist
             }
+
         case .none:
             fatalError("should not happen, baby <3")
         }

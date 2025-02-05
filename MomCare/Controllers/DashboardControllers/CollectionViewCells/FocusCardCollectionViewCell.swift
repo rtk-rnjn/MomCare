@@ -1,5 +1,5 @@
 //
-//  Section5CollectionViewCell.swift
+//  FocusCardCollectionViewCell.swift
 //  MomCare
 //
 //  Created by Batch-2 on 16/01/25.

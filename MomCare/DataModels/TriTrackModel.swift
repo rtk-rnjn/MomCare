@@ -7,8 +7,9 @@
 
 import Foundation
 import UIKit
+import EventKit
 
-struct TriTrackEvent {
+struct TriTrackEvent: Codable {
     var title: String
     var location: String?
 
@@ -21,7 +22,7 @@ struct TriTrackEvent {
     var repeatAfter: TimeInterval?
 }
 
-struct TriTrackReminder {
+struct TriTrackReminder: Codable {
     var title: String
     var date: Date = .init()
     var notes: String?
@@ -29,7 +30,7 @@ struct TriTrackReminder {
     var repeatAfter: TimeInterval?
 }
 
-struct TriTrackSymptom {
+struct TriTrackSymptom: Codable {
     var title: String
     var notes: String?
 
@@ -43,18 +44,19 @@ struct TrimesterData {
     let quote: String
 
     let leftImageName: String
-    var leftImage: UIImage? {
-        UIImage(named: leftImageName)
-    }
-
     let rightImageName: String
-    var rightImage: UIImage? {
-        UIImage(named: rightImageName)
-    }
-
     let babyHeightInCentimeters: Double
     let babyWeightInKilograms: Double
 
     let babyTipText: String
     let momTipText: String
+
+    var leftImage: UIImage? {
+        UIImage(named: leftImageName)
+    }
+
+    var rightImage: UIImage? {
+        UIImage(named: rightImageName)
+    }
+
 }

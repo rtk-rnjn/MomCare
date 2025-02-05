@@ -9,8 +9,10 @@ import UIKit
 
 class AddEventTableViewController: UITableViewController {
 
+    // MARK: Internal
+
     static let repeatTimeOptions: [String: TimeInterval] = [
-        "Never": -1,
+        "Never": 0,
         "Every Day": 24 * 60 * 60,
         "Every Week": 24 * 60 * 60 * 7,
         "Every 2 Week": 24 * 60 * 60 * 7 * 2,
@@ -19,7 +21,7 @@ class AddEventTableViewController: UITableViewController {
     ]
 
     static let travelTimeOptions: [String: TimeInterval] = [
-        "None": -1,
+        "None": 0,
         "5 Minutes": 5 * 60,
         "10 Minutes": 10 * 60,
         "15 Minutes": 15 * 60,
@@ -30,7 +32,6 @@ class AddEventTableViewController: UITableViewController {
     ]
 
     static let alertTimeOptions: [String: TimeInterval] = [
-        "None": -1,
         "At time of event": 0,
         "5 Minutes before": 5 * 60,
         "10 Minutes before": 10 * 60,
@@ -55,9 +56,9 @@ class AddEventTableViewController: UITableViewController {
     @IBOutlet var titleField: UITextField!
     @IBOutlet var locationField: UITextField!
 
-    var selectedRepeatOption: TimeInterval = -1
-    var selectedTravelTimeOption: TimeInterval = -1
-    var selectedAlertTimeOption: TimeInterval = -1
+    var selectedRepeatOption: TimeInterval = 0
+    var selectedTravelTimeOption: TimeInterval = 0
+    var selectedAlertTimeOption: TimeInterval = 0
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -77,6 +78,8 @@ class AddEventTableViewController: UITableViewController {
             literalEndsLabel.alpha = 1
         }
     }
+
+    // MARK: Private
 
     private func preparePopupButtons() {
         prepareRepeatPopup()

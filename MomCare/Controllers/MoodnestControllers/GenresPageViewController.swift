@@ -17,22 +17,22 @@ class GenresPageViewController: UIViewController, UICollectionViewDataSource, UI
         super.viewDidLoad()
         // Set the image for the bar button item with proper sizing
         if let IconImageVar {
-                let button = UIButton(type: .custom)
-                button.setImage(IconImageVar, for: .normal)
-                button.frame = CGRect(x: 0, y: 0, width: 50, height: 50)
-                button.imageView?.contentMode = .scaleAspectFit
+            let button = UIButton(type: .custom)
+            button.setImage(IconImageVar, for: .normal)
+            button.frame = CGRect(x: 0, y: 0, width: 50, height: 50)
+            button.imageView?.contentMode = .scaleAspectFit
 
-                let barButtonItem = UIBarButtonItem(customView: button)
+            let barButtonItem = UIBarButtonItem(customView: button)
 
-                // Constraints to prevent stretching
-                button.translatesAutoresizingMaskIntoConstraints = false
-                NSLayoutConstraint.activate([
-                    button.widthAnchor.constraint(equalToConstant: 50),
-                    button.heightAnchor.constraint(equalToConstant: 50)
-                ])
+            // Constraints to prevent stretching
+            button.translatesAutoresizingMaskIntoConstraints = false
+            NSLayoutConstraint.activate([
+                button.widthAnchor.constraint(equalToConstant: 50),
+                button.heightAnchor.constraint(equalToConstant: 50)
+            ])
 
-                navigationItem.rightBarButtonItem = barButtonItem
-            }
+            navigationItem.rightBarButtonItem = barButtonItem
+        }
 
         outerView.layer.cornerRadius = 30
         moodnestCollectionView.showsVerticalScrollIndicator = false
@@ -49,16 +49,19 @@ class GenresPageViewController: UIViewController, UICollectionViewDataSource, UI
         moodnestCollectionView.setCollectionViewLayout(generateLayout(), animated: true)
     }
 
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if let destinationVC = segue.destination as? SongPageViewController {
+            destinationVC.playlist = sender as? Playlist
+        }
+    }
+
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 3
     }
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         switch section {
-        case 0:
-            return 1
-
-        case 1:
+        case 0, 1:
             return 1
 
         case 2:
@@ -103,7 +106,6 @@ class GenresPageViewController: UIViewController, UICollectionViewDataSource, UI
     }
 
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-
         let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "SectionHeaderCollectionViewCell", for: indexPath) as? SectionHeaderCollectionViewCell
 
         guard let header else { fatalError("the sunset is beautiful, isn't it?") }
@@ -114,7 +116,7 @@ class GenresPageViewController: UIViewController, UICollectionViewDataSource, UI
     }
 
     func generateLayout() -> UICollectionViewLayout {
-        let layout = UICollectionViewCompositionalLayout { (sectionIndex: Int, _: NSCollectionLayoutEnvironment) -> NSCollectionLayoutSection? in
+        return UICollectionViewCompositionalLayout { (sectionIndex: Int, _: NSCollectionLayoutEnvironment) -> NSCollectionLayoutSection? in
             let section: NSCollectionLayoutSection
 
             switch sectionIndex {
@@ -136,12 +138,10 @@ class GenresPageViewController: UIViewController, UICollectionViewDataSource, UI
                 section.boundarySupplementaryItems = [header]
 
             default:
-                fatalError()
-
+                fatalError("dekha hai pehli baar, saajan ki aankhon mein pyaar")
             }
             return section
         }
-        return layout
     }
 
     func generateMainHeadingLayout() -> NSCollectionLayoutSection {
@@ -191,13 +191,7 @@ class GenresPageViewController: UIViewController, UICollectionViewDataSource, UI
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let selectedPlaylist = FeaturedPlaylists.playlists[indexPath.item]
-        performSegue(withIdentifier: "songPageSegue", sender: selectedPlaylist)
-    }
-
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if let destinationVC = segue.destination as? SongPageViewController {
-            destinationVC.playlist = sender as? Playlist
-        }
+        performSegue(withIdentifier: "segueShowSongPageViewController", sender: selectedPlaylist)
     }
 
 }

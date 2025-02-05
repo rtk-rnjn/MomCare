@@ -1,5 +1,5 @@
 //
-//  Section2CollectionViewCell.swift
+//  EventCardCollectionViewCell.swift
 //  MomCare
 //
 //  Created by Batch-2 on 15/01/25.
@@ -8,10 +8,8 @@
 import UIKit
 
 class EventCardCollectionViewCell: UICollectionViewCell {
-    @IBOutlet var upcomingEventLabel: UILabel!
-    @IBOutlet var upcomingEventDateLabel: UILabel!
 
-    var tapHandler: (() -> Void)?
+    // MARK: Lifecycle
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -23,15 +21,12 @@ class EventCardCollectionViewCell: UICollectionViewCell {
         setupGesture()
     }
 
-    private func setupGesture() {
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap))
-        contentView.addGestureRecognizer(tapGesture)
-    }
+    // MARK: Internal
 
-    @objc private func handleTap() {
-        guard let tapHandler else { return }
-        tapHandler()
-    }
+    @IBOutlet var upcomingEventLabel: UILabel!
+    @IBOutlet var upcomingEventDateLabel: UILabel!
+
+    var tapHandler: (() -> Void)?
 
     func updateElements(with event: TriTrackEvent?, tapHandler: (() -> Void)?) {
         if let event {
@@ -43,4 +38,17 @@ class EventCardCollectionViewCell: UICollectionViewCell {
         }
         self.tapHandler = tapHandler
     }
+
+    // MARK: Private
+
+    private func setupGesture() {
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap))
+        contentView.addGestureRecognizer(tapGesture)
+    }
+
+    @objc private func handleTap() {
+        guard let tapHandler else { return }
+        tapHandler()
+    }
+
 }

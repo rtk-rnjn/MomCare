@@ -11,19 +11,8 @@ import UIKit
 // MARK: Diet
 
 struct FoodItem {
-    let id: UUID = .init()
-    let name: String
-    let imageName: String
-    var image: UIImage? {
-        return UIImage(named: imageName)
-    }
 
-    var calories: Int = 0
-    var protein: Int = 0
-    var carbs: Int = 0
-    var fat: Int = 0
-
-    var consumed: Bool = false
+    // MARK: Lifecycle
 
     init(name: String, imageName: String, calories: Int, protein: Int, carbs: Int, fat: Int) {
         self.name = name
@@ -34,6 +23,23 @@ struct FoodItem {
         self.carbs = carbs
         self.fat = fat
     }
+
+    // MARK: Internal
+
+    let id: UUID = .init()
+    let name: String
+    let imageName: String
+    var calories: Int = 0
+    var protein: Int = 0
+    var carbs: Int = 0
+    var fat: Int = 0
+
+    var consumed: Bool = false
+
+    var image: UIImage? {
+        return UIImage(named: imageName)
+    }
+
 }
 
 struct MyPlanModel {
@@ -56,7 +62,20 @@ public enum MealType: Hashable {
 }
 
 class UserDiet {
+
+    // MARK: Lifecycle
+
+    private init() {
+        updateFromDatabase()
+    }
+
+    // MARK: Public
+
     public private(set) var plan: MyPlanModel = .init(caloriesGoal: 1740, proteinGoal: 70, carbsGoal: 175, fatGoal: 60)
+
+    // MARK: Internal
+
+    static var shared: UserDiet = .init()
 
     var meals: [MealType: [FoodItem]] = [
         .breakfast: [
@@ -77,12 +96,6 @@ class UserDiet {
             FoodItem(name: "Aloo Matar", imageName: "aloo-matar", calories: 200, protein: 6, carbs: 30, fat: 5)
         ]
     ]
-
-    static var shared: UserDiet = .init()
-
-    private init() {
-        updateFromDatabase()
-    }
 
     func addFoodItem(_ foodItem: FoodItem, to meal: MealType) {
         meals[meal]?.append(foodItem)
@@ -106,6 +119,11 @@ class UserDiet {
         meals[meal]?.forEach { _ = markFoodAsConsumed($0, in: meal) }
     }
 
+    func updateFromDatabase() {}
+    func updateToDatabase() {}
+
+    // MARK: Private
+
     private func updatePlan(with foodItem: FoodItem, multiplier: Int) {
         plan.currentCaloriesIntake += foodItem.calories * multiplier
         plan.currentProteinIntake += foodItem.protein * multiplier
@@ -113,8 +131,6 @@ class UserDiet {
         plan.currentFatIntake += foodItem.fat * multiplier
     }
 
-    func updateFromDatabase() {}
-    func updateToDatabase() {}
 }
 
 // MARK: Exercise
@@ -140,28 +156,32 @@ struct Exercise {
     let level: Difficulty = .beginner
 
     var exerciseImageName: String
+    var durationCompleted: TimeInterval = 0
+
     var exerciseImage: UIImage? {
         return UIImage(named: exerciseImageName)
     }
-
-    var durationCompleted: TimeInterval = 0
 }
 
 class UserExercise {
-    public private(set) var exercises: [Exercise] = []
-    static var shared: UserExercise = .init()
+
+    // MARK: Lifecycle
 
     private init() {
         updateFromDatabase()
     }
 
-    func updateFromDatabase() {
+    // MARK: Public
 
-    }
+    public private(set) var exercises: [Exercise] = []
 
-    func updateToDatabase() {
+    // MARK: Internal
 
-    }
+    static var shared: UserExercise = .init()
+
+    func updateFromDatabase() {}
+
+    func updateToDatabase() {}
 }
 
 // MARK: Sample Data

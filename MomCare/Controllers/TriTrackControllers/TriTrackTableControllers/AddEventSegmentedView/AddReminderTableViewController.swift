@@ -9,6 +9,8 @@ import UIKit
 
 class AddReminderTableViewController: UITableViewController {
 
+    // MARK: Internal
+
     static let options: [String: TimeInterval] = [
         "Never": -1,
         "Every Day": 24 * 60 * 60,
@@ -33,6 +35,8 @@ class AddReminderTableViewController: UITableViewController {
 
         prepareRepeatPopup()
     }
+
+    // MARK: Private
 
     private func prepareRepeatPopup() {
         repeatPopupButton.menu = UIMenu(children: AddReminderTableViewController.options.map { title, _ in

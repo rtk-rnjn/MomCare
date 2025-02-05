@@ -12,17 +12,17 @@ extension DashboardViewController {
         switch indexPath.section {
 
         case 0:
-            let cell = prepareWelcomeHeaderCell(at: indexPath)
-            return cell
+            return prepareWelcomeHeaderCell(at: indexPath)
+
         case 1:
-            let cell = prepareWeekEventCell(at: indexPath)
-            return cell
+            return prepareWeekEventCell(at: indexPath)
+
         case 2:
-            let cell = prepareDietExersiceCell(at: indexPath)
-            return cell
+            return prepareDietExersiceCell(at: indexPath)
+
         case 3:
-            let cell = prepareFocusTipCell(at: indexPath)
-            return cell
+            return prepareFocusTipCell(at: indexPath)
+
         default:
             fatalError("i love this error")
         }

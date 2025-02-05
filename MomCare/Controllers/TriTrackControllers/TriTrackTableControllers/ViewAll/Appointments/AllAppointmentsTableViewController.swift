@@ -9,7 +9,7 @@ import UIKit
 
 class AllAppointmentsTableViewController: UITableViewController {
 
-    var appointments = MomCareUser.shared.events
+    var appointments: [TriTrackEvent] = []
 
     override func numberOfSections(in tableView: UITableView) -> Int {
         return 1
@@ -23,7 +23,7 @@ class AllAppointmentsTableViewController: UITableViewController {
         let cell = tableView.dequeueReusableCell(withIdentifier: "AllAppointmentsTableViewCell", for: indexPath) as? AllAppointmentsTableViewCell
 
         let appointment = appointments[indexPath.row]
-        guard let cell else { return UITableViewCell() }
+        guard let cell else { fatalError("likhe jo khat tujhe, wo teri yaad me 🎶") }
         cell.updateElements(with: appointment)
 
         return cell

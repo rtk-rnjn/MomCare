@@ -1,4 +1,4 @@
-// Moods.swift
+// MoodNest.swift
 // MomCare
 // Created by Batch - 2 on 16/01/25.
 
@@ -7,10 +7,12 @@ import UIKit
 
 struct Mood {
     let imageName: String
+    let type: MoodType
+
     var image: UIImage? {
         return UIImage(named: imageName)
     }
-    let type: MoodType
+
 }
 
 struct Song {
@@ -18,20 +20,23 @@ struct Song {
     let artist: String
     let duration: TimeInterval
     let imageName: String
+    var isPlaying: Bool = false
+
     var image: UIImage? {
         return UIImage(named: imageName)
     }
 
-    var isPlaying: Bool = false
 }
 
 struct Playlist {
     let imageName: String
+    let name: String
+    let songs: [Song]
+
     var image: UIImage? {
         return UIImage(named: imageName)
     }
-    let name: String
-    let songs: [Song]
+
 }
 
 class AllMoods {
