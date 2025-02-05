@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import UIKit
 
 enum Country: String, Codable {
     case india
@@ -50,6 +51,15 @@ public enum MoodType: String, Codable {
    case angry = "Angry"
 }
 
+struct Mood: Codable {
+    var imageName: String
+    var type: MoodType
+
+    var image: UIImage? {
+        return UIImage(named: imageName)
+    }
+}
+
 struct User: Codable {
     var id: UUID = .init()
 
@@ -66,11 +76,21 @@ struct User: Codable {
 
     var mood: MoodType?
 
+    var plan: MyPlan?
+    var exercises: [Exercise] = []
+
+    var history: [History] = []
+
     var fullName: String {
         let fullName = "\(firstName) \(lastName ?? "")"
         return fullName.trimmingCharacters(in: .whitespaces)
     }
+}
 
+struct History: Codable {
+    var date: Date = .init()
+    var plan: MyPlan?
+    var exercises: [Exercise] = []
 }
 
 struct UserMedical: Codable {
@@ -87,11 +107,4 @@ struct UserMedical: Codable {
     var foodIntolerances: [Intolerance] = []
 
     var dietaryPreferences: [DietaryPreference] = []
-}
-
-enum PickerOptions {
-    case height
-    case prePregnancyWeight
-    case currentWeight
-    case country
 }
