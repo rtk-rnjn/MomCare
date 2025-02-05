@@ -1,54 +1,48 @@
 import UIKit
 
 class BreathingPlayerViewController: UIViewController {
-    
+
+    // MARK: Lifecycle
+
+    // Cleanup timer when view is dismissed
+    deinit {
+        timer?.invalidate()
+        timer = nil
+    }
+
+    // MARK: Internal
+
     @IBOutlet var totalBreatingDuration: UILabel!
-    
-    private var circlesContainer = CALayer()
-    private var circleLayers: [CAShapeLayer] = []
-    private var isInhaling = true
-    private let instructionLabel = UILabel()
-    private let timerLabel = UILabel()  // New timer label
-    private var timer: Timer?           // Timer for updating countdown
-    private var currentCount = 0
+
     var remainingMinSec: Double = 0.0
     var completedPercentage: Double = 0.0
-    
-    // Configuration
-    private let numberOfPetals = 6
-    private let circleSize: CGFloat = 100
-    private let animationDuration: TimeInterval = 4.0
-    private let spreadDistance: CGFloat = 50  // How far circles spread to form the flower
-    private let textAnimationDuration: TimeInterval = 0.5 //
-    private let transitionLabel = UILabel() //
-    private let totalBreathingTime: Double = 300
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         updateGradientBackground()
         setupCircleLayers()
         setupInstructionLabel()
         setupTimerLabel()
-        
+
         Task {
             await exrciseDurationSetup()
         }
-        
+
     }
-    
+
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         startBreathingAnimation() // starting animation when the screen is fully loaded
     }
-    
+
     func updateGradientBackground() {
         let gradientLayer = CAGradientLayer()
         gradientLayer.frame = view.bounds
-        
+
         let upperColor = Converters.convertHexToUIColor(hex: "#1e0d31")
         let middleColor = Converters.convertHexToUIColor(hex: "#13102f")
         let bottomColor = Converters.convertHexToUIColor(hex: "#0f102e")
-        
+
         gradientLayer.colors = [
             upperColor.withAlphaComponent(1.0).cgColor,
             middleColor.withAlphaComponent(1.0).cgColor,
@@ -56,52 +50,95 @@ class BreathingPlayerViewController: UIViewController {
         ]
         gradientLayer.startPoint = CGPoint(x: 0.5, y: 0.0)
         gradientLayer.endPoint = CGPoint(x: 0.5, y: 1.0)
-        
+
         view.layer.insertSublayer(gradientLayer, at: 0)
     }
-    
+
+    func exrciseDurationSetup() async {
+        var i = 0
+
+        while 5 * 60 - i > 0 {
+            try! await Task.sleep(nanoseconds: 1_000_000_000)
+            DispatchQueue.main.async {
+                i += 1
+                let remainingSeconds = 5 * 60 - i
+
+                let remainingMinutes = remainingSeconds / 60
+                let remainingSecondsPart = remainingSeconds % 60
+                self.remainingMinSec = Double(remainingMinutes) * 60 + Double(remainingSecondsPart)
+
+                self.totalBreatingDuration.text = String(format: "%02d:%02d", remainingMinutes, remainingSecondsPart)
+            }
+        }
+    }
+
+    @IBAction func breathingStopButtonTapped(_ sender: UIButton) {
+        let remainingTime: Double = remainingMinSec
+        let completedTime: Double = totalBreathingTime - remainingTime
+        completedPercentage = (completedTime / totalBreathingTime * 100)
+    }
+
+    // MARK: Private
+
+    private var circlesContainer: CALayer = .init()
+    private var circleLayers: [CAShapeLayer] = []
+    private var isInhaling = true
+    private let instructionLabel: UILabel = .init()
+    private let timerLabel: UILabel = .init() // New timer label
+    private var timer: Timer? // Timer for updating countdown
+    private var currentCount = 0
+
+    // Configuration
+    private let numberOfPetals = 6
+    private let circleSize: CGFloat = 100
+    private let animationDuration: TimeInterval = 4.0
+    private let spreadDistance: CGFloat = 50 // How far circles spread to form the flower
+    private let textAnimationDuration: TimeInterval = 0.5 //
+    private let transitionLabel: UILabel = .init() //
+    private let totalBreathingTime: Double = 300
+
     private func setupInstructionLabel() {
         instructionLabel.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(instructionLabel)
-        
+
         NSLayoutConstraint.activate([
             instructionLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            instructionLabel.topAnchor.constraint(equalTo: view.topAnchor, constant: 120),
+            instructionLabel.topAnchor.constraint(equalTo: view.topAnchor, constant: 120)
         ])
-        
+
         instructionLabel.textColor = .white
         instructionLabel.font = .systemFont(ofSize: 30, weight: .medium)
         instructionLabel.text = "Inhale"
         instructionLabel.alpha = 1
     }
-    
+
     private func setupTransitionLabel() {
         transitionLabel.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(transitionLabel)
-        
+
         // Position it exactly over the instruction label
         NSLayoutConstraint.activate([
             transitionLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             transitionLabel.bottomAnchor.constraint(equalTo: view.centerYAnchor, constant: -120)
         ])
-        
+
         transitionLabel.textColor = .white
         transitionLabel.font = .systemFont(ofSize: 24, weight: .medium)
         transitionLabel.alpha = 0 // Start invisible
     } //
-    
+
     private func animateInstructionChange(to newText: String) {
         // Setup transition label with new text
         transitionLabel.text = newText
         transitionLabel.transform = CGAffineTransform(translationX: 0, y: 0)
         transitionLabel.alpha = 0
-        
+
         // Animate old text up and fade out
         UIView.animate(withDuration: textAnimationDuration, delay: 0, options: .curveLinear) {
             self.instructionLabel.transform = CGAffineTransform(translationX: 0, y: 0)
             self.instructionLabel.alpha = 0
         }
-        
+
         // Animate new text up and fade in
         UIView.animate(withDuration: textAnimationDuration, delay: 0, options: .curveLinear) {
             self.transitionLabel.transform = .identity
@@ -114,48 +151,48 @@ class BreathingPlayerViewController: UIViewController {
             self.transitionLabel.alpha = 0
         }
     }
-    
+
     private func setupTimerLabel() {
         timerLabel.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(timerLabel)
-        
+
         NSLayoutConstraint.activate([
             timerLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             timerLabel.topAnchor.constraint(equalTo: instructionLabel.bottomAnchor, constant: 20)
         ])
-        
+
         timerLabel.textColor = .white
         timerLabel.font = .systemFont(ofSize: 30, weight: .regular)
         timerLabel.text = ""
         timerLabel.isHidden = true
     }
-    
+
     private func startTimer() {
         // Reset and invalidate existing timer if any
         timer?.invalidate()
         currentCount = 4
-        
+
         timerLabel.isHidden = false
-        
+
         // Start new timer
         timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] _ in
-            guard let self = self else { return }
-            
-            if self.currentCount <= Int(self.animationDuration) {
+            guard let self else { return }
+
+            if currentCount <= Int(animationDuration) {
                 // Update timer label with current count
-                self.timerLabel.text = "\(self.currentCount)"
+                timerLabel.text = "\(currentCount)"
             }
-            self.currentCount -= 1
+            currentCount -= 1
         }
     }
-    
+
     private func setupCircleLayers() {
         // Setup container
         let containerSize = circleSize + (spreadDistance * 2)
         circlesContainer.frame = CGRect(x: 0, y: 0, width: containerSize, height: containerSize)
         circlesContainer.position = view.center
         view.layer.addSublayer(circlesContainer)
-        
+
         // Create all circles (center + petals)
         for _ in 0...numberOfPetals {
             let circle = createCircleLayer()
@@ -165,18 +202,18 @@ class BreathingPlayerViewController: UIViewController {
             circleLayers.append(circle)
         }
     }
-    
+
     private func hideTimer() {
         timer?.invalidate()
         timer = nil
         timerLabel.isHidden = true
         timerLabel.text = ""
     }
-    
+
     private func createCircleLayer() -> CAShapeLayer {
         let layer = CAShapeLayer()
         layer.frame = CGRect(x: -circleSize/2, y: -circleSize/2, width: circleSize, height: circleSize)
-        
+
         let circlePath = UIBezierPath(
             arcCenter: CGPoint(x: circleSize/2, y: circleSize/2),
             radius: circleSize/2,
@@ -184,16 +221,16 @@ class BreathingPlayerViewController: UIViewController {
             endAngle: 2 * .pi,
             clockwise: true
         )
-        
+
         layer.path = circlePath.cgPath
         layer.fillColor = UIColor.systemBlue.withAlphaComponent(0.3).cgColor
         return layer
     }
-    
+
     private func startBreathingAnimation() {
         animateBreathCycle()
     }
-    
+
     private func animateBreathCycle() {
         if isInhaling {
             animateInstructionChange(to: "Inhale") //
@@ -218,22 +255,22 @@ class BreathingPlayerViewController: UIViewController {
             }
         }
     }
-    
+
     private func animateFlowerFormation(completion: @escaping () -> Void) {
         CATransaction.begin()
         CATransaction.setCompletionBlock(completion)
-        
+
         // Animate each circle to its position
         for (index, circle) in circleLayers.enumerated() {
             if index == 0 {
                 // Center circle stays put
                 continue
             }
-            
+
             let angle = (2.0 * .pi * CGFloat(index - 1)) / CGFloat(numberOfPetals)
             let destinationX = circlesContainer.bounds.midX + cos(angle) * spreadDistance
             let destinationY = circlesContainer.bounds.midY + sin(angle) * spreadDistance
-            
+
             let animation = CABasicAnimation(keyPath: "position")
             animation.fromValue = CGPoint(x: circlesContainer.bounds.midX, y: circlesContainer.bounds.midY)
             animation.toValue = CGPoint(x: destinationX, y: destinationY)
@@ -241,24 +278,24 @@ class BreathingPlayerViewController: UIViewController {
             animation.timingFunction = CAMediaTimingFunction(name: .easeInEaseOut)
             animation.fillMode = .forwards
             animation.isRemovedOnCompletion = false
-            
+
             circle.add(animation, forKey: "position")
         }
-        
+
         CATransaction.commit()
     }
-    
+
     private func animateFlowerCollapse(completion: @escaping () -> Void) {
         CATransaction.begin()
         CATransaction.setCompletionBlock(completion)
-        
+
         // Animate each circle back to center
         for (index, circle) in circleLayers.enumerated() {
             if index == 0 {
                 // Center circle stays put
                 continue
             }
-            
+
             let animation = CABasicAnimation(keyPath: "position")
             animation.fromValue = circle.presentation()?.position ?? circle.position
             animation.toValue = CGPoint(x: circlesContainer.bounds.midX, y: circlesContainer.bounds.midY)
@@ -266,43 +303,11 @@ class BreathingPlayerViewController: UIViewController {
             animation.timingFunction = CAMediaTimingFunction(name: .easeInEaseOut)
             animation.fillMode = .forwards
             animation.isRemovedOnCompletion = false
-            
+
             circle.add(animation, forKey: "position")
         }
-        
+
         CATransaction.commit()
     }
-    
-    // Cleanup timer when view is dismissed
-    deinit {
-        timer?.invalidate()
-        timer = nil
-    }
-    
-    func exrciseDurationSetup() async {
-        var i = 0
-        
-        while 5 * 60 - i > 0 {
-            try! await Task.sleep(nanoseconds: 1_000_000_000)
-            DispatchQueue.main.async {
-                i += 1
-                let remainingSeconds = 5 * 60 - i
-                
-                let remainingMinutes = remainingSeconds / 60
-                let remainingSecondsPart = remainingSeconds % 60
-                self.remainingMinSec = Double(remainingMinutes) * 60 + Double(remainingSecondsPart)
-                
-                self.totalBreatingDuration.text = String(format: "%02d:%02d", remainingMinutes, remainingSecondsPart)
-            }
-        }
-    }
-    
-    
-    @IBAction func breathingStopButtonTapped(_ sender: UIButton) {
-        let remainingTime: Double = self.remainingMinSec
-        let completedTime: Double = totalBreathingTime - remainingTime
-        completedPercentage = ((completedTime) / totalBreathingTime * 100)
-    }    
-}
-    
 
+}
