@@ -89,7 +89,7 @@ class UserDiet {
         ],
         .snacks: [
             FoodItem(name: "Aloo Chaat", imageName: "aloo-chaat", calories: 180, protein: 3, carbs: 25, fat: 8),
-            FoodItem(name: "Halwa", imageName: "halwa", calories: 300, protein: 4, carbs: 40, fat: 15)
+            FoodItem(name: "Halwa", imageName: "Halwa", calories: 300, protein: 4, carbs: 40, fat: 15)
         ],
         .dinner: [
             FoodItem(name: "Aloo Paratha", imageName: "aloo-paratha", calories: 280, protein: 6, carbs: 40, fat: 10),
