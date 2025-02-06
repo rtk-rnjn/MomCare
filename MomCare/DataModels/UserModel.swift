@@ -87,6 +87,7 @@ struct User: Codable {
         case emailAddress = "email_address"
         case password
         case countryCode = "country_code"
+        case country
         case phoneNumber = "phone_number"
         case medicalData = "medical_data"
         case mood
@@ -123,7 +124,6 @@ struct UserMedical: Codable {
         case height
         case prePregnancyWeight = "pre_pregnancy_weight"
         case currentWeight = "current_weight"
-        case country
         case dueDate = "due_date"
         case preExistingConditions = "pre_existing_conditions"
         case foodIntolerances = "food_intolerances"
