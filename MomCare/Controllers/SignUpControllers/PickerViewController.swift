@@ -7,6 +7,13 @@
 
 import UIKit
 
+public enum PickerOptions {
+    case height
+    case prePregnancyWeight
+    case currentWeight
+    case country
+}
+
 class PickerViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSource {
 
     // MARK: Lifecycle

@@ -66,9 +66,9 @@ class DietViewController: UIViewController {
     }
 
     private func setupCaloricProgress() {
-        animateKalcProgress(to: CGFloat(Float(MomCareUser.shared.diet.plan.currentCaloriesIntake) / Float(MomCareUser.shared.diet.plan.caloriesGoal!)))
-
-        caloricValueLabel.text = String(MomCareUser.shared.diet.plan.currentCaloriesIntake) + "/" + String(MomCareUser.shared.diet.plan.caloriesGoal!)
+        guard let plan = MomCareUser.shared.user?.plan else { return }
+        animateKalcProgress(to: CGFloat(Float(plan.currentCaloriesIntake) / Float(plan.caloriesGoal!)))
+        caloricValueLabel.text = String(plan.currentCaloriesIntake) + "/" + String(plan.caloriesGoal!)
     }
 
     private func setupProgressBars() {
@@ -76,24 +76,27 @@ class DietViewController: UIViewController {
         carbsProgressBar.transform = CGAffineTransform(scaleX: 1, y: 2)
         fatsProgressBar.transform = CGAffineTransform(scaleX: 1, y: 2)
 
-        proteinProgressBar.progress = Float(MomCareUser.shared.diet.plan.currentProteinIntake) / Float(MomCareUser.shared.diet.plan.proteinGoal!)
+        guard let plan = MomCareUser.shared.user?.plan else { return }
+
+        proteinProgressBar.progress = Float(plan.currentProteinIntake) / Float(plan.proteinGoal!)
         proteinProgressLabel.text = createProgressText(for: "protein")
 
-        carbsProgressBar.progress = Float(MomCareUser.shared.diet.plan.currentCarbsIntake) / Float(MomCareUser.shared.diet.plan.carbsGoal!)
+        carbsProgressBar.progress = Float(plan.currentCarbsIntake) / Float(plan.carbsGoal!)
         carbsProgressLabel.text = createProgressText(for: "carbs")
 
-        fatsProgressBar.progress = Float(MomCareUser.shared.diet.plan.currentFatIntake) / Float(MomCareUser.shared.diet.plan.fatGoal!)
+        fatsProgressBar.progress = Float(plan.currentFatIntake) / Float(plan.fatGoal!)
         fatsProgressLabel.text = createProgressText(for: "fats")
     }
 
     private func createProgressText(for macronutrients: String) -> String {
+        guard let plan = MomCareUser.shared.user?.plan else { fatalError() }
         switch macronutrients {
         case "protein":
-            return "\(MomCareUser.shared.diet.plan.currentProteinIntake)/\(MomCareUser.shared.diet.plan.proteinGoal!)g"
+            return "\(plan.currentProteinIntake)/\(plan.proteinGoal!)g"
         case "carbs":
-            return "\(MomCareUser.shared.diet.plan.currentCarbsIntake)/\(MomCareUser.shared.diet.plan.carbsGoal!)g"
+            return "\(plan.currentCarbsIntake)/\(plan.carbsGoal!)g"
         case "fats":
-            return "\(MomCareUser.shared.diet.plan.currentFatIntake)/\(MomCareUser.shared.diet.plan.fatGoal!)g"
+            return "\(plan.currentFatIntake)/\(plan.fatGoal!)g"
         default:
             return ""
         }

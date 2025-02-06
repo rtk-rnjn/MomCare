@@ -7,28 +7,60 @@
 
 import UIKit
 import CoreImage
+import AVFoundation
+import AVKit
 
 class PlayerViewController: UIViewController {
 
     // MARK: Internal
+
+    var audioPlayer: AVAudioPlayer!
+    var currentSongIndex: Int = 0
+    var playbackTimer: Timer?
 
     // MARK: - OUTLETS
     @IBOutlet var playerImageView: UIImageView!
     @IBOutlet var songTitleLabel: UILabel!
     @IBOutlet var songArtistLabel: UILabel!
     @IBOutlet var songDurationLabel: UILabel!
+    @IBOutlet var audioSlider: UISlider!
+    @IBOutlet var playPauseButton: UIButton!
+    @IBOutlet var repeatButton: UIButton!
+    @IBOutlet var currentSongDuration: UILabel!
 
     var song: Song?
     let gradientLayer: CAGradientLayer = .init()
+    var isPlaying = false
 
     override func viewDidLoad() {
         super.viewDidLoad()
         prepareSelectedSong()
+        loadCurrentSong()
+
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(sliderTapped(_:)))
+        audioSlider.addGestureRecognizer(tapGesture)
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         updateView()
+        playPauseButton.setImage(UIImage(systemName: "pause.circle.fill"), for: .normal)
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        playbackTimer?.invalidate()
+        playbackTimer = nil
+    }
+
+    @objc func sliderTapped(_ gesture: UITapGestureRecognizer) {
+        let point = gesture.location(in: audioSlider)
+        let percentage = point.x / audioSlider.bounds.width
+        let newTime = Double(percentage) * audioPlayer.duration
+
+        // Set audio player time and slider value
+        audioPlayer.currentTime = newTime
+        audioSlider.value = Float(newTime)
     }
 
     func updateGradientBackground(with color: UIColor) {
@@ -51,6 +83,98 @@ class PlayerViewController: UIViewController {
         if let dominantColor = songImage.dominantColor() {
             updateGradientBackground(with: dominantColor)
         }
+    }
+
+    // MARK: AVPLAYER SECTION
+    func loadCurrentSong() {
+        playbackTimer?.invalidate()
+        playbackTimer = nil
+
+        guard let audioData = NSDataAsset(name: mp3Songs[currentSongIndex])?.data else {
+            print("Audio file not found: \(mp3Songs[currentSongIndex])")
+            return
+        }
+
+        do {
+            audioPlayer = try AVAudioPlayer(data: audioData)
+            audioPlayer.prepareToPlay()
+            audioPlayer.play()
+        } catch {
+            print("Error initializing player: \(error.localizedDescription)")
+        }
+
+        setupSlider()
+    }
+
+    @IBAction func playPauseTapped(_ sender: UIButton) {
+        if audioPlayer.isPlaying {
+            audioPlayer.pause()
+            sender.setImage(UIImage(systemName: "play.circle.fill"), for: .normal)
+        } else {
+            audioPlayer.play()
+            sender.setImage(UIImage(systemName: "pause.circle.fill"), for: .normal)
+        }
+
+    }
+
+    @IBAction func forwardTapped(_ sender: UIButton) {
+        currentSongIndex = (currentSongIndex + 1) % mp3Songs.count
+        audioPlayer.stop() // Stop current playback
+
+        playbackTimer?.invalidate()
+        playbackTimer = nil
+        setupSlider()
+
+        loadCurrentSong()
+        updateView()
+        playPauseButton.setImage(UIImage(systemName: "pause.circle.fill"), for: .normal) // Update UI
+    }
+
+    @IBAction func backwardTapped(_ sender: UIButton) {
+        currentSongIndex = (currentSongIndex - 1 + mp3Songs.count) % mp3Songs.count
+        audioPlayer.stop() // Stop current playback
+
+        playbackTimer?.invalidate()
+        playbackTimer = nil
+        setupSlider()
+
+        loadCurrentSong()
+        updateView()
+        playPauseButton.setImage(UIImage(systemName: "pause.circle.fill"), for: .normal) // Update UI
+    }
+
+    @IBAction func repeatTapped(_ sender: UIButton) {
+        audioPlayer.numberOfLoops = audioPlayer.numberOfLoops == 0 ? -1 : 0
+        let imageName = audioPlayer.numberOfLoops == -1 ? "repeat.circle.fill" : "repeat.circle"
+        sender.setImage(UIImage(systemName: imageName), for: .normal)
+    }
+
+    func setupSlider() {
+        audioSlider.minimumValue = 0
+        audioSlider.maximumValue = Float(audioPlayer.duration)
+
+        playbackTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] _ in
+            guard let self else { return }
+
+            audioSlider.value = Float(audioPlayer.currentTime)
+
+            // Update the duration label
+            currentSongDuration.text = formatTime(audioPlayer.currentTime)
+        }
+    }
+
+    func formatTime(_ time: TimeInterval) -> String {
+        let minutes = Int(time) / 60
+        let seconds = Int(time) % 60
+        return String(format: "%02d:%02d", minutes, seconds)
+    }
+
+    @IBAction func sliderValueChanged(_ sender: UISlider) {
+        audioPlayer.currentTime = TimeInterval(sender.value)
+    }
+
+    @objc func songDidFinish() {
+        playPauseButton.setImage(UIImage(systemName: "play.circle.fill"), for: .normal)
     }
 
     // MARK: Private
