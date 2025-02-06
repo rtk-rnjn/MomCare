@@ -8,9 +8,11 @@
 
 /* Begin PBXBuildFile section */
 		053290F42D40AEC000295E58 /* FSCalendar in Frameworks */ = {isa = PBXBuildFile; productRef = 053290F32D40AEC000295E58 /* FSCalendar */; };
-		05E4F29D2D53792B00CEB41E /* MongoSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 05E4F29C2D53792B00CEB41E /* MongoSwift */; };
-		05E4F29F2D53792B00CEB41E /* MongoSwiftSync in Frameworks */ = {isa = PBXBuildFile; productRef = 05E4F29E2D53792B00CEB41E /* MongoSwiftSync */; };
 		05E7F9672D37748E00F4D81E /* .swiftlint.yml in Resources */ = {isa = PBXBuildFile; fileRef = 05E7F9662D37748300F4D81E /* .swiftlint.yml */; };
+		F55FB8A92D53D91400088C0D /* Meow in Frameworks */ = {isa = PBXBuildFile; productRef = F55FB8A82D53D91400088C0D /* Meow */; };
+		F55FB8AB2D53D91400088C0D /* MongoClient in Frameworks */ = {isa = PBXBuildFile; productRef = F55FB8AA2D53D91400088C0D /* MongoClient */; };
+		F55FB8AD2D53D91400088C0D /* MongoCore in Frameworks */ = {isa = PBXBuildFile; productRef = F55FB8AC2D53D91400088C0D /* MongoCore */; };
+		F55FB8AF2D53D91400088C0D /* MongoKitten in Frameworks */ = {isa = PBXBuildFile; productRef = F55FB8AE2D53D91400088C0D /* MongoKitten */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -49,9 +51,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F55FB8AB2D53D91400088C0D /* MongoClient in Frameworks */,
+				F55FB8AF2D53D91400088C0D /* MongoKitten in Frameworks */,
+				F55FB8A92D53D91400088C0D /* Meow in Frameworks */,
+				F55FB8AD2D53D91400088C0D /* MongoCore in Frameworks */,
 				053290F42D40AEC000295E58 /* FSCalendar in Frameworks */,
-				05E4F29D2D53792B00CEB41E /* MongoSwift in Frameworks */,
-				05E4F29F2D53792B00CEB41E /* MongoSwiftSync in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -98,8 +102,10 @@
 			name = MomCare;
 			packageProductDependencies = (
 				053290F32D40AEC000295E58 /* FSCalendar */,
-				05E4F29C2D53792B00CEB41E /* MongoSwift */,
-				05E4F29E2D53792B00CEB41E /* MongoSwiftSync */,
+				F55FB8A82D53D91400088C0D /* Meow */,
+				F55FB8AA2D53D91400088C0D /* MongoClient */,
+				F55FB8AC2D53D91400088C0D /* MongoCore */,
+				F55FB8AE2D53D91400088C0D /* MongoKitten */,
 			);
 			productName = MomCare;
 			productReference = 059C467D2D30D12400B4A15A /* MomCare.app */;
@@ -131,7 +137,7 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				053290F22D40AEC000295E58 /* XCRemoteSwiftPackageReference "FSCalendar" */,
-				05E4F29B2D53792B00CEB41E /* XCRemoteSwiftPackageReference "mongo-swift-driver" */,
+				F55FB8A72D53D91400088C0D /* XCRemoteSwiftPackageReference "MongoKitten" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 059C467E2D30D12400B4A15A /* Products */;
@@ -172,24 +178,32 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 6C5J9S87D2;
+				DEVELOPMENT_TEAM = "";
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = MomCare/Info.plist;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.medical";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				MACOSX_DEPLOYMENT_TARGET = 15.0;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = in.Team5Vision.MomCare.gu;
+				PRODUCT_BUNDLE_IDENTIFIER = com.MomCare.TeamVision;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				REGISTER_APP_GROUPS = NO;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -200,24 +214,32 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 6C5J9S87D2;
+				DEVELOPMENT_TEAM = "";
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = MomCare/Info.plist;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.medical";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				MACOSX_DEPLOYMENT_TARGET = 15.0;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = in.Team5Vision.MomCare.gu;
+				PRODUCT_BUNDLE_IDENTIFIER = com.MomCare.TeamVision;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				REGISTER_APP_GROUPS = NO;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
@@ -372,12 +394,12 @@
 				minimumVersion = 2.8.4;
 			};
 		};
-		05E4F29B2D53792B00CEB41E /* XCRemoteSwiftPackageReference "mongo-swift-driver" */ = {
+		F55FB8A72D53D91400088C0D /* XCRemoteSwiftPackageReference "MongoKitten" */ = {
 			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/mongodb/mongo-swift-driver";
+			repositoryURL = "https://github.com/orlandos-nl/MongoKitten";
 			requirement = {
-				branch = main;
-				kind = branch;
+				kind = upToNextMajorVersion;
+				minimumVersion = 7.9.8;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
@@ -388,15 +410,25 @@
 			package = 053290F22D40AEC000295E58 /* XCRemoteSwiftPackageReference "FSCalendar" */;
 			productName = FSCalendar;
 		};
-		05E4F29C2D53792B00CEB41E /* MongoSwift */ = {
+		F55FB8A82D53D91400088C0D /* Meow */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 05E4F29B2D53792B00CEB41E /* XCRemoteSwiftPackageReference "mongo-swift-driver" */;
-			productName = MongoSwift;
+			package = F55FB8A72D53D91400088C0D /* XCRemoteSwiftPackageReference "MongoKitten" */;
+			productName = Meow;
 		};
-		05E4F29E2D53792B00CEB41E /* MongoSwiftSync */ = {
+		F55FB8AA2D53D91400088C0D /* MongoClient */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 05E4F29B2D53792B00CEB41E /* XCRemoteSwiftPackageReference "mongo-swift-driver" */;
-			productName = MongoSwiftSync;
+			package = F55FB8A72D53D91400088C0D /* XCRemoteSwiftPackageReference "MongoKitten" */;
+			productName = MongoClient;
+		};
+		F55FB8AC2D53D91400088C0D /* MongoCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = F55FB8A72D53D91400088C0D /* XCRemoteSwiftPackageReference "MongoKitten" */;
+			productName = MongoCore;
+		};
+		F55FB8AE2D53D91400088C0D /* MongoKitten */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = F55FB8A72D53D91400088C0D /* XCRemoteSwiftPackageReference "MongoKitten" */;
+			productName = MongoKitten;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
