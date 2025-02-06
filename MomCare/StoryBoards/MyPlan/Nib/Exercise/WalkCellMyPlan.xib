@@ -38,17 +38,17 @@
                         <color key="tintColor" red="0.25882352941176467" green="0.25882352941176467" blue="0.25882352941176467" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                     </progressView>
                     <stackView opaque="NO" contentMode="scaleToFill" distribution="equalCentering" spacing="186" translatesAutoresizingMaskIntoConstraints="NO" id="i0G-2b-6MN">
-                        <rect key="frame" x="20" y="50.666666666666664" width="319" height="20.333333333333336"/>
+                        <rect key="frame" x="20" y="53" width="319" height="18"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="376 Steps" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="giz-Qg-uGU">
-                                <rect key="frame" x="0.0" y="0.0" width="81" height="20.333333333333332"/>
-                                <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
+                                <rect key="frame" x="0.0" y="0.0" width="70" height="18"/>
+                                <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1,000" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hRT-nl-lgo">
-                                <rect key="frame" x="274.33333333333331" y="0.0" width="44.666666666666686" height="20.333333333333332"/>
-                                <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
+                                <rect key="frame" x="281.33333333333331" y="0.0" width="37.666666666666686" height="18"/>
+                                <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
