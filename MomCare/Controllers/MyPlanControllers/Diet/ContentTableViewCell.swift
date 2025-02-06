@@ -37,13 +37,13 @@ class ContentTableViewCell: UITableViewCell {
         switch indexPath?.section {
         // fix: cases <Int> should be replaced with MealType enum cases
         case 0:
-            consumed = MomCareUser.shared.diet.markFoodAsConsumed(foodItem!, in: MealType.breakfast)
+            consumed = MomCareUser.shared.markFoodAsConsumed(foodItem!, in: MealType.breakfast)
         case 1:
-            consumed = MomCareUser.shared.diet.markFoodAsConsumed(foodItem!, in: MealType.lunch)
+            consumed = MomCareUser.shared.markFoodAsConsumed(foodItem!, in: MealType.lunch)
         case 2:
-            consumed = MomCareUser.shared.diet.markFoodAsConsumed(foodItem!, in: MealType.snacks)
+            consumed = MomCareUser.shared.markFoodAsConsumed(foodItem!, in: MealType.snacks)
         case 3:
-            consumed = MomCareUser.shared.diet.markFoodAsConsumed(foodItem!, in: MealType.dinner)
+            consumed = MomCareUser.shared.markFoodAsConsumed(foodItem!, in: MealType.dinner)
         default:
             fatalError()
         }

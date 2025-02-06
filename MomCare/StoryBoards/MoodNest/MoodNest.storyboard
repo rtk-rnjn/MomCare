@@ -386,11 +386,15 @@
                                                 <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                                 <color key="minimumTrackTintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <color key="maximumTrackTintColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <color key="thumbTintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <connections>
+                                                    <action selector="sliderValueChanged:" destination="WLQ-WE-HTY" eventType="valueChanged" id="001-f2-lGK"/>
+                                                </connections>
                                             </slider>
                                             <stackView opaque="NO" contentMode="scaleToFill" spacing="270" translatesAutoresizingMaskIntoConstraints="NO" id="SCQ-CK-Kfu">
                                                 <rect key="frame" x="0.0" y="30.000000000000004" width="353" height="15.666666666666668"/>
                                                 <subviews>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="1:30" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kIb-35-nxT">
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="0:00" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kIb-35-nxT">
                                                         <rect key="frame" x="0.0" y="0.0" width="57.666666666666664" height="15.666666666666666"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                                         <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -427,6 +431,9 @@
                                                             <preferredSymbolConfiguration key="preferredSymbolConfigurationForImage" configurationType="pointSize" pointSize="20"/>
                                                             <color key="baseForegroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         </buttonConfiguration>
+                                                        <connections>
+                                                            <action selector="backwardTapped:" destination="WLQ-WE-HTY" eventType="touchUpInside" id="pB2-te-U9g"/>
+                                                        </connections>
                                                     </button>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wng-i7-M1r">
                                                         <rect key="frame" x="57.333333333333329" y="0.0" width="52.666666666666671" height="52.666666666666664"/>
@@ -439,6 +446,9 @@
                                                             <directionalEdgeInsets key="contentInsets" top="0.0" leading="0.0" bottom="0.0" trailing="0.0"/>
                                                             <color key="baseForegroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         </buttonConfiguration>
+                                                        <connections>
+                                                            <action selector="playPauseTapped:" destination="WLQ-WE-HTY" eventType="touchUpInside" id="e3J-bs-qsp"/>
+                                                        </connections>
                                                     </button>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZNH-Lu-um5">
                                                         <rect key="frame" x="113.99999999999999" y="0.0" width="53.333333333333329" height="52.666666666666664"/>
@@ -447,6 +457,9 @@
                                                             <preferredSymbolConfiguration key="preferredSymbolConfigurationForImage" configurationType="pointSize" pointSize="20"/>
                                                             <color key="baseForegroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         </buttonConfiguration>
+                                                        <connections>
+                                                            <action selector="forwardTapped:" destination="WLQ-WE-HTY" eventType="touchUpInside" id="e4M-Gh-0Lo"/>
+                                                        </connections>
                                                     </button>
                                                 </subviews>
                                             </stackView>
@@ -457,6 +470,9 @@
                                                     <preferredSymbolConfiguration key="preferredSymbolConfigurationForImage" configurationType="pointSize" pointSize="20"/>
                                                     <color key="baseForegroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 </buttonConfiguration>
+                                                <connections>
+                                                    <action selector="repeatTapped:" destination="WLQ-WE-HTY" eventType="touchUpInside" id="aSm-7d-mHF"/>
+                                                </connections>
                                             </button>
                                         </subviews>
                                     </stackView>
@@ -499,7 +515,11 @@
                         </userDefinedRuntimeAttribute>
                     </userDefinedRuntimeAttributes>
                     <connections>
+                        <outlet property="audioSlider" destination="RTe-jn-uhd" id="f8C-DN-jKm"/>
+                        <outlet property="currentSongDuration" destination="kIb-35-nxT" id="dz9-vc-d3N"/>
+                        <outlet property="playPauseButton" destination="wng-i7-M1r" id="khc-xj-p4G"/>
                         <outlet property="playerImageView" destination="ffI-4g-Pbr" id="FTh-Zr-kQ9"/>
+                        <outlet property="repeatButton" destination="WW4-kj-dvS" id="1ei-LL-P2y"/>
                         <outlet property="songArtistLabel" destination="cQb-az-aB2" id="CnN-WR-CLH"/>
                         <outlet property="songDurationLabel" destination="LEN-LM-XRi" id="xLj-YK-Y21"/>
                         <outlet property="songTitleLabel" destination="ytK-KI-POo" id="pnx-yl-CKV"/>

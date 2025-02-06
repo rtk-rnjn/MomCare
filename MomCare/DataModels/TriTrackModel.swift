@@ -37,7 +37,7 @@ struct TriTrackSymptom: Codable {
     var atTime: Date
 }
 
-struct TrimesterData {
+struct TrimesterData: Codable {
     let trimesterNumber: Int
     let weekNumber: Int
     let dayNumber: Int
