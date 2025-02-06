@@ -23,8 +23,7 @@ class ExerciseViewController: UIViewController, UICollectionViewDelegate, UIColl
 
         exerciseCollectionView.delegate = self
         exerciseCollectionView.dataSource = self
-        
-        
+
     }
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
@@ -51,7 +50,7 @@ class ExerciseViewController: UIViewController, UICollectionViewDelegate, UIColl
 
         if indexPath.item == 0 {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ExerciseDate", for: indexPath) as? ExerciseDateCellCollectionViewCell
-            
+
             guard let cell else { fatalError() }
             cell.prepareViewRings()
 //            cell.setupRing()
@@ -87,6 +86,5 @@ class ExerciseViewController: UIViewController, UICollectionViewDelegate, UIColl
             }
         }
     }
-    
-}
 
+}
