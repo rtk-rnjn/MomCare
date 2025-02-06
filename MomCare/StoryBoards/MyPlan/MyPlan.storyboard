@@ -346,6 +346,25 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <view hidden="YES" alpha="0.40000000000000002" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="UsF-bs-bxj">
+                                <rect key="frame" x="132" y="288" width="128" height="128"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </view>
+                            <view hidden="YES" clipsSubviews="YES" contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="8FU-qJ-N12">
+                                <rect key="frame" x="46" y="252" width="300" height="200"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="300" id="0FI-Of-wpZ"/>
+                                    <constraint firstAttribute="height" constant="200" id="9WA-Yo-yNo"/>
+                                </constraints>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                        <integer key="value" value="12"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="layer.maskToBounds" value="YES"/>
+                                </userDefinedRuntimeAttributes>
+                            </view>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="Yt9-o6-ItS">
                                 <rect key="frame" x="0.0" y="53" width="393" height="652"/>
                                 <color key="backgroundColor" red="0.89777654409999996" green="0.83144223689999996" blue="0.82744789119999995" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
@@ -386,7 +405,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Rnh-hu-bAn" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4985" y="418"/>
+            <point key="canvasLocation" x="4983.9694656488546" y="417.95774647887328"/>
         </scene>
         <!--BreathingPlayer-->
         <scene sceneID="bNb-s2-oPK">

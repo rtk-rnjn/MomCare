@@ -7,12 +7,15 @@
 
 import UIKit
 
-class ExerciseViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
-
+class ExerciseViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, NewExerciseMyPlanCellDelegate {
+    func didTapInfoButton() {
+        showInfoCard()
+    }
+    
     var exercises: Int = 5
 
     @IBOutlet var exerciseCollectionView: UICollectionView!
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         exerciseCollectionView.register(UINib(nibName: "ExerciseDateCell", bundle: nil), forCellWithReuseIdentifier: "ExerciseDate")
@@ -57,10 +60,12 @@ class ExerciseViewController: UIViewController, UICollectionViewDelegate, UIColl
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell2", for: indexPath) as? NewExerciseMyPlanCellCollectionViewCell
             guard let cell else { fatalError("error aa gaya gys") }
 
+            cell.delegate = self
             cell.updateElements(with: segueHandler)
             return cell
         }
     }
+    
 
     func segueHandler() {
         performSegue(withIdentifier: "segueShowBreathingPlayer", sender: nil)
@@ -80,4 +85,18 @@ class ExerciseViewController: UIViewController, UICollectionViewDelegate, UIColl
             }
         }
     }
+    
+    func showInfoCard() {
+            dimmedBackgroundView.isHidden = false
+            cardView.isHidden = false
+
+            dimmedBackgroundView.alpha = 0
+            cardView.transform = CGAffineTransform(scaleX: 0.8, y: 0.8)
+
+            UIView.animate(withDuration: 0.3, animations: {
+                self.dimmedBackgroundView.alpha = 1
+                self.cardView.transform = .identity
+            })
+    }
 }
+

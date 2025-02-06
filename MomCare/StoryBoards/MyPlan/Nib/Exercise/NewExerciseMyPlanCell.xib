@@ -13,7 +13,7 @@
         <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="j7w-9J-cDZ" customClass="NewExerciseMyPlanCellCollectionViewCell" customModule="MomCare" customModuleProvider="target">
             <rect key="frame" x="0.0" y="0.0" width="359" height="170"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-            <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="JTZ-Un-ujN">
+            <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="JTZ-Un-ujN" customClass="NewExerciseMyPlanCellCollectionViewCell" customModule="MomCare" customModuleProvider="target">
                 <rect key="frame" x="0.0" y="0.0" width="359" height="170"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
@@ -127,6 +127,7 @@
                 <outlet property="exerciseName" destination="mjp-wH-cYy" id="AUM-IV-vlj"/>
                 <outlet property="exerciseStartButton" destination="A0q-ws-QUv" id="rdu-at-ovA"/>
                 <outlet property="exerciseTime" destination="aQA-b1-cOt" id="AIN-8Y-5tr"/>
+                <outlet property="infoButton" destination="kPS-5A-zx9" id="rmN-S8-rxR"/>
             </connections>
             <point key="canvasLocation" x="307" y="-39"/>
         </collectionViewCell>
