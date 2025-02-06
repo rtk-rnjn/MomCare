@@ -31,13 +31,13 @@ class HeaderTableViewCell: UITableViewCell {
     @IBAction func mealHeaderButtonTapped(_ sender: UIButton) {
         switch section {
         case 0:
-            MomCareUser.shared.diet.markFoodsAsConsumed(in: .breakfast)
+            MomCareUser.shared.markFoodsAsConsumed(in: .breakfast)
         case 1:
-            MomCareUser.shared.diet.markFoodsAsConsumed(in: .lunch)
+            MomCareUser.shared.markFoodsAsConsumed(in: .lunch)
         case 2:
-            MomCareUser.shared.diet.markFoodsAsConsumed(in: .snacks)
+            MomCareUser.shared.markFoodsAsConsumed(in: .snacks)
         case 3:
-            MomCareUser.shared.diet.markFoodsAsConsumed(in: .dinner)
+            MomCareUser.shared.markFoodsAsConsumed(in: .dinner)
         default:
             fatalError("pyar is khubsooaat cheez hai")
         }

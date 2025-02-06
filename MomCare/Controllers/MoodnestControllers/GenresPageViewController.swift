@@ -87,7 +87,7 @@ class GenresPageViewController: UIViewController, UICollectionViewDataSource, UI
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "MainImage", for: indexPath) as? MainImageCollectionViewCell
             guard let cell else { fatalError("'MainImage' me dikkat hai") }
 
-            let playlist = FeaturedPlaylists.playlists[indexPath.row]
+            let playlist = SampleFeaturedPlaylists.playlists[indexPath.row]
             cell.updateElements(with: playlist)
             cell.layer.cornerRadius = 20
 
@@ -97,7 +97,7 @@ class GenresPageViewController: UIViewController, UICollectionViewDataSource, UI
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "MoodNestMultipleImages", for: indexPath) as? MoodNestMultipleImagesCollectionViewCell
             guard let cell else { fatalError("'MoodNestMultipleImages' me dikkat hai") }
 
-            let playlist = FeaturedPlaylists.playlists[indexPath.row]
+            let playlist = SampleFeaturedPlaylists.playlists[indexPath.row]
             cell.updateElements(with: playlist)
             cell.layer.cornerRadius = 20
 
@@ -190,7 +190,7 @@ class GenresPageViewController: UIViewController, UICollectionViewDataSource, UI
     }
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let selectedPlaylist = FeaturedPlaylists.playlists[indexPath.item]
+        let selectedPlaylist = SampleFeaturedPlaylists.playlists[indexPath.item]
         performSegue(withIdentifier: "segueShowSongPageViewController", sender: selectedPlaylist)
     }
 

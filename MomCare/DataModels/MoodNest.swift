@@ -5,21 +5,11 @@
 import Foundation
 import UIKit
 
-struct Mood {
-    let imageName: String
-    let type: MoodType
-
-    var image: UIImage? {
-        return UIImage(named: imageName)
-    }
-
-}
-
-struct Song {
-    let name: String
-    let artist: String
-    let duration: TimeInterval
-    let imageName: String
+struct Song: Codable {
+    var name: String
+    var artist: String
+    var duration: TimeInterval
+    var imageName: String
     var isPlaying: Bool = false
 
     var image: UIImage? {
@@ -28,27 +18,21 @@ struct Song {
 
 }
 
-struct Playlist {
-    let imageName: String
-    let name: String
-    let songs: [Song]
+struct Playlist: Codable {
+    var id: UUID = .init()
+
+    var imageName: String
+    var name: String
+    var songs: [Song]
+
+    var forMood: MoodType?
 
     var image: UIImage? {
         return UIImage(named: imageName)
     }
-
 }
 
-class AllMoods {
-    static var moods: [Mood] = [
-        Mood(imageName: "Happy", type: .happy),
-        Mood(imageName: "Sad", type: .sad),
-        Mood(imageName: "Stressed", type: .stressed),
-        Mood(imageName: "Angry", type: .angry)
-    ]
-}
-
-class FeaturedPlaylists {
+enum SampleFeaturedPlaylists {
     static var playlists: [Playlist] = [
         Playlist(
             imageName: "Lofi",
@@ -122,7 +106,6 @@ class FeaturedPlaylists {
                 Song(name: "Native American Flute Music", artist: "R. Carlos Nakai", duration: 240.0, imageName: "native-american-flute-music")
             ]
         )
-
     ]
 }
 

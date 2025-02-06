@@ -57,12 +57,12 @@ class SignUpTableViewController: UITableViewController {
         }
 
         let user = User(
-            firstName: firstNameField.text ?? "",
+            firstName: firstNameField.text!,
             lastName: lastNameField.text,
-            emailAddress: emailField.text ?? "",
-            password: passwordField.text ?? "",
+            emailAddress: emailField.text!,
+            password: passwordField.text!,
             countryCode: countryCodeField.text ?? "+91",
-            phoneNumber: mobileNumberField.text ?? ""
+            phoneNumber: mobileNumberField.text!
         )
 
         let userCreated = MomCareUser.shared.createNewUser(user)

@@ -30,11 +30,14 @@ class DietProgressCollectionViewCell: UICollectionViewCell {
 
     var tapHandler: (() -> Void)?
 
-    func updateElements(with dietProgress: UserDiet, tapHandler: (() -> Void)?) {
-        currentKcalLabel.text = "\(dietProgress.plan.currentCaloriesIntake)"
-        caloriesGoalLabel.text = "/ \(dietProgress.plan.caloriesGoal!) kcal"
+    func updateElements(with plan: MyPlan?, tapHandler: (() -> Void)?) {
+        self.tapHandler = tapHandler
+        
+        guard let plan else { fatalError("yeh shaam mastaani, madhosh kiye jaaye 🎶") }
+        currentKcalLabel.text = "\(plan.currentCaloriesIntake)"
+        caloriesGoalLabel.text = "/ \(plan.caloriesGoal!) kcal"
 
-        let progress = Float(dietProgress.plan.currentCaloriesIntake) / Float(dietProgress.plan.caloriesGoal!)
+        let progress = Float(plan.currentCaloriesIntake) / Float(plan.caloriesGoal!)
         progressBar.progress = progress
         percentageLabel.text = "\(Int(progress * 100))%"
 
