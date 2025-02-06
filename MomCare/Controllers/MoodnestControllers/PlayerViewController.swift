@@ -14,6 +14,7 @@ class PlayerViewController: UIViewController {
 
     var audioPlayer: AVAudioPlayer!
     var currentSongIndex: Int = 0
+    var playbackTimer: Timer?
 
     // MARK: - OUTLETS
     @IBOutlet var playerImageView: UIImageView!
@@ -23,14 +24,29 @@ class PlayerViewController: UIViewController {
     @IBOutlet var audioSlider: UISlider!
     @IBOutlet var playPauseButton: UIButton!
     @IBOutlet var repeatButton: UIButton!
-
+    @IBOutlet var currentSongDuration: UILabel!
+    
     var song: Song?
     let gradientLayer: CAGradientLayer = .init()
+    var isPlaying = false
 
     override func viewDidLoad() {
         super.viewDidLoad()
         prepareSelectedSong()
         loadCurrentSong()
+        
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(sliderTapped(_:)))
+        audioSlider.addGestureRecognizer(tapGesture)
+    }
+    
+    @objc func sliderTapped(_ gesture: UITapGestureRecognizer) {
+        let point = gesture.location(in: audioSlider)
+        let percentage = point.x / audioSlider.bounds.width
+        let newTime = Double(percentage) * audioPlayer.duration
+        
+        // Set audio player time and slider value
+        audioPlayer.currentTime = newTime
+        audioSlider.value = Float(newTime)
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -84,6 +100,9 @@ class PlayerViewController: UIViewController {
 
     // MARK: AVPLAYER SECTION
     func loadCurrentSong() {
+        playbackTimer?.invalidate()
+        playbackTimer = nil
+        
         guard let audioData = NSDataAsset(name: mp3Songs[currentSongIndex])?.data else {
             print("Audio file not found: \(mp3Songs[currentSongIndex])")
             return
@@ -108,18 +127,33 @@ class PlayerViewController: UIViewController {
             audioPlayer.play()
             sender.setImage(UIImage(systemName: "pause.circle.fill"), for: .normal)
         }
+        
     }
 
     @IBAction func forwardTapped(_ sender: UIButton) {
         currentSongIndex = (currentSongIndex + 1) % mp3Songs.count
+        audioPlayer.stop() // Stop current playback
+        
+        playbackTimer?.invalidate()
+        playbackTimer = nil
+        setupSlider()
+        
         loadCurrentSong()
         updateView()
+        playPauseButton.setImage(UIImage(systemName: "pause.circle.fill"), for: .normal) // Update UI
     }
 
     @IBAction func backwardTapped(_ sender: UIButton) {
         currentSongIndex = (currentSongIndex - 1 + mp3Songs.count) % mp3Songs.count
+        audioPlayer.stop() // Stop current playback
+        
+        playbackTimer?.invalidate()
+        playbackTimer = nil
+        setupSlider()
+        
         loadCurrentSong()
         updateView()
+        playPauseButton.setImage(UIImage(systemName: "pause.circle.fill"), for: .normal) // Update UI
     }
 
     @IBAction func repeatTapped(_ sender: UIButton) {
@@ -131,14 +165,36 @@ class PlayerViewController: UIViewController {
     func setupSlider() {
         audioSlider.minimumValue = 0
         audioSlider.maximumValue = Float(audioPlayer.duration)
-
-        Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { _ in
+        
+        playbackTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] timer in
+            guard let self = self else { return }
+            
             self.audioSlider.value = Float(self.audioPlayer.currentTime)
+            
+            // Update the duration label
+            self.currentSongDuration.text = self.formatTime(self.audioPlayer.currentTime)
         }
+    }
+    
+    func formatTime(_ time: TimeInterval) -> String {
+        let minutes = Int(time) / 60
+        let seconds = Int(time) % 60
+        return String(format: "%02d:%02d", minutes, seconds)
     }
 
     @IBAction func sliderValueChanged(_ sender: UISlider) {
         audioPlayer.currentTime = TimeInterval(sender.value)
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        playbackTimer?.invalidate()
+        playbackTimer = nil
+    }
+    
+    
+    @objc func songDidFinish() {
+        playPauseButton.setImage(UIImage(systemName: "play.circle.fill"), for: .normal)
     }
 
 }

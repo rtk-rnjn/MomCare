@@ -386,6 +386,7 @@
                                                 <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                                 <color key="minimumTrackTintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <color key="maximumTrackTintColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <color key="thumbTintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <connections>
                                                     <action selector="sliderValueChanged:" destination="WLQ-WE-HTY" eventType="valueChanged" id="001-f2-lGK"/>
                                                 </connections>
@@ -515,6 +516,7 @@
                     </userDefinedRuntimeAttributes>
                     <connections>
                         <outlet property="audioSlider" destination="RTe-jn-uhd" id="f8C-DN-jKm"/>
+                        <outlet property="currentSongDuration" destination="kIb-35-nxT" id="dz9-vc-d3N"/>
                         <outlet property="playPauseButton" destination="wng-i7-M1r" id="khc-xj-p4G"/>
                         <outlet property="playerImageView" destination="ffI-4g-Pbr" id="FTh-Zr-kQ9"/>
                         <outlet property="repeatButton" destination="WW4-kj-dvS" id="1ei-LL-P2y"/>
@@ -708,13 +710,13 @@
         <image name="repeat" catalog="system" width="128" height="98"/>
         <image name="shuffle" catalog="system" width="128" height="95"/>
         <systemColor name="opaqueSeparatorColor">
-            <color red="0.77647058820000003" green="0.77647058820000003" blue="0.7843137255" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.77647058823529413" green="0.77647058823529413" blue="0.78431372549019607" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
         <systemColor name="systemGrayColor">
-            <color red="0.5568627451" green="0.5568627451" blue="0.57647058819999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.55686274509803924" green="0.55686274509803924" blue="0.57647058823529407" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>
