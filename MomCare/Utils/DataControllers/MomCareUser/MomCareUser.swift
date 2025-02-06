@@ -21,8 +21,9 @@ class MomCareUser {
     // MARK: Internal
 
     static var shared: MomCareUser = .init()
+
     var user: User?
-    
+
     var meals: [MealType: [FoodItem]] = [
         .breakfast: [
             FoodItem(name: "Moong Dal Cheela", imageName: "moong-dal-cheela", calories: 120, protein: 8, carbs: 15, fat: 2),
@@ -47,12 +48,10 @@ class MomCareUser {
         user?.mood = mood
     }
 
-    func updateToDatabase() {
-    }
+    func updateToDatabase() {}
 
     // MARK: Private
 
-    private func updateFromDatabase() {
-    }
+    private func updateFromDatabase() {}
 
 }

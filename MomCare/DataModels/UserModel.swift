@@ -61,6 +61,22 @@ struct Mood: Codable {
 }
 
 struct User: Codable {
+    enum CodingKeys: String, CodingKey {
+        case id
+        case firstName = "first_name"
+        case lastName = "last_name"
+        case emailAddress = "email_address"
+        case password
+        case countryCode = "country_code"
+        case country
+        case phoneNumber = "phone_number"
+        case medicalData = "medical_data"
+        case mood
+        case plan
+        case exercises
+        case history
+    }
+
     var id: UUID = .init()
     var firstName: String
     var lastName: String?
@@ -80,45 +96,22 @@ struct User: Codable {
         return fullName.trimmingCharacters(in: .whitespaces)
     }
 
-    enum CodingKeys: String, CodingKey {
-        case id
-        case firstName = "first_name"
-        case lastName = "last_name"
-        case emailAddress = "email_address"
-        case password
-        case countryCode = "country_code"
-        case country
-        case phoneNumber = "phone_number"
-        case medicalData = "medical_data"
-        case mood
-        case plan
-        case exercises
-        case history
-    }
 }
 
 struct History: Codable {
-    var date: Date = .init()
-    var plan: MyPlan?
-    var exercises: [Exercise] = []
-
     enum CodingKeys: String, CodingKey {
         case date
         case plan
         case exercises
     }
+
+    var date: Date = .init()
+    var plan: MyPlan?
+    var exercises: [Exercise] = []
+
 }
 
 struct UserMedical: Codable {
-    var dateOfBirth: Date
-    var height: Double
-    var prePregnancyWeight: Double
-    var currentWeight: Double
-    var dueDate: Date?
-    var preExistingConditions: [PreExistingCondition] = []
-    var foodIntolerances: [Intolerance] = []
-    var dietaryPreferences: [DietaryPreference] = []
-
     enum CodingKeys: String, CodingKey {
         case dateOfBirth = "date_of_birth"
         case height
@@ -129,5 +122,14 @@ struct UserMedical: Codable {
         case foodIntolerances = "food_intolerances"
         case dietaryPreferences = "dietary_preferences"
     }
-}
 
+    var dateOfBirth: Date
+    var height: Double
+    var prePregnancyWeight: Double
+    var currentWeight: Double
+    var dueDate: Date?
+    var preExistingConditions: [PreExistingCondition] = []
+    var foodIntolerances: [Intolerance] = []
+    var dietaryPreferences: [DietaryPreference] = []
+
+}

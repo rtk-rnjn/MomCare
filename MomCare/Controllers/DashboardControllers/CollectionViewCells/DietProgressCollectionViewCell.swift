@@ -32,7 +32,7 @@ class DietProgressCollectionViewCell: UICollectionViewCell {
 
     func updateElements(with plan: MyPlan?, tapHandler: (() -> Void)?) {
         self.tapHandler = tapHandler
-        
+
         guard let plan else { return }
         currentKcalLabel.text = "\(plan.currentCaloriesIntake)"
         caloriesGoalLabel.text = "/ \(plan.caloriesGoal!) kcal"

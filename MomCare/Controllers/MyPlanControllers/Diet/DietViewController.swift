@@ -75,7 +75,7 @@ class DietViewController: UIViewController {
         proteinProgressBar.transform = CGAffineTransform(scaleX: 1, y: 2)
         carbsProgressBar.transform = CGAffineTransform(scaleX: 1, y: 2)
         fatsProgressBar.transform = CGAffineTransform(scaleX: 1, y: 2)
-        
+
         guard let plan = MomCareUser.shared.user?.plan else { return }
 
         proteinProgressBar.progress = Float(plan.currentProteinIntake) / Float(plan.proteinGoal!)

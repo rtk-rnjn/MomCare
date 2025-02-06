@@ -1,5 +1,5 @@
 //
-//  MyPlanModel.swift
+//  MyPlan.swift
 //  MomCare
 //
 //  Created by Ritik Ranjan on 13/01/25.
@@ -27,6 +27,17 @@ enum Difficulty: String, Codable {
 }
 
 struct FoodItem: Codable {
+    enum CodingKeys: String, CodingKey {
+        case id
+        case name
+        case imageName = "image_name"
+        case calories
+        case protein
+        case carbs
+        case fat
+        case consumed
+    }
+
     var id: UUID = .init()
     let name: String
     let imageName: String
@@ -40,30 +51,9 @@ struct FoodItem: Codable {
         return UIImage(named: imageName)
     }
 
-    enum CodingKeys: String, CodingKey {
-        case id
-        case name
-        case imageName = "image_name"
-        case calories
-        case protein
-        case carbs
-        case fat
-        case consumed
-    }
 }
 
-
 struct MyPlan: Codable {
-    let caloriesGoal: Int?
-    let proteinGoal: Int?
-    let carbsGoal: Int?
-    let fatGoal: Int?
-
-    var currentCaloriesIntake: Int = 0
-    var currentProteinIntake: Int = 0
-    var currentCarbsIntake: Int = 0
-    var currentFatIntake: Int = 0
-
     enum CodingKeys: String, CodingKey {
         case caloriesGoal = "calories_goal"
         case proteinGoal = "protein_goal"
@@ -74,10 +64,30 @@ struct MyPlan: Codable {
         case currentCarbsIntake = "current_carbs_intake"
         case currentFatIntake = "current_fat_intake"
     }
+
+    let caloriesGoal: Int?
+    let proteinGoal: Int?
+    let carbsGoal: Int?
+    let fatGoal: Int?
+
+    var currentCaloriesIntake: Int = 0
+    var currentProteinIntake: Int = 0
+    var currentCarbsIntake: Int = 0
+    var currentFatIntake: Int = 0
+
 }
 
-
 struct Exercise: Codable {
+    enum CodingKeys: String, CodingKey {
+        case exerciseType = "exercise_type"
+        case duration
+        case description
+        case tags
+        case level
+        case exerciseImageName = "exercise_image_name"
+        case durationCompleted = "duration_completed"
+    }
+
     let exerciseType: ExerciseType
     let duration: TimeInterval
     let description: String
@@ -94,15 +104,6 @@ struct Exercise: Codable {
         return UIImage(named: exerciseImageName)
     }
 
-    enum CodingKeys: String, CodingKey {
-        case exerciseType = "exercise_type"
-        case duration
-        case description
-        case tags
-        case level
-        case exerciseImageName = "exercise_image_name"
-        case durationCompleted = "duration_completed"
-    }
 }
 
 // MARK: Sample Data

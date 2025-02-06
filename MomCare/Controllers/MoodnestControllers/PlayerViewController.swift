@@ -12,6 +12,8 @@ import AVKit
 
 class PlayerViewController: UIViewController {
 
+    // MARK: Internal
+
     var audioPlayer: AVAudioPlayer!
     var currentSongIndex: Int = 0
     var playbackTimer: Timer?
@@ -25,7 +27,7 @@ class PlayerViewController: UIViewController {
     @IBOutlet var playPauseButton: UIButton!
     @IBOutlet var repeatButton: UIButton!
     @IBOutlet var currentSongDuration: UILabel!
-    
+
     var song: Song?
     let gradientLayer: CAGradientLayer = .init()
     var isPlaying = false
@@ -34,25 +36,31 @@ class PlayerViewController: UIViewController {
         super.viewDidLoad()
         prepareSelectedSong()
         loadCurrentSong()
-        
+
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(sliderTapped(_:)))
         audioSlider.addGestureRecognizer(tapGesture)
-    }
-    
-    @objc func sliderTapped(_ gesture: UITapGestureRecognizer) {
-        let point = gesture.location(in: audioSlider)
-        let percentage = point.x / audioSlider.bounds.width
-        let newTime = Double(percentage) * audioPlayer.duration
-        
-        // Set audio player time and slider value
-        audioPlayer.currentTime = newTime
-        audioSlider.value = Float(newTime)
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         updateView()
         playPauseButton.setImage(UIImage(systemName: "pause.circle.fill"), for: .normal)
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        playbackTimer?.invalidate()
+        playbackTimer = nil
+    }
+
+    @objc func sliderTapped(_ gesture: UITapGestureRecognizer) {
+        let point = gesture.location(in: audioSlider)
+        let percentage = point.x / audioSlider.bounds.width
+        let newTime = Double(percentage) * audioPlayer.duration
+
+        // Set audio player time and slider value
+        audioPlayer.currentTime = newTime
+        audioSlider.value = Float(newTime)
     }
 
     func updateGradientBackground(with color: UIColor) {
@@ -77,32 +85,11 @@ class PlayerViewController: UIViewController {
         }
     }
 
-    // MARK: Private
-
-    private func prepareSelectedSong() {
-        let navController = navigationController as? SongPagePlayerNavigationController
-        guard let navController else { return }
-        song = navController.selectedSong
-    }
-
-    private func updateView() {
-        updateUIForNewSong(songImage: song?.image)
-        playerImageView.image = song?.image
-        songTitleLabel.text = song?.name
-        songArtistLabel.text = song?.artist
-
-        let seconds = Int(song?.duration ?? 0)
-        let minutes = seconds / 60
-        let remainingSeconds = seconds % 60
-        let durationString = String(format: "%02d:%02d", minutes, remainingSeconds)
-        songDurationLabel.text = durationString
-    }
-
     // MARK: AVPLAYER SECTION
     func loadCurrentSong() {
         playbackTimer?.invalidate()
         playbackTimer = nil
-        
+
         guard let audioData = NSDataAsset(name: mp3Songs[currentSongIndex])?.data else {
             print("Audio file not found: \(mp3Songs[currentSongIndex])")
             return
@@ -127,17 +114,17 @@ class PlayerViewController: UIViewController {
             audioPlayer.play()
             sender.setImage(UIImage(systemName: "pause.circle.fill"), for: .normal)
         }
-        
+
     }
 
     @IBAction func forwardTapped(_ sender: UIButton) {
         currentSongIndex = (currentSongIndex + 1) % mp3Songs.count
         audioPlayer.stop() // Stop current playback
-        
+
         playbackTimer?.invalidate()
         playbackTimer = nil
         setupSlider()
-        
+
         loadCurrentSong()
         updateView()
         playPauseButton.setImage(UIImage(systemName: "pause.circle.fill"), for: .normal) // Update UI
@@ -146,11 +133,11 @@ class PlayerViewController: UIViewController {
     @IBAction func backwardTapped(_ sender: UIButton) {
         currentSongIndex = (currentSongIndex - 1 + mp3Songs.count) % mp3Songs.count
         audioPlayer.stop() // Stop current playback
-        
+
         playbackTimer?.invalidate()
         playbackTimer = nil
         setupSlider()
-        
+
         loadCurrentSong()
         updateView()
         playPauseButton.setImage(UIImage(systemName: "pause.circle.fill"), for: .normal) // Update UI
@@ -165,17 +152,17 @@ class PlayerViewController: UIViewController {
     func setupSlider() {
         audioSlider.minimumValue = 0
         audioSlider.maximumValue = Float(audioPlayer.duration)
-        
-        playbackTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] timer in
-            guard let self = self else { return }
-            
-            self.audioSlider.value = Float(self.audioPlayer.currentTime)
-            
+
+        playbackTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] _ in
+            guard let self else { return }
+
+            audioSlider.value = Float(audioPlayer.currentTime)
+
             // Update the duration label
-            self.currentSongDuration.text = self.formatTime(self.audioPlayer.currentTime)
+            currentSongDuration.text = formatTime(audioPlayer.currentTime)
         }
     }
-    
+
     func formatTime(_ time: TimeInterval) -> String {
         let minutes = Int(time) / 60
         let seconds = Int(time) % 60
@@ -185,16 +172,30 @@ class PlayerViewController: UIViewController {
     @IBAction func sliderValueChanged(_ sender: UISlider) {
         audioPlayer.currentTime = TimeInterval(sender.value)
     }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        playbackTimer?.invalidate()
-        playbackTimer = nil
-    }
-    
-    
+
     @objc func songDidFinish() {
         playPauseButton.setImage(UIImage(systemName: "play.circle.fill"), for: .normal)
+    }
+
+    // MARK: Private
+
+    private func prepareSelectedSong() {
+        let navController = navigationController as? SongPagePlayerNavigationController
+        guard let navController else { return }
+        song = navController.selectedSong
+    }
+
+    private func updateView() {
+        updateUIForNewSong(songImage: song?.image)
+        playerImageView.image = song?.image
+        songTitleLabel.text = song?.name
+        songArtistLabel.text = song?.artist
+
+        let seconds = Int(song?.duration ?? 0)
+        let minutes = seconds / 60
+        let remainingSeconds = seconds % 60
+        let durationString = String(format: "%02d:%02d", minutes, remainingSeconds)
+        songDurationLabel.text = durationString
     }
 
 }
