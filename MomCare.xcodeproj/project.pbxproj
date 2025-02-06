@@ -9,10 +9,6 @@
 /* Begin PBXBuildFile section */
 		053290F42D40AEC000295E58 /* FSCalendar in Frameworks */ = {isa = PBXBuildFile; productRef = 053290F32D40AEC000295E58 /* FSCalendar */; };
 		05E7F9672D37748E00F4D81E /* .swiftlint.yml in Resources */ = {isa = PBXBuildFile; fileRef = 05E7F9662D37748300F4D81E /* .swiftlint.yml */; };
-		F55FB8A92D53D91400088C0D /* Meow in Frameworks */ = {isa = PBXBuildFile; productRef = F55FB8A82D53D91400088C0D /* Meow */; };
-		F55FB8AB2D53D91400088C0D /* MongoClient in Frameworks */ = {isa = PBXBuildFile; productRef = F55FB8AA2D53D91400088C0D /* MongoClient */; };
-		F55FB8AD2D53D91400088C0D /* MongoCore in Frameworks */ = {isa = PBXBuildFile; productRef = F55FB8AC2D53D91400088C0D /* MongoCore */; };
-		F55FB8AF2D53D91400088C0D /* MongoKitten in Frameworks */ = {isa = PBXBuildFile; productRef = F55FB8AE2D53D91400088C0D /* MongoKitten */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -51,10 +47,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F55FB8AB2D53D91400088C0D /* MongoClient in Frameworks */,
-				F55FB8AF2D53D91400088C0D /* MongoKitten in Frameworks */,
-				F55FB8A92D53D91400088C0D /* Meow in Frameworks */,
-				F55FB8AD2D53D91400088C0D /* MongoCore in Frameworks */,
 				053290F42D40AEC000295E58 /* FSCalendar in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -102,10 +94,6 @@
 			name = MomCare;
 			packageProductDependencies = (
 				053290F32D40AEC000295E58 /* FSCalendar */,
-				F55FB8A82D53D91400088C0D /* Meow */,
-				F55FB8AA2D53D91400088C0D /* MongoClient */,
-				F55FB8AC2D53D91400088C0D /* MongoCore */,
-				F55FB8AE2D53D91400088C0D /* MongoKitten */,
 			);
 			productName = MomCare;
 			productReference = 059C467D2D30D12400B4A15A /* MomCare.app */;
@@ -137,7 +125,6 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				053290F22D40AEC000295E58 /* XCRemoteSwiftPackageReference "FSCalendar" */,
-				F55FB8A72D53D91400088C0D /* XCRemoteSwiftPackageReference "MongoKitten" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 059C467E2D30D12400B4A15A /* Products */;
@@ -394,14 +381,6 @@
 				minimumVersion = 2.8.4;
 			};
 		};
-		F55FB8A72D53D91400088C0D /* XCRemoteSwiftPackageReference "MongoKitten" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/orlandos-nl/MongoKitten";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 7.9.8;
-			};
-		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -409,26 +388,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 053290F22D40AEC000295E58 /* XCRemoteSwiftPackageReference "FSCalendar" */;
 			productName = FSCalendar;
-		};
-		F55FB8A82D53D91400088C0D /* Meow */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = F55FB8A72D53D91400088C0D /* XCRemoteSwiftPackageReference "MongoKitten" */;
-			productName = Meow;
-		};
-		F55FB8AA2D53D91400088C0D /* MongoClient */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = F55FB8A72D53D91400088C0D /* XCRemoteSwiftPackageReference "MongoKitten" */;
-			productName = MongoClient;
-		};
-		F55FB8AC2D53D91400088C0D /* MongoCore */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = F55FB8A72D53D91400088C0D /* XCRemoteSwiftPackageReference "MongoKitten" */;
-			productName = MongoCore;
-		};
-		F55FB8AE2D53D91400088C0D /* MongoKitten */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = F55FB8A72D53D91400088C0D /* XCRemoteSwiftPackageReference "MongoKitten" */;
-			productName = MongoKitten;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

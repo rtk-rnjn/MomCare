@@ -27,21 +27,6 @@ enum Difficulty: String, Codable {
 }
 
 struct FoodItem: Codable {
-
-    // MARK: Lifecycle
-
-    init(name: String, imageName: String, calories: Int, protein: Int, carbs: Int, fat: Int) {
-        self.name = name
-
-        self.imageName = imageName
-        self.calories = calories
-        self.protein = protein
-        self.carbs = carbs
-        self.fat = fat
-    }
-
-    // MARK: Internal
-
     var id: UUID = .init()
     let name: String
     let imageName: String
@@ -49,14 +34,24 @@ struct FoodItem: Codable {
     var protein: Int = 0
     var carbs: Int = 0
     var fat: Int = 0
-
     var consumed: Bool = false
 
     var image: UIImage? {
         return UIImage(named: imageName)
     }
 
+    enum CodingKeys: String, CodingKey {
+        case id
+        case name
+        case imageName = "image_name"
+        case calories
+        case protein
+        case carbs
+        case fat
+        case consumed
+    }
 }
+
 
 struct MyPlan: Codable {
     let caloriesGoal: Int?
@@ -68,26 +63,45 @@ struct MyPlan: Codable {
     var currentProteinIntake: Int = 0
     var currentCarbsIntake: Int = 0
     var currentFatIntake: Int = 0
+
+    enum CodingKeys: String, CodingKey {
+        case caloriesGoal = "calories_goal"
+        case proteinGoal = "protein_goal"
+        case carbsGoal = "carbs_goal"
+        case fatGoal = "fat_goal"
+        case currentCaloriesIntake = "current_calories_intake"
+        case currentProteinIntake = "current_protein_intake"
+        case currentCarbsIntake = "current_carbs_intake"
+        case currentFatIntake = "current_fat_intake"
+    }
 }
+
 
 struct Exercise: Codable {
     let exerciseType: ExerciseType
-
     let duration: TimeInterval
     let description: String
-
     let tags: [String]
     var level: Difficulty = .beginner
-
     var exerciseImageName: String
     var durationCompleted: TimeInterval = 0
-    
+
     var completed: Bool {
         return durationCompleted >= duration - 1
     }
 
     var exerciseImage: UIImage? {
         return UIImage(named: exerciseImageName)
+    }
+
+    enum CodingKeys: String, CodingKey {
+        case exerciseType = "exercise_type"
+        case duration
+        case description
+        case tags
+        case level
+        case exerciseImageName = "exercise_image_name"
+        case durationCompleted = "duration_completed"
     }
 }
 
