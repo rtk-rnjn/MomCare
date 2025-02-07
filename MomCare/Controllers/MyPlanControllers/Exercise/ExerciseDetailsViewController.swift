@@ -8,26 +8,34 @@
 import UIKit
 
 class ExerciseDetailsViewController: UIViewController {
-    private var rootViewController: UIViewController?
+
+    // MARK: Lifecycle
 
     init(rootViewController: UIViewController) {
         super.init(nibName: "ExerciseDetailsViewController", bundle: nil)
-        self.modalPresentationStyle = .overCurrentContext
-        self.modalTransitionStyle = .crossDissolve
-        
+        modalPresentationStyle = .overCurrentContext
+        modalTransitionStyle = .crossDissolve
+
         self.rootViewController = rootViewController
     }
-    
+
     required init?(coder: NSCoder) {
         super.init(coder: coder)
     }
-    
+
+    // MARK: Internal
+
     // https://rohittamkhane.medium.com/create-a-custom-alert-controller-in-swift-ef5d715839f5
     func show() {
         rootViewController?.present(self, animated: true, completion: nil)
     }
 
     @IBAction func crossButtonTapped(_ sender: UIButton) {
-        self.dismiss(animated: true)
+        dismiss(animated: true)
     }
+
+    // MARK: Private
+
+    private var rootViewController: UIViewController?
+
 }

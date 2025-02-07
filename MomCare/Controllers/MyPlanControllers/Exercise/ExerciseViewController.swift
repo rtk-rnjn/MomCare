@@ -7,7 +7,6 @@
 
 import UIKit
 
-
 class ExerciseViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
 
     var exercises: Int = 5
@@ -72,7 +71,7 @@ class ExerciseViewController: UIViewController, UICollectionViewDelegate, UIColl
     func segueHandler() {
         performSegue(withIdentifier: "segueShowBreathingPlayer", sender: nil)
     }
-    
+
     func popUpHandler() {
         ExerciseDetailsViewController(rootViewController: self).show()
     }

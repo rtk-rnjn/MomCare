@@ -29,11 +29,11 @@ class ExerciseCollectionViewCell: UICollectionViewCell {
         segueHandler = handler
         self.popUpHandler = popUpHandler
     }
-    
+
     @IBAction func infoButtonTapped(_ sender: UIButton) {
         if let popUpHandler {
             popUpHandler()
         }
     }
-    
+
 }
