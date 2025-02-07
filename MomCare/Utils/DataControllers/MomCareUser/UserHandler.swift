@@ -7,43 +7,40 @@
 
 import Foundation
 
+struct CreateResponse: Codable {
+    enum CodingKeys: String, CodingKey {
+        case success
+        case insertedId = "inserted_id"
+    }
+
+    var success: Bool
+    var insertedId: String
+
+}
+
 extension MomCareUser {
-    func createNewUser(_ user: User) -> Bool {
-        if MomCareUser.userExists(user) {
-            return false
-        }
-
-        self.user = user
-
-        saveUser(user)
-        return true
-    }
-
-    func saveUser(_ user: User) {
-        if let encoded = try? JSONEncoder().encode(user) {
-            UserDefaults.standard.set(encoded, forKey: "User")
+    func saveUserToUserDefaults(user: User) {
+        let encoder = JSONEncoder()
+        if let encoded = try? encoder.encode(user) {
+            UserDefaults.standard.set(encoded, forKey: "savedUser")
         }
     }
 
-    func getCurrentUser() -> User? {
-        guard let currentUser = user,
-              let userData = UserDefaults.standard.data(forKey: "User"),
-              let savedUser = try? JSONDecoder().decode(User.self, from: userData),
-              currentUser.id == savedUser.id else {
-            return nil
+    func retrieveUserFromUserDefaults() -> User? {
+        if let savedUserData = UserDefaults.standard.data(forKey: "savedUser") {
+            let decoder = JSONDecoder()
+            if let user = try? decoder.decode(User.self, from: savedUserData) {
+                return user
+            }
         }
-
-        user = savedUser
-        return savedUser
+        return nil
     }
 
-    static func userExists(_ user: User) -> Bool {
-        // TODO: Implement this method
-        return false
-    }
+    func createNewUser(_ user: User) async -> Bool {
+        let response: CreateResponse? = await MiddlewareManager.shared.post(url: "/user/create", body: user.toData()!)
+        let status = response?.success ?? false
 
-    func updateUser(with medicalData: UserMedical) {
-        user?.medicalData = medicalData
-        saveUser(user!)
+        Utils.save(key: "mongoUserID", value: response?.insertedId ?? "nil")
+        return status
     }
 }

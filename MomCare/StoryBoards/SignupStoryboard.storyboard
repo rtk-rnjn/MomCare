@@ -264,7 +264,6 @@
                                                     </buttonConfiguration>
                                                     <connections>
                                                         <action selector="createButtonTapped:" destination="9Xi-l9-W8d" eventType="touchUpInside" id="vAz-Yq-l2H"/>
-                                                        <segue destination="j28-Ag-RMC" kind="show" id="xeP-lZ-Pil"/>
                                                     </connections>
                                                 </button>
                                             </subviews>
@@ -296,6 +295,7 @@
                         <outlet property="mobileNumberField" destination="UNi-7g-NYP" id="6f9-5M-msE"/>
                         <outlet property="passwordField" destination="Klb-XY-Bus" id="dl3-35-yDd"/>
                         <segue destination="51c-gM-3lN" kind="presentation" identifier="segueShowPickerViewController" destinationCreationSelector="segueViaCountryCodeField:" id="zf3-jg-5xd"/>
+                        <segue destination="j28-Ag-RMC" kind="show" identifier="segueShowSignUpDetailsTableViewController" id="ZAM-aH-W8N"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Qu1-YN-pUw" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -1129,7 +1129,7 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="ASP-Ya-WHl"/>
+        <segue reference="zf3-jg-5xd"/>
     </inferredMetricsTieBreakers>
     <resources>
         <image name="chevron.right" catalog="system" width="97" height="128"/>

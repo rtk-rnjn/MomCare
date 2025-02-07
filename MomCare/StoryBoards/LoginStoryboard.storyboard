@@ -10,7 +10,7 @@
         <!--Sign In-->
         <scene sceneID="oJy-qO-djG">
             <objects>
-                <tableViewController id="qip-ZC-N5Y" sceneMemberID="viewController">
+                <tableViewController id="qip-ZC-N5Y" customClass="LoginTableViewController" customModule="MomCare" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="insetGrouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" estimatedSectionHeaderHeight="-1" sectionFooterHeight="18" estimatedSectionFooterHeight="-1" id="0dT-Pb-RBp">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -32,7 +32,12 @@
                                                         <constraint firstAttribute="height" constant="50" id="bN7-DB-d0Z"/>
                                                     </constraints>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                    <textInputTraits key="textInputTraits"/>
+                                                    <textInputTraits key="textInputTraits" textContentType="email"/>
+                                                    <connections>
+                                                        <action selector="textFieldChanged:" destination="qip-ZC-N5Y" eventType="editingDidEnd" id="12b-5N-QtF"/>
+                                                        <action selector="textFieldChanged:" destination="qip-ZC-N5Y" eventType="valueChanged" id="83s-CS-j7V"/>
+                                                        <action selector="textFieldChanged:" destination="qip-ZC-N5Y" eventType="editingChanged" id="VR4-B2-ele"/>
+                                                    </connections>
                                                 </textField>
                                             </subviews>
                                             <color key="backgroundColor" systemColor="systemGray6Color"/>
@@ -58,7 +63,12 @@
                                                         <constraint firstAttribute="height" constant="50" id="1JB-De-aKm"/>
                                                     </constraints>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                    <textInputTraits key="textInputTraits"/>
+                                                    <textInputTraits key="textInputTraits" secureTextEntry="YES" textContentType="password"/>
+                                                    <connections>
+                                                        <action selector="textFieldChanged:" destination="qip-ZC-N5Y" eventType="editingChanged" id="PTG-iE-wwd"/>
+                                                        <action selector="textFieldChanged:" destination="qip-ZC-N5Y" eventType="valueChanged" id="lbj-Om-jGT"/>
+                                                        <action selector="textFieldChanged:" destination="qip-ZC-N5Y" eventType="editingDidEnd" id="rvs-LA-3P2"/>
+                                                    </connections>
                                                 </textField>
                                             </subviews>
                                             <color key="backgroundColor" systemColor="systemGray6Color"/>
@@ -93,6 +103,7 @@
                                                         <color key="baseBackgroundColor" red="0.57254904510000004" green="0.26274511220000002" blue="0.31372550129999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                                     </buttonConfiguration>
                                                     <connections>
+                                                        <action selector="signInButtonTapped:" destination="qip-ZC-N5Y" eventType="touchUpInside" id="AKD-TX-LCV"/>
                                                         <segue destination="GoU-9m-MW7" kind="show" id="AGz-CH-R2Z"/>
                                                     </connections>
                                                 </button>
@@ -114,6 +125,11 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Sign In" id="YGu-mh-JFY"/>
+                    <connections>
+                        <outlet property="emailAddressField" destination="4aN-5q-s6Z" id="qRQ-me-Pbn"/>
+                        <outlet property="passwordField" destination="OXr-LO-gII" id="ydo-lw-2h5"/>
+                        <outlet property="signInButton" destination="vEu-gR-LYK" id="VCL-f6-BSu"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Us5-TY-eOA" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
