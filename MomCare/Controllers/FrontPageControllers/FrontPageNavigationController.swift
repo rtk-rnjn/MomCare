@@ -7,5 +7,4 @@
 
 import UIKit
 
-class FrontPageNavigationController: UINavigationController {
-}
+class FrontPageNavigationController: UINavigationController {}

@@ -9,6 +9,8 @@ import UIKit
 
 class SignUpTableViewController: UITableViewController {
 
+    // MARK: Internal
+
     var activityIndicator: UIActivityIndicatorView?
 
     @IBOutlet var createButton: UIButton!
@@ -72,7 +74,7 @@ class SignUpTableViewController: UITableViewController {
             }
             var userCreated = false
             userCreated = await MomCareUser.shared.createNewUser(user)
-            
+
             DispatchQueue.main.async {
                 self.hideActivityIndicator()
                 if !userCreated {
@@ -116,7 +118,7 @@ class SignUpTableViewController: UITableViewController {
         let alert = Utils.getAlert(type: .ok, title: title, message: message)
         present(alert, animated: true)
     }
-    
+
     private func showActivityIndicator() {
         activityIndicator = UIActivityIndicatorView(style: .large)
         activityIndicator?.center = view.center
@@ -124,7 +126,7 @@ class SignUpTableViewController: UITableViewController {
         activityIndicator?.hidesWhenStopped = true
         view.addSubview(activityIndicator!)
     }
-    
+
     private func hideActivityIndicator() {
         activityIndicator?.stopAnimating()
         activityIndicator?.removeFromSuperview()

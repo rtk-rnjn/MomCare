@@ -8,13 +8,14 @@
 import Foundation
 
 struct CreateResponse: Codable {
-    var success: Bool
-    var insertedId: String
-    
     enum CodingKeys: String, CodingKey {
         case success
         case insertedId = "inserted_id"
     }
+
+    var success: Bool
+    var insertedId: String
+
 }
 
 extension MomCareUser {
@@ -34,11 +35,11 @@ extension MomCareUser {
         }
         return nil
     }
-    
+
     func createNewUser(_ user: User) async -> Bool {
         let response: CreateResponse? = await MiddlewareManager.shared.post(url: "/user/create", body: user.toData()!)
         let status = response?.success ?? false
-        
+
         Utils.save(key: "mongoUserID", value: response?.insertedId ?? "nil")
         return status
     }

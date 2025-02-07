@@ -8,15 +8,15 @@
 import Foundation
 
 struct UpdateResponse: Codable {
-    var success: Bool
-    var modifiedCount: String
-    
     enum CodingKeys: String, CodingKey {
         case success
         case modifiedCount = "modified_count"
     }
-}
 
+    var success: Bool
+    var modifiedCount: String
+
+}
 
 class MomCareUser {
 
@@ -57,9 +57,9 @@ class MomCareUser {
     }
 
     func updateToDatabase() {
-        guard let user = self.user else { return }
+        guard let user else { return }
         saveUserToUserDefaults(user: user)
-        
+
         Task {
             var _: UpdateResponse? = await MiddlewareManager.shared.put(url: "/user/update", body: user.toData()!)
         }
@@ -72,13 +72,13 @@ class MomCareUser {
 
         Task {
             if let cachedUser {
-                self.user = await MiddlewareManager.shared.get(url: "/user/fetch", queryParameters: ["email": cachedUser.emailAddress, "password":  cachedUser.password])
+                self.user = await MiddlewareManager.shared.get(url: "/user/fetch", queryParameters: ["email": cachedUser.emailAddress, "password": cachedUser.password])
             }
-            
+
             if mongoId != "nil" {
                 self.user = await MiddlewareManager.shared.get(url: "/user/fetch/\(mongoId)")
             }
-            
+
             print(self.user as Any)
         }
     }

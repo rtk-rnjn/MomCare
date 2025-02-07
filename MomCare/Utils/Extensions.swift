@@ -64,7 +64,7 @@ extension Encodable {
 
         return try? JSONSerialization.jsonObject(with: data, options: .allowFragments) as? [String: Any]
     }
-    
+
     func toData(keyEncodingStrategy: JSONEncoder.KeyEncodingStrategy = .convertToSnakeCase) -> Data? {
         let encoder = JSONEncoder()
         encoder.keyEncodingStrategy = keyEncodingStrategy
