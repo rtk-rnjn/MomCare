@@ -2,7 +2,11 @@
 
 A personalized prenatal care app designed for expecting mothers. Offers health plans, milestone tracking, and expert tips to ensure a smooth journey through pregnancy. 
 
-# Development is in progress 🚀
+## Development is in progress 🚀
+
+## Backend
+
+The Backend for this app is available at [**MomCare Backend**](https://github.com/rtk-rnjn/MomCare-Backend). The backend is under development. API endpoints and Models are available [**here**](http://13.233.139.216:8000/redoc).
 
 ## Recent activity ![Time period](https://images.repography.com/25054784/rtk-rnjn/MomCare/recent-activity/7pj0ZqdNQI3fROBoBipr-5-QATc_sSUbZAQyVLrFoos/8N3eB2LP6qp1cqWRZeGQU1qqTnKEoitYLEzF1nJqYis_badge.svg)
 [![Timeline graph](https://images.repography.com/25054784/rtk-rnjn/MomCare/recent-activity/7pj0ZqdNQI3fROBoBipr-5-QATc_sSUbZAQyVLrFoos/8N3eB2LP6qp1cqWRZeGQU1qqTnKEoitYLEzF1nJqYis_timeline.svg)](https://github.com/rtk-rnjn/MomCare/commits)
@@ -10,4 +14,10 @@ A personalized prenatal care app designed for expecting mothers. Offers health p
 
 ## Top contributors
 [![Top contributors](https://images.repography.com/25054784/rtk-rnjn/MomCare/top-contributors/7pj0ZqdNQI3fROBoBipr-5-QATc_sSUbZAQyVLrFoos/8N3eB2LP6qp1cqWRZeGQU1qqTnKEoitYLEzF1nJqYis_table.svg)](https://github.com/rtk-rnjn/MomCare/graphs/contributors)
+
+---
+
+## Lead Maintainers
+
+This project is maintained by iSDP Students at Galgotias University.
 

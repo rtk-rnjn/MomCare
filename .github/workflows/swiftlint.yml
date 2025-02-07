@@ -2,9 +2,15 @@ name: SwiftLint
 
 on:
   push:
-    branches: [ "main" ]
+    branches:
+      - main
+    paths:
+      - "**/*.swift"
   pull_request:
-    branches: [ "main" ]
+    branches:
+      - main
+    paths:
+      - "**/*.swift"
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}

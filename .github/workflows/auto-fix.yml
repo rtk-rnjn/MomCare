@@ -1,9 +1,17 @@
 name: SwiftLint & SwiftFormat
 
 on:
+  push:
+    branches:
+      - main
+    paths:
+      - "**/*.swift"
+
   pull_request:
     branches:
       - main
+    paths:
+      - "**/*.swift"
 
 permissions:
   contents: write
