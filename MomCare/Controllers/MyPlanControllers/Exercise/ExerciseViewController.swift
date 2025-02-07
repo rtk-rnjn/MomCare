@@ -7,6 +7,7 @@
 
 import UIKit
 
+
 class ExerciseViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
 
     var exercises: Int = 5
@@ -16,8 +17,8 @@ class ExerciseViewController: UIViewController, UICollectionViewDelegate, UIColl
     override func viewDidLoad() {
         super.viewDidLoad()
         exerciseCollectionView.register(UINib(nibName: "ExerciseDateCell", bundle: nil), forCellWithReuseIdentifier: "ExerciseDate")
-        exerciseCollectionView.register(UINib(nibName: "WalkCellMyPlan", bundle: nil), forCellWithReuseIdentifier: "Cell1")
-        exerciseCollectionView.register(UINib(nibName: "NewExerciseMyPlanCell", bundle: nil), forCellWithReuseIdentifier: "Cell2")
+        exerciseCollectionView.register(UINib(nibName: "WalkCellMyPlan", bundle: nil), forCellWithReuseIdentifier: "WalkCellMyPlan")
+        exerciseCollectionView.register(UINib(nibName: "ExerciseCell", bundle: nil), forCellWithReuseIdentifier: "ExerciseCell")
 
         exerciseCollectionView.showsVerticalScrollIndicator = false
 
@@ -40,9 +41,7 @@ class ExerciseViewController: UIViewController, UICollectionViewDelegate, UIColl
     }
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-
-        return 2+exercises
-
+        return exercises + 2
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -51,13 +50,13 @@ class ExerciseViewController: UIViewController, UICollectionViewDelegate, UIColl
             return collectionView.dequeueReusableCell(withReuseIdentifier: "ExerciseDate", for: indexPath)
 
         } else if indexPath.item == 1 {
-            return collectionView.dequeueReusableCell(withReuseIdentifier: "Cell1", for: indexPath)
+            return collectionView.dequeueReusableCell(withReuseIdentifier: "WalkCellMyPlan", for: indexPath)
 
         } else {
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell2", for: indexPath) as? NewExerciseMyPlanCellCollectionViewCell
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ExerciseCell", for: indexPath) as? ExerciseCollectionViewCell
             guard let cell else { fatalError("error aa gaya gys") }
 
-            cell.updateElements(with: segueHandler)
+            cell.updateElements(segueHandler: segueHandler, popUpHandler: popUpHandler)
             return cell
         }
     }
@@ -65,9 +64,13 @@ class ExerciseViewController: UIViewController, UICollectionViewDelegate, UIColl
     func segueHandler() {
         performSegue(withIdentifier: "segueShowBreathingPlayer", sender: nil)
     }
+    
+    func popUpHandler() {
+        ExerciseDetailsViewController(rootViewController: self).show()
+    }
 
     func updateExerciseCardItems(buttonValue: String, completedPercent: Double) {
-        if let cell = exerciseCollectionView.cellForItem(at: IndexPath(item: 2, section: 0)) as? NewExerciseMyPlanCellCollectionViewCell {
+        if let cell = exerciseCollectionView.cellForItem(at: IndexPath(item: 2, section: 0)) as? ExerciseCollectionViewCell {
             cell.exerciseStartButton.setTitle(buttonValue, for: .normal)
             cell.exerciseCompletionPercentage.text = "\(Int(completedPercent))% completed"
         }
