@@ -7,20 +7,28 @@
 
 import Foundation
 
+struct UpdateResponse: Codable {
+    var success: Bool
+    var modifiedCount: String
+    
+    enum CodingKeys: String, CodingKey {
+        case success
+        case modifiedCount = "modified_count"
+    }
+}
+
+
 class MomCareUser {
 
     // MARK: Lifecycle
 
     private init() {
         updateFromDatabase()
-
-        // TODO: Remove this
-        _ = getCurrentUser()
     }
 
     // MARK: Internal
 
-    static var shared: MomCareUser = .init()
+    @MainActor static var shared: MomCareUser = .init()
 
     var user: User?
 
@@ -48,10 +56,31 @@ class MomCareUser {
         user?.mood = mood
     }
 
-    func updateToDatabase() {}
+    func updateToDatabase() {
+        guard let user = self.user else { return }
+        saveUserToUserDefaults(user: user)
+        
+        Task {
+            var _: UpdateResponse? = await MiddlewareManager.shared.put(url: "/user/update", body: user.toData()!)
+        }
+    }
 
-    // MARK: Private
+    func updateFromDatabase() {
+        let mongoId = Utils.get(key: "mongoUserID", defaultValue: "nil")
+        // We can't just use nil. cause the type of defaultvalue determines the type of the return value
+        let cachedUser = retrieveUserFromUserDefaults()
 
-    private func updateFromDatabase() {}
+        Task {
+            if let cachedUser {
+                self.user = await MiddlewareManager.shared.get(url: "/user/fetch", queryParameters: ["email": cachedUser.emailAddress, "password":  cachedUser.password])
+            }
+            
+            if mongoId != "nil" {
+                self.user = await MiddlewareManager.shared.get(url: "/user/fetch/\(mongoId)")
+            }
+            
+            print(self.user as Any)
+        }
+    }
 
 }

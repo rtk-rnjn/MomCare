@@ -9,7 +9,7 @@ import Foundation
 import UIKit
 
 enum Country: String, Codable {
-    case india
+    case india = "India"
 }
 
 enum PreExistingCondition: Codable {
@@ -77,7 +77,7 @@ struct User: Codable {
         case history
     }
 
-    var id: UUID = .init()
+    var id: String = UUID().uuidString
     var firstName: String
     var lastName: String?
     var emailAddress: String

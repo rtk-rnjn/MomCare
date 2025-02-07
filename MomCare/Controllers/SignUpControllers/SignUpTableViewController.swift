@@ -9,7 +9,7 @@ import UIKit
 
 class SignUpTableViewController: UITableViewController {
 
-    // MARK: Internal
+    var activityIndicator: UIActivityIndicatorView?
 
     @IBOutlet var createButton: UIButton!
 
@@ -54,6 +54,7 @@ class SignUpTableViewController: UITableViewController {
 
         if !errors.isEmpty {
             createErrorAlert(with: errors)
+            return
         }
 
         let user = User(
@@ -65,9 +66,21 @@ class SignUpTableViewController: UITableViewController {
             phoneNumber: mobileNumberField.text!
         )
 
-        let userCreated = MomCareUser.shared.createNewUser(user)
-        if !userCreated {
-            createErrorAlert(title: "User Creation Failed", message: "An error occurred while creating your account. Please try again.")
+        Task {
+            DispatchQueue.main.async {
+                self.showActivityIndicator()
+            }
+            var userCreated = false
+            userCreated = await MomCareUser.shared.createNewUser(user)
+            
+            DispatchQueue.main.async {
+                self.hideActivityIndicator()
+                if !userCreated {
+                    self.createErrorAlert(title: "User Creation Failed", message: "An error occurred while creating your account. Please try again.")
+                } else {
+                    self.performSegue(withIdentifier: "segueShowSignUpDetailsTableViewController", sender: nil)
+                }
+            }
         }
     }
 
@@ -102,6 +115,19 @@ class SignUpTableViewController: UITableViewController {
     private func createErrorAlert(title: String, message: String) {
         let alert = Utils.getAlert(type: .ok, title: title, message: message)
         present(alert, animated: true)
+    }
+    
+    private func showActivityIndicator() {
+        activityIndicator = UIActivityIndicatorView(style: .large)
+        activityIndicator?.center = view.center
+        activityIndicator?.startAnimating()
+        activityIndicator?.hidesWhenStopped = true
+        view.addSubview(activityIndicator!)
+    }
+    
+    private func hideActivityIndicator() {
+        activityIndicator?.stopAnimating()
+        activityIndicator?.removeFromSuperview()
     }
 
 }
