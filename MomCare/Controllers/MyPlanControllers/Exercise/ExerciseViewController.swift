@@ -56,7 +56,9 @@ class ExerciseViewController: UIViewController, UICollectionViewDelegate, UIColl
             return cell
 
         } else if indexPath.item == 1 {
-            return collectionView.dequeueReusableCell(withReuseIdentifier: "WalkCellMyPlan", for: indexPath)
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "WalkCellMyPlan", for: indexPath) as? WalkExerciseCollectionViewCell
+            guard let cell else { fatalError() }
+            return cell
 
         } else {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ExerciseCell", for: indexPath) as? ExerciseCollectionViewCell
