@@ -19,7 +19,7 @@ class LoginTableViewController: UITableViewController {
     }
 
     @IBAction func signInButtonTapped(_ sender: UIButton) {
-        // Try Login
+        performSegue(withIdentifier: "segueShowInitialTabBarController", sender: nil)
     }
 
     // MARK: Private

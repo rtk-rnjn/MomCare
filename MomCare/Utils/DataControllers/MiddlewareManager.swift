@@ -7,8 +7,8 @@
 
 import Foundation
 
-// private let endpoint = "http://13.233.139.216:8000"
-private let endpoint = "http://127.0.0.1:8000"
+ private let endpoint = "http://13.233.139.216:8000"
+//private let endpoint = "http://127.0.0.1:8000"
 
 class MiddlewareManager {
 
