@@ -33,7 +33,7 @@ struct Playlist: Codable, Sendable {
 }
 
 enum SampleFeaturedPlaylists {
-    static let playlists: [Playlist] = [
+    public static let playlists: [Playlist] = [
         Playlist(
             imageName: "Lofi",
             name: "Lo-fi",

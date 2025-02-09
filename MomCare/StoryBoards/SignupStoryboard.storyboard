@@ -1080,7 +1080,6 @@
                                                     </buttonConfiguration>
                                                     <connections>
                                                         <action selector="finishButtonTapped:" destination="8kZ-fK-sew" eventType="touchUpInside" id="p1h-08-spj"/>
-                                                        <segue destination="x6Q-s6-GCY" kind="show" identifier="segueShowInitialTabBarController" id="DEE-WW-Ooe"/>
                                                     </connections>
                                                 </button>
                                             </subviews>
@@ -1114,6 +1113,7 @@
                         <outlet property="secondRowCell" destination="mP2-Ho-nBd" id="fdl-6t-y1a"/>
                         <outlet property="weekPullDownButton" destination="eeg-LF-O2f" id="lAt-Si-HbZ"/>
                         <outlet property="weeksLabel" destination="AKS-mr-PJs" id="cby-nM-afq"/>
+                        <segue destination="x6Q-s6-GCY" kind="show" identifier="segueShowInitialTabBarController" id="JAW-qC-dcb"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="012-qh-L8t" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

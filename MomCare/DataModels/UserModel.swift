@@ -62,6 +62,7 @@ struct Mood: Codable {
 
 struct User: Codable, Sendable {
     enum CodingKeys: String, CodingKey {
+        case mongoId = "mongo_id" // oh my MongoDB
         case id
         case firstName = "first_name"
         case lastName = "last_name"
@@ -75,8 +76,11 @@ struct User: Codable, Sendable {
         case plan
         case exercises
         case history
+        case createdAt = "created_at"
+        case updatedAt = "updated_at"
     }
 
+    var mongoId: String?
     var id: String = UUID().uuidString
     var firstName: String
     var lastName: String?
@@ -90,6 +94,8 @@ struct User: Codable, Sendable {
     var plan: MyPlan?
     var exercises: [Exercise] = []
     var history: [History] = []
+    var createdAt: Date = .init()
+    var updatedAt: Date?
 
     var fullName: String {
         let fullName = "\(firstName) \(lastName ?? "")"

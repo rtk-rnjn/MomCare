@@ -105,7 +105,6 @@
                                                     </buttonConfiguration>
                                                     <connections>
                                                         <action selector="signInButtonTapped:" destination="qip-ZC-N5Y" eventType="touchUpInside" id="AKD-TX-LCV"/>
-                                                        <segue destination="GoU-9m-MW7" kind="show" identifier="segueShowInitialTabBarController" id="Oyh-8G-eWb"/>
                                                     </connections>
                                                 </button>
                                             </subviews>
@@ -130,6 +129,7 @@
                         <outlet property="emailAddressField" destination="4aN-5q-s6Z" id="qRQ-me-Pbn"/>
                         <outlet property="passwordField" destination="OXr-LO-gII" id="ydo-lw-2h5"/>
                         <outlet property="signInButton" destination="vEu-gR-LYK" id="VCL-f6-BSu"/>
+                        <segue destination="GoU-9m-MW7" kind="show" identifier="segueShowInitialTabBarController" id="Eel-jf-BRy"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Us5-TY-eOA" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

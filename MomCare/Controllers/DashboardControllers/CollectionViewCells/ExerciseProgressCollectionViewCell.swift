@@ -25,8 +25,7 @@ class ExerciseProgressCollectionViewCell: UICollectionViewCell {
 
     var tapHandler: (() -> Void)?
 
-    func updateElements(with data: [Exercise]?, tapHandler: (() -> Void)?) {
-        if let data {}
+    func updateElements(with exercise: [Exercise]?, tapHandler: (() -> Void)?) {
         self.tapHandler = tapHandler
     }
 

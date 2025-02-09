@@ -22,6 +22,7 @@ class PickerViewController: UIViewController, UIPickerViewDelegate, UIPickerView
         self.selectedOption = selectedOption
         signUpDetailsTableViewController = tableViewController
         super.init(coder: coder)
+
         preparePickerView()
     }
 

@@ -14,18 +14,25 @@ enum AlertType {
     case okCancel
 }
 
+struct AlertActionHandler {
+    let title: String
+    let style: UIAlertAction.Style
+    let handler: ((UIAlertAction) -> Void)?
+}
+
 let dimViewTag = 100
 
 enum Utils {
-    @MainActor public static func getAlert(type: AlertType, title: String, message: String, okHandler: ((UIAlertAction) -> Void)? = nil, cancelHandler: ((UIAlertAction) -> Void)? = nil) -> UIAlertController {
+    @MainActor public static func getAlert(title: String, message: String, actions: [AlertActionHandler]? = nil) -> UIAlertController {
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
 
-        switch type {
-        case .ok:
-            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: okHandler))
-        case .okCancel:
-            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: okHandler))
-            alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: cancelHandler))
+        guard let actions else {
+            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+            return alert
+        }
+
+        for action in actions {
+            alert.addAction(UIAlertAction(title: action.title, style: action.style, handler: action.handler))
         }
 
         return alert
@@ -42,15 +49,15 @@ enum Utils {
 
     // MARK: - User Defaults
 
-    public static func save<T>(key: String, value: T) {
-        UserDefaults.standard.set(value, forKey: key)
+    public static func save<T>(forKey key: UserDefaultsKey, withValue value: T) {
+        UserDefaults.standard.set(value, forKey: key.rawValue)
     }
 
-    public static func get<T>(key: String, defaultValue: Any? = nil) -> T? {
-        return UserDefaults.standard.value(forKey: key) as? T ?? defaultValue as? T
+    public static func get<T>(fromKey: String, withDefaultValue: Any? = nil) -> T? {
+        return UserDefaults.standard.value(forKey: fromKey) as? T ?? withDefaultValue as? T
     }
 
-    public static func remove(key: String) {
+    public static func remove(_ key: String) {
         UserDefaults.standard.removeObject(forKey: key)
     }
 }

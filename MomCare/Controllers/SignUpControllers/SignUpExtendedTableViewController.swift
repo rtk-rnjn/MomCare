@@ -47,23 +47,35 @@ class SignUpExtendedTableViewController: UITableViewController {
 
     @IBAction func finishButtonTapped(_ sender: UIButton) {
         guard let signUpDetailsTableViewController else { fatalError("yeh kya hua, kaise hua... kab hua") }
+
         let dateOfBirth = signUpDetailsTableViewController.dateOfBirthPicker.date
         let height = signUpDetailsTableViewController.height
         let currentWeight = signUpDetailsTableViewController.currentWeight
         let prePregnancyWeight = signUpDetailsTableViewController.prePregnancyWeight
 
-        let userMedical = UserMedical(dateOfBirth: dateOfBirth, height: Double(height), prePregnancyWeight: Double(prePregnancyWeight), currentWeight: Double(currentWeight))
+        let dueDate = dueDateDatePicker.date
+
+        let error = height <= 0 || currentWeight <= 0 || prePregnancyWeight <= 0
+        if error {
+            let alert = Utils.getAlert(title: "Error", message: "Please input valid data")
+            present(alert, animated: true)
+            return
+        }
+
+        let userMedical = UserMedical(dateOfBirth: dateOfBirth, height: Double(height), prePregnancyWeight: Double(prePregnancyWeight), currentWeight: Double(currentWeight), dueDate: dueDate)
+
         MomCareUser.shared.user?.medicalData = userMedical
-        Utils.save(key: UserDefaultsKey.signedUp.rawValue, value: true)
+
+        Utils.save(forKey: .signedUp, withValue: true)
     }
 
     // MARK: Private
 
     private func setupPopUpButtons() {
-        configureDueDatePopUpButton()
-        configureExistingConditionPopUpButton()
-        configureFoodIntolerancePopUpButton()
-        configureDietaryPreferencePopUpButton()
+        prepareDueDatePopUpButton()
+        prepareExistingConditionPopUpButton()
+        prepareFoodIntolerancePopUpButton()
+        prepareDietaryPreferencePopUpButton()
     }
 
     private func hideInitialElements() {
@@ -71,7 +83,7 @@ class SignUpExtendedTableViewController: UITableViewController {
             .forEach { $0.isHidden = true }
     }
 
-    private func configureDueDatePopUpButton() {
+    private func prepareDueDatePopUpButton() {
         let options = [
             "None", "Estimated due date", "Date of last menstrual period", "Date of conception", "Week pregnant", "Day 3 embryo transfer", "Day 5 embryo transfer"
         ]
@@ -99,11 +111,10 @@ class SignUpExtendedTableViewController: UITableViewController {
         dayPullDownButton.isHidden = !showWeeks
         dueDateInputLabel.text = action.title
 
-        tableView.beginUpdates()
-        tableView.endUpdates()
+        tableView.reloadData()
     }
 
-    private func configureExistingConditionPopUpButton() {
+    private func prepareExistingConditionPopUpButton() {
         let options = [
             "None", "Diabetes (Type 1, Type 2, Gestational)", "Hypertension", "Polycystic Ovary Syndrome (PCOS)", "Anemia", "Asthma", "Heart Disease", "Kidney Disease"
         ]
@@ -111,7 +122,7 @@ class SignUpExtendedTableViewController: UITableViewController {
         configurePopUpButton(existingConditionPopupButton, options: options)
     }
 
-    private func configureFoodIntolerancePopUpButton() {
+    private func prepareFoodIntolerancePopUpButton() {
         let options = [
             "None", "Lactose Intolerance", "Gluten Sensitivity", "Egg Allergy", "Seafood Allergy", "Soy Allergy", "Dairy Allergy", "Wheat Allergy", "Others"
 
@@ -119,7 +130,7 @@ class SignUpExtendedTableViewController: UITableViewController {
         configurePopUpButton(foodIntolerancePopupButton, options: options)
     }
 
-    private func configureDietaryPreferencePopUpButton() {
+    private func prepareDietaryPreferencePopUpButton() {
         let options = [
             "None", "Vegetarian", "Non-Vegetarian", "Vegan", "Pescatarian", "Flexitarian", "Gluten-Free", "Low-Carb / Ketogenic", "High-Protein", "Dairy-Free", "Low-Sodium"
         ]

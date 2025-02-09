@@ -8,24 +8,87 @@ class LoginTableViewController: UITableViewController {
     @IBOutlet var passwordField: UITextField!
     @IBOutlet var signInButton: UIButton!
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-        updateView()
-    }
-
-    @IBAction func textFieldChanged(_ sender: UITextField) {
-        updateView()
-    }
+    @IBAction func textFieldChanged(_ sender: UITextField) {}
 
     @IBAction func signInButtonTapped(_ sender: UIButton) {
-        performSegue(withIdentifier: "segueShowInitialTabBarController", sender: nil)
+        // swiftlint:disable large_tuple
+        let requiredFields: [(UITextField, String, String)] = [
+            (emailAddressField, "Email Required", "Please enter your email."),
+            (passwordField, "Password Required", "Please enter your password.")
+        ]
+        // swiftlint:enable large_tuple
+
+        var errors: [[String]] = []
+
+        for (field, title, message) in requiredFields where (field.text ?? "").isEmpty {
+            errors.append([title, message])
+        }
+
+        if !errors.isEmpty {
+            createErrorAlert(with: errors)
+            return
+        }
+
+        guard let email = emailAddressField.text, let password = passwordField.text else { return }
+
+        Task {
+            DispatchQueue.main.async {
+                self.showActivityIndicator()
+            }
+
+            let success = await MomCareUser.shared.fetchUserFromDatabase(with: email, and: password)
+            if !success {
+                DispatchQueue.main.async {
+                    self.hideActivityIndicator()
+                }
+
+                self.showErrorAlert(title: "Sign In Failed", message: "An error occurred while signing in. Please try again.")
+            } else {
+                Utils.save(forKey: .signedUp, withValue: true)
+                performSegue(withIdentifier: "segueShowInitialTabBarController", sender: nil)
+            }
+        }
     }
 
     // MARK: Private
 
-    private func updateView() {
-        signInButton.isEnabled = emailAddressField.text?.isEmpty == false && passwordField.text?.isEmpty == false && emailAddressField.text?.isValidEmail() == true
+    private var activityIndicator: UIActivityIndicatorView?
+
+    // From: MomCare/MomCare/Controllers/SignUpCotrollers/SignUpTableViewController.swift
+
+    private func createErrorAlert(with errors: [[String]]) {
+        let title = errors.count == 1 ? errors[0][0] : "Errors"
+
+        var message: String
+
+        if errors.count == 1 {
+            message = "\(errors[0][0]): \(errors[0][1])"
+        } else {
+            message = errors.map { "\($0[0])" }.joined(separator: "\n")
+        }
+
+        showErrorAlert(title: title, message: message)
     }
 
+    private func showErrorAlert(title: String, message: String) {
+        let alert = Utils.getAlert(title: title, message: message, actions: [AlertActionHandler(title: "OK", style: .default, handler: nil)])
+        present(alert, animated: true)
+    }
+
+    private func showActivityIndicator() {
+        activityIndicator = UIActivityIndicatorView(style: .large)
+
+        guard let activityIndicator else { fatalError("roop tera mastana, pyar mera deewana") }
+        activityIndicator.center = tableView.center
+        activityIndicator.startAnimating()
+        activityIndicator.hidesWhenStopped = true
+
+        view.addSubview(activityIndicator)
+    }
+
+    private func hideActivityIndicator() {
+        guard let activityIndicator else { fatalError("bhool kahi hamse na ho jaye") }
+        activityIndicator.stopAnimating()
+        activityIndicator.removeFromSuperview()
+    }
 }

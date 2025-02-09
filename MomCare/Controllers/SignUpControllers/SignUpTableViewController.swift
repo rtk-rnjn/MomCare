@@ -11,8 +11,6 @@ class SignUpTableViewController: UITableViewController {
 
     // MARK: Internal
 
-    var activityIndicator: UIActivityIndicatorView?
-
     @IBOutlet var createButton: UIButton!
 
     @IBOutlet var firstNameField: UITextField!
@@ -78,7 +76,7 @@ class SignUpTableViewController: UITableViewController {
             DispatchQueue.main.async {
                 self.hideActivityIndicator()
                 if !userCreated {
-                    self.createErrorAlert(title: "User Creation Failed", message: "An error occurred while creating your account. Please try again.")
+                    self.showErrorAlert(title: "User Creation Failed", message: "An error occurred while creating your account. Please try again.")
                 } else {
                     self.performSegue(withIdentifier: "segueShowSignUpDetailsTableViewController", sender: nil)
                 }
@@ -100,6 +98,8 @@ class SignUpTableViewController: UITableViewController {
 
     // MARK: Private
 
+    private var activityIndicator: UIActivityIndicatorView?
+
     private func createErrorAlert(with errors: [[String]]) {
         let title = errors.count == 1 ? errors[0][0] : "Errors"
 
@@ -111,11 +111,11 @@ class SignUpTableViewController: UITableViewController {
             message = errors.map { "\($0[0])" }.joined(separator: "\n")
         }
 
-        createErrorAlert(title: title, message: message)
+        showErrorAlert(title: title, message: message)
     }
 
-    private func createErrorAlert(title: String, message: String) {
-        let alert = Utils.getAlert(type: .ok, title: title, message: message)
+    private func showErrorAlert(title: String, message: String) {
+        let alert = Utils.getAlert(title: title, message: message, actions: [AlertActionHandler(title: "OK", style: .default, handler: nil)])
         present(alert, animated: true)
     }
 

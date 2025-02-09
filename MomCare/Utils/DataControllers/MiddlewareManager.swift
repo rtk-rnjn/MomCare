@@ -62,7 +62,12 @@ actor MiddlewareManager {
                 return nil
             }
 
-            return try JSONDecoder().decode(T.self, from: data)
+            let decoder = JSONDecoder()
+            decoder.dateDecodingStrategy = .iso8601
+            // I loce you Gemini. ChatGPT is stupid.
+
+            return try decoder.decode(T.self, from: data)
+
         } catch {
             print(error.localizedDescription)
             return nil

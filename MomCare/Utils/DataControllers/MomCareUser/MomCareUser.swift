@@ -11,9 +11,14 @@ class MomCareUser {
 
     @MainActor static var shared: MomCareUser = .init()
 
+    let queue: DispatchQueue = .init(label: "MomCareUserQueue")
+
     var user: User? {
         didSet {
             updateToDatabase()
+        }
+        willSet {
+            user?.updatedAt = Date()
         }
     }
 
@@ -21,8 +26,10 @@ class MomCareUser {
         user?.mood = mood
     }
 
+    // https://medium.com/@harshaag99/understanding-dispatchqueue-in-swift-c73058df6b37
+
     func updateToDatabase() {
-        DispatchQueue.global().async {
+        queue.async {
             Task {
                 await self.updateUser(to: .database)
             }
@@ -30,7 +37,7 @@ class MomCareUser {
     }
 
     func updateFromDatabase() {
-        DispatchQueue.global().async {
+        queue.async {
             Task {
                 await self.fetchUser(from: .database)
             }
