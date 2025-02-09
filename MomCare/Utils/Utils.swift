@@ -17,7 +17,7 @@ enum AlertType {
 let dimViewTag = 100
 
 enum Utils {
-    public static func getAlert(type: AlertType, title: String, message: String, okHandler: ((UIAlertAction) -> Void)? = nil, cancelHandler: ((UIAlertAction) -> Void)? = nil) -> UIAlertController {
+    @MainActor public static func getAlert(type: AlertType, title: String, message: String, okHandler: ((UIAlertAction) -> Void)? = nil, cancelHandler: ((UIAlertAction) -> Void)? = nil) -> UIAlertController {
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
 
         switch type {
@@ -29,17 +29,6 @@ enum Utils {
         }
 
         return alert
-    }
-
-    public static func dimViewController(_ viewController: UIViewController, dim: Bool) {
-        if dim {
-            let dimView = UIView(frame: viewController.view.bounds)
-            dimView.backgroundColor = UIColor.black.withAlphaComponent(0.5)
-            dimView.tag = dimViewTag
-            viewController.view.addSubview(dimView)
-        } else {
-            viewController.view.viewWithTag(dimViewTag)?.removeFromSuperview()
-        }
     }
 
     public static func isConnectedToNetwork() -> Bool {
@@ -57,8 +46,8 @@ enum Utils {
         UserDefaults.standard.set(value, forKey: key)
     }
 
-    public static func get<T>(key: String, defaultValue: T) -> T {
-        return UserDefaults.standard.value(forKey: key) as? T ?? defaultValue
+    public static func get<T>(key: String, defaultValue: Any? = nil) -> T? {
+        return UserDefaults.standard.value(forKey: key) as? T ?? defaultValue as? T
     }
 
     public static func remove(key: String) {

@@ -7,14 +7,17 @@
 
 import Foundation
 
- private let endpoint = "http://13.233.139.216:8000"
-//private let endpoint = "http://127.0.0.1:8000"
+// private let endpoint = "http://13.233.139.216:8000"
+private let endpoint = "http://127.0.0.1:8000"
 
-class MiddlewareManager {
+// https://discord.com/channels/1283435123232079933/1285451521592656013/1338103731568513066
+actor MiddlewareManager {
+
+    // MARK: Public
+
+    public static let shared: MiddlewareManager = .init()
 
     // MARK: Internal
-
-    static let shared: MiddlewareManager = .init()
 
     func get<T: Codable>(url: String, queryParameters: [String: String]? = nil) async -> T? {
         return await request(url: url, method: "GET", queryParameters: queryParameters)
@@ -44,7 +47,11 @@ class MiddlewareManager {
             urlString = urlComponents?.url?.absoluteString ?? urlString
         }
 
-        var request = URLRequest(url: URL(string: urlString)!)
+        guard let url = URL(string: urlString) else {
+            fatalError("Oo haseena zulfon waali jaane jahan")
+        }
+
+        var request = URLRequest(url: url)
         request.httpMethod = method
         if let body { request.httpBody = body }
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
