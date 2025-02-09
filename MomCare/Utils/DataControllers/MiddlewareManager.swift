@@ -7,8 +7,7 @@
 
 import Foundation
 
-// private let endpoint = "http://13.233.139.216:8000"
-private let endpoint = "http://127.0.0.1:8000"
+private let endpoint = "http://13.233.139.216:8000"
 
 // https://discord.com/channels/1283435123232079933/1285451521592656013/1338103731568513066
 actor MiddlewareManager {
