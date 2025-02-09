@@ -44,7 +44,7 @@ enum DietaryPreference: Codable {
     case dairyFree
 }
 
-public enum MoodType: String, Codable {
+public enum MoodType: String, Codable, Sendable {
    case happy = "Happy"
    case sad = "Sad"
    case stressed = "Stressed"
@@ -60,7 +60,7 @@ struct Mood: Codable {
     }
 }
 
-struct User: Codable {
+struct User: Codable, Sendable {
     enum CodingKeys: String, CodingKey {
         case id
         case firstName = "first_name"
@@ -95,10 +95,9 @@ struct User: Codable {
         let fullName = "\(firstName) \(lastName ?? "")"
         return fullName.trimmingCharacters(in: .whitespaces)
     }
-
 }
 
-struct History: Codable {
+struct History: Codable, Sendable {
     enum CodingKeys: String, CodingKey {
         case date
         case plan

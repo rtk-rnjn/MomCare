@@ -7,7 +7,6 @@
 
 import Foundation
 import UIKit
-import EventKit
 
 struct TriTrackEvent: Codable {
     var title: String

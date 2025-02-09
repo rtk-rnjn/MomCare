@@ -18,7 +18,7 @@ struct Song: Codable {
 
 }
 
-struct Playlist: Codable {
+struct Playlist: Codable, Sendable {
     var id: UUID = .init()
 
     var imageName: String
@@ -33,7 +33,7 @@ struct Playlist: Codable {
 }
 
 enum SampleFeaturedPlaylists {
-    static var playlists: [Playlist] = [
+    static let playlists: [Playlist] = [
         Playlist(
             imageName: "Lofi",
             name: "Lo-fi",
@@ -109,4 +109,4 @@ enum SampleFeaturedPlaylists {
     ]
 }
 
-var mp3Songs = ["Treat You Better", "Stay", "Sweetner"]
+let mp3Songs = ["Treat You Better", "Stay", "Sweetner"]

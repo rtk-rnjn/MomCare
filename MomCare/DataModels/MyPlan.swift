@@ -8,25 +8,25 @@
 import Foundation
 import UIKit
 
-public enum MealType: Hashable {
-    case breakfast
-    case lunch
-    case snacks
-    case dinner
+public enum MealType: String, Codable, Sendable {
+    case breakfast = "Breakfast"
+    case lunch = "Lunch"
+    case snacks = "Snacks"
+    case dinner = "Dinner"
 }
 
 enum ExerciseType: String, Codable {
-    case breathing
-    case stretching
+    case breathing = "Breathing"
+    case stretching = "Stretching"
 }
 
 enum Difficulty: String, Codable {
-    case beginner
-    case intermediate
-    case advanced
+    case beginner = "Beginner"
+    case intermediate = "Intermediate"
+    case advanced = "Advanced"
 }
 
-struct FoodItem: Codable {
+struct FoodItem: Codable, Sendable {
     enum CodingKeys: String, CodingKey {
         case id
         case name
@@ -38,7 +38,7 @@ struct FoodItem: Codable {
         case consumed
     }
 
-    var id: UUID = .init()
+    var id = UUID().uuidString
     let name: String
     let imageName: String
     var calories: Int = 0
@@ -53,7 +53,7 @@ struct FoodItem: Codable {
 
 }
 
-struct MyPlan: Codable {
+struct MyPlan: Codable, Sendable {
     enum CodingKeys: String, CodingKey {
         case caloriesGoal = "calories_goal"
         case proteinGoal = "protein_goal"
@@ -63,6 +63,8 @@ struct MyPlan: Codable {
         case currentProteinIntake = "current_protein_intake"
         case currentCarbsIntake = "current_carbs_intake"
         case currentFatIntake = "current_fat_intake"
+        case currentWaterIntake = "current_water_intake"
+        case meals
     }
 
     let caloriesGoal: Int?
@@ -75,6 +77,9 @@ struct MyPlan: Codable {
     var currentCarbsIntake: Int = 0
     var currentFatIntake: Int = 0
 
+    var currentWaterIntake: Int = 0
+
+    var meals: [MealType: [FoodItem]] = [:]
 }
 
 struct Exercise: Codable {
@@ -109,7 +114,7 @@ struct Exercise: Codable {
 // MARK: Sample Data
 
 enum SampleFoodData {
-    public static var uniqueFoodItems: [FoodItem] = [
+    public static let uniqueFoodItems: [FoodItem] = [
         FoodItem(name: "Moong Dal Cheela", imageName: "moong-dal-cheela", calories: 120, protein: 8, carbs: 15, fat: 2),
         FoodItem(name: "Anda Bhurji", imageName: "anda-bhurji", calories: 150, protein: 12, carbs: 2, fat: 10),
         FoodItem(name: "Chole Chawal", imageName: "chole-chawal", calories: 350, protein: 12, carbs: 50, fat: 8),
