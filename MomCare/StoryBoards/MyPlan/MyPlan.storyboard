@@ -88,16 +88,16 @@
                                                 <rect key="frame" x="0.0" y="0.0" width="176.66666666666666" height="170"/>
                                                 <subviews>
                                                     <stackView opaque="NO" contentMode="center" axis="vertical" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="BP7-LY-CEU">
-                                                        <rect key="frame" x="72.666666666666671" y="67" width="31" height="36"/>
+                                                        <rect key="frame" x="52.333333333333329" y="67" width="72" height="36"/>
                                                         <subviews>
-                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0 / 0" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="blC-t9-jS1">
-                                                                <rect key="frame" x="0.0" y="0.0" width="31" height="18"/>
+                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="NaN / NaN" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="blC-t9-jS1">
+                                                                <rect key="frame" x="0.0" y="0.0" width="72" height="18"/>
                                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                                                                 <nil key="textColor"/>
                                                                 <nil key="highlightedColor"/>
                                                             </label>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Kcal" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0og-14-cpv">
-                                                                <rect key="frame" x="1" y="18" width="29" height="18"/>
+                                                                <rect key="frame" x="21.333333333333343" y="18" width="29" height="18"/>
                                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                                                                 <nil key="textColor"/>
                                                                 <nil key="highlightedColor"/>
@@ -143,7 +143,7 @@
                                                                             </label>
                                                                         </subviews>
                                                                     </stackView>
-                                                                    <progressView opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="OV4-C3-97h">
+                                                                    <progressView opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="OV4-C3-97h">
                                                                         <rect key="frame" x="0.0" y="34.666666666666671" width="146.33333333333334" height="8.6666666666666643"/>
                                                                         <color key="backgroundColor" red="0.89803921568627454" green="0.90980392156862744" blue="0.90196078431372551" alpha="1" colorSpace="calibratedRGB"/>
                                                                         <color key="tintColor" red="0.6470588235294118" green="0.75294117647058822" blue="0.78431372549019607" alpha="1" colorSpace="calibratedRGB"/>
@@ -170,7 +170,7 @@
                                                                             </label>
                                                                         </subviews>
                                                                     </stackView>
-                                                                    <progressView opaque="NO" contentMode="scaleToFill" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="kLF-yT-6QC">
+                                                                    <progressView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kLF-yT-6QC">
                                                                         <rect key="frame" x="0.0" y="34.666666666666671" width="146.33333333333334" height="8.6666666666666643"/>
                                                                         <color key="backgroundColor" red="0.8666666666666667" green="0.89803921568627454" blue="0.85882352941176465" alpha="1" colorSpace="calibratedRGB"/>
                                                                         <color key="tintColor" red="0.31764705882352939" green="0.43529411764705883" blue="0.35686274509803922" alpha="1" colorSpace="calibratedRGB"/>
@@ -197,7 +197,7 @@
                                                                             </label>
                                                                         </subviews>
                                                                     </stackView>
-                                                                    <progressView opaque="NO" contentMode="scaleToFill" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="2Km-yg-zm7">
+                                                                    <progressView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2Km-yg-zm7">
                                                                         <rect key="frame" x="0.0" y="34.666666666666671" width="146.33333333333334" height="8.6666666666666643"/>
                                                                         <color key="backgroundColor" red="0.97647058959999999" green="0.93333333730000001" blue="0.85490196939999996" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                                                         <color key="tintColor" red="0.8784313725490196" green="0.6588235294117647" blue="0.25098039215686274" alpha="1" colorSpace="calibratedRGB"/>
@@ -340,7 +340,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="393" height="705"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Week 10" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZcW-2a-cQK">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Week NaN" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZcW-2a-cQK">
                                 <rect key="frame" x="0.0" y="15" width="393" height="23"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="19"/>
                                 <nil key="textColor"/>

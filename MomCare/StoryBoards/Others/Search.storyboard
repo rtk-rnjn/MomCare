@@ -16,7 +16,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <searchBar contentMode="redraw" placeholder="Aloo Chaat" translatesAutoresizingMaskIntoConstraints="NO" id="4Bk-Ur-59O">
+                            <searchBar contentMode="redraw" placeholder="Unkown Item" translatesAutoresizingMaskIntoConstraints="NO" id="4Bk-Ur-59O">
                                 <rect key="frame" x="0.0" y="103" width="393" height="56"/>
                                 <textInputTraits key="textInputTraits" autocorrectionType="no" returnKeyType="search"/>
                                 <connections>
@@ -112,7 +112,7 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="jLh-6u-h5O">
-                        <barButtonItem key="leftBarButtonItem" style="plain" systemItem="cancel" id="61L-oU-K8T">
+                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="61L-oU-K8T">
                             <connections>
                                 <segue destination="amh-z7-d6a" kind="unwind" unwindAction="unwindToMyPlanDiet:" id="woA-kD-sqz"/>
                             </connections>

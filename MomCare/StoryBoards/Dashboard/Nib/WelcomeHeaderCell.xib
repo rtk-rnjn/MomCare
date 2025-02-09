@@ -16,8 +16,8 @@
                 <rect key="frame" x="0.0" y="0.0" width="393" height="100"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Hi! Sakshi" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Qhi-0w-wMZ">
-                        <rect key="frame" x="5" y="0.0" width="167" height="100"/>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Unknow User" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Qhi-0w-wMZ">
+                        <rect key="frame" x="5" y="0.0" width="223.33333333333334" height="100"/>
                         <fontDescription key="fontDescription" type="boldSystem" pointSize="36"/>
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>

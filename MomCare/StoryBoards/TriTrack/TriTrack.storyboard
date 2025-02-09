@@ -203,12 +203,12 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="Fsz-tt-NFa">
-                        <barButtonItem key="leftBarButtonItem" style="plain" systemItem="cancel" id="HqI-7F-a1b">
+                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="HqI-7F-a1b">
                             <connections>
                                 <segue destination="JiF-16-ZFh" kind="unwind" identifier="unwindToTriTrackViaCancel" unwindAction="unwinToTriTrack:" id="Af7-Jc-otq"/>
                             </connections>
                         </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" style="plain" systemItem="done" id="EW7-7d-ok4">
+                        <barButtonItem key="rightBarButtonItem" style="done" systemItem="done" id="EW7-7d-ok4">
                             <connections>
                                 <segue destination="JiF-16-ZFh" kind="unwind" identifier="unwindToTriTrackViaDone" unwindAction="unwinToTriTrack:" id="cry-KS-tRA"/>
                             </connections>
@@ -1067,17 +1067,17 @@
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="ReminderCell" id="U8c-ZO-ma7" customClass="RemindersTableViewCell" customModule="MomCare" customModuleProvider="target">
-                                <rect key="frame" x="20" y="55.333332061767578" width="333" height="76"/>
+                                <rect key="frame" x="20" y="55.333332061767578" width="333" height="76.333335876464844"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="U8c-ZO-ma7" id="3t8-KG-73H">
-                                    <rect key="frame" x="0.0" y="0.0" width="333" height="76"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="333" height="76.333335876464844"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="KH0-fS-4Rt">
-                                            <rect key="frame" x="10" y="5" width="313" height="66"/>
+                                            <rect key="frame" x="10" y="5" width="313" height="66.333333333333329"/>
                                             <subviews>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="I6h-hJ-l1H">
-                                                    <rect key="frame" x="0.0" y="0.0" width="156.66666666666666" height="66"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="156.66666666666666" height="66.333333333333329"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BYV-o8-20G">
                                                             <rect key="frame" x="44.333333333333329" y="23" width="41.333333333333329" height="20.333333333333329"/>
@@ -1106,7 +1106,7 @@
                                                     </constraints>
                                                 </view>
                                                 <datePicker userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" verticalHuggingPriority="1000" contentHorizontalAlignment="trailing" contentVerticalAlignment="center" datePickerMode="time" minuteInterval="1" translatesAutoresizingMaskIntoConstraints="NO" id="x1x-nd-kd4">
-                                                    <rect key="frame" x="156.66666666666663" y="0.0" width="156.33333333333337" height="66"/>
+                                                    <rect key="frame" x="156.66666666666663" y="0.0" width="156.33333333333337" height="66.333333333333329"/>
                                                 </datePicker>
                                             </subviews>
                                             <constraints>
@@ -1221,23 +1221,23 @@
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="SymptomsCell" id="5TP-nx-z19" customClass="SymptomsTableViewCell" customModule="MomCare" customModuleProvider="target">
-                                <rect key="frame" x="20" y="55.333332061767578" width="333" height="78.333335876464844"/>
+                                <rect key="frame" x="20" y="55.333332061767578" width="333" height="78.666664123535156"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="5TP-nx-z19" id="71T-NE-FGv">
-                                    <rect key="frame" x="0.0" y="0.0" width="333" height="78.333335876464844"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="333" height="78.666664123535156"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="K59-eh-h1s">
-                                            <rect key="frame" x="10" y="5" width="313" height="68.333333333333329"/>
+                                            <rect key="frame" x="10" y="5" width="313" height="68.666666666666671"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZPh-5e-3jk">
-                                                    <rect key="frame" x="0.0" y="0.0" width="41.333333333333336" height="68.333333333333329"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="41.333333333333336" height="68.666666666666671"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <datePicker contentMode="scaleToFill" contentHorizontalAlignment="trailing" contentVerticalAlignment="center" datePickerMode="date" translatesAutoresizingMaskIntoConstraints="NO" id="pDA-ZC-EfM">
-                                                    <rect key="frame" x="41.333333333333343" y="0.0" width="271.66666666666663" height="68.333333333333329"/>
+                                                    <rect key="frame" x="41.333333333333343" y="0.0" width="271.66666666666663" height="68.666666666666671"/>
                                                 </datePicker>
                                             </subviews>
                                         </stackView>

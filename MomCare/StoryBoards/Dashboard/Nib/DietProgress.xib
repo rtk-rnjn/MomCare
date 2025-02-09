@@ -17,7 +17,7 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <stackView opaque="NO" contentMode="center" alignment="center" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="a1I-hw-68i">
-                        <rect key="frame" x="25" y="0.0" width="175.33333333333334" height="67"/>
+                        <rect key="frame" x="25" y="0.0" width="157.33333333333334" height="67"/>
                         <subviews>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="fork.knife.circle.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="fRg-bL-2oj">
                                 <rect key="frame" x="0.0" y="19.333333333333336" width="30" height="28.666666666666664"/>
@@ -27,14 +27,14 @@
                                     <constraint firstAttribute="width" constant="30" id="duL-mR-Dhx"/>
                                 </constraints>
                             </imageView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1300" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wzv-6C-eEy">
-                                <rect key="frame" x="35" y="19.666666666666664" width="55" height="27.666666666666664"/>
-                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="23"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="NaN" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wzv-6C-eEy">
+                                <rect key="frame" x="35" y="19.666666666666664" width="44.333333333333343" height="27.666666666666664"/>
+                                <fontDescription key="fontDescription" name=".AppleSystemUIFont" family=".AppleSystemUIFont" pointSize="23"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="/2000 kcal" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HDe-29-iim">
-                                <rect key="frame" x="95" y="23.333333333333336" width="80.333333333333314" height="20.333333333333336"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="/NaN kcal" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HDe-29-iim">
+                                <rect key="frame" x="84.333333333333329" y="23.333333333333336" width="72.999999999999986" height="20.333333333333336"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -44,13 +44,13 @@
                     <view contentMode="scaleAspectFit" translatesAutoresizingMaskIntoConstraints="NO" id="AWu-hq-Rzx">
                         <rect key="frame" x="215" y="0.0" width="130" height="67"/>
                         <subviews>
-                            <progressView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="750" progress="0.75" id="7VZ-jj-DFi">
+                            <progressView opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="750" id="7VZ-jj-DFi">
                                 <rect key="frame" x="14" y="40" width="103" height="4"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="tintColor" red="0.52156862749999999" green="0.68627450980000004" blue="0.68235294120000001" alpha="1" colorSpace="calibratedRGB"/>
                                 <color key="progressTintColor" red="0.52156862749999999" green="0.68627450980000004" blue="0.68235294120000001" alpha="1" colorSpace="calibratedRGB"/>
                             </progressView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="75%" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="oC4-rv-NSW">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0%" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="oC4-rv-NSW">
                                 <rect key="frame" x="30" y="18" width="70" height="20"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
