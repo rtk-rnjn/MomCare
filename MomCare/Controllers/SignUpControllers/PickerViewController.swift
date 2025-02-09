@@ -112,11 +112,11 @@ class PickerViewController: UIViewController, UIPickerViewDelegate, UIPickerView
 
         case .prePregnancyWeight:
             currentOptions = weight
-            suffix = "Kg"
+            suffix = "kg"
 
         case .currentWeight:
             currentOptions = weight
-            suffix = "Kg"
+            suffix = "kg"
 
         case .country:
             currentOptions = CountryData.countryCodes.values.map { $0 }
