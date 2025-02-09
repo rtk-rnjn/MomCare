@@ -34,7 +34,7 @@ class TriTrackViewController: UIViewController, FSCalendarDelegate, FSCalendarDa
     var eventsViewController: EventsViewController?
 
     var currentSegmentValue: Int = 0
-    let eventStore: EKEventStore = .init()
+    var eventStore: EKEventStore = .init()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -80,8 +80,10 @@ class TriTrackViewController: UIViewController, FSCalendarDelegate, FSCalendarDa
         }
     }
 
-    func calendar(_ calendar: FSCalendar, didSelect date: Date, at monthPosition: FSCalendarMonthPosition) {
-        currentDateSelected = date
+    nonisolated func calendar(_ calendar: FSCalendar, didSelect date: Date, at monthPosition: FSCalendarMonthPosition) {
+        DispatchQueue.main.async {
+            self.currentDateSelected = date
+        }
     }
 
     @IBAction func segmentTapped(_ sender: UISegmentedControl) {

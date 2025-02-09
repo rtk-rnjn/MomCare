@@ -53,8 +53,8 @@ class SignUpExtendedTableViewController: UITableViewController {
         let prePregnancyWeight = signUpDetailsTableViewController.prePregnancyWeight
 
         let userMedical = UserMedical(dateOfBirth: dateOfBirth, height: Double(height), prePregnancyWeight: Double(prePregnancyWeight), currentWeight: Double(currentWeight))
-//        MomCareUser.shared.updateUser(with: userMedical)
-        Utils.save(key: "SignedUp", value: true)
+        MomCareUser.shared.user?.medicalData = userMedical
+        Utils.save(key: UserDefaultsKey.signedUp.rawValue, value: true)
     }
 
     // MARK: Private

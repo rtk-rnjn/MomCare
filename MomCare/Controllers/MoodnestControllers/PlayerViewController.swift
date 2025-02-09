@@ -153,13 +153,10 @@ class PlayerViewController: UIViewController {
         audioSlider.minimumValue = 0
         audioSlider.maximumValue = Float(audioPlayer.duration)
 
-        playbackTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] _ in
-            guard let self else { return }
-
-            audioSlider.value = Float(audioPlayer.currentTime)
-
-            // Update the duration label
-            currentSongDuration.text = formatTime(audioPlayer.currentTime)
+        playbackTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { _ in
+            DispatchQueue.main.async {
+                self.updateSlider()
+            }
         }
     }
 
@@ -178,6 +175,11 @@ class PlayerViewController: UIViewController {
     }
 
     // MARK: Private
+
+    private func updateSlider() {
+        audioSlider.value = Float(audioPlayer.currentTime)
+        currentSongDuration.text = formatTime(audioPlayer.currentTime)
+    }
 
     private func prepareSelectedSong() {
         let navController = navigationController as? SongPagePlayerNavigationController

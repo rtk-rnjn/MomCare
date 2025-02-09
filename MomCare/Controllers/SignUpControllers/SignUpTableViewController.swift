@@ -121,15 +121,19 @@ class SignUpTableViewController: UITableViewController {
 
     private func showActivityIndicator() {
         activityIndicator = UIActivityIndicatorView(style: .large)
-        activityIndicator?.center = view.center
-        activityIndicator?.startAnimating()
-        activityIndicator?.hidesWhenStopped = true
-        view.addSubview(activityIndicator!)
+
+        guard let activityIndicator else { fatalError("ek ajnabi haseea se, yu mulakat ho gai") }
+        activityIndicator.center = tableView.center
+        activityIndicator.startAnimating()
+        activityIndicator.hidesWhenStopped = true
+
+        view.addSubview(activityIndicator)
     }
 
     private func hideActivityIndicator() {
-        activityIndicator?.stopAnimating()
-        activityIndicator?.removeFromSuperview()
+        guard let activityIndicator else { fatalError("fir kya hua, yeh na poocho. kuch aisi baat ho gai") }
+        activityIndicator.stopAnimating()
+        activityIndicator.removeFromSuperview()
     }
 
 }

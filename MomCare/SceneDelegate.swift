@@ -14,7 +14,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard let scene = (scene as? UIWindowScene) else { return }
 
         let window = UIWindow(windowScene: scene)
-        let userSignedUp = Utils.get(key: "SignedUp", defaultValue: false)
+        let userSignedUp = MomCareUser.shared.isUserSignedUp()
         let storyboard = userSignedUp ? UIStoryboard(name: "InitialStoryboard", bundle: nil) : UIStoryboard(name: "Main", bundle: nil)
 
         let initialViewController = storyboard.instantiateInitialViewController()

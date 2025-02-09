@@ -10,12 +10,24 @@ import UIKit
 import EventKit
 
 extension TriTrackViewController {
+    // https://stackoverflow.com/a/44415132
+    // https://stackoverflow.com/a/50369804
+
     func requestAccessToCalendar() {
         let status = EKEventStore.authorizationStatus(for: .event)
 
         switch status {
         case .denied, .restricted, .notDetermined:
-            eventStore.requestFullAccessToEvents(completion: eventRequestAccessHandler)
+            eventStore.requestFullAccessToEvents(completion: { success, _ in
+                self.eventStore = EKEventStore()
+
+                if success {
+                    DispatchQueue.main.async {
+                        _ = self.createOrGetEvent()
+                    }
+                }
+            })
+
         case .authorized:
             break
         default:
@@ -28,7 +40,16 @@ extension TriTrackViewController {
 
         switch status {
         case .denied, .restricted, .notDetermined:
-            eventStore.requestFullAccessToReminders(completion: reminderRequestAccessHandler)
+            eventStore.requestFullAccessToReminders(completion: { success, _ in
+                self.eventStore = EKEventStore()
+
+                if success {
+                    DispatchQueue.main.async {
+                        _ = self.createOrGetReminder()
+                    }
+                }
+            })
+
         case .authorized:
             break
         default:
@@ -36,19 +57,9 @@ extension TriTrackViewController {
         }
     }
 
-    private func eventRequestAccessHandler(success: Bool, error: Error?) {
-        if success {
-            _ = createOrGetEvent()
-        }
-    }
-
-    private func reminderRequestAccessHandler(success: Bool, error: Error?) {
-        if success {
-            _ = createOrGetReminder()
-        }
-    }
-
     private func createOrGetCalendar(identifierKey: String, eventType: EKEntityType, title: String, defaultCalendar: EKCalendar?) -> EKCalendar? {
+        eventStore = EKEventStore()
+
         if let identifier = UserDefaults.standard.string(forKey: identifierKey) {
             return eventStore.calendar(withIdentifier: identifier)
         }

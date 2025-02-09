@@ -19,7 +19,10 @@ class HeaderTableViewCell: UITableViewCell {
 
     override func awakeFromNib() {
         super.awakeFromNib()
-        configurePullDownMenu()
+
+        DispatchQueue.main.async {
+            self.configurePullDownMenu()
+        }
     }
 
     func updateTitle(with title: String, at section: Int, of view: DietTableViewController) {

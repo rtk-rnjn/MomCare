@@ -2,14 +2,6 @@ import UIKit
 
 class BreathingPlayerViewController: UIViewController {
 
-    // MARK: Lifecycle
-
-    // Cleanup timer when view is dismissed
-    deinit {
-        timer?.invalidate()
-        timer = nil
-    }
-
     // MARK: Internal
 
     @IBOutlet var totalBreatingDuration: UILabel!
@@ -175,15 +167,19 @@ class BreathingPlayerViewController: UIViewController {
         timerLabel.isHidden = false
 
         // Start new timer
-        timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] _ in
-            guard let self else { return }
-
-            if currentCount <= Int(animationDuration) {
-                // Update timer label with current count
-                timerLabel.text = "\(currentCount)"
+        timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { _ in
+            DispatchQueue.main.async {
+                self.updateCurrentCount()
             }
-            currentCount -= 1
         }
+
+    }
+
+    private func updateCurrentCount() {
+        if currentCount <= Int(animationDuration) {
+            timerLabel.text = "\(currentCount)"
+        }
+        currentCount -= 1
     }
 
     private func setupCircleLayers() {

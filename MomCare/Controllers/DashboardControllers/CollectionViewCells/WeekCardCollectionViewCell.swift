@@ -31,8 +31,11 @@ class WeekCardCollectionViewCell: UICollectionViewCell {
 
     override func awakeFromNib() {
         super.awakeFromNib()
-        contentView.layer.cornerRadius = 16
-        contentView.layer.masksToBounds = true
+
+        DispatchQueue.main.async {
+            self.contentView.layer.cornerRadius = 16
+            self.contentView.layer.masksToBounds = true
+        }
     }
 
     func updateElements(with userData: User?, tapHandler: (() -> Void)?) {

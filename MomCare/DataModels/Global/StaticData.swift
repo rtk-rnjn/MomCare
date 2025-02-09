@@ -30,7 +30,7 @@ struct FrontPageImage {
 }
 
 enum FrontPageData {
-    public static var images: [FrontPageImage] = [
+    public static let images: [FrontPageImage] = [
         .init(imageName: "Image", heading: "Personalised plans curated just for you"),
         .init(imageName: "Image 1", heading: "Receive insights for every trimester"),
         .init(imageName: "Image 2", heading: "Track your progress effortlessly"),
@@ -47,7 +47,7 @@ enum FrontPageData {
 }
 
 enum CountryData {
-    public static var countryCodes: [String: String] = [
+    public static let countryCodes: [String: String] = [
         "91": "India"
         // Add more? No, fetch from Internet
         // https://pastebin.com/raw/AE0Q8cJM

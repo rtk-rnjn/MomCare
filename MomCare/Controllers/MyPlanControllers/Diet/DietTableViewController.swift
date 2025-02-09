@@ -22,10 +22,10 @@ class DietTableViewController: UITableViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         foodData = [
-            MomCareUser.shared.meals[.breakfast] ?? [],
-            MomCareUser.shared.meals[.lunch] ?? [],
-            MomCareUser.shared.meals[.snacks] ?? [],
-            MomCareUser.shared.meals[.dinner] ?? []
+            MomCareUser.shared.user?.plan?.meals[.breakfast] ?? [],
+            MomCareUser.shared.user?.plan?.meals[.lunch] ?? [],
+            MomCareUser.shared.user?.plan?.meals[.snacks] ?? [],
+            MomCareUser.shared.user?.plan?.meals[.dinner] ?? []
         ]
         tableView.reloadData()
     }

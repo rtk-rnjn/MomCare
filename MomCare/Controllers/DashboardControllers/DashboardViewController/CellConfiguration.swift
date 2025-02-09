@@ -73,7 +73,7 @@ extension DashboardViewController {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "DietProgress", for: indexPath) as? DietProgressCollectionViewCell
 
             guard let cell else { fatalError("'DietProgress' not found") }
-            cell.updateElements(with: MomCareUser.shared.user?.plan!, tapHandler: dietCardTapped)
+            cell.updateElements(with: MomCareUser.shared.user?.plan, tapHandler: dietCardTapped)
             return cell
 
         case 1:

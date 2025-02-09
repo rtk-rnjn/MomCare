@@ -57,11 +57,6 @@ class MoodnestViewController: UIViewController, UIScrollViewDelegate {
         imageView.addGestureRecognizer(tapGesture)
     }
 
-//    @objc func imageTapped(_ sender: UITapGestureRecognizer) {
-//        if let destinationVC = storyboard?.instantiateViewController(withIdentifier: "genresPageView") as? GenresPageViewController {
-//            navigationController?.pushViewController(destinationVC, animated: true)
-//        }
-//    }
     @objc func imageTapped(_ sender: UITapGestureRecognizer) {
         if let tappedImageView = sender.view as? UIImageView {
             performSegue(withIdentifier: "segueShowGenresPageViewController", sender: tappedImageView)
