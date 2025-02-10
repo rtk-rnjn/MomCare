@@ -20,8 +20,6 @@ struct AlertActionHandler {
     let handler: ((UIAlertAction) -> Void)?
 }
 
-let dimViewTag = 100
-
 enum Utils {
     @MainActor public static func getAlert(title: String, message: String, actions: [AlertActionHandler]? = nil) -> UIAlertController {
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)

@@ -63,7 +63,7 @@ actor MiddlewareManager {
 
             let decoder = JSONDecoder()
             decoder.dateDecodingStrategy = .iso8601
-            // I loce you Gemini. ChatGPT is stupid.
+            // I love you Gemini. ChatGPT is stupid.
 
             return try decoder.decode(T.self, from: data)
 

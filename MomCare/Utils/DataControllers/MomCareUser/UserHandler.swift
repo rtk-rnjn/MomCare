@@ -25,7 +25,7 @@ struct UpdateResponse: Codable {
     }
 
     let success: Bool
-    let modifiedCount: String
+    let modifiedCount: Int
 
 }
 
