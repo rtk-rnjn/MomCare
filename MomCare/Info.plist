@@ -9,7 +9,7 @@
 	<key>NSHealthClinicalHealthRecordsShareUsageDescription</key>
 	<string></string>
 	<key>NSHealthShareUsageDescription</key>
-	<string></string>
+	<string>App needs to sync your data with native Apple apps</string>
 	<key>NSHealthUpdateUsageDescription</key>
 	<string></string>
 	<key>NSAppTransportSecurity</key>

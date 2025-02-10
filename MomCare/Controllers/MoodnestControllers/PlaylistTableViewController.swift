@@ -1,5 +1,5 @@
 //
-//  SongPageTableViewController.swift
+//  PlaylistTableViewController.swift
 //  MomCare
 //
 //  Created by Batch - 2  on 20/01/25.
@@ -7,10 +7,10 @@
 
 import UIKit
 
-class SongPageTableViewController: UITableViewController {
+class PlaylistTableViewController: UITableViewController {
     var songs: [Song] = []
     var playlist: Playlist!
-    var songPagePlayerNavigationController: SongPagePlayerNavigationController?
+    var playerNavigationController: PlayerNavigationController?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -44,11 +44,11 @@ class SongPageTableViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        performSegue(withIdentifier: "segueShowSongPagePlayerNavigationController", sender: songs[indexPath.row])
+        performSegue(withIdentifier: "segueShowPlayerNavigationController", sender: songs[indexPath.row])
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if let destinationNav = segue.destination as? SongPagePlayerNavigationController {
+        if let destinationNav = segue.destination as? PlayerNavigationController {
             destinationNav.selectedSong = sender as? Song
         }
     }

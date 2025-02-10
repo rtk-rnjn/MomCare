@@ -9,10 +9,10 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Moodnest View Controller-->
+        <!--Moods View Controller-->
         <scene sceneID="s0d-6b-0kx">
             <objects>
-                <viewController storyboardIdentifier="MoodNest" useStoryboardIdentifierAsRestorationIdentifier="YES" id="Y6W-OH-hqX" customClass="MoodnestViewController" customModule="MomCare" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="MoodNest" useStoryboardIdentifierAsRestorationIdentifier="YES" id="Y6W-OH-hqX" customClass="MoodsViewController" customModule="MomCare" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="5EZ-qb-Rvc">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -151,7 +151,7 @@
                         <outlet property="pageControl" destination="b8o-t3-6ao" id="BbI-pF-SxS"/>
                         <outlet property="sadImageView" destination="VEK-fX-0qx" id="J9c-98-Z62"/>
                         <outlet property="stressedImageView" destination="W59-lv-3BK" id="gga-dS-j86"/>
-                        <segue destination="pwN-0J-bVZ" kind="show" identifier="segueShowGenresPageViewController" destinationCreationSelector="segueToGenresPage:" id="h0b-4V-iWC"/>
+                        <segue destination="pwN-0J-bVZ" kind="show" identifier="segueShowMoodNestViewController" destinationCreationSelector="segueToGenresPage:" id="h0b-4V-iWC"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ief-a0-LHa" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -161,7 +161,7 @@
         <!--MoodNest-->
         <scene sceneID="Atk-Bq-QKr">
             <objects>
-                <viewController storyboardIdentifier="GenresPageViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="pwN-0J-bVZ" customClass="GenresPageViewController" customModule="MomCare" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="GenresPageViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="pwN-0J-bVZ" customClass="MoodNestViewController" customModule="MomCare" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="6GO-uC-gbZ">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -229,7 +229,7 @@
         <!--Song Page View Controller-->
         <scene sceneID="Hz3-cd-ATj">
             <objects>
-                <viewController storyboardIdentifier="songpageviewcontroller" id="h1m-vL-n6M" customClass="SongPageViewController" customModule="MomCare" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="SongPageViewController" id="h1m-vL-n6M" customClass="SongPageViewController" customModule="MomCare" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="QWK-a5-xpx">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -240,14 +240,14 @@
                                     <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Nj7-zS-ZJp">
                                         <rect key="frame" x="0.0" y="0.0" width="393" height="382"/>
                                         <connections>
-                                            <segue destination="Ig0-dJ-l80" kind="embed" identifier="embedShowSongPageContainerViewController" id="lh4-4J-JFh"/>
+                                            <segue destination="Ig0-dJ-l80" kind="embed" identifier="embedShowSongElementsViewController" id="lh4-4J-JFh"/>
                                         </connections>
                                     </containerView>
                                     <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aJs-2A-L2T">
                                         <rect key="frame" x="0.0" y="382" width="393" height="470"/>
                                         <color key="backgroundColor" red="0.96078431369999995" green="0.96470588239999999" blue="0.97647058819999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <connections>
-                                            <segue destination="eev-1C-fby" kind="embed" identifier="embedShowSongPageTableViewController" id="JBX-Xd-CUa"/>
+                                            <segue destination="eev-1C-fby" kind="embed" identifier="embedShowPlaylistTableViewController" id="JBX-Xd-CUa"/>
                                         </connections>
                                     </containerView>
                                 </subviews>
@@ -282,10 +282,10 @@
             </objects>
             <point key="canvasLocation" x="2612.9770992366412" y="-15.492957746478874"/>
         </scene>
-        <!--Song Page Elements View Controller-->
+        <!--Song Elements View Controller-->
         <scene sceneID="eca-OL-DRZ">
             <objects>
-                <viewController id="Ig0-dJ-l80" customClass="SongPageElementsViewController" customModule="MomCare" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="Ig0-dJ-l80" customClass="SongElementsViewController" customModule="MomCare" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="zVQ-ZT-l2k">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="382"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -530,10 +530,10 @@
             </objects>
             <point key="canvasLocation" x="5168.7022900763359" y="157.74647887323945"/>
         </scene>
-        <!--Song Page Table View Controller-->
+        <!--Playlist Table View Controller-->
         <scene sceneID="3bx-ug-Uiy">
             <objects>
-                <tableViewController id="eev-1C-fby" customClass="SongPageTableViewController" customModule="MomCare" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController id="eev-1C-fby" customClass="PlaylistTableViewController" customModule="MomCare" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="66" estimatedRowHeight="-1" sectionHeaderHeight="28" estimatedSectionHeaderHeight="-1" sectionFooterHeight="28" estimatedSectionFooterHeight="-1" id="Idf-Zr-oWr">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="470"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -647,7 +647,7 @@
                         </connections>
                     </tableView>
                     <connections>
-                        <segue destination="6KC-Bt-B0W" kind="presentation" identifier="segueShowSongPagePlayerNavigationController" modalPresentationStyle="fullScreen" id="UZu-sZ-wIJ"/>
+                        <segue destination="6KC-Bt-B0W" kind="presentation" identifier="segueShowPlayerNavigationController" modalPresentationStyle="fullScreen" id="UZu-sZ-wIJ"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7dn-EB-iBW" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -673,10 +673,10 @@
             </objects>
             <point key="canvasLocation" x="-164" y="-15"/>
         </scene>
-        <!--Song Page Player Navigation Controller-->
+        <!--Player Navigation Controller-->
         <scene sceneID="8UP-ZL-bWC">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="6KC-Bt-B0W" customClass="SongPagePlayerNavigationController" customModule="MomCare" customModuleProvider="target" sceneMemberID="viewController">
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="6KC-Bt-B0W" customClass="PlayerNavigationController" customModule="MomCare" customModuleProvider="target" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="VJU-Ej-pcb">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="44"/>

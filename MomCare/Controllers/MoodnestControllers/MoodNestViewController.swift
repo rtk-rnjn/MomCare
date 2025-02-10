@@ -1,5 +1,5 @@
 //
-//  GenresPageViewController.swift
+//  MoodnestViewController.swift
 //  MomCare
 //
 //  Created by Batch - 2  on 17/01/25.
@@ -7,46 +7,27 @@
 
 import UIKit
 
-class GenresPageViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
+enum MoodNestCollectionViewCellType: Int {
+    case mainHeading = 0
+    case mainImage = 1
+    case multipleImages = 2
+}
+
+class MoodNestViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
+
+    // MARK: Internal
 
     @IBOutlet var moodnestCollectionView: UICollectionView!
     @IBOutlet var outerView: UIView!
-    var IconImageVar: UIImage?
+
+    var iconImageView: UIImage?
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Set the image for the bar button item with proper sizing
-        if let IconImageVar {
-            let button = UIButton(type: .custom)
-            button.setImage(IconImageVar, for: .normal)
-            button.frame = CGRect(x: 0, y: 0, width: 50, height: 50)
-            button.imageView?.contentMode = .scaleAspectFit
-
-            let barButtonItem = UIBarButtonItem(customView: button)
-
-            // Constraints to prevent stretching
-            button.translatesAutoresizingMaskIntoConstraints = false
-            NSLayoutConstraint.activate([
-                button.widthAnchor.constraint(equalToConstant: 50),
-                button.heightAnchor.constraint(equalToConstant: 50)
-            ])
-
-            navigationItem.rightBarButtonItem = barButtonItem
-        }
+        prepareIconImage()
 
         outerView.layer.cornerRadius = 30
-        moodnestCollectionView.showsVerticalScrollIndicator = false
-        moodnestCollectionView.backgroundColor = .clear
-
-        moodnestCollectionView.register(UINib(nibName: "MainHeading", bundle: nil), forCellWithReuseIdentifier: "MainHeading")
-        moodnestCollectionView.register(UINib(nibName: "MainImage", bundle: nil), forCellWithReuseIdentifier: "MainImage")
-        moodnestCollectionView.register(UINib(nibName: "MoodNestMultipleImages", bundle: nil), forCellWithReuseIdentifier: "MoodNestMultipleImages")
-        moodnestCollectionView.register(SectionHeaderCollectionViewCell.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "SectionHeaderCollectionViewCell")
-
-        moodnestCollectionView.dataSource = self
-        moodnestCollectionView.delegate = self
-
-        moodnestCollectionView.setCollectionViewLayout(generateLayout(), animated: true)
+        registerAllNibs()
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -60,21 +41,23 @@ class GenresPageViewController: UIViewController, UICollectionViewDataSource, UI
     }
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        switch section {
-        case 0, 1:
+        let cellType = MoodNestCollectionViewCellType(rawValue: section)
+        guard let cellType else { fatalError("cellType is nil") }
+
+        switch cellType {
+        case .mainHeading, .mainImage:
             return 1
 
-        case 2:
+        case .multipleImages:
             return 6
-
-        default:
-            fatalError()
         }
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        switch indexPath.section {
-        case 0:
+        let cellType = MoodNestCollectionViewCellType(rawValue: indexPath.section)
+        guard let cellType else { fatalError("cellType is nil") }
+        switch cellType {
+        case .mainHeading:
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "MainHeading", for: indexPath) as? MainHeadingCollectionViewCell
             guard let cell else { fatalError("'MainHeading' me dikkat hai") }
 
@@ -83,7 +66,7 @@ class GenresPageViewController: UIViewController, UICollectionViewDataSource, UI
 
             return cell
 
-        case 1:
+        case .mainImage:
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "MainImage", for: indexPath) as? MainImageCollectionViewCell
             guard let cell else { fatalError("'MainImage' me dikkat hai") }
 
@@ -93,7 +76,7 @@ class GenresPageViewController: UIViewController, UICollectionViewDataSource, UI
 
             return cell
 
-        default:
+        case .multipleImages:
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "MoodNestMultipleImages", for: indexPath) as? MoodNestMultipleImagesCollectionViewCell
             guard let cell else { fatalError("'MoodNestMultipleImages' me dikkat hai") }
 
@@ -118,16 +101,18 @@ class GenresPageViewController: UIViewController, UICollectionViewDataSource, UI
     func generateLayout() -> UICollectionViewLayout {
         return UICollectionViewCompositionalLayout { (sectionIndex: Int, _: NSCollectionLayoutEnvironment) -> NSCollectionLayoutSection? in
             let section: NSCollectionLayoutSection
+            let cellType = MoodNestCollectionViewCellType(rawValue: sectionIndex)
+            guard let cellType else { fatalError("dekha hai pehli baar, saajan ki aankhon mein pyaar") }
 
-            switch sectionIndex {
+            switch cellType {
 
-            case 0:
+            case .mainHeading:
                 section = self.generateMainHeadingLayout()
 
-            case 1:
+            case .mainImage:
                 section = self.generateMainImageLayout()
 
-            case 2:
+            case .multipleImages:
                 section = self.generateMultipleImageLayout()
 
                 let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(44))
@@ -136,9 +121,6 @@ class GenresPageViewController: UIViewController, UICollectionViewDataSource, UI
                 )
 
                 section.boundarySupplementaryItems = [header]
-
-            default:
-                fatalError("dekha hai pehli baar, saajan ki aankhon mein pyaar")
             }
             return section
         }
@@ -152,7 +134,7 @@ class GenresPageViewController: UIViewController, UICollectionViewDataSource, UI
         let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [mainHeading])
 
         let section = NSCollectionLayoutSection(group: group)
-        section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 16, bottom: 8, trailing: 16) // Add padding around the section
+        section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 16, bottom: 8, trailing: 16)
 
         return section
     }
@@ -165,7 +147,7 @@ class GenresPageViewController: UIViewController, UICollectionViewDataSource, UI
         let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [mainImage])
 
         let section = NSCollectionLayoutSection(group: group)
-        section.contentInsets = NSDirectionalEdgeInsets(top: 16, leading: 16, bottom: 16, trailing: 16) // Add padding around the section
+        section.contentInsets = NSDirectionalEdgeInsets(top: 16, leading: 16, bottom: 16, trailing: 16)
 
         return section
     }
@@ -183,8 +165,8 @@ class GenresPageViewController: UIViewController, UICollectionViewDataSource, UI
 
         let section = NSCollectionLayoutSection(group: group)
 
-        section.contentInsets = NSDirectionalEdgeInsets(top: 8, leading: 8, bottom: 8, trailing: 8) // Add padding around the sectio
-        section.interGroupSpacing = 8 // Space between groups
+        section.contentInsets = NSDirectionalEdgeInsets(top: 8, leading: 8, bottom: 8, trailing: 8)
+        section.interGroupSpacing = 8
 
         return section
     }
@@ -192,6 +174,41 @@ class GenresPageViewController: UIViewController, UICollectionViewDataSource, UI
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let selectedPlaylist = SampleFeaturedPlaylists.playlists[indexPath.item]
         performSegue(withIdentifier: "segueShowSongPageViewController", sender: selectedPlaylist)
+    }
+
+    // MARK: Private
+
+    private func prepareIconImage() {
+        if let iconImageView {
+            let button = UIButton(type: .custom)
+            button.setImage(iconImageView, for: .normal)
+            button.frame = CGRect(x: 0, y: 0, width: 50, height: 50)
+            button.imageView?.contentMode = .scaleAspectFit
+
+            let barButtonItem = UIBarButtonItem(customView: button)
+
+            button.translatesAutoresizingMaskIntoConstraints = false
+            NSLayoutConstraint.activate([
+                button.widthAnchor.constraint(equalToConstant: 50),
+                button.heightAnchor.constraint(equalToConstant: 50)
+            ])
+
+            navigationItem.rightBarButtonItem = barButtonItem
+        }
+    }
+
+    private func registerAllNibs() {
+        moodnestCollectionView.showsVerticalScrollIndicator = false
+        moodnestCollectionView.backgroundColor = .clear
+
+        moodnestCollectionView.register(UINib(nibName: "MainHeading", bundle: nil), forCellWithReuseIdentifier: "MainHeading")
+        moodnestCollectionView.register(UINib(nibName: "MainImage", bundle: nil), forCellWithReuseIdentifier: "MainImage")
+        moodnestCollectionView.register(UINib(nibName: "MoodNestMultipleImages", bundle: nil), forCellWithReuseIdentifier: "MoodNestMultipleImages")
+        moodnestCollectionView.register(SectionHeaderCollectionViewCell.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "SectionHeaderCollectionViewCell")
+
+        moodnestCollectionView.dataSource = self
+        moodnestCollectionView.delegate = self
+        moodnestCollectionView.setCollectionViewLayout(generateLayout(), animated: true)
     }
 
 }

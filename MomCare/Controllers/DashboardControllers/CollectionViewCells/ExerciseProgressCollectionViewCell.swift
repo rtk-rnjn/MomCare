@@ -23,6 +23,8 @@ class ExerciseProgressCollectionViewCell: UICollectionViewCell {
 
     // MARK: Internal
 
+    @IBOutlet var activityView: UIView!
+
     var tapHandler: (() -> Void)?
 
     func updateElements(with exercise: [Exercise]?, tapHandler: (() -> Void)?) {

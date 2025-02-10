@@ -182,7 +182,7 @@ class PlayerViewController: UIViewController {
     }
 
     private func prepareSelectedSong() {
-        let navController = navigationController as? SongPagePlayerNavigationController
+        let navController = navigationController as? PlayerNavigationController
         guard let navController else { return }
         song = navController.selectedSong
     }

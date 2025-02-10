@@ -81,6 +81,7 @@ extension DashboardViewController {
             guard let cell else { fatalError("'ExerciseProgress' not found") }
 
             cell.updateElements(with: MomCareUser.shared.user?.exercises, tapHandler: exersiceCardTapped)
+            addHKActivityRing(to: cell.activityView, with: nil)
             return cell
 
         default:
