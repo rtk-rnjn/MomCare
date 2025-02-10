@@ -6,11 +6,14 @@
 //
 
 import UIKit
+import HealthKit
 
 class FrontViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
 
     @IBOutlet var collectionView: UICollectionView!
     @IBOutlet var pageControl: UIPageControl!
+    
+    var healthStore = HKHealthStore()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -19,6 +22,10 @@ class FrontViewController: UIViewController, UICollectionViewDelegate, UICollect
         collectionView.dataSource = self
 
         collectionView.backgroundColor = .none
+        
+        if HKHealthStore.isHealthDataAvailable() {
+            print("Health data available")
+        }
     }
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
