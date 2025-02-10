@@ -12,8 +12,8 @@ class FrontViewController: UIViewController, UICollectionViewDelegate, UICollect
 
     @IBOutlet var collectionView: UICollectionView!
     @IBOutlet var pageControl: UIPageControl!
-    
-    var healthStore = HKHealthStore()
+
+    var healthStore: HKHealthStore = .init()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -22,7 +22,7 @@ class FrontViewController: UIViewController, UICollectionViewDelegate, UICollect
         collectionView.dataSource = self
 
         collectionView.backgroundColor = .none
-        
+
         if HKHealthStore.isHealthDataAvailable() {
             print("Health data available")
         }
