@@ -116,7 +116,7 @@ class SignUpExtendedTableViewController: UITableViewController {
 
     private func prepareExistingConditionPopUpButton() {
         let options = [
-            "None", "Diabetes (Type 1, Type 2, Gestational)", "Hypertension", "Polycystic Ovary Syndrome (PCOS)", "Anemia", "Asthma", "Heart Disease", "Kidney Disease"
+            "None", "Diabetes", "Hypertension", "Polycystic Ovary Syndrome", "Anemia", "Asthma", "Heart Disease", "Kidney Disease"
         ]
 
         configurePopUpButton(existingConditionPopupButton, options: options)
