@@ -12,7 +12,7 @@ class AppointmentsTableViewController: UITableViewController {
 
     // MARK: Internal
 
-    var data: [TriTrackEvent] = []
+    var data: [EKEvent] = []
     let store: EKEventStore = .init()
 
     override func viewWillAppear(_ animated: Bool) {
@@ -60,15 +60,15 @@ class AppointmentsTableViewController: UITableViewController {
 
     // MARK: Private
 
-    private func fetchEvents() -> [TriTrackEvent] {
-        let startDate = Date()
+    private func fetchEvents() -> [EKEvent] {
+        let store = EKEventStore()
+
+        let startDate = Calendar.current.startOfDay(for: Date())
         let endDate = Calendar.current.date(byAdding: .month, value: 1, to: startDate)!
         let ekCalendars = getCalendar(with: "TriTrackEvent")
 
         let predicate = store.predicateForEvents(withStart: startDate, end: endDate, calendars: ekCalendars)
-        let events = store.events(matching: predicate)
-
-        return events.map { TriTrackEvent(title: $0.title, startDate: $0.startDate) }
+        return store.events(matching: predicate)
     }
 
     private func getCalendar(with identifierKey: String) -> [EKCalendar]? {

@@ -56,9 +56,9 @@ class AddEventTableViewController: UITableViewController {
     @IBOutlet var titleField: UITextField!
     @IBOutlet var locationField: UITextField!
 
-    var selectedRepeatOption: TimeInterval = 0
-    var selectedTravelTimeOption: TimeInterval = 0
-    var selectedAlertTimeOption: TimeInterval = 0
+    var selectedRepeatOption: TimeInterval?
+    var selectedTravelTimeOption: TimeInterval?
+    var selectedAlertTimeOption: TimeInterval?
 
     override func viewDidLoad() {
         super.viewDidLoad()

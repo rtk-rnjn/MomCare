@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import EventKit
 
 class AllAppointmentsTableViewCell: UITableViewCell {
 
@@ -13,7 +14,7 @@ class AllAppointmentsTableViewCell: UITableViewCell {
     @IBOutlet var notesLabel: UILabel!
     @IBOutlet var dateTimePicker: UIDatePicker!
 
-    func updateElements(with appointment: TriTrackEvent) {
+    func updateElements(with appointment: EKEvent) {
         titleLabel.text = appointment.title
         notesLabel.text = appointment.location
         dateTimePicker.date = appointment.startDate

@@ -75,7 +75,6 @@ extension MomCareUser {
             self.user?.mongoId = response?.insertedId
         }
         await updateUser(to: .iPhone)
-        print("User created: \(success)")
         return success
     }
 
@@ -102,6 +101,7 @@ extension MomCareUser {
             self.user = user
             await updateUser(to: .iPhone)
 
+            Utils.save(forKey: .mongoUserId, withValue: user?.mongoId)
             return true
         }
 

@@ -8,8 +8,46 @@
 import Foundation
 import UIKit
 import EventKit
+import EventKitUI
 
-extension TriTrackViewController {
+extension TriTrackViewController: EKEventEditViewDelegate, EKEventViewDelegate {
+    func eventEditViewController(_ controller: EKEventEditViewController, didCompleteWith action: EKEventEditViewAction) {
+        switch action {
+        case .saved:
+            if let event = controller.event {
+                presentEKEventViewController(event: event)
+            }
+
+        case .canceled, .deleted:
+            dismiss(animated: true, completion: nil)
+        @unknown default:
+            break
+        }
+    }
+
+    func eventViewController(_ controller: EKEventViewController, didCompleteWith action: EKEventViewAction) {}
+
+    func presentEKEventEditViewController(event: EKEvent?) {
+        let eventStore = EKEventStore()
+
+        let eventEditViewController = EKEventEditViewController()
+        eventEditViewController.eventStore = eventStore
+        eventEditViewController.event = event
+
+        eventEditViewController.editViewDelegate = self
+
+        present(eventEditViewController, animated: true, completion: nil)
+    }
+
+    func presentEKEventViewController(event: EKEvent) {
+        let eventViewController = EKEventViewController()
+        eventViewController.delegate = self
+        eventViewController.event = event
+        eventViewController.allowsEditing = true
+
+        present(eventViewController, animated: true, completion: nil)
+    }
+
     // https://stackoverflow.com/a/44415132
     // https://stackoverflow.com/a/50369804
 
@@ -18,7 +56,7 @@ extension TriTrackViewController {
 
         switch status {
         case .denied, .restricted, .notDetermined:
-            eventStore.requestFullAccessToEvents(completion: { success, _ in
+            eventStore.requestFullAccessToEvents { success, _ in
                 self.eventStore = EKEventStore()
 
                 if success {
@@ -26,7 +64,7 @@ extension TriTrackViewController {
                         _ = self.createOrGetEvent()
                     }
                 }
-            })
+            }
 
         case .authorized:
             break
@@ -40,7 +78,7 @@ extension TriTrackViewController {
 
         switch status {
         case .denied, .restricted, .notDetermined:
-            eventStore.requestFullAccessToReminders(completion: { success, _ in
+            eventStore.requestFullAccessToReminders { success, _ in
                 self.eventStore = EKEventStore()
 
                 if success {
@@ -48,7 +86,7 @@ extension TriTrackViewController {
                         _ = self.createOrGetReminder()
                     }
                 }
-            })
+            }
 
         case .authorized:
             break
@@ -80,7 +118,7 @@ extension TriTrackViewController {
     }
 
     func createOrGetEvent() -> EKCalendar? {
-        return createOrGetCalendar(identifierKey: "TriTrackEvent", eventType: .event, title: "MomCare - TriTrack Reminders", defaultCalendar: eventStore.defaultCalendarForNewEvents)
+        return createOrGetCalendar(identifierKey: "TriTrackEvent", eventType: .event, title: "MomCare - TriTrack Calendar", defaultCalendar: eventStore.defaultCalendarForNewEvents)
     }
 
     func createOrGetReminder() -> EKCalendar? {

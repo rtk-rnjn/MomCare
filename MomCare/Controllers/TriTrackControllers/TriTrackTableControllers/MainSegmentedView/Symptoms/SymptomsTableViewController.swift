@@ -6,9 +6,10 @@
 //
 
 import UIKit
+import EventKit
 
 class SymptomsTableViewController: UITableViewController {
-    var data: [TriTrackSymptom] = []
+    var data: [EKEvent] = []
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)

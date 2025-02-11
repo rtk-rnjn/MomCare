@@ -6,9 +6,10 @@
 //
 
 import UIKit
+import EventKit
 
 class AllSymptomsTableViewController: UITableViewController {
-    var symptoms: [TriTrackSymptom] = []
+    var symptoms: [EKEvent] = []
 
     override func numberOfSections(in tableView: UITableView) -> Int {
         return 1

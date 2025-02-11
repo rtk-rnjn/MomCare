@@ -12,7 +12,7 @@ class RemindersTableViewController: UITableViewController {
 
     // MARK: Internal
 
-    var data: [TriTrackReminder] = []
+    var data: [EKReminder] = []
     let store: EKEventStore = .init()
 
     override func viewWillAppear(_ animated: Bool) {
@@ -68,7 +68,7 @@ class RemindersTableViewController: UITableViewController {
 
     private func reminderCompletionHandler(reminders: [EKReminder]?) {
         guard let reminders else { return }
-        data = reminders.map { TriTrackReminder(title: $0.title, date: $0.dueDateComponents?.date ?? Date()) }
+        data = reminders
 
         DispatchQueue.main.async {
             self.tableView.reloadData()

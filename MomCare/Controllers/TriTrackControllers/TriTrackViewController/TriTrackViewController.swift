@@ -99,7 +99,6 @@ class TriTrackViewController: UIViewController, FSCalendarDelegate, FSCalendarDa
     // MARK: Private
 
     private var calendarView: FSCalendar!
-
     private var currentDateSelected: Date = .init()
 
     private func prepareCalendar() {

@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import EventKit
 
 class EventCardCollectionViewCell: UICollectionViewCell {
 
@@ -28,7 +29,7 @@ class EventCardCollectionViewCell: UICollectionViewCell {
 
     var tapHandler: (() -> Void)?
 
-    func updateElements(with event: TriTrackEvent?, tapHandler: (() -> Void)?) {
+    func updateElements(with event: EKEvent?, tapHandler: (() -> Void)?) {
         if let event {
             upcomingEventLabel.text = event.title
 

@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import EventKit
 
 class RemindersTableViewCell: UITableViewCell {
 
@@ -13,7 +14,7 @@ class RemindersTableViewCell: UITableViewCell {
     @IBOutlet var titleLabel: UILabel!
     @IBOutlet var dateTime: UIDatePicker!
 
-    func updateElements(with reminder: TriTrackReminder) {
+    func updateElements(with reminder: EKReminder) {
         titleLabel.text = reminder.title
     }
 }

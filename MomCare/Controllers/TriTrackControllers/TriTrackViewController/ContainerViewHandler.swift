@@ -39,7 +39,7 @@ extension TriTrackViewController {
         }
     }
 
-    private func updateMainView(with index: Int?) {
+    func updateView(with index: Int? = nil) {
         if index != nil {
             currentSegmentValue = index!
             triTrackSegmentedControl.selectedSegmentIndex = index!
@@ -68,13 +68,5 @@ extension TriTrackViewController {
             // Should never happen
             fatalError("love is beautiful thing")
         }
-    }
-
-    func updateView() {
-        updateMainView(with: nil)
-    }
-
-    func updateView(with index: Int) {
-        updateMainView(with: index)
     }
 }

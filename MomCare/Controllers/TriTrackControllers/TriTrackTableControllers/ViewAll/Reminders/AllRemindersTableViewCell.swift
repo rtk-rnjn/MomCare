@@ -6,14 +6,15 @@
 //
 
 import UIKit
+import EventKit
 
 class AllRemindersTableViewCell: UITableViewCell {
 
     @IBOutlet var titleLabel: UILabel!
     @IBOutlet var dateTimePicker: UIDatePicker!
 
-    func updateElements(with reminder: TriTrackReminder) {
+    func updateElements(with reminder: EKReminder) {
         titleLabel.text = reminder.title
-        dateTimePicker.date = reminder.date
+        dateTimePicker.date = reminder.startDateComponents!.date!
     }
 }
