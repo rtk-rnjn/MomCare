@@ -59,20 +59,20 @@ enum Utils {
     public static func remove(_ key: String) {
         UserDefaults.standard.removeObject(forKey: key)
     }
-    
-    @MainActor public static func createNotification(title: String? = nil, body: String? = nil, date: Date? = nil, userInfo: [String: Any]? = nil) {
+
+    public static func createNotification(title: String? = nil, body: String? = nil, date: Date? = nil, userInfo: [String: Any]? = nil) {
         let content = UNMutableNotificationContent()
-        
+
         content.title = title ?? "MomCare"
         content.body = body ?? "Reminder"
         content.sound = .defaultCritical
         content.interruptionLevel = .timeSensitive
         content.userInfo = userInfo ?? [:]
-        
+
         let timeInterval = Date().relativeInterval(from: date)
         let trigger = UNTimeIntervalNotificationTrigger(timeInterval: timeInterval, repeats: false)
         let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
-        
+
         UNUserNotificationCenter.current().add(request)
     }
 }

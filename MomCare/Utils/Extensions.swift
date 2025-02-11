@@ -92,7 +92,7 @@ extension Date {
             return "just now"
         }
     }
-    
+
     func relativeInterval(from date: Date?) -> TimeInterval {
         guard let date else { return 0 }
         return abs(round(Date().timeIntervalSince(date)))
