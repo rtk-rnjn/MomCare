@@ -9,7 +9,7 @@ import UIKit
 
 class EventsViewController: UIViewController {
     var triTrackViewController: TriTrackViewController?
-    
+
     var appointmentsTableViewController: AppointmentsTableViewController?
     var remindersTableViewController: RemindersTableViewController?
 
@@ -27,9 +27,11 @@ class EventsViewController: UIViewController {
         case appointmentIdentifier:
             appointmentsTableViewController = segue.destination as? AppointmentsTableViewController
             appointmentsTableViewController?.eventsViewController = self
+
         case reminderIdentifier:
             remindersTableViewController = segue.destination as? RemindersTableViewController
             remindersTableViewController?.eventsViewController = self
+
         default:
             break
         }

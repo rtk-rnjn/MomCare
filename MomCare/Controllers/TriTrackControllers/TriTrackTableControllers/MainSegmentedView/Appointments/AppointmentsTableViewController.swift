@@ -11,16 +11,18 @@ import EventKit
 class AppointmentsTableViewController: UITableViewController {
 
     // MARK: Internal
+
     var eventsViewController: EventsViewController?
 
     var events: [EKEvent]? = []
     var store: EKEventStore?
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         guard let eventsVC = eventsViewController else { fatalError("eventsViewController is nil") }
         store = eventsVC.triTrackViewController?.eventStore
     }
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         refreshData()
@@ -52,7 +54,7 @@ class AppointmentsTableViewController: UITableViewController {
 
         return cell
     }
-    
+
     override func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
         guard let triTrackVC = eventsViewController?.triTrackViewController else { return nil }
         guard let events else { return nil }
@@ -65,7 +67,7 @@ class AppointmentsTableViewController: UITableViewController {
             }
 
             let deleteAction = UIAction(title: "Delete", image: UIImage(systemName: "trash"), attributes: .destructive) { _ in
-                try? self.store?.remove(event, span: .thisEvent)
+                try? self.store?.remove(event, span: .thisEvent, commit: true)
                 self.refreshData()
             }
 

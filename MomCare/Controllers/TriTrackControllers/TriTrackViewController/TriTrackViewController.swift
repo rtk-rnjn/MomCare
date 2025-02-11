@@ -41,15 +41,16 @@ class TriTrackViewController: UIViewController, FSCalendarDelegate, FSCalendarDa
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        prepareCalendar()
+        prepareFSCalendar()
 
         requestAccessToCalendar()
         requestAccessToReminders()
+
+        navigationController?.navigationBar.isTranslucent = false
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        triTrackInternalView.backgroundColor = .white
         triTrackInternalView.layer.cornerRadius = 15
 
         prepareSegmentedControl()
@@ -105,7 +106,7 @@ class TriTrackViewController: UIViewController, FSCalendarDelegate, FSCalendarDa
     private var calendarView: FSCalendar!
     private var currentDateSelected: Date = .init()
 
-    private func prepareCalendar() {
+    private func prepareFSCalendar() {
         calendarView = FSCalendar(frame: CGRect(x: 0, y: 0, width: calendarUIView.frame.width, height: calendarUIView.frame.height + 150))
         calendarView.scope = .week
         calendarView.select(Date())

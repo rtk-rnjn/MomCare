@@ -92,7 +92,7 @@ extension TriTrackViewController {
         reminder.dueDateComponents = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute], from: reminderTVC.dateTime.date)
         reminder.calendar = createOrGetReminder()
         reminder.recurrenceRules = createRecurrenceRule(for: reminderTVC.selectedRepeatOption)
-        
+
         Utils.createNotification(title: reminder.title, body: reminder.notes, date: reminder.dueDateComponents?.date!)
         try? eventStore.save(reminder, commit: true)
         eventsViewController?.remindersTableViewController?.refreshData()

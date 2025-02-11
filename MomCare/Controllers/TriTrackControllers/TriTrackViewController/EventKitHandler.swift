@@ -11,21 +11,27 @@ import EventKit
 import EventKitUI
 
 extension TriTrackViewController: EKEventEditViewDelegate, EKEventViewDelegate {
-    func eventEditViewController(_ controller: EKEventEditViewController, didCompleteWith action: EKEventEditViewAction) {
+    nonisolated func eventEditViewController(_ controller: EKEventEditViewController, didCompleteWith action: EKEventEditViewAction) {
         switch action {
         case .saved:
             break
         case .canceled, .deleted:
-            dismiss(animated: true, completion: nil)
+            DispatchQueue.main.async {
+                controller.dismiss(animated: true)
+            }
+
         @unknown default:
             break
         }
     }
 
-    func eventViewController(_ controller: EKEventViewController, didCompleteWith action: EKEventViewAction) {
+    nonisolated func eventViewController(_ controller: EKEventViewController, didCompleteWith action: EKEventViewAction) {
         switch action {
         case .done:
-            dismissEventViewController()
+            DispatchQueue.main.async {
+                controller.dismiss(animated: true)
+            }
+
         default:
             break
         }
@@ -50,7 +56,7 @@ extension TriTrackViewController: EKEventEditViewDelegate, EKEventViewDelegate {
         let navigationController = UINavigationController(rootViewController: eventViewController)
         eventViewController.delegate = self
 
-        self.present(navigationController, animated: true)
+        present(navigationController, animated: true)
     }
 
     @objc func dismissEventViewController() {
@@ -66,6 +72,7 @@ extension TriTrackViewController: EKEventEditViewDelegate, EKEventViewDelegate {
         switch status {
         case .denied, .restricted, .notDetermined:
             eventStore.requestFullAccessToEvents { success, _ in
+                self.eventStore = .init()
                 if success {
                     self.eventStore = EKEventStore()
                     DispatchQueue.main.async {
@@ -87,6 +94,7 @@ extension TriTrackViewController: EKEventEditViewDelegate, EKEventViewDelegate {
         switch status {
         case .denied, .restricted, .notDetermined:
             eventStore.requestFullAccessToReminders { success, _ in
+                self.eventStore = .init()
                 if success {
                     self.eventStore = EKEventStore()
                     DispatchQueue.main.async {
