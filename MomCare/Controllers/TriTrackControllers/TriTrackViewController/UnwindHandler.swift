@@ -7,6 +7,7 @@
 
 import UIKit
 import EventKit
+import UserNotifications
 
 extension TriTrackViewController {
     @IBAction func unwinToTriTrack(_ sender: UIStoryboardSegue) {
@@ -50,18 +51,21 @@ extension TriTrackViewController {
         guard let title = viewController.addSymptomsTableViewController?.titleField.text,
               let dateTime = viewController.addSymptomsTableViewController?.dateTime.date else { return }
 
+        let event = EKEvent(eventStore: eventStore)
+        event.title = title
+        event.startDate = dateTime
+        event.calendar = createOrGetEvent()
+
         symptomsViewController?.symptomsTableViewController?.refreshData()
     }
 
     private func handleEventsView(with viewController: TriTrackAddEventViewController) {
-        let eventStore = EKEventStore()
-
         guard let eventTVC = viewController.addEventTableViewController,
               let title = eventTVC.titleField.text else { return }
 
         let event = EKEvent(eventStore: eventStore)
         event.title = title
-        event.location = eventTVC.locationField.text
+        event.location = ((eventTVC.locationField.text?.isEmpty) != nil) ? eventTVC.locationField.text : nil
         event.startDate = eventTVC.startDateTimePicker.date
         event.isAllDay = eventTVC.allDaySwitch.isOn
 
@@ -88,7 +92,8 @@ extension TriTrackViewController {
         reminder.dueDateComponents = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute], from: reminderTVC.dateTime.date)
         reminder.calendar = createOrGetReminder()
         reminder.recurrenceRules = createRecurrenceRule(for: reminderTVC.selectedRepeatOption)
-
+        
+        Utils.createNotification(title: reminder.title, body: reminder.notes, date: reminder.dueDateComponents?.date!)
         try? eventStore.save(reminder, commit: true)
         eventsViewController?.remindersTableViewController?.refreshData()
     }

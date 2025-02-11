@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import EventKitUI
 
 class AddEventTableViewController: UITableViewController {
 

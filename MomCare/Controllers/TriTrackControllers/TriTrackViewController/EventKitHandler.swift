@@ -14,10 +14,7 @@ extension TriTrackViewController: EKEventEditViewDelegate, EKEventViewDelegate {
     func eventEditViewController(_ controller: EKEventEditViewController, didCompleteWith action: EKEventEditViewAction) {
         switch action {
         case .saved:
-            if let event = controller.event {
-                presentEKEventViewController(event: event)
-            }
-
+            break
         case .canceled, .deleted:
             dismiss(animated: true, completion: nil)
         @unknown default:
@@ -25,27 +22,39 @@ extension TriTrackViewController: EKEventEditViewDelegate, EKEventViewDelegate {
         }
     }
 
-    func eventViewController(_ controller: EKEventViewController, didCompleteWith action: EKEventViewAction) {}
+    func eventViewController(_ controller: EKEventViewController, didCompleteWith action: EKEventViewAction) {
+        switch action {
+        case .done:
+            dismissEventViewController()
+        default:
+            break
+        }
+    }
 
-    func presentEKEventEditViewController(event: EKEvent?) {
-        let eventStore = EKEventStore()
-
+    @objc func presentEKEventEditViewController(with event: EKEvent?) {
         let eventEditViewController = EKEventEditViewController()
         eventEditViewController.eventStore = eventStore
-        eventEditViewController.event = event
+        eventEditViewController.event = .none
 
         eventEditViewController.editViewDelegate = self
 
         present(eventEditViewController, animated: true, completion: nil)
     }
 
-    func presentEKEventViewController(event: EKEvent) {
+    func presentEKEventViewController(with event: EKEvent) {
         let eventViewController = EKEventViewController()
-        eventViewController.delegate = self
         eventViewController.event = event
         eventViewController.allowsEditing = true
+        eventViewController.allowsCalendarPreview = true
 
-        present(eventViewController, animated: true, completion: nil)
+        let navigationController = UINavigationController(rootViewController: eventViewController)
+        eventViewController.delegate = self
+
+        self.present(navigationController, animated: true)
+    }
+
+    @objc func dismissEventViewController() {
+        dismiss(animated: true, completion: nil)
     }
 
     // https://stackoverflow.com/a/44415132
@@ -57,9 +66,8 @@ extension TriTrackViewController: EKEventEditViewDelegate, EKEventViewDelegate {
         switch status {
         case .denied, .restricted, .notDetermined:
             eventStore.requestFullAccessToEvents { success, _ in
-                self.eventStore = EKEventStore()
-
                 if success {
+                    self.eventStore = EKEventStore()
                     DispatchQueue.main.async {
                         _ = self.createOrGetEvent()
                     }
@@ -79,9 +87,8 @@ extension TriTrackViewController: EKEventEditViewDelegate, EKEventViewDelegate {
         switch status {
         case .denied, .restricted, .notDetermined:
             eventStore.requestFullAccessToReminders { success, _ in
-                self.eventStore = EKEventStore()
-
                 if success {
+                    self.eventStore = EKEventStore()
                     DispatchQueue.main.async {
                         _ = self.createOrGetReminder()
                     }
@@ -96,9 +103,8 @@ extension TriTrackViewController: EKEventEditViewDelegate, EKEventViewDelegate {
     }
 
     private func createOrGetCalendar(identifierKey: String, eventType: EKEntityType, title: String, defaultCalendar: EKCalendar?) -> EKCalendar? {
-        eventStore = EKEventStore()
-
-        if let identifier = UserDefaults.standard.string(forKey: identifierKey) {
+        let identifier: String? = Utils.get(fromKey: identifierKey)
+        if let identifier {
             return eventStore.calendar(withIdentifier: identifier)
         }
 

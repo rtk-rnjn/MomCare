@@ -30,11 +30,14 @@ class TriTrackViewController: UIViewController, FSCalendarDelegate, FSCalendarDa
     @IBOutlet var symptomsContainerView: UIView!
 
     @IBOutlet var calendarUIView: UIView!
+
     var symptomsViewController: SymptomsViewController?
     var eventsViewController: EventsViewController?
 
     var currentSegmentValue: Int = 0
     var eventStore: EKEventStore = .init()
+
+    var activityIndicator: UIActivityIndicatorView?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -73,6 +76,7 @@ class TriTrackViewController: UIViewController, FSCalendarDelegate, FSCalendarDa
         case "embedShowEventsViewController":
             if let destinationVC = segue.destination as? EventsViewController {
                 eventsViewController = destinationVC
+                destinationVC.triTrackViewController = self
             }
 
         default:
@@ -111,5 +115,4 @@ class TriTrackViewController: UIViewController, FSCalendarDelegate, FSCalendarDa
 
         calendarUIView.addSubview(calendarView)
     }
-
 }

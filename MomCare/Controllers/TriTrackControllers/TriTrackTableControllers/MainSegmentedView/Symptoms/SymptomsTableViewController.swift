@@ -9,7 +9,7 @@ import UIKit
 import EventKit
 
 class SymptomsTableViewController: UITableViewController {
-    var data: [EKEvent] = []
+    var events: [EKEvent] = []
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -17,7 +17,7 @@ class SymptomsTableViewController: UITableViewController {
     }
 
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return data.count
+        return events.count
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -29,7 +29,7 @@ class SymptomsTableViewController: UITableViewController {
 
         guard let cell else { return UITableViewCell() }
 
-        cell.updateElements(with: data[indexPath.section])
+        cell.updateElements(with: events[indexPath.section])
         cell.showsReorderControl = false
 
         // config as per prototype
@@ -50,7 +50,7 @@ class SymptomsTableViewController: UITableViewController {
     }
 
     func refreshData() {
-        data = []
+        events = []
         tableView.reloadData()
     }
 

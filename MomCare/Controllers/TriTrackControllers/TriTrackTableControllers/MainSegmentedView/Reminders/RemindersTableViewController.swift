@@ -11,10 +11,18 @@ import EventKit
 class RemindersTableViewController: UITableViewController {
 
     // MARK: Internal
+    var eventsViewController: EventsViewController?
 
     var data: [EKReminder] = []
-    let store: EKEventStore = .init()
+    var store: EKEventStore?
 
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        guard let eventsViewController else { return }
+        store = eventsViewController.triTrackViewController?.eventStore
+
+    }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         refreshData()
@@ -33,10 +41,9 @@ class RemindersTableViewController: UITableViewController {
 
         guard let cell else { return UITableViewCell() }
 
-        cell.updateElements(with: data[indexPath.section])
+        cell.updateElements(with: data[indexPath.section], for: store)
         cell.showsReorderControl = false
 
-        // config as per prototype
         cell.backgroundColor = Converters.convertHexToUIColor(hex: "F2F2F7")
         cell.contentView.layer.cornerRadius = 10
         cell.contentView.layer.masksToBounds = true
@@ -61,6 +68,8 @@ class RemindersTableViewController: UITableViewController {
 
     private func fetchReminders() {
         let ekCalendars = getCalendar(with: "TriTrackReminder")
+        
+        guard let store else { return }
 
         let predicate = store.predicateForReminders(in: ekCalendars)
         store.fetchReminders(matching: predicate, completion: reminderCompletionHandler)
@@ -76,6 +85,8 @@ class RemindersTableViewController: UITableViewController {
     }
 
     private func getCalendar(with identifierKey: String) -> [EKCalendar]? {
+        guard let store else { return [] }
+
         if let identifier = UserDefaults.standard.string(forKey: identifierKey), let calendar = store.calendar(withIdentifier: identifier) {
             return [calendar]
         }
