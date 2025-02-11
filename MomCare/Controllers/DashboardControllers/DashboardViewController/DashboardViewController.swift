@@ -125,7 +125,7 @@ class DashboardViewController: UIViewController, UICollectionViewDataSource {
     private func requestForNotification() {
         let center = UNUserNotificationCenter.current()
         center.requestAuthorization(options: [.alert, .sound, .badge]) { granted, error in
-            if let error = error {
+            if let error {
                 print("❌ Notification permission error: \(error.localizedDescription)")
             } else if granted {
                 center.getNotificationSettings { settings in
