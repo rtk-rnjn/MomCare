@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import EventKit
 
 public enum TriTrackViewControlSegmentValue: Int {
     case eventsReminderView = 1

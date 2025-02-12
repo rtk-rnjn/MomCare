@@ -8,8 +8,61 @@
 import Foundation
 import UIKit
 import EventKit
+import EventKitUI
 
-extension TriTrackViewController {
+extension TriTrackViewController: EKEventEditViewDelegate, EKEventViewDelegate {
+    nonisolated func eventEditViewController(_ controller: EKEventEditViewController, didCompleteWith action: EKEventEditViewAction) {
+        switch action {
+        case .saved:
+            break
+        case .canceled, .deleted:
+            DispatchQueue.main.async {
+                controller.dismiss(animated: true)
+            }
+
+        @unknown default:
+            break
+        }
+    }
+
+    nonisolated func eventViewController(_ controller: EKEventViewController, didCompleteWith action: EKEventViewAction) {
+        switch action {
+        case .done:
+            DispatchQueue.main.async {
+                controller.dismiss(animated: true)
+            }
+
+        default:
+            break
+        }
+    }
+
+    @objc func presentEKEventEditViewController(with event: EKEvent?) {
+        let eventEditViewController = EKEventEditViewController()
+        eventEditViewController.eventStore = eventStore
+        eventEditViewController.event = .none
+
+        eventEditViewController.editViewDelegate = self
+
+        present(eventEditViewController, animated: true, completion: nil)
+    }
+
+    func presentEKEventViewController(with event: EKEvent) {
+        let eventViewController = EKEventViewController()
+        eventViewController.event = event
+        eventViewController.allowsEditing = true
+        eventViewController.allowsCalendarPreview = true
+
+        let navigationController = UINavigationController(rootViewController: eventViewController)
+        eventViewController.delegate = self
+
+        present(navigationController, animated: true)
+    }
+
+    @objc func dismissEventViewController() {
+        dismiss(animated: true, completion: nil)
+    }
+
     // https://stackoverflow.com/a/44415132
     // https://stackoverflow.com/a/50369804
 
@@ -18,15 +71,15 @@ extension TriTrackViewController {
 
         switch status {
         case .denied, .restricted, .notDetermined:
-            eventStore.requestFullAccessToEvents(completion: { success, _ in
-                self.eventStore = EKEventStore()
-
+            eventStore.requestFullAccessToEvents { success, _ in
+                self.eventStore = .init()
                 if success {
+                    self.eventStore = EKEventStore()
                     DispatchQueue.main.async {
                         _ = self.createOrGetEvent()
                     }
                 }
-            })
+            }
 
         case .authorized:
             break
@@ -40,15 +93,15 @@ extension TriTrackViewController {
 
         switch status {
         case .denied, .restricted, .notDetermined:
-            eventStore.requestFullAccessToReminders(completion: { success, _ in
-                self.eventStore = EKEventStore()
-
+            eventStore.requestFullAccessToReminders { success, _ in
+                self.eventStore = .init()
                 if success {
+                    self.eventStore = EKEventStore()
                     DispatchQueue.main.async {
                         _ = self.createOrGetReminder()
                     }
                 }
-            })
+            }
 
         case .authorized:
             break
@@ -58,9 +111,8 @@ extension TriTrackViewController {
     }
 
     private func createOrGetCalendar(identifierKey: String, eventType: EKEntityType, title: String, defaultCalendar: EKCalendar?) -> EKCalendar? {
-        eventStore = EKEventStore()
-
-        if let identifier = UserDefaults.standard.string(forKey: identifierKey) {
+        let identifier: String? = Utils.get(fromKey: identifierKey)
+        if let identifier {
             return eventStore.calendar(withIdentifier: identifier)
         }
 
@@ -80,7 +132,7 @@ extension TriTrackViewController {
     }
 
     func createOrGetEvent() -> EKCalendar? {
-        return createOrGetCalendar(identifierKey: "TriTrackEvent", eventType: .event, title: "MomCare - TriTrack Reminders", defaultCalendar: eventStore.defaultCalendarForNewEvents)
+        return createOrGetCalendar(identifierKey: "TriTrackEvent", eventType: .event, title: "MomCare - TriTrack Calendar", defaultCalendar: eventStore.defaultCalendarForNewEvents)
     }
 
     func createOrGetReminder() -> EKCalendar? {

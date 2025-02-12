@@ -6,13 +6,14 @@
 //
 
 import UIKit
+import EventKit
 
 class AppointmentsTableViewCell: UITableViewCell {
 
     @IBOutlet var titleLabel: UILabel!
     @IBOutlet var dateTime: UIDatePicker!
 
-    func updateElements(with event: TriTrackEvent) {
+    func updateElements(with event: EKEvent) {
         dateTime.date = event.startDate
         titleLabel.text = event.title
     }

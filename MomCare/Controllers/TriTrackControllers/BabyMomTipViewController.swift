@@ -15,10 +15,10 @@ class BabyMomTipViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        babyStack.layer.cornerRadius = 14
+        babyStack.layer.cornerRadius = 16
         babyStack.layer.masksToBounds = true
 
-        momStack.layer.cornerRadius = 14
+        momStack.layer.cornerRadius = 16
         momStack.layer.masksToBounds = true
     }
 

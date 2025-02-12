@@ -105,7 +105,7 @@
                         </subviews>
                     </stackView>
                 </subviews>
-                <color key="backgroundColor" red="0.69803921568627447" green="0.81568627450980391" blue="0.87058823529411766" alpha="1" colorSpace="calibratedRGB"/>
+                <color key="backgroundColor" red="0.92156862750000001" green="0.86666666670000003" blue="0.85882352939999995" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                 <constraints>
                     <constraint firstItem="DRM-Bb-WQb" firstAttribute="top" secondItem="7iD-x9-pRT" secondAttribute="top" constant="20" id="F2h-DJ-THk"/>
                     <constraint firstAttribute="bottom" secondItem="DRM-Bb-WQb" secondAttribute="bottom" constant="20" id="IR5-ZJ-Wvc"/>

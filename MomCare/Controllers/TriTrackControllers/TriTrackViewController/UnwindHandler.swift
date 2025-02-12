@@ -7,6 +7,7 @@
 
 import UIKit
 import EventKit
+import UserNotifications
 
 extension TriTrackViewController {
     @IBAction func unwinToTriTrack(_ sender: UIStoryboardSegue) {
@@ -18,100 +19,81 @@ extension TriTrackViewController {
         case "unwindToTriTrackViaCancel":
             break
         default:
-            fatalError("love is a battlefield")
+            fatalError("Invalid unwind segue identifier")
         }
     }
 
     private func handleDoneButtonTapped(with viewController: TriTrackAddEventViewController) {
-
         switch viewController.viewControllerValue {
         case .eventsReminderView:
-            handleDoneButtonTappedForEventsReminders(with: viewController)
+            handleEventsReminders(with: viewController)
         case .symptomsView:
-            handleDoneButtonTappedForSymptomsView(with: viewController)
+            handleSymptomsView(with: viewController)
         case .none:
-            fatalError("what is love?")
+            fatalError("Unexpected nil viewControllerValue")
         }
     }
 
-    private func handleDoneButtonTappedForEventsReminders(with viewController: TriTrackAddEventViewController) {
-        switch TriTrackEventReminderViewControlSegmentValue(rawValue: viewController.eventReminderSegmentControl.selectedSegmentIndex) {
+    private func handleEventsReminders(with viewController: TriTrackAddEventViewController) {
+        guard let segmentValue = TriTrackEventReminderViewControlSegmentValue(rawValue: viewController.eventReminderSegmentControl.selectedSegmentIndex) else {
+            fatalError("Invalid segment index")
+        }
+
+        switch segmentValue {
         case .eventView:
-            handleDoneButtonTappedForEventsView(with: viewController)
+            handleEventsView(with: viewController)
         case .reminderView:
-            handleDoneButtonTappedForRemindersView(with: viewController)
-        default:
-            fatalError("Love is not what you think it is")
+            handleRemindersView(with: viewController)
         }
     }
 
-    private func handleDoneButtonTappedForSymptomsView(with viewController: TriTrackAddEventViewController) {
-        let title = viewController.addSymptomsTableViewController?.titleField.text
-        let notes = viewController.addSymptomsTableViewController?.notesField.text
-        let dateTime = viewController.addSymptomsTableViewController?.dateTime.date
-
-        guard let title, let dateTime else { return }
-
-        // TODO:
-        symptomsViewController?.symptomsTableViewController?.refreshData()
-    }
-
-    private func handleDoneButtonTappedForEventsView(with viewController: TriTrackAddEventViewController) {
-        let title = viewController.addEventTableViewController?.titleField.text
-        let location = viewController.addEventTableViewController?.locationField.text
-
-        let startDateTime = viewController.addEventTableViewController?.startDateTimePicker.date
-        let endDateTime = viewController.addEventTableViewController?.endDateTimePicker.date
-
-        let repeatAfter = viewController.addEventTableViewController?.selectedRepeatOption
-        let travelTime = viewController.addEventTableViewController?.selectedTravelTimeOption
-        let alertTime = viewController.addEventTableViewController?.selectedAlertTimeOption
-
-        let allDay = viewController.addEventTableViewController?.allDaySwitch.isOn ?? false
-
-        guard let title, let startDateTime else { return }
+    private func handleSymptomsView(with viewController: TriTrackAddEventViewController) {
+        guard let title = viewController.addSymptomsTableViewController?.titleField.text,
+              let dateTime = viewController.addSymptomsTableViewController?.dateTime.date else { return }
 
         let event = EKEvent(eventStore: eventStore)
         event.title = title
-        event.startDate = startDateTime
-
-        event.location = location
-        event.isAllDay = allDay
-        if let repeatAfter {
-            event.recurrenceRules = createRecurrenceRule(for: repeatAfter)
-        }
-        if let alertTime {
-            event.addAlarm(EKAlarm(relativeOffset: -alertTime))
-        }
-        if let travelTime {
-            if let endDateTime = endDateTime?.addingTimeInterval(travelTime) {
-                event.endDate = endDateTime
-            }
-        }
+        event.startDate = dateTime
         event.calendar = createOrGetEvent()
 
-        try? eventStore.save(event, span: .thisEvent)
+        symptomsViewController?.symptomsTableViewController?.refreshData()
+    }
 
+    private func handleEventsView(with viewController: TriTrackAddEventViewController) {
+        guard let eventTVC = viewController.addEventTableViewController,
+              let title = eventTVC.titleField.text else { return }
+
+        let event = EKEvent(eventStore: eventStore)
+        event.title = title
+        event.location = ((eventTVC.locationField.text?.isEmpty) != nil) ? eventTVC.locationField.text : nil
+        event.startDate = eventTVC.startDateTimePicker.date
+        event.isAllDay = eventTVC.allDaySwitch.isOn
+
+        if let repeatAfter = eventTVC.selectedRepeatOption {
+            event.recurrenceRules = createRecurrenceRule(for: repeatAfter)
+        }
+        if let alertTime = eventTVC.selectedAlertTimeOption {
+            event.addAlarm(EKAlarm(relativeOffset: -alertTime))
+        }
+        event.endDate = eventTVC.allDaySwitch.isOn ? event.startDate : eventTVC.endDateTimePicker.date.addingTimeInterval(eventTVC.selectedTravelTimeOption ?? 0)
+        event.calendar = createOrGetEvent()
+
+        try? eventStore.save(event, span: .thisEvent, commit: true)
         eventsViewController?.appointmentsTableViewController?.refreshData()
     }
 
-    private func handleDoneButtonTappedForRemindersView(with viewController: TriTrackAddEventViewController) {
-        let title = viewController.addReminderTableViewController?.titleField.text
-        let notes = viewController.addReminderTableViewController?.notesField.text
-        let dueDate = viewController.addReminderTableViewController?.dateTime.date
-        let repeatAfter = viewController.addReminderTableViewController?.selectedRepeatOption
-
-        guard let title, let notes, let dueDate else { return }
+    private func handleRemindersView(with viewController: TriTrackAddEventViewController) {
+        guard let reminderTVC = viewController.addReminderTableViewController,
+              let title = reminderTVC.titleField.text else { return }
 
         let reminder = EKReminder(eventStore: eventStore)
         reminder.title = title
-        reminder.notes = notes
-
-        let dueDateComponents = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute], from: dueDate)
-        reminder.dueDateComponents = dueDateComponents
+        reminder.notes = reminderTVC.notesField.text
+        reminder.dueDateComponents = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute], from: reminderTVC.dateTime.date)
         reminder.calendar = createOrGetReminder()
-        reminder.recurrenceRules = createRecurrenceRule(for: repeatAfter)
+        reminder.recurrenceRules = createRecurrenceRule(for: reminderTVC.selectedRepeatOption)
 
+        Utils.createNotification(title: reminder.title, body: reminder.notes, date: reminder.dueDateComponents?.date!)
         try? eventStore.save(reminder, commit: true)
         eventsViewController?.remindersTableViewController?.refreshData()
     }
@@ -119,40 +101,17 @@ extension TriTrackViewController {
     private func createRecurrenceRule(for interval: TimeInterval?) -> [EKRecurrenceRule] {
         guard let interval, interval > 0 else { return [] }
 
-        var recurrenceFrequency = EKRecurrenceFrequency.daily
-        var intervalValue = 1
+        let (frequency, intervalValue): (EKRecurrenceFrequency, Int) = {
+            switch interval {
+            case 24 * 60 * 60: return (.daily, 1)
+            case 24 * 60 * 60 * 7: return (.weekly, 1)
+            case 24 * 60 * 60 * 7 * 2: return (.weekly, 2)
+            case 24 * 60 * 60 * 30: return (.monthly, 1)
+            case 24 * 60 * 60 * 365: return (.yearly, 1)
+            default: return (.daily, 1)
+            }
+        }()
 
-        switch interval {
-        case 24 * 60 * 60:
-            recurrenceFrequency = .daily
-            intervalValue = 1
-
-        case 24 * 60 * 60 * 7:
-            recurrenceFrequency = .weekly
-            intervalValue = 1
-
-        case 24 * 60 * 60 * 7 * 2:
-            recurrenceFrequency = .weekly
-            intervalValue = 2
-
-        case 24 * 60 * 60 * 7 * 30:
-            recurrenceFrequency = .monthly
-            intervalValue = 1
-
-        case 24 * 60 * 60 * 7 * 30 * 12:
-            recurrenceFrequency = .yearly
-            intervalValue = 1
-
-        default:
-            return []
-        }
-
-        let rule = EKRecurrenceRule(
-            recurrenceWith: recurrenceFrequency,
-            interval: intervalValue,
-            end: nil
-        )
-
-        return [rule]
+        return [EKRecurrenceRule(recurrenceWith: frequency, interval: intervalValue, end: nil)]
     }
 }

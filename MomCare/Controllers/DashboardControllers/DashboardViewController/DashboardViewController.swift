@@ -124,11 +124,18 @@ class DashboardViewController: UIViewController, UICollectionViewDataSource {
 
     private func requestForNotification() {
         let center = UNUserNotificationCenter.current()
-        center.requestAuthorization(options: [.alert, .sound, .badge]) { granted, _ in
-            if granted {
-                print("Permission granted")
+        center.requestAuthorization(options: [.alert, .sound, .badge]) { granted, error in
+            if let error {
+                print("❌ Notification permission error: \(error.localizedDescription)")
+            } else if granted {
+                center.getNotificationSettings { settings in
+                    guard settings.authorizationStatus == .authorized else { return }
+                    DispatchQueue.main.async {
+                        UIApplication.shared.registerForRemoteNotifications()
+                    }
+                }
             } else {
-                print("Permission denied")
+                print("❌ Notification permission denied")
             }
         }
     }

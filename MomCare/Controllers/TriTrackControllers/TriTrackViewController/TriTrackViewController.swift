@@ -30,23 +30,27 @@ class TriTrackViewController: UIViewController, FSCalendarDelegate, FSCalendarDa
     @IBOutlet var symptomsContainerView: UIView!
 
     @IBOutlet var calendarUIView: UIView!
+
     var symptomsViewController: SymptomsViewController?
     var eventsViewController: EventsViewController?
 
     var currentSegmentValue: Int = 0
     var eventStore: EKEventStore = .init()
 
+    var activityIndicator: UIActivityIndicatorView?
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        prepareCalendar()
+        prepareFSCalendar()
 
         requestAccessToCalendar()
         requestAccessToReminders()
+
+        navigationController?.navigationBar.isTranslucent = false
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        triTrackInternalView.backgroundColor = .white
         triTrackInternalView.layer.cornerRadius = 15
 
         prepareSegmentedControl()
@@ -73,6 +77,7 @@ class TriTrackViewController: UIViewController, FSCalendarDelegate, FSCalendarDa
         case "embedShowEventsViewController":
             if let destinationVC = segue.destination as? EventsViewController {
                 eventsViewController = destinationVC
+                destinationVC.triTrackViewController = self
             }
 
         default:
@@ -99,10 +104,9 @@ class TriTrackViewController: UIViewController, FSCalendarDelegate, FSCalendarDa
     // MARK: Private
 
     private var calendarView: FSCalendar!
-
     private var currentDateSelected: Date = .init()
 
-    private func prepareCalendar() {
+    private func prepareFSCalendar() {
         calendarView = FSCalendar(frame: CGRect(x: 0, y: 0, width: calendarUIView.frame.width, height: calendarUIView.frame.height + 150))
         calendarView.scope = .week
         calendarView.select(Date())
@@ -112,5 +116,4 @@ class TriTrackViewController: UIViewController, FSCalendarDelegate, FSCalendarDa
 
         calendarUIView.addSubview(calendarView)
     }
-
 }

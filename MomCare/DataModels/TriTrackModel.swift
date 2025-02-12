@@ -8,34 +8,6 @@
 import Foundation
 import UIKit
 
-struct TriTrackEvent: Codable {
-    var title: String
-    var location: String?
-
-    var allDay: Bool = false
-    var startDate: Date
-    var endDate: Date?
-
-    var travelTime: TimeInterval?
-    var alertBefore: TimeInterval?
-    var repeatAfter: TimeInterval?
-}
-
-struct TriTrackReminder: Codable {
-    var title: String
-    var date: Date = .init()
-    var notes: String?
-
-    var repeatAfter: TimeInterval?
-}
-
-struct TriTrackSymptom: Codable {
-    var title: String
-    var notes: String?
-
-    var atTime: Date
-}
-
 struct TrimesterData: Codable {
     let trimesterNumber: Int
     let weekNumber: Int

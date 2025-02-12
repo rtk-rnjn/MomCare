@@ -6,10 +6,11 @@
 //
 
 import UIKit
+import EventKit
 
 class AllRemindersTableViewController: UITableViewController {
 
-    var reminders: [TriTrackReminder] = []
+    var reminders: [EKReminder] = []
 
     override func numberOfSections(in tableView: UITableView) -> Int {
         return 1

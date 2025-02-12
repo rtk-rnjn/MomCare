@@ -6,10 +6,11 @@
 //
 
 import UIKit
+import EventKit
 
 class AllAppointmentsTableViewController: UITableViewController {
 
-    var appointments: [TriTrackEvent] = []
+    var appointments: [EKEvent] = []
 
     override func numberOfSections(in tableView: UITableView) -> Int {
         return 1

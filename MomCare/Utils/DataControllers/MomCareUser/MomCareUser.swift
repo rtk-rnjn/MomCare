@@ -31,7 +31,7 @@ class MomCareUser {
     func updateToDatabase() {
         queue.async {
             Task {
-                await self.updateUser(to: .database)
+//                await self.updateUser(to: .database)
             }
         }
     }
@@ -39,7 +39,7 @@ class MomCareUser {
     func updateFromDatabase() {
         queue.async {
             Task {
-                await self.fetchUser(from: .database)
+//                await self.fetchUser(from: .database)
             }
         }
     }
