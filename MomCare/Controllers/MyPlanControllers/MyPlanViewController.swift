@@ -24,7 +24,7 @@ class MyPlanViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         dietContainerView.backgroundColor = .white
-        exerciseContainerView.layer.cornerRadius = 15
+        exerciseContainerView.layer.cornerRadius = 16
 
         prepareSegmentedControl()
         updateView()
