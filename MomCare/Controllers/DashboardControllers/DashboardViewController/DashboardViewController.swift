@@ -34,7 +34,6 @@ class DashboardViewController: UIViewController, UICollectionViewDataSource {
 
     func addHKActivityRing(to cellView: UIView, with summary: HKActivitySummary?) {
         let summary = HKActivitySummary()
-        // Set sample values (replace with actual HealthKit data)
         summary.activeEnergyBurned = HKQuantity(unit: .kilocalorie(), doubleValue: 300)
         summary.activeEnergyBurnedGoal = HKQuantity(unit: .kilocalorie(), doubleValue: 500)
         summary.appleExerciseTime = HKQuantity(unit: .minute(), doubleValue: 30)
