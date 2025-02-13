@@ -42,7 +42,6 @@ class DashboardViewController: UIViewController, UICollectionViewDataSource {
         summary.appleStandHours = HKQuantity(unit: .count(), doubleValue: 10)
         summary.appleStandHoursGoal = HKQuantity(unit: .count(), doubleValue: 12)
 
-        
         let HKview = HKActivityRingView()
         HKview.setActivitySummary(summary, animated: true)
         HKview.translatesAutoresizingMaskIntoConstraints = false
