@@ -13,18 +13,17 @@ extension DashboardViewController {
     func addHKActivityRing(to cellView: UIView, withSummary summary: HKActivitySummary? = nil) {
         let summary = HKActivitySummary()
 
-        summary.activeEnergyBurned = HKQuantity(unit: .kilocalorie(), doubleValue: 0)
-        summary.activeEnergyBurnedGoal = HKQuantity(unit: .kilocalorie(), doubleValue: 0)
-        summary.appleExerciseTime = HKQuantity(unit: .minute(), doubleValue: 0)
-        summary.appleExerciseTimeGoal = HKQuantity(unit: .minute(), doubleValue: 0)
-        summary.appleStandHours = HKQuantity(unit: .count(), doubleValue: 0)
-        summary.appleStandHoursGoal = HKQuantity(unit: .count(), doubleValue: 0)
+        summary.activeEnergyBurned = HKQuantity(unit: .kilocalorie(), doubleValue: 11)
+        summary.activeEnergyBurnedGoal = HKQuantity(unit: .kilocalorie(), doubleValue: 21)
+        summary.appleExerciseTime = HKQuantity(unit: .minute(), doubleValue: 1)
+        summary.appleExerciseTimeGoal = HKQuantity(unit: .minute(), doubleValue: 2)
+        summary.appleStandHours = HKQuantity(unit: .count(), doubleValue: 12)
+        summary.appleStandHoursGoal = HKQuantity(unit: .count(), doubleValue: 34)
 
         let healthKitActivityRingView = HKActivityRingView()
         cellView.addSubview(healthKitActivityRingView)
 
         healthKitActivityRingView.translatesAutoresizingMaskIntoConstraints = false
-        healthKitActivityRingView.backgroundColor = .clear
 
         let width = cellView.frame.size.width
         let height = cellView.frame.size.height
@@ -49,15 +48,84 @@ extension DashboardViewController {
 
         let allTypes = Set([
             HKQuantityType.quantityType(forIdentifier: .activeEnergyBurned)!,
-            HKQuantityType.quantityType(forIdentifier: .appleExerciseTime)!,
-            HKQuantityType.quantityType(forIdentifier: .appleStandTime)!,
+            HKQuantityType.quantityType(forIdentifier: .stepCount)!,
             HKObjectType.activitySummaryType()
         ])
 
         healthStore.requestAuthorization(toShare: nil, read: allTypes) { success, _ in
             if success {
-                print("HealthKit permission granted")
+                self.readVitals()
             }
         }
+    }
+    
+    private var lastDayPredicate: NSPredicate {
+        let calendar = Calendar.current
+        let now = Date()
+        let startOfDay = calendar.startOfDay(for: now)
+        let endOfDay = calendar.date(byAdding: .day, value: 1, to: startOfDay)
+
+        let predicate = HKQuery.predicateForSamples(withStart: startOfDay, end: endOfDay, options: .strictStartDate)
+        
+        return predicate
+    }
+    
+    func readVitals() {
+        readStepCount()
+        readCaloriesBurned()
+        readWorkout()
+    }
+    
+    private func readStepCount() {
+        guard let stepType = HKQuantityType.quantityType(forIdentifier: .stepCount) else { return }
+        
+        let query = HKStatisticsCollectionQuery(quantityType: stepType, quantitySamplePredicate: lastDayPredicate, options: .cumulativeSum, anchorDate: Date(), intervalComponents: DateComponents(day: 1))
+
+        query.initialResultsHandler = { query, results, error in
+            guard let results = results else { return }
+            
+            results.enumerateStatistics(from: Date(), to: Date()) { statistics, _ in
+                if let quantity = statistics.sumQuantity() {
+                    let steps = quantity.doubleValue(for: .count())
+                    print("Steps: \(steps)")
+                }
+            }
+        }
+        
+        healthStore?.execute(query)
+    }
+    
+    private func readCaloriesBurned() {
+        guard let calorieType = HKQuantityType.quantityType(forIdentifier: .activeEnergyBurned) else { return }
+        
+        let query = HKStatisticsCollectionQuery(quantityType: calorieType, quantitySamplePredicate: lastDayPredicate, options: .cumulativeSum, anchorDate: Date(), intervalComponents: DateComponents(day: 1))
+
+        query.initialResultsHandler = { query, results, error in
+            guard let results = results else { return }
+            
+            results.enumerateStatistics(from: Date(), to: Date()) { statistics, _ in
+                if let quantity = statistics.sumQuantity() {
+                    let calories = quantity.doubleValue(for: .kilocalorie())
+                    print("Calories: \(calories)")
+                }
+            }
+        }
+        
+        healthStore?.execute(query)
+    }
+
+
+    private func readWorkout() {
+        let workoutType = HKWorkoutType.workoutType()
+
+        let query = HKSampleQuery(sampleType: workoutType, predicate: lastDayPredicate, limit: HKObjectQueryNoLimit, sortDescriptors: nil) { query, samples, error in
+            guard let samples = samples as? [HKWorkout] else { return }
+            
+            for sample in samples {
+                print("Workout: \(sample.workoutActivityType.rawValue)")
+            }
+        }
+        
+        healthStore?.execute(query)
     }
 }

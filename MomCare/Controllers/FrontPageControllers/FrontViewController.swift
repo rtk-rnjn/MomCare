@@ -22,10 +22,6 @@ class FrontViewController: UIViewController, UICollectionViewDelegate, UICollect
         collectionView.dataSource = self
 
         collectionView.backgroundColor = .none
-
-        if HKHealthStore.isHealthDataAvailable() {
-            print("Health data available")
-        }
     }
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
