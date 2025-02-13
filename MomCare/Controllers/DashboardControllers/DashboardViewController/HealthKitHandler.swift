@@ -58,32 +58,30 @@ extension DashboardViewController {
             }
         }
     }
-    
+
     private var lastDayPredicate: NSPredicate {
         let calendar = Calendar.current
         let now = Date()
         let startOfDay = calendar.startOfDay(for: now)
         let endOfDay = calendar.date(byAdding: .day, value: 1, to: startOfDay)
 
-        let predicate = HKQuery.predicateForSamples(withStart: startOfDay, end: endOfDay, options: .strictStartDate)
-        
-        return predicate
+        return HKQuery.predicateForSamples(withStart: startOfDay, end: endOfDay, options: .strictStartDate)
     }
-    
+
     func readVitals() {
         readStepCount()
         readCaloriesBurned()
         readWorkout()
     }
-    
+
     private func readStepCount() {
         guard let stepType = HKQuantityType.quantityType(forIdentifier: .stepCount) else { return }
-        
+
         let query = HKStatisticsCollectionQuery(quantityType: stepType, quantitySamplePredicate: lastDayPredicate, options: .cumulativeSum, anchorDate: Date(), intervalComponents: DateComponents(day: 1))
 
-        query.initialResultsHandler = { query, results, error in
-            guard let results = results else { return }
-            
+        query.initialResultsHandler = { _, results, _ in
+            guard let results else { return }
+
             results.enumerateStatistics(from: Date(), to: Date()) { statistics, _ in
                 if let quantity = statistics.sumQuantity() {
                     let steps = quantity.doubleValue(for: .count())
@@ -91,18 +89,18 @@ extension DashboardViewController {
                 }
             }
         }
-        
+
         healthStore?.execute(query)
     }
-    
+
     private func readCaloriesBurned() {
         guard let calorieType = HKQuantityType.quantityType(forIdentifier: .activeEnergyBurned) else { return }
-        
+
         let query = HKStatisticsCollectionQuery(quantityType: calorieType, quantitySamplePredicate: lastDayPredicate, options: .cumulativeSum, anchorDate: Date(), intervalComponents: DateComponents(day: 1))
 
-        query.initialResultsHandler = { query, results, error in
-            guard let results = results else { return }
-            
+        query.initialResultsHandler = { _, results, _ in
+            guard let results else { return }
+
             results.enumerateStatistics(from: Date(), to: Date()) { statistics, _ in
                 if let quantity = statistics.sumQuantity() {
                     let calories = quantity.doubleValue(for: .kilocalorie())
@@ -110,22 +108,21 @@ extension DashboardViewController {
                 }
             }
         }
-        
+
         healthStore?.execute(query)
     }
-
 
     private func readWorkout() {
         let workoutType = HKWorkoutType.workoutType()
 
-        let query = HKSampleQuery(sampleType: workoutType, predicate: lastDayPredicate, limit: HKObjectQueryNoLimit, sortDescriptors: nil) { query, samples, error in
+        let query = HKSampleQuery(sampleType: workoutType, predicate: lastDayPredicate, limit: HKObjectQueryNoLimit, sortDescriptors: nil) { _, samples, _ in
             guard let samples = samples as? [HKWorkout] else { return }
-            
+
             for sample in samples {
                 print("Workout: \(sample.workoutActivityType.rawValue)")
             }
         }
-        
+
         healthStore?.execute(query)
     }
 }
