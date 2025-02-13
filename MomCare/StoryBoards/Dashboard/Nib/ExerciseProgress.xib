@@ -99,7 +99,7 @@
                                     </stackView>
                                 </subviews>
                             </stackView>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ojq-Nd-XIB">
+                            <view contentMode="center" translatesAutoresizingMaskIntoConstraints="NO" id="Ojq-Nd-XIB">
                                 <rect key="frame" x="160" y="0.0" width="160" height="130"/>
                             </view>
                         </subviews>
@@ -120,7 +120,7 @@
                 <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
             </userDefinedRuntimeAttributes>
             <connections>
-                <outlet property="activityView" destination="Ojq-Nd-XIB" id="4zQ-Yn-3lj"/>
+                <outlet property="activityView" destination="Ojq-Nd-XIB" id="gCA-KO-f3Z"/>
             </connections>
             <point key="canvasLocation" x="237" y="-26"/>
         </collectionViewCell>

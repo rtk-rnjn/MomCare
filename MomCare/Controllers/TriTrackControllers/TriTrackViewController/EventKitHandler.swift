@@ -66,7 +66,7 @@ extension TriTrackViewController: EKEventEditViewDelegate, EKEventViewDelegate {
     // https://stackoverflow.com/a/44415132
     // https://stackoverflow.com/a/50369804
 
-    func requestAccessToCalendar() {
+    func requestAccessForCalendar() {
         let status = EKEventStore.authorizationStatus(for: .event)
 
         switch status {
@@ -88,7 +88,7 @@ extension TriTrackViewController: EKEventEditViewDelegate, EKEventViewDelegate {
         }
     }
 
-    func requestAccessToReminders() {
+    func requestAccessForReminders() {
         let status = EKEventStore.authorizationStatus(for: .reminder)
 
         switch status {

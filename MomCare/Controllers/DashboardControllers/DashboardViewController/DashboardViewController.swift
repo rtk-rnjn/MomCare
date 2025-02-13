@@ -22,29 +22,14 @@ class DashboardViewController: UIViewController, UICollectionViewDataSource {
         setupCollectionView()
         collectionView.showsVerticalScrollIndicator = false
 
-        requestForNotification()
-        requestForHealthKit()
+        requestAccessForNotification()
+        requestAccessForHealth()
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationItem.hidesBackButton = true
         collectionView.reloadData()
-    }
-
-    func addHKActivityRing(to cellView: UIView, with summary: HKActivitySummary?) {
-        let summary = HKActivitySummary()
-        summary.activeEnergyBurned = HKQuantity(unit: .kilocalorie(), doubleValue: 300)
-        summary.activeEnergyBurnedGoal = HKQuantity(unit: .kilocalorie(), doubleValue: 500)
-        summary.appleExerciseTime = HKQuantity(unit: .minute(), doubleValue: 30)
-        summary.appleExerciseTimeGoal = HKQuantity(unit: .minute(), doubleValue: 60)
-        summary.appleStandHours = HKQuantity(unit: .count(), doubleValue: 10)
-        summary.appleStandHoursGoal = HKQuantity(unit: .count(), doubleValue: 12)
-
-        let HKview = HKActivityRingView()
-        HKview.setActivitySummary(summary, animated: true)
-        HKview.translatesAutoresizingMaskIntoConstraints = false
-        cellView.addSubview(HKview)
     }
 
     func numberOfSections(in collectionView: UICollectionView) -> Int {
@@ -71,45 +56,6 @@ class DashboardViewController: UIViewController, UICollectionViewDataSource {
     private let cellIdentifiers = ["WelcomeHeaderCell", "WeekCard", "EventCard", "DietProgress", "ExerciseProgress", "FocusCard", "TipCard"]
     private let headerIdentifier = "SectionHeaderView"
     private let interItemSpacing: CGFloat = 15
-
-    private func requestForNotification() {
-        let center = UNUserNotificationCenter.current()
-        center.requestAuthorization(options: [.alert, .sound, .badge]) { granted, error in
-            if let error {
-                print("❌ Notification permission error: \(error.localizedDescription)")
-            } else if granted {
-                center.getNotificationSettings { settings in
-                    guard settings.authorizationStatus == .authorized else { return }
-                    DispatchQueue.main.async {
-                        UIApplication.shared.registerForRemoteNotifications()
-                    }
-                }
-            } else {
-                print("❌ Notification permission denied")
-            }
-        }
-    }
-
-    private func requestForHealthKit() {
-        healthStore = HKHealthStore()
-
-        guard let healthStore else { return }
-
-        let allTypes = Set([
-            HKObjectType.workoutType(),
-            HKObjectType.quantityType(forIdentifier: .activeEnergyBurned)!,
-            HKObjectType.quantityType(forIdentifier: .activeEnergyBurned)!,
-            HKObjectType.quantityType(forIdentifier: .appleExerciseTime)!,
-            HKObjectType.quantityType(forIdentifier: .appleStandTime)!,
-            HKObjectType.activitySummaryType()
-        ])
-
-        healthStore.requestAuthorization(toShare: nil, read: allTypes) { success, _ in
-            if success {
-                print("HealthKit permission granted")
-            }
-        }
-    }
 
     private func setupCollectionView() {
         registerCells()

@@ -43,8 +43,8 @@ class TriTrackViewController: UIViewController, FSCalendarDelegate, FSCalendarDa
         super.viewDidLoad()
         prepareFSCalendar()
 
-        requestAccessToCalendar()
-        requestAccessToReminders()
+        requestAccessForCalendar()
+        requestAccessForReminders()
 
         navigationController?.navigationBar.isTranslucent = false
     }

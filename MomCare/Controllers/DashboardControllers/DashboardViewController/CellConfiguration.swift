@@ -73,15 +73,15 @@ extension DashboardViewController {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "DietProgress", for: indexPath) as? DietProgressCollectionViewCell
 
             guard let cell else { fatalError("'DietProgress' not found") }
-            cell.updateElements(with: MomCareUser.shared.user?.plan, tapHandler: dietCardTapped)
+            cell.updateElements(withTapHandler: dietCardTapped)
             return cell
 
         case 1:
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ExerciseProgress", for: indexPath) as? ExerciseProgressCollectionViewCell
             guard let cell else { fatalError("'ExerciseProgress' not found") }
 
-            cell.updateElements(with: MomCareUser.shared.user?.exercises, tapHandler: exersiceCardTapped)
-            addHKActivityRing(to: cell.activityView, with: nil)
+            cell.updateElements(withTapHandler: exersiceCardTapped)
+            addHKActivityRing(to: cell.activityView, withSummary: nil)
             return cell
 
         default:
