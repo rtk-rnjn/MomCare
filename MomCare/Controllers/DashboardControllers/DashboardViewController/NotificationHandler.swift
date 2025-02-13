@@ -12,7 +12,7 @@ import UIKit
 extension DashboardViewController {
     func requestAccessForNotification() {
         let center = UNUserNotificationCenter.current()
-        center.requestAuthorization(options: [.alert, .sound, .badge]) { granted, error in
+        center.requestAuthorization(options: [.alert, .sound, .badge]) { granted, _ in
             if granted {
                 center.getNotificationSettings { settings in
                     guard settings.authorizationStatus == .authorized else { return }
