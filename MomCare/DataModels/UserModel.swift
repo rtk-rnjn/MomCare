@@ -12,7 +12,7 @@ enum Country: String, Codable {
     case india = "India"
 }
 
-enum PreExistingCondition: Codable {
+public enum PreExistingCondition: String, Codable, CaseIterable, Equatable, Hashable {
     case diabetes
     case hypertension
     case pcos
@@ -22,7 +22,7 @@ enum PreExistingCondition: Codable {
     case kidneyDisease
 }
 
-enum Intolerance: String, Codable {
+public enum Intolerance: String, Codable, CaseIterable, Equatable, Hashable {
     case gluten
     case lactose
     case egg
@@ -32,7 +32,7 @@ enum Intolerance: String, Codable {
     case wheat
 }
 
-enum DietaryPreference: Codable {
+public enum DietaryPreference: String, Codable, CaseIterable, Equatable, Hashable {
     case vegetarian
     case nonVegetarian
     case vegan

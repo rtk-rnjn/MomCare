@@ -44,7 +44,6 @@ class SignUpDetailsTableViewController: UITableViewController, UIViewControllerT
         default:
             if let destination = segue.destination as? PickerViewController, let presentationController = destination.presentationController as? UISheetPresentationController {
                 presentationController.detents = [.medium()]
-                present(destination, animated: true)
             }
         }
     }

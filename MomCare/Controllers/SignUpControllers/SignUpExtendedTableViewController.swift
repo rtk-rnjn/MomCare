@@ -12,9 +12,6 @@ class SignUpExtendedTableViewController: UITableViewController {
     // MARK: Internal
 
     @IBOutlet var dueDatePopupButton: UIButton!
-    @IBOutlet var existingConditionPopupButton: UIButton!
-    @IBOutlet var foodIntolerancePopupButton: UIButton!
-    @IBOutlet var dietaryPreferencePopupButton: UIButton!
     @IBOutlet var weekPullDownButton: UIButton!
     @IBOutlet var dayPullDownButton: UIButton!
     @IBOutlet var weeksLabel: UILabel!
@@ -75,9 +72,6 @@ class SignUpExtendedTableViewController: UITableViewController {
 
     private func setupPopUpButtons() {
         prepareDueDatePopUpButton()
-        prepareExistingConditionPopUpButton()
-        prepareFoodIntolerancePopUpButton()
-        prepareDietaryPreferencePopUpButton()
     }
 
     private func hideInitialElements() {
@@ -116,30 +110,6 @@ class SignUpExtendedTableViewController: UITableViewController {
         tableView.reloadData()
     }
 
-    private func prepareExistingConditionPopUpButton() {
-        let options = [
-            "None", "Diabetes", "Hypertension", "Polycystic Ovary Syndrome", "Anemia", "Asthma", "Heart Disease", "Kidney Disease"
-        ]
-
-        configurePopUpButton(existingConditionPopupButton, options: options)
-    }
-
-    private func prepareFoodIntolerancePopUpButton() {
-        let options = [
-            "None", "Lactose Intolerance", "Gluten Sensitivity", "Egg Allergy", "Seafood Allergy", "Soy Allergy", "Dairy Allergy", "Wheat Allergy", "Others"
-
-        ]
-        configurePopUpButton(foodIntolerancePopupButton, options: options)
-    }
-
-    private func prepareDietaryPreferencePopUpButton() {
-        let options = [
-            "None", "Vegetarian", "Non-Vegetarian", "Vegan", "Pescatarian", "Flexitarian", "Gluten-Free", "Low-Carb / Ketogenic", "High-Protein", "Dairy-Free", "Low-Sodium"
-        ]
-
-        configurePopUpButton(dietaryPreferencePopupButton, options: options)
-    }
-
     private func configurePopUpButton(_ button: UIButton, options: [String]) {
         button.menu = UIMenu(children: options.map { title in
             UIAction(title: title, handler: { action in
@@ -148,7 +118,31 @@ class SignUpExtendedTableViewController: UITableViewController {
         })
         button.showsMenuAsPrimaryAction = true
         button.changesSelectionAsPrimaryAction = true
-
     }
 
+    @IBAction func intoleranceButtonTapped(_ sender: Any) {
+        let options = Intolerance.allCases.map { $0.rawValue }
+        performSegue(withIdentifier: "segueShowMedicalDetailSelectorTableViewController", sender: options)
+    }
+    
+    
+    @IBAction func preExistingConditionTapped(_ sender: Any) {
+        let options = PreExistingCondition.allCases.map { $0.rawValue }
+        performSegue(withIdentifier: "segueShowMedicalDetailSelectorTableViewController", sender: options)
+    }
+    
+    
+    @IBAction func dietaryPreferenceTapped(_ sender: Any) {
+        let options = DietaryPreference.allCases.map { $0.rawValue }
+        performSegue(withIdentifier: "segueShowMedicalDetailSelectorTableViewController", sender: options)
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if let destination = segue.destination as? MedicalDetailSelectorTableViewController, let presentationController = destination.presentationController as? UISheetPresentationController {
+            presentationController.detents = [.medium()]
+            if let options = sender as? [String] {
+                destination.options = options
+            }
+        }
+    }
 }
