@@ -42,6 +42,15 @@ class SignUpExtendedTableViewController: UITableViewController {
         return UITableView.automaticDimension
     }
 
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if let destination = segue.destination as? MedicalDetailSelectorTableViewController, let presentationController = destination.presentationController as? UISheetPresentationController {
+            presentationController.detents = [.medium()]
+            if let options = sender as? [String] {
+                destination.options = options
+            }
+        }
+    }
+
     @IBAction func finishButtonTapped(_ sender: UIButton) {
         guard let signUpDetailsTableViewController else { fatalError("yeh kya hua, kaise hua... kab hua") }
 
@@ -66,6 +75,21 @@ class SignUpExtendedTableViewController: UITableViewController {
         Utils.save(forKey: .signedUp, withValue: true)
 
         performSegue(withIdentifier: "segueShowInitialTabBarController", sender: nil)
+    }
+
+    @IBAction func intoleranceButtonTapped(_ sender: Any) {
+        let options = Intolerance.allCases.map { $0.rawValue }
+        performSegue(withIdentifier: "segueShowMedicalDetailSelectorTableViewController", sender: options)
+    }
+
+    @IBAction func preExistingConditionTapped(_ sender: Any) {
+        let options = PreExistingCondition.allCases.map { $0.rawValue }
+        performSegue(withIdentifier: "segueShowMedicalDetailSelectorTableViewController", sender: options)
+    }
+
+    @IBAction func dietaryPreferenceTapped(_ sender: Any) {
+        let options = DietaryPreference.allCases.map { $0.rawValue }
+        performSegue(withIdentifier: "segueShowMedicalDetailSelectorTableViewController", sender: options)
     }
 
     // MARK: Private
@@ -120,29 +144,4 @@ class SignUpExtendedTableViewController: UITableViewController {
         button.changesSelectionAsPrimaryAction = true
     }
 
-    @IBAction func intoleranceButtonTapped(_ sender: Any) {
-        let options = Intolerance.allCases.map { $0.rawValue }
-        performSegue(withIdentifier: "segueShowMedicalDetailSelectorTableViewController", sender: options)
-    }
-    
-    
-    @IBAction func preExistingConditionTapped(_ sender: Any) {
-        let options = PreExistingCondition.allCases.map { $0.rawValue }
-        performSegue(withIdentifier: "segueShowMedicalDetailSelectorTableViewController", sender: options)
-    }
-    
-    
-    @IBAction func dietaryPreferenceTapped(_ sender: Any) {
-        let options = DietaryPreference.allCases.map { $0.rawValue }
-        performSegue(withIdentifier: "segueShowMedicalDetailSelectorTableViewController", sender: options)
-    }
-    
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if let destination = segue.destination as? MedicalDetailSelectorTableViewController, let presentationController = destination.presentationController as? UISheetPresentationController {
-            presentationController.detents = [.medium()]
-            if let options = sender as? [String] {
-                destination.options = options
-            }
-        }
-    }
 }
