@@ -87,7 +87,7 @@ class TriTrackViewController: UIViewController, FSCalendarDelegate, FSCalendarDa
 
     nonisolated func calendar(_ calendar: FSCalendar, didSelect date: Date, at monthPosition: FSCalendarMonthPosition) {
         DispatchQueue.main.async {
-            self.currentDateSelected = date
+            self.selectedDate = date
         }
     }
 
@@ -104,12 +104,12 @@ class TriTrackViewController: UIViewController, FSCalendarDelegate, FSCalendarDa
     // MARK: Private
 
     private var calendarView: FSCalendar!
-    private var currentDateSelected: Date = .init()
+    var selectedDate: Date = .init()
 
     private func prepareFSCalendar() {
         calendarView = FSCalendar(frame: CGRect(x: 0, y: 0, width: calendarUIView.frame.width, height: calendarUIView.frame.height + 150))
         calendarView.scope = .week
-        calendarView.select(Date())
+        calendarView.select(selectedDate)
 
         calendarView.dataSource = self
         calendarView.delegate = self

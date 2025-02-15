@@ -46,7 +46,6 @@ class AppointmentsTableViewController: UITableViewController {
         cell.updateElements(with: events[indexPath.section])
         cell.showsReorderControl = false
 
-        // config as per prototype. not my fault
         cell.backgroundColor = Converters.convertHexToUIColor(hex: "F2F2F7")
         cell.contentView.layer.cornerRadius = 10
         cell.contentView.layer.masksToBounds = true

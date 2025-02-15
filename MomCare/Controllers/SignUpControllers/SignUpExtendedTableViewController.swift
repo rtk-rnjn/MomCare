@@ -22,7 +22,7 @@ class SignUpExtendedTableViewController: UITableViewController {
     @IBOutlet var progressView: UIProgressView!
 
     var initialProgress: Float = 0.0
-    var signUpDetailsTableViewController: SignUpDetailsTableViewController?
+    var userMedical: UserMedical?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -43,33 +43,18 @@ class SignUpExtendedTableViewController: UITableViewController {
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if let destination = segue.destination as? MedicalDetailSelectorTableViewController, let presentationController = destination.presentationController as? UISheetPresentationController {
+        if let destination = segue.destination as? UINavigationController, let presentationController = destination.presentationController as? UISheetPresentationController {
             presentationController.detents = [.medium()]
-            if let options = sender as? [String] {
-                destination.options = options
+            if let medicalDetailSelectorTableViewController = destination.viewControllers.first as? MultipleSelectorTableViewController {
+                medicalDetailSelectorTableViewController.options = sender as? [String] ?? []
             }
         }
     }
 
     @IBAction func finishButtonTapped(_ sender: UIButton) {
-        guard let signUpDetailsTableViewController else { fatalError("yeh kya hua, kaise hua... kab hua") }
-
-        let dateOfBirth = signUpDetailsTableViewController.dateOfBirthPicker.date
-        let height = signUpDetailsTableViewController.height
-        let currentWeight = signUpDetailsTableViewController.currentWeight
-        let prePregnancyWeight = signUpDetailsTableViewController.prePregnancyWeight
-
         let dueDate = dueDateDatePicker.date
-
-        let error = height <= 0 || currentWeight <= 0 || prePregnancyWeight <= 0
-        if error {
-            let alert = Utils.getAlert(title: "Error", message: "Please input valid data")
-            present(alert, animated: true)
-            return
-        }
-
-        let userMedical = UserMedical(dateOfBirth: dateOfBirth, height: Double(height), prePregnancyWeight: Double(prePregnancyWeight), currentWeight: Double(currentWeight), dueDate: dueDate)
-
+        
+        userMedical?.dueDate = dueDate
         MomCareUser.shared.user?.medicalData = userMedical
 
         Utils.save(forKey: .signedUp, withValue: true)
@@ -142,6 +127,10 @@ class SignUpExtendedTableViewController: UITableViewController {
         })
         button.showsMenuAsPrimaryAction = true
         button.changesSelectionAsPrimaryAction = true
+    }
+    
+    @IBAction func unwinToMedicalDetail(_ segue: UIStoryboardSegue) {
+        print(segue.identifier)
     }
 
 }

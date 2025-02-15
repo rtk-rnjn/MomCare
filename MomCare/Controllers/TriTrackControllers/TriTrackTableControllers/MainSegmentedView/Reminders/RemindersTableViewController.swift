@@ -104,19 +104,21 @@ class RemindersTableViewController: UITableViewController {
 
     private func fetchReminders() {
         let ekCalendars = getCalendar(with: "TriTrackReminder")
+        
+        // Thank you Kiran Ma'am for pointing it out.
+        let selectedDate = eventsViewController?.triTrackViewController?.selectedDate ?? Date()
 
-        guard let store else { return }
+        guard let store, let ekCalendars else { return }
 
         let predicate = store.predicateForReminders(in: ekCalendars)
-        store.fetchReminders(matching: predicate, completion: reminderCompletionHandler)
-    }
+        store.fetchReminders(matching: predicate) { reminders in
+            guard let reminders else { return }
 
-    private func reminderCompletionHandler(reminders: [EKReminder]?) {
-        guard let reminders else { return }
-        self.reminders = reminders
-
-        DispatchQueue.main.async {
-            self.tableView.reloadData()
+            self.reminders = reminders.filter { reminder in
+                let date = reminder.dueDateComponents?.date
+                guard let date else { return false }
+                return Calendar.current.isDate(date, inSameDayAs: selectedDate)
+            }
         }
     }
 

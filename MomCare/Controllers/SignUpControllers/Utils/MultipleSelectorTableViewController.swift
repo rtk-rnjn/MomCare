@@ -1,5 +1,5 @@
 //
-//  MedicalDetailSelectorTableViewController.swift
+//  MultipleSelectorTableViewController.swift
 //  MomCare
 //
 //  Created by Ritik Ranjan on 14/02/25.
@@ -7,9 +7,14 @@
 
 import UIKit
 
-class MedicalDetailSelectorTableViewController: UITableViewController {
+class MultipleSelectorTableViewController: UITableViewController {
     var options: [String] = []
-    var selectedOptions: [String] = []
+    var selectedMappedOptions: [String: Bool] = [:]
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        selectedMappedOptions = options.reduce(into: [:]) { $0[$1] = false }
+    }
 
     override func numberOfSections(in tableView: UITableView) -> Int {
         return 1
@@ -25,21 +30,14 @@ class MedicalDetailSelectorTableViewController: UITableViewController {
         var contentConfig = cell.defaultContentConfiguration()
         contentConfig.text = "\(options[indexPath.row])"
 
+        cell.accessoryType = selectedMappedOptions[options[indexPath.row]]! ? .checkmark : .none
         cell.contentConfiguration = contentConfig
         return cell
     }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "MedicalDetailSelectorTableViewCell", for: indexPath)
+        selectedMappedOptions[options[indexPath.row]] = !selectedMappedOptions[options[indexPath.row]]!
 
-        if cell.accessoryType == .checkmark {
-            cell.accessoryType = .none
-            selectedOptions.removeAll { $0 == options[indexPath.row] }
-        } else {
-            cell.accessoryType = .checkmark
-            selectedOptions.append(options[indexPath.row])
-        }
-
-        tableView.deselectRow(at: indexPath, animated: true)
+        tableView.reloadRows(at: [indexPath], with: .fade)
     }
 }

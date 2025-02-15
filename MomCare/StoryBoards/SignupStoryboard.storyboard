@@ -296,7 +296,7 @@
                         <outlet property="lastNameField" destination="Wtv-Fl-XGg" id="aYl-ec-UFt"/>
                         <outlet property="mobileNumberField" destination="UNi-7g-NYP" id="6f9-5M-msE"/>
                         <outlet property="passwordField" destination="Klb-XY-Bus" id="dl3-35-yDd"/>
-                        <segue destination="51c-gM-3lN" kind="presentation" identifier="segueShowPickerViewController" destinationCreationSelector="segueViaCountryCodeField:" id="zf3-jg-5xd"/>
+                        <segue destination="51c-gM-3lN" kind="presentation" identifier="segueShowPickerViewController" id="zf3-jg-5xd"/>
                         <segue destination="j28-Ag-RMC" kind="show" identifier="segueShowSignUpDetailsTableViewController" id="ZAM-aH-W8N"/>
                     </connections>
                 </tableViewController>
@@ -307,7 +307,7 @@
         <!--Your Details-->
         <scene sceneID="cRh-NH-nLw">
             <objects>
-                <tableViewController id="j28-Ag-RMC" customClass="SignUpDetailsTableViewController" customModule="MomCare" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="SignUpDetailsTableViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="j28-Ag-RMC" customClass="SignUpDetailsTableViewController" customModule="MomCare" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="insetGrouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" estimatedSectionHeaderHeight="-1" sectionFooterHeight="18" estimatedSectionFooterHeight="-1" id="bPs-kZ-dsr">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="842"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -398,28 +398,25 @@
                                             <rect key="frame" x="0.0" y="0.0" width="353" height="50.333332061767578"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cMU-rt-JwQ">
+                                                <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="cMU-rt-JwQ">
                                                     <rect key="frame" x="10" y="0.0" width="333" height="50.333333333333336"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" text="Height" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jL5-yu-ALl">
-                                                            <rect key="frame" x="0.0" y="0.0" width="237.66666666666666" height="50.333333333333336"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="166.66666666666666" height="50.333333333333336"/>
                                                             <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="120 cm" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Xrg-zJ-ljc">
-                                                            <rect key="frame" x="237.66666666666666" y="0.0" width="55.666666666666657" height="50.333333333333336"/>
-                                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                            <nil key="textColor"/>
-                                                            <nil key="highlightedColor"/>
-                                                        </label>
-                                                        <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yuz-Eh-lKz" userLabel="HeightButton">
-                                                            <rect key="frame" x="293.33333333333331" y="0.0" width="39.666666666666686" height="50.333333333333336"/>
-                                                            <color key="tintColor" systemColor="systemGray3Color"/>
+                                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="trailing" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="x6F-Th-jK1">
+                                                            <rect key="frame" x="166.66666666666663" y="0.0" width="166.33333333333337" height="50.333333333333336"/>
+                                                            <color key="tintColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                             <state key="normal" title="Button"/>
-                                                            <buttonConfiguration key="configuration" style="plain" image="chevron.right" catalog="system"/>
+                                                            <buttonConfiguration key="configuration" style="plain" imagePlacement="trailing" title="None" imagePadding="5">
+                                                                <imageReference key="image" image="chevron.up.chevron.down" catalog="system" symbolScale="small"/>
+                                                                <fontDescription key="titleFontDescription" style="UICTFontTextStyleSubhead"/>
+                                                            </buttonConfiguration>
                                                             <connections>
-                                                                <segue destination="51c-gM-3lN" kind="presentation" destinationCreationSelector="segueViaHeightButton:" id="Rd9-7D-dMb"/>
+                                                                <action selector="heightButtonTapped:" destination="j28-Ag-RMC" eventType="touchUpInside" id="0VP-tN-yFh"/>
                                                             </connections>
                                                         </button>
                                                     </subviews>
@@ -448,28 +445,25 @@
                                             <rect key="frame" x="0.0" y="0.0" width="353" height="50.333332061767578"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Bei-zd-82O">
+                                                <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="Bei-zd-82O">
                                                     <rect key="frame" x="10" y="0.0" width="333" height="50.333333333333336"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" text="Pre-Pregnancy Weight" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XzA-hm-9IM">
-                                                            <rect key="frame" x="0.0" y="0.0" width="258.66666666666669" height="50.333333333333336"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="166.66666666666666" height="50.333333333333336"/>
                                                             <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0 Kg" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="y4e-zW-vMF">
-                                                            <rect key="frame" x="258.66666666666669" y="0.0" width="34.666666666666686" height="50.333333333333336"/>
-                                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                            <nil key="textColor"/>
-                                                            <nil key="highlightedColor"/>
-                                                        </label>
-                                                        <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LHJ-Bq-WRf" userLabel="PrePregnancyButton">
-                                                            <rect key="frame" x="293.33333333333331" y="0.0" width="39.666666666666686" height="50.333333333333336"/>
-                                                            <color key="tintColor" systemColor="systemGray3Color"/>
+                                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="trailing" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6YW-Tn-lMm">
+                                                            <rect key="frame" x="166.66666666666663" y="0.0" width="166.33333333333337" height="50.333333333333336"/>
+                                                            <color key="tintColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                             <state key="normal" title="Button"/>
-                                                            <buttonConfiguration key="configuration" style="plain" image="chevron.right" catalog="system"/>
+                                                            <buttonConfiguration key="configuration" style="plain" imagePlacement="trailing" title="None" imagePadding="5">
+                                                                <imageReference key="image" image="chevron.up.chevron.down" catalog="system" symbolScale="small"/>
+                                                                <fontDescription key="titleFontDescription" style="UICTFontTextStyleSubhead"/>
+                                                            </buttonConfiguration>
                                                             <connections>
-                                                                <segue destination="51c-gM-3lN" kind="presentation" destinationCreationSelector="segueViaPrePregnancyButton:" id="ASP-Ya-WHl"/>
+                                                                <action selector="prePregnacyWeightButtonTapped:" destination="j28-Ag-RMC" eventType="touchUpInside" id="eKw-es-HGC"/>
                                                             </connections>
                                                         </button>
                                                     </subviews>
@@ -498,28 +492,25 @@
                                             <rect key="frame" x="0.0" y="0.0" width="353" height="50.333332061767578"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ao7-Qb-NNx">
+                                                <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="Ao7-Qb-NNx">
                                                     <rect key="frame" x="10" y="0.0" width="333" height="50.333333333333336"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" text="Current Weight" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ELp-h7-zdK">
-                                                            <rect key="frame" x="0.0" y="0.0" width="258.66666666666669" height="50.333333333333336"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="166.66666666666666" height="50.333333333333336"/>
                                                             <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0 Kg" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="w2k-V0-LQd">
-                                                            <rect key="frame" x="258.66666666666669" y="0.0" width="34.666666666666686" height="50.333333333333336"/>
-                                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                            <nil key="textColor"/>
-                                                            <nil key="highlightedColor"/>
-                                                        </label>
-                                                        <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="umW-2Q-89A" userLabel="WeightButton">
-                                                            <rect key="frame" x="293.33333333333331" y="0.0" width="39.666666666666686" height="50.333333333333336"/>
-                                                            <color key="tintColor" systemColor="systemGray3Color"/>
+                                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="trailing" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="udP-RA-2Ib">
+                                                            <rect key="frame" x="166.66666666666663" y="0.0" width="166.33333333333337" height="50.333333333333336"/>
+                                                            <color key="tintColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                             <state key="normal" title="Button"/>
-                                                            <buttonConfiguration key="configuration" style="plain" image="chevron.right" catalog="system"/>
+                                                            <buttonConfiguration key="configuration" style="plain" imagePlacement="trailing" title="None" imagePadding="5">
+                                                                <imageReference key="image" image="chevron.up.chevron.down" catalog="system" symbolScale="small"/>
+                                                                <fontDescription key="titleFontDescription" style="UICTFontTextStyleSubhead"/>
+                                                            </buttonConfiguration>
                                                             <connections>
-                                                                <segue destination="51c-gM-3lN" kind="presentation" destinationCreationSelector="segueViaWeightButton:" id="GYF-i6-sjI"/>
+                                                                <action selector="currentWeightButtonTapped:" destination="j28-Ag-RMC" eventType="touchUpInside" id="GCt-ov-J0R"/>
                                                             </connections>
                                                         </button>
                                                     </subviews>
@@ -548,28 +539,25 @@
                                             <rect key="frame" x="0.0" y="0.0" width="353" height="50.333332061767578"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ron-zK-cqe">
+                                                <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="ron-zK-cqe">
                                                     <rect key="frame" x="10" y="0.0" width="333" height="50.333333333333336"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" text="Country" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="crg-VU-vYg">
-                                                            <rect key="frame" x="0.0" y="0.0" width="257" height="50.333333333333336"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="166.66666666666666" height="50.333333333333336"/>
                                                             <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="India" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="G0A-CU-KzB">
-                                                            <rect key="frame" x="257" y="0.0" width="36.333333333333314" height="50.333333333333336"/>
-                                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                            <nil key="textColor"/>
-                                                            <nil key="highlightedColor"/>
-                                                        </label>
-                                                        <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZG6-Vf-Eaz" userLabel="CountryButton">
-                                                            <rect key="frame" x="293.33333333333331" y="0.0" width="39.666666666666686" height="50.333333333333336"/>
-                                                            <color key="tintColor" systemColor="systemGray3Color"/>
+                                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="trailing" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gh9-kO-ouK">
+                                                            <rect key="frame" x="166.66666666666663" y="0.0" width="166.33333333333337" height="50.333333333333336"/>
+                                                            <color key="tintColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                             <state key="normal" title="Button"/>
-                                                            <buttonConfiguration key="configuration" style="plain" image="chevron.right" catalog="system"/>
+                                                            <buttonConfiguration key="configuration" style="plain" imagePlacement="trailing" title="None" imagePadding="5">
+                                                                <imageReference key="image" image="chevron.up.chevron.down" catalog="system" symbolScale="small"/>
+                                                                <fontDescription key="titleFontDescription" style="UICTFontTextStyleSubhead"/>
+                                                            </buttonConfiguration>
                                                             <connections>
-                                                                <segue destination="51c-gM-3lN" kind="presentation" destinationCreationSelector="segueViaCountryButton:" id="dxu-SB-WqG"/>
+                                                                <action selector="countryButtonTapped:" destination="j28-Ag-RMC" eventType="touchUpInside" id="qiP-S7-dOE"/>
                                                             </connections>
                                                         </button>
                                                     </subviews>
@@ -611,7 +599,7 @@
                                                         <color key="baseBackgroundColor" red="0.57254901960000004" green="0.26274509800000001" blue="0.31372549020000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     </buttonConfiguration>
                                                     <connections>
-                                                        <segue destination="8kZ-fK-sew" kind="show" identifier="segueShowSignUpExtendedTableViewController" id="9Rs-SJ-fNX"/>
+                                                        <action selector="nextButtonTapped:" destination="j28-Ag-RMC" eventType="touchUpInside" id="kTd-fy-BcU"/>
                                                     </connections>
                                                 </button>
                                             </subviews>
@@ -633,12 +621,14 @@
                     </tableView>
                     <navigationItem key="navigationItem" title="Your Details" largeTitleDisplayMode="never" id="xHs-UZ-TJ4"/>
                     <connections>
-                        <outlet property="countryLabel" destination="G0A-CU-KzB" id="twB-gG-kIs"/>
-                        <outlet property="currentWeightLabel" destination="w2k-V0-LQd" id="w44-tn-t1v"/>
+                        <outlet property="countryButton" destination="gh9-kO-ouK" id="Itr-15-CrS"/>
+                        <outlet property="currentWeightButton" destination="udP-RA-2Ib" id="xfh-n2-AOG"/>
                         <outlet property="dateOfBirthPicker" destination="QsS-81-0kz" id="zdr-jd-dsM"/>
-                        <outlet property="heightLabel" destination="Xrg-zJ-ljc" id="Tzf-QW-O3x"/>
-                        <outlet property="prePregnancyWeightLabel" destination="y4e-zW-vMF" id="2ZA-XR-DNH"/>
+                        <outlet property="heightButton" destination="x6F-Th-jK1" id="fFv-hZ-NdF"/>
+                        <outlet property="prePregnancyWeightButton" destination="6YW-Tn-lMm" id="ePR-ke-tuO"/>
                         <outlet property="progressView" destination="Uti-rD-FWY" id="ujA-G8-OaU"/>
+                        <segue destination="51c-gM-3lN" kind="presentation" identifier="segueShowPickerViewController" id="hqu-E6-uUo"/>
+                        <segue destination="8kZ-fK-sew" kind="show" identifier="segueShowSignUpExtendedTableViewController" id="iTF-mR-dGX"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Cr2-48-Jvf" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -694,6 +684,7 @@
                         </userDefinedRuntimeAttributes>
                     </view>
                     <toolbarItems/>
+                    <navigationItem key="navigationItem" id="APE-BA-78H"/>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="pickerView" destination="wyj-8h-pwX" id="1CW-gc-QfZ"/>
@@ -702,7 +693,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="GAp-0v-84x" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
                 <exit id="Nmy-Q4-mt8" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="4982" y="735"/>
+            <point key="canvasLocation" x="4981" y="755"/>
         </scene>
         <!--Medical History-->
         <scene sceneID="kmY-Xc-tGE">
@@ -1106,17 +1097,17 @@
                         <outlet property="weekPullDownButton" destination="eeg-LF-O2f" id="lAt-Si-HbZ"/>
                         <outlet property="weeksLabel" destination="AKS-mr-PJs" id="cby-nM-afq"/>
                         <segue destination="x6Q-s6-GCY" kind="show" identifier="segueShowInitialTabBarController" id="JAW-qC-dcb"/>
-                        <segue destination="l0e-Lr-h2J" kind="presentation" identifier="segueShowMedicalDetailSelectorTableViewController" id="fzb-l6-ATc"/>
+                        <segue destination="he8-wq-i1W" kind="presentation" identifier="segueShowMedicalDetailSelectorTableViewController" id="fzb-l6-ATc"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="012-qh-L8t" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="5975" y="-4"/>
         </scene>
-        <!--Medical Detail Selector Table View Controller-->
+        <!--Multiple Selector Table View Controller-->
         <scene sceneID="yhb-MF-jrk">
             <objects>
-                <tableViewController id="l0e-Lr-h2J" customClass="MedicalDetailSelectorTableViewController" customModule="MomCare" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="MedicalDetailSelectorTableViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="l0e-Lr-h2J" customClass="MultipleSelectorTableViewController" customModule="MomCare" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="insetGrouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" estimatedSectionHeaderHeight="-1" sectionFooterHeight="18" estimatedSectionFooterHeight="-1" id="9UN-8j-rnT">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="842"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -1135,10 +1126,23 @@
                             <outlet property="delegate" destination="l0e-Lr-h2J" id="ZnG-S3-3xr"/>
                         </connections>
                     </tableView>
+                    <navigationItem key="navigationItem" id="Ybs-Lk-iiq">
+                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="Cl4-VD-P2s">
+                            <connections>
+                                <segue destination="AF6-rs-0jX" kind="unwind" unwindAction="unwinToMedicalDetail:" id="DoJ-Xl-XGQ"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" style="done" systemItem="done" id="Ndg-xd-VaL">
+                            <connections>
+                                <segue destination="AF6-rs-0jX" kind="unwind" identifier="unwinToMedicalDetailViaDone" unwindAction="unwinToMedicalDetail:" id="F0z-87-vLK"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="W0f-Y7-bHq" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+                <exit id="AF6-rs-0jX" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="5975" y="735"/>
+            <point key="canvasLocation" x="6901.5267175572517" y="734.50704225352115"/>
         </scene>
         <!--InitialStoryboard-->
         <scene sceneID="uuu-1T-eXL">
@@ -1150,24 +1154,38 @@
             </objects>
             <point key="canvasLocation" x="6551" y="-4"/>
         </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="ufU-m1-52V">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="he8-wq-i1W" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="N7h-I4-Fqe">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="56"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="l0e-Lr-h2J" kind="relationship" relationship="rootViewController" id="6JC-ml-JgB"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="H0a-yp-Cxz" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="5974.8091603053435" y="734.50704225352115"/>
+        </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="ASP-Ya-WHl"/>
+        <segue reference="hqu-E6-uUo"/>
     </inferredMetricsTieBreakers>
     <resources>
-        <image name="chevron.right" catalog="system" width="97" height="128"/>
         <image name="chevron.up.chevron.down" catalog="system" width="109" height="128"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
         <systemColor name="systemGray2Color">
-            <color red="0.68235294120000001" green="0.68235294120000001" blue="0.69803921570000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </systemColor>
-        <systemColor name="systemGray3Color">
-            <color red="0.78039215689999997" green="0.78039215689999997" blue="0.80000000000000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.68235294117647061" green="0.68235294117647061" blue="0.69803921568627447" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemGray6Color">
-            <color red="0.94901960780000005" green="0.94901960780000005" blue="0.96862745100000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.94901960784313721" green="0.94901960784313721" blue="0.96862745098039216" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>
