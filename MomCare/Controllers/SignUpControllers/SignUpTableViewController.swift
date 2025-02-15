@@ -23,6 +23,17 @@ class SignUpTableViewController: UITableViewController {
     @IBOutlet var countryCodeField: UITextField!
     @IBOutlet var mobileNumberField: UITextField!
 
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "segueShowPickerViewController", let destination = segue.destination as? PickerViewController, let presentationController = destination.presentationController as? UISheetPresentationController {
+            presentationController.detents = [.medium()]
+
+            destination.options = sender as? [String: String]
+            destination.completionHandler = { key, _ in
+                self.countryCodeField.text = key
+            }
+        }
+    }
+
     @IBAction func createButtonTapped(_ sender: UIButton) {
         // swiftlint:disable large_tuple
         let requiredFields: [(UITextField, String, String)] = [
@@ -81,17 +92,6 @@ class SignUpTableViewController: UITableViewController {
 
     @IBAction func countryCodeFieldTapped(_ sender: UITextField) {
         performSegue(withIdentifier: "segueShowPickerViewController", sender: CountryData.countryCodes)
-    }
-
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "segueShowPickerViewController", let destination = segue.destination as? PickerViewController, let presentationController = destination.presentationController as? UISheetPresentationController {
-            presentationController.detents = [.medium()]
-
-            destination.options = sender as? [String: String]
-            destination.completionHandler = { key, value in
-                self.countryCodeField.text = key
-            }
-        }
     }
 
     @IBAction func unwindToSignUp(_ segue: UIStoryboardSegue) {}

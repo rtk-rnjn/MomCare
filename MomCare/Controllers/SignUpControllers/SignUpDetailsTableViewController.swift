@@ -9,13 +9,15 @@ import UIKit
 
 class SignUpDetailsTableViewController: UITableViewController, UIViewControllerTransitioningDelegate {
 
+    // MARK: Internal
+
     @IBOutlet var dateOfBirthPicker: UIDatePicker!
-    
+
     @IBOutlet var heightButton: UIButton!
     @IBOutlet var prePregnancyWeightButton: UIButton!
     @IBOutlet var currentWeightButton: UIButton!
     @IBOutlet var countryButton: UIButton!
-    
+
     var height: Int?
     var prePregnancyWeight: Int?
     var currentWeight: Int?
@@ -44,9 +46,9 @@ class SignUpDetailsTableViewController: UITableViewController, UIViewControllerT
         case "segueShowPickerViewController":
             if let destination = segue.destination as? PickerViewController, let presentationController = destination.presentationController as? UISheetPresentationController {
                 presentationController.detents = [.medium()]
-                
+
                 let sender = sender as? (options: [String: String], completionHandler: (String, String) -> Void)
-                guard let sender  else { fatalError("Sender not set") }
+                guard let sender else { fatalError("Sender not set") }
 
                 destination.options = sender.options
                 destination.completionHandler = sender.completionHandler
@@ -59,7 +61,6 @@ class SignUpDetailsTableViewController: UITableViewController, UIViewControllerT
 
     @IBAction func unwindToSignUp(_ segue: UIStoryboardSegue) {}
 
-    
     @IBAction func heightButtonTapped(_ sender: UIButton) {
         let heights: [String: String] = Array(120...220).reduce(into: [:]) { $0["\($1)"] = "\($1) cm" }
         var completionHandler: ((String, String) -> Void)?
@@ -67,12 +68,11 @@ class SignUpDetailsTableViewController: UITableViewController, UIViewControllerT
             self.height = Int(key)!
             self.heightButton.setTitle(value, for: .normal)
         }
-        
+
         let sendable = (options: heights, completionHandler: completionHandler)
         performSegue(withIdentifier: "segueShowPickerViewController", sender: sendable)
     }
-    
-    
+
     @IBAction func prePregnacyWeightButtonTapped(_ sender: UIButton) {
         let weights: [String: String] = Array(40...120).reduce(into: [:]) { $0["\($1)"] = "\($1) kg" }
         var completionHandler: ((String, String) -> Void)?
@@ -80,11 +80,11 @@ class SignUpDetailsTableViewController: UITableViewController, UIViewControllerT
             self.prePregnancyWeight = Int(key)!
             self.prePregnancyWeightButton.setTitle(value, for: .normal)
         }
-        
+
         let sendable = (options: weights, completionHandler: completionHandler)
         performSegue(withIdentifier: "segueShowPickerViewController", sender: sendable)
     }
-    
+
     @IBAction func currentWeightButtonTapped(_ sender: UIButton) {
         let weights: [String: String] = Array(40...120).reduce(into: [:]) { $0["\($1)"] = "\($1) kg" }
         var completionHandler: ((String, String) -> Void)?
@@ -92,7 +92,7 @@ class SignUpDetailsTableViewController: UITableViewController, UIViewControllerT
             self.currentWeight = Int(key)!
             self.currentWeightButton.setTitle(value, for: .normal)
         }
-        
+
         let sendable = (options: weights, completionHandler: completionHandler)
         performSegue(withIdentifier: "segueShowPickerViewController", sender: sendable)
     }
@@ -104,7 +104,7 @@ class SignUpDetailsTableViewController: UITableViewController, UIViewControllerT
             self.country = key
             self.countryButton.setTitle(value, for: .normal)
         }
-        
+
         let sendable = (options: countries, completionHandler: completionHandler)
         performSegue(withIdentifier: "segueShowPickerViewController", sender: sendable)
     }
@@ -123,17 +123,19 @@ class SignUpDetailsTableViewController: UITableViewController, UIViewControllerT
         if country == nil {
             errors.append(("Country", "Please select your country"))
         }
-        
+
         if !errors.isEmpty {
             createErrorAlert(with: errors)
             return
         }
-        
+
         let userMedical = UserMedical(dateOfBirth: dateOfBirthPicker.date, height: Double(height!), prePregnancyWeight: Double(prePregnancyWeight!), currentWeight: Double(currentWeight!))
-        
+
         performSegue(withIdentifier: "segueShowSignUpExtendedTableViewController", sender: userMedical)
     }
-    
+
+    // MARK: Private
+
     private func createErrorAlert(with errors: [(String, String)]) {
         let alert = Utils.getAlert(title: "Errors", message: errors.map { "\($0.0): \($0.1)" }.joined(separator: "\n"), actions: [AlertActionHandler(title: "OK", style: .default, handler: nil)])
         present(alert, animated: true, completion: nil)

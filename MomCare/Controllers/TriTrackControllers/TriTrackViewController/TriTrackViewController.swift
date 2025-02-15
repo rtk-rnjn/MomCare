@@ -39,6 +39,8 @@ class TriTrackViewController: UIViewController, FSCalendarDelegate, FSCalendarDa
 
     var activityIndicator: UIActivityIndicatorView?
 
+    var selectedDate: Date = .init()
+
     override func viewDidLoad() {
         super.viewDidLoad()
         prepareFSCalendar()
@@ -104,7 +106,6 @@ class TriTrackViewController: UIViewController, FSCalendarDelegate, FSCalendarDa
     // MARK: Private
 
     private var calendarView: FSCalendar!
-    var selectedDate: Date = .init()
 
     private func prepareFSCalendar() {
         calendarView = FSCalendar(frame: CGRect(x: 0, y: 0, width: calendarUIView.frame.width, height: calendarUIView.frame.height + 150))

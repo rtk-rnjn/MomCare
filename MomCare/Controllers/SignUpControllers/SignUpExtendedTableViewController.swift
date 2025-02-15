@@ -53,7 +53,7 @@ class SignUpExtendedTableViewController: UITableViewController {
 
     @IBAction func finishButtonTapped(_ sender: UIButton) {
         let dueDate = dueDateDatePicker.date
-        
+
         userMedical?.dueDate = dueDate
         MomCareUser.shared.user?.medicalData = userMedical
 
@@ -75,6 +75,10 @@ class SignUpExtendedTableViewController: UITableViewController {
     @IBAction func dietaryPreferenceTapped(_ sender: Any) {
         let options = DietaryPreference.allCases.map { $0.rawValue }
         performSegue(withIdentifier: "segueShowMedicalDetailSelectorTableViewController", sender: options)
+    }
+
+    @IBAction func unwinToMedicalDetail(_ segue: UIStoryboardSegue) {
+        print(segue.identifier)
     }
 
     // MARK: Private
@@ -127,10 +131,6 @@ class SignUpExtendedTableViewController: UITableViewController {
         })
         button.showsMenuAsPrimaryAction = true
         button.changesSelectionAsPrimaryAction = true
-    }
-    
-    @IBAction func unwinToMedicalDetail(_ segue: UIStoryboardSegue) {
-        print(segue.identifier)
     }
 
 }

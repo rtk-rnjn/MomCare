@@ -10,7 +10,7 @@ import UIKit
 class MultipleSelectorTableViewController: UITableViewController {
     var options: [String] = []
     var selectedMappedOptions: [String: Bool] = [:]
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         selectedMappedOptions = options.reduce(into: [:]) { $0[$1] = false }
