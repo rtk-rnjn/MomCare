@@ -28,7 +28,7 @@ class DashboardViewController: UIViewController, UICollectionViewDataSource {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
+
         Task {
             await MomCareUser.shared.fetchUser(from: .iPhone)
             DispatchQueue.main.async {
