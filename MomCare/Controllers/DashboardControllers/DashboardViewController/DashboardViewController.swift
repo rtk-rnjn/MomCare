@@ -28,8 +28,13 @@ class DashboardViewController: UIViewController, UICollectionViewDataSource {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        navigationItem.hidesBackButton = true
-        collectionView.reloadData()
+        
+        Task {
+            await MomCareUser.shared.fetchUser(from: .iPhone)
+            DispatchQueue.main.async {
+                self.collectionView.reloadData()
+            }
+        }
     }
 
     func numberOfSections(in collectionView: UICollectionView) -> Int {

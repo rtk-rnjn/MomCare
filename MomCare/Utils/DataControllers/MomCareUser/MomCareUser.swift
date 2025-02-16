@@ -9,7 +9,7 @@ import Foundation
 
 class MomCareUser {
 
-    @MainActor static var shared: MomCareUser = .init()
+    @MainActor public static var shared: MomCareUser = .init()
 
     let queue: DispatchQueue = .init(label: "MomCareUserQueue")
 
@@ -28,7 +28,7 @@ class MomCareUser {
 
     // https://medium.com/@harshaag99/understanding-dispatchqueue-in-swift-c73058df6b37
 
-    func updateToDatabase() {
+    private func updateToDatabase() {
         queue.async {
             Task {
                 await self.updateUser(to: .database)

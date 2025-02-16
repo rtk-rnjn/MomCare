@@ -11,6 +11,8 @@ import HealthKitUI
 
 extension DashboardViewController {
     func addHKActivityRing(to cellView: UIView, withSummary summary: HKActivitySummary? = nil) {
+        cellView.layer.sublayers?.forEach { $0.removeFromSuperlayer() }
+
         let summary = HKActivitySummary()
 
         summary.activeEnergyBurned = HKQuantity(unit: .kilocalorie(), doubleValue: 11)
@@ -20,25 +22,58 @@ extension DashboardViewController {
         summary.appleStandHours = HKQuantity(unit: .count(), doubleValue: 12)
         summary.appleStandHoursGoal = HKQuantity(unit: .count(), doubleValue: 34)
 
-        let healthKitActivityRingView = HKActivityRingView()
-        cellView.addSubview(healthKitActivityRingView)
+        let ringColors: [UIColor] = [.systemRed, .systemYellow, .systemBlue]
+        let maxValues: [Double] = [
+            summary.activeEnergyBurnedGoal.doubleValue(for: .kilocalorie()),
+            summary.appleExerciseTimeGoal.doubleValue(for: .minute()),
+            summary.appleStandHoursGoal.doubleValue(for: .count())
+        ]
+        let currentValues: [Double] = [
+            summary.activeEnergyBurned.doubleValue(for: .kilocalorie()),
+            summary.appleExerciseTime.doubleValue(for: .minute()),
+            summary.appleStandHours.doubleValue(for: .count())
+        ]
 
-        healthKitActivityRingView.translatesAutoresizingMaskIntoConstraints = false
+        let ringSize = min(cellView.bounds.width, cellView.bounds.height)
+        let ringWidth: CGFloat = ringSize * 0.1
+        let radius: CGFloat = (ringSize / 2) - (ringWidth / 2)
+        let center = CGPoint(x: cellView.bounds.midX, y: cellView.bounds.midY)
 
-        let width = cellView.frame.size.width
-        let height = cellView.frame.size.height
+        for (index, color) in ringColors.enumerated() {
+            let startAngle: CGFloat = -.pi / 2
+            let endAngle: CGFloat = startAngle + (.pi * 2 * CGFloat(currentValues[index] / maxValues[index]))
 
-        let length = min(width, height)
+            let backgroundLayer = CAShapeLayer()
+            let progressLayer = CAShapeLayer()
 
-        NSLayoutConstraint.activate([
-            healthKitActivityRingView.centerXAnchor.constraint(equalTo: cellView.centerXAnchor),
-            healthKitActivityRingView.centerYAnchor.constraint(equalTo: cellView.centerYAnchor),
+            let path = UIBezierPath(arcCenter: center, radius: radius - (CGFloat(index) * ringWidth * 1.2), startAngle: 0, endAngle: .pi * 2, clockwise: true)
 
-            healthKitActivityRingView.widthAnchor.constraint(equalToConstant: length),
-            healthKitActivityRingView.heightAnchor.constraint(equalToConstant: length)
-        ])
+            backgroundLayer.path = path.cgPath
+            backgroundLayer.strokeColor = color.withAlphaComponent(0.2).cgColor
+            backgroundLayer.lineWidth = ringWidth
+            backgroundLayer.fillColor = UIColor.clear.cgColor
+            backgroundLayer.lineCap = .round
+            cellView.layer.addSublayer(backgroundLayer)
 
-        healthKitActivityRingView.setActivitySummary(summary, animated: true)
+            let progressPath = UIBezierPath(arcCenter: center, radius: radius - (CGFloat(index) * ringWidth * 1.2), startAngle: startAngle, endAngle: endAngle, clockwise: true)
+
+            progressLayer.path = progressPath.cgPath
+            progressLayer.strokeColor = color.cgColor
+            progressLayer.lineWidth = ringWidth
+            progressLayer.fillColor = UIColor.clear.cgColor
+            progressLayer.lineCap = .round
+            progressLayer.strokeEnd = 0.0
+            cellView.layer.addSublayer(progressLayer)
+
+            let animation = CABasicAnimation(keyPath: "strokeEnd")
+            animation.fromValue = 0
+            animation.toValue = 1
+            animation.duration = 1.0
+            animation.timingFunction = CAMediaTimingFunction(name: .easeInEaseOut)
+            progressLayer.add(animation, forKey: "progressAnim")
+
+            progressLayer.strokeEnd = 1.0
+        }
     }
 
     func requestAccessForHealth() {
