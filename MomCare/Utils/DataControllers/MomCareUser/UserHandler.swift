@@ -15,18 +15,18 @@ struct CreateResponse: Codable {
 
     let success: Bool
     let insertedId: String
-
 }
 
 struct UpdateResponse: Codable {
     enum CodingKeys: String, CodingKey {
         case success
         case modifiedCount = "modified_count"
+        case detail
     }
 
     let success: Bool
     let modifiedCount: Int
-
+    let detail: String?
 }
 
 enum UserDefaultsKey: String {

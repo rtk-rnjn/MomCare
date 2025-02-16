@@ -28,7 +28,7 @@ enum Difficulty: String, Codable {
 
 struct FoodItem: Codable, Sendable {
     enum CodingKeys: String, CodingKey {
-        case id
+        case id = "_id"
         case name
         case imageName = "image_name"
         case calories

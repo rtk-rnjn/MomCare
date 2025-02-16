@@ -12,9 +12,6 @@ class SignUpExtendedTableViewController: UITableViewController {
     // MARK: Internal
 
     @IBOutlet var dueDatePopupButton: UIButton!
-    @IBOutlet var existingConditionPopupButton: UIButton!
-    @IBOutlet var foodIntolerancePopupButton: UIButton!
-    @IBOutlet var dietaryPreferencePopupButton: UIButton!
     @IBOutlet var weekPullDownButton: UIButton!
     @IBOutlet var dayPullDownButton: UIButton!
     @IBOutlet var weeksLabel: UILabel!
@@ -25,7 +22,7 @@ class SignUpExtendedTableViewController: UITableViewController {
     @IBOutlet var progressView: UIProgressView!
 
     var initialProgress: Float = 0.0
-    var signUpDetailsTableViewController: SignUpDetailsTableViewController?
+    var userMedical: UserMedical?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -45,25 +42,19 @@ class SignUpExtendedTableViewController: UITableViewController {
         return UITableView.automaticDimension
     }
 
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if let destination = segue.destination as? UINavigationController, let presentationController = destination.presentationController as? UISheetPresentationController {
+            presentationController.detents = [.medium()]
+            if let medicalDetailSelectorTableViewController = destination.viewControllers.first as? MultipleSelectorTableViewController {
+                medicalDetailSelectorTableViewController.options = sender as? [String] ?? []
+            }
+        }
+    }
+
     @IBAction func finishButtonTapped(_ sender: UIButton) {
-        guard let signUpDetailsTableViewController else { fatalError("yeh kya hua, kaise hua... kab hua") }
-
-        let dateOfBirth = signUpDetailsTableViewController.dateOfBirthPicker.date
-        let height = signUpDetailsTableViewController.height
-        let currentWeight = signUpDetailsTableViewController.currentWeight
-        let prePregnancyWeight = signUpDetailsTableViewController.prePregnancyWeight
-
         let dueDate = dueDateDatePicker.date
 
-        let error = height <= 0 || currentWeight <= 0 || prePregnancyWeight <= 0
-        if error {
-            let alert = Utils.getAlert(title: "Error", message: "Please input valid data")
-            present(alert, animated: true)
-            return
-        }
-
-        let userMedical = UserMedical(dateOfBirth: dateOfBirth, height: Double(height), prePregnancyWeight: Double(prePregnancyWeight), currentWeight: Double(currentWeight), dueDate: dueDate)
-
+        userMedical?.dueDate = dueDate
         MomCareUser.shared.user?.medicalData = userMedical
 
         Utils.save(forKey: .signedUp, withValue: true)
@@ -71,13 +62,29 @@ class SignUpExtendedTableViewController: UITableViewController {
         performSegue(withIdentifier: "segueShowInitialTabBarController", sender: nil)
     }
 
+    @IBAction func intoleranceButtonTapped(_ sender: Any) {
+        let options = Intolerance.allCases.map { $0.rawValue }
+        performSegue(withIdentifier: "segueShowMedicalDetailSelectorTableViewController", sender: options)
+    }
+
+    @IBAction func preExistingConditionTapped(_ sender: Any) {
+        let options = PreExistingCondition.allCases.map { $0.rawValue }
+        performSegue(withIdentifier: "segueShowMedicalDetailSelectorTableViewController", sender: options)
+    }
+
+    @IBAction func dietaryPreferenceTapped(_ sender: Any) {
+        let options = DietaryPreference.allCases.map { $0.rawValue }
+        performSegue(withIdentifier: "segueShowMedicalDetailSelectorTableViewController", sender: options)
+    }
+
+    @IBAction func unwinToMedicalDetail(_ segue: UIStoryboardSegue) {
+        print(segue.identifier)
+    }
+
     // MARK: Private
 
     private func setupPopUpButtons() {
         prepareDueDatePopUpButton()
-        prepareExistingConditionPopUpButton()
-        prepareFoodIntolerancePopUpButton()
-        prepareDietaryPreferencePopUpButton()
     }
 
     private func hideInitialElements() {
@@ -116,30 +123,6 @@ class SignUpExtendedTableViewController: UITableViewController {
         tableView.reloadData()
     }
 
-    private func prepareExistingConditionPopUpButton() {
-        let options = [
-            "None", "Diabetes", "Hypertension", "Polycystic Ovary Syndrome", "Anemia", "Asthma", "Heart Disease", "Kidney Disease"
-        ]
-
-        configurePopUpButton(existingConditionPopupButton, options: options)
-    }
-
-    private func prepareFoodIntolerancePopUpButton() {
-        let options = [
-            "None", "Lactose Intolerance", "Gluten Sensitivity", "Egg Allergy", "Seafood Allergy", "Soy Allergy", "Dairy Allergy", "Wheat Allergy", "Others"
-
-        ]
-        configurePopUpButton(foodIntolerancePopupButton, options: options)
-    }
-
-    private func prepareDietaryPreferencePopUpButton() {
-        let options = [
-            "None", "Vegetarian", "Non-Vegetarian", "Vegan", "Pescatarian", "Flexitarian", "Gluten-Free", "Low-Carb / Ketogenic", "High-Protein", "Dairy-Free", "Low-Sodium"
-        ]
-
-        configurePopUpButton(dietaryPreferencePopupButton, options: options)
-    }
-
     private func configurePopUpButton(_ button: UIButton, options: [String]) {
         button.menu = UIMenu(children: options.map { title in
             UIAction(title: title, handler: { action in
@@ -148,7 +131,6 @@ class SignUpExtendedTableViewController: UITableViewController {
         })
         button.showsMenuAsPrimaryAction = true
         button.changesSelectionAsPrimaryAction = true
-
     }
 
 }

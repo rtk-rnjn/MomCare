@@ -30,8 +30,10 @@ class DietProgressCollectionViewCell: UICollectionViewCell {
 
     var tapHandler: (() -> Void)?
 
-    func updateElements(with plan: MyPlan?, tapHandler: (() -> Void)?) {
+    func updateElements(withTapHandler tapHandler: (() -> Void)? = nil) {
         self.tapHandler = tapHandler
+
+        let plan = MomCareUser.shared.user?.plan
 
         guard let plan else { return }
         currentKcalLabel.text = "\(plan.currentCaloriesIntake)"

@@ -9,7 +9,11 @@ import Foundation
 
 class MomCareUser {
 
-    @MainActor static var shared: MomCareUser = .init()
+    // MARK: Public
+
+    @MainActor public static var shared: MomCareUser = .init()
+
+    // MARK: Internal
 
     let queue: DispatchQueue = .init(label: "MomCareUserQueue")
 
@@ -26,20 +30,22 @@ class MomCareUser {
         user?.mood = mood
     }
 
-    // https://medium.com/@harshaag99/understanding-dispatchqueue-in-swift-c73058df6b37
-
-    func updateToDatabase() {
+    func updateFromDatabase() {
         queue.async {
             Task {
-//                await self.updateUser(to: .database)
+                await self.fetchUser(from: .database)
             }
         }
     }
 
-    func updateFromDatabase() {
+    // MARK: Private
+
+    // https://medium.com/@harshaag99/understanding-dispatchqueue-in-swift-c73058df6b37
+
+    private func updateToDatabase() {
         queue.async {
             Task {
-//                await self.fetchUser(from: .database)
+                await self.updateUser(to: .database)
             }
         }
     }

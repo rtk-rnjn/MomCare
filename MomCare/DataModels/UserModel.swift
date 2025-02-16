@@ -12,36 +12,36 @@ enum Country: String, Codable {
     case india = "India"
 }
 
-enum PreExistingCondition: Codable {
-    case diabetes
-    case hypertension
-    case pcos
-    case anemia
-    case asthma
-    case heartDisease
-    case kidneyDisease
+public enum PreExistingCondition: String, Codable, CaseIterable, Equatable, Hashable, Sendable {
+    case diabetes = "Diabetes"
+    case hypertension = "Hypertension"
+    case pcos = "PCOS"
+    case anemia = "Anemia"
+    case asthma = "Asthma"
+    case heartDisease = "Heart Disease"
+    case kidneyDisease = "Kidney Disease"
 }
 
-enum Intolerance: String, Codable {
-    case gluten
-    case lactose
-    case egg
-    case seafood
-    case soy
-    case dairy
-    case wheat
+public enum Intolerance: String, Codable, CaseIterable, Equatable, Hashable, Sendable {
+    case gluten = "Gluten"
+    case lactose = "Lactose"
+    case egg = "Egg"
+    case seafood = "Seafood"
+    case soy = "Soy"
+    case dairy = "Dairy"
+    case wheat = "Wheat"
 }
 
-enum DietaryPreference: Codable {
-    case vegetarian
-    case nonVegetarian
-    case vegan
-    case pescetarian
-    case flexitarian
-    case glutenFree
-    case ketogenic
-    case highProtein
-    case dairyFree
+public enum DietaryPreference: String, Codable, CaseIterable, Equatable, Hashable, Sendable {
+    case vegetarian = "Vegetarian"
+    case nonVegetarian = "Non-Vegetarian"
+    case vegan = "Vegan"
+    case pescetarian = "Pescetarian"
+    case flexitarian = "Flexitarian"
+    case glutenFree = "Gluten-Free"
+    case ketogenic = "Ketogenic"
+    case highProtein = "High Protein"
+    case dairyFree = "Dairy-Free"
 }
 
 public enum MoodType: String, Codable, Sendable {
@@ -62,8 +62,7 @@ struct Mood: Codable {
 
 struct User: Codable, Sendable {
     enum CodingKeys: String, CodingKey {
-        case mongoId = "mongo_id" // oh my MongoDB
-        case id
+        case id = "_id"
         case firstName = "first_name"
         case lastName = "last_name"
         case emailAddress = "email_address"
@@ -116,7 +115,7 @@ struct History: Codable, Sendable {
 
 }
 
-struct UserMedical: Codable {
+struct UserMedical: Codable, Sendable {
     enum CodingKeys: String, CodingKey {
         case dateOfBirth = "date_of_birth"
         case height
@@ -128,7 +127,7 @@ struct UserMedical: Codable {
         case dietaryPreferences = "dietary_preferences"
     }
 
-    var dateOfBirth: Date
+    var dateOfBirth: Date = .init()
     var height: Double
     var prePregnancyWeight: Double
     var currentWeight: Double

@@ -26,7 +26,13 @@ class SignUpTableViewController: UITableViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "segueShowPickerViewController", let destination = segue.destination as? PickerViewController, let presentationController = destination.presentationController as? UISheetPresentationController {
             presentationController.detents = [.medium()]
-            present(destination, animated: true)
+
+            if let sender = sender as? [String: String] {
+                destination.options = sender
+                destination.completionHandler = { key, _ in
+                    self.countryCodeField.text = key
+                }
+            }
         }
     }
 
@@ -87,11 +93,7 @@ class SignUpTableViewController: UITableViewController {
     @IBAction func editingChanged(_ sender: UITextField) {}
 
     @IBAction func countryCodeFieldTapped(_ sender: UITextField) {
-        performSegue(withIdentifier: "segueShowPickerViewController", sender: nil)
-    }
-
-    @IBSegueAction func segueViaCountryCodeField(_ coder: NSCoder) -> PickerViewController? {
-        return PickerViewController(coder: coder, with: countryCodeField, sender: self)
+        performSegue(withIdentifier: "segueShowPickerViewController", sender: CountryData.countryCodes)
     }
 
     @IBAction func unwindToSignUp(_ segue: UIStoryboardSegue) {}
