@@ -382,6 +382,7 @@
                     <connections>
                         <outlet property="exerciseCollectionView" destination="Yt9-o6-ItS" id="XIY-gV-QNv"/>
                         <segue destination="pSF-KE-uVj" kind="presentation" identifier="segueShowBreathingPlayer" modalPresentationStyle="fullScreen" id="qUh-Ct-XyP"/>
+                        <segue destination="0T0-Zc-b8u" kind="presentation" identifier="segueShowExerciseAVPlayer" modalPresentationStyle="fullScreen" id="hk3-NJ-bzY"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Rnh-hu-bAn" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -396,7 +397,15 @@
                 </viewControllerPlaceholder>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="KJy-bn-Be1" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5952" y="418"/>
+            <point key="canvasLocation" x="5952" y="334"/>
+        </scene>
+        <!--ExerciseAVPlayer-->
+        <scene sceneID="Kmp-oS-Vpe">
+            <objects>
+                <viewControllerPlaceholder storyboardName="ExerciseAVPlayer" id="0T0-Zc-b8u" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="QUP-K1-tFS" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="5959" y="454"/>
         </scene>
         <!--MyPlan-->
         <scene sceneID="FH3-ZF-28y">
