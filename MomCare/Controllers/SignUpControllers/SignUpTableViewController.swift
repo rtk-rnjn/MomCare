@@ -27,9 +27,11 @@ class SignUpTableViewController: UITableViewController {
         if segue.identifier == "segueShowPickerViewController", let destination = segue.destination as? PickerViewController, let presentationController = destination.presentationController as? UISheetPresentationController {
             presentationController.detents = [.medium()]
 
-            destination.options = sender as? [String: String]
-            destination.completionHandler = { key, _ in
-                self.countryCodeField.text = key
+            if let sender = sender as? [String: String] {
+                destination.options = sender
+                destination.completionHandler = { key, _ in
+                    self.countryCodeField.text = key
+                }
             }
         }
     }

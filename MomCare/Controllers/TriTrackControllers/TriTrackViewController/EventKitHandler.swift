@@ -118,7 +118,7 @@ extension TriTrackViewController: EKEventEditViewDelegate, EKEventViewDelegate {
 
         let newCalendar = EKCalendar(for: eventType, eventStore: eventStore)
         newCalendar.title = title
-        if let localSource = eventStore.sources.filter({ $0.sourceType == .local }).first {
+        if let localSource = eventStore.sources.first(where: { $0.sourceType == .local }) {
             newCalendar.source = localSource
         } else {
             newCalendar.source = defaultCalendar?.source

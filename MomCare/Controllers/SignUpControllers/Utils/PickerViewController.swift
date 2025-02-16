@@ -14,7 +14,7 @@ class PickerViewController: UIViewController, UIPickerViewDelegate, UIPickerView
     @IBOutlet var pickerView: UIPickerView!
 
     // Value: Display Name
-    var options: [String: String]!
+    var options: [String: String] = [:]
     var completionHandler: ((String, String) -> Void)?
 
     override func viewDidLoad() {
@@ -23,7 +23,9 @@ class PickerViewController: UIViewController, UIPickerViewDelegate, UIPickerView
         pickerView.delegate = self
         pickerView.dataSource = self
 
-        guard let options else { fatalError("Options not set") }
+        if options.isEmpty {
+            fatalError("Options not set")
+        }
 
         let sortedOptionsByAlphabet = options.sorted { $0.value < $1.value }
         let selectedOption = sortedOptionsByAlphabet[0]
