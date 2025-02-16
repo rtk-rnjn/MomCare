@@ -10,71 +10,6 @@ import HealthKit
 import HealthKitUI
 
 extension DashboardViewController {
-    func addHKActivityRing(to cellView: UIView, withSummary summary: HKActivitySummary? = nil) {
-        cellView.layer.sublayers?.forEach { $0.removeFromSuperlayer() }
-
-        let summary = HKActivitySummary()
-
-        summary.activeEnergyBurned = HKQuantity(unit: .kilocalorie(), doubleValue: 11)
-        summary.activeEnergyBurnedGoal = HKQuantity(unit: .kilocalorie(), doubleValue: 21)
-        summary.appleExerciseTime = HKQuantity(unit: .minute(), doubleValue: 1)
-        summary.appleExerciseTimeGoal = HKQuantity(unit: .minute(), doubleValue: 2)
-        summary.appleStandHours = HKQuantity(unit: .count(), doubleValue: 12)
-        summary.appleStandHoursGoal = HKQuantity(unit: .count(), doubleValue: 34)
-
-        let ringColors: [UIColor] = [.systemRed, .systemYellow, .systemBlue]
-        let maxValues: [Double] = [
-            summary.activeEnergyBurnedGoal.doubleValue(for: .kilocalorie()),
-            summary.appleExerciseTimeGoal.doubleValue(for: .minute()),
-            summary.appleStandHoursGoal.doubleValue(for: .count())
-        ]
-        let currentValues: [Double] = [
-            summary.activeEnergyBurned.doubleValue(for: .kilocalorie()),
-            summary.appleExerciseTime.doubleValue(for: .minute()),
-            summary.appleStandHours.doubleValue(for: .count())
-        ]
-
-        let ringSize = min(cellView.bounds.width, cellView.bounds.height)
-        let ringWidth: CGFloat = ringSize * 0.1
-        let radius: CGFloat = (ringSize / 2) - (ringWidth / 2)
-        let center = CGPoint(x: cellView.bounds.midX, y: cellView.bounds.midY)
-
-        for (index, color) in ringColors.enumerated() {
-            let startAngle: CGFloat = -.pi / 2
-            let endAngle: CGFloat = startAngle + (.pi * 2 * CGFloat(currentValues[index] / maxValues[index]))
-
-            let backgroundLayer = CAShapeLayer()
-            let progressLayer = CAShapeLayer()
-
-            let path = UIBezierPath(arcCenter: center, radius: radius - (CGFloat(index) * ringWidth * 1.2), startAngle: 0, endAngle: .pi * 2, clockwise: true)
-
-            backgroundLayer.path = path.cgPath
-            backgroundLayer.strokeColor = color.withAlphaComponent(0.2).cgColor
-            backgroundLayer.lineWidth = ringWidth
-            backgroundLayer.fillColor = UIColor.clear.cgColor
-            backgroundLayer.lineCap = .round
-            cellView.layer.addSublayer(backgroundLayer)
-
-            let progressPath = UIBezierPath(arcCenter: center, radius: radius - (CGFloat(index) * ringWidth * 1.2), startAngle: startAngle, endAngle: endAngle, clockwise: true)
-
-            progressLayer.path = progressPath.cgPath
-            progressLayer.strokeColor = color.cgColor
-            progressLayer.lineWidth = ringWidth
-            progressLayer.fillColor = UIColor.clear.cgColor
-            progressLayer.lineCap = .round
-            progressLayer.strokeEnd = 0.0
-            cellView.layer.addSublayer(progressLayer)
-
-            let animation = CABasicAnimation(keyPath: "strokeEnd")
-            animation.fromValue = 0
-            animation.toValue = 1
-            animation.duration = 1.0
-            animation.timingFunction = CAMediaTimingFunction(name: .easeInEaseOut)
-            progressLayer.add(animation, forKey: "progressAnim")
-
-            progressLayer.strokeEnd = 1.0
-        }
-    }
 
     func requestAccessForHealth() {
         self.healthStore = HKHealthStore()
@@ -160,4 +95,84 @@ extension DashboardViewController {
 
         healthStore?.execute(query)
     }
+
+    func addHKActivityRing(to cellView: UIView, withSummary summary: HKActivitySummary? = nil) {
+        cellView.layer.sublayers?.forEach { $0.removeFromSuperlayer() }
+
+        let activitySummary = summary ?? defaultHKActivitySummary()
+        let ringColors: [UIColor] = [.systemRed, .systemYellow, .systemBlue]
+        let maxValues = extractMaxValues(from: activitySummary)
+        let currentValues = extractCurrentValues(from: activitySummary)
+
+        drawActivityRings(in: cellView, colors: ringColors, maxValues: maxValues, currentValues: currentValues)
+    }
+
+    private func defaultHKActivitySummary() -> HKActivitySummary {
+        let summary = HKActivitySummary()
+        summary.activeEnergyBurned = HKQuantity(unit: .kilocalorie(), doubleValue: 11)
+        summary.activeEnergyBurnedGoal = HKQuantity(unit: .kilocalorie(), doubleValue: 21)
+        summary.appleExerciseTime = HKQuantity(unit: .minute(), doubleValue: 1)
+        summary.appleExerciseTimeGoal = HKQuantity(unit: .minute(), doubleValue: 2)
+        summary.appleStandHours = HKQuantity(unit: .count(), doubleValue: 12)
+        summary.appleStandHoursGoal = HKQuantity(unit: .count(), doubleValue: 34)
+        return summary
+    }
+
+    private func extractMaxValues(from summary: HKActivitySummary) -> [Double] {
+        return [
+            summary.activeEnergyBurnedGoal.doubleValue(for: .kilocalorie()),
+            summary.appleExerciseTimeGoal.doubleValue(for: .minute()),
+            summary.appleStandHoursGoal.doubleValue(for: .count())
+        ]
+    }
+
+    private func extractCurrentValues(from summary: HKActivitySummary) -> [Double] {
+        return [
+            summary.activeEnergyBurned.doubleValue(for: .kilocalorie()),
+            summary.appleExerciseTime.doubleValue(for: .minute()),
+            summary.appleStandHours.doubleValue(for: .count())
+        ]
+    }
+
+    private func drawActivityRings(in cellView: UIView, colors: [UIColor], maxValues: [Double], currentValues: [Double]) {
+        let ringSize = min(cellView.bounds.width, cellView.bounds.height)
+        let ringWidth: CGFloat = ringSize * 0.1
+        let radius: CGFloat = (ringSize / 2) - (ringWidth / 2)
+        let center = CGPoint(x: cellView.bounds.midX, y: cellView.bounds.midY)
+
+        for (index, color) in colors.enumerated() {
+            let startAngle: CGFloat = -.pi / 2
+            let endAngle: CGFloat = startAngle + (.pi * 2 * CGFloat(currentValues[index] / maxValues[index]))
+
+            let backgroundLayer = createRingLayer(center: center, radius: radius - (CGFloat(index) * ringWidth * 1.2), color: color.withAlphaComponent(0.2), lineWidth: ringWidth, startAngle: 0, endAngle: .pi * 2)
+            let progressLayer = createRingLayer(center: center, radius: radius - (CGFloat(index) * ringWidth * 1.2), color: color, lineWidth: ringWidth, startAngle: startAngle, endAngle: endAngle)
+
+            cellView.layer.addSublayer(backgroundLayer)
+            cellView.layer.addSublayer(progressLayer)
+
+            animateProgressLayer(progressLayer)
+        }
+    }
+
+    private func createRingLayer(center: CGPoint, radius: CGFloat, color: UIColor, lineWidth: CGFloat, startAngle: CGFloat, endAngle: CGFloat) -> CAShapeLayer { // swiftlint:disable:this function_parameter_count
+        let path = UIBezierPath(arcCenter: center, radius: radius, startAngle: startAngle, endAngle: endAngle, clockwise: true)
+        let layer = CAShapeLayer()
+        layer.path = path.cgPath
+        layer.strokeColor = color.cgColor
+        layer.lineWidth = lineWidth
+        layer.fillColor = UIColor.clear.cgColor
+        layer.lineCap = .round
+        return layer
+    }
+
+    private func animateProgressLayer(_ layer: CAShapeLayer) {
+        let animation = CABasicAnimation(keyPath: "strokeEnd")
+        animation.fromValue = 0
+        animation.toValue = 1
+        animation.duration = 1.0
+        animation.timingFunction = CAMediaTimingFunction(name: .easeInEaseOut)
+        layer.add(animation, forKey: "progressAnim")
+        layer.strokeEnd = 1.0
+    }
+
 }
