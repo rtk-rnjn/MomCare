@@ -32,6 +32,9 @@
                                             <backgroundConfiguration key="background" cornerRadius="30"/>
                                             <color key="baseBackgroundColor" red="0.16078431369999999" green="0.17254901959999999" blue="0.34901960780000002" alpha="1" colorSpace="calibratedRGB"/>
                                         </buttonConfiguration>
+                                        <connections>
+                                            <action selector="playButtonTapped:" destination="Y6W-OH-hqX" eventType="touchUpInside" id="JSY-Tq-tvs"/>
+                                        </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1iF-xD-2sS">
                                         <rect key="frame" x="116.66666666666666" y="0.0" width="60" height="60"/>
@@ -46,6 +49,9 @@
                                             <backgroundConfiguration key="background" cornerRadius="32"/>
                                             <color key="baseBackgroundColor" red="0.16078431369999999" green="0.17254901959999999" blue="0.34901960780000002" alpha="1" colorSpace="calibratedRGB"/>
                                         </buttonConfiguration>
+                                        <connections>
+                                            <action selector="pauseButtonTapped:" destination="Y6W-OH-hqX" eventType="touchUpInside" id="5q6-Ab-Bkh"/>
+                                        </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hRb-GK-4mg">
                                         <rect key="frame" x="233" y="0.0" width="60" height="60"/>
