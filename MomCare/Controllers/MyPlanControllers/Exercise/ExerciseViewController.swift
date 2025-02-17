@@ -66,8 +66,7 @@ class ExerciseViewController: UIViewController, UICollectionViewDelegate, UIColl
             cell.updateElements(segueHandler: breathingSegueHandler, popUpHandler: popUpHandler)
             return cell
 
-        }
-        else {
+        } else {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ExerciseCell", for: indexPath) as? ExerciseCollectionViewCell
             guard let cell else { fatalError("error aa gaya gys") }
 
@@ -79,7 +78,7 @@ class ExerciseViewController: UIViewController, UICollectionViewDelegate, UIColl
     func breathingSegueHandler() {
         performSegue(withIdentifier: "segueShowBreathingPlayer", sender: nil)
     }
-    
+
     func exerciseSegueHandler() {
         performSegue(withIdentifier: "segueShowExerciseAVPlayer", sender: nil)
     }
