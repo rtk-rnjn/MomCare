@@ -18,6 +18,7 @@ class ExerciseViewController: UIViewController, UICollectionViewDelegate, UIColl
         exerciseCollectionView.register(UINib(nibName: "ExerciseDateCell", bundle: nil), forCellWithReuseIdentifier: "ExerciseDate")
         exerciseCollectionView.register(UINib(nibName: "WalkCellMyPlan", bundle: nil), forCellWithReuseIdentifier: "WalkCellMyPlan")
         exerciseCollectionView.register(UINib(nibName: "ExerciseCell", bundle: nil), forCellWithReuseIdentifier: "ExerciseCell")
+        exerciseCollectionView.register(UINib(nibName: "BreathingCell", bundle: nil), forCellWithReuseIdentifier: "BreathingCell")
 
         exerciseCollectionView.showsVerticalScrollIndicator = false
 
@@ -59,17 +60,27 @@ class ExerciseViewController: UIViewController, UICollectionViewDelegate, UIColl
             guard let cell else { fatalError() }
             return cell
 
+        } else if indexPath.item == 2 {
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "BreathingCell", for: indexPath) as? BreathingCollectionViewCell
+            guard let cell else { fatalError() }
+            cell.updateElements(segueHandler: breathingSegueHandler, popUpHandler: popUpHandler)
+            return cell
+
         } else {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ExerciseCell", for: indexPath) as? ExerciseCollectionViewCell
             guard let cell else { fatalError("error aa gaya gys") }
 
-            cell.updateElements(segueHandler: segueHandler, popUpHandler: popUpHandler)
+            cell.updateElements(segueHandler: exerciseSegueHandler, popUpHandler: popUpHandler)
             return cell
         }
     }
 
-    func segueHandler() {
+    func breathingSegueHandler() {
         performSegue(withIdentifier: "segueShowBreathingPlayer", sender: nil)
+    }
+
+    func exerciseSegueHandler() {
+        performSegue(withIdentifier: "segueShowExerciseAVPlayer", sender: nil)
     }
 
     func popUpHandler() {
