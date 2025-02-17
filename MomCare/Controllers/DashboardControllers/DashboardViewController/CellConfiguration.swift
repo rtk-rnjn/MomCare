@@ -93,7 +93,7 @@ extension DashboardViewController {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "WelcomeHeaderCell", for: indexPath) as? WelcomeHeaderCollectionViewCell
 
         guard let cell else { fatalError("'WelcomeHeaderCell' not found") }
-        cell.updateElements(with: MomCareUser.shared.user?.fullName ?? "User")
+        cell.updateElements(with: MomCareUser.shared.user?.fullName ?? "User", tapHandler: profileIconTapped)
 
         return cell
     }
@@ -140,5 +140,10 @@ extension DashboardViewController {
                 destinationVC.currentSegmentValue = 0
             }
         }
+    }
+    
+    func profileIconTapped() {
+        print("TAPPED")
+        performSegue(withIdentifier: "segueShowProfilePageTableViewController", sender: nil)
     }
 }
