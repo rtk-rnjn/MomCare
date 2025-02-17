@@ -76,5 +76,7 @@ class DashboardViewController: UIViewController, UICollectionViewDataSource {
 
         collectionView.register(UINib(nibName: headerIdentifier, bundle: nil), forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: headerIdentifier)
     }
+    
+    @IBAction func unwinToDashboard(_ segue: UIStoryboardSegue) {}
 
 }
