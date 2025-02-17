@@ -11,11 +11,8 @@ import AVFoundation
 
 class ExerciseAVPlayerViewController: UIViewController {
     
-//    @IBOutlet weak var videoView: UIView!
     @IBOutlet weak var playButton: UIButton!
     @IBOutlet weak var pauseButton: UIButton!
-    
-    //    var player: AVPlayer?
     @IBOutlet weak var videoView: UIView!
     var player: AVPlayer?
     var playerLayer: AVPlayerLayer?
