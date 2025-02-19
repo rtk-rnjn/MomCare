@@ -31,9 +31,9 @@ class BreathingPlayerViewController: UIViewController {
         let gradientLayer = CAGradientLayer()
         gradientLayer.frame = view.bounds
 
-        let upperColor = Converters.convertHexToUIColor(hex: "#1e0d31")
-        let middleColor = Converters.convertHexToUIColor(hex: "#13102f")
-        let bottomColor = Converters.convertHexToUIColor(hex: "#0f102e")
+        let upperColor = UIColor(hex: "#1e0d31")
+        let middleColor = UIColor(hex: "#13102f")
+        let bottomColor = UIColor(hex: "#0f102e")
 
         gradientLayer.colors = [
             upperColor.withAlphaComponent(1.0).cgColor,

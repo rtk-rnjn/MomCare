@@ -105,7 +105,7 @@
                         </subviews>
                     </stackView>
                 </subviews>
-                <color key="backgroundColor" red="0.92156862750000001" green="0.86666666670000003" blue="0.85882352939999995" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                <color key="backgroundColor" red="0.69803921568627447" green="0.81568627450980391" blue="0.87058823529411766" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                 <constraints>
                     <constraint firstItem="DRM-Bb-WQb" firstAttribute="top" secondItem="7iD-x9-pRT" secondAttribute="top" constant="20" id="F2h-DJ-THk"/>
                     <constraint firstAttribute="bottom" secondItem="DRM-Bb-WQb" secondAttribute="bottom" constant="20" id="IR5-ZJ-Wvc"/>
@@ -121,6 +121,9 @@
             </userDefinedRuntimeAttributes>
             <connections>
                 <outlet property="activityView" destination="Ojq-Nd-XIB" id="gCA-KO-f3Z"/>
+                <outlet property="caloriesBurnedLabel" destination="iDQ-L8-87M" id="Fau-kl-1Of"/>
+                <outlet property="exerciseDurationLabel" destination="CqZ-Ne-F6x" id="O7g-T0-8IV"/>
+                <outlet property="stepsLabel" destination="KQ2-Hd-bN3" id="lUw-LE-5DP"/>
             </connections>
             <point key="canvasLocation" x="237" y="-26"/>
         </collectionViewCell>

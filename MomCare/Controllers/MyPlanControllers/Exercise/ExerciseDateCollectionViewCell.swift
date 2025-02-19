@@ -66,7 +66,7 @@ class ExerciseDateCellCollectionViewCell: UICollectionViewCell {
         backgroundLayer = CAShapeLayer()
         backgroundLayer.path = circlePath.cgPath
         backgroundLayer.lineWidth = lineWidth
-        backgroundLayer.strokeColor = Converters.convertHexToUIColor(hex: "E7DBDB").cgColor
+        backgroundLayer.strokeColor = UIColor(hex: "E7DBDB").cgColor
         backgroundLayer.fillColor = UIColor.clear.cgColor
         backgroundLayer.strokeStart = 0
         backgroundLayer.strokeEnd = 1
@@ -76,7 +76,7 @@ class ExerciseDateCellCollectionViewCell: UICollectionViewCell {
         shapeLayer.path = circlePath.cgPath
         shapeLayer.lineWidth = lineWidth
         shapeLayer.lineCap = .round
-        shapeLayer.strokeColor = Converters.convertHexToUIColor(hex: "B9898A").cgColor
+        shapeLayer.strokeColor = UIColor(hex: "B9898A").cgColor
         shapeLayer.fillColor = UIColor.clear.cgColor
         shapeLayer.strokeStart = 0
         shapeLayer.strokeEnd = 0

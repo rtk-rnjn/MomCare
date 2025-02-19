@@ -33,7 +33,7 @@ class SymptomsTableViewController: UITableViewController {
         cell.showsReorderControl = false
 
         // config as per prototype
-        cell.backgroundColor = Converters.convertHexToUIColor(hex: "F2F2F7")
+        cell.backgroundColor = UIColor(hex: "F2F2F7")
         cell.contentView.layer.cornerRadius = 10
         cell.contentView.layer.masksToBounds = true
         cell.clipsToBounds = true

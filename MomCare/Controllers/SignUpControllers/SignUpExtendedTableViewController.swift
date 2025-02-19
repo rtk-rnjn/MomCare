@@ -77,9 +77,7 @@ class SignUpExtendedTableViewController: UITableViewController {
         performSegue(withIdentifier: "segueShowMedicalDetailSelectorTableViewController", sender: options)
     }
 
-    @IBAction func unwinToMedicalDetail(_ segue: UIStoryboardSegue) {
-        print(segue.identifier)
-    }
+    @IBAction func unwinToMedicalDetail(_ segue: UIStoryboardSegue) {}
 
     // MARK: Private
 

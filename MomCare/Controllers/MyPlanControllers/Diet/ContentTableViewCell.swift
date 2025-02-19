@@ -60,6 +60,6 @@ class ContentTableViewCell: UITableViewCell {
 
     private var dietTableViewController: DietTableViewController?
 
-    private let color: UIColor = Converters.convertHexToUIColor(hex: "924350")
+    private let color: UIColor = UIColor(hex: "924350")
 
 }

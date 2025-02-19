@@ -46,7 +46,7 @@ class RemindersTableViewController: UITableViewController {
         cell.updateElements(with: reminders[indexPath.section], for: store)
         cell.showsReorderControl = false
 
-        cell.backgroundColor = Converters.convertHexToUIColor(hex: "F2F2F7")
+        cell.backgroundColor = UIColor(hex: "F2F2F7")
         cell.contentView.layer.cornerRadius = 10
         cell.contentView.layer.masksToBounds = true
         cell.clipsToBounds = true

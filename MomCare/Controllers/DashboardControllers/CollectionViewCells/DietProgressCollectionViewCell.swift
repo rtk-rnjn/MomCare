@@ -29,8 +29,9 @@ class DietProgressCollectionViewCell: UICollectionViewCell {
     @IBOutlet var percentageLabel: UILabel!
 
     var tapHandler: (() -> Void)?
+    var dashboardViewController: DashboardViewController?
 
-    func updateElements(withTapHandler tapHandler: (() -> Void)? = nil) {
+    func updateElements(withTapHandler tapHandler: (() -> Void)? = nil, sender: Any? = nil) {
         self.tapHandler = tapHandler
 
         let plan = MomCareUser.shared.user?.plan
@@ -42,6 +43,15 @@ class DietProgressCollectionViewCell: UICollectionViewCell {
         let progress = Float(plan.currentCaloriesIntake) / Float(plan.caloriesGoal!)
         progressBar.progress = progress
         percentageLabel.text = "\(Int(progress * 100))%"
+        
+        if let sender = sender as? DashboardViewController {
+            dashboardViewController = sender
+        }
+    }
+    
+    private func updateLabels() {
+        guard let dashboardViewController else { return }
+        // TODO: 
     }
 
     // MARK: Private

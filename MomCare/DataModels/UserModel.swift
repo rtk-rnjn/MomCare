@@ -79,7 +79,6 @@ struct User: Codable, Sendable {
         case updatedAt = "updated_at"
     }
 
-    var mongoId: String?
     var id: String = UUID().uuidString
     var firstName: String
     var lastName: String?

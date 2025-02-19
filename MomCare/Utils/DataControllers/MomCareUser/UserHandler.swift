@@ -65,17 +65,15 @@ extension MomCareUser {
         guard let body = user.toData() else { return false }
         let response: CreateResponse? = await MiddlewareManager.shared.post(url: UserEndpoints.createUser(), body: body)
 
-        if let insertedId = response?.insertedId {
-            Utils.save(forKey: .mongoUserId, withValue: insertedId)
-        }
-        let success = response?.success ?? false
+        guard let response, response.success else { return false }
 
-        if success {
-            self.user = user
-            self.user?.mongoId = response?.insertedId
-        }
+        Utils.save(forKey: .mongoUserId, withValue: response.insertedId)
+
+        self.user = user
+        self.user?.id = response.insertedId
+
         await updateUser(to: .iPhone)
-        return success
+        return response.success
     }
 
     func isUserSignedUp() -> Bool {
@@ -101,7 +99,7 @@ extension MomCareUser {
             self.user = user
             await updateUser(to: .iPhone)
 
-            Utils.save(forKey: .mongoUserId, withValue: user?.mongoId)
+            Utils.save(forKey: .mongoUserId, withValue: user?.id)
             return true
         }
 
@@ -114,7 +112,7 @@ extension MomCareUser {
             return false
         }
 
-        guard user?.mongoId == mongoUserID else {
+        guard user?.id == mongoUserID else {
             return false
         }
 

@@ -7,11 +7,12 @@
 
 import Foundation
 
+@MainActor
 class MomCareUser {
 
     // MARK: Public
 
-    @MainActor public static var shared: MomCareUser = .init()
+    public static var shared: MomCareUser = .init()
 
     // MARK: Internal
 
@@ -33,7 +34,7 @@ class MomCareUser {
     func updateFromDatabase() {
         queue.async {
             Task {
-                await self.fetchUser(from: .database)
+//                await self.fetchUser(from: .database)
             }
         }
     }
@@ -49,5 +50,4 @@ class MomCareUser {
             }
         }
     }
-
 }

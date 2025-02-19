@@ -52,7 +52,7 @@ class HeaderTableViewCell: UITableViewCell {
 
     // MARK: Private
 
-    private let color: UIColor = Converters.convertHexToUIColor(hex: "924350")
+    private let color: UIColor = UIColor(hex: "924350")
 
     private func configurePullDownMenu() {
         let addItem = UIAction(title: "Add Item", image: UIImage(systemName: "plus"), handler: addItemHandler)

@@ -15,7 +15,7 @@ extension TriTrackViewController {
             .foregroundColor: UIColor.white
         ]
 
-        let selectedBackground = Converters.convertHexToUIColor(hex: "924350")
+        let selectedBackground = UIColor(hex: "924350")
 
         let selectedTextAttribute: [NSAttributedString.Key: Any] = [
             .foregroundColor: selectedBackground
