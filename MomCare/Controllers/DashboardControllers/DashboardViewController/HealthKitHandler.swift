@@ -38,7 +38,7 @@ extension DashboardViewController {
         let calendar = Calendar.current
         let now = Date()
         let startDate = calendar.date(byAdding: .day, value: -1, to: now)
-        
+
         let predicate = HKQuery.predicateForSamples(withStart: startDate, end: now, options: .strictStartDate)
 
         let query = HKStatisticsQuery(quantityType: stepType, quantitySamplePredicate: predicate, options: .cumulativeSum) { _, result, _ in
@@ -56,11 +56,11 @@ extension DashboardViewController {
 
     func readCaloriesBurned(completionHandler: @escaping @Sendable (Double) -> Void) {
         guard let calorieType = HKQuantityType.quantityType(forIdentifier: .activeEnergyBurned) else { return }
-        
+
         let calendar = Calendar.current
         let now = Date()
         let startDate = calendar.date(byAdding: .day, value: -1, to: now)
-        
+
         let predicate = HKQuery.predicateForSamples(withStart: startDate, end: now, options: .strictStartDate)
 
         let query = HKStatisticsQuery(quantityType: calorieType, quantitySamplePredicate: predicate, options: .cumulativeSum) { _, result, _ in
@@ -78,11 +78,11 @@ extension DashboardViewController {
 
     func readWorkout(completionHandler: @escaping @Sendable (Double) -> Void) {
         let workoutType = HKWorkoutType.workoutType()
-        
+
         let calendar = Calendar.current
         let now = Date()
         let startDate = calendar.date(byAdding: .day, value: -1, to: now)
-        
+
         let predicate = HKQuery.predicateForSamples(withStart: startDate, end: now, options: .strictStartDate)
 
         let query = HKSampleQuery(sampleType: workoutType, predicate: predicate, limit: HKObjectQueryNoLimit, sortDescriptors: nil) { _, samples, _ in

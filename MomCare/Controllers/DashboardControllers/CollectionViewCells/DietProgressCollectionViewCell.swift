@@ -43,18 +43,18 @@ class DietProgressCollectionViewCell: UICollectionViewCell {
         let progress = Float(plan.currentCaloriesIntake) / Float(plan.caloriesGoal!)
         progressBar.progress = progress
         percentageLabel.text = "\(Int(progress * 100))%"
-        
+
         if let sender = sender as? DashboardViewController {
             dashboardViewController = sender
         }
     }
-    
-    private func updateLabels() {
-        guard let dashboardViewController else { return }
-        // TODO: 
-    }
 
     // MARK: Private
+
+    private func updateLabels() {
+        guard let dashboardViewController else { return }
+        // TODO:
+    }
 
     private func setupGesture() {
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap))

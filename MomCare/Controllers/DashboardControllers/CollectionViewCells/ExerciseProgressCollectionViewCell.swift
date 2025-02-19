@@ -9,9 +9,6 @@ import UIKit
 
 class ExerciseProgressCollectionViewCell: UICollectionViewCell {
 
-    @IBOutlet var stepsLabel: UILabel!
-    @IBOutlet var exerciseDurationLabel: UILabel!
-    @IBOutlet var caloriesBurnedLabel: UILabel!
     // MARK: Lifecycle
 
     override init(frame: CGRect) {
@@ -26,6 +23,9 @@ class ExerciseProgressCollectionViewCell: UICollectionViewCell {
 
     // MARK: Internal
 
+    @IBOutlet var stepsLabel: UILabel!
+    @IBOutlet var exerciseDurationLabel: UILabel!
+    @IBOutlet var caloriesBurnedLabel: UILabel!
     @IBOutlet var activityView: UIView!
 
     var tapHandler: (() -> Void)?
@@ -33,44 +33,44 @@ class ExerciseProgressCollectionViewCell: UICollectionViewCell {
 
     func updateElements(withTapHandler tapHandler: (() -> Void)? = nil, sender: Any? = nil) {
         self.tapHandler = tapHandler
-        
+
         if let sender = sender as? DashboardViewController {
             dashboardViewController = sender
-            
+
             updateStepsLabel()
             updateExerciseDurationLabel()
             updateCaloriesBurnedLabel()
         }
     }
-    
+
+    // MARK: Private
+
     private func updateStepsLabel() {
         guard let dashboardViewController else { return }
-        dashboardViewController.readStepCount() { steps in
+        dashboardViewController.readStepCount { steps in
             DispatchQueue.main.async {
                 self.stepsLabel.text = "\(Int(steps))"
             }
         }
     }
-    
+
     private func updateExerciseDurationLabel() {
         guard let dashboardViewController else { return }
-        dashboardViewController.readWorkout() { duration in
+        dashboardViewController.readWorkout { duration in
             DispatchQueue.main.async {
                 self.exerciseDurationLabel.text = "\(round(Double(duration)))"
             }
         }
     }
-    
+
     private func updateCaloriesBurnedLabel() {
         guard let dashboardViewController else { return }
-        dashboardViewController.readCaloriesBurned() { calories in
+        dashboardViewController.readCaloriesBurned { calories in
             DispatchQueue.main.async {
                 self.caloriesBurnedLabel.text = "\(Int(calories))"
             }
         }
     }
-
-    // MARK: Private
 
     private func setupGesture() {
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap))
