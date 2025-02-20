@@ -22,6 +22,9 @@ struct AlertActionHandler {
 }
 
 enum Utils {
+
+    // MARK: Public
+
     @MainActor public static func getAlert(title: String, message: String, actions: [AlertActionHandler]? = nil) -> UIAlertController {
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
 
@@ -75,11 +78,13 @@ enum Utils {
 
         UNUserNotificationCenter.current().add(request)
     }
-    
+
+    // MARK: Internal
+
     static func pregnancyWeekAndDay(dueDate: Date) -> (week: Int, day: Int, trimester: String)? {
         let calendar = Calendar.current
         let today = Date()
-        
+
         guard let lmp = calendar.date(byAdding: .day, value: -280, to: dueDate) else {
             return nil
         }
@@ -87,10 +92,10 @@ enum Utils {
         guard daysElapsed >= 0, daysElapsed <= 280 else {
             return nil
         }
-        
+
         let weekNumber = daysElapsed / 7 + 1
         let dayNumber = daysElapsed % 7 + 1
-        
+
         let trimester: String
         switch weekNumber {
             case 1...12: trimester = "I"
@@ -98,7 +103,7 @@ enum Utils {
             case 28...40: trimester = "III"
             default: return nil
         }
-        
+
         return (week: weekNumber, day: dayNumber, trimester: trimester)
     }
 }

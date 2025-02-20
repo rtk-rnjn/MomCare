@@ -19,6 +19,8 @@ class TriTrackViewController: UIViewController, FSCalendarDelegate, FSCalendarDa
 
     // MARK: Internal
 
+    static var eventStore: EKEventStore = .init()
+
     @IBOutlet var triTrackInternalView: UIView!
 
     @IBOutlet var addButton: UIBarButtonItem!
@@ -35,7 +37,6 @@ class TriTrackViewController: UIViewController, FSCalendarDelegate, FSCalendarDa
     var eventsViewController: EventsViewController?
 
     var currentSegmentValue: Int = 0
-    static var eventStore: EKEventStore = .init()
 
     var activityIndicator: UIActivityIndicatorView?
 

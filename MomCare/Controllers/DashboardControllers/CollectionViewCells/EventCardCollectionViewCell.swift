@@ -44,22 +44,9 @@ class EventCardCollectionViewCell: UICollectionViewCell {
         self.event = event
     }
 
-    // MARK: Private
-
-    private func setupGesture() {
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap))
-        contentView.addGestureRecognizer(tapGesture)
-    }
-
-    @objc private func handleTap() {
-        guard let tapHandler else { return }
-        tapHandler()
-    }
-
-    
     @IBAction func addEventButtonTapped(_ sender: UIButton) {
         let status = EKEventStore.authorizationStatus(for: .event)
-        
+
         switch status {
         case .denied, .restricted, .notDetermined:
             TriTrackViewController.eventStore.requestFullAccessToEvents { success, _ in
@@ -74,17 +61,16 @@ class EventCardCollectionViewCell: UICollectionViewCell {
             }
 
         case .authorized:
-            self.addEditEKEventPresenter?(self.event)
+            addEditEKEventPresenter?(event)
         default:
             break
         }
     }
-    
-    
-    
+
     func createOrGetEvent() -> EKCalendar? {
         return createOrGetCalendar(identifierKey: "TriTrackEvent", eventType: .event, title: "MomCare - TriTrack Calendar", defaultCalendar: TriTrackViewController.eventStore.defaultCalendarForNewEvents)
     }
+
     func createOrGetCalendar(identifierKey: String, eventType: EKEntityType, title: String, defaultCalendar: EKCalendar?) -> EKCalendar? {
         let identifier: String? = Utils.get(fromKey: identifierKey)
         if let identifier {
@@ -105,4 +91,17 @@ class EventCardCollectionViewCell: UICollectionViewCell {
 
         return newCalendar
     }
+
+    // MARK: Private
+
+    private func setupGesture() {
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap))
+        contentView.addGestureRecognizer(tapGesture)
+    }
+
+    @objc private func handleTap() {
+        guard let tapHandler else { return }
+        tapHandler()
+    }
+
 }

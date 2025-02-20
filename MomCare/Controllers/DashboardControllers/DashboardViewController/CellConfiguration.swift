@@ -59,7 +59,7 @@ extension DashboardViewController {
         case 1:
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "EventCard", for: indexPath) as? EventCardCollectionViewCell
             guard let cell else { fatalError("'EventCard' not found") }
-            cell.updateElements(with: nil, tapHandler: eventCardTapped, addEditEKEventPresenter: self.presentEKEventEditViewController)
+            cell.updateElements(with: nil, tapHandler: eventCardTapped, addEditEKEventPresenter: presentEKEventEditViewController)
             return cell
 
         default:
