@@ -21,7 +21,7 @@ class RemindersTableViewController: UITableViewController {
         super.viewDidLoad()
 
         guard let eventsViewController else { return }
-        store = eventsViewController.triTrackViewController?.eventStore
+        store = TriTrackViewController.eventStore
 
     }
 

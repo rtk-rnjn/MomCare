@@ -39,9 +39,18 @@ class WeekCardCollectionViewCell: UICollectionViewCell {
     }
 
     func updateElements(with userData: User?, tapHandler: (() -> Void)?) {
-//        if let userData = userData {
-//
-//        }
+        if let userData = userData {
+            if let dueDate = userData.medicalData?.dueDate {
+                let weekAndDay = Utils.pregnancyWeekAndDay(dueDate: dueDate)
+                currentWeekLabel.text = "Week \(String(weekAndDay?.week ?? 0))"
+                currentDayLabel.text = "Day \(String(weekAndDay?.day ?? 0))"
+                currentTrimesterLabel.text = "Trimester \(String(weekAndDay?.trimester ?? "0"))"
+            } else {
+                currentWeekLabel.text = "Week NaN"
+                currentDayLabel.text = "Day NaN"
+                currentTrimesterLabel.text = "Trimester NaN"
+            }
+        }
         self.tapHandler = tapHandler
     }
 

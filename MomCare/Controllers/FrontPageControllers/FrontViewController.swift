@@ -20,7 +20,7 @@ class FrontViewController: UIViewController, UICollectionViewDelegate, UICollect
 
         collectionView.delegate = self
         collectionView.dataSource = self
-
+        collectionView.collectionViewLayout = createLayout()
         collectionView.backgroundColor = .none
     }
 
@@ -36,10 +36,29 @@ class FrontViewController: UIViewController, UICollectionViewDelegate, UICollect
         return 1
     }
 
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "slide", for: indexPath) as? FrontPageSliderCollectionViewCell
+    func createLayout() -> UICollectionViewLayout {
+        let layout = UICollectionViewCompositionalLayout { (sectionIndex, layoutEnvironment) -> NSCollectionLayoutSection? in
+            let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .fractionalHeight(1))
+            let item = NSCollectionLayoutItem(layoutSize: itemSize)
+            
+            let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .fractionalHeight(1))
+            let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
+            
+            let section = NSCollectionLayoutSection(group: group)
+            section.orthogonalScrollingBehavior = .groupPaging
+            return section
+        }
+        return layout
+    }
 
-        guard let cell else { return UICollectionViewCell() }
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return collectionView.frame.size
+    }
+
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "FrontPageSliderCollectionViewCell", for: indexPath) as? FrontPageSliderCollectionViewCell
+
+        guard let cell else { fatalError("aise na mujhe tum dekho, seene se laga lunga") }
 
         cell.imageView.image = FrontPageData.getImage(at: indexPath)
         cell.heading.text = FrontPageData.getHeading(at: indexPath)
@@ -47,13 +66,8 @@ class FrontViewController: UIViewController, UICollectionViewDelegate, UICollect
         return cell
     }
 
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: collectionView.frame.width, height: collectionView.frame.height)
-    }
-
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
-        let pageWidth = collectionView.frame.size.width
-        let currentPage = Int((collectionView.contentOffset.x + pageWidth / 2) / pageWidth)
-        pageControl.currentPage = currentPage
+        let page = Int(scrollView.contentOffset.x / scrollView.frame.size.width)
+        pageControl.currentPage = page
     }
 }

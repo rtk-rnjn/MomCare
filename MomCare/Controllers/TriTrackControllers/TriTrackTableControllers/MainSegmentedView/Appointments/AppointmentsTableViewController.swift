@@ -20,7 +20,7 @@ class AppointmentsTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         guard let eventsVC = eventsViewController else { fatalError("eventsViewController is nil") }
-        store = eventsVC.triTrackViewController?.eventStore
+        store = TriTrackViewController.eventStore
     }
 
     override func viewWillAppear(_ animated: Bool) {

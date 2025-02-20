@@ -9,19 +9,16 @@ import UIKit
 
 extension DashboardViewController {
     func createLayout() -> UICollectionViewCompositionalLayout {
-        UICollectionViewCompositionalLayout { [weak self] sectionIndex, _ -> NSCollectionLayoutSection? in
-
-            guard let self else { return nil }
-
+        UICollectionViewCompositionalLayout { sectionIndex, _ -> NSCollectionLayoutSection? in
             switch sectionIndex {
             case 0:
-                return createLayoutForHeading()
+                return self.createLayoutForHeading()
             case 1:
-                return createLayoutForWeekEventCard()
+                return self.createLayoutForWeekEventCard()
             case 2:
-                return createLayoutForDietExerciseProgress()
+                return self.createLayoutForDietExerciseProgress()
             case 3:
-                return createLayoutForDailyInsights()
+                return self.createLayoutForDailyInsights()
             default:
                 fatalError("the sunset is beautiful, ins't it?")
             }

@@ -35,7 +35,7 @@ class TriTrackViewController: UIViewController, FSCalendarDelegate, FSCalendarDa
     var eventsViewController: EventsViewController?
 
     var currentSegmentValue: Int = 0
-    var eventStore: EKEventStore = .init()
+    static var eventStore: EKEventStore = .init()
 
     var activityIndicator: UIActivityIndicatorView?
 

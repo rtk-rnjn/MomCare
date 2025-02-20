@@ -51,7 +51,7 @@ extension TriTrackViewController {
         guard let title = viewController.addSymptomsTableViewController?.titleField.text,
               let dateTime = viewController.addSymptomsTableViewController?.dateTime.date else { return }
 
-        let event = EKEvent(eventStore: eventStore)
+        let event = EKEvent(eventStore: TriTrackViewController.eventStore)
         event.title = title
         event.startDate = dateTime
         event.calendar = createOrGetEvent()
@@ -63,7 +63,7 @@ extension TriTrackViewController {
         guard let eventTVC = viewController.addEventTableViewController,
               let title = eventTVC.titleField.text else { return }
 
-        let event = EKEvent(eventStore: eventStore)
+        let event = EKEvent(eventStore: TriTrackViewController.eventStore)
         event.title = title
         event.location = ((eventTVC.locationField.text?.isEmpty) != nil) ? eventTVC.locationField.text : nil
         event.startDate = eventTVC.startDateTimePicker.date
@@ -78,7 +78,7 @@ extension TriTrackViewController {
         event.endDate = eventTVC.allDaySwitch.isOn ? event.startDate : eventTVC.endDateTimePicker.date.addingTimeInterval(eventTVC.selectedTravelTimeOption ?? 0)
         event.calendar = createOrGetEvent()
 
-        try? eventStore.save(event, span: .thisEvent, commit: true)
+        try? TriTrackViewController.eventStore.save(event, span: .thisEvent, commit: true)
         eventsViewController?.appointmentsTableViewController?.refreshData()
     }
 
@@ -86,7 +86,7 @@ extension TriTrackViewController {
         guard let reminderTVC = viewController.addReminderTableViewController,
               let title = reminderTVC.titleField.text else { return }
 
-        let reminder = EKReminder(eventStore: eventStore)
+        let reminder = EKReminder(eventStore: TriTrackViewController.eventStore)
         reminder.title = title
         reminder.notes = reminderTVC.notesField.text
         reminder.dueDateComponents = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute], from: reminderTVC.dateTime.date)
@@ -94,7 +94,7 @@ extension TriTrackViewController {
         reminder.recurrenceRules = createRecurrenceRule(for: reminderTVC.selectedRepeatOption)
 
         Utils.createNotification(title: reminder.title, body: reminder.notes, date: reminder.dueDateComponents?.date!)
-        try? eventStore.save(reminder, commit: true)
+        try? TriTrackViewController.eventStore.save(reminder, commit: true)
         eventsViewController?.remindersTableViewController?.refreshData()
     }
 

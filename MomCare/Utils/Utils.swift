@@ -75,4 +75,30 @@ enum Utils {
 
         UNUserNotificationCenter.current().add(request)
     }
+    
+    static func pregnancyWeekAndDay(dueDate: Date) -> (week: Int, day: Int, trimester: String)? {
+        let calendar = Calendar.current
+        let today = Date()
+        
+        guard let lmp = calendar.date(byAdding: .day, value: -280, to: dueDate) else {
+            return nil
+        }
+        let daysElapsed = calendar.dateComponents([.day], from: lmp, to: today).day ?? 0
+        guard daysElapsed >= 0, daysElapsed <= 280 else {
+            return nil
+        }
+        
+        let weekNumber = daysElapsed / 7 + 1
+        let dayNumber = daysElapsed % 7 + 1
+        
+        let trimester: String
+        switch weekNumber {
+            case 1...12: trimester = "I"
+            case 13...27: trimester = "II"
+            case 28...40: trimester = "III"
+            default: return nil
+        }
+        
+        return (week: weekNumber, day: dayNumber, trimester: trimester)
+    }
 }

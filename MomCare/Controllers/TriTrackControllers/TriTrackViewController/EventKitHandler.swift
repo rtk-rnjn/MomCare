@@ -39,7 +39,7 @@ extension TriTrackViewController: EKEventEditViewDelegate, EKEventViewDelegate {
 
     func presentEKEventEditViewController(with event: EKEvent?) {
         let eventEditViewController = EKEventEditViewController()
-        eventEditViewController.eventStore = eventStore
+        eventEditViewController.eventStore = TriTrackViewController.eventStore
         eventEditViewController.event = .none
 
         eventEditViewController.editViewDelegate = self
@@ -71,10 +71,10 @@ extension TriTrackViewController: EKEventEditViewDelegate, EKEventViewDelegate {
 
         switch status {
         case .denied, .restricted, .notDetermined:
-            eventStore.requestFullAccessToEvents { success, _ in
-                self.eventStore = .init()
+            TriTrackViewController.eventStore.requestFullAccessToEvents { success, _ in
+                TriTrackViewController.eventStore = .init()
                 if success {
-                    self.eventStore = EKEventStore()
+                    TriTrackViewController.eventStore = EKEventStore()
                     DispatchQueue.main.async {
                         _ = self.createOrGetEvent()
                     }
@@ -93,10 +93,10 @@ extension TriTrackViewController: EKEventEditViewDelegate, EKEventViewDelegate {
 
         switch status {
         case .denied, .restricted, .notDetermined:
-            eventStore.requestFullAccessToReminders { success, _ in
-                self.eventStore = .init()
+            TriTrackViewController.eventStore.requestFullAccessToReminders { success, _ in
+                TriTrackViewController.eventStore = .init()
                 if success {
-                    self.eventStore = EKEventStore()
+                    TriTrackViewController.eventStore = EKEventStore()
                     DispatchQueue.main.async {
                         _ = self.createOrGetReminder()
                     }
@@ -113,12 +113,12 @@ extension TriTrackViewController: EKEventEditViewDelegate, EKEventViewDelegate {
     private func createOrGetCalendar(identifierKey: String, eventType: EKEntityType, title: String, defaultCalendar: EKCalendar?) -> EKCalendar? {
         let identifier: String? = Utils.get(fromKey: identifierKey)
         if let identifier {
-            return eventStore.calendar(withIdentifier: identifier)
+            return TriTrackViewController.eventStore.calendar(withIdentifier: identifier)
         }
 
-        let newCalendar = EKCalendar(for: eventType, eventStore: eventStore)
+        let newCalendar = EKCalendar(for: eventType, eventStore: TriTrackViewController.eventStore)
         newCalendar.title = title
-        if let localSource = eventStore.sources.first(where: { $0.sourceType == .local }) {
+        if let localSource = TriTrackViewController.eventStore.sources.first(where: { $0.sourceType == .local }) {
             newCalendar.source = localSource
         } else {
             newCalendar.source = defaultCalendar?.source
@@ -126,16 +126,16 @@ extension TriTrackViewController: EKEventEditViewDelegate, EKEventViewDelegate {
 
         UserDefaults.standard.set(newCalendar.calendarIdentifier, forKey: identifierKey)
 
-        try? eventStore.saveCalendar(newCalendar, commit: true)
+        try? TriTrackViewController.eventStore.saveCalendar(newCalendar, commit: true)
 
         return newCalendar
     }
 
     func createOrGetEvent() -> EKCalendar? {
-        return createOrGetCalendar(identifierKey: "TriTrackEvent", eventType: .event, title: "MomCare - TriTrack Calendar", defaultCalendar: eventStore.defaultCalendarForNewEvents)
+        return createOrGetCalendar(identifierKey: "TriTrackEvent", eventType: .event, title: "MomCare - TriTrack Calendar", defaultCalendar: TriTrackViewController.eventStore.defaultCalendarForNewEvents)
     }
 
     func createOrGetReminder() -> EKCalendar? {
-        return createOrGetCalendar(identifierKey: "TriTrackReminder", eventType: .reminder, title: "MomCare - TriTrack Reminders", defaultCalendar: eventStore.defaultCalendarForNewReminders())
+        return createOrGetCalendar(identifierKey: "TriTrackReminder", eventType: .reminder, title: "MomCare - TriTrack Reminders", defaultCalendar: TriTrackViewController.eventStore.defaultCalendarForNewReminders())
     }
 }

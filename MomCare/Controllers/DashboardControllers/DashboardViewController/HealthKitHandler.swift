@@ -117,12 +117,14 @@ extension DashboardViewController {
 
     private func sampleHKSummary() -> HKActivitySummary {
         let summary = HKActivitySummary()
-        summary.activeEnergyBurned = HKQuantity(unit: .kilocalorie(), doubleValue: 11)
-        summary.activeEnergyBurnedGoal = HKQuantity(unit: .kilocalorie(), doubleValue: 21)
+        summary.activeEnergyBurned = HKQuantity(unit: .kilocalorie(), doubleValue: 0.001)
+        summary.activeEnergyBurnedGoal = HKQuantity(unit: .kilocalorie(), doubleValue: 1)
+
         summary.appleExerciseTime = HKQuantity(unit: .minute(), doubleValue: 0.001)
-        summary.appleExerciseTimeGoal = HKQuantity(unit: .minute(), doubleValue: 2)
-        summary.appleStandHours = HKQuantity(unit: .count(), doubleValue: 12)
-        summary.appleStandHoursGoal = HKQuantity(unit: .count(), doubleValue: 34)
+        summary.appleExerciseTimeGoal = HKQuantity(unit: .minute(), doubleValue: 1)
+
+        summary.appleStandHours = HKQuantity(unit: .count(), doubleValue: 0.001)
+        summary.appleStandHoursGoal = HKQuantity(unit: .count(), doubleValue: 1)
         return summary
     }
 

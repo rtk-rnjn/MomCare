@@ -52,7 +52,6 @@ class DietProgressCollectionViewCell: UICollectionViewCell {
     // MARK: Private
 
     private func updateLabels() {
-        guard let dashboardViewController else { return }
         // TODO:
     }
 
