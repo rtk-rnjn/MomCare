@@ -20,10 +20,9 @@ class MomCareUser {
 
     var user: User? {
         didSet {
-            updateToDatabase()
-        }
-        willSet {
-            user?.updatedAt = Date()
+            if oldValue != user {
+                updateToDatabase()
+            }
         }
     }
 
@@ -34,16 +33,14 @@ class MomCareUser {
     func updateFromDatabase() {
         queue.async {
             Task {
-//                await self.fetchUser(from: .database)
+                await self.fetchUser(from: .database)
             }
         }
     }
 
-    // MARK: Private
-
     // https://medium.com/@harshaag99/understanding-dispatchqueue-in-swift-c73058df6b37
 
-    private func updateToDatabase() {
+    func updateToDatabase() {
         queue.async {
             Task {
                 await self.updateUser(to: .database)

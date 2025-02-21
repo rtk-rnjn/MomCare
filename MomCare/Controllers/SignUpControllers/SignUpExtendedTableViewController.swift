@@ -37,7 +37,9 @@ class SignUpExtendedTableViewController: UITableViewController {
     @IBAction func finishButtonTapped(_ sender: UIButton) {
         let dueDate = dueDatePicker.date
 
-        userMedical?.dueDate = dueDate
+        guard var userMedical else { fatalError() }
+
+        userMedical.dueDate = dueDate
         MomCareUser.shared.user?.medicalData = userMedical
 
         Utils.save(forKey: .signedUp, withValue: true)

@@ -32,7 +32,7 @@ class DashboardViewController: UIViewController, UICollectionViewDataSource {
         super.viewWillAppear(animated)
 
         Task {
-            await MomCareUser.shared.fetchUser(from: .iPhone)
+            await MomCareUser.shared.fetchUser(from: .database)
             DispatchQueue.main.async {
                 self.collectionView.reloadData()
             }

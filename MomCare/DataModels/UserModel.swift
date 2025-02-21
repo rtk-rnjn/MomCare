@@ -60,7 +60,7 @@ struct Mood: Codable {
     }
 }
 
-struct User: Codable, Sendable {
+struct User: Codable, Sendable, Equatable {
     enum CodingKeys: String, CodingKey {
         case id = "_id"
         case firstName = "first_name"
@@ -101,7 +101,7 @@ struct User: Codable, Sendable {
     }
 }
 
-struct History: Codable, Sendable {
+struct History: Codable, Sendable, Equatable {
     enum CodingKeys: String, CodingKey {
         case date
         case plan
@@ -112,9 +112,16 @@ struct History: Codable, Sendable {
     var plan: MyPlan?
     var exercises: [Exercise] = []
 
+    static func ==(lhs: History, rhs: History) -> Bool {
+        let date = lhs.date == rhs.date
+        let plan = lhs.plan == rhs.plan
+        let exercises = lhs.exercises == rhs.exercises
+
+        return date && plan && exercises
+    }
 }
 
-struct UserMedical: Codable, Sendable {
+struct UserMedical: Codable, Sendable, Equatable {
     enum CodingKeys: String, CodingKey {
         case dateOfBirth = "date_of_birth"
         case height
@@ -135,4 +142,16 @@ struct UserMedical: Codable, Sendable {
     var foodIntolerances: [Intolerance] = []
     var dietaryPreferences: [DietaryPreference] = []
 
+    static func ==(lhs: UserMedical, rhs: UserMedical) -> Bool {
+        let dateOfBirth = lhs.dateOfBirth == rhs.dateOfBirth
+        let height = lhs.height == rhs.height
+        let prePregnancyWeight = lhs.prePregnancyWeight == rhs.prePregnancyWeight
+        let currentWeight = lhs.currentWeight == rhs.currentWeight
+        let dueDate = lhs.dueDate == rhs.dueDate
+        let preExistingConditions = lhs.preExistingConditions == rhs.preExistingConditions
+        let foodIntolerances = lhs.foodIntolerances == rhs.foodIntolerances
+        let dietaryPreferences = lhs.dietaryPreferences == rhs.dietaryPreferences
+
+        return dateOfBirth && height && prePregnancyWeight && currentWeight && dueDate && preExistingConditions && foodIntolerances && dietaryPreferences
+    }
 }

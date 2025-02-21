@@ -69,10 +69,10 @@ extension MomCareUser {
 
         Utils.save(forKey: .mongoUserId, withValue: response.insertedId)
 
-        self.user = user
-        self.user?.id = response.insertedId
+        if response.success {
+            await updateUser(to: .iPhone)
+        }
 
-        await updateUser(to: .iPhone)
         return response.success
     }
 
@@ -91,11 +91,9 @@ extension MomCareUser {
     }
 
     func fetchUserFromDatabase(with email: String, and password: String) async -> Bool {
-        var user: User? = await MiddlewareManager.shared.get(url: UserEndpoints.fetchUserWithEmail(email), queryParameters: ["email": email, "password": password])
+        let user: User? = await MiddlewareManager.shared.get(url: UserEndpoints.fetchUserWithEmail(email), queryParameters: ["email": email, "password": password])
 
         if user != nil {
-            user?.password = password // Password is HIDDEN from the API calls
-
             self.user = user
             await updateUser(to: .iPhone)
 
