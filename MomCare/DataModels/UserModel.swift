@@ -84,7 +84,7 @@ struct User: Codable, Sendable {
     var lastName: String?
     var emailAddress: String
     var password: String
-    var countryCode: String = "+91"
+    var countryCode: String = "91"
     var country: Country = .india
     var phoneNumber: String
     var medicalData: UserMedical?
