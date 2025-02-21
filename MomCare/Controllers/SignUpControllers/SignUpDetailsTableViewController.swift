@@ -33,6 +33,8 @@ class SignUpDetailsTableViewController: UITableViewController, UIViewControllerT
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
             self.progressView.setProgress(0.5, animated: true)
         }
+
+        dateOfBirthPicker.maximumDate = Date()
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {

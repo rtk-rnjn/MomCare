@@ -21,6 +21,8 @@ class SignUpExtendedTableViewController: UITableViewController {
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
             self.progressView.setProgress(1.0, animated: true)
         }
+
+        dueDatePicker.minimumDate = Date()
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {

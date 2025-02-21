@@ -23,6 +23,12 @@ class SignUpTableViewController: UITableViewController {
     @IBOutlet var countryCodeField: UITextField!
     @IBOutlet var mobileNumberField: UITextField!
 
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+        view.addGestureRecognizer(tapGesture)
+    }
+
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "segueShowPickerViewController", let destination = segue.destination as? PickerViewController, let presentationController = destination.presentationController as? UISheetPresentationController {
             presentationController.detents = [.medium()]
@@ -138,4 +144,7 @@ class SignUpTableViewController: UITableViewController {
         activityIndicator.removeFromSuperview()
     }
 
+    @objc private func dismissKeyboard() {
+        view.endEditing(true)
+    }
 }

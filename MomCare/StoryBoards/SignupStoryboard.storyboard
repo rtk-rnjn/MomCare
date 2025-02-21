@@ -760,7 +760,7 @@
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <datePicker contentMode="scaleToFill" contentHorizontalAlignment="trailing" contentVerticalAlignment="center" datePickerMode="date" translatesAutoresizingMaskIntoConstraints="NO" id="hmB-N7-EKZ">
-                                                            <rect key="frame" x="166.66666666666663" y="0.0" width="166.33333333333337" height="50.333333333333336"/>
+                                                            <rect key="frame" x="167" y="0.0" width="166" height="51"/>
                                                         </datePicker>
                                                     </subviews>
                                                     <constraints>
