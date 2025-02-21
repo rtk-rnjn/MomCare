@@ -8,7 +8,7 @@
 import UIKit
 import HealthKit
 
-class FrontViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+class FrontViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource {
 
     @IBOutlet var collectionView: UICollectionView!
     @IBOutlet var pageControl: UIPageControl!
@@ -22,6 +22,9 @@ class FrontViewController: UIViewController, UICollectionViewDelegate, UICollect
         collectionView.dataSource = self
         collectionView.collectionViewLayout = createLayout()
         collectionView.backgroundColor = .none
+        collectionView.alwaysBounceVertical = false
+
+        collectionView.reloadData()
     }
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -45,13 +48,9 @@ class FrontViewController: UIViewController, UICollectionViewDelegate, UICollect
             let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
 
             let section = NSCollectionLayoutSection(group: group)
-            section.orthogonalScrollingBehavior = .groupPaging
+            section.orthogonalScrollingBehavior = .groupPagingCentered
             return section
         }
-    }
-
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return collectionView.frame.size
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -63,10 +62,5 @@ class FrontViewController: UIViewController, UICollectionViewDelegate, UICollect
         cell.heading.text = FrontPageData.getHeading(at: indexPath)
 
         return cell
-    }
-
-    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
-        let page = Int(scrollView.contentOffset.x / scrollView.frame.size.width)
-        pageControl.currentPage = page
     }
 }

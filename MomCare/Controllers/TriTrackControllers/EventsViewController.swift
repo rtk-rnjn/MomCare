@@ -20,8 +20,8 @@ class EventsViewController: UIViewController {
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        let appointmentIdentifier = "embedShowAppointmentsTabelViewController"
-        let reminderIdentifier = "embedShowRemindersTabelViewController"
+        let appointmentIdentifier = "embedShowAppointmentsTableViewController"
+        let reminderIdentifier = "embedShowRemindersTableViewController"
 
         switch segue.identifier {
         case appointmentIdentifier:

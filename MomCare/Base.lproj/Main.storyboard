@@ -48,7 +48,6 @@
                                                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" adjustsImageSizeForAccessibilityContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="9hw-k8-ZBc">
                                                                     <rect key="frame" x="0.0" y="20.333333333333343" width="330" height="302.66666666666663"/>
                                                                     <constraints>
-                                                                        <constraint firstAttribute="width" constant="330" id="4Vz-UH-Tac"/>
                                                                         <constraint firstAttribute="width" secondItem="9hw-k8-ZBc" secondAttribute="height" multiplier="1:1" id="Vo6-p2-unj"/>
                                                                     </constraints>
                                                                 </imageView>
@@ -56,10 +55,10 @@
                                                         </stackView>
                                                     </subviews>
                                                     <constraints>
-                                                        <constraint firstItem="UpQ-gY-NXu" firstAttribute="leading" secondItem="FL6-uN-iaQ" secondAttribute="leading" constant="10" id="NtG-P7-bh5"/>
-                                                        <constraint firstAttribute="bottom" secondItem="UpQ-gY-NXu" secondAttribute="bottom" constant="10" id="Nw9-gC-KAO"/>
-                                                        <constraint firstItem="UpQ-gY-NXu" firstAttribute="top" secondItem="FL6-uN-iaQ" secondAttribute="top" constant="10" id="PdQ-hv-mZK"/>
-                                                        <constraint firstAttribute="trailing" secondItem="UpQ-gY-NXu" secondAttribute="trailing" constant="10" id="ZZg-Ew-wy1"/>
+                                                        <constraint firstItem="UpQ-gY-NXu" firstAttribute="leading" secondItem="FL6-uN-iaQ" secondAttribute="leading" constant="10" id="F8D-bm-3JR"/>
+                                                        <constraint firstAttribute="bottom" secondItem="UpQ-gY-NXu" secondAttribute="bottom" constant="10" id="NjA-eQ-fKS"/>
+                                                        <constraint firstAttribute="trailing" secondItem="UpQ-gY-NXu" secondAttribute="trailing" constant="10" id="X5T-Gz-QKJ"/>
+                                                        <constraint firstItem="UpQ-gY-NXu" firstAttribute="top" secondItem="FL6-uN-iaQ" secondAttribute="top" constant="10" id="x4p-eV-YBX"/>
                                                     </constraints>
                                                 </collectionViewCellContentView>
                                                 <size key="customSize" width="350" height="343"/>

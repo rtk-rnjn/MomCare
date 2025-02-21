@@ -135,6 +135,7 @@
                     </navigationBar>
                     <nil name="viewControllers"/>
                     <toolbar key="toolbar" opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="w0m-Rf-gKU">
+                        <rect key="frame" x="0.0" y="0.0" width="1000" height="1000"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </toolbar>
                     <connections>
@@ -150,7 +151,7 @@
             <objects>
                 <viewController id="fms-3k-5Rz" customClass="TriTrackAddEventViewController" customModule="MomCare" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="PZR-ss-lj8">
-                        <rect key="frame" x="0.0" y="0.0" width="393" height="842"/>
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="Js8-bI-4Nb">
@@ -920,7 +921,7 @@
                                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qKN-fw-oqP">
                                                 <rect key="frame" x="0.0" y="26" width="373" height="204"/>
                                                 <connections>
-                                                    <segue destination="uzu-3k-7qw" kind="embed" identifier="embedShowAppointmentsTabelViewController" id="5M3-AY-DFd"/>
+                                                    <segue destination="uzu-3k-7qw" kind="embed" identifier="embedShowAppointmentsTableViewController" id="5M3-AY-DFd"/>
                                                 </connections>
                                             </containerView>
                                         </subviews>
@@ -957,7 +958,7 @@
                                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pGX-Rc-gde">
                                                 <rect key="frame" x="0.0" y="40.3333333333333" width="373" height="189.66666666666663"/>
                                                 <connections>
-                                                    <segue destination="WEG-uo-kp3" kind="embed" identifier="embedShowRemindersTabelViewController" id="ihj-17-XEo"/>
+                                                    <segue destination="WEG-uo-kp3" kind="embed" identifier="embedShowRemindersTableViewController" id="ihj-17-XEo"/>
                                                 </connections>
                                             </containerView>
                                         </subviews>
@@ -1197,7 +1198,7 @@
             <objects>
                 <tableViewController storyboardIdentifier="RemindersTableViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="WEG-uo-kp3" customClass="RemindersTableViewController" customModule="MomCare" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="insetGrouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" estimatedSectionHeaderHeight="-1" sectionFooterHeight="18" estimatedSectionFooterHeight="-1" id="EVQ-mH-9Kv">
-                        <rect key="frame" x="0.0" y="0.0" width="373" height="189.66666666666666"/>
+                        <rect key="frame" x="0.0" y="0.0" width="373" height="189.66666666666663"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <prototypes>
@@ -1352,23 +1353,23 @@
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="SymptomsCell" id="5TP-nx-z19" customClass="SymptomsTableViewCell" customModule="MomCare" customModuleProvider="target">
-                                <rect key="frame" x="20" y="55.333332061767578" width="333" height="63"/>
+                                <rect key="frame" x="20" y="55.333332061767578" width="333" height="63.333332061767578"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="5TP-nx-z19" id="71T-NE-FGv">
-                                    <rect key="frame" x="0.0" y="0.0" width="333" height="63"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="333" height="63.333332061767578"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="K59-eh-h1s">
-                                            <rect key="frame" x="10" y="5" width="313" height="53"/>
+                                            <rect key="frame" x="10" y="5" width="313" height="53.333333333333336"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZPh-5e-3jk">
-                                                    <rect key="frame" x="0.0" y="0.0" width="41" height="53"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="41" height="53.333333333333336"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <datePicker contentMode="scaleToFill" contentHorizontalAlignment="trailing" contentVerticalAlignment="center" datePickerMode="date" translatesAutoresizingMaskIntoConstraints="NO" id="pDA-ZC-EfM">
-                                                    <rect key="frame" x="41" y="0.0" width="272" height="53"/>
+                                                    <rect key="frame" x="41" y="0.0" width="272" height="53.333333333333336"/>
                                                 </datePicker>
                                             </subviews>
                                         </stackView>

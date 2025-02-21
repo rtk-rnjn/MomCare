@@ -74,7 +74,7 @@ class SignUpTableViewController: UITableViewController {
             lastName: lastNameField.text,
             emailAddress: emailField.text!,
             password: passwordField.text!,
-            countryCode: countryCodeField.text ?? "+91",
+            countryCode: countryCodeField.text ?? "91",
             phoneNumber: mobileNumberField.text!
         )
 
@@ -84,6 +84,7 @@ class SignUpTableViewController: UITableViewController {
             }
             var userCreated = false
             userCreated = await MomCareUser.shared.createNewUser(user)
+            MomCareUser.shared.user = user
 
             DispatchQueue.main.async {
                 self.hideActivityIndicator()
