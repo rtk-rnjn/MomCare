@@ -6,21 +6,24 @@
 //
 
 import Foundation
-import UserNotifications
+@preconcurrency import UserNotifications
 import UIKit
 
 extension DashboardViewController {
-    func requestAccessForNotification() {
+    func requestAccessForNotification() async {
         let center = UNUserNotificationCenter.current()
-        center.requestAuthorization(options: [.alert, .sound, .badge]) { granted, _ in
+        do {
+            let granted = try await center.requestAuthorization(options: [.alert, .sound, .badge])
             if granted {
-                center.getNotificationSettings { settings in
-                    guard settings.authorizationStatus == .authorized else { return }
-                    DispatchQueue.main.async {
-                        UIApplication.shared.registerForRemoteNotifications()
-                    }
+                let settings = await center.notificationSettings()
+                guard settings.authorizationStatus == .authorized else { return }
+                DispatchQueue.main.async {
+                    UIApplication.shared.registerForRemoteNotifications()
                 }
+
             }
+        } catch {
+            print(error.localizedDescription)
         }
     }
 

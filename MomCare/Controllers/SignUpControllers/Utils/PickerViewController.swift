@@ -29,10 +29,8 @@ class PickerViewController: UIViewController, UIPickerViewDelegate, UIPickerView
 
         let sortedOptionsByAlphabet = options.sorted { $0.value < $1.value }
         let selectedOption = sortedOptionsByAlphabet[0]
-
-        pickerView.selectRow(0, inComponent: 0, animated: false)
-
         self.selectedOption = selectedOption
+        pickerView.selectRow(0, inComponent: 0, animated: false)
     }
 
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
@@ -60,5 +58,4 @@ class PickerViewController: UIViewController, UIPickerViewDelegate, UIPickerView
     // MARK: Private
 
     private var selectedOption: (key: String, value: String)?
-
 }

@@ -21,9 +21,11 @@ class DashboardViewController: UIViewController, UICollectionViewDataSource {
         super.viewDidLoad()
         setupCollectionView()
         collectionView.showsVerticalScrollIndicator = false
-
-        requestAccessForNotification()
         requestAccessForHealth()
+
+        Task {
+            await requestAccessForNotification()
+        }
     }
 
     override func viewWillAppear(_ animated: Bool) {
