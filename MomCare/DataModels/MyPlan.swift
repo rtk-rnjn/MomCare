@@ -50,7 +50,7 @@ struct FoodItem: Codable, Sendable, Equatable {
     var image: UIImage? {
         return UIImage(named: imageName)
     }
-    
+
     static func ==(lhs: FoodItem, rhs: FoodItem) -> Bool {
         return lhs.id == rhs.id
     }
@@ -83,18 +83,18 @@ struct MyPlan: Codable, Sendable, Equatable {
     var currentWaterIntake: Int = 0
 
     var meals: [MealType: [FoodItem]] = [:]
-    
+
     static func ==(lhs: MyPlan, rhs: MyPlan) -> Bool {
         let caloriesGoal = lhs.caloriesGoal == rhs.caloriesGoal
         let proteinGoal = lhs.proteinGoal == rhs.proteinGoal
         let carbsGoal = lhs.carbsGoal == rhs.carbsGoal
         let fatGoal = lhs.fatGoal == rhs.fatGoal
-        
+
         let currentCaloriesIntake = lhs.currentCaloriesIntake == rhs.currentCaloriesIntake
         let currentProteinIntake = lhs.currentProteinIntake == rhs.currentProteinIntake
         let currentCarbsIntake = lhs.currentCarbsIntake == rhs.currentCarbsIntake
         let currentFatIntake = lhs.currentFatIntake == rhs.currentFatIntake
-        
+
         return carbsGoal && fatGoal && proteinGoal && caloriesGoal && currentCaloriesIntake && currentProteinIntake && currentCarbsIntake && currentFatIntake
     }
 }
@@ -125,7 +125,7 @@ struct Exercise: Codable, Sendable, Equatable {
     var exerciseImage: UIImage? {
         return UIImage(named: exerciseImageName)
     }
-    
+
     static func ==(lhs: Exercise, rhs: Exercise) -> Bool {
         let exerciseType = lhs.exerciseType == rhs.exerciseType
         let duration = lhs.duration == rhs.duration
@@ -134,7 +134,7 @@ struct Exercise: Codable, Sendable, Equatable {
         let level = lhs.level == rhs.level
         let exerciseImageName = lhs.exerciseImageName == rhs.exerciseImageName
         let durationCompleted = lhs.durationCompleted == rhs.durationCompleted
-        
+
         return exerciseType && duration && description && tags && level && exerciseImageName && durationCompleted
     }
 

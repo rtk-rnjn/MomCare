@@ -38,8 +38,6 @@ class MomCareUser {
         }
     }
 
-    // MARK: Private
-
     // https://medium.com/@harshaag99/understanding-dispatchqueue-in-swift-c73058df6b37
 
     func updateToDatabase() {

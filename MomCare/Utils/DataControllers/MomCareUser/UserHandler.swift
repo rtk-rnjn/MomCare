@@ -68,7 +68,7 @@ extension MomCareUser {
         guard let response, response.success else { return false }
 
         Utils.save(forKey: .mongoUserId, withValue: response.insertedId)
-        
+
         if response.success {
             await updateUser(to: .iPhone)
         }

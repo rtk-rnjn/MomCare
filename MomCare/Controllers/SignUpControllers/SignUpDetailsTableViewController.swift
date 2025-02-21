@@ -42,9 +42,9 @@ class SignUpDetailsTableViewController: UITableViewController, UIViewControllerT
         case "segueShowSignUpExtendedTableViewController":
             if let destinationTableViewController = segue.destination as? SignUpExtendedTableViewController {
                 destinationTableViewController.initialProgress = progressView.progress
-                
+
                 guard let medical = sender as? UserMedical else { fatalError("UserMedical not set") }
-                destinationTableViewController.userMedical = medical 
+                destinationTableViewController.userMedical = medical
             }
 
         case "segueShowPickerViewController":
