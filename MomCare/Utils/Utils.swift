@@ -81,7 +81,7 @@ enum Utils {
 
     // MARK: Internal
 
-    static func pregnancyWeekAndDay(dueDate: Date) -> (week: Int, day: Int, trimester: String)? {
+    static func pregnancyWeekAndDay(dueDate: Date) -> (week: Int, day: Int, trimester: String)? { // swiftlint:disable:this large_tuple
         let calendar = Calendar.current
         let today = Date()
 
@@ -98,10 +98,14 @@ enum Utils {
 
         let trimester: String
         switch weekNumber {
-            case 1...12: trimester = "I"
-            case 13...27: trimester = "II"
-            case 28...40: trimester = "III"
-            default: return nil
+        case 1...12:
+            trimester = "I"
+        case 13...27:
+            trimester = "II"
+        case 28...40:
+            trimester = "III"
+        default:
+            return nil
         }
 
         return (week: weekNumber, day: dayNumber, trimester: trimester)

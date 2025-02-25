@@ -8,7 +8,7 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Dashboard-->
+        <!--ProgressHub-->
         <scene sceneID="s0d-6b-0kx">
             <objects>
                 <viewController storyboardIdentifier="Dashboard" useStoryboardIdentifierAsRestorationIdentifier="YES" id="Y6W-OH-hqX" customClass="DashboardViewController" customModule="MomCare" customModuleProvider="target" sceneMemberID="viewController">
@@ -46,7 +46,7 @@
                             <constraint firstItem="3fr-wh-mP1" firstAttribute="top" secondItem="vDu-zF-Fre" secondAttribute="top" id="tWE-LK-fKu"/>
                         </constraints>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Dashboard" image="trophy.fill" catalog="system" id="u5p-9j-pEP"/>
+                    <tabBarItem key="tabBarItem" title="ProgressHub" image="trophy.fill" catalog="system" id="u5p-9j-pEP"/>
                     <navigationItem key="navigationItem" largeTitleDisplayMode="never" id="Ujh-Pd-5Ms"/>
                     <connections>
                         <outlet property="collectionView" destination="3fr-wh-mP1" id="W6A-WM-eNG"/>

@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import ImageIO
 
 class MoodsViewController: UIViewController, UIScrollViewDelegate {
 
@@ -24,6 +25,11 @@ class MoodsViewController: UIViewController, UIScrollViewDelegate {
         emotionsScrollView.isPagingEnabled = true
         pageControl.numberOfPages = 4
         pageControl.currentPage = 0
+
+        happyImageView.image = loadGIF(named: "happy")
+        sadImageView.image = loadGIF(named: "sad")
+        stressedImageView.image = loadGIF(named: "stressed")
+        angryImageView.image = loadGIF(named: "angry")
 
         happyImageView.isUserInteractionEnabled = true
         sadImageView.isUserInteractionEnabled = true
@@ -63,4 +69,42 @@ class MoodsViewController: UIViewController, UIScrollViewDelegate {
         }
     }
 
+    func loadGIF(named name: String) -> UIImage? {
+        guard let path = Bundle.main.path(forResource: name, ofType: "gif"),
+              let data = try? Data(contentsOf: URL(fileURLWithPath: path)) else { return nil }
+
+        return UIImage.gif(data: data)
+    }
+
+}
+
+extension UIImage {
+    static func gif(data: Data) -> UIImage? {
+        guard let source = CGImageSourceCreateWithData(data as CFData, nil) else { return nil }
+        let count = CGImageSourceGetCount(source)
+
+        var images: [UIImage] = []
+        var totalDuration: TimeInterval = 0
+
+        for i in 0..<count {
+            if let cgImage = CGImageSourceCreateImageAtIndex(source, i, nil) {
+                let frameDuration = UIImage.frameDuration(from: source, at: i)
+                totalDuration += frameDuration
+                images.append(UIImage(cgImage: cgImage))
+            }
+        }
+
+        return UIImage.animatedImage(with: images, duration: totalDuration)
+    }
+
+    private static func frameDuration(from source: CGImageSource, at index: Int) -> TimeInterval {
+        let defaultFrameDuration = 0.1
+        guard let properties = CGImageSourceCopyPropertiesAtIndex(source, index, nil) as? [CFString: Any],
+              let gifProperties = properties[kCGImagePropertyGIFDictionary] as? [CFString: Any],
+              let delayTime = gifProperties[kCGImagePropertyGIFUnclampedDelayTime] as? TimeInterval
+                ?? gifProperties[kCGImagePropertyGIFDelayTime] as? TimeInterval else {
+            return defaultFrameDuration
+        }
+        return delayTime < 0.01 ? defaultFrameDuration : delayTime
+    }
 }
