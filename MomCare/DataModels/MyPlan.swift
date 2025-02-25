@@ -51,7 +51,7 @@ struct FoodItem: Codable, Sendable, Equatable {
         return UIImage(named: imageName)
     }
 
-    static func ==(lhs: FoodItem, rhs: FoodItem) -> Bool {
+    static func == (lhs: FoodItem, rhs: FoodItem) -> Bool {
         return lhs.id == rhs.id
     }
 }
@@ -84,7 +84,7 @@ struct MyPlan: Codable, Sendable, Equatable {
 
     var meals: [MealType: [FoodItem]] = [:]
 
-    static func ==(lhs: MyPlan, rhs: MyPlan) -> Bool {
+    static func == (lhs: MyPlan, rhs: MyPlan) -> Bool {
         let caloriesGoal = lhs.caloriesGoal == rhs.caloriesGoal
         let proteinGoal = lhs.proteinGoal == rhs.proteinGoal
         let carbsGoal = lhs.carbsGoal == rhs.carbsGoal
@@ -126,7 +126,7 @@ struct Exercise: Codable, Sendable, Equatable {
         return UIImage(named: exerciseImageName)
     }
 
-    static func ==(lhs: Exercise, rhs: Exercise) -> Bool {
+    static func == (lhs: Exercise, rhs: Exercise) -> Bool {
         let exerciseType = lhs.exerciseType == rhs.exerciseType
         let duration = lhs.duration == rhs.duration
         let description = lhs.description == rhs.description

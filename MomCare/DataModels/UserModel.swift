@@ -112,7 +112,7 @@ struct History: Codable, Sendable, Equatable {
     var plan: MyPlan?
     var exercises: [Exercise] = []
 
-    static func ==(lhs: History, rhs: History) -> Bool {
+    static func == (lhs: History, rhs: History) -> Bool {
         let date = lhs.date == rhs.date
         let plan = lhs.plan == rhs.plan
         let exercises = lhs.exercises == rhs.exercises
@@ -142,7 +142,7 @@ struct UserMedical: Codable, Sendable, Equatable {
     var foodIntolerances: [Intolerance] = []
     var dietaryPreferences: [DietaryPreference] = []
 
-    static func ==(lhs: UserMedical, rhs: UserMedical) -> Bool {
+    static func == (lhs: UserMedical, rhs: UserMedical) -> Bool {
         let dateOfBirth = lhs.dateOfBirth == rhs.dateOfBirth
         let height = lhs.height == rhs.height
         let prePregnancyWeight = lhs.prePregnancyWeight == rhs.prePregnancyWeight
