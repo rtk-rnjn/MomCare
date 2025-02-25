@@ -25,13 +25,11 @@ class MoodsViewController: UIViewController, UIScrollViewDelegate {
         emotionsScrollView.isPagingEnabled = true
         pageControl.numberOfPages = 4
         pageControl.currentPage = 0
-        
-        
+
         happyImageView.image = loadGIF(named: "happy")
         sadImageView.image = loadGIF(named: "sad")
         stressedImageView.image = loadGIF(named: "stressed")
         angryImageView.image = loadGIF(named: "angry")
-
 
         happyImageView.isUserInteractionEnabled = true
         sadImageView.isUserInteractionEnabled = true
@@ -70,11 +68,11 @@ class MoodsViewController: UIViewController, UIScrollViewDelegate {
             performSegue(withIdentifier: "segueShowMoodNestViewController", sender: tappedImageView)
         }
     }
-    
+
     func loadGIF(named name: String) -> UIImage? {
         guard let path = Bundle.main.path(forResource: name, ofType: "gif"),
               let data = try? Data(contentsOf: URL(fileURLWithPath: path)) else { return nil }
-        
+
         return UIImage.gif(data: data)
     }
 
@@ -84,7 +82,7 @@ extension UIImage {
     static func gif(data: Data) -> UIImage? {
         guard let source = CGImageSourceCreateWithData(data as CFData, nil) else { return nil }
         let count = CGImageSourceGetCount(source)
-        
+
         var images: [UIImage] = []
         var totalDuration: TimeInterval = 0
 
