@@ -28,7 +28,7 @@
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Tx5-Fe-rZ1">
                                         <rect key="frame" x="0.0" y="0.0" width="299" height="6"/>
-                                        <color key="backgroundColor" systemColor="systemBlueColor"/>
+                                        <color key="backgroundColor" systemColor="systemFillColor"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="6" id="3as-Hx-sOA"/>
                                         </constraints>
@@ -38,41 +38,41 @@
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="LfX-eS-Lxq">
                                                 <rect key="frame" x="0.0" y="0.0" width="17" height="17"/>
-                                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                                <color key="backgroundColor" systemColor="systemFillColor"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="17" id="UNq-Hq-Pij"/>
                                                     <constraint firstAttribute="height" constant="17" id="zyG-lC-lNo"/>
                                                 </constraints>
                                                 <userDefinedRuntimeAttributes>
                                                     <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                                                        <integer key="value" value="10"/>
+                                                        <integer key="value" value="8"/>
                                                     </userDefinedRuntimeAttribute>
                                                 </userDefinedRuntimeAttributes>
                                             </view>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Fan-WM-UrX">
                                                 <rect key="frame" x="94" y="0.0" width="17" height="17"/>
-                                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                                <color key="backgroundColor" systemColor="systemFillColor"/>
                                                 <userDefinedRuntimeAttributes>
                                                     <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                                                        <integer key="value" value="10"/>
+                                                        <integer key="value" value="8"/>
                                                     </userDefinedRuntimeAttribute>
                                                 </userDefinedRuntimeAttributes>
                                             </view>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Kzj-2g-hW6">
                                                 <rect key="frame" x="188" y="0.0" width="17" height="17"/>
-                                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                                <color key="backgroundColor" systemColor="systemFillColor"/>
                                                 <userDefinedRuntimeAttributes>
                                                     <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                                                        <integer key="value" value="10"/>
+                                                        <integer key="value" value="8"/>
                                                     </userDefinedRuntimeAttribute>
                                                 </userDefinedRuntimeAttributes>
                                             </view>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nTS-nk-Dcu">
                                                 <rect key="frame" x="282" y="0.0" width="17" height="17"/>
-                                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                                <color key="backgroundColor" systemColor="systemFillColor"/>
                                                 <userDefinedRuntimeAttributes>
                                                     <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                                                        <integer key="value" value="10"/>
+                                                        <integer key="value" value="8"/>
                                                     </userDefinedRuntimeAttribute>
                                                 </userDefinedRuntimeAttributes>
                                             </view>
@@ -93,7 +93,7 @@
                                 <rect key="frame" x="52" y="244.66666666666663" width="289" height="217.33333333333337"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </view>
-                            <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="1" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="DjG-kR-pOr">
+                            <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="DjG-kR-pOr">
                                 <rect key="frame" x="39" y="614" width="315" height="35.666666666666629"/>
                                 <color key="tintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <color key="minimumTrackTintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -101,7 +101,7 @@
                             </slider>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="vDu-zF-Fre"/>
-                        <color key="backgroundColor" red="0.81568627450980391" green="0.66274509803921566" blue="0.33725490196078434" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="backgroundColor" red="0.6588235294117647" green="0.71764705882352942" blue="0.36078431372549019" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstItem="Fb3-KY-CVf" firstAttribute="centerX" secondItem="5EZ-qb-Rvc" secondAttribute="centerX" id="3AF-hd-bu5"/>
                             <constraint firstItem="scY-RN-gbZ" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" constant="30" id="8ZB-Ci-Prw"/>
@@ -123,7 +123,12 @@
                     </view>
                     <navigationItem key="navigationItem" id="mls-LA-dau"/>
                     <connections>
+                        <outlet property="angrySliderPoint" destination="nTS-nk-Dcu" id="k0F-oX-xoy"/>
+                        <outlet property="emojiView" destination="lqg-0X-5dT" id="JwP-Sl-KGT"/>
+                        <outlet property="happySliderPoint" destination="LfX-eS-Lxq" id="g3A-vd-OIm"/>
                         <outlet property="moodSlider" destination="DjG-kR-pOr" id="Bxk-pC-Gbh"/>
+                        <outlet property="sadSliderPoint" destination="Fan-WM-UrX" id="oD4-wn-T8f"/>
+                        <outlet property="stressedSliderPoint" destination="Kzj-2g-hW6" id="Pqw-Fm-vI5"/>
                         <segue destination="pwN-0J-bVZ" kind="show" identifier="segueShowMoodNestViewController" destinationCreationSelector="segueToGenresPage:" id="h0b-4V-iWC"/>
                     </connections>
                 </viewController>
@@ -685,8 +690,8 @@
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
-        <systemColor name="systemBlueColor">
-            <color red="0.0" green="0.47843137254901963" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        <systemColor name="systemFillColor">
+            <color red="0.47058823529411764" green="0.47058823529411764" blue="0.50196078431372548" alpha="0.20000000000000001" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemGrayColor">
             <color red="0.55686274509803924" green="0.55686274509803924" blue="0.57647058823529407" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
