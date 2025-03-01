@@ -9,6 +9,8 @@ import UIKit
 
 class SongElementsViewController: UIViewController {
 
+    // MARK: Internal
+
     @IBOutlet var playlistSongLabel: UILabel!
     @IBOutlet var playlistCoverImage: UIImageView!
 
@@ -23,6 +25,8 @@ class SongElementsViewController: UIViewController {
         super.viewDidLayoutSubviews()
         addGradient()
     }
+
+    // MARK: Private
 
     private func updateElements(with playlist: Playlist?) {
         guard let playlist else { return }

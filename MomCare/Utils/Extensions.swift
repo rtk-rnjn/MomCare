@@ -118,7 +118,7 @@ extension UIColor {
 
 extension UIButton {
     func startLoadingAnimation() {
-        self.setTitle("", for: .normal)
+        setTitle("", for: .normal)
 
         let activityIndicator = UIActivityIndicatorView()
         activityIndicator.style = .medium
@@ -126,16 +126,16 @@ extension UIButton {
         activityIndicator.startAnimating()
         activityIndicator.hidesWhenStopped = true
 
-        self.addSubview(activityIndicator)
+        addSubview(activityIndicator)
         activityIndicator.translatesAutoresizingMaskIntoConstraints = false
-        activityIndicator.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
-        activityIndicator.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
+        activityIndicator.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
+        activityIndicator.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
     }
 
     func stopLoadingAnimation(with title: String) {
-        self.setTitle(title, for: .normal)
+        setTitle(title, for: .normal)
 
-        for subview in self.subviews where subview is UIActivityIndicatorView {
+        for subview in subviews where subview is UIActivityIndicatorView {
             subview.removeFromSuperview()
         }
     }

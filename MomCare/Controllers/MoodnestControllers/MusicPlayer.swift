@@ -7,7 +7,7 @@
 
 import UIKit
 
-protocol MusicPlayerDelegate {
+protocol MusicPlayerDelegate: AnyObject {
     func playPauseButtonTapped(_ sender: UIButton)
     func forwardButtonTapped(_ sender: UIButton)
     func backwardButtonTapped(_ sender: UIButton)
@@ -20,8 +20,22 @@ protocol MusicPlayerDelegate {
 }
 
 class MusicPlayer: UIViewController {
+
+    // MARK: Internal
+
     var delegate: MusicPlayerDelegate?
     var song: Song?
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        prepareUI()
+    }
+
+    @objc func durationSliderTapped(_ gesture: UITapGestureRecognizer) {
+        delegate?.durationSliderTapped(gesture)
+    }
+
+    // MARK: Private
 
     private lazy var albumImageView: UIImageView = {
         let imageView = UIImageView()
@@ -275,11 +289,6 @@ class MusicPlayer: UIViewController {
         return stackView
     }()
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        prepareUI()
-    }
-
     private func prepareUI() {
         let color = song?.image?.dominantColor() ?? .systemGray5
         let gradientLayer = CAGradientLayer()
@@ -301,7 +310,7 @@ class MusicPlayer: UIViewController {
             mainStackView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 0),
             mainStackView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 20),
             mainStackView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -20),
-            mainStackView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -40),
+            mainStackView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -40)
         ])
     }
 
@@ -319,10 +328,6 @@ class MusicPlayer: UIViewController {
 
     @objc private func backwardTapped(sender: UIButton) {
         delegate?.backwardButtonTapped(sender)
-    }
-
-    @objc func durationSliderTapped(_ gesture: UITapGestureRecognizer) {
-        delegate?.durationSliderTapped(gesture)
     }
 
     @objc private func volumeSliderValueChanged(_ sender: UISlider) {

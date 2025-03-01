@@ -106,7 +106,6 @@ class SignUpTableViewController: UITableViewController {
 
     // MARK: Private
 
-
     private func createErrorAlert(with errors: [[String]]) {
         let title = errors.count == 1 ? errors[0][0] : "Errors"
 

@@ -14,10 +14,6 @@ class MomCareUser {
 
     public static var shared: MomCareUser = .init()
 
-    // MARK: Internal
-
-    let queue: DispatchQueue = .init(label: "MomCareUserQueue")
-
     public private(set) var user: User? {
         didSet {
             if oldValue != user {
@@ -25,6 +21,10 @@ class MomCareUser {
             }
         }
     }
+
+    // MARK: Internal
+
+    let queue: DispatchQueue = .init(label: "MomCareUserQueue")
 
     // https://medium.com/@harshaag99/understanding-dispatchqueue-in-swift-c73058df6b37
 

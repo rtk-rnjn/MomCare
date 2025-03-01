@@ -3,6 +3,9 @@ import LNPopupController
 import AVFoundation
 
 class PlaylistTableViewController: UITableViewController {
+
+    // MARK: Internal
+
     var songs: [Song] = []
     var playlist: Playlist!
     var initialTabBarController: InitialTabBarController?
@@ -16,10 +19,6 @@ class PlaylistTableViewController: UITableViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         songs = playlist.songs
-    }
-
-    private func configureTableView() {
-        tableView.showsVerticalScrollIndicator = false
     }
 
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -40,6 +39,14 @@ class PlaylistTableViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         setupMusicPlayer(with: songs[indexPath.row])
+    }
+
+    @IBAction func unwindToSongPageViewController(_ segue: UIStoryboardSegue) {}
+
+    // MARK: Private
+
+    private func configureTableView() {
+        tableView.showsVerticalScrollIndicator = false
     }
 
     private func setupMusicPlayer(with song: Song) {
@@ -71,34 +78,33 @@ class PlaylistTableViewController: UITableViewController {
         player.popupItem.accessibilityValue = "\(song.name) by \(song.artist)"
     }
 
-    @IBAction func unwindToSongPageViewController(_ segue: UIStoryboardSegue) {}
 }
 
 extension PlaylistTableViewController: MusicPlayerDelegate {
     @objc func playPauseButtonTapped(_ sender: UIButton) {
         print("WORKS HERE")
     }
-    
+
     @objc func forwardButtonTapped(_ sender: UIButton) {
         print("WORKS HERE")
     }
-    
+
     func backwardButtonTapped(_ sender: UIButton) {
         print("WORKS HERE")
     }
-    
+
     func durationSliderValueChanged(value: Float) {
         print("WORKS HERE")
     }
-    
+
     func durationSliderTapped(_ gesture: UITapGestureRecognizer) {
         print("WORKS HERE")
     }
-    
+
     func volumeSliderValueChanged(value: Float) {
         print("WORKS HERE")
     }
-    
+
     func volumeButtonTapped(_ sender: UIButton) {
         print("WORKS HERE")
     }

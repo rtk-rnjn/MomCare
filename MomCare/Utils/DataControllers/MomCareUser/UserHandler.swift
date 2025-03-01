@@ -143,6 +143,7 @@ extension MomCareUser {
                 setUser(user)
             }
             return user != nil
+
         case .database:
             let success = await fetchUserFromDatabase()
             if success {
