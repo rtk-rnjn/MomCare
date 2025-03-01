@@ -7,4 +7,4 @@
 
 import UIKit
 
-class PersonalInfoTableViewController: UITableViewController { }
+class PersonalInfoTableViewController: UITableViewController {}

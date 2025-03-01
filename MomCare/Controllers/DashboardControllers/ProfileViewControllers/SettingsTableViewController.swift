@@ -7,5 +7,4 @@
 
 import UIKit
 
-class SettingsTableViewController: UITableViewController {
-}
+class SettingsTableViewController: UITableViewController {}

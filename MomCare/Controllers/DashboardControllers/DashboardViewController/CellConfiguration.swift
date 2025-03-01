@@ -141,7 +141,7 @@ extension DashboardViewController {
             }
         }
     }
-    
+
     func profileIconTapped() {
         print("TAPPED")
         performSegue(withIdentifier: "segueShowProfilePageTableViewController", sender: nil)

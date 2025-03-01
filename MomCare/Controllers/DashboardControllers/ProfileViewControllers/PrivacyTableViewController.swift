@@ -7,5 +7,4 @@
 
 import UIKit
 
-class PrivacyTableViewController: UITableViewController {
-}
+class PrivacyTableViewController: UITableViewController {}

@@ -7,5 +7,4 @@
 
 import UIKit
 
-class HealthDetailsTableViewController: UITableViewController {
-}
+class HealthDetailsTableViewController: UITableViewController {}

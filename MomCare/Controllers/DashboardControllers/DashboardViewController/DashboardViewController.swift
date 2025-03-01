@@ -58,6 +58,8 @@ class DashboardViewController: UIViewController, UICollectionViewDataSource {
         return headerView
     }
 
+    @IBAction func unwinToDashboard(_ segue: UIStoryboardSegue) {}
+
     // MARK: Private
 
     private let cellIdentifiers = ["WelcomeHeaderCell", "WeekCard", "EventCard", "DietProgress", "ExerciseProgress", "FocusCard", "TipCard"]
@@ -78,7 +80,5 @@ class DashboardViewController: UIViewController, UICollectionViewDataSource {
 
         collectionView.register(UINib(nibName: headerIdentifier, bundle: nil), forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: headerIdentifier)
     }
-    
-    @IBAction func unwinToDashboard(_ segue: UIStoryboardSegue) {}
 
 }
