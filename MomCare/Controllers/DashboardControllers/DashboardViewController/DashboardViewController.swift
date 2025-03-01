@@ -65,6 +65,8 @@ class DashboardViewController: UIViewController, UICollectionViewDataSource {
         return headerView
     }
 
+    @IBAction func unwinToDashboard(_ segue: UIStoryboardSegue) {}
+
     // MARK: Private
 
     private let cellIdentifiers = ["WelcomeHeaderCell", "WeekCard", "EventCard", "DietProgress", "ExerciseProgress", "FocusCard", "TipCard"]
