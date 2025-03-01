@@ -1,5 +1,5 @@
 {
-  "originHash" : "a8e3bdc8a575dc2e877d6db93487d01a5d367d09f87aa622f054d800bcea3b60",
+  "originHash" : "2160d04f10382f2b006abe6b60dc82efca2cf92020188225fade0e283df1d7fc",
   "pins" : [
     {
       "identity" : "fscalendar",
@@ -8,6 +8,15 @@
       "state" : {
         "revision" : "0fbdec5172fccb90f707472eeaea4ffe095278f6",
         "version" : "2.8.4"
+      }
+    },
+    {
+      "identity" : "youtube-ios-player-helper",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/youtube/youtube-ios-player-helper",
+      "state" : {
+        "revision" : "f57129cd4380ec0a74dd3a59da3270a1d653d59b",
+        "version" : "1.0.4"
       }
     }
   ],
