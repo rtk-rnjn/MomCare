@@ -1,5 +1,5 @@
 {
-  "originHash" : "2160d04f10382f2b006abe6b60dc82efca2cf92020188225fade0e283df1d7fc",
+  "originHash" : "97c0db2fd8ed1b04cb18d1b2f78302688ef4c8cf6455653adf2a4f48f17b1578",
   "pins" : [
     {
       "identity" : "fscalendar",
@@ -8,6 +8,15 @@
       "state" : {
         "revision" : "0fbdec5172fccb90f707472eeaea4ffe095278f6",
         "version" : "2.8.4"
+      }
+    },
+    {
+      "identity" : "lnpopupcontroller",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/LeoNatan/LNPopupController.git",
+      "state" : {
+        "revision" : "80fe14a5f38f117f81dbf7d583fe867f012fee8c",
+        "version" : "2.20.7"
       }
     },
     {

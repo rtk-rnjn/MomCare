@@ -73,6 +73,9 @@ extension MomCareUser {
             await updateUser(to: .iPhone)
         }
 
+        setUser(user)
+        updateUserToUserDefaults()
+
         return response.success
     }
 
@@ -86,18 +89,21 @@ extension MomCareUser {
         let mongoUserID: String? = Utils.get(fromKey: UserDefaultsKey.mongoUserId.rawValue)
         guard let mongoUserID else { return false }
 
-        user = await MiddlewareManager.shared.get(url: UserEndpoints.fetchUser(with: mongoUserID))
+        let user: User? = await MiddlewareManager.shared.get(url: UserEndpoints.fetchUser(with: mongoUserID))
+        if let user {
+            setUser(user)
+        }
         return user != nil
     }
 
     func fetchUserFromDatabase(with email: String, and password: String) async -> Bool {
         let user: User? = await MiddlewareManager.shared.get(url: UserEndpoints.fetchUserWithEmail(email), queryParameters: ["email": email, "password": password])
 
-        if user != nil {
-            self.user = user
+        if let user {
+            setUser(user)
             await updateUser(to: .iPhone)
 
-            Utils.save(forKey: .mongoUserId, withValue: user?.id)
+            Utils.save(forKey: .mongoUserId, withValue: user.id)
             return true
         }
 
@@ -129,14 +135,20 @@ extension MomCareUser {
         }
     }
 
-    func fetchUser(from scope: SavepointScope = .iPhone) async {
+    func fetchUser(from scope: SavepointScope = .iPhone) async -> Bool {
         switch scope {
         case .iPhone:
-            user = fetchUserFromUserDefaults()
+            let user = fetchUserFromUserDefaults()
+            if let user {
+                setUser(user)
+            }
+            return user != nil
         case .database:
-            if await fetchUserFromDatabase() {
+            let success = await fetchUserFromDatabase()
+            if success {
                 await updateUser(to: .iPhone)
             }
+            return success
         }
     }
 }

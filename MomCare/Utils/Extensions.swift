@@ -115,3 +115,28 @@ extension UIColor {
         self.init(red: red, green: green, blue: blue, alpha: alpha)
     }
 }
+
+extension UIButton {
+    func startLoadingAnimation() {
+        self.setTitle("", for: .normal)
+
+        let activityIndicator = UIActivityIndicatorView()
+        activityIndicator.style = .medium
+        activityIndicator.color = .white
+        activityIndicator.startAnimating()
+        activityIndicator.hidesWhenStopped = true
+
+        self.addSubview(activityIndicator)
+        activityIndicator.translatesAutoresizingMaskIntoConstraints = false
+        activityIndicator.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
+        activityIndicator.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
+    }
+
+    func stopLoadingAnimation(with title: String) {
+        self.setTitle(title, for: .normal)
+
+        for subview in self.subviews where subview is UIActivityIndicatorView {
+            subview.removeFromSuperview()
+        }
+    }
+}

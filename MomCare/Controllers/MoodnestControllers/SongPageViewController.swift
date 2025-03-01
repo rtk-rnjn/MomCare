@@ -21,6 +21,7 @@ class SongPageViewController: UIViewController {
             if let destination = segue.destination as? PlaylistTableViewController {
                 playlistTableViewController = destination
                 playlistTableViewController?.playlist = playlist
+                playlistTableViewController?.initialTabBarController = self.tabBarController as? InitialTabBarController
             }
 
         case .songPageElementsVC:

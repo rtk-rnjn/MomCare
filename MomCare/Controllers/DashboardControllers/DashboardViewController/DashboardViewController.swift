@@ -25,14 +25,21 @@ class DashboardViewController: UIViewController, UICollectionViewDataSource {
 
         Task {
             await requestAccessForNotification()
+            DispatchQueue.main.async {
+                self.loadUser()
+            }
         }
     }
 
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-
+    private func loadUser() {
         Task {
-            await MomCareUser.shared.fetchUser(from: .database)
+            let success = await MomCareUser.shared.fetchUser(from: .iPhone)
+            if !success {
+                let fetched = await MomCareUser.shared.fetchUser(from: .database)
+                if !fetched {
+                    fatalError("seriously fucked up bro")
+                }
+            }
             DispatchQueue.main.async {
                 self.collectionView.reloadData()
             }

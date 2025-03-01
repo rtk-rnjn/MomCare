@@ -80,14 +80,13 @@ class SignUpTableViewController: UITableViewController {
 
         Task {
             DispatchQueue.main.async {
-                self.showActivityIndicator()
+                self.createButton.startLoadingAnimation()
             }
             var userCreated = false
             userCreated = await MomCareUser.shared.createNewUser(user)
-            MomCareUser.shared.user = user
 
             DispatchQueue.main.async {
-                self.hideActivityIndicator()
+                self.createButton.stopLoadingAnimation(with: "Create")
                 if !userCreated {
                     self.showErrorAlert(title: "User Creation Failed", message: "An error occurred while creating your account. Please try again.")
                 } else {
@@ -107,7 +106,6 @@ class SignUpTableViewController: UITableViewController {
 
     // MARK: Private
 
-    private var activityIndicator: UIActivityIndicatorView?
 
     private func createErrorAlert(with errors: [[String]]) {
         let title = errors.count == 1 ? errors[0][0] : "Errors"
@@ -126,23 +124,6 @@ class SignUpTableViewController: UITableViewController {
     private func showErrorAlert(title: String, message: String) {
         let alert = Utils.getAlert(title: title, message: message, actions: [AlertActionHandler(title: "OK", style: .default, handler: nil)])
         present(alert, animated: true)
-    }
-
-    private func showActivityIndicator() {
-        activityIndicator = UIActivityIndicatorView(style: .large)
-
-        guard let activityIndicator else { fatalError("ek ajnabi haseea se, yu mulakat ho gai") }
-        activityIndicator.center = tableView.center
-        activityIndicator.startAnimating()
-        activityIndicator.hidesWhenStopped = true
-
-        view.addSubview(activityIndicator)
-    }
-
-    private func hideActivityIndicator() {
-        guard let activityIndicator else { fatalError("fir kya hua, yeh na poocho. kuch aisi baat ho gai") }
-        activityIndicator.stopAnimating()
-        activityIndicator.removeFromSuperview()
     }
 
     @objc private func dismissKeyboard() {

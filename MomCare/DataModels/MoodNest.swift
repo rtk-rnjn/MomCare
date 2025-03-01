@@ -41,7 +41,7 @@ enum SampleFeaturedPlaylists {
                 Song(name: "Him & I", artist: "G-Eazy, Halsey", duration: 134.0, imageName: "Him-&-I"),
                 Song(name: "Unstoppable", artist: "Sia", duration: 132.0, imageName: "Unstoppable"),
                 Song(name: "ABCDEFU", artist: "Gayle", duration: 129.0, imageName: "abcdefu"),
-                Song(name: "Stay", artist: "The Kid LAROI, justin Bieber", duration: 129.0, imageName: "Stay"),
+                Song(name: "Stay", artist: "The Kid LAROI, justin Bieber", duration: 129.0, imageName: "Stay-Image"),
                 Song(name: "Woman", artist: "Doja cat", duration: 123.0, imageName: "Woman"),
                 Song(name: "Daechwita", artist: "august D", duration: 126.0, imageName: "Daechwita")
             ]

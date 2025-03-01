@@ -17,10 +17,10 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="3Bs-IZ-ED9">
-                                <rect key="frame" x="0.0" y="143" width="393" height="535"/>
+                                <rect key="frame" x="0.0" y="143" width="393" height="525"/>
                                 <subviews>
                                     <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleAspectFit" alwaysBounceHorizontal="YES" pagingEnabled="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="cg8-04-ZUW">
-                                        <rect key="frame" x="0.0" y="0.0" width="393" height="499.33333333333331"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="393" height="489.33333333333331"/>
                                         <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="10" id="wCC-gj-8BD">
                                             <size key="itemSize" width="350" height="343"/>
                                             <size key="headerReferenceSize" width="0.0" height="0.0"/>
@@ -29,7 +29,7 @@
                                         </collectionViewFlowLayout>
                                         <cells>
                                             <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="FrontPageSliderCollectionViewCell" id="6p7-rn-kTA" customClass="FrontPageSliderCollectionViewCell" customModule="MomCare" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="78" width="350" height="343"/>
+                                                <rect key="frame" x="0.0" y="73" width="350" height="343"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="FL6-uN-iaQ">
                                                     <rect key="frame" x="0.0" y="0.0" width="350" height="343"/>
@@ -38,15 +38,15 @@
                                                         <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="UpQ-gY-NXu">
                                                             <rect key="frame" x="10" y="10" width="330" height="323"/>
                                                             <subviews>
-                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Uth-Sx-6fO">
-                                                                    <rect key="frame" x="0.0" y="0.0" width="330" height="20.333333333333332"/>
+                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="252" text="Label" textAlignment="center" lineBreakMode="wordWrap" adjustsFontSizeToFit="NO" id="Uth-Sx-6fO">
+                                                                    <rect key="frame" x="0.0" y="0.0" width="330" height="19.333333333333332"/>
                                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleCallout"/>
                                                                     <nil key="textColor"/>
                                                                     <nil key="highlightedColor"/>
                                                                 </label>
-                                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" adjustsImageSizeForAccessibilityContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="9hw-k8-ZBc">
-                                                                    <rect key="frame" x="0.0" y="20.333333333333343" width="330" height="302.66666666666663"/>
+                                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" adjustsImageSizeForAccessibilityContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="9hw-k8-ZBc">
+                                                                    <rect key="frame" x="0.0" y="19.333333333333343" width="330" height="303.66666666666663"/>
                                                                     <constraints>
                                                                         <constraint firstAttribute="width" secondItem="9hw-k8-ZBc" secondAttribute="height" multiplier="1:1" id="Vo6-p2-unj"/>
                                                                     </constraints>
@@ -70,24 +70,24 @@
                                         </cells>
                                     </collectionView>
                                     <pageControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" numberOfPages="4" translatesAutoresizingMaskIntoConstraints="NO" id="JKd-t5-LGg">
-                                        <rect key="frame" x="0.0" y="509.33333333333343" width="393" height="25.666666666666686"/>
+                                        <rect key="frame" x="0.0" y="499.33333333333343" width="393" height="25.666666666666686"/>
                                         <color key="pageIndicatorTintColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <color key="currentPageIndicatorTintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     </pageControl>
                                 </subviews>
                             </stackView>
                             <stackView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" axis="vertical" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="1MY-St-4yS">
-                                <rect key="frame" x="20" y="698" width="353" height="100"/>
+                                <rect key="frame" x="20" y="688" width="353" height="110"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" verticalHuggingPriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KZg-B5-rnl">
-                                        <rect key="frame" x="0.0" y="0.0" width="353" height="40"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="353" height="45"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="40" id="6Pj-z0-wn8"/>
+                                            <constraint firstAttribute="height" constant="45" id="PTh-kx-aye"/>
                                         </constraints>
                                         <state key="normal" title="Button"/>
                                         <buttonConfiguration key="configuration" style="filled" title="Sign Up">
-                                            <backgroundConfiguration key="background" cornerRadius="15"/>
-                                            <fontDescription key="titleFontDescription" name="Helvetica" family="Helvetica" pointSize="17"/>
+                                            <backgroundConfiguration key="background" cornerRadius="16"/>
+                                            <fontDescription key="titleFontDescription" style="UICTFontTextStyleBody"/>
                                             <color key="baseBackgroundColor" red="0.5725490196078431" green="0.2627450980392157" blue="0.31372549019607843" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         </buttonConfiguration>
                                         <connections>
@@ -95,14 +95,14 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" verticalHuggingPriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ess-wU-kGH">
-                                        <rect key="frame" x="0.0" y="60" width="353" height="40"/>
+                                        <rect key="frame" x="0.0" y="65" width="353" height="45"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="40" id="Z3M-aX-WfP"/>
+                                            <constraint firstAttribute="height" constant="45" id="Uwj-tS-Mu9"/>
                                         </constraints>
                                         <state key="normal" title="Button"/>
                                         <buttonConfiguration key="configuration" style="filled" title="Sign In">
-                                            <backgroundConfiguration key="background" cornerRadius="15"/>
-                                            <fontDescription key="titleFontDescription" name="Helvetica" family="Helvetica" pointSize="17"/>
+                                            <backgroundConfiguration key="background" cornerRadius="16"/>
+                                            <fontDescription key="titleFontDescription" style="UICTFontTextStyleBody"/>
                                             <color key="baseBackgroundColor" red="0.57254901960000004" green="0.26274509800000001" blue="0.31372549020000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         </buttonConfiguration>
                                         <connections>
