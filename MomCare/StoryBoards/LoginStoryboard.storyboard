@@ -78,16 +78,15 @@
                             </tableViewSection>
                             <tableViewSection id="8TK-jh-Gfq">
                                 <cells>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="X8T-Uv-fUu">
-                                        <rect key="frame" x="20" y="154" width="353" height="50"/>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" rowHeight="45" id="X8T-Uv-fUu">
+                                        <rect key="frame" x="20" y="154" width="353" height="45"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="X8T-Uv-fUu" id="vap-p9-pCm">
-                                            <rect key="frame" x="0.0" y="0.0" width="353" height="50"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="353" height="45"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vEu-gR-LYK">
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vEu-gR-LYK">
                                                     <rect key="frame" x="0.0" y="0.0" width="353" height="45"/>
-                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <color key="tintColor" red="0.1725490093" green="0.1725490093" blue="0.1647058874" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                                     <state key="normal" title="Button"/>
                                                     <buttonConfiguration key="configuration" style="filled" title="Sign In">
@@ -100,6 +99,12 @@
                                                     </connections>
                                                 </button>
                                             </subviews>
+                                            <constraints>
+                                                <constraint firstItem="vEu-gR-LYK" firstAttribute="top" secondItem="vap-p9-pCm" secondAttribute="top" id="E60-3s-pyq"/>
+                                                <constraint firstAttribute="trailing" secondItem="vEu-gR-LYK" secondAttribute="trailing" id="fie-9q-5e3"/>
+                                                <constraint firstItem="vEu-gR-LYK" firstAttribute="leading" secondItem="vap-p9-pCm" secondAttribute="leading" id="qae-AF-Njq"/>
+                                                <constraint firstAttribute="bottom" secondItem="vEu-gR-LYK" secondAttribute="bottom" id="ruz-rp-iZ8"/>
+                                            </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                 </cells>
