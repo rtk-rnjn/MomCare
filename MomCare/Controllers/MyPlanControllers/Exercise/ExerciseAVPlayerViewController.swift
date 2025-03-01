@@ -1,57 +1,122 @@
-//
-//  ExerciseAVPlayerViewController.swift
-//  MomCare
-//
-//  Created by Nupur on 17/02/25.
-//
-
 import UIKit
-import AVKit
-import AVFoundation
+import YouTubeiOSPlayerHelper
 
-class ExerciseAVPlayerViewController: UIViewController {
+class ExerciseAVPlayerViewController: UIViewController, YTPlayerViewDelegate {
 
-    @IBOutlet var playButton: UIButton!
-    @IBOutlet var pauseButton: UIButton!
+    // MARK: Internal
+
+    @IBOutlet var playPauseButton: UIButton!
+    @IBOutlet var restartButton: UIButton!
     @IBOutlet var videoView: UIView!
-    var player: AVPlayer?
-    var playerLayer: AVPlayerLayer?
-    var playerViewController: AVPlayerViewController?
+    var videoURL: String = "https://www.youtube.com/watch?v=UItWltVZZmE"
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        setupYouTubePlayer()
+        setupButtons()
+    }
 
-        // Load video from resources
-        if let path = Bundle.main.path(forResource: "ExerciseSampleVideo", ofType: "mp4") {
-            let videoURL = URL(fileURLWithPath: path)
-            setupVideo(url: videoURL)
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        ytPlayer.frame = videoView.bounds
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        ytPlayer.stopVideo()
+    }
+
+    @IBAction func playPauseButtonTapped(_ sender: UIButton) {
+        if isPlaying {
+            ytPlayer.pauseVideo()
+        } else {
+            ytPlayer.playVideo()
         }
     }
 
-    func setupVideo(url: URL) {
-        // Initialize AVPlayer with the video URL
-        player = AVPlayer(url: url)
-
-        // Initialize AVPlayerViewController and set the player
-        playerViewController = AVPlayerViewController()
-        playerViewController?.player = player
-
-        // Set the player view controller's frame to match the video container
-        if let playerViewController {
-            playerViewController.view.frame = videoView.bounds
-            playerViewController.view.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-
-            // Add the playerViewController's view as a subview of your custom videoView
-            videoView.addSubview(playerViewController.view)
+    @IBAction func restartButtonTapped(_ sender: UIButton) {
+        ytPlayer.seek(toSeconds: 0, allowSeekAhead: true)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) { [weak self] in
+            self?.ytPlayer.playVideo()
+            self?.isPlaying = true
+            self?.playPauseButton.setImage(UIImage(systemName: "pause.fill"), for: .normal)
         }
     }
 
-    @IBAction func playButtonTapped(_ sender: UIButton) {
-        player?.play()
-
+    // MARK: - YTPlayerViewDelegate Methods
+    func playerViewDidBecomeReady(_ playerView: YTPlayerView) {
+        DispatchQueue.main.async { [weak self] in
+            guard let self else { return }
+            playPauseButton.isEnabled = true
+            restartButton.isEnabled = true
+            playPauseButton.setImage(UIImage(systemName: "play.fill"), for: .normal)
+            isPlaying = false
+        }
     }
 
-    @IBAction func pauseButtonTapped(_ sender: UIButton) {
-        player?.pause()
+    func playerView(_ playerView: YTPlayerView, didChangeTo state: YTPlayerState) {
+        DispatchQueue.main.async { [weak self] in
+            guard let self else { return }
+
+            playPauseButton.isEnabled = true
+
+            switch state {
+            case .ended:
+                playPauseButton.setImage(UIImage(systemName: "play.fill"), for: .normal)
+                isPlaying = false
+
+            case .paused:
+                playPauseButton.setImage(UIImage(systemName: "play.fill"), for: .normal)
+                isPlaying = false
+
+            case .playing:
+                playPauseButton.setImage(UIImage(systemName: "pause.fill"), for: .normal)
+                isPlaying = true
+
+            case .buffering:
+                break
+            default:
+                break
+            }
+        }
     }
+
+    // MARK: Private
+
+    private var ytPlayer: YTPlayerView!
+    private var isPlaying = false
+
+    private func setupYouTubePlayer() {
+        ytPlayer = YTPlayerView()
+        ytPlayer.delegate = self
+        ytPlayer.frame = videoView.bounds
+        videoView.addSubview(ytPlayer)
+
+        let videoID = extractYouTubeID(from: videoURL)
+        ytPlayer.load(withVideoId: videoID)
+    }
+
+    private func extractYouTubeID(from url: String) -> String {
+        if let url = URL(string: url) {
+            if let queryItems = URLComponents(url: url, resolvingAgainstBaseURL: false)?.queryItems {
+                if let videoID = queryItems.first(where: { $0.name == "v" })?.value {
+                    return videoID
+                }
+            }
+
+            if url.host == "youtu.be" {
+                return url.lastPathComponent
+            }
+        }
+        return ""
+    }
+
+    private func setupButtons() {
+        playPauseButton.setImage(UIImage(systemName: "play.fill"), for: .normal)
+        playPauseButton.isEnabled = true
+
+        restartButton.setImage(UIImage(systemName: "arrow.clockwise"), for: .normal)
+        restartButton.isEnabled = true
+    }
+
 }

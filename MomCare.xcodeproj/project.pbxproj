@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		053290F42D40AEC000295E58 /* FSCalendar in Frameworks */ = {isa = PBXBuildFile; productRef = 053290F32D40AEC000295E58 /* FSCalendar */; };
 		05E7F9672D37748E00F4D81E /* .swiftlint.yml in Resources */ = {isa = PBXBuildFile; fileRef = 05E7F9662D37748300F4D81E /* .swiftlint.yml */; };
+		3A36E1032D73710800AAF5B7 /* YouTubeiOSPlayerHelper in Frameworks */ = {isa = PBXBuildFile; productRef = 3A36E1022D73710800AAF5B7 /* YouTubeiOSPlayerHelper */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -48,6 +49,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				053290F42D40AEC000295E58 /* FSCalendar in Frameworks */,
+				3A36E1032D73710800AAF5B7 /* YouTubeiOSPlayerHelper in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -94,6 +96,7 @@
 			name = MomCare;
 			packageProductDependencies = (
 				053290F32D40AEC000295E58 /* FSCalendar */,
+				3A36E1022D73710800AAF5B7 /* YouTubeiOSPlayerHelper */,
 			);
 			productName = MomCare;
 			productReference = 059C467D2D30D12400B4A15A /* MomCare.app */;
@@ -125,6 +128,7 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				053290F22D40AEC000295E58 /* XCRemoteSwiftPackageReference "FSCalendar" */,
+				3A36E1012D73710800AAF5B7 /* XCRemoteSwiftPackageReference "youtube-ios-player-helper" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 059C467E2D30D12400B4A15A /* Products */;
@@ -381,6 +385,14 @@
 				minimumVersion = 2.8.4;
 			};
 		};
+		3A36E1012D73710800AAF5B7 /* XCRemoteSwiftPackageReference "youtube-ios-player-helper" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/youtube/youtube-ios-player-helper";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.4;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -388,6 +400,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 053290F22D40AEC000295E58 /* XCRemoteSwiftPackageReference "FSCalendar" */;
 			productName = FSCalendar;
+		};
+		3A36E1022D73710800AAF5B7 /* YouTubeiOSPlayerHelper */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 3A36E1012D73710800AAF5B7 /* XCRemoteSwiftPackageReference "youtube-ios-player-helper" */;
+			productName = YouTubeiOSPlayerHelper;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

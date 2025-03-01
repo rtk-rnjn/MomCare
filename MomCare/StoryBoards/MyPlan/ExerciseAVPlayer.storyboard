@@ -3,8 +3,8 @@
     <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23506"/>
+        <capability name="Image references" minToolsVersion="12.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
-        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -19,53 +19,44 @@
                             <stackView opaque="NO" contentMode="scaleToFill" distribution="equalCentering" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="r87-Md-DKU">
                                 <rect key="frame" x="50" y="616" width="293" height="60"/>
                                 <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wSB-Vm-UlD">
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LkL-rx-hTe">
                                         <rect key="frame" x="0.0" y="0.0" width="60" height="60"/>
                                         <constraints>
-                                            <constraint firstAttribute="width" constant="60" id="5tF-HH-R2W"/>
-                                            <constraint firstAttribute="height" constant="60" id="Ak9-8D-XWn"/>
-                                            <constraint firstAttribute="width" secondItem="wSB-Vm-UlD" secondAttribute="height" multiplier="1:1" id="njd-bd-Zwm"/>
+                                            <constraint firstAttribute="width" secondItem="LkL-rx-hTe" secondAttribute="height" multiplier="1:1" id="DZJ-ui-2Fm"/>
+                                            <constraint firstAttribute="height" constant="60" id="JfQ-Ch-hlT"/>
+                                            <constraint firstAttribute="width" constant="60" id="XZ7-5J-rK4"/>
                                         </constraints>
-                                        <color key="tintColor" red="0.16078431369999999" green="0.17254901959999999" blue="0.34901960780000002" alpha="1" colorSpace="calibratedRGB"/>
                                         <state key="normal" title="Button"/>
-                                        <buttonConfiguration key="configuration" style="filled" image="arrow.counterclockwise" catalog="system">
-                                            <backgroundConfiguration key="background" cornerRadius="30"/>
-                                            <color key="baseBackgroundColor" red="0.16078431369999999" green="0.17254901959999999" blue="0.34901960780000002" alpha="1" colorSpace="calibratedRGB"/>
+                                        <buttonConfiguration key="configuration" style="plain">
+                                            <imageReference key="image" image="arrow.counterclockwise.circle.fill" catalog="system" symbolScale="large"/>
+                                            <preferredSymbolConfiguration key="preferredSymbolConfigurationForImage" scale="large"/>
                                         </buttonConfiguration>
                                         <connections>
-                                            <action selector="playButtonTapped:" destination="Y6W-OH-hqX" eventType="touchUpInside" id="JSY-Tq-tvs"/>
+                                            <action selector="restartButtonTapped:" destination="Y6W-OH-hqX" eventType="touchUpInside" id="7Un-d4-Ioj"/>
                                         </connections>
                                     </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1iF-xD-2sS">
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TpE-bZ-3aF">
                                         <rect key="frame" x="116.66666666666666" y="0.0" width="60" height="60"/>
                                         <constraints>
-                                            <constraint firstAttribute="width" constant="60" id="MsC-6r-yhz"/>
-                                            <constraint firstAttribute="width" secondItem="1iF-xD-2sS" secondAttribute="height" multiplier="1:1" id="TIM-eX-AZB"/>
-                                            <constraint firstAttribute="height" constant="60" id="d4I-DL-bt7"/>
+                                            <constraint firstAttribute="height" constant="60" id="Meg-0b-7KE"/>
+                                            <constraint firstAttribute="width" constant="60" id="elO-6g-AZz"/>
+                                            <constraint firstAttribute="width" secondItem="TpE-bZ-3aF" secondAttribute="height" multiplier="1:1" id="tCj-So-L7Q"/>
                                         </constraints>
-                                        <color key="tintColor" red="0.16078431369999999" green="0.17254901959999999" blue="0.34901960780000002" alpha="1" colorSpace="calibratedRGB"/>
                                         <state key="normal" title="Button"/>
-                                        <buttonConfiguration key="configuration" style="filled" image="play.fill" catalog="system">
-                                            <backgroundConfiguration key="background" cornerRadius="32"/>
-                                            <color key="baseBackgroundColor" red="0.16078431369999999" green="0.17254901959999999" blue="0.34901960780000002" alpha="1" colorSpace="calibratedRGB"/>
-                                        </buttonConfiguration>
+                                        <buttonConfiguration key="configuration" style="plain" image="play.circle.fill" catalog="system"/>
                                         <connections>
-                                            <action selector="pauseButtonTapped:" destination="Y6W-OH-hqX" eventType="touchUpInside" id="5q6-Ab-Bkh"/>
+                                            <action selector="playPauseButtonTapped:" destination="Y6W-OH-hqX" eventType="touchUpInside" id="pJr-mA-hZL"/>
                                         </connections>
                                     </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hRb-GK-4mg">
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9pU-dR-fTO">
                                         <rect key="frame" x="233" y="0.0" width="60" height="60"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="60" id="J4z-N5-bQC"/>
-                                            <constraint firstAttribute="width" secondItem="hRb-GK-4mg" secondAttribute="height" multiplier="1:1" id="drH-Dl-7Hc"/>
-                                            <constraint firstAttribute="width" constant="60" id="tU7-0j-pNF"/>
+                                            <constraint firstAttribute="width" constant="60" id="8fe-tJ-CMt"/>
+                                            <constraint firstAttribute="height" constant="60" id="OeI-De-o8P"/>
+                                            <constraint firstAttribute="width" secondItem="9pU-dR-fTO" secondAttribute="height" multiplier="1:1" id="uCG-3h-1hp"/>
                                         </constraints>
-                                        <color key="tintColor" systemColor="systemGreenColor"/>
                                         <state key="normal" title="Button"/>
-                                        <buttonConfiguration key="configuration" style="filled" image="checkmark" catalog="system">
-                                            <backgroundConfiguration key="background" cornerRadius="29"/>
-                                            <color key="baseBackgroundColor" systemColor="systemGreenColor"/>
-                                        </buttonConfiguration>
+                                        <buttonConfiguration key="configuration" style="plain" image="checkmark.circle.fill" catalog="system"/>
                                     </button>
                                 </subviews>
                             </stackView>
@@ -116,8 +107,8 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
-                        <outlet property="pauseButton" destination="1iF-xD-2sS" id="GZu-bc-gX2"/>
-                        <outlet property="playButton" destination="wSB-Vm-UlD" id="y1r-Lf-jX8"/>
+                        <outlet property="playPauseButton" destination="TpE-bZ-3aF" id="9hL-Yc-ufl"/>
+                        <outlet property="restartButton" destination="LkL-rx-hTe" id="WiV-5n-hy1"/>
                         <outlet property="videoView" destination="vZK-Gz-KPd" id="H0j-E8-644"/>
                     </connections>
                 </viewController>
@@ -146,12 +137,9 @@
         </scene>
     </scenes>
     <resources>
-        <image name="arrow.counterclockwise" catalog="system" width="110" height="128"/>
-        <image name="checkmark" catalog="system" width="128" height="114"/>
+        <image name="arrow.counterclockwise.circle.fill" catalog="system" width="128" height="123"/>
+        <image name="checkmark.circle.fill" catalog="system" width="128" height="123"/>
         <image name="chevron.left" catalog="system" width="97" height="128"/>
-        <image name="play.fill" catalog="system" width="120" height="128"/>
-        <systemColor name="systemGreenColor">
-            <color red="0.20392156859999999" green="0.78039215689999997" blue="0.34901960780000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </systemColor>
+        <image name="play.circle.fill" catalog="system" width="128" height="123"/>
     </resources>
 </document>
