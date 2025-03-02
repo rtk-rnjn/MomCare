@@ -6,105 +6,108 @@
 //
 
 import UIKit
-import ImageIO
 
-class MoodsViewController: UIViewController, UIScrollViewDelegate {
-
-    @IBOutlet var pageControl: UIPageControl!
-    @IBOutlet var emotionsScrollView: UIScrollView!
-
-    @IBOutlet var happyImageView: UIImageView!
-    @IBOutlet var sadImageView: UIImageView!
-    @IBOutlet var stressedImageView: UIImageView!
-    @IBOutlet var angryImageView: UIImageView!
-
+class MoodsViewController: UIViewController {
+    
+    @IBOutlet weak var happySliderPoint: UIView!
+    @IBOutlet weak var sadSliderPoint: UIView!
+    @IBOutlet weak var stressedSliderPoint: UIView!
+    @IBOutlet weak var angrySliderPoint: UIView!
+    
+    @IBOutlet weak var emojiView: UIImageView!
+    @IBOutlet weak var moodSlider: UISlider!
+    @IBOutlet weak var moodLabel: UILabel!
+    
+    let moodImages = [
+        UIImage(named: "Happy"),
+        UIImage(named: "Stressed"),
+        UIImage(named: "Sad"),
+        UIImage(named: "Angry")
+    ]
+    let moodTexts = ["Happy", "Stressed", "Sad", "Angry"]
+    
+    let moodHexColors: [String] = [
+        //#97B1E4 <blue/indigo?  #D0A956 <yellow>  #A8B75C <green>   #E68669 <Red>
+            "#D0A956",
+            "#A8B75C",
+            "#97B1E4",
+            "#E68669"
+            ]
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        emotionsScrollView.delegate = self
-        emotionsScrollView.isPagingEnabled = true
-        pageControl.numberOfPages = 4
-        pageControl.currentPage = 0
-
-        happyImageView.image = loadGIF(named: "happy")
-        sadImageView.image = loadGIF(named: "sad")
-        stressedImageView.image = loadGIF(named: "stressed")
-        angryImageView.image = loadGIF(named: "angry")
-
-        happyImageView.isUserInteractionEnabled = true
-        sadImageView.isUserInteractionEnabled = true
-        stressedImageView.isUserInteractionEnabled = true
-        angryImageView.isUserInteractionEnabled = true
-
-        addTapGesture(to: happyImageView)
-        addTapGesture(to: sadImageView)
-        addTapGesture(to: stressedImageView)
-        addTapGesture(to: angryImageView)
-
+        setupSlider()
+        addTapGestureToSlider()
+        updateMoodDisplay(for: Int(moodSlider.value))
+        moodSlider.addTarget(self, action: #selector(sliderChanged), for: .valueChanged)
     }
-
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-
-        if segue.identifier == "segueShowMoodNestViewController" {
-            if let destination = segue.destination as? MoodNestViewController,
-               let selectedImageView = sender as? UIImageView {
-                destination.iconImageView = selectedImageView.image
-            }
+    
+    func setupSlider() {
+        moodSlider.minimumValue = 0
+        moodSlider.maximumValue = 3
+        moodSlider.value = 0
+        moodSlider.isContinuous = false
+    }
+    
+    func updateMoodDisplay(for index: Int) {
+        guard index >= 0 && index < moodImages.count else {
+            return
         }
-    }
-
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        let pageIndex = round(emotionsScrollView.contentOffset.x / emotionsScrollView.frame.width)
-        pageControl.currentPage = Int(pageIndex)
-    }
-
-    func addTapGesture(to imageView: UIImageView) {
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(imageTapped(_:)))
-        imageView.addGestureRecognizer(tapGesture)
-    }
-
-    @objc func imageTapped(_ sender: UITapGestureRecognizer) {
-        if let tappedImageView = sender.view as? UIImageView {
-            performSegue(withIdentifier: "segueShowMoodNestViewController", sender: tappedImageView)
+        emojiView.image = moodImages[index]
+        moodLabel.text = moodTexts[index]
+        
+        UIView.animate(withDuration: 0.3) {
+            self.view.backgroundColor = self.hexStringToUIColor(self.moodHexColors[index])
         }
+        UIView.transition(with: emojiView, duration: 0.3, options: .transitionCrossDissolve, animations: {
+            self.emojiView.image = self.moodImages[index]
+        }, completion: nil)
+    }
+    
+    func addTapGestureToSlider() {
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(sliderTapped(_:)))
+        moodSlider.addGestureRecognizer(tapGesture)
+    }
+    
+    @objc func sliderChanged(_ sender: UISlider) {
+        let step: Float = 1
+        let roundedValue = round(sender.value / step) * step
+        sender.setValue(roundedValue, animated: true)
+        updateMoodDisplay(for: Int(roundedValue))
+    }
+    
+    @objc func sliderTapped(_ sender: UITapGestureRecognizer) {
+        let location = sender.location(in: moodSlider)
+        let sliderWidth = moodSlider.bounds.width
+        let stepWidth = sliderWidth / 4  // Divide by 4 instead of 3 to cover all 4 steps
+        
+        var index = Int(location.x / stepWidth + 0.5) // +0.5 for better rounding behavior
+        index = min(max(index, 0), 3) // Ensure index stays between 0 and 3
+
+        moodSlider.setValue(Float(index), animated: true)
+        updateMoodDisplay(for: index)
     }
 
-    func loadGIF(named name: String) -> UIImage? {
-        guard let path = Bundle.main.path(forResource: name, ofType: "gif"),
-              let data = try? Data(contentsOf: URL(fileURLWithPath: path)) else { return nil }
-
-        return UIImage.gif(data: data)
-    }
-
-}
-
-extension UIImage {
-    static func gif(data: Data) -> UIImage? {
-        guard let source = CGImageSourceCreateWithData(data as CFData, nil) else { return nil }
-        let count = CGImageSourceGetCount(source)
-
-        var images: [UIImage] = []
-        var totalDuration: TimeInterval = 0
-
-        for i in 0..<count {
-            if let cgImage = CGImageSourceCreateImageAtIndex(source, i, nil) {
-                let frameDuration = UIImage.frameDuration(from: source, at: i)
-                totalDuration += frameDuration
-                images.append(UIImage(cgImage: cgImage))
-            }
+    
+    func hexStringToUIColor(_ hex: String) -> UIColor {
+        var cString: String = hex.trimmingCharacters(in: .whitespacesAndNewlines).uppercased()
+        
+        if cString.hasPrefix("#") {
+            cString.removeFirst()
         }
-
-        return UIImage.animatedImage(with: images, duration: totalDuration)
-    }
-
-    private static func frameDuration(from source: CGImageSource, at index: Int) -> TimeInterval {
-        let defaultFrameDuration = 0.1
-        guard let properties = CGImageSourceCopyPropertiesAtIndex(source, index, nil) as? [CFString: Any],
-              let gifProperties = properties[kCGImagePropertyGIFDictionary] as? [CFString: Any],
-              let delayTime = gifProperties[kCGImagePropertyGIFUnclampedDelayTime] as? TimeInterval
-                ?? gifProperties[kCGImagePropertyGIFDelayTime] as? TimeInterval else {
-            return defaultFrameDuration
+        
+        if cString.count != 6 {
+            return UIColor.gray
         }
-        return delayTime < 0.01 ? defaultFrameDuration : delayTime
+        
+        var rgbValue: UInt64 = 0
+        Scanner(string: cString).scanHexInt64(&rgbValue)
+        
+        return UIColor(
+            red: CGFloat((rgbValue >> 16) & 0xFF) / 255.0,
+            green: CGFloat((rgbValue >> 8) & 0xFF) / 255.0,
+            blue: CGFloat(rgbValue & 0xFF) / 255.0,
+            alpha: 1.0
+        )
     }
 }
