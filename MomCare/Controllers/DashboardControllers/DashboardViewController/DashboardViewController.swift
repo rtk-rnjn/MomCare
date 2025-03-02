@@ -25,16 +25,8 @@ class DashboardViewController: UIViewController, UICollectionViewDataSource {
 
         Task {
             await requestAccessForNotification()
-        }
-    }
-
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-
-        Task {
-            await MomCareUser.shared.fetchUser(from: .database)
             DispatchQueue.main.async {
-                self.collectionView.reloadData()
+                self.loadUser()
             }
         }
     }
@@ -58,11 +50,28 @@ class DashboardViewController: UIViewController, UICollectionViewDataSource {
         return headerView
     }
 
+    @IBAction func unwinToDashboard(_ segue: UIStoryboardSegue) {}
+
     // MARK: Private
 
     private let cellIdentifiers = ["WelcomeHeaderCell", "WeekCard", "EventCard", "DietProgress", "ExerciseProgress", "FocusCard", "TipCard"]
     private let headerIdentifier = "SectionHeaderView"
     private let interItemSpacing: CGFloat = 15
+
+    private func loadUser() {
+        Task {
+            let success = await MomCareUser.shared.fetchUser(from: .iPhone)
+            if !success {
+                let fetched = await MomCareUser.shared.fetchUser(from: .database)
+                if !fetched {
+                    fatalError("seriously fucked up bro")
+                }
+            }
+            DispatchQueue.main.async {
+                self.collectionView.reloadData()
+            }
+        }
+    }
 
     private func setupCollectionView() {
         registerCells()

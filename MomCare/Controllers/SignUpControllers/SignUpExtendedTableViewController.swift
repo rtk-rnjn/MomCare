@@ -40,7 +40,7 @@ class SignUpExtendedTableViewController: UITableViewController {
         guard var userMedical else { fatalError() }
 
         userMedical.dueDate = dueDate
-        MomCareUser.shared.user?.medicalData = userMedical
+        MomCareUser.shared.setMedicalData(userMedical)
 
         Utils.save(forKey: .signedUp, withValue: true)
 

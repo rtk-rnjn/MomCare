@@ -33,26 +33,27 @@ class LoginTableViewController: UITableViewController {
 
         Task {
             DispatchQueue.main.async {
-                self.showActivityIndicator()
+                sender.startLoadingAnimation()
             }
 
             let success = await MomCareUser.shared.fetchUserFromDatabase(with: email, and: password)
             if !success {
                 DispatchQueue.main.async {
-                    self.hideActivityIndicator()
+                    sender.stopLoadingAnimation(with: "Sign In")
                 }
 
                 self.showErrorAlert(title: "Sign In Failed", message: "An error occurred while signing in. Please try again.")
             } else {
-                Utils.save(forKey: .signedUp, withValue: true)
-                performSegue(withIdentifier: "segueShowInitialTabBarController", sender: nil)
+                if MomCareUser.shared.user?.medicalData == nil {
+                    performSegue(withIdentifier: "segueShowSignUpDetailsTableViewController", sender: nil)
+                } else {
+                    performSegue(withIdentifier: "segueShowInitialTabBarController", sender: nil)
+                }
             }
         }
     }
 
     // MARK: Private
-
-    private var activityIndicator: UIActivityIndicatorView?
 
     // From: MomCare/MomCare/Controllers/SignUpCotrollers/SignUpTableViewController.swift
 
@@ -73,22 +74,5 @@ class LoginTableViewController: UITableViewController {
     private func showErrorAlert(title: String, message: String) {
         let alert = Utils.getAlert(title: title, message: message, actions: [AlertActionHandler(title: "OK", style: .default, handler: nil)])
         present(alert, animated: true)
-    }
-
-    private func showActivityIndicator() {
-        activityIndicator = UIActivityIndicatorView(style: .large)
-
-        guard let activityIndicator else { fatalError("roop tera mastana, pyar mera deewana") }
-        activityIndicator.center = tableView.center
-        activityIndicator.startAnimating()
-        activityIndicator.hidesWhenStopped = true
-
-        view.addSubview(activityIndicator)
-    }
-
-    private func hideActivityIndicator() {
-        guard let activityIndicator else { fatalError("bhool kahi hamse na ho jaye") }
-        activityIndicator.stopAnimating()
-        activityIndicator.removeFromSuperview()
     }
 }
