@@ -42,6 +42,13 @@ class MoodsViewController: UIViewController {
         moodSlider.addTarget(self, action: #selector(sliderChanged), for: .valueChanged)
     }
 
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "segueShowMoodNestViewController",
+           let destination = segue.destination as? MoodNestViewController {
+            destination.iconImageView = emojiView.image
+        }
+    }
+
     func setupSlider() {
         moodSlider.minimumValue = 0
         moodSlider.maximumValue = 3
@@ -109,15 +116,9 @@ class MoodsViewController: UIViewController {
             alpha: 1.0
         )
     }
-    
+
     @IBAction func SetMoodButtonTapped(_ sender: UIButton) {
         performSegue(withIdentifier: "segueShowMoodNestViewController", sender: self)
     }
-    
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "segueShowMoodNestViewController",
-           let destination = segue.destination as? MoodNestViewController {
-            destination.iconImageView = emojiView.image
-        }
-    }
+
 }
