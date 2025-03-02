@@ -40,6 +40,7 @@ class MoodsViewController: UIViewController {
         addTapGestureToSlider()
         updateMoodDisplay(for: Int(moodSlider.value))
         moodSlider.addTarget(self, action: #selector(sliderChanged), for: .valueChanged)
+        moodLabel.alpha = 0.5
     }
     
     func setupSlider() {
@@ -79,9 +80,9 @@ class MoodsViewController: UIViewController {
     @objc func sliderTapped(_ sender: UITapGestureRecognizer) {
         let location = sender.location(in: moodSlider)
         let sliderWidth = moodSlider.bounds.width
-        let stepWidth = sliderWidth / 4  // Divide by 4 instead of 3 to cover all 4 steps
+        let stepWidth = sliderWidth / 3  // Divide by 3 to create 4 equal sections (0-1, 1-2, 2-3)
         
-        var index = Int(location.x / stepWidth + 0.5) // +0.5 for better rounding behavior
+        var index = Int(round(location.x / stepWidth)) // Use round() instead of simple division
         index = min(max(index, 0), 3) // Ensure index stays between 0 and 3
 
         moodSlider.setValue(Float(index), animated: true)
