@@ -14,139 +14,100 @@ class MoodsViewController: UIViewController {
     @IBOutlet weak var stressedSliderPoint: UIView!
     @IBOutlet weak var angrySliderPoint: UIView!
     
-    @IBOutlet weak var emojiView: UIView!
+    @IBOutlet weak var emojiView: UIImageView!
     @IBOutlet weak var moodSlider: UISlider!
+    @IBOutlet weak var moodLabel: UILabel!
     
-    private let leftEye = CAShapeLayer()
-    private let rightEye = CAShapeLayer()
-    private let mouth = CAShapeLayer()
+    let moodImages = [
+        UIImage(named: "Happy"),
+        UIImage(named: "Stressed"),
+        UIImage(named: "Sad"),
+        UIImage(named: "Angry")
+    ]
+    let moodTexts = ["Happy", "Stressed", "Sad", "Angry"]
+    
+    let moodHexColors: [String] = [
+        //#97B1E4 <blue/indigo?  #D0A956 <yellow>  #A8B75C <green>   #E68669 <Red>
+            "#D0A956",
+            "#A8B75C",
+            "#97B1E4",
+            "#E68669"
+            ]
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupEmojiFace()
         setupSlider()
+        addTapGestureToSlider()
+        updateMoodDisplay(for: Int(moodSlider.value))
         moodSlider.addTarget(self, action: #selector(sliderChanged), for: .valueChanged)
     }
     
     func setupSlider() {
         moodSlider.minimumValue = 0
-        moodSlider.maximumValue = 1
+        moodSlider.maximumValue = 3
         moodSlider.value = 0
         moodSlider.isContinuous = false
     }
     
-    func setupEmojiFace() {
-        emojiView.layer.sublayers?.forEach { $0.removeFromSuperlayer() }
+    func updateMoodDisplay(for index: Int) {
+        guard index >= 0 && index < moodImages.count else {
+            return
+        }
+        emojiView.image = moodImages[index]
+        moodLabel.text = moodTexts[index]
         
-        let eyeRadius: CGFloat = 20
-        let eyeSpacing: CGFloat = 40
-        let centerY = emojiView.bounds.height / 2
-        
-        // Initial eye positions
-        let leftEyePath = UIBezierPath(ovalIn: CGRect(x: emojiView.bounds.midX - eyeSpacing, y: centerY - eyeRadius, width: eyeRadius, height: eyeRadius))
-        let rightEyePath = UIBezierPath(ovalIn: CGRect(x: emojiView.bounds.midX + eyeSpacing - eyeRadius, y: centerY - eyeRadius, width: eyeRadius, height: eyeRadius))
-        
-        leftEye.path = leftEyePath.cgPath
-        rightEye.path = rightEyePath.cgPath
-        leftEye.fillColor = UIColor.black.cgColor
-        rightEye.fillColor = UIColor.black.cgColor
-        
-        // Initial mouth (neutral straight line)
-        let mouthPath = UIBezierPath()
-        mouthPath.move(to: CGPoint(x: emojiView.bounds.midX - 20, y: centerY + 20))
-        mouthPath.addLine(to: CGPoint(x: emojiView.bounds.midX + 20, y: centerY + 20))
-        
-        mouth.path = mouthPath.cgPath
-        mouth.strokeColor = UIColor.black.cgColor
-        mouth.lineWidth = 4
-        mouth.lineCap = .round
-        
-        emojiView.layer.addSublayer(leftEye)
-        emojiView.layer.addSublayer(rightEye)
-        emojiView.layer.addSublayer(mouth)
+        UIView.animate(withDuration: 0.3) {
+            self.view.backgroundColor = self.hexStringToUIColor(self.moodHexColors[index])
+        }
+        UIView.transition(with: emojiView, duration: 0.3, options: .transitionCrossDissolve, animations: {
+            self.emojiView.image = self.moodImages[index]
+        }, completion: nil)
+    }
+    
+    func addTapGestureToSlider() {
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(sliderTapped(_:)))
+        moodSlider.addGestureRecognizer(tapGesture)
     }
     
     @objc func sliderChanged(_ sender: UISlider) {
-        // Snap slider to 4 fixed values
-        let steps: [Float] = [0.0, 0.33, 0.66, 1.0]
-        let closest = steps.min(by: { abs($0 - sender.value) < abs($1 - sender.value) }) ?? 0.0
-        sender.setValue(closest, animated: true)
-        
-        updateUI(for: closest)
+        let step: Float = 1
+        let roundedValue = round(sender.value / step) * step
+        sender.setValue(roundedValue, animated: true)
+        updateMoodDisplay(for: Int(roundedValue))
     }
     
-    func updateUI(for value: Float) {
-        switch value {
-        case 0.0:
-            self.view.backgroundColor = UIColor(hex: "#A8B75C") // Happy 😀
-        case 0.33:
-            self.view.backgroundColor = UIColor(hex: "#97B1E4") // Calm 😊
-        case 0.66:
-            self.view.backgroundColor = UIColor(hex: "#D0A956") // Neutral 😐
-        case 1.0:
-            self.view.backgroundColor = UIColor(hex: "#E68669") // Sad 😢
-        default:
-            break
-        }
+    @objc func sliderTapped(_ sender: UITapGestureRecognizer) {
+        let location = sender.location(in: moodSlider)
+        let sliderWidth = moodSlider.bounds.width
+        let stepWidth = sliderWidth / 4  // Divide by 4 instead of 3 to cover all 4 steps
         
-        updateEmojiFace(for: value)
-    }
-    
-    func updateEmojiFace(for value: Float) {
-        let eyeSize = CGFloat(20 + (value * 15))
-        let eyeY = emojiView.bounds.height / 2 - eyeSize / 2
-        
-        let leftEyePath: UIBezierPath
-        let rightEyePath: UIBezierPath
-        let mouthPath = UIBezierPath()
-        
-        switch value {
-        case 0.0:
-            // Happy
-            leftEyePath = UIBezierPath(ovalIn: CGRect(x: emojiView.bounds.midX - 40, y: eyeY, width: eyeSize, height: eyeSize))
-            rightEyePath = UIBezierPath(ovalIn: CGRect(x: emojiView.bounds.midX + 30, y: eyeY, width: eyeSize, height: eyeSize))
-            mouthPath.move(to: CGPoint(x: emojiView.bounds.midX - 25, y: emojiView.bounds.height / 2 + 40))
-            mouthPath.addQuadCurve(to: CGPoint(x: emojiView.bounds.midX + 25, y: emojiView.bounds.height / 2 + 40),controlPoint: CGPoint(x: emojiView.bounds.midX, y: emojiView.bounds.height / 2 + 55))
-        case 0.33:
-            // Calm
-            leftEyePath = UIBezierPath(ovalIn: CGRect(x: emojiView.bounds.midX - 40, y: eyeY, width: 15, height: 15))
-            rightEyePath = UIBezierPath(ovalIn: CGRect(x: emojiView.bounds.midX + 30, y: eyeY, width: 15, height: 15))
-            mouthPath.move(to: CGPoint(x: emojiView.bounds.midX - 20, y: emojiView.bounds.height / 2 + 30))
-            mouthPath.addLine(to: CGPoint(x: emojiView.bounds.midX + 20, y: emojiView.bounds.height / 2 + 30))
-        case 0.66:
-            // Neutral
-            leftEyePath = UIBezierPath(rect: CGRect(x: emojiView.bounds.midX - 40, y: eyeY, width: 15, height: 20))
-            rightEyePath = UIBezierPath(rect: CGRect(x: emojiView.bounds.midX + 30, y: eyeY, width: 15, height: 20))
-            mouthPath.move(to: CGPoint(x: emojiView.bounds.midX - 20, y: emojiView.bounds.height / 2 + 30))
-            mouthPath.addLine(to: CGPoint(x: emojiView.bounds.midX + 20, y: emojiView.bounds.height / 2 + 30))
-        case 1.0:
-            // Sad
-            leftEyePath = UIBezierPath(ovalIn: CGRect(x: emojiView.bounds.midX - 40, y: eyeY, width: 10, height: 10))
-            rightEyePath = UIBezierPath(ovalIn: CGRect(x: emojiView.bounds.midX + 30, y: eyeY, width: 10, height: 10))
-            mouthPath.move(to: CGPoint(x: emojiView.bounds.midX - 20, y: emojiView.bounds.height / 2 + 35))
-            mouthPath.addQuadCurve(to: CGPoint(x: emojiView.bounds.midX + 20, y: emojiView.bounds.height / 2 + 35),controlPoint: CGPoint(x: emojiView.bounds.midX, y: emojiView.bounds.height / 2 + 10))
-        default:
-            return
-        }
-        
-        leftEye.path = leftEyePath.cgPath
-        rightEye.path = rightEyePath.cgPath
-        mouth.path = mouthPath.cgPath
-    }
-}
+        var index = Int(location.x / stepWidth + 0.5) // +0.5 for better rounding behavior
+        index = min(max(index, 0), 3) // Ensure index stays between 0 and 3
 
-extension UIColor {
-    convenience init(hex: String) {
-        var hexSanitized = hex.trimmingCharacters(in: .whitespacesAndNewlines)
-        hexSanitized = hexSanitized.replacingOccurrences(of: "#", with: "")
+        moodSlider.setValue(Float(index), animated: true)
+        updateMoodDisplay(for: index)
+    }
+
+    
+    func hexStringToUIColor(_ hex: String) -> UIColor {
+        var cString: String = hex.trimmingCharacters(in: .whitespacesAndNewlines).uppercased()
         
-        var rgb: UInt64 = 0
-        Scanner(string: hexSanitized).scanHexInt64(&rgb)
+        if cString.hasPrefix("#") {
+            cString.removeFirst()
+        }
         
-        let red = CGFloat((rgb >> 16) & 0xFF) / 255.0
-        let green = CGFloat((rgb >> 8) & 0xFF) / 255.0
-        let blue = CGFloat(rgb & 0xFF) / 255.0
+        if cString.count != 6 {
+            return UIColor.gray
+        }
         
-        self.init(red: red, green: green, blue: blue, alpha: 1.0)
+        var rgbValue: UInt64 = 0
+        Scanner(string: cString).scanHexInt64(&rgbValue)
+        
+        return UIColor(
+            red: CGFloat((rgbValue >> 16) & 0xFF) / 255.0,
+            green: CGFloat((rgbValue >> 8) & 0xFF) / 255.0,
+            blue: CGFloat(rgbValue & 0xFF) / 255.0,
+            alpha: 1.0
+        )
     }
 }
