@@ -54,7 +54,7 @@ class ExerciseAVPlayerViewController: UIViewController, YTPlayerViewDelegate {
             isPlaying = false
         }
     }
-    
+
     func updateGradientBackground() {
         let gradientLayer = CAGradientLayer()
         gradientLayer.frame = view.bounds
