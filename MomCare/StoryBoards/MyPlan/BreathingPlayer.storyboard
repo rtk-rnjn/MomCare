@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="23504" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="Y6W-OH-hqX">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="23504" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="rmx-NW-3Na">
     <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23506"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
-        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -29,7 +28,10 @@
                                         <rect key="frame" x="0.0" y="80" width="353" height="50"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oA1-Hh-kLH">
-                                                <rect key="frame" x="0.0" y="8" width="171.66666666666666" height="34.333333333333336"/>
+                                                <rect key="frame" x="0.0" y="5" width="171.66666666666666" height="40"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="40" id="tFG-QN-fzi"/>
+                                                </constraints>
                                                 <color key="tintColor" red="0.16078431369999999" green="0.17254901959999999" blue="0.34901960780000002" alpha="1" colorSpace="calibratedRGB"/>
                                                 <state key="normal" title="Button"/>
                                                 <buttonConfiguration key="configuration" style="filled" title="Pause" cornerStyle="capsule">
@@ -41,7 +43,10 @@
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="R1Y-RI-HSj">
-                                                <rect key="frame" x="181.66666666666663" y="8" width="171.33333333333337" height="34.333333333333336"/>
+                                                <rect key="frame" x="181.66666666666663" y="5" width="171.33333333333337" height="40"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="40" id="I50-bW-iSF"/>
+                                                </constraints>
                                                 <color key="tintColor" red="0.16078431372549018" green="0.17254901960784313" blue="0.34901960784313724" alpha="1" colorSpace="calibratedRGB"/>
                                                 <state key="normal" title="Button"/>
                                                 <buttonConfiguration key="configuration" style="filled" title="Stop" cornerStyle="capsule">
@@ -63,7 +68,7 @@
                             </stackView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="vDu-zF-Fre"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <color key="backgroundColor" red="0.8980392157" green="0.83144223689999996" blue="0.82744789119999995" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                         <constraints>
                             <constraint firstItem="vDu-zF-Fre" firstAttribute="bottom" secondItem="sIN-rK-h4F" secondAttribute="bottom" constant="25" id="7Fh-AD-syd"/>
                             <constraint firstItem="vDu-zF-Fre" firstAttribute="trailing" secondItem="sIN-rK-h4F" secondAttribute="trailing" constant="20" id="CoV-Xl-liQ"/>
@@ -71,6 +76,14 @@
                             <constraint firstItem="sIN-rK-h4F" firstAttribute="centerX" secondItem="5EZ-qb-Rvc" secondAttribute="centerX" id="o1m-0Q-JP5"/>
                         </constraints>
                     </view>
+                    <navigationItem key="navigationItem" id="OA4-U9-qSa">
+                        <barButtonItem key="leftBarButtonItem" title="Item" image="chevron.down" catalog="system" id="eta-fF-e23">
+                            <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <connections>
+                                <segue destination="9z3-j2-v26" kind="unwind" unwindAction="unwindToMyPlanExercisePageWithSegue:" id="Ze9-7e-1i6"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
                         <outlet property="totalBreatingDuration" destination="Tfx-SB-n5l" id="tEa-Xb-ybT"/>
                     </connections>
@@ -78,12 +91,28 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ief-a0-LHa" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
                 <exit id="9z3-j2-v26" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="-329" y="-2"/>
+            <point key="canvasLocation" x="597.70992366412213" y="-2.1126760563380285"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="AXR-CI-ne9">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="rmx-NW-3Na" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="Hu2-g4-pXT">
+                        <rect key="frame" x="0.0" y="59" width="393" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="Y6W-OH-hqX" kind="relationship" relationship="rootViewController" id="iO6-xg-Kw9"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Fy6-Sc-VXQ" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-329.00763358778624" y="-2.1126760563380285"/>
         </scene>
     </scenes>
     <resources>
-        <systemColor name="systemBackgroundColor">
-            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-        </systemColor>
+        <image name="chevron.down" catalog="system" width="128" height="70"/>
     </resources>
 </document>
