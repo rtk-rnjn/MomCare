@@ -45,6 +45,8 @@ class TriTrackViewController: UIViewController, FSCalendarDelegate, FSCalendarDa
     override func viewDidLoad() {
         super.viewDidLoad()
         prepareFSCalendar()
+        calendarView.appearance.todayColor = .clear
+        calendarView.appearance.titleTodayColor = .black
 
         requestAccessForCalendar()
         requestAccessForReminders()
