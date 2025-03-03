@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="23504" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="O6F-ED-Mfi">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="23504" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="Y6W-OH-hqX">
     <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23506"/>
@@ -10,7 +10,7 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Dashboard View Controller-->
+        <!--ProgressHub-->
         <scene sceneID="s0d-6b-0kx">
             <objects>
                 <viewController storyboardIdentifier="Dashboard" useStoryboardIdentifierAsRestorationIdentifier="YES" id="Y6W-OH-hqX" customClass="DashboardViewController" customModule="MomCare" customModuleProvider="target" sceneMemberID="viewController">
@@ -19,7 +19,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="3fr-wh-mP1">
-                                <rect key="frame" x="0.0" y="103" width="393" height="715"/>
+                                <rect key="frame" x="0.0" y="59" width="393" height="759"/>
                                 <color key="backgroundColor" red="0.96078431372549022" green="0.96470588235294119" blue="0.97647058823529409" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="10" id="4ns-fZ-ftx">
                                     <size key="itemSize" width="128" height="128"/>
@@ -48,22 +48,25 @@
                             <constraint firstItem="3fr-wh-mP1" firstAttribute="top" secondItem="vDu-zF-Fre" secondAttribute="top" id="tWE-LK-fKu"/>
                         </constraints>
                     </view>
+                    <tabBarItem key="tabBarItem" title="ProgressHub" image="trophy.fill" catalog="system" id="hmP-iM-YQ6">
+                        <color key="badgeColor" red="0.53333333329999999" green="0.2784313725" blue="0.31764705879999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    </tabBarItem>
                     <navigationItem key="navigationItem" largeTitleDisplayMode="never" id="Ujh-Pd-5Ms"/>
                     <connections>
                         <outlet property="collectionView" destination="3fr-wh-mP1" id="W6A-WM-eNG"/>
-                        <segue destination="bqx-cP-ynl" kind="show" identifier="segueShowProfilePageTableViewController" id="hfQ-xl-p5d"/>
+                        <segue destination="vuh-qh-hgR" kind="show" identifier="segueShowProfilePageTableViewController" id="hfQ-xl-p5d"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ief-a0-LHa" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-793" y="-42"/>
+            <point key="canvasLocation" x="133.58778625954199" y="-42.253521126760567"/>
         </scene>
         <!--Profile Page Table View Controller-->
         <scene sceneID="Z6k-kL-rAC">
             <objects>
                 <tableViewController id="bqx-cP-ynl" customClass="ProfilePageTableViewController" customModule="MomCare" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="insetGrouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" estimatedSectionHeaderHeight="-1" sectionFooterHeight="18" estimatedSectionFooterHeight="-1" id="Xxk-io-njt">
-                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="842"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="sectionIndexBackgroundColor" systemColor="systemGray6Color"/>
                         <sections>
@@ -230,14 +233,14 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="JUh-xX-lZC" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
                 <exit id="yzs-dt-TCl" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="100" y="-42"/>
+            <point key="canvasLocation" x="2164.1221374045799" y="-37.323943661971832"/>
         </scene>
         <!--Settings-->
         <scene sceneID="0FX-O9-Fl2">
             <objects>
                 <tableViewController id="oO8-UD-jq3" customClass="SettingsTableViewController" customModule="MomCare" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="insetGrouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" estimatedSectionHeaderHeight="-1" sectionFooterHeight="18" estimatedSectionFooterHeight="-1" id="nkm-2N-2YP">
-                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="842"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <sections>
                             <tableViewSection id="fop-Yf-CMm">
@@ -309,14 +312,14 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="DNa-Qh-vz9" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-721" y="696"/>
+            <point key="canvasLocation" x="2589" y="842"/>
         </scene>
         <!--Privacy & Security-->
         <scene sceneID="YNF-Yn-YEs">
             <objects>
                 <tableViewController id="Oih-TT-hif" customClass="PrivacyTableViewController" customModule="MomCare" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="insetGrouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="25" estimatedSectionHeaderHeight="-1" sectionFooterHeight="18" estimatedSectionFooterHeight="-1" id="kc9-v5-C7z">
-                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="842"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <sections>
                             <tableViewSection id="zeF-Ra-jTD">
@@ -371,14 +374,14 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hh2-8S-yjF" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="157" y="724"/>
+            <point key="canvasLocation" x="1534" y="763"/>
         </scene>
         <!--Health Preferences-->
         <scene sceneID="94E-yF-1Qr">
             <objects>
                 <tableViewController id="3hj-dY-GAu" customClass="HealthPreferencesTableViewController" customModule="MomCare" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="insetGrouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" estimatedSectionHeaderHeight="-1" sectionFooterHeight="18" estimatedSectionFooterHeight="-1" id="Gxf-lf-lL6">
-                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="842"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <sections>
                             <tableViewSection id="ga3-vF-7Vc">
@@ -465,14 +468,14 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="YtL-e8-kE4" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="940" y="783"/>
+            <point key="canvasLocation" x="810" y="808"/>
         </scene>
         <!--Health Details-->
         <scene sceneID="Nhz-Tp-3DX">
             <objects>
                 <tableViewController id="Fti-hv-RJM" customClass="HealthDetailsTableViewController" customModule="MomCare" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="insetGrouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" estimatedSectionHeaderHeight="-1" sectionFooterHeight="18" estimatedSectionFooterHeight="-1" id="ASv-8J-DP9">
-                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="842"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <sections>
                             <tableViewSection id="bSe-Ik-wcB">
@@ -635,14 +638,14 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="IuO-CW-qz4" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="959" y="32"/>
+            <point key="canvasLocation" x="3144.2748091603053" y="42.95774647887324"/>
         </scene>
         <!--Personal Info-->
         <scene sceneID="iRU-kW-izF">
             <objects>
                 <tableViewController id="4dk-vA-dKF" customClass="PersonalInfoTableViewController" customModule="MomCare" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="insetGrouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" estimatedSectionHeaderHeight="-1" sectionFooterHeight="18" estimatedSectionFooterHeight="-1" id="nJ0-pn-axl">
-                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="842"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <sections>
                             <tableViewSection id="WBb-4z-ZJ4">
@@ -983,26 +986,26 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="gYL-Mc-ioF" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="769" y="-723"/>
+            <point key="canvasLocation" x="2088" y="-689"/>
         </scene>
-        <!--ProgressHub-->
-        <scene sceneID="Hlm-LY-NZv">
+        <!--Navigation Controller-->
+        <scene sceneID="Bth-gx-cbb">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="O6F-ED-Mfi" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="ProgressHub" image="trophy.fill" catalog="system" id="u5p-9j-pEP"/>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="vuh-qh-hgR" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="JD5-iI-0GZ">
-                        <rect key="frame" x="0.0" y="59" width="393" height="44"/>
+                    <navigationItem key="navigationItem" id="5YP-71-fyq"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="pyT-aP-XRV">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="56"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
                     <connections>
-                        <segue destination="Y6W-OH-hqX" kind="relationship" relationship="rootViewController" id="15d-LZ-Yki"/>
+                        <segue destination="bqx-cP-ynl" kind="relationship" relationship="rootViewController" id="a0E-Fn-6Bk"/>
                     </connections>
                 </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="gcV-bJ-72i" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="ien-zO-ZCE" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1666" y="-42"/>
+            <point key="canvasLocation" x="1237.4045801526718" y="-37.323943661971832"/>
         </scene>
     </scenes>
     <resources>
@@ -1012,10 +1015,10 @@
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
         <systemColor name="systemGray6Color">
-            <color red="0.94901960784313721" green="0.94901960784313721" blue="0.96862745098039216" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.94901960780000005" green="0.94901960780000005" blue="0.96862745100000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemRedColor">
-            <color red="1" green="0.23137254901960785" blue="0.18823529411764706" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="1" green="0.23137254900000001" blue="0.18823529410000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>
