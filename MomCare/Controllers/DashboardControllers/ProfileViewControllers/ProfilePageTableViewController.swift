@@ -7,4 +7,17 @@
 
 import UIKit
 
-class ProfilePageTableViewController: UITableViewController {}
+class ProfilePageTableViewController: UITableViewController {
+    @IBOutlet var profileImageView: UIImageView?
+    @IBOutlet var usernameLabel: UILabel!
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        updateElements()
+    }
+    
+    func updateElements() {
+        usernameLabel.text = MomCareUser.shared.user?.fullName
+    }
+
+}
