@@ -7,7 +7,7 @@
 
 import UIKit
 
-class PersonalInfoTableViewController: UITableViewController {
+class PersonalInfoTableViewController: UITableViewController,UITableViewDelegate, UITableViewDataSource{
     
     @IBOutlet var userName: UILabel!
     @IBOutlet var userAge: UILabel!
@@ -25,17 +25,30 @@ class PersonalInfoTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         updateElements()
-
-        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Edit", style: .plain, target: self, action: #selector(toggleEditMode))
+        
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .edit, target: self, action: #selector(editTapped))
+        tableView.delegate = self
+        tableView.dataSource = self
+        
     }
 
-        @objc func toggleEditMode() {
+    @objc func toggleEditMode() {
         isEditingMode.toggle()
-
+        
         navigationItem.rightBarButtonItem?.title = isEditingMode ? "Save" : "Edit"
         updateUIForEditingMode()
-
+        
         tableView.reloadData()
+    }
+    
+    @objc func editTapped() {
+        tableView.setEditing(!tableView.isEditing, animated: true)
+        if tableView.isEditing {
+            navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(editTapped))
+        }
+        else {
+            navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .edit, target: self, action: #selector(editTapped))
+        }
     }
     
     func updateUIForEditingMode(){
