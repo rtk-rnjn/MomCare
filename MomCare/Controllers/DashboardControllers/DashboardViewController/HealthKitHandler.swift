@@ -97,6 +97,26 @@ extension DashboardViewController {
 
         healthStore?.execute(query)
     }
+    
+    func readCaloriesIntake(completionHandler: @escaping @Sendable (Double) -> Void) {
+        let calorieType = HKQuantityType.quantityType(forIdentifier: .dietaryEnergyConsumed)
+        
+        let calendar = Calendar.current
+        let now = Date()
+        let startDate = calendar.date(byAdding: .day, value: -1, to: now)
+        
+        let predicate = HKQuery.predicateForSamples(withStart: startDate, end: now, options: .strictStartDate)
+        
+        let query = HKStatisticsQuery(quantityType: calorieType!, quantitySamplePredicate: predicate, options: .cumulativeSum) { _, result, _ in
+            guard let result, let quantity = result.sumQuantity() else {
+                completionHandler(0)
+                return
+            }
+            
+            let calories = quantity.doubleValue(for: .kilocalorie())
+            completionHandler(calories)
+        }
+    }
 
     func addHKActivityRing(to cellView: UIView, withSummary summary: HKActivitySummary? = nil) {
         cellView.layer.sublayers?.forEach { $0.removeFromSuperlayer() }
