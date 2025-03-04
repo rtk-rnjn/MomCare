@@ -112,7 +112,7 @@ enum Utils {
 
         return (week: weekNumber, day: dayNumber, trimester: trimester)
     }
-    
+
     static func getCaloriesGoal(trimester: String) -> Double {
         switch trimester {
         case "I":

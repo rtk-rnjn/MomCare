@@ -11,7 +11,7 @@ import HealthKit
 import HealthKitUI
 import EventKit
 
-private let refreshControl = UIRefreshControl()
+private let refreshControl: UIRefreshControl = .init()
 
 class DashboardViewController: UIViewController, UICollectionViewDataSource {
 
@@ -37,17 +37,6 @@ class DashboardViewController: UIViewController, UICollectionViewDataSource {
         }
 
         refreshControl.addTarget(self, action: #selector(didPullToRefresh(_:)), for: .valueChanged)
-    }
-
-    @objc private func didPullToRefresh(_ sender: Any) {
-        refreshControl.beginRefreshing()
-        loadUser()
-        self.collectionView.reloadData()
-        stopRefresh()
-    }
-
-    private func stopRefresh() {
-        refreshControl.endRefreshing()
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -88,6 +77,17 @@ class DashboardViewController: UIViewController, UICollectionViewDataSource {
     private let cellIdentifiers = ["WelcomeHeaderCell", "WeekCard", "EventCard", "DietProgress", "ExerciseProgress", "FocusCard", "TipCard"]
     private let headerIdentifier = "SectionHeaderView"
     private let interItemSpacing: CGFloat = 15
+
+    @objc private func didPullToRefresh(_ sender: Any) {
+        refreshControl.beginRefreshing()
+        loadUser()
+        collectionView.reloadData()
+        stopRefresh()
+    }
+
+    private func stopRefresh() {
+        refreshControl.endRefreshing()
+    }
 
     private func loadUser() {
         Task {

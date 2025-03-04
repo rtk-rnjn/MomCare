@@ -13,6 +13,8 @@ class SongElementsViewController: UIViewController {
 
     @IBOutlet var playlistSongLabel: UILabel!
     @IBOutlet var playlistCoverImage: UIImageView!
+    @IBOutlet var playButtonTapped: UIButton!
+    @IBOutlet var shuffleButtonTapped: UIButton!
 
     var playlist: Playlist?
 
@@ -37,6 +39,9 @@ class SongElementsViewController: UIViewController {
 
     // https://discord.com/channels/1283435123232079933/1285117124041244765/1334221772609945730
     private func addGradient() {
+        // Remove existing gradient layers
+        playlistCoverImage.layer.sublayers?.removeAll(where: { $0 is CAGradientLayer })
+
         let gradientLayer = CAGradientLayer()
         gradientLayer.frame = CGRect(
             x: 0,
@@ -54,4 +59,5 @@ class SongElementsViewController: UIViewController {
 
         playlistCoverImage.layer.addSublayer(gradientLayer)
     }
+
 }
