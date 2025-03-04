@@ -70,7 +70,7 @@ extension TriTrackViewController {
         event.isAllDay = eventTVC.allDaySwitch.isOn
 
         if let repeatAfter = eventTVC.selectedRepeatOption {
-            event.recurrenceRules = createRecurrenceRule(for: repeatAfter)
+            event.recurrenceRules = TriTrackViewController.createRecurrenceRule(for: repeatAfter)
         }
         if let alertTime = eventTVC.selectedAlertTimeOption {
             event.addAlarm(EKAlarm(relativeOffset: -alertTime))
@@ -91,14 +91,14 @@ extension TriTrackViewController {
         reminder.notes = reminderTVC.notesField.text
         reminder.dueDateComponents = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute], from: reminderTVC.dateTime.date)
         reminder.calendar = createOrGetReminder()
-        reminder.recurrenceRules = createRecurrenceRule(for: reminderTVC.selectedRepeatOption)
+        reminder.recurrenceRules = TriTrackViewController.createRecurrenceRule(for: reminderTVC.selectedRepeatOption)
 
         Utils.createNotification(title: reminder.title, body: reminder.notes, date: reminder.dueDateComponents?.date!)
         try? TriTrackViewController.eventStore.save(reminder, commit: true)
         eventsViewController?.remindersTableViewController?.refreshData()
     }
 
-    private func createRecurrenceRule(for interval: TimeInterval?) -> [EKRecurrenceRule] {
+    static func createRecurrenceRule(for interval: TimeInterval?) -> [EKRecurrenceRule] {
         guard let interval, interval > 0 else { return [] }
 
         let (frequency, intervalValue): (EKRecurrenceFrequency, Int) = {

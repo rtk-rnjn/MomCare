@@ -10,18 +10,8 @@ import EventKit
 
 class AppointmentsTableViewController: UITableViewController {
 
-    // MARK: Internal
-
     var eventsViewController: EventsViewController?
-
     var events: [EKEvent]? = []
-    var store: EKEventStore?
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        guard let eventsVC = eventsViewController else { fatalError("eventsViewController is nil") }
-        store = TriTrackViewController.eventStore
-    }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -66,7 +56,7 @@ class AppointmentsTableViewController: UITableViewController {
             }
 
             let deleteAction = UIAction(title: "Delete", image: UIImage(systemName: "trash"), attributes: .destructive) { _ in
-                try? self.store?.remove(event, span: .thisEvent, commit: true)
+                try? TriTrackViewController.eventStore.remove(event, span: .thisEvent, commit: true)
                 self.refreshData()
             }
 
@@ -88,31 +78,26 @@ class AppointmentsTableViewController: UITableViewController {
         return 3
     }
 
-    func refreshData() {
-        events = fetchEvents()
-        tableView.reloadData()
-    }
-
-    // MARK: Private
-
-    private func fetchEvents() -> [EKEvent]? {
+    static func fetchEvents() -> [EKEvent]? {
         let startDate = Calendar.current.startOfDay(for: Date())
         let endDate = Calendar.current.date(byAdding: .month, value: 1, to: startDate)!
-        let ekCalendars = getCalendar(with: "TriTrackEvent")
+        let ekCalendars = AppointmentsTableViewController.getCalendar(with: "TriTrackEvent")
 
-        let predicate = store?.predicateForEvents(withStart: startDate, end: endDate, calendars: ekCalendars)
-        if let predicate {
-            return store?.events(matching: predicate)
-        }
-        return []
+        let predicate = TriTrackViewController.eventStore.predicateForEvents(withStart: startDate, end: endDate, calendars: ekCalendars)
+        return TriTrackViewController.eventStore.events(matching: predicate)
     }
 
-    private func getCalendar(with identifierKey: String) -> [EKCalendar]? {
-        if let identifier = UserDefaults.standard.string(forKey: identifierKey), let calendar = store?.calendar(withIdentifier: identifier) {
+    static func getCalendar(with identifierKey: String) -> [EKCalendar]? {
+        if let identifier = UserDefaults.standard.string(forKey: identifierKey), let calendar = TriTrackViewController.eventStore.calendar(withIdentifier: identifier) {
             return [calendar]
         }
 
         return []
+    }
+
+    func refreshData() {
+        events = AppointmentsTableViewController.fetchEvents()
+        tableView.reloadData()
     }
 
 }

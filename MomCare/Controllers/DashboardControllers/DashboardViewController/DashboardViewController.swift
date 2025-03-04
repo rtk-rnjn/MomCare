@@ -9,6 +9,7 @@ import UIKit
 import UserNotifications
 import HealthKit
 import HealthKitUI
+import EventKit
 
 class DashboardViewController: UIViewController, UICollectionViewDataSource {
 
@@ -16,6 +17,7 @@ class DashboardViewController: UIViewController, UICollectionViewDataSource {
 
     @IBOutlet var collectionView: UICollectionView!
     var healthStore: HKHealthStore?
+    var addEventTableViewController: AddEventTableViewController?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -27,6 +29,19 @@ class DashboardViewController: UIViewController, UICollectionViewDataSource {
             await requestAccessForNotification()
             DispatchQueue.main.async {
                 self.loadUser()
+            }
+        }
+    }
+
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "segueShowAddEventTableViewController" {
+            if let navigationController = segue.destination as? UINavigationController {
+                let addEventTableViewController = navigationController.viewControllers.first as? AddEventTableViewController
+                // add Done, Cancel in nav
+                self.addEventTableViewController = addEventTableViewController
+
+                addEventTableViewController?.navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(cancelAddEvent))
+                addEventTableViewController?.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(doneAddEvent))
             }
         }
     }
@@ -86,6 +101,57 @@ class DashboardViewController: UIViewController, UICollectionViewDataSource {
         }
 
         collectionView.register(UINib(nibName: headerIdentifier, bundle: nil), forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: headerIdentifier)
+    }
+
+    @objc private func cancelAddEvent() {
+        dismiss(animated: true)
+    }
+
+    @objc private func doneAddEvent() {
+        guard let eventTVC = addEventTableViewController,
+              let title = eventTVC.titleField.text else { return }
+        let event = EKEvent(eventStore: TriTrackViewController.eventStore)
+        event.title = title
+        event.location = ((eventTVC.locationField.text?.isEmpty) != nil) ? eventTVC.locationField.text : nil
+        event.startDate = eventTVC.startDateTimePicker.date
+        event.isAllDay = eventTVC.allDaySwitch.isOn
+
+        if let repeatAfter = eventTVC.selectedRepeatOption {
+            event.recurrenceRules = TriTrackViewController.createRecurrenceRule(for: repeatAfter)
+        }
+        if let alertTime = eventTVC.selectedAlertTimeOption {
+            event.addAlarm(EKAlarm(relativeOffset: -alertTime))
+        }
+        event.endDate = eventTVC.allDaySwitch.isOn ? event.startDate : eventTVC.endDateTimePicker.date.addingTimeInterval(eventTVC.selectedTravelTimeOption ?? 0)
+        event.calendar = createOrGetEvent()
+
+        try? TriTrackViewController.eventStore.save(event, span: .thisEvent, commit: true)
+        dismiss(animated: true)
+    }
+
+    private func createOrGetEvent() -> EKCalendar? {
+        return createOrGetCalendar(identifierKey: "TriTrackEvent", eventType: .event, title: "MomCare - TriTrack Calendar", defaultCalendar: TriTrackViewController.eventStore.defaultCalendarForNewEvents)
+    }
+
+    private func createOrGetCalendar(identifierKey: String, eventType: EKEntityType, title: String, defaultCalendar: EKCalendar?) -> EKCalendar? {
+        let identifier: String? = Utils.get(fromKey: identifierKey)
+        if let identifier {
+            return TriTrackViewController.eventStore.calendar(withIdentifier: identifier)
+        }
+
+        let newCalendar = EKCalendar(for: eventType, eventStore: TriTrackViewController.eventStore)
+        newCalendar.title = title
+        if let localSource = TriTrackViewController.eventStore.sources.first(where: { $0.sourceType == .local }) {
+            newCalendar.source = localSource
+        } else {
+            newCalendar.source = defaultCalendar?.source
+        }
+
+        UserDefaults.standard.set(newCalendar.calendarIdentifier, forKey: identifierKey)
+
+        try? TriTrackViewController.eventStore.saveCalendar(newCalendar, commit: true)
+
+        return newCalendar
     }
 
 }

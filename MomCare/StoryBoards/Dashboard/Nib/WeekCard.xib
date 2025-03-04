@@ -73,7 +73,7 @@
                         </constraints>
                     </view>
                     <stackView opaque="NO" contentMode="scaleToFill" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="GBR-KI-ShU">
-                        <rect key="frame" x="20" y="18" width="153" height="50"/>
+                        <rect key="frame" x="22.666666666666671" y="18" width="148" height="50"/>
                         <subviews>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="momImageDashboard" translatesAutoresizingMaskIntoConstraints="NO" id="IuD-AO-bWl">
                                 <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
@@ -83,7 +83,7 @@
                                 </constraints>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Week NaN" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Hs4-jE-uvO">
-                                <rect key="frame" x="55" y="0.0" width="98" height="50"/>
+                                <rect key="frame" x="55" y="0.0" width="93" height="50"/>
                                 <fontDescription key="fontDescription" style="UICTFontTextStyleTitle3"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -93,12 +93,11 @@
                 </subviews>
                 <constraints>
                     <constraint firstItem="l4e-Ak-oA3" firstAttribute="leading" secondItem="R7i-Bs-XTB" secondAttribute="leading" id="2rW-DZ-8Eb"/>
-                    <constraint firstItem="GBR-KI-ShU" firstAttribute="leading" secondItem="R7i-Bs-XTB" secondAttribute="leading" constant="20" id="9fb-nu-46b"/>
                     <constraint firstItem="GBR-KI-ShU" firstAttribute="top" secondItem="R7i-Bs-XTB" secondAttribute="top" constant="18" id="9hD-wm-sgH"/>
                     <constraint firstAttribute="trailing" secondItem="l4e-Ak-oA3" secondAttribute="trailing" id="N1D-Ot-l0e"/>
                     <constraint firstAttribute="bottom" secondItem="l4e-Ak-oA3" secondAttribute="bottom" id="gUU-eU-fOR"/>
                     <constraint firstItem="l4e-Ak-oA3" firstAttribute="centerX" secondItem="R7i-Bs-XTB" secondAttribute="centerX" id="jj9-dd-uq5"/>
-                    <constraint firstAttribute="trailing" secondItem="GBR-KI-ShU" secondAttribute="trailing" constant="20" id="mEr-Rh-cBB"/>
+                    <constraint firstItem="GBR-KI-ShU" firstAttribute="centerX" secondItem="R7i-Bs-XTB" secondAttribute="centerX" id="nRl-wC-DKr"/>
                 </constraints>
             </collectionViewCellContentView>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>

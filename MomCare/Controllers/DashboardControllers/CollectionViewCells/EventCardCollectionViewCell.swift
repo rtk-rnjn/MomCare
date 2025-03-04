@@ -26,21 +26,24 @@ class EventCardCollectionViewCell: UICollectionViewCell {
     // MARK: Internal
 
     @IBOutlet var upcomingEventLabel: UILabel!
+    @IBOutlet var eventDateLabel: UILabel!
 
     var tapHandler: (() -> Void)?
-    var addEditEKEventPresenter: ((EKEvent?) -> Void)?
+    var segueHandler: (() -> Void)?
     var event: EKEvent?
 
-    func updateElements(with event: EKEvent?, tapHandler: (() -> Void)? = nil, addEditEKEventPresenter: @escaping ((EKEvent?) -> Void)) {
+    func updateElements(with event: EKEvent?, tapHandler: (() -> Void)? = nil, segueHandler: @escaping (() -> Void)) {
         if let event {
             upcomingEventLabel.text = event.title
 
             let dateFormatter = DateFormatter()
             dateFormatter.dateFormat = "dd MMMM"
+            eventDateLabel.isHidden = false
+            eventDateLabel.text = dateFormatter.string(from: event.startDate)
         }
 
         self.tapHandler = tapHandler
-        self.addEditEKEventPresenter = addEditEKEventPresenter
+        self.segueHandler = segueHandler
         self.event = event
     }
 
@@ -55,23 +58,25 @@ class EventCardCollectionViewCell: UICollectionViewCell {
                     TriTrackViewController.eventStore = EKEventStore()
                     DispatchQueue.main.async {
                         _ = self.createOrGetEvent()
-                        self.addEditEKEventPresenter?(self.event)
+                        self.segueHandler?()
                     }
                 }
             }
 
         case .authorized:
-            addEditEKEventPresenter?(event)
+            segueHandler?()
         default:
             break
         }
     }
 
-    func createOrGetEvent() -> EKCalendar? {
+    // MARK: Private
+
+    private func createOrGetEvent() -> EKCalendar? {
         return createOrGetCalendar(identifierKey: "TriTrackEvent", eventType: .event, title: "MomCare - TriTrack Calendar", defaultCalendar: TriTrackViewController.eventStore.defaultCalendarForNewEvents)
     }
 
-    func createOrGetCalendar(identifierKey: String, eventType: EKEntityType, title: String, defaultCalendar: EKCalendar?) -> EKCalendar? {
+    private func createOrGetCalendar(identifierKey: String, eventType: EKEntityType, title: String, defaultCalendar: EKCalendar?) -> EKCalendar? {
         let identifier: String? = Utils.get(fromKey: identifierKey)
         if let identifier {
             return TriTrackViewController.eventStore.calendar(withIdentifier: identifier)
@@ -91,8 +96,6 @@ class EventCardCollectionViewCell: UICollectionViewCell {
 
         return newCalendar
     }
-
-    // MARK: Private
 
     private func setupGesture() {
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap))
