@@ -12,18 +12,15 @@ import HealthKitUI
 extension DashboardViewController {
 
     func requestAccessForHealth() {
-        self.healthStore = HKHealthStore()
-
-        guard let healthStore else { return }
-
         let allTypes = Set([
             HKQuantityType.quantityType(forIdentifier: .activeEnergyBurned)!,
             HKQuantityType.quantityType(forIdentifier: .stepCount)!,
             HKQuantityType.quantityType(forIdentifier: .appleExerciseTime)!,
+            HKQuantityType.quantityType(forIdentifier: .dietaryEnergyConsumed)!,
             HKObjectType.activitySummaryType()
         ])
 
-        healthStore.requestAuthorization(toShare: nil, read: allTypes) { success, _ in
+        DashboardViewController.healthStore.requestAuthorization(toShare: nil, read: allTypes) { success, _ in
             if success {
                 DispatchQueue.main.async {
                     self.collectionView.reloadData()
@@ -32,7 +29,7 @@ extension DashboardViewController {
         }
     }
 
-    func readStepCount(completionHandler: @escaping @Sendable (Double) -> Void) {
+    static func readStepCount(completionHandler: @escaping @Sendable (Double) -> Void) {
         guard let stepType = HKQuantityType.quantityType(forIdentifier: .stepCount) else { return }
 
         let calendar = Calendar.current
@@ -51,10 +48,10 @@ extension DashboardViewController {
             completionHandler(steps)
         }
 
-        healthStore?.execute(query)
+        DashboardViewController.healthStore.execute(query)
     }
 
-    func readCaloriesBurned(completionHandler: @escaping @Sendable (Double) -> Void) {
+    static func readCaloriesBurned(completionHandler: @escaping @Sendable (Double) -> Void) {
         guard let calorieType = HKQuantityType.quantityType(forIdentifier: .activeEnergyBurned) else { return }
 
         let calendar = Calendar.current
@@ -73,10 +70,10 @@ extension DashboardViewController {
             completionHandler(calories)
         }
 
-        healthStore?.execute(query)
+        DashboardViewController.healthStore.execute(query)
     }
 
-    func readWorkout(completionHandler: @escaping @Sendable (Double) -> Void) {
+    static func readWorkout(completionHandler: @escaping @Sendable (Double) -> Void) {
         let workoutType = HKWorkoutType.workoutType()
 
         let calendar = Calendar.current
@@ -95,7 +92,29 @@ extension DashboardViewController {
             completionHandler(totalMinutes)
         }
 
-        healthStore?.execute(query)
+        DashboardViewController.healthStore.execute(query)
+    }
+
+    static func readCaloriesIntake(completionHandler: @escaping @Sendable (Double) -> Void) {
+        let calorieType = HKQuantityType.quantityType(forIdentifier: .dietaryEnergyConsumed)
+
+        let calendar = Calendar.current
+        let now = Date()
+        let startDate = calendar.date(byAdding: .day, value: -1, to: now)
+
+        let predicate = HKQuery.predicateForSamples(withStart: startDate, end: now, options: .strictStartDate)
+
+        let query = HKStatisticsQuery(quantityType: calorieType!, quantitySamplePredicate: predicate, options: .cumulativeSum) { _, result, _ in
+            guard let result, let quantity = result.sumQuantity() else {
+                completionHandler(0)
+                return
+            }
+
+            let calories = quantity.doubleValue(for: .kilocalorie())
+            completionHandler(calories)
+        }
+
+        DashboardViewController.healthStore.execute(query)
     }
 
     func addHKActivityRing(to cellView: UIView, withSummary summary: HKActivitySummary? = nil) {
@@ -104,9 +123,9 @@ extension DashboardViewController {
         let activitySummary = summary ?? sampleHKSummary()
 
         let ringColors: [UIColor] = [
-            UIColor(hex: "FF3B30"),
-            UIColor(hex: "3AFB3A"),
-            UIColor(hex: "42A8F4")
+            UIColor(hex: "DF433D"),
+            UIColor(hex: "30D130"),
+            UIColor(hex: "DA6239")
         ]
 
         let maxValues = extractMaxValues(from: activitySummary)
@@ -154,7 +173,7 @@ extension DashboardViewController {
             let startAngle: CGFloat = -.pi / 2
             let endAngle: CGFloat = startAngle + (.pi * 2 * CGFloat(currentValues[index] / maxValues[index]))
 
-            let backgroundLayer = createRingLayer(center: center, radius: radius - (CGFloat(index) * ringWidth * 1.2), color: color.withAlphaComponent(0.2), lineWidth: ringWidth, startAngle: 0, endAngle: .pi * 2)
+            let backgroundLayer = createRingLayer(center: center, radius: radius - (CGFloat(index) * ringWidth * 1.2), color: color.withAlphaComponent(0.15), lineWidth: ringWidth, startAngle: 0, endAngle: .pi * 2)
             let progressLayer = createRingLayer(center: center, radius: radius - (CGFloat(index) * ringWidth * 1.2), color: color, lineWidth: ringWidth, startAngle: startAngle, endAngle: endAngle)
 
             cellView.layer.addSublayer(backgroundLayer)

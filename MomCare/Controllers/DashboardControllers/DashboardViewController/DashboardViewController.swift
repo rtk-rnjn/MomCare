@@ -11,14 +11,15 @@ import HealthKit
 import HealthKitUI
 import EventKit
 
-private let refreshControl = UIRefreshControl()
+private let refreshControl: UIRefreshControl = .init()
 
 class DashboardViewController: UIViewController, UICollectionViewDataSource {
 
     // MARK: Internal
 
+    static let healthStore: HKHealthStore = .init()
+
     @IBOutlet var collectionView: UICollectionView!
-    var healthStore: HKHealthStore?
     var addEventTableViewController: AddEventTableViewController?
 
     override func viewDidLoad() {
@@ -39,22 +40,10 @@ class DashboardViewController: UIViewController, UICollectionViewDataSource {
         refreshControl.addTarget(self, action: #selector(didPullToRefresh(_:)), for: .valueChanged)
     }
 
-    @objc private func didPullToRefresh(_ sender: Any) {
-        refreshControl.beginRefreshing()
-        loadUser()
-        self.collectionView.reloadData()
-        stopRefresh()
-    }
-
-    private func stopRefresh() {
-        refreshControl.endRefreshing()
-    }
-
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "segueShowAddEventTableViewController" {
             if let navigationController = segue.destination as? UINavigationController {
                 let addEventTableViewController = navigationController.viewControllers.first as? AddEventTableViewController
-                // add Done, Cancel in nav
                 self.addEventTableViewController = addEventTableViewController
 
                 addEventTableViewController?.navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(cancelAddEvent))
@@ -89,6 +78,17 @@ class DashboardViewController: UIViewController, UICollectionViewDataSource {
     private let cellIdentifiers = ["WelcomeHeaderCell", "WeekCard", "EventCard", "DietProgress", "ExerciseProgress", "FocusCard", "TipCard"]
     private let headerIdentifier = "SectionHeaderView"
     private let interItemSpacing: CGFloat = 15
+
+    @objc private func didPullToRefresh(_ sender: Any) {
+        refreshControl.beginRefreshing()
+        loadUser()
+        collectionView.reloadData()
+        stopRefresh()
+    }
+
+    private func stopRefresh() {
+        refreshControl.endRefreshing()
+    }
 
     private func loadUser() {
         Task {

@@ -249,6 +249,10 @@
                             </connections>
                         </barButtonItem>
                     </navigationItem>
+                    <connections>
+                        <outlet property="profileImageView" destination="t2U-Ce-jlT" id="Trm-jD-Hig"/>
+                        <outlet property="usernameLabel" destination="uTv-qT-fIp" id="1Vd-EL-bvP"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="JUh-xX-lZC" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
                 <exit id="yzs-dt-TCl" userLabel="Exit" sceneMemberID="exit"/>
@@ -395,6 +399,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hh2-8S-yjF" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="2876" y="763"/>
+            <point key="canvasLocation" x="1775" y="804"/>
         </scene>
         <!--Health Preferences-->
         <scene sceneID="94E-yF-1Qr">
@@ -931,6 +936,7 @@
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="ProfileInfoCell" rowHeight="45" id="fKA-d8-aMD">
                                         <rect key="frame" x="20" y="469.66666412353516" width="353" height="45"/>
+
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="fKA-d8-aMD" id="1qf-qO-v3Z">
                                             <rect key="frame" x="0.0" y="0.0" width="353" height="45"/>
@@ -965,6 +971,7 @@
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="ProfileInfoCell" rowHeight="45" id="c6L-6I-N5H">
                                         <rect key="frame" x="20" y="514.66666412353516" width="353" height="45"/>
+
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="c6L-6I-N5H" id="bHs-eL-52f">
                                             <rect key="frame" x="0.0" y="0.0" width="353" height="45"/>
@@ -997,6 +1004,40 @@
                                             </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="ProfileInfoCell" rowHeight="45" id="EjY-Yr-feZ">
+                                        <rect key="frame" x="20" y="559.33333587646484" width="353" height="45"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="EjY-Yr-feZ" id="gyX-tG-F7E">
+                                            <rect key="frame" x="0.0" y="0.0" width="353" height="45"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tft-FA-ggU">
+                                                    <rect key="frame" x="18" y="0.0" width="335" height="45"/>
+                                                    <subviews>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Phone Number" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yfC-YD-Wlu">
+                                                            <rect key="frame" x="0.0" y="0.0" width="102.66666666666667" height="45"/>
+                                                            <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
+                                                            <nil key="textColor"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KDt-YB-oIc">
+                                                            <rect key="frame" x="102.66666666666667" y="0.0" width="232.33333333333331" height="45"/>
+                                                            <state key="normal" title="Button"/>
+                                                            <buttonConfiguration key="configuration" style="plain" title="Not Set">
+                                                                <fontDescription key="titleFontDescription" style="UICTFontTextStyleSubhead"/>
+                                                            </buttonConfiguration>
+                                                        </button>
+                                                    </subviews>
+                                                </stackView>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="bottom" secondItem="tft-FA-ggU" secondAttribute="bottom" id="QH4-B9-Leq"/>
+                                                <constraint firstItem="tft-FA-ggU" firstAttribute="top" secondItem="gyX-tG-F7E" secondAttribute="top" id="eUN-a3-OfH"/>
+                                                <constraint firstAttribute="trailing" secondItem="tft-FA-ggU" secondAttribute="trailing" id="gTe-a4-4q9"/>
+                                                <constraint firstItem="tft-FA-ggU" firstAttribute="leading" secondItem="gyX-tG-F7E" secondAttribute="leading" constant="18" id="jfe-SS-n68"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
                                 </cells>
                             </tableViewSection>
                         </sections>
@@ -1008,10 +1049,22 @@
                     <navigationItem key="navigationItem" title="Personal Info" id="fSx-GN-9fR">
                         <barButtonItem key="rightBarButtonItem" style="plain" systemItem="edit" id="JCM-oP-LW2"/>
                     </navigationItem>
+                    <connections>
+                        <outlet property="userAge" destination="4mH-BL-Xih" id="oYc-nz-bgW"/>
+                        <outlet property="userCurrentWeight" destination="3sX-Uv-huM" id="5WO-Ib-C7G"/>
+                        <outlet property="userDOB" destination="IBk-Q3-oeJ" id="BTX-5d-oMO"/>
+                        <outlet property="userHeight" destination="DL1-df-SM3" id="2F7-eA-hPt"/>
+                        <outlet property="userName" destination="8vh-Gj-ASb" id="ZFY-8s-PFy"/>
+                        <outlet property="userPhoneNumber" destination="KDt-YB-oIc" id="0XW-xA-sFn"/>
+                        <outlet property="userPrePregnancyWeight" destination="2sJ-WY-ViJ" id="nNB-t1-1sf"/>
+                        <outlet property="userPregnancyDay" destination="UOl-9i-ZAh" id="5TV-m8-HSh"/>
+                        <outlet property="userPregnancyWeek" destination="7wA-In-p7P" id="37e-23-Tgf"/>
+                        <outlet property="userTrimester" destination="Kdj-XY-5Wc" id="MF8-G8-R81"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="gYL-Mc-ioF" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="691" y="763"/>
+            <point key="canvasLocation" x="2932" y="-693"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="Bth-gx-cbb">

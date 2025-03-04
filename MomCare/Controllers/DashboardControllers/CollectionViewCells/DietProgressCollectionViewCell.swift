@@ -29,30 +29,33 @@ class DietProgressCollectionViewCell: UICollectionViewCell {
     @IBOutlet var percentageLabel: UILabel!
 
     var tapHandler: (() -> Void)?
-    var dashboardViewController: DashboardViewController?
 
-    func updateElements(withTapHandler tapHandler: (() -> Void)? = nil, sender: Any? = nil) {
+    var currentCaloriesIntake: Int = 0
+
+    func updateElements(withTapHandler tapHandler: (() -> Void)? = nil) {
         self.tapHandler = tapHandler
 
-        let plan = MomCareUser.shared.user?.plan
+        updateLabels()
+        guard let dueDate = MomCareUser.shared.user?.medicalData?.dueDate else { return }
 
-        guard let plan else { return }
-        currentKcalLabel.text = "\(plan.currentCaloriesIntake)"
-        caloriesGoalLabel.text = "/ \(plan.caloriesGoal!) kcal"
+        let pregnancyData = Utils.pregnancyWeekAndDay(dueDate: dueDate)
+        let caloriesGoal = Utils.getCaloriesGoal(trimester: pregnancyData?.trimester ?? "")
+        caloriesGoalLabel.text = "/ \(Int(caloriesGoal)) kcal"
 
-        let progress = Float(plan.currentCaloriesIntake) / Float(plan.caloriesGoal!)
+        let progress = Float(currentCaloriesIntake) / Float(caloriesGoal)
         progressBar.progress = progress
         percentageLabel.text = "\(Int(progress * 100))%"
-
-        if let sender = sender as? DashboardViewController {
-            dashboardViewController = sender
-        }
     }
 
     // MARK: Private
 
     private func updateLabels() {
-        // TODO:
+        DashboardViewController.readCaloriesIntake { caloriesIntake in
+            DispatchQueue.main.async {
+                self.currentKcalLabel.text = "\(Int(caloriesIntake))"
+                self.currentCaloriesIntake = Int(caloriesIntake)
+            }
+        }
     }
 
     private func setupGesture() {
