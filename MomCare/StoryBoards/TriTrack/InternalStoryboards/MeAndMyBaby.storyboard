@@ -43,6 +43,10 @@
                             <constraint firstItem="6jf-2I-5pA" firstAttribute="top" secondItem="B7O-IU-9kw" secondAttribute="top" id="aX4-2b-mzP"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="MeAndMyBabyLowerView" destination="Emh-9T-5Vk" id="V88-ZM-avR"/>
+                        <outlet property="MeAndMyBabyUpperView" destination="aGr-Se-l3b" id="LFI-g4-svo"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ief-a0-LHa" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
@@ -149,6 +153,9 @@
                             <constraint firstItem="sFS-00-EZe" firstAttribute="top" secondItem="cz6-iJ-8fj" secondAttribute="bottom" id="wHU-54-2O6"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="BabyMomStatsTipLoweView" destination="Jwm-qL-4b5" id="lrC-ZJ-VQn"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="u8S-mt-msd" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
@@ -314,13 +321,24 @@
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" text="In week 8, the embryo looks more like a human, instead of an alien. The facial features become more defined..." textAlignment="natural" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iKK-Vy-Poh">
-                                                <rect key="frame" x="0.0" y="21.666666666666671" width="166.66666666666666" height="175.33333333333331"/>
+                                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" textAlignment="natural" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iKK-Vy-Poh">
+                                                <rect key="frame" x="0.0" y="21.666666666666671" width="166.66666666666666" height="143.33333333333331"/>
+                                                <string key="text">At week 19, your baby is about 6 inches long and developing tiny senses of touch, taste, and hearing! Their skin is covered in vernix caseosa, a protective layer to prevent dryness in the womb. You may feel more movement </string>
                                                 <color key="textColor" systemColor="labelColor"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                                 <dataDetectorType key="dataDetectorTypes" lookupSuggestion="YES"/>
                                             </textView>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3mW-wo-ARg">
+                                                <rect key="frame" x="0.0" y="165" width="166.66666666666666" height="32"/>
+                                                <state key="normal" title="Button"/>
+                                                <buttonConfiguration key="configuration" style="plain" title="See More">
+                                                    <fontDescription key="titleFontDescription" style="UICTFontTextStyleSubhead"/>
+                                                </buttonConfiguration>
+                                                <connections>
+                                                    <action selector="BabySeeMoreTapped:" destination="QJj-Wh-XkK" eventType="touchUpInside" id="lAO-ab-8wH"/>
+                                                </connections>
+                                            </button>
                                         </subviews>
                                         <color key="backgroundColor" red="0.93725490199999995" green="0.72549019609999998" blue="0.6588235294" alpha="1" colorSpace="calibratedRGB"/>
                                     </stackView>
@@ -333,13 +351,24 @@
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" text="Stay hydrated and combat nausea. Many women experience morning sickness and it can be challenging…" textAlignment="natural" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RRB-rF-KHN">
-                                                <rect key="frame" x="0.0" y="21.666666666666671" width="166.33333333333334" height="175.33333333333331"/>
+                                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" textAlignment="natural" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RRB-rF-KHN">
+                                                <rect key="frame" x="0.0" y="21.666666666666671" width="166.33333333333334" height="141"/>
+                                                <string key="text">At week 19, your baby is developing rapidly, and your body is working hard to support this growth. If your weight is lower than expected, focus on nutrient-rich foods ike avocados </string>
                                                 <color key="textColor" systemColor="labelColor"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                                 <dataDetectorType key="dataDetectorTypes" lookupSuggestion="YES"/>
                                             </textView>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0lb-Tc-FBe">
+                                                <rect key="frame" x="0.0" y="162.66666666666666" width="166.33333333333334" height="34.333333333333343"/>
+                                                <state key="normal" title="Button"/>
+                                                <buttonConfiguration key="configuration" style="plain" title="See More">
+                                                    <fontDescription key="titleFontDescription" style="UICTFontTextStyleSubhead"/>
+                                                </buttonConfiguration>
+                                                <connections>
+                                                    <action selector="MomSeeMoreTapped:" destination="QJj-Wh-XkK" eventType="touchUpInside" id="07X-US-Mnd"/>
+                                                </connections>
+                                            </button>
                                         </subviews>
                                         <color key="backgroundColor" red="0.93725490196078431" green="0.72549019607843135" blue="0.6588235294117647" alpha="1" colorSpace="calibratedRGB"/>
                                     </stackView>
@@ -364,7 +393,73 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="nR1-kZ-c1q" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2232.8244274809158" y="437.67605633802822"/>
+            <point key="canvasLocation" x="2232.8244274809158" y="437.32394366197184"/>
+        </scene>
+        <!--Mom Card View Controller-->
+        <scene sceneID="DKA-1J-IDk">
+            <objects>
+                <viewController storyboardIdentifier="FullScreenCardViewController" id="JXj-eN-8Sv" customClass="MomCardViewController" customModule="MomCare" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="46v-Sd-amz">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="Aa9-QS-bTK">
+                                <rect key="frame" x="20" y="79" width="353" height="719"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Mom" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="z4L-qU-Ehl">
+                                        <rect key="frame" x="139" y="0.0" width="75" height="40.666666666666664"/>
+                                        <fontDescription key="fontDescription" style="UICTFontTextStyleTitle0"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="justified" translatesAutoresizingMaskIntoConstraints="NO" id="5gD-yi-AGV">
+                                        <rect key="frame" x="0.0" y="60.666666666666686" width="353" height="658.33333333333326"/>
+                                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                        <mutableString key="text">At week 19, your baby is developing rapidly, and your body is working hard to support this growth. If your weight is lower than expected, focus on nutrient-rich foods like avocados, nuts, dairy, lean proteins, and whole grains to ensure both you and your baby get essential vitamins. You may also experience round ligament pain—a sharp ache in your lower belly. Try gentle stretching, proper posture, and warm compresses for relief. Staying hydrated and getting enough rest will also help. Listen to your body and consult your doctor if discomfort persists.                                 💖👶          #HealthyPregnancy</mutableString>
+                                        <color key="textColor" systemColor="labelColor"/>
+                                        <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                                        <textInputTraits key="textInputTraits" autocapitalizationType="sentences" smartDashesType="yes"/>
+                                    </textView>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstAttribute="bottom" secondItem="5gD-yi-AGV" secondAttribute="bottom" id="EJT-oQ-0Ly"/>
+                                    <constraint firstItem="5gD-yi-AGV" firstAttribute="top" secondItem="Aa9-QS-bTK" secondAttribute="top" constant="60.670000000000002" id="Snx-lh-sK1"/>
+                                    <constraint firstItem="5gD-yi-AGV" firstAttribute="leading" secondItem="Aa9-QS-bTK" secondAttribute="leading" id="qnQ-tZ-kpz"/>
+                                    <constraint firstAttribute="trailing" secondItem="5gD-yi-AGV" secondAttribute="trailing" id="z5F-qE-81C"/>
+                                </constraints>
+                            </stackView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="BTc-KW-Aac"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="Aa9-QS-bTK" firstAttribute="top" secondItem="BTc-KW-Aac" secondAttribute="top" constant="20" id="0aE-E9-dd2"/>
+                            <constraint firstItem="BTc-KW-Aac" firstAttribute="bottom" secondItem="Aa9-QS-bTK" secondAttribute="bottom" constant="20" id="25o-Q5-Fhk"/>
+                            <constraint firstItem="BTc-KW-Aac" firstAttribute="trailing" secondItem="Aa9-QS-bTK" secondAttribute="trailing" constant="20" id="5h7-7P-q22"/>
+                            <constraint firstItem="Aa9-QS-bTK" firstAttribute="leading" secondItem="BTc-KW-Aac" secondAttribute="leading" constant="20" id="jHS-lx-kb0"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="contentTextView" destination="5gD-yi-AGV" id="YXt-FH-tKd"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="RKd-pC-q0I" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1914" y="935"/>
+        </scene>
+        <!--Baby Card View Controller-->
+        <scene sceneID="065-1g-ToH">
+            <objects>
+                <viewController id="MjJ-ur-pvK" customClass="BabyCardViewController" customModule="MomCare" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="1LM-oQ-pPE">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <viewLayoutGuide key="safeArea" id="Xfy-HW-579"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="vvy-Vu-S02" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2752" y="935"/>
         </scene>
     </scenes>
     <resources>

@@ -8,7 +8,14 @@
 import UIKit
 
 class MeAndMyBabyViewController: UIViewController {
-
+    @IBOutlet var MeAndMyBabyUpperView: UIView!
+    @IBOutlet var MeAndMyBabyLowerView: UIView!
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+                
+    }
+        
     var trimesterData: TrimesterData? {
         let pregnancyData = Utils.pregnancyWeekAndDay(dueDate: MomCareUser.shared.user?.medicalData?.dueDate ?? Date())
         guard let pregnancyData else { return nil }
@@ -37,3 +44,4 @@ class MeAndMyBabyViewController: UIViewController {
         imageView.clipsToBounds = true
     }
 }
+
