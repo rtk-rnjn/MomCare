@@ -12,18 +12,15 @@ import HealthKitUI
 extension DashboardViewController {
 
     func requestAccessForHealth() {
-        self.healthStore = HKHealthStore()
-
-        guard let healthStore else { return }
-
         let allTypes = Set([
             HKQuantityType.quantityType(forIdentifier: .activeEnergyBurned)!,
             HKQuantityType.quantityType(forIdentifier: .stepCount)!,
             HKQuantityType.quantityType(forIdentifier: .appleExerciseTime)!,
+            HKQuantityType.quantityType(forIdentifier: .dietaryEnergyConsumed)!,
             HKObjectType.activitySummaryType()
         ])
 
-        healthStore.requestAuthorization(toShare: nil, read: allTypes) { success, _ in
+        DashboardViewController.healthStore.requestAuthorization(toShare: nil, read: allTypes) { success, _ in
             if success {
                 DispatchQueue.main.async {
                     self.collectionView.reloadData()
@@ -32,7 +29,7 @@ extension DashboardViewController {
         }
     }
 
-    func readStepCount(completionHandler: @escaping @Sendable (Double) -> Void) {
+    static func readStepCount(completionHandler: @escaping @Sendable (Double) -> Void) {
         guard let stepType = HKQuantityType.quantityType(forIdentifier: .stepCount) else { return }
 
         let calendar = Calendar.current
@@ -51,10 +48,10 @@ extension DashboardViewController {
             completionHandler(steps)
         }
 
-        healthStore?.execute(query)
+        DashboardViewController.healthStore.execute(query)
     }
 
-    func readCaloriesBurned(completionHandler: @escaping @Sendable (Double) -> Void) {
+    static func readCaloriesBurned(completionHandler: @escaping @Sendable (Double) -> Void) {
         guard let calorieType = HKQuantityType.quantityType(forIdentifier: .activeEnergyBurned) else { return }
 
         let calendar = Calendar.current
@@ -73,10 +70,10 @@ extension DashboardViewController {
             completionHandler(calories)
         }
 
-        healthStore?.execute(query)
+        DashboardViewController.healthStore.execute(query)
     }
 
-    func readWorkout(completionHandler: @escaping @Sendable (Double) -> Void) {
+    static func readWorkout(completionHandler: @escaping @Sendable (Double) -> Void) {
         let workoutType = HKWorkoutType.workoutType()
 
         let calendar = Calendar.current
@@ -95,10 +92,10 @@ extension DashboardViewController {
             completionHandler(totalMinutes)
         }
 
-        healthStore?.execute(query)
+        DashboardViewController.healthStore.execute(query)
     }
 
-    func readCaloriesIntake(completionHandler: @escaping @Sendable (Double) -> Void) {
+    static func readCaloriesIntake(completionHandler: @escaping @Sendable (Double) -> Void) {
         let calorieType = HKQuantityType.quantityType(forIdentifier: .dietaryEnergyConsumed)
 
         let calendar = Calendar.current
@@ -116,8 +113,8 @@ extension DashboardViewController {
             let calories = quantity.doubleValue(for: .kilocalorie())
             completionHandler(calories)
         }
-        
-        healthStore?.execute(query)
+
+        DashboardViewController.healthStore.execute(query)
     }
 
     func addHKActivityRing(to cellView: UIView, withSummary summary: HKActivitySummary? = nil) {

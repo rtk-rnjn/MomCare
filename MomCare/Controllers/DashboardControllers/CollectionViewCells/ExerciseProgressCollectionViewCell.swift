@@ -29,25 +29,19 @@ class ExerciseProgressCollectionViewCell: UICollectionViewCell {
     @IBOutlet var activityView: UIView!
 
     var tapHandler: (() -> Void)?
-    var dashboardViewController: DashboardViewController?
 
-    func updateElements(withTapHandler tapHandler: (() -> Void)? = nil, sender: Any? = nil) {
+    func updateElements(withTapHandler tapHandler: (() -> Void)? = nil) {
         self.tapHandler = tapHandler
 
-        if let sender = sender as? DashboardViewController {
-            dashboardViewController = sender
-
-            updateStepsLabel()
-            updateExerciseDurationLabel()
-            updateCaloriesBurnedLabel()
-        }
+        updateStepsLabel()
+        updateExerciseDurationLabel()
+        updateCaloriesBurnedLabel()
     }
 
     // MARK: Private
 
     private func updateStepsLabel() {
-        guard let dashboardViewController else { return }
-        dashboardViewController.readStepCount { steps in
+        DashboardViewController.readStepCount { steps in
             DispatchQueue.main.async {
                 self.stepsLabel.text = "\(Int(steps))"
             }
@@ -55,8 +49,7 @@ class ExerciseProgressCollectionViewCell: UICollectionViewCell {
     }
 
     private func updateExerciseDurationLabel() {
-        guard let dashboardViewController else { return }
-        dashboardViewController.readWorkout { duration in
+        DashboardViewController.readWorkout { duration in
             DispatchQueue.main.async {
                 self.exerciseDurationLabel.text = "\(round(Double(duration)))"
             }
@@ -64,8 +57,7 @@ class ExerciseProgressCollectionViewCell: UICollectionViewCell {
     }
 
     private func updateCaloriesBurnedLabel() {
-        guard let dashboardViewController else { return }
-        dashboardViewController.readCaloriesBurned { calories in
+        DashboardViewController.readCaloriesBurned { calories in
             DispatchQueue.main.async {
                 self.caloriesBurnedLabel.text = "\(Int(calories))"
             }

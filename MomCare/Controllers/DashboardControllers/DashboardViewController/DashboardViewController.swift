@@ -17,8 +17,9 @@ class DashboardViewController: UIViewController, UICollectionViewDataSource {
 
     // MARK: Internal
 
+    static let healthStore: HKHealthStore = .init()
+
     @IBOutlet var collectionView: UICollectionView!
-    var healthStore: HKHealthStore?
     var addEventTableViewController: AddEventTableViewController?
 
     override func viewDidLoad() {
