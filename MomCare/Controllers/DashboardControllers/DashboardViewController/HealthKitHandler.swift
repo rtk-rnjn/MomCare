@@ -124,9 +124,9 @@ extension DashboardViewController {
         let activitySummary = summary ?? sampleHKSummary()
 
         let ringColors: [UIColor] = [
-            UIColor(hex: "FF3B30"),
-            UIColor(hex: "3AFB3A"),
-            UIColor(hex: "42A8F4")
+            UIColor(hex: "DF433D"),
+            UIColor(hex: "30D130"),
+            UIColor(hex: "DA6239")
         ]
 
         let maxValues = extractMaxValues(from: activitySummary)
@@ -174,7 +174,7 @@ extension DashboardViewController {
             let startAngle: CGFloat = -.pi / 2
             let endAngle: CGFloat = startAngle + (.pi * 2 * CGFloat(currentValues[index] / maxValues[index]))
 
-            let backgroundLayer = createRingLayer(center: center, radius: radius - (CGFloat(index) * ringWidth * 1.2), color: color.withAlphaComponent(0.2), lineWidth: ringWidth, startAngle: 0, endAngle: .pi * 2)
+            let backgroundLayer = createRingLayer(center: center, radius: radius - (CGFloat(index) * ringWidth * 1.2), color: color.withAlphaComponent(0.15), lineWidth: ringWidth, startAngle: 0, endAngle: .pi * 2)
             let progressLayer = createRingLayer(center: center, radius: radius - (CGFloat(index) * ringWidth * 1.2), color: color, lineWidth: ringWidth, startAngle: startAngle, endAngle: endAngle)
 
             cellView.layer.addSublayer(backgroundLayer)
