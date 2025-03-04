@@ -49,7 +49,7 @@ enum FrontPageData {
 enum CountryData {
     public static let countryCodes: [String: String] = [
         "91": "India",
-        "92": "Pakistan",
+        "92": "Pakistan"
         // https://pastebin.com/raw/AE0Q8cJM
     ]
 }

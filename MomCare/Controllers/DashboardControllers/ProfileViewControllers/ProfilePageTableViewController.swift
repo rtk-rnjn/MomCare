@@ -15,7 +15,7 @@ class ProfilePageTableViewController: UITableViewController {
         super.viewDidLoad()
         updateElements()
     }
-    
+
     func updateElements() {
         usernameLabel.text = MomCareUser.shared.user?.fullName
     }

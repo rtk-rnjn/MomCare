@@ -15,7 +15,7 @@ class SongElementsViewController: UIViewController {
     @IBOutlet var playlistCoverImage: UIImageView!
     @IBOutlet var playButtonTapped: UIButton!
     @IBOutlet var shuffleButtonTapped: UIButton!
-    
+
     var playlist: Playlist?
 
     override func viewWillAppear(_ animated: Bool) {
