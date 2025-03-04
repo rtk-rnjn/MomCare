@@ -20,31 +20,31 @@
                         <rect key="frame" x="20" y="20" width="159" height="130"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0% Completed" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kjt-Iv-zfB">
-                                <rect key="frame" x="0.0" y="0.0" width="159" height="31.333333333333332"/>
+                                <rect key="frame" x="0.0" y="0.0" width="159" height="20"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="31.333333333333332" id="NqA-4I-yob"/>
+                                    <constraint firstAttribute="height" constant="20" id="NqA-4I-yob"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
                                 <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" spacing="7" translatesAutoresizingMaskIntoConstraints="NO" id="fBx-RF-2kX">
-                                <rect key="frame" x="0.0" y="45.333333333333321" width="159" height="84.666666666666686"/>
+                                <rect key="frame" x="0.0" y="34" width="159" height="96"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Exercise : Breathing" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="o1o-GA-tKR">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" text="Exercise : Breathing" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="o1o-GA-tKR">
                                         <rect key="frame" x="0.0" y="0.0" width="159" height="20.333333333333332"/>
                                         <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="20 Min" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sY5-wg-nOl">
-                                        <rect key="frame" x="0.0" y="27.333333333333343" width="52.333333333333336" height="20.333333333333329"/>
+                                        <rect key="frame" x="0.0" y="27.333333333333329" width="52.333333333333336" height="31.666666666666671"/>
                                         <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DrK-HL-rQJ">
-                                        <rect key="frame" x="0.0" y="54.666666666666671" width="100" height="30"/>
+                                        <rect key="frame" x="0.0" y="66" width="100" height="30"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="100" id="ZUL-xM-ZyP"/>
                                             <constraint firstAttribute="height" constant="30" id="ezt-XX-u6J"/>

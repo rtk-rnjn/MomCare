@@ -22,14 +22,8 @@
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" alignment="top" spacing="-2" translatesAutoresizingMaskIntoConstraints="NO" id="f6l-Qv-9NA">
                                 <rect key="frame" x="15" y="3" width="158" height="44"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="Day NaN" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4hE-5Q-NoJ">
-                                        <rect key="frame" x="0.0" y="0.0" width="69" height="23"/>
-                                        <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
-                                        <nil key="textColor"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Trimester NaN" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wxO-xS-gha">
-                                        <rect key="frame" x="0.0" y="21" width="115" height="23"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="115" height="44"/>
                                         <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
@@ -72,18 +66,17 @@
                             <constraint firstAttribute="trailing" secondItem="f6l-Qv-9NA" secondAttribute="trailing" constant="20" id="vEk-up-sas"/>
                         </constraints>
                     </view>
-                    <stackView opaque="NO" contentMode="scaleToFill" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="GBR-KI-ShU">
-                        <rect key="frame" x="22.666666666666671" y="18" width="148" height="50"/>
+                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" translatesAutoresizingMaskIntoConstraints="NO" id="Q3B-07-XVm">
+                        <rect key="frame" x="16" y="25.000000000000004" width="101" height="50.333333333333343"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="momImageDashboard" translatesAutoresizingMaskIntoConstraints="NO" id="IuD-AO-bWl">
-                                <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="50" id="Xbs-st-X2y"/>
-                                    <constraint firstAttribute="width" constant="50" id="s6U-8x-c74"/>
-                                </constraints>
-                            </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Week NaN" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Hs4-jE-uvO">
-                                <rect key="frame" x="55" y="0.0" width="93" height="50"/>
+                                <rect key="frame" x="0.0" y="0.0" width="101" height="26.333333333333332"/>
+                                <fontDescription key="fontDescription" style="UICTFontTextStyleTitle2"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="Day NaN" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4hE-5Q-NoJ">
+                                <rect key="frame" x="0.0" y="26.333333333333336" width="77.666666666666671" height="24"/>
                                 <fontDescription key="fontDescription" style="UICTFontTextStyleTitle3"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -93,11 +86,11 @@
                 </subviews>
                 <constraints>
                     <constraint firstItem="l4e-Ak-oA3" firstAttribute="leading" secondItem="R7i-Bs-XTB" secondAttribute="leading" id="2rW-DZ-8Eb"/>
-                    <constraint firstItem="GBR-KI-ShU" firstAttribute="top" secondItem="R7i-Bs-XTB" secondAttribute="top" constant="18" id="9hD-wm-sgH"/>
                     <constraint firstAttribute="trailing" secondItem="l4e-Ak-oA3" secondAttribute="trailing" id="N1D-Ot-l0e"/>
+                    <constraint firstItem="l4e-Ak-oA3" firstAttribute="top" secondItem="Q3B-07-XVm" secondAttribute="bottom" constant="11.670000076293945" id="gT8-Ch-k9A"/>
                     <constraint firstAttribute="bottom" secondItem="l4e-Ak-oA3" secondAttribute="bottom" id="gUU-eU-fOR"/>
                     <constraint firstItem="l4e-Ak-oA3" firstAttribute="centerX" secondItem="R7i-Bs-XTB" secondAttribute="centerX" id="jj9-dd-uq5"/>
-                    <constraint firstItem="GBR-KI-ShU" firstAttribute="centerX" secondItem="R7i-Bs-XTB" secondAttribute="centerX" id="nRl-wC-DKr"/>
+                    <constraint firstItem="Q3B-07-XVm" firstAttribute="leading" secondItem="R7i-Bs-XTB" secondAttribute="leading" constant="16" id="uod-CZ-kga"/>
                 </constraints>
             </collectionViewCellContentView>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -118,6 +111,5 @@
     </objects>
     <resources>
         <image name="calendar" catalog="system" width="128" height="107"/>
-        <image name="momImageDashboard" width="931" height="931"/>
     </resources>
 </document>

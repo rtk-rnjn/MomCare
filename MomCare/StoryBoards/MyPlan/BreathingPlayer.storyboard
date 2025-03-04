@@ -16,7 +16,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" alignment="center" spacing="30" translatesAutoresizingMaskIntoConstraints="NO" id="sIN-rK-h4F">
-                                <rect key="frame" x="20" y="663" width="353" height="130"/>
+                                <rect key="frame" x="20" y="588" width="353" height="130"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Tfx-SB-n5l">
                                         <rect key="frame" x="151.66666666666666" y="0.0" width="50" height="50"/>
@@ -70,7 +70,7 @@
                         <viewLayoutGuide key="safeArea" id="vDu-zF-Fre"/>
                         <color key="backgroundColor" red="0.8980392157" green="0.83144223689999996" blue="0.82744789119999995" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                         <constraints>
-                            <constraint firstItem="vDu-zF-Fre" firstAttribute="bottom" secondItem="sIN-rK-h4F" secondAttribute="bottom" constant="25" id="7Fh-AD-syd"/>
+                            <constraint firstItem="vDu-zF-Fre" firstAttribute="bottom" secondItem="sIN-rK-h4F" secondAttribute="bottom" constant="100" id="7Fh-AD-syd"/>
                             <constraint firstItem="vDu-zF-Fre" firstAttribute="trailing" secondItem="sIN-rK-h4F" secondAttribute="trailing" constant="20" id="CoV-Xl-liQ"/>
                             <constraint firstItem="sIN-rK-h4F" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" constant="20" id="fGz-0L-UMO"/>
                             <constraint firstItem="sIN-rK-h4F" firstAttribute="centerX" secondItem="5EZ-qb-Rvc" secondAttribute="centerX" id="o1m-0Q-JP5"/>

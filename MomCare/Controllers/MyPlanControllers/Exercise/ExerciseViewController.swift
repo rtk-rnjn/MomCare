@@ -11,19 +11,19 @@ class ExerciseViewController: UIViewController, UICollectionViewDelegate, UIColl
 
     var exercises: Int = 5
 
-    @IBOutlet var exerciseCollectionView: UICollectionView!
+    @IBOutlet var collectionView: UICollectionView!
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        exerciseCollectionView.register(UINib(nibName: "ExerciseDateCell", bundle: nil), forCellWithReuseIdentifier: "ExerciseDate")
-        exerciseCollectionView.register(UINib(nibName: "WalkCellMyPlan", bundle: nil), forCellWithReuseIdentifier: "WalkCellMyPlan")
-        exerciseCollectionView.register(UINib(nibName: "ExerciseCell", bundle: nil), forCellWithReuseIdentifier: "ExerciseCell")
-        exerciseCollectionView.register(UINib(nibName: "BreathingCell", bundle: nil), forCellWithReuseIdentifier: "BreathingCell")
+        collectionView.register(UINib(nibName: "ExerciseDateCell", bundle: nil), forCellWithReuseIdentifier: "ExerciseDate")
+        collectionView.register(UINib(nibName: "WalkCellMyPlan", bundle: nil), forCellWithReuseIdentifier: "WalkCellMyPlan")
+        collectionView.register(UINib(nibName: "ExerciseCell", bundle: nil), forCellWithReuseIdentifier: "ExerciseCell")
+        collectionView.register(UINib(nibName: "BreathingCell", bundle: nil), forCellWithReuseIdentifier: "BreathingCell")
 
-        exerciseCollectionView.showsVerticalScrollIndicator = false
+        collectionView.showsVerticalScrollIndicator = false
 
-        exerciseCollectionView.delegate = self
-        exerciseCollectionView.dataSource = self
+        collectionView.delegate = self
+        collectionView.dataSource = self
 
     }
 
@@ -52,7 +52,6 @@ class ExerciseViewController: UIViewController, UICollectionViewDelegate, UIColl
 
             guard let cell else { fatalError() }
             cell.prepareViewRings()
-//            cell.setupRing()
             return cell
 
         } else if indexPath.item == 1 {
@@ -88,7 +87,7 @@ class ExerciseViewController: UIViewController, UICollectionViewDelegate, UIColl
     }
 
     func updateExerciseCardItems(buttonValue: String, completedPercent: Double) {
-        if let cell = exerciseCollectionView.cellForItem(at: IndexPath(item: 2, section: 0)) as? ExerciseCollectionViewCell {
+        if let cell = collectionView.cellForItem(at: IndexPath(item: 2, section: 0)) as? ExerciseCollectionViewCell {
             cell.exerciseStartButton.setTitle(buttonValue, for: .normal)
             cell.exerciseCompletionPercentage.text = "\(Int(completedPercent))% completed"
         }

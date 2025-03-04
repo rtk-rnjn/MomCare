@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import HealthKit
 
 class ContentTableViewCell: UITableViewCell {
 
@@ -33,33 +34,29 @@ class ContentTableViewCell: UITableViewCell {
     }
 
     @IBAction func foodItemButtonTapped(_ sender: UIButton) {
-        var consumed: Bool
-        switch indexPath?.section {
-        // fix: cases <Int> should be replaced with MealType enum cases
-        case 0:
-            consumed = MomCareUser.shared.markFoodAsConsumed(foodItem!, in: MealType.breakfast)
-        case 1:
-            consumed = MomCareUser.shared.markFoodAsConsumed(foodItem!, in: MealType.lunch)
-        case 2:
-            consumed = MomCareUser.shared.markFoodAsConsumed(foodItem!, in: MealType.snacks)
-        case 3:
-            consumed = MomCareUser.shared.markFoodAsConsumed(foodItem!, in: MealType.dinner)
-        default:
-            fatalError()
-        }
+        var consumed = false
+        guard let indexPath, let dietTableViewController else { return }
+
+        dietTableViewController.foodData[indexPath.section][indexPath.row - 1].consumed.toggle()
+        consumed = dietTableViewController.foodData[indexPath.section][indexPath.row - 1].consumed
+
         let configuration = UIImage.SymbolConfiguration(scale: .small)
+
+        DietViewController.addCalories(energy: Double(foodItem?.calories ?? 0), consumed: consumed)
+        DietViewController.addCarbs(carbs: Double(foodItem?.carbs ?? 0), consumed: consumed)
+        DietViewController.addProtein(protein: Double(foodItem?.protein ?? 0), consumed: consumed)
+        DietViewController.addFats(fats: Double(foodItem?.fat ?? 0), consumed: consumed)
+
         if consumed {
             sender.setImage(UIImage(systemName: "checkmark.circle.fill", withConfiguration: configuration)?.withTintColor(color), for: .normal)
         } else {
             sender.setImage(UIImage(systemName: "circle", withConfiguration: configuration)?.withTintColor(color), for: .normal)
         }
-        dietTableViewController?.dietViewController.refresh()
+        dietTableViewController.dietViewController.refresh()
     }
 
     // MARK: Private
 
     private var dietTableViewController: DietTableViewController?
-
     private let color: UIColor = .init(hex: "924350")
-
 }

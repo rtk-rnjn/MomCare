@@ -19,14 +19,27 @@ class DietTableViewController: UITableViewController {
 
     var dietViewController: DietViewController
 
+    var foodData: [[FoodItem]] = [
+        [SampleFoodData.uniqueFoodItems[0], SampleFoodData.uniqueFoodItems[1]],
+        [SampleFoodData.uniqueFoodItems[2], SampleFoodData.uniqueFoodItems[3]],
+        [SampleFoodData.uniqueFoodItems[4], SampleFoodData.uniqueFoodItems[5]],
+        [SampleFoodData.uniqueFoodItems[6], SampleFoodData.uniqueFoodItems[7]]
+    ]
+
+    var proteinGoal: Double {
+        return Double(SampleFoodData.uniqueFoodItems.reduce(0) { $0 + $1.protein })
+    }
+
+    var carbsGoal: Double {
+        return Double(SampleFoodData.uniqueFoodItems.reduce(0) { $0 + $1.carbs })
+    }
+
+    var fatsGoal: Double {
+        return Double(SampleFoodData.uniqueFoodItems.reduce(0) { $0 + $1.fat })
+    }
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        foodData = [
-            [SampleFoodData.uniqueFoodItems[0], SampleFoodData.uniqueFoodItems[1]],
-            [SampleFoodData.uniqueFoodItems[2], SampleFoodData.uniqueFoodItems[3]],
-            [SampleFoodData.uniqueFoodItems[4], SampleFoodData.uniqueFoodItems[5]],
-            [SampleFoodData.uniqueFoodItems[6], SampleFoodData.uniqueFoodItems[7]]
-        ]
         tableView.reloadData()
     }
 
@@ -62,7 +75,7 @@ class DietTableViewController: UITableViewController {
         let cell = tableView.dequeueReusableCell(withIdentifier: "ContentCell", for: indexPath) as? ContentTableViewCell
         guard let cell else { fatalError("'ContentCell' not found") }
 
-        let foodItem = getFoods(with: indexPath)
+        let foodItem = getFood(with: indexPath)
         cell.updateElements(with: foodItem, at: indexPath, of: self)
 
         return cell
@@ -74,13 +87,11 @@ class DietTableViewController: UITableViewController {
 
     @IBAction func unwindToMyPlanDiet(_ segue: UIStoryboardSegue) {}
 
-    // MARK: Private
-
-    private var mealNames = ["Breakfast", "Lunch", "Snacks", "Dinner"]
-    private var foodData: [[FoodItem]] = []
-
-    private func getFoods(with indexPath: IndexPath) -> FoodItem {
+    func getFood(with indexPath: IndexPath) -> FoodItem {
         return foodData[indexPath.section][indexPath.row - 1]
     }
 
+    // MARK: Private
+
+    private var mealNames = ["Breakfast", "Lunch", "Snacks", "Dinner"]
 }
