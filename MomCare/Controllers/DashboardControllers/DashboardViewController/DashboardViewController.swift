@@ -54,7 +54,6 @@ class DashboardViewController: UIViewController, UICollectionViewDataSource {
         if segue.identifier == "segueShowAddEventTableViewController" {
             if let navigationController = segue.destination as? UINavigationController {
                 let addEventTableViewController = navigationController.viewControllers.first as? AddEventTableViewController
-                // add Done, Cancel in nav
                 self.addEventTableViewController = addEventTableViewController
 
                 addEventTableViewController?.navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(cancelAddEvent))

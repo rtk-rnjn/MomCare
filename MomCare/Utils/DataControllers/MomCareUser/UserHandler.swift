@@ -82,7 +82,9 @@ extension MomCareUser {
     func isUserSignedUp() -> Bool {
         let isSignedUp: Bool? = Utils.get(fromKey: UserDefaultsKey.signedUp.rawValue, withDefaultValue: false)
         let mongoUserID: String? = Utils.get(fromKey: UserDefaultsKey.mongoUserId.rawValue)
-        return (isSignedUp ?? false) && mongoUserID?.isEmpty == nil
+
+        guard let isSignedUp, let mongoUserID else { return false }
+        return isSignedUp && !mongoUserID.isEmpty
     }
 
     private func fetchUserFromDatabase() async -> Bool {
