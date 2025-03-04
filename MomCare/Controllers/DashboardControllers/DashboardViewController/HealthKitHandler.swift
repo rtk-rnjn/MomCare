@@ -116,6 +116,8 @@ extension DashboardViewController {
             let calories = quantity.doubleValue(for: .kilocalorie())
             completionHandler(calories)
         }
+        
+        healthStore?.execute(query)
     }
 
     func addHKActivityRing(to cellView: UIView, withSummary summary: HKActivitySummary? = nil) {
