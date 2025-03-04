@@ -51,8 +51,10 @@ enum Utils {
 
     // MARK: - User Defaults
 
-    public static func save<T>(forKey key: UserDefaultsKey, withValue value: T) {
-        UserDefaults.standard.set(value, forKey: key.rawValue)
+    public static func save<T>(forKey key: UserDefaultsKey, withValue value: T?) {
+        if let value {
+            UserDefaults.standard.set(value, forKey: key.rawValue)
+        }
     }
 
     public static func get<T>(fromKey: String, withDefaultValue: Any? = nil) -> T? {

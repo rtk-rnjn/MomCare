@@ -11,6 +11,8 @@ import HealthKit
 import HealthKitUI
 import EventKit
 
+private let refreshControl = UIRefreshControl()
+
 class DashboardViewController: UIViewController, UICollectionViewDataSource {
 
     // MARK: Internal
@@ -23,6 +25,8 @@ class DashboardViewController: UIViewController, UICollectionViewDataSource {
         super.viewDidLoad()
         setupCollectionView()
         collectionView.showsVerticalScrollIndicator = false
+        collectionView.alwaysBounceVertical = true
+        collectionView.refreshControl = refreshControl
         requestAccessForHealth()
 
         Task {
@@ -31,6 +35,19 @@ class DashboardViewController: UIViewController, UICollectionViewDataSource {
                 self.loadUser()
             }
         }
+
+        refreshControl.addTarget(self, action: #selector(didPullToRefresh(_:)), for: .valueChanged)
+    }
+
+    @objc private func didPullToRefresh(_ sender: Any) {
+        refreshControl.beginRefreshing()
+        loadUser()
+        self.collectionView.reloadData()
+        stopRefresh()
+    }
+
+    private func stopRefresh() {
+        refreshControl.endRefreshing()
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -126,7 +143,9 @@ class DashboardViewController: UIViewController, UICollectionViewDataSource {
         event.calendar = createOrGetEvent()
 
         try? TriTrackViewController.eventStore.save(event, span: .thisEvent, commit: true)
-        dismiss(animated: true)
+        dismiss(animated: true) {
+            self.collectionView.reloadSections([1])
+        }
     }
 
     private func createOrGetEvent() -> EKCalendar? {
