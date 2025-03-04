@@ -12,15 +12,25 @@ import HealthKitUI
 extension DashboardViewController {
 
     func requestAccessForHealth() {
-        let allTypes = Set([
+        let readTypes = Set([
             HKQuantityType.quantityType(forIdentifier: .activeEnergyBurned)!,
             HKQuantityType.quantityType(forIdentifier: .stepCount)!,
             HKQuantityType.quantityType(forIdentifier: .appleExerciseTime)!,
             HKQuantityType.quantityType(forIdentifier: .dietaryEnergyConsumed)!,
+            HKQuantityType.quantityType(forIdentifier: .dietaryProtein)!,
+            HKQuantityType.quantityType(forIdentifier: .dietaryCarbohydrates)!,
+            HKQuantityType.quantityType(forIdentifier: .dietaryFatTotal)!,
             HKObjectType.activitySummaryType()
         ])
 
-        DashboardViewController.healthStore.requestAuthorization(toShare: nil, read: allTypes) { success, _ in
+        let writeTypes = Set([
+            HKQuantityType.quantityType(forIdentifier: .dietaryEnergyConsumed)!,
+            HKQuantityType.quantityType(forIdentifier: .dietaryProtein)!,
+            HKQuantityType.quantityType(forIdentifier: .dietaryCarbohydrates)!,
+            HKQuantityType.quantityType(forIdentifier: .dietaryFatTotal)!
+        ])
+
+        DashboardViewController.healthStore.requestAuthorization(toShare: writeTypes, read: readTypes) { success, _ in
             if success {
                 DispatchQueue.main.async {
                     self.collectionView.reloadData()
@@ -112,6 +122,72 @@ extension DashboardViewController {
 
             let calories = quantity.doubleValue(for: .kilocalorie())
             completionHandler(calories)
+        }
+
+        DashboardViewController.healthStore.execute(query)
+    }
+
+    static func readTotalFat(completionHandler: @escaping @Sendable (Double) -> Void) {
+        let fatType = HKQuantityType.quantityType(forIdentifier: .dietaryFatTotal)
+
+        let calendar = Calendar.current
+        let now = Date()
+        let startDate = calendar.date(byAdding: .day, value: -1, to: now)
+
+        let predicate = HKQuery.predicateForSamples(withStart: startDate, end: now, options: .strictStartDate)
+
+        let query = HKStatisticsQuery(quantityType: fatType!, quantitySamplePredicate: predicate, options: .cumulativeSum) { _, result, _ in
+            guard let result, let quantity = result.sumQuantity() else {
+                completionHandler(0)
+                return
+            }
+
+            let fat = quantity.doubleValue(for: .gram())
+            completionHandler(fat)
+        }
+
+        DashboardViewController.healthStore.execute(query)
+    }
+
+    static func readTotalProtein(completionHandler: @escaping @Sendable (Double) -> Void) {
+        let proteinType = HKQuantityType.quantityType(forIdentifier: .dietaryProtein)
+
+        let calendar = Calendar.current
+        let now = Date()
+        let startDate = calendar.date(byAdding: .day, value: -1, to: now)
+
+        let predicate = HKQuery.predicateForSamples(withStart: startDate, end: now, options: .strictStartDate)
+
+        let query = HKStatisticsQuery(quantityType: proteinType!, quantitySamplePredicate: predicate, options: .cumulativeSum) { _, result, _ in
+            guard let result, let quantity = result.sumQuantity() else {
+                completionHandler(0)
+                return
+            }
+
+            let protein = quantity.doubleValue(for: .gram())
+            completionHandler(protein)
+        }
+
+        DashboardViewController.healthStore.execute(query)
+    }
+
+    static func readTotalCarbs(completionHandler: @escaping @Sendable (Double) -> Void) {
+        let carbsType = HKQuantityType.quantityType(forIdentifier: .dietaryCarbohydrates)
+
+        let calendar = Calendar.current
+        let now = Date()
+        let startDate = calendar.date(byAdding: .day, value: -1, to: now)
+
+        let predicate = HKQuery.predicateForSamples(withStart: startDate, end: now, options: .strictStartDate)
+
+        let query = HKStatisticsQuery(quantityType: carbsType!, quantitySamplePredicate: predicate, options: .cumulativeSum) { _, result, _ in
+            guard let result, let quantity = result.sumQuantity() else {
+                completionHandler(0)
+                return
+            }
+
+            let carbs = quantity.doubleValue(for: .gram())
+            completionHandler(carbs)
         }
 
         DashboardViewController.healthStore.execute(query)

@@ -8,10 +8,25 @@
 
 /* Begin PBXBuildFile section */
 		053290F42D40AEC000295E58 /* FSCalendar in Frameworks */ = {isa = PBXBuildFile; productRef = 053290F32D40AEC000295E58 /* FSCalendar */; };
+		05BAA2152D771882008C89DB /* LNPopupController in Embed Frameworks */ = {isa = PBXBuildFile; productRef = F5F1D6112D739C6A00F65BA7 /* LNPopupController */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		05E7F9672D37748E00F4D81E /* .swiftlint.yml in Resources */ = {isa = PBXBuildFile; fileRef = 05E7F9662D37748300F4D81E /* .swiftlint.yml */; };
 		3A36E1032D73710800AAF5B7 /* YouTubeiOSPlayerHelper in Frameworks */ = {isa = PBXBuildFile; productRef = 3A36E1022D73710800AAF5B7 /* YouTubeiOSPlayerHelper */; };
 		F5F1D6122D739C6A00F65BA7 /* LNPopupController in Frameworks */ = {isa = PBXBuildFile; productRef = F5F1D6112D739C6A00F65BA7 /* LNPopupController */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		05BAA2162D771882008C89DB /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				05BAA2152D771882008C89DB /* LNPopupController in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		059C467D2D30D12400B4A15A /* MomCare.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MomCare.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -86,6 +101,7 @@
 				059C46792D30D12400B4A15A /* Sources */,
 				059C467A2D30D12400B4A15A /* Frameworks */,
 				059C467B2D30D12400B4A15A /* Resources */,
+				05BAA2162D771882008C89DB /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -174,7 +190,7 @@
 				CODE_SIGN_ENTITLEMENTS = MomCare/MomCare.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = 5F5GUA92X8;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = MomCare/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "MomCare+";

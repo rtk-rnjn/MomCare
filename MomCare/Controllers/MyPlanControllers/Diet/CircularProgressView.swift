@@ -31,8 +31,8 @@ class CircularProgressView: UIView {
 
     override func layoutSubviews() {
         super.layoutSubviews()
-        layer.sublayers?.forEach { $0.removeFromSuperlayer() } // Remove old layers
-        setupLayer() // Redraw path with the correct size
+        layer.sublayers?.forEach { $0.removeFromSuperlayer() }
+        setupLayer()
     }
 
     // MARK: Private

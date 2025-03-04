@@ -64,6 +64,9 @@
                                         <buttonConfiguration key="configuration" style="plain" image="checkmark.circle.fill" catalog="system">
                                             <preferredSymbolConfiguration key="preferredSymbolConfigurationForImage" configurationType="pointSize" pointSize="40"/>
                                         </buttonConfiguration>
+                                        <connections>
+                                            <segue destination="X82-tb-6I2" kind="unwind" unwindAction="unwindToMyPlanExercisePageWithSegue:" id="8j1-vO-ZqR"/>
+                                        </connections>
                                     </button>
                                 </subviews>
                             </stackView>

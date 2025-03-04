@@ -1,10 +1,10 @@
 import UIKit
+import HealthKit
 
 class DietViewController: UIViewController {
 
     // MARK: Internal
 
-    // Progress Bars Outlets
     @IBOutlet var proteinProgressBar: UIProgressView!
     @IBOutlet var carbsProgressBar: UIProgressView!
     @IBOutlet var fatsProgressBar: UIProgressView!
@@ -12,7 +12,6 @@ class DietViewController: UIViewController {
     @IBOutlet var carbsProgressLabel: UILabel!
     @IBOutlet var fatsProgressLabel: UILabel!
 
-    // Progress Ring Outlets
     @IBOutlet var progressContainerView: UIView!
     @IBOutlet var caloricValueLabel: UILabel!
 
@@ -28,8 +27,9 @@ class DietViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
-        setupProgressBars()
-        setupCaloricProgress()
+        prepareProgressBars([proteinProgressBar, carbsProgressBar, fatsProgressBar])
+        prepareCaloricProgress()
+        prepareProgress()
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -38,9 +38,82 @@ class DietViewController: UIViewController {
         }
     }
 
+    static func addCalories(energy: Double, consumed: Bool) {
+        let date = Date()
+
+        let energyType = HKQuantityType.quantityType(forIdentifier: .dietaryEnergyConsumed)!
+        let energyQuantity = HKQuantity(unit: HKUnit.kilocalorie(), doubleValue: energy * (consumed ? 1 : -1))
+
+        let energySample = HKQuantitySample(
+            type: energyType,
+            quantity: energyQuantity,
+            start: date,
+            end: date
+        )
+
+        DashboardViewController.healthStore.save(energySample) { success, _ in
+            if success {}
+        }
+    }
+
+    static func addProtein(protein: Double, consumed: Bool) {
+        let date = Date()
+
+        let proteinType = HKQuantityType.quantityType(forIdentifier: .dietaryProtein)!
+        let proteinQuantity = HKQuantity(unit: HKUnit.gram(), doubleValue: protein * (consumed ? 1 : -1))
+
+        let proteinSample = HKQuantitySample(
+            type: proteinType,
+            quantity: proteinQuantity,
+            start: date,
+            end: date
+        )
+
+        DashboardViewController.healthStore.save(proteinSample) { success, _ in
+            if success {}
+        }
+    }
+
+    static func addCarbs(carbs: Double, consumed: Bool) {
+        let date = Date()
+
+        let carbsType = HKQuantityType.quantityType(forIdentifier: .dietaryCarbohydrates)!
+        let carbsQuantity = HKQuantity(unit: HKUnit.gram(), doubleValue: carbs * (consumed ? 1 : -1))
+
+        let carbsSample = HKQuantitySample(
+            type: carbsType,
+            quantity: carbsQuantity,
+            start: date,
+            end: date
+        )
+
+        DashboardViewController.healthStore.save(carbsSample) { success, _ in
+            if success {}
+        }
+    }
+
+    static func addFats(fats: Double, consumed: Bool) {
+        let date = Date()
+
+        let fatsType = HKQuantityType.quantityType(forIdentifier: .dietaryFatTotal)!
+        let fatsQuantity = HKQuantity(unit: HKUnit.gram(), doubleValue: fats * (consumed ? 1 : -1))
+
+        let fatsSample = HKQuantitySample(
+            type: fatsType,
+            quantity: fatsQuantity,
+            start: date,
+            end: date
+        )
+
+        DashboardViewController.healthStore.save(fatsSample) { success, _ in
+            if success {}
+        }
+    }
+
     func refresh() {
-        setupProgressBars()
-        setupCaloricProgress()
+        prepareProgressBars([proteinProgressBar, carbsProgressBar, fatsProgressBar])
+        prepareCaloricProgress()
+        prepareProgress()
     }
 
     @IBSegueAction func test(_ coder: NSCoder) -> DietTableViewController? {
@@ -58,6 +131,7 @@ class DietViewController: UIViewController {
         for progressBar in progressBars {
             progressBar.layer.cornerRadius = 5
             progressBar.clipsToBounds = true
+            progressBar.transform = CGAffineTransform(scaleX: 1, y: 2)
             for subview in progressBar.subviews {
                 subview.layer.cornerRadius = 5
                 subview.clipsToBounds = true
@@ -65,27 +139,57 @@ class DietViewController: UIViewController {
         }
     }
 
-    private func setupCaloricProgress() {
-        guard let plan = MomCareUser.shared.user?.plan else { return }
-        animateKalcProgress(to: CGFloat(Float(plan.currentCaloriesIntake) / Float(plan.caloriesGoal!)))
-        caloricValueLabel.text = String(plan.currentCaloriesIntake) + "/" + String(plan.caloriesGoal!)
+    private func prepareProgress() {
+        guard let dietTableViewController else { return }
+        let proteinGoal = dietTableViewController.proteinGoal
+        let carbsGoal = dietTableViewController.carbsGoal
+        let fatsGoal = dietTableViewController.fatsGoal
+
+        prepareProtienProgress(with: proteinGoal)
+        prepareCarbsProgress(with: carbsGoal)
+        prepareFatsProgress(with: fatsGoal)
     }
 
-    private func setupProgressBars() {
-        proteinProgressBar.transform = CGAffineTransform(scaleX: 1, y: 2)
-        carbsProgressBar.transform = CGAffineTransform(scaleX: 1, y: 2)
-        fatsProgressBar.transform = CGAffineTransform(scaleX: 1, y: 2)
+    private func prepareProtienProgress(with goal: Double) {
+        DashboardViewController.readTotalProtein { protienConsumed in
+            DispatchQueue.main.async {
+                self.proteinProgressBar.progress = Float(protienConsumed / goal)
+                self.proteinProgressLabel.text = "\(protienConsumed) / \(goal)g"
+            }
+        }
+    }
 
-        guard let plan = MomCareUser.shared.user?.plan else { return }
+    private func prepareCarbsProgress(with goal: Double) {
+        DashboardViewController.readTotalCarbs { carbsConsumed in
+            DispatchQueue.main.async {
+                self.carbsProgressBar.progress = Float(carbsConsumed / goal)
+                self.carbsProgressLabel.text = "\(carbsConsumed) / \(goal)g"
+            }
+        }
+    }
 
-        proteinProgressBar.progress = Float(plan.currentProteinIntake) / Float(plan.proteinGoal!)
-        proteinProgressLabel.text = createProgressText(for: "protein")
+    private func prepareFatsProgress(with goal: Double) {
+        DashboardViewController.readTotalFat { fatsConsumed in
+            DispatchQueue.main.async {
+                self.fatsProgressBar.progress = Float(fatsConsumed / goal)
+                self.fatsProgressLabel.text = "\(fatsConsumed) / \(goal)g"
+            }
+        }
+    }
 
-        carbsProgressBar.progress = Float(plan.currentCarbsIntake) / Float(plan.carbsGoal!)
-        carbsProgressLabel.text = createProgressText(for: "carbs")
+    private func prepareCaloricProgress() {
+        DashboardViewController.readCaloriesIntake { currentCaloriesIntake in
+            DispatchQueue.main.async {
+                guard let dueDate = MomCareUser.shared.user?.medicalData?.dueDate else { return }
+                guard let pregnancyData = Utils.pregnancyWeekAndDay(dueDate: dueDate) else { return }
+                let goal = Utils.getCaloriesGoal(trimester: pregnancyData.trimester)
 
-        fatsProgressBar.progress = Float(plan.currentFatIntake) / Float(plan.fatGoal!)
-        fatsProgressLabel.text = createProgressText(for: "fats")
+                let currentCaloriesGoal = goal
+
+                self.animateKalcProgress(to: CGFloat(Float(currentCaloriesIntake) / Float(currentCaloriesGoal)))
+                self.caloricValueLabel.text = "\(Int(currentCaloriesIntake))/\(Int(currentCaloriesGoal))"
+            }
+        }
     }
 
     private func createProgressText(for macronutrients: String) -> String {

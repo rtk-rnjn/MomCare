@@ -116,9 +116,9 @@ enum Utils {
     static func getCaloriesGoal(trimester: String) -> Double {
         switch trimester {
         case "I":
-            return 1800
+            return 1700
         case "II":
-            return 2200
+            return 1850
         case "III":
             return 2400
         default:
