@@ -55,8 +55,8 @@ class PersonalInfoTableViewController: UITableViewController, UIPickerViewDelega
     func setupPickers() {
         pickerView.delegate = self
         pickerView.dataSource = self
-        pickerView.backgroundColor = UIColor.black.withAlphaComponent(0.5)
-        pickerView.frame = CGRect(x: 0, y: view.frame.height - 400, width: view.frame.width, height: 350)
+        pickerView.backgroundColor = UIColor.systemGray5
+        pickerView.frame = CGRect(x: 0, y: view.frame.height - 350, width: view.frame.width, height: 215)
         
         pickerView.isHidden = true
         view.addSubview(pickerView)
