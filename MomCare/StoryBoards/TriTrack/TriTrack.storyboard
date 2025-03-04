@@ -1337,7 +1337,7 @@
         <!--MeAndMyBaby-->
         <scene sceneID="CWO-YE-CgP">
             <objects>
-                <viewControllerPlaceholder storyboardName="MeAndMyBaby" referencedIdentifier="MeAndMyBaby" id="AV1-XB-5IO" sceneMemberID="viewController"/>
+                <viewControllerPlaceholder storyboardName="MeAndMyBaby" id="AV1-XB-5IO" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="rZ1-up-7sA" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1761" y="176"/>

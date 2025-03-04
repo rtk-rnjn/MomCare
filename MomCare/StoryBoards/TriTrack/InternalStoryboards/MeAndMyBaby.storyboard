@@ -8,10 +8,10 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--View Controller-->
+        <!--Me And My Baby View Controller-->
         <scene sceneID="s0d-6b-0kx">
             <objects>
-                <viewController storyboardIdentifier="MeAndMyBaby" useStoryboardIdentifierAsRestorationIdentifier="YES" id="Y6W-OH-hqX" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="MeAndMyBabyViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="Y6W-OH-hqX" customClass="MeAndMyBabyViewController" customModule="MomCare" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="6D4-aY-pus">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -22,13 +22,13 @@
                                     <containerView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="aGr-Se-l3b">
                                         <rect key="frame" x="0.0" y="0.0" width="393" height="379.66666666666669"/>
                                         <connections>
-                                            <segue destination="jC5-F0-ycI" kind="embed" id="seh-0c-8xr"/>
+                                            <segue destination="jC5-F0-ycI" kind="embed" identifier="embedShowTrimesterStatsViewController" id="seh-0c-8xr"/>
                                         </connections>
                                     </containerView>
                                     <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Emh-9T-5Vk">
                                         <rect key="frame" x="0.0" y="379.66666666666674" width="393" height="379.33333333333326"/>
                                         <connections>
-                                            <segue destination="wGc-dr-JYr" kind="embed" id="rfg-cJ-AF6"/>
+                                            <segue destination="wGc-dr-JYr" kind="embed" identifier="embedShowBabyMomStatsTipViewController" id="rfg-cJ-AF6"/>
                                         </connections>
                                     </containerView>
                                 </subviews>
@@ -48,10 +48,10 @@
             </objects>
             <point key="canvasLocation" x="135.1145038167939" y="3.5211267605633805"/>
         </scene>
-        <!--View Controller-->
+        <!--Trimester Stats View Controller-->
         <scene sceneID="RLb-7o-qcj">
             <objects>
-                <viewController id="jC5-F0-ycI" sceneMemberID="viewController">
+                <viewController id="jC5-F0-ycI" customClass="TrimesterStatsViewController" customModule="MomCare" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="eo0-IJ-CGf">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="379.66666666666669"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -79,7 +79,7 @@
                                     <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="EEN-7L-OqU">
                                         <rect key="frame" x="0.0" y="45.999999999999986" width="361" height="230.66666666666663"/>
                                         <connections>
-                                            <segue destination="exA-3n-zZ4" kind="embed" id="txC-FX-peW"/>
+                                            <segue destination="exA-3n-zZ4" kind="embed" identifier="embedShowBabyComparisionViewController" id="txC-FX-peW"/>
                                         </connections>
                                     </containerView>
                                 </subviews>
@@ -94,15 +94,19 @@
                             <constraint firstItem="Nlp-Ei-UCG" firstAttribute="top" secondItem="eo0-IJ-CGf" secondAttribute="topMargin" constant="10" id="W9B-uZ-Yjm"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="trimesterLabel" destination="ejo-Qk-DkD" id="1HV-AE-hX6"/>
+                        <outlet property="weekDayLabel" destination="Vns-ma-afy" id="7TF-29-KaR"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hD3-eF-yiX" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1139.6946564885495" y="-310.56338028169017"/>
         </scene>
-        <!--View Controller-->
+        <!--Baby Mom Stats Tip View Controller-->
         <scene sceneID="IL9-Zh-yPx">
             <objects>
-                <viewController id="wGc-dr-JYr" sceneMemberID="viewController">
+                <viewController id="wGc-dr-JYr" customClass="BabyMomStatsTipViewController" customModule="MomCare" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="MMG-0n-a47">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="379.33333333333331"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -120,13 +124,13 @@
                                     <containerView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="ZBL-mR-uI9">
                                         <rect key="frame" x="0.0" y="0.0" width="393" height="133"/>
                                         <connections>
-                                            <segue destination="Saz-UF-WdO" kind="embed" id="Ez9-h5-HHT"/>
+                                            <segue destination="Saz-UF-WdO" kind="embed" identifier="embedShowBabyStatsViewController" id="Ez9-h5-HHT"/>
                                         </connections>
                                     </containerView>
                                     <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Jwm-qL-4b5">
                                         <rect key="frame" x="0.0" y="133" width="393" height="152.33333333333337"/>
                                         <connections>
-                                            <segue destination="QJj-Wh-XkK" kind="embed" id="Srj-JP-7Ox"/>
+                                            <segue destination="QJj-Wh-XkK" kind="embed" identifier="embedShowBabyMomTipViewController" id="Srj-JP-7Ox"/>
                                         </connections>
                                     </containerView>
                                 </subviews>
@@ -150,10 +154,10 @@
             </objects>
             <point key="canvasLocation" x="1139.6946564885495" y="272.53521126760563"/>
         </scene>
-        <!--View Controller-->
+        <!--Baby Comparision View Controller-->
         <scene sceneID="MrQ-aC-goA">
             <objects>
-                <viewController id="exA-3n-zZ4" sceneMemberID="viewController">
+                <viewController id="exA-3n-zZ4" customClass="BabyComparisionViewController" customModule="MomCare" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Avf-2p-BjB">
                         <rect key="frame" x="0.0" y="0.0" width="361" height="230.66666666666666"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -198,7 +202,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="iRK-0v-1eT" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2080" y="-311"/>
+            <point key="canvasLocation" x="2077" y="-310"/>
         </scene>
         <!--Baby Stats View Controller-->
         <scene sceneID="3Oi-qR-ArC">
@@ -281,7 +285,9 @@
                     </view>
                     <connections>
                         <outlet property="heightImage" destination="yhD-x2-wyq" id="BAT-Ob-1Xd"/>
+                        <outlet property="heightLabel" destination="M7k-Xp-T1b" id="mFs-XM-PQh"/>
                         <outlet property="scaleImage" destination="rfo-g6-Dj7" id="HYf-iR-Wz8"/>
+                        <outlet property="weightLabel" destination="khB-Rx-3Q7" id="1AA-Jz-mwP"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="oAH-qR-sZ5" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -351,7 +357,9 @@
                     <size key="freeformSize" width="393" height="300"/>
                     <connections>
                         <outlet property="babyStack" destination="ERZ-Ax-Crg" id="0RF-Tm-JCb"/>
+                        <outlet property="babyTipTextView" destination="iKK-Vy-Poh" id="8Vs-oy-rrw"/>
                         <outlet property="momStack" destination="LZJ-0W-xTD" id="35u-3P-3up"/>
+                        <outlet property="momTipTextView" destination="RRB-rF-KHN" id="6jq-2K-vou"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="nR1-kZ-c1q" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -372,7 +380,7 @@
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
         <systemColor name="systemGray6Color">
-            <color red="0.94901960784313721" green="0.94901960784313721" blue="0.96862745098039216" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.94901960780000005" green="0.94901960780000005" blue="0.96862745100000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>
