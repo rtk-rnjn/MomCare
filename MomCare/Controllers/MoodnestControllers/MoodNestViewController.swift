@@ -20,11 +20,8 @@ class MoodNestViewController: UIViewController, UICollectionViewDataSource, UICo
     @IBOutlet var moodnestCollectionView: UICollectionView!
     @IBOutlet var outerView: UIView!
 
-    var iconImageView: UIImage?
-
     override func viewDidLoad() {
         super.viewDidLoad()
-        prepareIconImage()
 
         outerView.layer.cornerRadius = 30
         registerAllNibs()
@@ -177,25 +174,6 @@ class MoodNestViewController: UIViewController, UICollectionViewDataSource, UICo
     }
 
     // MARK: Private
-
-    private func prepareIconImage() {
-        if let iconImageView {
-            let button = UIButton(type: .custom)
-            button.setImage(iconImageView, for: .normal)
-            button.frame = CGRect(x: 0, y: 0, width: 50, height: 50)
-            button.imageView?.contentMode = .scaleAspectFit
-
-            let barButtonItem = UIBarButtonItem(customView: button)
-
-            button.translatesAutoresizingMaskIntoConstraints = false
-            NSLayoutConstraint.activate([
-                button.widthAnchor.constraint(equalToConstant: 50),
-                button.heightAnchor.constraint(equalToConstant: 50)
-            ])
-
-            navigationItem.rightBarButtonItem = barButtonItem
-        }
-    }
 
     private func registerAllNibs() {
         moodnestCollectionView.showsVerticalScrollIndicator = false

@@ -196,9 +196,7 @@
                             <constraint firstItem="uM7-Kg-hxD" firstAttribute="top" secondItem="T9W-Uf-yKU" secondAttribute="top" constant="20" id="xCf-3u-zxc"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="MoodNest" largeTitleDisplayMode="never" id="iUd-me-Atv">
-                        <barButtonItem key="rightBarButtonItem" title="Item" style="done" id="uRw-ke-T8B"/>
-                    </navigationItem>
+                    <navigationItem key="navigationItem" title="MoodNest" largeTitleDisplayMode="never" id="iUd-me-Atv"/>
                     <connections>
                         <outlet property="moodnestCollectionView" destination="daW-N7-FvE" id="8fJ-yd-P9r"/>
                         <outlet property="outerView" destination="uM7-Kg-hxD" id="Po0-98-y14"/>
