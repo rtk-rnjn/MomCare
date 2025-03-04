@@ -324,8 +324,10 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="playButtonTapped" destination="fHM-1v-fDG" id="DK1-89-HJH"/>
                         <outlet property="playlistCoverImage" destination="88M-UG-1PO" id="Tv4-UV-bP4"/>
                         <outlet property="playlistSongLabel" destination="59s-T1-9SX" id="b6k-oW-QPD"/>
+                        <outlet property="shuffleButtonTapped" destination="8V2-Pp-gc4" id="H5n-Ap-gxb"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Jsp-48-kRL" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
