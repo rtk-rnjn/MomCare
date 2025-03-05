@@ -20,9 +20,7 @@ class RemindersTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        guard let eventsViewController else { return }
         store = TriTrackViewController.eventStore
-
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -114,10 +112,10 @@ class RemindersTableViewController: UITableViewController {
         store.fetchReminders(matching: predicate) { reminders in
             guard let reminders else { return }
 
-            self.reminders = reminders.filter { reminder in
-                let date = reminder.dueDateComponents?.date
-                guard let date else { return false }
-                return Calendar.current.isDate(date, inSameDayAs: selectedDate)
+            self.reminders = reminders
+
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
             }
         }
     }

@@ -22,6 +22,7 @@ class SongPageViewController: UIViewController {
                 playlistTableViewController = destination
                 playlistTableViewController?.playlist = playlist
                 playlistTableViewController?.initialTabBarController = tabBarController as? InitialTabBarController
+                playlistTableViewController?.songElementsViewController = songElementsViewController
             }
 
         case .songPageElementsVC:

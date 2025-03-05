@@ -1,10 +1,3 @@
-//
-//  AddEventTableViewController.swift
-//  MomCare
-//
-//  Created by Ritik Ranjan on 17/01/25.
-//
-
 import UIKit
 import EventKitUI
 
@@ -89,7 +82,9 @@ class AddEventTableViewController: UITableViewController {
     }
 
     private func prepareRepeatPopup() {
-        repeatPopupButton.menu = UIMenu(children: AddEventTableViewController.repeatTimeOptions.map { title, _ in
+        let sortedRepeatOptions = AddEventTableViewController.repeatTimeOptions.sorted { $0.key > $1.key }
+
+        repeatPopupButton.menu = UIMenu(children: sortedRepeatOptions.map { title, _ in
             UIAction(title: title, handler: handleRepeatOption) })
 
         repeatPopupButton.showsMenuAsPrimaryAction = true
@@ -102,7 +97,9 @@ class AddEventTableViewController: UITableViewController {
     }
 
     private func prepareTravelTimePopup() {
-        travelTimePopupButton.menu = UIMenu(children: AddEventTableViewController.travelTimeOptions.map { title, _ in
+        let sortedTravelTimeOptions = AddEventTableViewController.travelTimeOptions.sorted { $0.key > $1.key }
+
+        travelTimePopupButton.menu = UIMenu(children: sortedTravelTimeOptions.map { title, _ in
             UIAction(title: title, handler: handleTravelTimeOption) })
 
         travelTimePopupButton.showsMenuAsPrimaryAction = true
@@ -115,7 +112,9 @@ class AddEventTableViewController: UITableViewController {
     }
 
     private func prepareAlertTimePopup() {
-        alertTimePopupButton.menu = UIMenu(children: AddEventTableViewController.alertTimeOptions.map { title, _ in
+        let sortedAlertTimeOptions = AddEventTableViewController.alertTimeOptions.sorted { $0.key > $1.key }
+
+        alertTimePopupButton.menu = UIMenu(children: sortedAlertTimeOptions.map { title, _ in
             UIAction(title: title, handler: handleAlertTimeOption) })
 
         alertTimePopupButton.showsMenuAsPrimaryAction = true

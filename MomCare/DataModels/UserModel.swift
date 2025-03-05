@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-enum Country: String, Codable {
+enum Country: String, Codable, Equatable {
     case india = "India"
 }
 
@@ -44,7 +44,7 @@ public enum DietaryPreference: String, Codable, CaseIterable, Equatable, Hashabl
     case dairyFree = "Dairy-Free"
 }
 
-public enum MoodType: String, Codable, Sendable {
+public enum MoodType: String, Codable, Sendable, Equatable {
    case happy = "Happy"
    case sad = "Sad"
    case stressed = "Stressed"
@@ -76,7 +76,6 @@ struct User: Codable, Sendable, Equatable {
         case exercises
         case history
         case createdAt = "created_at"
-        case updatedAt = "updated_at"
     }
 
     var id: String = UUID().uuidString
@@ -89,11 +88,10 @@ struct User: Codable, Sendable, Equatable {
     var phoneNumber: String
     var medicalData: UserMedical?
     var mood: MoodType?
-    var plan: MyPlan?
+    var plan: MyPlan = .init()
     var exercises: [Exercise] = []
     var history: [History] = []
     var createdAt: Date = .init()
-    var updatedAt: Date?
 
     var fullName: String {
         let fullName = "\(firstName) \(lastName ?? "")"
@@ -111,14 +109,6 @@ struct History: Codable, Sendable, Equatable {
     var date: Date = .init()
     var plan: MyPlan?
     var exercises: [Exercise] = []
-
-    static func == (lhs: History, rhs: History) -> Bool {
-        let date = lhs.date == rhs.date
-        let plan = lhs.plan == rhs.plan
-        let exercises = lhs.exercises == rhs.exercises
-
-        return date && plan && exercises
-    }
 }
 
 struct UserMedical: Codable, Sendable, Equatable {
@@ -141,17 +131,4 @@ struct UserMedical: Codable, Sendable, Equatable {
     var preExistingConditions: [PreExistingCondition] = []
     var foodIntolerances: [Intolerance] = []
     var dietaryPreferences: [DietaryPreference] = []
-
-    static func == (lhs: UserMedical, rhs: UserMedical) -> Bool {
-        let dateOfBirth = lhs.dateOfBirth == rhs.dateOfBirth
-        let height = lhs.height == rhs.height
-        let prePregnancyWeight = lhs.prePregnancyWeight == rhs.prePregnancyWeight
-        let currentWeight = lhs.currentWeight == rhs.currentWeight
-        let dueDate = lhs.dueDate == rhs.dueDate
-        let preExistingConditions = lhs.preExistingConditions == rhs.preExistingConditions
-        let foodIntolerances = lhs.foodIntolerances == rhs.foodIntolerances
-        let dietaryPreferences = lhs.dietaryPreferences == rhs.dietaryPreferences
-
-        return dateOfBirth && height && prePregnancyWeight && currentWeight && dueDate && preExistingConditions && foodIntolerances && dietaryPreferences
-    }
 }

@@ -14,6 +14,9 @@ class SearchViewController: UIViewController {
     let allFoods: [FoodItem] = SampleFoodData.uniqueFoodItems
     var searchedFood: [FoodItem] = []
 
+    var refreshHandler: (() -> Void)?
+    var mealName: String?
+
     override func viewDidLoad() {
         super.viewDidLoad()
         prepareTable()

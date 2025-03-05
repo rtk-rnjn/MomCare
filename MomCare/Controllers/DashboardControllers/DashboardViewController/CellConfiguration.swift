@@ -107,13 +107,10 @@ extension DashboardViewController {
 
 extension DashboardViewController {
     func eventCardTapped() {
-        if let tabController = tabBarController as? InitialTabBarController {
-            tabController.selectedIndex = 2
+        let events = AppointmentsTableViewController.fetchEvents()
+        guard let event = events?.isEmpty ?? true ? nil : events?[0] else { return }
 
-            if let destinationVC = (tabController.viewControllers?[2] as? UINavigationController)?.topViewController as? TriTrackViewController {
-                destinationVC.currentSegmentValue = 1
-            }
-        }
+        self.presentEKEventViewController(with: event)
     }
 
     func weekCardTapped() {

@@ -14,7 +14,7 @@ class MomCareUser {
 
     public static var shared: MomCareUser = .init()
 
-    public private(set) var user: User? {
+    var user: User? {
         didSet {
             if oldValue != user {
                 updateToDatabase()
@@ -56,34 +56,77 @@ class MomCareUser {
         self.user = user
     }
 
+    func setUserPlan(_ plan: MyPlan) {
+        user?.plan = plan
+    }
+
     func addFoodItem(_ foodItem: FoodItem, to meal: MealType) {
-        user?.plan?.meals[meal]?.append(foodItem)
+        switch meal {
+        case .breakfast:
+            user?.plan.breakfast.append(foodItem)
+        case .lunch:
+            user?.plan.lunch.append(foodItem)
+        case .snacks:
+            user?.plan.snacks.append(foodItem)
+        case .dinner:
+            user?.plan.dinner.append(foodItem)
+        }
+
     }
 
     func removeFoodItem(_ foodItem: FoodItem, from meal: MealType) {
-        user?.plan?.meals[meal]?.removeAll { $0.id == foodItem.id }
+        switch meal {
+        case .breakfast:
+            user?.plan.breakfast.removeAll { $0.name == foodItem.name }
+        case .lunch:
+            user?.plan.lunch.removeAll { $0.name == foodItem.name }
+        case .snacks:
+            user?.plan.snacks.removeAll { $0.name == foodItem.name }
+        case .dinner:
+            user?.plan.dinner.removeAll { $0.name == foodItem.name }
+        }
     }
 
-    func markFoodAsConsumed(_ foodItem: FoodItem, in meal: MealType) -> Bool {
-        guard let index = user?.plan?.meals[meal]?.firstIndex(where: { $0.id == foodItem.id }) else { return false }
+    func toggleConsumed(for foodItem: FoodItem, in meal: MealType) -> Bool? {
 
-        user?.plan?.meals[meal]?[index].consumed.toggle()
-        let multiplier = user?.plan?.meals[meal]?[index].consumed == true ? 1 : -1
+        switch meal {
+        case .breakfast:
+            if let index = user?.plan.breakfast.firstIndex(where: { $0.name == foodItem.name }) {
+                user?.plan.breakfast[index].consumed.toggle()
+                return user?.plan.breakfast[index].consumed
+            }
 
-        updatePlan(with: foodItem, multiplier: multiplier)
-        return multiplier == 1
+        case .lunch:
+            if let index = user?.plan.lunch.firstIndex(where: { $0.name == foodItem.name }) {
+                user?.plan.lunch[index].consumed.toggle()
+                return user?.plan.lunch[index].consumed
+            }
+
+        case .snacks:
+            if let index = user?.plan.snacks.firstIndex(where: { $0.name == foodItem.name }) {
+                user?.plan.snacks[index].consumed.toggle()
+                return user?.plan.snacks[index].consumed
+            }
+
+        case .dinner:
+            if let index = user?.plan.dinner.firstIndex(where: { $0.name == foodItem.name }) {
+                user?.plan.dinner[index].consumed.toggle()
+                return user?.plan.dinner[index].consumed
+            }
+        }
+        return false
     }
 
-    func markFoodsAsConsumed(in meal: MealType) {
-        user?.plan?.meals[meal]?.forEach { _ = markFoodAsConsumed($0, in: meal) }
-    }
-
-    // MARK: Private
-
-    private func updatePlan(with foodItem: FoodItem, multiplier: Int) {
-        user?.plan?.currentCaloriesIntake += foodItem.calories * multiplier
-        user?.plan?.currentProteinIntake += foodItem.protein * multiplier
-        user?.plan?.currentCarbsIntake += foodItem.carbs * multiplier
-        user?.plan?.currentFatIntake += foodItem.fat * multiplier
+    func markFoodsAsConsumed(in meal: MealType, consumed: Bool = true) {
+        switch meal {
+        case .breakfast:
+            user?.plan.breakfast = user?.plan.breakfast.map { var item = $0; item.consumed = consumed; return item } ?? []
+        case .lunch:
+            user?.plan.lunch = user?.plan.lunch.map { var item = $0; item.consumed = consumed; return item } ?? []
+        case .snacks:
+            user?.plan.snacks = user?.plan.snacks.map { var item = $0; item.consumed = consumed; return item } ?? []
+        case .dinner:
+            user?.plan.dinner = user?.plan.dinner.map { var item = $0; item.consumed = consumed; return item } ?? []
+        }
     }
 }
