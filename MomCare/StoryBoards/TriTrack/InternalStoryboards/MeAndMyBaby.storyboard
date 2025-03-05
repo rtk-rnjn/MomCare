@@ -415,7 +415,7 @@
                                     <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="justified" translatesAutoresizingMaskIntoConstraints="NO" id="5gD-yi-AGV">
                                         <rect key="frame" x="0.0" y="60.666666666666686" width="353" height="658.33333333333326"/>
                                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                                        <mutableString key="text">At week 19, your baby is developing rapidly, and your body is working hard to support this growth. If your weight is lower than expected, focus on nutrient-rich foods like avocados, nuts, dairy, lean proteins, and whole grains to ensure both you and your baby get essential vitamins. You may also experience round ligament pain—a sharp ache in your lower belly. Try gentle stretching, proper posture, and warm compresses for relief. Staying hydrated and getting enough rest will also help. Listen to your body and consult your doctor if discomfort persists.                                 💖👶          #HealthyPregnancy</mutableString>
+                                        <string key="text">At week 19, your baby is developing rapidly, and your body is working hard to support this growth. If your weight is lower than expected, focus on nutrient-rich foods like avocados, nuts, dairy, lean proteins, and whole grains to ensure both you and your baby get essential vitamins. You may also experience round ligament pain—a sharp ache in your lower belly. Try gentle stretching, proper posture, and warm compresses for relief. Staying hydrated and getting enough rest will also help. Listen to your body and consult your doctor if discomfort persists.                                 💖👶          #HealthyPregnancy</string>
                                         <color key="textColor" systemColor="labelColor"/>
                                         <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                         <textInputTraits key="textInputTraits" autocapitalizationType="sentences" smartDashesType="yes"/>
@@ -440,6 +440,7 @@
                     </view>
                     <connections>
                         <outlet property="contentTextView" destination="5gD-yi-AGV" id="YXt-FH-tKd"/>
+                        <outlet property="momCardTextView" destination="5gD-yi-AGV" id="ZkH-8w-k9A"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="RKd-pC-q0I" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

@@ -8,7 +8,9 @@
 import UIKit
 
 class MomCardViewController: UIViewController {
-
+    
+    @IBOutlet var momCardTextView: UITextView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
