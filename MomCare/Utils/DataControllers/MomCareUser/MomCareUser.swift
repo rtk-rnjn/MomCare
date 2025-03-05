@@ -88,7 +88,6 @@ class MomCareUser {
     }
 
     func toggleConsumed(for foodItem: FoodItem, in meal: MealType) -> Bool? {
-
         switch meal {
         case .breakfast:
             if let index = user?.plan.breakfast.firstIndex(where: { $0.name == foodItem.name }) {

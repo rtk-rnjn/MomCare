@@ -245,7 +245,7 @@
                                     <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lha-9a-J2W">
                                         <rect key="frame" x="0.0" y="0.0" width="353" height="495"/>
                                         <connections>
-                                            <segue destination="yfR-4p-uCo" kind="embed" identifier="embedShowDietTableViewController" destinationCreationSelector="test:" id="dvK-G8-sC0"/>
+                                            <segue destination="yfR-4p-uCo" kind="embed" identifier="embedShowDietTableViewController" id="dvK-G8-sC0"/>
                                         </connections>
                                     </containerView>
                                 </subviews>
@@ -316,7 +316,6 @@
                         </connections>
                     </tableView>
                     <connections>
-                        <outlet property="dietTableView" destination="eaD-eZ-Zte" id="GWc-0D-nfh"/>
                         <segue destination="ARC-f2-eYg" kind="presentation" identifier="segueShowSearchViewController" id="wAR-dP-vgX"/>
                     </connections>
                 </tableViewController>
