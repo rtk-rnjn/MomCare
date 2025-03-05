@@ -30,7 +30,7 @@ class PersonalInfoTableViewController: UITableViewController, UIPickerViewDelega
     let dayValues = Array(1...7).map { "\($0)" }
     let weekValues = Array(1...40).map { "\($0)" }
     let trimesterValues = ["I", "II", "III"]
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         updateElements()
@@ -103,16 +103,16 @@ class PersonalInfoTableViewController: UITableViewController, UIPickerViewDelega
         pickerView.isHidden = true
     }
 
-    @objc func donePicker() {
-        if let button = activeButton {
-            let selectedRow = pickerView.selectedRow(inComponent: 0)
-            button.setTitle(currentPickerData[selectedRow], for: .normal)
-        }
-
-        pickerView.isHidden = true
-        activeButton?.resignFirstResponder()
-        view.endEditing(true)
-    }
+//    @objc func donePicker() {
+//        if let button = activeButton {
+//            let selectedRow = pickerView.selectedRow(inComponent: 0)
+//            button.setTitle(currentPickerData[selectedRow], for: .normal)
+//        }
+//
+//        pickerView.isHidden = true
+//        activeButton?.resignFirstResponder()
+//        view.endEditing(true)
+//    }
 
     func calculateAge(from dob: Date) -> Int {
         let calendar = Calendar.current

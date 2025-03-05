@@ -918,6 +918,9 @@
                     </tableView>
                     <navigationItem key="navigationItem" title="Medical History" largeTitleDisplayMode="never" id="t6q-OZ-b1Z"/>
                     <connections>
+                        <outlet property="PreExistingCondtionButton" destination="5qb-oL-WkN" id="GuL-Vy-qqS"/>
+                        <outlet property="allergiesButton" destination="7rN-H1-Q1C" id="HXl-He-oIm"/>
+                        <outlet property="dietaryPreferenceButton" destination="uZf-dz-n1s" id="Vru-fX-KKc"/>
                         <outlet property="dueDatePicker" destination="hmB-N7-EKZ" id="JkK-Y3-RjY"/>
                         <outlet property="progressView" destination="yCq-TB-GpE" id="78C-jz-8z1"/>
                         <segue destination="x6Q-s6-GCY" kind="show" identifier="segueShowInitialTabBarController" id="JAW-qC-dcb"/>
