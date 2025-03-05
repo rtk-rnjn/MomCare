@@ -9,11 +9,15 @@ class PlaylistTableViewController: UITableViewController {
     var songs: [Song] = []
     var playlist: Playlist!
     var initialTabBarController: InitialTabBarController?
+    var songElementsViewController: SongElementsViewController?
     var musicPlayer: MusicPlayer = .init()
 
     override func viewDidLoad() {
         super.viewDidLoad()
         configureTableView()
+
+        songElementsViewController?.playButton.addTarget(self, action: #selector(playFromSongElementsViewController), for: .touchUpInside)
+        songElementsViewController?.shuffleButton.addTarget(self, action: #selector(shuffleFromSongElementsViewController), for: .touchUpInside)
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -49,16 +53,21 @@ class PlaylistTableViewController: UITableViewController {
         tableView.showsVerticalScrollIndicator = false
     }
 
-    private func setupMusicPlayer(with song: Song) {
+    func setupMusicPlayer(with song: Song) {
         let playBarButton = createBarButtonItem(systemName: "play.fill", action: #selector(playPauseButtonTapped))
         let forwardBarButton = createBarButtonItem(systemName: "forward.fill", action: #selector(forwardButtonTapped))
+        let crossBarButton = createBarButtonItem(systemName: "x.circle.fill", action: #selector(crossButtonTapped))
 
         musicPlayer = MusicPlayer()
         musicPlayer.song = song
-        configurePopupItem(for: musicPlayer, song: song, buttons: [playBarButton, forwardBarButton])
+        configurePopupItem(for: musicPlayer, song: song, buttons: [playBarButton, forwardBarButton, crossBarButton])
         musicPlayer.delegate = self
 
         initialTabBarController?.presentPopupBar(with: musicPlayer, animated: true)
+    }
+
+    @objc func crossButtonTapped(_ sender: UIButton) {
+        initialTabBarController?.dismissPopupBar(animated: true)
     }
 
     private func createBarButtonItem(systemName: String, action: Selector) -> UIBarButtonItem {
@@ -107,5 +116,16 @@ extension PlaylistTableViewController: MusicPlayerDelegate {
 
     func volumeButtonTapped(_ sender: UIButton) {
         print("WORKS HERE")
+    }
+}
+
+extension PlaylistTableViewController {
+    @objc func playFromSongElementsViewController() {
+        setupMusicPlayer(with: songs[0])
+    }
+
+    @objc func shuffleFromSongElementsViewController() {
+        guard let song = songs.randomElement() else { return }
+        setupMusicPlayer(with: song)
     }
 }

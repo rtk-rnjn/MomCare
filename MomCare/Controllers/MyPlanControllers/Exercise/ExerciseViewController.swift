@@ -11,7 +11,16 @@ class ExerciseViewController: UIViewController, UICollectionViewDelegate, UIColl
 
     var exercises: Int = 5
 
+    @IBOutlet var weekLabel: UILabel!
+
     @IBOutlet var collectionView: UICollectionView!
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+
+        guard let pregnancyData = Utils.pregnancyWeekAndDay(dueDate: MomCareUser.shared.user?.medicalData?.dueDate ?? Date()) else { return }
+        weekLabel.text = "Week \(pregnancyData.week)"
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()

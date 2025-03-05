@@ -13,7 +13,7 @@ import EventKit
 
 private let refreshControl: UIRefreshControl = .init()
 
-class DashboardViewController: UIViewController, UICollectionViewDataSource {
+class DashboardViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate {
 
     // MARK: Internal
 
@@ -24,7 +24,7 @@ class DashboardViewController: UIViewController, UICollectionViewDataSource {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupCollectionView()
+        prepareCollectionView()
         collectionView.showsVerticalScrollIndicator = false
         collectionView.alwaysBounceVertical = true
         collectionView.refreshControl = refreshControl
@@ -32,12 +32,28 @@ class DashboardViewController: UIViewController, UICollectionViewDataSource {
 
         Task {
             await requestAccessForNotification()
+
+            await self.loadUser()
+
+            if var user = MomCareUser.shared.user, let medical = user.medicalData {
+                let meals = await MyPlanMLModel.fetchPlans(from: medical)
+                user.plan = meals
+
+                MomCareUser.shared.setUser(user)
+            }
+
             DispatchQueue.main.async {
-                self.loadUser()
+                self.collectionView.reloadData()
             }
         }
 
         refreshControl.addTarget(self, action: #selector(didPullToRefresh(_:)), for: .valueChanged)
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+
+        collectionView.reloadData()
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -81,34 +97,31 @@ class DashboardViewController: UIViewController, UICollectionViewDataSource {
 
     @objc private func didPullToRefresh(_ sender: Any) {
         refreshControl.beginRefreshing()
-        loadUser()
-        collectionView.reloadData()
-        stopRefresh()
-    }
-
-    private func stopRefresh() {
-        refreshControl.endRefreshing()
-    }
-
-    private func loadUser() {
         Task {
-            let success = await MomCareUser.shared.fetchUser(from: .iPhone)
-            if !success {
-                let fetched = await MomCareUser.shared.fetchUser(from: .database)
-                if !fetched {
-                    fatalError("seriously fucked up bro")
-                }
-            }
+            await loadUser()
+
             DispatchQueue.main.async {
                 self.collectionView.reloadData()
+                refreshControl.endRefreshing()
             }
         }
     }
 
-    private func setupCollectionView() {
+    private func loadUser() async {
+        let success = await MomCareUser.shared.fetchUser(from: .iPhone)
+        if !success {
+            let fetched = await MomCareUser.shared.fetchUser(from: .database)
+            if !fetched {
+                fatalError("seriously fucked up bro")
+            }
+        }
+    }
+
+    private func prepareCollectionView() {
         registerCells()
 
         collectionView.collectionViewLayout = createLayout()
+        collectionView.delegate = self
         collectionView.dataSource = self
     }
 

@@ -126,17 +126,17 @@
                                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillProportionally" translatesAutoresizingMaskIntoConstraints="NO" id="DU4-br-aMt" userLabel="protein">
                                                                 <rect key="frame" x="0.0" y="0.0" width="146.33333333333334" height="43.333333333333336"/>
                                                                 <subviews>
-                                                                    <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="tE1-Z7-ob8" userLabel="proteinLabelStack">
+                                                                    <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tE1-Z7-ob8" userLabel="proteinLabelStack">
                                                                         <rect key="frame" x="0.0" y="0.0" width="146.33333333333334" height="34.666666666666664"/>
                                                                         <subviews>
-                                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" text="Protein" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cgS-eP-IJY">
-                                                                                <rect key="frame" x="0.0" y="0.0" width="73" height="34.666666666666664"/>
+                                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="Protein" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cgS-eP-IJY">
+                                                                                <rect key="frame" x="0.0" y="0.0" width="43.333333333333336" height="34.666666666666664"/>
                                                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
                                                                                 <nil key="textColor"/>
                                                                                 <nil key="highlightedColor"/>
                                                                             </label>
                                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" text="Label" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wGv-uz-gYL">
-                                                                                <rect key="frame" x="73.000000000000028" y="0.0" width="73.333333333333343" height="34.666666666666664"/>
+                                                                                <rect key="frame" x="43.333333333333343" y="0.0" width="103" height="34.666666666666664"/>
                                                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
                                                                                 <nil key="textColor"/>
                                                                                 <nil key="highlightedColor"/>
@@ -153,17 +153,17 @@
                                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillProportionally" translatesAutoresizingMaskIntoConstraints="NO" id="PRb-Ux-URk" userLabel="carbs">
                                                                 <rect key="frame" x="0.0" y="43.333333333333329" width="146.33333333333334" height="43.333333333333329"/>
                                                                 <subviews>
-                                                                    <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="N7f-wh-NOQ" userLabel="carbsLabelStack">
+                                                                    <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="N7f-wh-NOQ" userLabel="carbsLabelStack">
                                                                         <rect key="frame" x="0.0" y="0.0" width="146.33333333333334" height="34.666666666666664"/>
                                                                         <subviews>
-                                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" text="Carbs" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qaa-K9-t3P">
-                                                                                <rect key="frame" x="0.0" y="0.0" width="73" height="34.666666666666664"/>
+                                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="Carbs" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qaa-K9-t3P">
+                                                                                <rect key="frame" x="0.0" y="0.0" width="36" height="34.666666666666664"/>
                                                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
                                                                                 <nil key="textColor"/>
                                                                                 <nil key="highlightedColor"/>
                                                                             </label>
                                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" text="Label" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iCO-vG-lMo">
-                                                                                <rect key="frame" x="73.000000000000028" y="0.0" width="73.333333333333343" height="34.666666666666664"/>
+                                                                                <rect key="frame" x="35.999999999999993" y="0.0" width="110.33333333333331" height="34.666666666666664"/>
                                                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
                                                                                 <nil key="textColor"/>
                                                                                 <nil key="highlightedColor"/>
@@ -180,17 +180,17 @@
                                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillProportionally" translatesAutoresizingMaskIntoConstraints="NO" id="Mtn-VE-XeL" userLabel="fats">
                                                                 <rect key="frame" x="0.0" y="86.666666666666671" width="146.33333333333334" height="43.333333333333329"/>
                                                                 <subviews>
-                                                                    <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="2ov-ZS-HBT" userLabel="fatsLabelStack">
+                                                                    <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2ov-ZS-HBT" userLabel="fatsLabelStack">
                                                                         <rect key="frame" x="0.0" y="0.0" width="146.33333333333334" height="34.666666666666664"/>
                                                                         <subviews>
-                                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" text="Fats" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nFc-zU-qca" userLabel="Fats">
-                                                                                <rect key="frame" x="0.0" y="0.0" width="73" height="34.666666666666664"/>
+                                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="Fats" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nFc-zU-qca" userLabel="Fats">
+                                                                                <rect key="frame" x="0.0" y="0.0" width="25.333333333333332" height="34.666666666666664"/>
                                                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
                                                                                 <nil key="textColor"/>
                                                                                 <nil key="highlightedColor"/>
                                                                             </label>
                                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" text="Label" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RRp-eh-zEG">
-                                                                                <rect key="frame" x="73.000000000000028" y="0.0" width="73.333333333333343" height="34.666666666666664"/>
+                                                                                <rect key="frame" x="25.333333333333343" y="0.0" width="121" height="34.666666666666664"/>
                                                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
                                                                                 <nil key="textColor"/>
                                                                                 <nil key="highlightedColor"/>
@@ -381,6 +381,7 @@
                     </view>
                     <connections>
                         <outlet property="collectionView" destination="Yt9-o6-ItS" id="XIY-gV-QNv"/>
+                        <outlet property="weekLabel" destination="ZcW-2a-cQK" id="I46-Jr-NuW"/>
                         <segue destination="pSF-KE-uVj" kind="presentation" identifier="segueShowBreathingPlayer" modalPresentationStyle="fullScreen" id="qUh-Ct-XyP"/>
                         <segue destination="0T0-Zc-b8u" kind="presentation" identifier="segueShowExerciseAVPlayer" modalPresentationStyle="fullScreen" id="hk3-NJ-bzY"/>
                     </connections>

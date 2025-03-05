@@ -64,8 +64,7 @@ class DietProgressCollectionViewCell: UICollectionViewCell {
     }
 
     @objc private func handleTap() {
-        guard let tapHandler else { return }
-        tapHandler()
+        tapHandler?()
     }
 
 }

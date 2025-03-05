@@ -192,20 +192,6 @@ class DietViewController: UIViewController {
         }
     }
 
-    private func createProgressText(for macronutrients: String) -> String {
-        guard let plan = MomCareUser.shared.user?.plan else { fatalError() }
-        switch macronutrients {
-        case "protein":
-            return "\(plan.currentProteinIntake)/\(plan.proteinGoal!)g"
-        case "carbs":
-            return "\(plan.currentCarbsIntake)/\(plan.carbsGoal!)g"
-        case "fats":
-            return "\(plan.currentFatIntake)/\(plan.fatGoal!)g"
-        default:
-            return ""
-        }
-    }
-
     private func prepareProgressRing() {
 
         let center = CGPoint(x: progressContainerView.bounds.midX, y: progressContainerView.bounds.midY)

@@ -2,7 +2,6 @@ import UIKit
 
 enum MealEditType: String {
     case addItem = "Add Item"
-    case replaceItem = "Replace Item"
 }
 
 class HeaderTableViewCell: UITableViewCell {
@@ -14,8 +13,10 @@ class HeaderTableViewCell: UITableViewCell {
     @IBOutlet var mealHeaderLabel: UILabel!
     @IBOutlet var mealHeaderButton: UIButton!
 
-    var section: Int?
-    var dietTableViewController: DietTableViewController?
+    var buttonTapHandler: (() -> Bool)?
+    var segueHandler: (() -> Void)?
+    var refreshHandler: (() -> Void)?
+    var allConsumed: Bool!
 
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -25,29 +26,29 @@ class HeaderTableViewCell: UITableViewCell {
         }
     }
 
-    func updateTitle(with title: String, at section: Int, of view: DietTableViewController) {
+    func updateElements(with title: String, segueHandler: (() -> Void)?, refreshHandler: (() -> Void)?, allConsumed: Bool, buttonTapHandler: @escaping (() -> Bool)) {
         mealHeaderLabel.text = title
-        self.section = section
-        dietTableViewController = view
+
+        self.buttonTapHandler = buttonTapHandler
+        self.segueHandler = segueHandler
+        self.refreshHandler = refreshHandler
+        self.allConsumed = allConsumed
+
+        let configuration = UIImage.SymbolConfiguration(scale: .medium)
+
+        if self.allConsumed {
+            mealHeaderButton.setImage(UIImage(systemName: "checkmark.circle.fill", withConfiguration: configuration)?.withTintColor(color), for: .normal)
+        } else {
+            mealHeaderButton.setImage(UIImage(systemName: "circle", withConfiguration: configuration)?.withTintColor(color), for: .normal)
+        }
     }
 
     @IBAction func mealHeaderButtonTapped(_ sender: UIButton) {
-        switch section {
-        case 0:
-            MomCareUser.shared.markFoodsAsConsumed(in: .breakfast)
-        case 1:
-            MomCareUser.shared.markFoodsAsConsumed(in: .lunch)
-        case 2:
-            MomCareUser.shared.markFoodsAsConsumed(in: .snacks)
-        case 3:
-            MomCareUser.shared.markFoodsAsConsumed(in: .dinner)
-        default:
-            fatalError("pyar is khubsooaat cheez hai")
-        }
-        let configuration = UIImage.SymbolConfiguration(scale: .medium)
-        sender.setImage(UIImage(systemName: "checkmark.circle.fill", withConfiguration: configuration)?.withTintColor(color), for: .normal)
+        let consumed = buttonTapHandler?() ?? false
 
-        dietTableViewController?.dietViewController.refresh()
+        allConsumed = consumed
+
+        refreshHandler?()
     }
 
     // MARK: Private
@@ -56,8 +57,7 @@ class HeaderTableViewCell: UITableViewCell {
 
     private func configurePullDownMenu() {
         let addItem = UIAction(title: "Add Item", image: UIImage(systemName: "plus"), handler: addItemHandler)
-        let replaceItem = UIAction(title: "Replace Item", image: UIImage(systemName: "repeat"), handler: replaceItemHandler)
-        actionButton.menu = UIMenu(title: "", children: [addItem, replaceItem])
+        actionButton.menu = UIMenu(title: "", children: [addItem])
         actionButton.showsMenuAsPrimaryAction = true
 
         actionButton.setTitle(nil, for: .normal)
@@ -65,11 +65,6 @@ class HeaderTableViewCell: UITableViewCell {
     }
 
     private func addItemHandler(_ action: UIAction) {
-        dietTableViewController?.performSegueToSearch(with: MealEditType.addItem)
+        segueHandler?()
     }
-
-    private func replaceItemHandler(_ action: UIAction) {
-        dietTableViewController?.performSegueToSearch(with: MealEditType.replaceItem)
-    }
-
 }
