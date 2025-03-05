@@ -8,6 +8,8 @@
 import UIKit
 
 class MeAndMyBabyViewController: UIViewController {
+    @IBOutlet var MeAndMyBabyUpperView: UIView!
+    @IBOutlet var MeAndMyBabyLowerView: UIView!
 
     var trimesterData: TrimesterData? {
         let pregnancyData = Utils.pregnancyWeekAndDay(dueDate: MomCareUser.shared.user?.medicalData?.dueDate ?? Date())

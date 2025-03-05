@@ -77,7 +77,6 @@ class DietTableViewController: UITableViewController {
                     }
                 }
 
-
                 switch indexPath.section {
                 case 0:
                     MomCareUser.shared.markFoodsAsConsumed(in: .breakfast, consumed: !allConsumed)
@@ -123,10 +122,6 @@ class DietTableViewController: UITableViewController {
         return cell
     }
 
-    func performSegueToSearch(_ sender: Any?) {
-        performSegue(withIdentifier: "segueShowSearchViewController", sender: sender)
-    }
-
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "segueShowSearchViewController" {
             let navigationController = segue.destination as? UINavigationController
@@ -134,6 +129,34 @@ class DietTableViewController: UITableViewController {
             searchViewController?.refreshHandler = refreshHandler
             searchViewController?.mealName = sender as? String
         }
+    }
+
+    override func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
+        if indexPath.row == 0 {
+            return nil
+        }
+
+        if let foods = getFoods(with: indexPath), foods[indexPath.row - 1].consumed {
+            return nil
+        }
+        return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in
+            let deleteAction = UIAction(title: "Delete", image: UIImage(systemName: "trash"), attributes: .destructive) { _ in
+                switch indexPath.section {
+                case 0: MomCareUser.shared.user?.plan.breakfast.remove(at: indexPath.row - 1)
+                case 1: MomCareUser.shared.user?.plan.lunch.remove(at: indexPath.row - 1)
+                case 2: MomCareUser.shared.user?.plan.snacks.remove(at: indexPath.row - 1)
+                case 3: MomCareUser.shared.user?.plan.dinner.remove(at: indexPath.row - 1)
+                default: fatalError()
+                }
+                self.tableView.reloadData()
+            }
+
+            return UIMenu(title: "", children: [deleteAction])
+        }
+    }
+
+    func performSegueToSearch(_ sender: Any?) {
+        performSegue(withIdentifier: "segueShowSearchViewController", sender: sender)
     }
 
     @IBAction func unwindToMyPlanDiet(_ segue: UIStoryboardSegue) {}
@@ -162,27 +185,4 @@ class DietTableViewController: UITableViewController {
         dietViewController.refresh()
     }
 
-    override func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
-        if indexPath.row == 0 {
-            return nil
-        }
-
-        if let foods = getFoods(with: indexPath), foods[indexPath.row - 1].consumed {
-            return nil
-        }
-        return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in
-            let deleteAction = UIAction(title: "Delete", image: UIImage(systemName: "trash"), attributes: .destructive) { _ in
-                switch indexPath.section {
-                case 0: MomCareUser.shared.user?.plan.breakfast.remove(at: indexPath.row - 1)
-                case 1: MomCareUser.shared.user?.plan.lunch.remove(at: indexPath.row - 1)
-                case 2: MomCareUser.shared.user?.plan.snacks.remove(at: indexPath.row - 1)
-                case 3: MomCareUser.shared.user?.plan.dinner.remove(at: indexPath.row - 1)
-                default: fatalError()
-                }
-                self.tableView.reloadData()
-            }
-
-            return UIMenu(title: "", children: [deleteAction])
-        }
-    }
 }

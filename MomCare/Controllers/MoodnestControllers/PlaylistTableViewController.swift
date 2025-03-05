@@ -47,12 +47,6 @@ class PlaylistTableViewController: UITableViewController {
 
     @IBAction func unwindToSongPageViewController(_ segue: UIStoryboardSegue) {}
 
-    // MARK: Private
-
-    private func configureTableView() {
-        tableView.showsVerticalScrollIndicator = false
-    }
-
     func setupMusicPlayer(with song: Song) {
         let playBarButton = createBarButtonItem(systemName: "play.fill", action: #selector(playPauseButtonTapped))
         let forwardBarButton = createBarButtonItem(systemName: "forward.fill", action: #selector(forwardButtonTapped))
@@ -68,6 +62,12 @@ class PlaylistTableViewController: UITableViewController {
 
     @objc func crossButtonTapped(_ sender: UIButton) {
         initialTabBarController?.dismissPopupBar(animated: true)
+    }
+
+    // MARK: Private
+
+    private func configureTableView() {
+        tableView.showsVerticalScrollIndicator = false
     }
 
     private func createBarButtonItem(systemName: String, action: Selector) -> UIBarButtonItem {

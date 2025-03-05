@@ -32,4 +32,14 @@ class BabyMomTipViewController: UIViewController {
         momTipTextView.text = trimesterData.momTipText
     }
 
+    @IBAction func BabySeeMoreTapped(_ sender: UIButton) {
+        performSegue(withIdentifier: "segueShowBabyCardViewController", sender: nil)
+    }
+
+    @IBAction func MomSeeMoreTapped(_ sender: UIButton) {
+        performSegue(withIdentifier: "segueShowMomCardViewController", sender: nil)
+    }
+
+    @IBAction func unwindToBabyMomTipViewController(_ segue: UIStoryboardSegue) {}
+
 }
