@@ -312,24 +312,23 @@
                             <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="KHH-Sa-mEg">
                                 <rect key="frame" x="20" y="59" width="353" height="197"/>
                                 <subviews>
-                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="ERZ-Ax-Crg">
+                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" translatesAutoresizingMaskIntoConstraints="NO" id="ERZ-Ax-Crg">
                                         <rect key="frame" x="0.0" y="0.0" width="166.66666666666666" height="197"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Baby" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6hy-Uf-rll">
-                                                <rect key="frame" x="0.0" y="0.0" width="166.66666666666666" height="21.666666666666668"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="166.66666666666666" height="32"/>
                                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" textAlignment="natural" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iKK-Vy-Poh">
-                                                <rect key="frame" x="0.0" y="21.666666666666671" width="166.66666666666666" height="143.33333333333331"/>
-                                                <string key="text">At week 19, your baby is about 6 inches long and developing tiny senses of touch, taste, and hearing! Their skin is covered in vernix caseosa, a protective layer to prevent dryness in the womb. You may feel more movement </string>
+                                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" editable="NO" text="At week 19, your baby is about 6 inches long and developing tiny senses of touch, taste, and hearing!  " selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iKK-Vy-Poh">
+                                                <rect key="frame" x="0.0" y="48.666666666666664" width="166.66666666666666" height="99.666666666666686"/>
                                                 <color key="textColor" systemColor="labelColor"/>
-                                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                <fontDescription key="fontDescription" name=".AppleSystemUIFont" family=".AppleSystemUIFont" pointSize="14"/>
                                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                                 <dataDetectorType key="dataDetectorTypes" lookupSuggestion="YES"/>
                                             </textView>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3mW-wo-ARg">
+                                            <button opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="249" contentHorizontalAlignment="right" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3mW-wo-ARg">
                                                 <rect key="frame" x="0.0" y="165" width="166.66666666666666" height="32"/>
                                                 <state key="normal" title="Button"/>
                                                 <buttonConfiguration key="configuration" style="plain" title="See More">
@@ -341,26 +340,35 @@
                                             </button>
                                         </subviews>
                                         <color key="backgroundColor" red="0.93725490199999995" green="0.72549019609999998" blue="0.6588235294" alpha="1" colorSpace="calibratedRGB"/>
+                                        <constraints>
+                                            <constraint firstAttribute="trailing" secondItem="6hy-Uf-rll" secondAttribute="trailing" id="4fb-Sc-5wc"/>
+                                            <constraint firstItem="iKK-Vy-Poh" firstAttribute="centerX" secondItem="ERZ-Ax-Crg" secondAttribute="centerX" id="5Cl-x7-rrx"/>
+                                            <constraint firstItem="iKK-Vy-Poh" firstAttribute="centerY" secondItem="ERZ-Ax-Crg" secondAttribute="centerY" id="Mps-4w-e78"/>
+                                            <constraint firstItem="6hy-Uf-rll" firstAttribute="top" secondItem="ERZ-Ax-Crg" secondAttribute="top" id="UEY-MU-w9F"/>
+                                            <constraint firstAttribute="trailing" secondItem="3mW-wo-ARg" secondAttribute="trailing" id="lds-fW-ZCA"/>
+                                            <constraint firstAttribute="bottom" secondItem="3mW-wo-ARg" secondAttribute="bottom" id="nWS-1O-S1U"/>
+                                            <constraint firstItem="3mW-wo-ARg" firstAttribute="leading" secondItem="ERZ-Ax-Crg" secondAttribute="leading" id="oPA-zh-dva"/>
+                                            <constraint firstItem="6hy-Uf-rll" firstAttribute="leading" secondItem="ERZ-Ax-Crg" secondAttribute="leading" id="z1j-4X-yVN"/>
+                                        </constraints>
                                     </stackView>
-                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="LZJ-0W-xTD">
+                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" translatesAutoresizingMaskIntoConstraints="NO" id="LZJ-0W-xTD">
                                         <rect key="frame" x="186.66666666666663" y="0.0" width="166.33333333333337" height="197"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Mom" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="po0-Q1-J4d">
-                                                <rect key="frame" x="0.0" y="0.0" width="166.33333333333334" height="21.666666666666668"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="166.33333333333334" height="32"/>
                                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" textAlignment="natural" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RRB-rF-KHN">
-                                                <rect key="frame" x="0.0" y="21.666666666666671" width="166.33333333333334" height="141"/>
-                                                <string key="text">At week 19, your baby is developing rapidly, and your body is working hard to support this growth. If your weight is lower than expected, focus on nutrient-rich foods ike avocados </string>
+                                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" editable="NO" text="At week 19, your baby is developing rapidly, and your body is working hard to support this growth. " textAlignment="natural" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RRB-rF-KHN">
+                                                <rect key="frame" x="0.0" y="48.666666666666664" width="166.33333333333334" height="99.666666666666686"/>
                                                 <color key="textColor" systemColor="labelColor"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                                 <dataDetectorType key="dataDetectorTypes" lookupSuggestion="YES"/>
                                             </textView>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0lb-Tc-FBe">
-                                                <rect key="frame" x="0.0" y="162.66666666666666" width="166.33333333333334" height="34.333333333333343"/>
+                                                <rect key="frame" x="0.0" y="165" width="166.33333333333334" height="32"/>
                                                 <state key="normal" title="Button"/>
                                                 <buttonConfiguration key="configuration" style="plain" title="See More">
                                                     <fontDescription key="titleFontDescription" style="UICTFontTextStyleSubhead"/>
@@ -371,6 +379,16 @@
                                             </button>
                                         </subviews>
                                         <color key="backgroundColor" red="0.93725490196078431" green="0.72549019607843135" blue="0.6588235294117647" alpha="1" colorSpace="calibratedRGB"/>
+                                        <constraints>
+                                            <constraint firstItem="0lb-Tc-FBe" firstAttribute="leading" secondItem="LZJ-0W-xTD" secondAttribute="leading" id="0Du-ft-uER"/>
+                                            <constraint firstItem="po0-Q1-J4d" firstAttribute="top" secondItem="LZJ-0W-xTD" secondAttribute="top" id="ECw-Oq-2bG"/>
+                                            <constraint firstItem="RRB-rF-KHN" firstAttribute="centerY" secondItem="LZJ-0W-xTD" secondAttribute="centerY" id="GuT-Gn-7gy"/>
+                                            <constraint firstItem="po0-Q1-J4d" firstAttribute="leading" secondItem="LZJ-0W-xTD" secondAttribute="leading" id="W52-kC-DZA"/>
+                                            <constraint firstAttribute="trailing" secondItem="0lb-Tc-FBe" secondAttribute="trailing" id="pqi-ed-2ec"/>
+                                            <constraint firstAttribute="bottom" secondItem="0lb-Tc-FBe" secondAttribute="bottom" id="wFb-EB-aIY"/>
+                                            <constraint firstItem="RRB-rF-KHN" firstAttribute="centerX" secondItem="LZJ-0W-xTD" secondAttribute="centerX" id="xg7-Q6-DhB"/>
+                                            <constraint firstAttribute="trailing" secondItem="po0-Q1-J4d" secondAttribute="trailing" id="yIq-g6-FVd"/>
+                                        </constraints>
                                     </stackView>
                                 </subviews>
                             </stackView>
@@ -389,78 +407,157 @@
                         <outlet property="babyTipTextView" destination="iKK-Vy-Poh" id="8Vs-oy-rrw"/>
                         <outlet property="momStack" destination="LZJ-0W-xTD" id="35u-3P-3up"/>
                         <outlet property="momTipTextView" destination="RRB-rF-KHN" id="6jq-2K-vou"/>
+                        <segue destination="vtg-ph-GZh" kind="presentation" identifier="segueShowBabyCardViewController" id="zMn-rx-576"/>
+                        <segue destination="1ke-dC-0k3" kind="presentation" identifier="segueShowMomCardViewController" id="2eM-rt-YBc"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="nR1-kZ-c1q" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="2232.8244274809158" y="437.32394366197184"/>
         </scene>
-        <!--Mom Card View Controller-->
+        <!--Mom-->
         <scene sceneID="DKA-1J-IDk">
             <objects>
-                <viewController storyboardIdentifier="FullScreenCardViewController" id="JXj-eN-8Sv" customClass="MomCardViewController" customModule="MomCare" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="FullScreenMomCardViewController" id="JXj-eN-8Sv" customClass="MomCardViewController" customModule="MomCare" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="46v-Sd-amz">
-                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="590"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="Aa9-QS-bTK">
-                                <rect key="frame" x="20" y="79" width="353" height="719"/>
-                                <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Mom" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="z4L-qU-Ehl">
-                                        <rect key="frame" x="139" y="0.0" width="75" height="40.666666666666664"/>
-                                        <fontDescription key="fontDescription" style="UICTFontTextStyleTitle0"/>
-                                        <nil key="textColor"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="justified" translatesAutoresizingMaskIntoConstraints="NO" id="5gD-yi-AGV">
-                                        <rect key="frame" x="0.0" y="60.666666666666686" width="353" height="658.33333333333326"/>
-                                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                                        <string key="text">At week 19, your baby is developing rapidly, and your body is working hard to support this growth. If your weight is lower than expected, focus on nutrient-rich foods like avocados, nuts, dairy, lean proteins, and whole grains to ensure both you and your baby get essential vitamins. You may also experience round ligament pain—a sharp ache in your lower belly. Try gentle stretching, proper posture, and warm compresses for relief. Staying hydrated and getting enough rest will also help. Listen to your body and consult your doctor if discomfort persists.                                 💖👶          #HealthyPregnancy</string>
-                                        <color key="textColor" systemColor="labelColor"/>
-                                        <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
-                                        <textInputTraits key="textInputTraits" autocapitalizationType="sentences" smartDashesType="yes"/>
-                                    </textView>
-                                </subviews>
-                                <constraints>
-                                    <constraint firstAttribute="bottom" secondItem="5gD-yi-AGV" secondAttribute="bottom" id="EJT-oQ-0Ly"/>
-                                    <constraint firstItem="5gD-yi-AGV" firstAttribute="top" secondItem="Aa9-QS-bTK" secondAttribute="top" constant="60.670000000000002" id="Snx-lh-sK1"/>
-                                    <constraint firstItem="5gD-yi-AGV" firstAttribute="leading" secondItem="Aa9-QS-bTK" secondAttribute="leading" id="qnQ-tZ-kpz"/>
-                                    <constraint firstAttribute="trailing" secondItem="5gD-yi-AGV" secondAttribute="trailing" id="z5F-qE-81C"/>
-                                </constraints>
-                            </stackView>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" usesAttributedText="YES" translatesAutoresizingMaskIntoConstraints="NO" id="5gD-yi-AGV">
+                                <rect key="frame" x="20" y="56" width="353" height="534"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <attributedString key="attributedText">
+                                    <fragment>
+                                        <mutableString key="content">At week 19, your baby is developing rapidly, and your body is working hard to support this growth. If your weight is lower than expected, focus on nutrient-rich foods like avocados, nuts, dairy, lean proteins, and whole grains to ensure both you and your baby get essential vitamins. You may also experience round ligament pain—a sharp ache in your lower belly. Try gentle stretching, proper posture, and warm compresses for relief. Staying hydrated and getting enough rest will also help. Listen to your body and consult your doctor if discomfort persists.                                 </mutableString>
+                                        <attributes>
+                                            <color key="NSColor" systemColor="labelColor"/>
+                                            <font key="NSFont" metaFont="system" size="17"/>
+                                            <paragraphStyle key="NSParagraphStyle" alignment="justified" lineBreakMode="wordWrapping" baseWritingDirection="natural" paragraphSpacing="4" tighteningFactorForTruncation="0.0"/>
+                                        </attributes>
+                                    </fragment>
+                                    <fragment content="💖👶">
+                                        <attributes>
+                                            <color key="NSColor" systemColor="labelColor"/>
+                                            <font key="NSFont" size="17" name=".AppleColorEmojiUI"/>
+                                            <font key="NSOriginalFont" metaFont="system" size="17"/>
+                                            <paragraphStyle key="NSParagraphStyle" alignment="justified" lineBreakMode="wordWrapping" baseWritingDirection="natural" paragraphSpacing="4" tighteningFactorForTruncation="0.0"/>
+                                        </attributes>
+                                    </fragment>
+                                    <fragment content="          #HealthyPregnancy">
+                                        <attributes>
+                                            <color key="NSColor" systemColor="labelColor"/>
+                                            <font key="NSFont" metaFont="system" size="17"/>
+                                            <paragraphStyle key="NSParagraphStyle" alignment="justified" lineBreakMode="wordWrapping" baseWritingDirection="natural" paragraphSpacing="4" tighteningFactorForTruncation="0.0"/>
+                                        </attributes>
+                                    </fragment>
+                                </attributedString>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences" smartDashesType="yes"/>
+                            </textView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="BTc-KW-Aac"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <color key="backgroundColor" red="0.94117647059999998" green="0.74117647060000003" blue="0.72549019609999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="Aa9-QS-bTK" firstAttribute="top" secondItem="BTc-KW-Aac" secondAttribute="top" constant="20" id="0aE-E9-dd2"/>
-                            <constraint firstItem="BTc-KW-Aac" firstAttribute="bottom" secondItem="Aa9-QS-bTK" secondAttribute="bottom" constant="20" id="25o-Q5-Fhk"/>
-                            <constraint firstItem="BTc-KW-Aac" firstAttribute="trailing" secondItem="Aa9-QS-bTK" secondAttribute="trailing" constant="20" id="5h7-7P-q22"/>
-                            <constraint firstItem="Aa9-QS-bTK" firstAttribute="leading" secondItem="BTc-KW-Aac" secondAttribute="leading" constant="20" id="jHS-lx-kb0"/>
+                            <constraint firstItem="5gD-yi-AGV" firstAttribute="top" secondItem="BTc-KW-Aac" secondAttribute="top" id="8IC-xc-E0o"/>
+                            <constraint firstItem="BTc-KW-Aac" firstAttribute="bottom" secondItem="5gD-yi-AGV" secondAttribute="bottom" id="A2c-xM-Aab"/>
+                            <constraint firstItem="5gD-yi-AGV" firstAttribute="leading" secondItem="BTc-KW-Aac" secondAttribute="leading" constant="20" id="Ii0-KE-oSI"/>
+                            <constraint firstItem="BTc-KW-Aac" firstAttribute="trailing" secondItem="5gD-yi-AGV" secondAttribute="trailing" constant="20" id="RZj-Ar-Rze"/>
                         </constraints>
                     </view>
+                    <navigationItem key="navigationItem" title="Mom" largeTitleDisplayMode="always" id="2MN-dm-QWB">
+                        <barButtonItem key="rightBarButtonItem" style="done" systemItem="done" id="oj4-Bj-wKs">
+                            <connections>
+                                <segue destination="Ocv-dR-NMT" kind="unwind" unwindAction="unwindToBabyMomTipViewController:" id="kqE-XF-9rA"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
-                        <outlet property="contentTextView" destination="5gD-yi-AGV" id="YXt-FH-tKd"/>
-                        <outlet property="momCardTextView" destination="5gD-yi-AGV" id="ZkH-8w-k9A"/>
+                        <outlet property="momCardTextView" destination="5gD-yi-AGV" id="jqM-dn-zFZ"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="RKd-pC-q0I" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+                <exit id="Ocv-dR-NMT" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="1914" y="935"/>
+            <point key="canvasLocation" x="4476" y="175"/>
         </scene>
-        <!--Baby Card View Controller-->
+        <!--Baby-->
         <scene sceneID="065-1g-ToH">
             <objects>
-                <viewController id="MjJ-ur-pvK" customClass="BabyCardViewController" customModule="MomCare" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="FullScreenBabyCardViewController" id="MjJ-ur-pvK" customClass="BabyCardViewController" customModule="MomCare" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="1LM-oQ-pPE">
-                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="590"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="justified" translatesAutoresizingMaskIntoConstraints="NO" id="KiA-7v-zjY">
+                                <rect key="frame" x="20" y="56" width="353" height="534"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <mutableString key="text">At week 19, your baby is about 6 inches long and developing tiny senses of touch, taste, and hearing! Their skin is covered in vernix caseosa, a protective layer to prevent dryness in the womb. You may feel more movement as they kick and stretch. Their brain is busy forming specialized areas for smell, vision, and hearing—so talking, reading, or playing soft music can help! If you're feeling light flutters, that's quickening, your baby's first noticeable movements. Stay hydrated, eat iron-rich foods, and rest well to support this phase of rapid growth. 💖👣 #GrowingStrong</mutableString>
+                                <color key="textColor" systemColor="labelColor"/>
+                                <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
+                        </subviews>
                         <viewLayoutGuide key="safeArea" id="Xfy-HW-579"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <color key="backgroundColor" red="0.94117647059999998" green="0.74117647060000003" blue="0.72549019609999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="Xfy-HW-579" firstAttribute="bottom" secondItem="KiA-7v-zjY" secondAttribute="bottom" id="5Bu-2D-e5J"/>
+                            <constraint firstItem="KiA-7v-zjY" firstAttribute="leading" secondItem="Xfy-HW-579" secondAttribute="leading" constant="20" id="6Xu-Hk-m5I"/>
+                            <constraint firstItem="Xfy-HW-579" firstAttribute="trailing" secondItem="KiA-7v-zjY" secondAttribute="trailing" constant="20" id="W6u-OP-Fiy"/>
+                            <constraint firstItem="KiA-7v-zjY" firstAttribute="top" secondItem="Xfy-HW-579" secondAttribute="top" id="f7m-Pr-zRS"/>
+                        </constraints>
                     </view>
+                    <navigationItem key="navigationItem" title="Baby" largeTitleDisplayMode="always" id="V17-wI-BEw">
+                        <barButtonItem key="rightBarButtonItem" style="done" systemItem="done" id="SkR-Eg-9cd">
+                            <connections>
+                                <segue destination="sjs-01-Vzc" kind="unwind" unwindAction="unwindToBabyMomTipViewController:" id="gXT-7y-49A"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="babyCardTextView" destination="KiA-7v-zjY" id="9nj-J3-g2z"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="vvy-Vu-S02" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+                <exit id="sjs-01-Vzc" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="2752" y="935"/>
+            <point key="canvasLocation" x="4450" y="713"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="qVC-6T-LRu">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="vtg-ph-GZh" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <size key="freeformSize" width="393" height="600"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" largeTitles="YES" id="PWU-iy-hbO">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="108"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="MjJ-ur-pvK" kind="relationship" relationship="rootViewController" id="Uvp-Yy-9Fi"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Uwy-Ww-SLe" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3520" y="714"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="ghg-Qj-ANj">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="1ke-dC-0k3" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <size key="freeformSize" width="393" height="600"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" largeTitles="YES" id="KI9-Da-kfy">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="108"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="JXj-eN-8Sv" kind="relationship" relationship="rootViewController" id="rVf-Yx-QJl"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="vC9-J1-9mZ" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3520" y="175"/>
         </scene>
     </scenes>
     <resources>

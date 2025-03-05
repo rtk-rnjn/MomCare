@@ -15,6 +15,12 @@ class MomCardViewController: UIViewController {
         super.viewDidLoad()
 
         view.backgroundColor = UIColor(hex: "ECC7BA")
+        momCardTextView.backgroundColor = UIColor(hex: "ECC7BA")
 
+    }
+    
+    
+    @IBAction func MomCardCancelButtonTapped(_ sender: UIButton) {
+        dismiss(animated: true, completion: nil)
     }
 }

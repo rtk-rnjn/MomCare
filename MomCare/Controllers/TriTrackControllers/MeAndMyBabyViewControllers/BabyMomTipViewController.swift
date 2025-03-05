@@ -33,20 +33,16 @@ class BabyMomTipViewController: UIViewController {
     }
     
     @IBAction func BabySeeMoreTapped(_ sender: UIButton) {
-        let storyboard = UIStoryboard(name: "MeAndMyBaby", bundle: nil)
-        if let fullScreenVC = storyboard.instantiateViewController(withIdentifier: "FullScreenBabyCardViewController") as? BabyCardViewController {
-            fullScreenVC.modalPresentationStyle = .fullScreen
-            present(fullScreenVC, animated: true, completion: nil)
-        }
+        performSegue(withIdentifier: "segueShowBabyCardViewController", sender: nil)
+    }
+
+    @IBAction func MomSeeMoreTapped(_ sender: UIButton) {
+        performSegue(withIdentifier: "segueShowMomCardViewController", sender: nil)
     }
     
-    @IBAction func MomSeeMoreTapped(_ sender: UIButton) {
-        let storyboard = UIStoryboard(name: "MeAndMyBaby", bundle: nil)
-        if let fullScreenVC = storyboard.instantiateViewController(withIdentifier: "FullScreenMomCardViewController") as? MomCardViewController {
-            fullScreenVC.modalPresentationStyle = .fullScreen
-            present(fullScreenVC, animated: true, completion: nil)
-        }
+    @IBAction func unwindToBabyMomTipViewController(_ segue: UIStoryboardSegue) {
     }
+
 
 }
 
