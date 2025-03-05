@@ -86,7 +86,6 @@ class BreathingPlayerViewController: UIViewController {
     private let animationDuration: TimeInterval = 4.0
     private let spreadDistance: CGFloat = 50 // How far circles spread to form the flower
     private let textAnimationDuration: TimeInterval = 0.5 //
-    private let transitionLabel: UILabel = .init() //
     private let totalBreathingTime: Double = 300
 
     private func setupInstructionLabel() {
@@ -104,28 +103,9 @@ class BreathingPlayerViewController: UIViewController {
         instructionLabel.alpha = 1
     }
 
-    private func setupTransitionLabel() {
-        transitionLabel.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(transitionLabel)
-
-        // Position it exactly over the instruction label
-        NSLayoutConstraint.activate([
-            transitionLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            transitionLabel.bottomAnchor.constraint(equalTo: view.centerYAnchor, constant: -120)
-        ])
-
-        transitionLabel.textColor = .white
-        transitionLabel.font = .systemFont(ofSize: 24, weight: .medium)
-        transitionLabel.alpha = 0 // Start invisible
-    } //
+ 
 
     private func animateInstructionChange(to newText: String) {
-        // Setup transition label with new text
-        transitionLabel.text = newText
-        transitionLabel.transform = CGAffineTransform(translationX: 0, y: 0)
-        transitionLabel.alpha = 0
-
-        // Animate old text up and fade out
         UIView.animate(withDuration: textAnimationDuration, delay: 0, options: .curveLinear) {
             self.instructionLabel.transform = CGAffineTransform(translationX: 0, y: 0)
             self.instructionLabel.alpha = 0
@@ -133,14 +113,11 @@ class BreathingPlayerViewController: UIViewController {
 
         // Animate new text up and fade in
         UIView.animate(withDuration: textAnimationDuration, delay: 0, options: .curveLinear) {
-            self.transitionLabel.transform = .identity
-            self.transitionLabel.alpha = 1
         } completion: { _ in
             // Reset for next transition
             self.instructionLabel.text = newText
             self.instructionLabel.transform = .identity
             self.instructionLabel.alpha = 1
-            self.transitionLabel.alpha = 0
         }
     }
 
@@ -285,10 +262,8 @@ class BreathingPlayerViewController: UIViewController {
         CATransaction.begin()
         CATransaction.setCompletionBlock(completion)
 
-        // Animate each circle back to center
         for (index, circle) in circleLayers.enumerated() {
             if index == 0 {
-                // Center circle stays put
                 continue
             }
 

@@ -9,20 +9,27 @@ import UIKit
 import EventKit
 
 class AllSymptomsTableViewController: UITableViewController {
-    var symptoms: [EKEvent] = []
+    var symptoms: [EKEvent]? = []
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        symptoms = AppointmentsTableViewController.fetchOldEvents()
+    }
 
     override func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return symptoms.count
+        return symptoms?.count ?? 0
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "AllSymptomsTableViewCell", for: indexPath) as? AllSymptomsTableViewCell
 
         guard let cell else { fatalError() }
+        guard let symptoms = symptoms else { return cell }
 
         cell.updateElements(with: symptoms[indexPath.row])
 

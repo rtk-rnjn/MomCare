@@ -54,8 +54,12 @@ extension TriTrackViewController {
         let event = EKEvent(eventStore: TriTrackViewController.eventStore)
         event.title = title
         event.startDate = dateTime
+        event.endDate = dateTime
         event.calendar = createOrGetEvent()
+        event.isAllDay = true
+        event.notes = "Symptom event"
 
+        try? TriTrackViewController.eventStore.save(event, span: .thisEvent, commit: true)
         symptomsViewController?.symptomsTableViewController?.refreshData()
     }
 
@@ -65,7 +69,10 @@ extension TriTrackViewController {
 
         let event = EKEvent(eventStore: TriTrackViewController.eventStore)
         event.title = title
-        event.location = ((eventTVC.locationField.text?.isEmpty) != nil) ? eventTVC.locationField.text : nil
+        if let location = eventTVC.locationField.text, !location.trimmingCharacters(in: .whitespaces).isEmpty {
+            event.location = location
+        }
+
         event.startDate = eventTVC.startDateTimePicker.date
         event.isAllDay = eventTVC.allDaySwitch.isOn
 

@@ -80,11 +80,24 @@ class AppointmentsTableViewController: UITableViewController {
 
     static func fetchEvents() -> [EKEvent]? {
         let startDate = Calendar.current.startOfDay(for: Date())
-        let endDate = Calendar.current.date(byAdding: .month, value: 1, to: startDate)!
+        let endDate = Calendar.current.date(byAdding: .year, value: 1, to: startDate)!
         let ekCalendars = AppointmentsTableViewController.getCalendar(with: "TriTrackEvent")
 
         let predicate = TriTrackViewController.eventStore.predicateForEvents(withStart: startDate, end: endDate, calendars: ekCalendars)
-        return TriTrackViewController.eventStore.events(matching: predicate)
+        let events = TriTrackViewController.eventStore.events(matching: predicate)
+        
+        return events.filter { $0.notes != "Symptom event" }
+    }
+    
+    static func fetchOldEvents() -> [EKEvent]? {
+        let startDate = Calendar.current.date(byAdding: .year, value: -1, to: Date())!
+        let endDate = Date()
+        let ekCalendars = AppointmentsTableViewController.getCalendar(with: "TriTrackEvent")
+
+        let predicate = TriTrackViewController.eventStore.predicateForEvents(withStart: startDate, end: endDate, calendars: ekCalendars)
+        let events = TriTrackViewController.eventStore.events(matching: predicate)
+
+        return events.filter { $0.notes == "Symptom event" }
     }
 
     static func getCalendar(with identifierKey: String) -> [EKCalendar]? {
@@ -99,5 +112,4 @@ class AppointmentsTableViewController: UITableViewController {
         events = AppointmentsTableViewController.fetchEvents()
         tableView.reloadData()
     }
-
 }
