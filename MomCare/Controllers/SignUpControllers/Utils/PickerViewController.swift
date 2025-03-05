@@ -27,8 +27,14 @@ class PickerViewController: UIViewController, UIPickerViewDelegate, UIPickerView
             fatalError("Options not set")
         }
 
-        let sortedOptionsByAlphabet = options.sorted { $0.value < $1.value }
-        let selectedOption = sortedOptionsByAlphabet[0]
+        let sortedOptions = options.sorted {
+            if let firstNumber = Int($0.key), let secondNumber = Int($1.key) {
+                return firstNumber < secondNumber
+            }
+
+            return $0.value < $1.value
+        }
+        let selectedOption = sortedOptions[0]
         self.selectedOption = selectedOption
         pickerView.selectRow(0, inComponent: 0, animated: false)
     }

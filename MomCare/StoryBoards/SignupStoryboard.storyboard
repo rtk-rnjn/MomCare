@@ -753,7 +753,8 @@
                                                         </label>
                                                         <button opaque="NO" contentMode="scaleToFill" showsMenuAsPrimaryAction="YES" contentHorizontalAlignment="right" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" changesSelectionAsPrimaryAction="YES" translatesAutoresizingMaskIntoConstraints="NO" id="7rN-H1-Q1C">
                                                             <rect key="frame" x="166.66666666666663" y="0.0" width="166.33333333333337" height="50"/>
-                                                            <color key="tintColor" systemColor="systemGray2Color"/>
+                                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                            <color key="tintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                             <state key="normal" title="Button">
                                                                 <color key="titleColor" systemColor="systemGray2Color"/>
                                                             </state>
@@ -800,7 +801,8 @@
                                                         </label>
                                                         <button opaque="NO" contentMode="scaleToFill" showsMenuAsPrimaryAction="YES" contentHorizontalAlignment="right" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" changesSelectionAsPrimaryAction="YES" translatesAutoresizingMaskIntoConstraints="NO" id="5qb-oL-WkN">
                                                             <rect key="frame" x="166.66666666666663" y="0.0" width="166.33333333333337" height="50"/>
-                                                            <color key="tintColor" systemColor="systemGray2Color"/>
+                                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                            <color key="tintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                             <state key="normal" title="Button">
                                                                 <color key="titleColor" systemColor="systemGray2Color"/>
                                                             </state>
@@ -847,7 +849,8 @@
                                                         </label>
                                                         <button opaque="NO" contentMode="scaleToFill" showsMenuAsPrimaryAction="YES" contentHorizontalAlignment="right" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" changesSelectionAsPrimaryAction="YES" translatesAutoresizingMaskIntoConstraints="NO" id="uZf-dz-n1s">
                                                             <rect key="frame" x="166.66666666666663" y="0.0" width="166.33333333333337" height="50"/>
-                                                            <color key="tintColor" systemColor="systemGray2Color"/>
+                                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                            <color key="tintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                             <state key="normal" title="Button">
                                                                 <color key="titleColor" systemColor="systemGray2Color"/>
                                                             </state>

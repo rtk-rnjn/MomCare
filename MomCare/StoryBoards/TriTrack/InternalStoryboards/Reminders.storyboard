@@ -9,41 +9,47 @@
         <!--All Reminders Table View Controller-->
         <scene sceneID="ijA-1Y-xCH">
             <objects>
-                <tableViewController id="O4E-30-vrW" customClass="AllRemindersTableViewController" customModule="MomCare" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="AllRemindersTableViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="O4E-30-vrW" customClass="AllRemindersTableViewController" customModule="MomCare" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="insetGrouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" estimatedSectionHeaderHeight="-1" sectionFooterHeight="18" estimatedSectionFooterHeight="-1" id="Rdq-Lr-Sys">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="0.9137254901960784" green="0.82745098039215681" blue="0.82745098039215681" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="AllRemindersTableViewCell" id="Zx3-Yf-LfQ" customClass="AllRemindersTableViewCell" customModule="MomCare" customModuleProvider="target">
-                                <rect key="frame" x="20" y="55.333332061767578" width="353" height="60.333332061767578"/>
+                                <rect key="frame" x="20" y="55.333332061767578" width="353" height="44.666667938232422"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Zx3-Yf-LfQ" id="Fym-Cv-bcE">
-                                    <rect key="frame" x="0.0" y="0.0" width="353" height="60.333332061767578"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="353" height="44.666667938232422"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="Cgd-hl-l1v">
-                                            <rect key="frame" x="20" y="5" width="313" height="50.333333333333336"/>
+                                        <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Cgd-hl-l1v">
+                                            <rect key="frame" x="20" y="5" width="313" height="34.666666666666664"/>
                                             <subviews>
                                                 <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="m3n-53-Jg1">
-                                                    <rect key="frame" x="0.0" y="8" width="88" height="34.333333333333336"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="271.66666666666669" height="34.666666666666657"/>
                                                     <subviews>
                                                         <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Xci-WO-IS9">
-                                                            <rect key="frame" x="0.0" y="0.0" width="46.666666666666664" height="34.333333333333336"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="49.666666666666664" height="34.666666666666664"/>
                                                             <state key="normal" title="Button"/>
                                                             <buttonConfiguration key="configuration" style="plain" image="circle" catalog="system"/>
+                                                            <connections>
+                                                                <action selector="buttonTapped:" destination="Zx3-Yf-LfQ" eventType="touchUpInside" id="S9k-5Q-zvo"/>
+                                                            </connections>
                                                         </button>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RnB-ud-DGN">
-                                                            <rect key="frame" x="46.666666666666671" y="0.0" width="41.333333333333329" height="34.333333333333336"/>
+                                                            <rect key="frame" x="49.666666666666686" y="0.0" width="222" height="34.666666666666664"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                     </subviews>
                                                 </stackView>
-                                                <datePicker contentMode="scaleToFill" contentHorizontalAlignment="trailing" contentVerticalAlignment="center" datePickerMode="time" minuteInterval="1" translatesAutoresizingMaskIntoConstraints="NO" id="cMz-et-XZV">
-                                                    <rect key="frame" x="104" y="0.33333333333333215" width="209" height="50"/>
-                                                </datePicker>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YfC-5b-lkn">
+                                                    <rect key="frame" x="271.66666666666669" y="0.0" width="41.333333333333314" height="34.666666666666664"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
                                             </subviews>
                                         </stackView>
                                     </subviews>
@@ -55,7 +61,8 @@
                                     </constraints>
                                 </tableViewCellContentView>
                                 <connections>
-                                    <outlet property="dateTimePicker" destination="cMz-et-XZV" id="jtf-hl-CEz"/>
+                                    <outlet property="button" destination="Xci-WO-IS9" id="j4w-hL-8rL"/>
+                                    <outlet property="relativeTimeLabel" destination="YfC-5b-lkn" id="cqa-Zg-wwC"/>
                                     <outlet property="titleLabel" destination="RnB-ud-DGN" id="uP3-kP-7Sd"/>
                                 </connections>
                             </tableViewCell>

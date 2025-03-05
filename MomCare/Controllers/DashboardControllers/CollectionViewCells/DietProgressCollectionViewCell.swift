@@ -35,7 +35,6 @@ class DietProgressCollectionViewCell: UICollectionViewCell {
     func updateElements(withTapHandler tapHandler: (() -> Void)? = nil) {
         self.tapHandler = tapHandler
 
-        updateLabels()
         guard let dueDate = MomCareUser.shared.user?.medicalData?.dueDate else { return }
 
         let pregnancyData = Utils.pregnancyWeekAndDay(dueDate: dueDate)
@@ -44,7 +43,12 @@ class DietProgressCollectionViewCell: UICollectionViewCell {
 
         let progress = Float(currentCaloriesIntake) / Float(caloriesGoal)
         progressBar.progress = progress
-        percentageLabel.text = "\(Int(progress * 100))%"
+
+        var displayProgress = Int(progress * 100)
+        displayProgress = displayProgress > 100 ? 100 : displayProgress
+        percentageLabel.text = "\(displayProgress)%"
+        
+        updateLabels()
     }
 
     // MARK: Private

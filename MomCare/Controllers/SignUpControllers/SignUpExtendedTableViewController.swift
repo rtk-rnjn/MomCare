@@ -14,6 +14,7 @@ class SignUpExtendedTableViewController: UITableViewController {
 
     var initialProgress: Float = 0.0
     var userMedical: UserMedical?
+    var multipleSelectorTableViewController: MultipleSelectorTableViewController?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -29,7 +30,9 @@ class SignUpExtendedTableViewController: UITableViewController {
         if let destination = segue.destination as? UINavigationController, let presentationController = destination.presentationController as? UISheetPresentationController {
             presentationController.detents = [.medium()]
             if let medicalDetailSelectorTableViewController = destination.viewControllers.first as? MultipleSelectorTableViewController {
-                medicalDetailSelectorTableViewController.options = sender as? [String] ?? []
+                guard let sender = sender as? (options: [String], button: UIButton) else { return }
+                medicalDetailSelectorTableViewController.options = sender.options
+                medicalDetailSelectorTableViewController.button = sender.button
             }
         }
     }
@@ -47,19 +50,19 @@ class SignUpExtendedTableViewController: UITableViewController {
         performSegue(withIdentifier: "segueShowInitialTabBarController", sender: nil)
     }
 
-    @IBAction func intoleranceButtonTapped(_ sender: Any) {
+    @IBAction func intoleranceButtonTapped(_ sender: UIButton) {
         let options = Intolerance.allCases.map { $0.rawValue }
-        performSegue(withIdentifier: "segueShowMedicalDetailSelectorTableViewController", sender: options)
+        performSegue(withIdentifier: "segueShowMedicalDetailSelectorTableViewController", sender: (options, sender))
     }
 
-    @IBAction func preExistingConditionTapped(_ sender: Any) {
+    @IBAction func preExistingConditionTapped(_ sender: UIButton) {
         let options = PreExistingCondition.allCases.map { $0.rawValue }
-        performSegue(withIdentifier: "segueShowMedicalDetailSelectorTableViewController", sender: options)
+        performSegue(withIdentifier: "segueShowMedicalDetailSelectorTableViewController", sender: (options, sender))
     }
 
-    @IBAction func dietaryPreferenceTapped(_ sender: Any) {
+    @IBAction func dietaryPreferenceTapped(_ sender: UIButton) {
         let options = DietaryPreference.allCases.map { $0.rawValue }
-        performSegue(withIdentifier: "segueShowMedicalDetailSelectorTableViewController", sender: options)
+        performSegue(withIdentifier: "segueShowMedicalDetailSelectorTableViewController", sender: (options, sender))
     }
 
     @IBAction func unwinToMedicalDetail(_ segue: UIStoryboardSegue) {}

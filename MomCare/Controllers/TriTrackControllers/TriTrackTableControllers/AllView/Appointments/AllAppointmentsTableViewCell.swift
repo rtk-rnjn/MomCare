@@ -17,6 +17,11 @@ class AllAppointmentsTableViewCell: UITableViewCell {
     func updateElements(with appointment: EKEvent) {
         titleLabel.text = appointment.title
         notesLabel.text = appointment.location
+        
+        if appointment.location?.trimmingCharacters(in: .whitespaces).isEmpty ?? true {
+            notesLabel.isHidden = true
+        }
+
         dateTimePicker.date = appointment.startDate
     }
 }

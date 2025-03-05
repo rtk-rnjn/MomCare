@@ -20,7 +20,6 @@ extension DashboardViewController {
                 DispatchQueue.main.async {
                     UIApplication.shared.registerForRemoteNotifications()
                 }
-
             }
         } catch {
             print(error.localizedDescription)

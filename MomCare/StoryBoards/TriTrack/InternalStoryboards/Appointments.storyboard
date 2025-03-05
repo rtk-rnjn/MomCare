@@ -14,7 +14,6 @@
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="insetGrouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" estimatedSectionHeaderHeight="-1" sectionFooterHeight="18" estimatedSectionFooterHeight="-1" id="155-r4-zE4">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" red="0.9137254901960784" green="0.82745098039215681" blue="0.82745098039215681" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="AllAppointmentsTableViewCell" id="OT0-8f-6cT" customClass="AllAppointmentsTableViewCell" customModule="MomCare" customModuleProvider="target">
                                 <rect key="frame" x="20" y="55.333332061767578" width="353" height="61.333332061767578"/>
@@ -68,14 +67,17 @@
                             <outlet property="delegate" destination="oWn-ML-c53" id="fId-7w-6jG"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" id="TRN-op-xYG"/>
+                    <navigationItem key="navigationItem" id="TRN-op-xYG">
+                        <barButtonItem key="rightBarButtonItem" title="Item" image="arrow.up.arrow.down" catalog="system" style="done" id="SLI-ta-tM1"/>
+                    </navigationItem>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="yjr-w2-uUA" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1272.5190839694656" y="-23.239436619718312"/>
+            <point key="canvasLocation" x="2199.2366412213742" y="-23.239436619718312"/>
         </scene>
     </scenes>
     <resources>
+        <image name="arrow.up.arrow.down" catalog="system" width="128" height="97"/>
         <systemColor name="opaqueSeparatorColor">
             <color red="0.77647058820000003" green="0.77647058820000003" blue="0.7843137255" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
