@@ -1,5 +1,5 @@
 //
-//  BabyAndMomCardViewController.swift
+//  MomCardViewController.swift
 //  MomCare
 //
 //  Created by Khushi Rana on 04/03/25.
@@ -8,9 +8,9 @@
 import UIKit
 
 class MomCardViewController: UIViewController {
-    
+
     @IBOutlet var momCardTextView: UITextView!
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -18,8 +18,7 @@ class MomCardViewController: UIViewController {
         momCardTextView.backgroundColor = UIColor(hex: "ECC7BA")
 
     }
-    
-    
+
     @IBAction func MomCardCancelButtonTapped(_ sender: UIButton) {
         dismiss(animated: true, completion: nil)
     }

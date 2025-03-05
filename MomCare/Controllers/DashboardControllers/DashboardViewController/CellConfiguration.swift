@@ -110,7 +110,7 @@ extension DashboardViewController {
         let events = AppointmentsTableViewController.fetchEvents()
         guard let event = events?.isEmpty ?? true ? nil : events?[0] else { return }
 
-        self.presentEKEventViewController(with: event)
+        presentEKEventViewController(with: event)
     }
 
     func weekCardTapped() {

@@ -61,7 +61,7 @@ class SearchTableViewCell: UITableViewCell {
             break
         }
 
-        self.viewController?.dismiss(animated: true) {
+        viewController?.dismiss(animated: true) {
             self.viewController?.refreshHandler?()
         }
 

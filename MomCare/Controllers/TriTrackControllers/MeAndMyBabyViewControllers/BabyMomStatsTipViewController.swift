@@ -11,12 +11,7 @@ class BabyMomStatsTipViewController: UIViewController {
     var meAndMyBabyViewController: MeAndMyBabyViewController?
 
     @IBOutlet var BabyMomStatsTipLoweView: UIView!
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-    }
-    
+
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         switch segue.identifier {
         case "embedShowBabyStatsViewController":
