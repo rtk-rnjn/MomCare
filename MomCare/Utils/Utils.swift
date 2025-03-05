@@ -118,7 +118,7 @@ enum Utils {
         case "I":
             return 1700
         case "II":
-            return 1850
+            return 1830
         case "III":
             return 2400
         default:
