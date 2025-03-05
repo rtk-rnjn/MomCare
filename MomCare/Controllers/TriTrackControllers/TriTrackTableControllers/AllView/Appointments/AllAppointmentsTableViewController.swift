@@ -12,13 +12,12 @@ import EventKitUI
 class AllAppointmentsTableViewController: UITableViewController {
 
     var events: [EKEvent]? = []
-    
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
         events = AppointmentsTableViewController.fetchEvents()
     }
-
 
     override func numberOfSections(in tableView: UITableView) -> Int {
         return 1
@@ -32,12 +31,12 @@ class AllAppointmentsTableViewController: UITableViewController {
         let cell = tableView.dequeueReusableCell(withIdentifier: "AllAppointmentsTableViewCell", for: indexPath) as? AllAppointmentsTableViewCell
         guard let cell else { fatalError("likhe jo khat tujhe, wo teri yaad me 🎶") }
 
-        guard let appointment = events?[indexPath.row] else { return cell }        
+        guard let appointment = events?[indexPath.row] else { return cell }
         cell.updateElements(with: appointment)
 
         return cell
     }
-    
+
     override func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
         guard let events else { return nil }
 

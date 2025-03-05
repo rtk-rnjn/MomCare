@@ -10,12 +10,14 @@ import EventKit
 
 class AllRemindersTableViewController: UITableViewController {
 
+    // MARK: Internal
+
     var reminders: [EKReminder] = []
     var store: EKEventStore?
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
+
         store = TriTrackViewController.eventStore
         fetchReminders()
     }
@@ -37,7 +39,9 @@ class AllRemindersTableViewController: UITableViewController {
 
         return cell
     }
-    
+
+    // MARK: Private
+
     private func fetchReminders() {
         let ekCalendars = getCalendar(with: "TriTrackReminder")
 

@@ -10,10 +10,10 @@ import EventKit
 
 class AllSymptomsTableViewController: UITableViewController {
     var symptoms: [EKEvent]? = []
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         symptoms = AppointmentsTableViewController.fetchOldEvents()
     }
 
@@ -29,7 +29,7 @@ class AllSymptomsTableViewController: UITableViewController {
         let cell = tableView.dequeueReusableCell(withIdentifier: "AllSymptomsTableViewCell", for: indexPath) as? AllSymptomsTableViewCell
 
         guard let cell else { fatalError() }
-        guard let symptoms = symptoms else { return cell }
+        guard let symptoms else { return cell }
 
         cell.updateElements(with: symptoms[indexPath.row])
 

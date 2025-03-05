@@ -39,7 +39,7 @@ class MultipleSelectorTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         selectedMappedOptions[options[indexPath.row]] = !selectedMappedOptions[options[indexPath.row]]!
         let count = selectedMappedOptions.map({ $0.value }).filter({ $0 }).count
-        self.button?.setTitle("\(count) selected", for: .normal)
+        button?.setTitle("\(count) selected", for: .normal)
 
         tableView.reloadRows(at: [indexPath], with: .fade)
     }

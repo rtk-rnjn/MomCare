@@ -15,7 +15,7 @@ class EKReminderViewController: UITableViewController {
     var reminder: EKReminder!
     var store: EKEventStore!
     @IBOutlet var reminderLabel: UILabel!
-    
+
     @IBOutlet var completeButton: UIButton!
     @IBOutlet var deleteButton: UIButton!
 

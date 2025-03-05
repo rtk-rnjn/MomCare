@@ -10,6 +10,8 @@ import EventKit
 
 class AllRemindersTableViewCell: UITableViewCell {
 
+    // MARK: Internal
+
     @IBOutlet var titleLabel: UILabel!
     @IBOutlet var relativeTimeLabel: UILabel!
     @IBOutlet var button: UIButton!
