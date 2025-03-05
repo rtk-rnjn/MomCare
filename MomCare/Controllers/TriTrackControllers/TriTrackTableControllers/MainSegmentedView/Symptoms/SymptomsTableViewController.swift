@@ -9,7 +9,7 @@ import UIKit
 import EventKit
 
 class SymptomsTableViewController: UITableViewController {
-    var events: [EKEvent] = []
+    var events: [EKEvent]? = []
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -17,7 +17,7 @@ class SymptomsTableViewController: UITableViewController {
     }
 
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return events.count
+        return events?.count ?? 0
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -27,10 +27,10 @@ class SymptomsTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "SymptomsCell", for: indexPath) as? SymptomsTableViewCell
 
-        guard let cell else { return UITableViewCell() }
+        guard let cell else { fatalError() }
+        guard let event = events?[indexPath.section] else { return cell }
 
-        cell.updateElements(with: events[indexPath.section])
-        cell.showsReorderControl = false
+        cell.updateElements(with: event)
 
         // config as per prototype
         cell.backgroundColor = UIColor(hex: "F2F2F7")
@@ -50,7 +50,7 @@ class SymptomsTableViewController: UITableViewController {
     }
 
     func refreshData() {
-        events = []
+        events = AppointmentsTableViewController.fetchOldEvents()
         tableView.reloadData()
     }
 

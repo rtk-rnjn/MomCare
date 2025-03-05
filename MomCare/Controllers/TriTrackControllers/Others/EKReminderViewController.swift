@@ -14,7 +14,8 @@ class EKReminderViewController: UITableViewController {
 
     var reminder: EKReminder!
     var store: EKEventStore!
-
+    @IBOutlet var reminderLabel: UILabel!
+    
     @IBOutlet var completeButton: UIButton!
     @IBOutlet var deleteButton: UIButton!
 
@@ -30,6 +31,8 @@ class EKReminderViewController: UITableViewController {
     // MARK: Private
 
     private func updateView() {
+        reminderLabel.text = reminder.title
+
         if !reminder.isCompleted {
             completeButton.titleLabel?.text = "Mark as Complete"
         } else {
