@@ -15,7 +15,7 @@ class SearchTableViewCell: UITableViewCell {
     @IBOutlet var foodLabel: UILabel!
     @IBOutlet var foodMetadata: UILabel!
 
-    var viewController: UIViewController?
+    var viewController: SearchViewController?
     var foodItem: FoodItem?
 
     @IBAction func addButtonTapped(_ sender: UIButton) {
@@ -23,7 +23,7 @@ class SearchTableViewCell: UITableViewCell {
         confirmAlert(title: "Add Food", message: "Do you want to add \(foodItem.name) to your meal?", with: sender)
     }
 
-    func updateElements(with foodItem: FoodItem, sender viewController: UIViewController?) {
+    func updateElements(with foodItem: FoodItem, sender viewController: SearchViewController?) {
         foodImageView.image = foodItem.image
         foodLabel.text = foodItem.name
         foodMetadata.text = "\(foodItem.calories) calories"
@@ -46,7 +46,25 @@ class SearchTableViewCell: UITableViewCell {
     }
 
     private func alertConfirmTapped(_ actionAlert: UIAlertAction) {
-        print("Confirm Tapped")
+        guard let foodItem else { return }
+
+        switch viewController?.mealName {
+        case "Breakfast":
+            MomCareUser.shared.user?.plan.breakfast.append(foodItem)
+        case "Lunch":
+            MomCareUser.shared.user?.plan.lunch.append(foodItem)
+        case "Snacks":
+            MomCareUser.shared.user?.plan.snacks.append(foodItem)
+        case "Dinner":
+            MomCareUser.shared.user?.plan.dinner.append(foodItem)
+        default:
+            break
+        }
+
+        self.viewController?.dismiss(animated: true) {
+            self.viewController?.refreshHandler?()
+        }
+
     }
 
     private func alertCancelTapped(_ actionAlert: UIAlertAction) {

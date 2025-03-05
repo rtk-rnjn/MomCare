@@ -9,7 +9,7 @@ import Foundation
 import EventKit
 import EventKitUI
 
-extension DashboardViewController: EKEventEditViewDelegate {
+extension DashboardViewController: EKEventEditViewDelegate, EKEventViewDelegate {
     nonisolated func eventEditViewController(_ controller: EKEventEditViewController, didCompleteWith action: EKEventEditViewAction) {
         switch action {
         case .saved:
@@ -24,6 +24,18 @@ extension DashboardViewController: EKEventEditViewDelegate {
         }
     }
 
+    nonisolated func eventViewController(_ controller: EKEventViewController, didCompleteWith action: EKEventViewAction) {
+        switch action {
+        case .done:
+            DispatchQueue.main.async {
+                controller.dismiss(animated: true)
+            }
+
+        default:
+            break
+        }
+    }
+
     func presentEKEventEditViewController(with event: EKEvent?) {
         let eventEditViewController = EKEventEditViewController()
         eventEditViewController.eventStore = TriTrackViewController.eventStore
@@ -32,5 +44,17 @@ extension DashboardViewController: EKEventEditViewDelegate {
         eventEditViewController.editViewDelegate = self
 
         present(eventEditViewController, animated: true, completion: nil)
+    }
+
+    func presentEKEventViewController(with event: EKEvent) {
+        let eventViewController = EKEventViewController()
+        eventViewController.event = event
+        eventViewController.allowsEditing = true
+        eventViewController.allowsCalendarPreview = true
+
+        let navigationController = UINavigationController(rootViewController: eventViewController)
+        eventViewController.delegate = self
+
+        present(navigationController, animated: true)
     }
 }

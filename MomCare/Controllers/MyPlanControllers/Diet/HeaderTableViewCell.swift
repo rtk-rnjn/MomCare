@@ -14,7 +14,7 @@ class HeaderTableViewCell: UITableViewCell {
     @IBOutlet var mealHeaderButton: UIButton!
 
     var buttonTapHandler: (() -> Bool)?
-    var segueHandler: (() -> Void)?
+    var segueHandler: ((Any?) -> Void)?
     var refreshHandler: (() -> Void)?
     var allConsumed: Bool!
 
@@ -26,7 +26,7 @@ class HeaderTableViewCell: UITableViewCell {
         }
     }
 
-    func updateElements(with title: String, segueHandler: (() -> Void)?, refreshHandler: (() -> Void)?, allConsumed: Bool, buttonTapHandler: @escaping (() -> Bool)) {
+    func updateElements(with title: String, segueHandler: ((Any?) -> Void)?, refreshHandler: (() -> Void)?, allConsumed: Bool, buttonTapHandler: @escaping (() -> Bool)) {
         mealHeaderLabel.text = title
 
         self.buttonTapHandler = buttonTapHandler
@@ -65,6 +65,6 @@ class HeaderTableViewCell: UITableViewCell {
     }
 
     private func addItemHandler(_ action: UIAction) {
-        segueHandler?()
+        segueHandler?(mealHeaderLabel.text)
     }
 }

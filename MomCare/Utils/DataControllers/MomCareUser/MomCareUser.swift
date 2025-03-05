@@ -14,7 +14,7 @@ class MomCareUser {
 
     public static var shared: MomCareUser = .init()
 
-    public private(set) var user: User? {
+    var user: User? {
         didSet {
             if oldValue != user {
                 updateToDatabase()
