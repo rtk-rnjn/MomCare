@@ -549,16 +549,16 @@
                                                     </userDefinedRuntimeAttributes>
                                                 </imageView>
                                                 <stackView opaque="NO" contentMode="center" axis="vertical" spacing="-1" translatesAutoresizingMaskIntoConstraints="NO" id="pnI-vX-LZ3">
-                                                    <rect key="frame" x="54.999999999999993" y="0.0" width="80.333333333333314" height="46"/>
+                                                    <rect key="frame" x="55" y="0.0" width="308" height="46"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="TopLeft" horizontalHuggingPriority="251" verticalHuggingPriority="1000" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AvU-Fn-W3T">
-                                                            <rect key="frame" x="0.0" y="0.0" width="80.333333333333329" height="27"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="308" height="27"/>
                                                             <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                             <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <stackView opaque="NO" contentMode="left" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="0Xf-gb-Obs">
-                                                            <rect key="frame" x="0.0" y="26" width="80.333333333333329" height="20"/>
+                                                            <rect key="frame" x="0.0" y="26" width="308" height="20"/>
                                                             <subviews>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="1000" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0P1-w8-7a0">
                                                                     <rect key="frame" x="0.0" y="0.0" width="35.333333333333336" height="20"/>
@@ -574,7 +574,7 @@
                                                                     </constraints>
                                                                 </imageView>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="TopLeft" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="2:50" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="epl-2f-Y4X">
-                                                                    <rect key="frame" x="50.333333333333329" y="0.0" width="30" height="20"/>
+                                                                    <rect key="frame" x="50.333333333333343" y="0.0" width="257.66666666666663" height="20"/>
                                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                                     <color key="textColor" systemColor="systemGrayColor"/>
                                                                     <nil key="highlightedColor"/>
@@ -586,16 +586,7 @@
                                                         </stackView>
                                                     </subviews>
                                                 </stackView>
-                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="trailing" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Bmy-bN-GBa">
-                                                    <rect key="frame" x="145.33333333333337" y="0.0" width="217.66666666666663" height="46"/>
-                                                    <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                    <state key="normal" title="Button"/>
-                                                    <buttonConfiguration key="configuration" style="plain" image="ellipsis" catalog="system"/>
-                                                </button>
                                             </subviews>
-                                            <constraints>
-                                                <constraint firstAttribute="trailing" secondItem="Bmy-bN-GBa" secondAttribute="trailing" id="LFk-47-O5d"/>
-                                            </constraints>
                                         </stackView>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kmO-hs-iCs" userLabel="DividerView">
                                             <rect key="frame" x="75" y="60" width="318" height="1"/>
@@ -668,7 +659,6 @@
         <image name="checkmark" catalog="system" width="128" height="114"/>
         <image name="chevron.down" catalog="system" width="128" height="70"/>
         <image name="circle.fill" catalog="system" width="128" height="123"/>
-        <image name="ellipsis" catalog="system" width="128" height="37"/>
         <image name="face.dashed.fill" catalog="system" width="128" height="123"/>
         <image name="fantasize" width="128" height="128"/>
         <image name="forward.end.fill" catalog="system" width="128" height="97"/>
@@ -680,16 +670,16 @@
             <color red="1" green="0.17647058823529413" blue="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <systemColor name="opaqueSeparatorColor">
-            <color red="0.77647058823529413" green="0.77647058823529413" blue="0.78431372549019607" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.77647058820000003" green="0.77647058820000003" blue="0.7843137255" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
         <systemColor name="systemGray5Color">
-            <color red="0.89803921568627454" green="0.89803921568627454" blue="0.91764705882352937" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.8980392157" green="0.8980392157" blue="0.91764705879999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemGrayColor">
-            <color red="0.55686274509803924" green="0.55686274509803924" blue="0.57647058823529407" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.5568627451" green="0.5568627451" blue="0.57647058819999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>
