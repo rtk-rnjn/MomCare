@@ -40,6 +40,27 @@ class SymptomsTableViewController: UITableViewController {
 
         return cell
     }
+    
+    override func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
+        guard let events else {
+                return nil
+        }
+        
+        let event = events[indexPath.row]
+        
+        return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in
+            let deleteAction = UIAction(title: "Delete", image: UIImage(systemName: "trash"), attributes: .destructive) { _ in
+                do {
+                    try TriTrackViewController.eventStore.remove(event, span: .thisEvent, commit: true)
+                    self.refreshData()
+                } catch {
+                    print("Failed to delete event: \(error.localizedDescription)")
+                }
+            }
+            
+            return UIMenu(title: "", children: [deleteAction])
+        }
+    }
 
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return 1

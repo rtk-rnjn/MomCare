@@ -15,24 +15,24 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="0.91372549020000005" green="0.82745098039999998" blue="0.82745098039999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="AllSymptomsTableViewCell" id="qad-tw-Rof" customClass="AllSymptomsTableViewCell" customModule="MomCare" customModuleProvider="target">
-                                <rect key="frame" x="20" y="55.333332061767578" width="353" height="65.333335876464844"/>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="AllSymptomsTableViewCell" id="qad-tw-Rof" customClass="AllSymptomsTableViewCell" customModule="MomCare" customModuleProvider="target">
+                                <rect key="frame" x="20" y="55.333332061767578" width="353" height="67"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="qad-tw-Rof" id="NSc-1q-ljQ">
-                                    <rect key="frame" x="0.0" y="0.0" width="353" height="65.333335876464844"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="353" height="67"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kw8-Pr-crA">
-                                            <rect key="frame" x="20" y="5.0000000000000036" width="313" height="55.333333333333343"/>
+                                        <stackView opaque="NO" contentMode="scaleToFill" distribution="fillProportionally" translatesAutoresizingMaskIntoConstraints="NO" id="kw8-Pr-crA">
+                                            <rect key="frame" x="20" y="5" width="313" height="57"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4OI-vs-aVy">
-                                                    <rect key="frame" x="0.0" y="0.0" width="41.333333333333336" height="55.333333333333336"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="44.666666666666664" height="57"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <datePicker contentMode="scaleToFill" contentHorizontalAlignment="trailing" contentVerticalAlignment="center" datePickerMode="dateAndTime" minuteInterval="1" translatesAutoresizingMaskIntoConstraints="NO" id="IGz-Ci-HJi">
-                                                    <rect key="frame" x="41.333333333333343" y="0.0" width="271.66666666666663" height="55.333333333333336"/>
+                                                    <rect key="frame" x="44.666666666666657" y="0.0" width="268.33333333333337" height="57"/>
                                                 </datePicker>
                                             </subviews>
                                         </stackView>
