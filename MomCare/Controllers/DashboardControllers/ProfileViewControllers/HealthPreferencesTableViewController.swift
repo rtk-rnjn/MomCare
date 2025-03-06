@@ -48,7 +48,7 @@ class HealthPreferencesTableViewController: UITableViewController, UIPickerViewD
     
     @objc func toggleEditingMode() {
         isEditingMode = !isEditingMode
-        navigationItem.rightBarButtonItem?.title = isEditing ? "Save" : "Edit"
+        navigationItem.rightBarButtonItem?.title = isEditingMode ? "Save" : "Edit"
         
         UpdateUIForEditingMode()
         tableView.reloadData()
@@ -73,13 +73,11 @@ class HealthPreferencesTableViewController: UITableViewController, UIPickerViewD
     }
     
     func UpdateUIForEditingMode() {
-        dietPreferneceOutlet.isEnabled = isEditingMode
-        exerciseLevelOutlet.isEnabled = isEditingMode
+        dietPreferneceOutlet.isUserInteractionEnabled = isEditingMode
+        exerciseLevelOutlet.isUserInteractionEnabled = isEditingMode
     }
     
     func updateElements() {
-        guard let medicalData = MomCareUser.shared.user?.medicalData else { return }
-        
         dietPreferneceOutlet.setTitle("Not Set", for: .normal)
         exerciseLevelOutlet.setTitle("Not Set", for: .normal)
     }
@@ -99,5 +97,4 @@ class HealthPreferencesTableViewController: UITableViewController, UIPickerViewD
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         activeButton?.setTitle(currentPickerData[row], for: .normal)
     }
-    
 }
