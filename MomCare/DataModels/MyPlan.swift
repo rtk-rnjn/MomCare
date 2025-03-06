@@ -13,6 +13,18 @@ enum MealType: String, Codable, Equatable {
     case lunch
     case snacks
     case dinner
+
+    // MARK: Lifecycle
+
+    init?(rawValue: Int) {
+        switch rawValue {
+        case 0: self = .breakfast
+        case 1: self = .lunch
+        case 2: self = .snacks
+        case 3: self = .dinner
+        default: return nil
+        }
+    }
 }
 
 enum ExerciseType: String, Codable, Equatable {
@@ -66,6 +78,29 @@ struct MyPlan: Codable, Sendable, Equatable {
     var lunch: [FoodItem] = []
     var snacks: [FoodItem] = []
     var dinner: [FoodItem] = []
+
+    subscript(index: Int) -> [FoodItem] {
+        mutating get {
+            switch index {
+            case 0: return breakfast
+            case 1: return lunch
+            case 2: return snacks
+            case 3: return dinner
+            default: fatalError()
+            }
+        }
+    }
+
+    subscript(mealtype: MealType) -> [FoodItem] {
+        mutating get {
+            switch mealtype {
+            case .breakfast: return breakfast
+            case .lunch: return lunch
+            case .snacks: return snacks
+            case .dinner: return dinner
+            }
+        }
+    }
 }
 
 struct Exercise: Codable, Sendable, Equatable {

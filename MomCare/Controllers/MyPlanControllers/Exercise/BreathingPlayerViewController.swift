@@ -103,8 +103,6 @@ class BreathingPlayerViewController: UIViewController {
         instructionLabel.alpha = 1
     }
 
- 
-
     private func animateInstructionChange(to newText: String) {
         UIView.animate(withDuration: textAnimationDuration, delay: 0, options: .curveLinear) {
             self.instructionLabel.transform = CGAffineTransform(translationX: 0, y: 0)
@@ -112,8 +110,7 @@ class BreathingPlayerViewController: UIViewController {
         }
 
         // Animate new text up and fade in
-        UIView.animate(withDuration: textAnimationDuration, delay: 0, options: .curveLinear) {
-        } completion: { _ in
+        UIView.animate(withDuration: textAnimationDuration, delay: 0, options: .curveLinear) {} completion: { _ in
             // Reset for next transition
             self.instructionLabel.text = newText
             self.instructionLabel.transform = .identity

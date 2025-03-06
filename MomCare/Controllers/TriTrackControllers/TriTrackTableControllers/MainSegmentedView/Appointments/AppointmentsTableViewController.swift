@@ -85,10 +85,10 @@ class AppointmentsTableViewController: UITableViewController {
 
         let predicate = TriTrackViewController.eventStore.predicateForEvents(withStart: startDate, end: endDate, calendars: ekCalendars)
         let events = TriTrackViewController.eventStore.events(matching: predicate)
-        
+
         return events.filter { $0.notes != "Symptom event" }
     }
-    
+
     static func fetchOldEvents() -> [EKEvent]? {
         let startDate = Calendar.current.date(byAdding: .year, value: -1, to: Date())!
         let endDate = Date()

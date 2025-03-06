@@ -47,7 +47,7 @@ class DietProgressCollectionViewCell: UICollectionViewCell {
         var displayProgress = Int(progress * 100)
         displayProgress = displayProgress > 100 ? 100 : displayProgress
         percentageLabel.text = "\(displayProgress)%"
-        
+
         updateLabels()
     }
 
