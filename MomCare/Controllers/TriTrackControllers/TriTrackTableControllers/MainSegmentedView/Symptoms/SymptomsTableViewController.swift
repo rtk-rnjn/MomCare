@@ -10,6 +10,7 @@ import EventKit
 
 class SymptomsTableViewController: UITableViewController {
     var events: [EKEvent]? = []
+    var symptomsViewController: SymptomsViewController?
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -42,23 +43,26 @@ class SymptomsTableViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
+        guard let triTrackVC = symptomsViewController?.triTrackViewController else { return nil }
+
         guard let events else {
                 return nil
         }
         
-        let event = events[indexPath.row]
+        let event = events[indexPath.section]
         
         return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in
-            let deleteAction = UIAction(title: "Delete", image: UIImage(systemName: "trash"), attributes: .destructive) { _ in
-                do {
-                    try TriTrackViewController.eventStore.remove(event, span: .thisEvent, commit: true)
-                    self.refreshData()
-                } catch {
-                    print("Failed to delete event: \(error.localizedDescription)")
-                }
+            let editAction = UIAction(title: "Edit", image: UIImage(systemName: "pencil")) { _ in
+                print("edit")
+                triTrackVC.presentEKEventEditViewController(with: event)
             }
+            let deleteAction = UIAction(title: "Delete", image: UIImage(systemName: "trash"), attributes: .destructive) { _ in
+                print("delete")
+                    try? TriTrackViewController.eventStore.remove(event, span: .thisEvent, commit: true)
+                    self.refreshData()
+                }
             
-            return UIMenu(title: "", children: [deleteAction])
+            return UIMenu(title: "", children: [editAction, deleteAction])
         }
     }
 

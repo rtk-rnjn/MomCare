@@ -46,7 +46,7 @@ extension TriTrackViewController: EKEventEditViewDelegate, EKEventViewDelegate {
 
         present(eventEditViewController, animated: true, completion: nil)
     }
-
+    
     func presentEKEventViewController(with event: EKEvent) {
         let eventViewController = EKEventViewController()
         eventViewController.event = event
