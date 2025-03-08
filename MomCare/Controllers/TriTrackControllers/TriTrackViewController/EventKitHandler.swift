@@ -66,45 +66,47 @@ extension TriTrackViewController: EKEventEditViewDelegate, EKEventViewDelegate {
     // https://stackoverflow.com/a/44415132
     // https://stackoverflow.com/a/50369804
 
-    func requestAccessForCalendar() {
+    func requestAccessForCalendar() async {
         let status = EKEventStore.authorizationStatus(for: .event)
 
         switch status {
         case .denied, .restricted, .notDetermined:
-            TriTrackViewController.eventStore.requestFullAccessToEvents { success, _ in
-                TriTrackViewController.eventStore = .init()
+            let store = EKEventStore()
+            do {
+                let success = try await store.requestFullAccessToEvents()
                 if success {
-                    TriTrackViewController.eventStore = EKEventStore()
                     DispatchQueue.main.async {
                         _ = self.createOrGetEvent()
+                        TriTrackViewController.eventStore = store
                     }
                 }
+            } catch {
+                print("Error: \(error)")
             }
 
-        case .authorized:
-            break
         default:
             break
         }
     }
 
-    func requestAccessForReminders() {
+    func requestAccessForReminders() async {
         let status = EKEventStore.authorizationStatus(for: .reminder)
 
         switch status {
         case .denied, .restricted, .notDetermined:
-            TriTrackViewController.eventStore.requestFullAccessToReminders { success, _ in
-                TriTrackViewController.eventStore = .init()
+            let store = EKEventStore()
+            do {
+                let success = try await store.requestFullAccessToReminders()
                 if success {
-                    TriTrackViewController.eventStore = EKEventStore()
                     DispatchQueue.main.async {
                         _ = self.createOrGetReminder()
+                        TriTrackViewController.eventStore = store
                     }
                 }
+            } catch {
+                print(error)
             }
 
-        case .authorized:
-            break
         default:
             break
         }

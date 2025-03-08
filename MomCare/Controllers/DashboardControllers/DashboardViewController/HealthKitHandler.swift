@@ -31,7 +31,7 @@ extension DashboardViewController {
         }
     }
 
-    private static func fetchHealthData(quantityTypeIdentifier: HKQuantityTypeIdentifier, unit: HKUnit, completionHandler: @escaping (Double) -> Void) {
+    private static func fetchHealthData(quantityTypeIdentifier: HKQuantityTypeIdentifier, unit: HKUnit, completionHandler: @escaping @Sendable (Double) -> Void) {
         guard let quantityType = HKQuantityType.quantityType(forIdentifier: quantityTypeIdentifier) else { return }
 
         let now = Date()
@@ -46,31 +46,31 @@ extension DashboardViewController {
         DashboardViewController.healthStore.execute(query)
     }
 
-    static func readStepCount(completionHandler: @escaping (Double) -> Void) {
+    static func readStepCount(completionHandler: @escaping @Sendable (Double) -> Void) {
         fetchHealthData(quantityTypeIdentifier: .stepCount, unit: .count(), completionHandler: completionHandler)
     }
 
-    static func readCaloriesBurned(completionHandler: @escaping (Double) -> Void) {
+    static func readCaloriesBurned(completionHandler: @escaping @Sendable (Double) -> Void) {
         fetchHealthData(quantityTypeIdentifier: .activeEnergyBurned, unit: .kilocalorie(), completionHandler: completionHandler)
     }
 
-    static func readCaloriesIntake(completionHandler: @escaping (Double) -> Void) {
+    static func readCaloriesIntake(completionHandler: @escaping @Sendable (Double) -> Void) {
         fetchHealthData(quantityTypeIdentifier: .dietaryEnergyConsumed, unit: .kilocalorie(), completionHandler: completionHandler)
     }
 
-    static func readTotalFat(completionHandler: @escaping (Double) -> Void) {
+    static func readTotalFat(completionHandler: @escaping @Sendable (Double) -> Void) {
         fetchHealthData(quantityTypeIdentifier: .dietaryFatTotal, unit: .gram(), completionHandler: completionHandler)
     }
 
-    static func readTotalProtein(completionHandler: @escaping (Double) -> Void) {
+    static func readTotalProtein(completionHandler: @escaping @Sendable (Double) -> Void) {
         fetchHealthData(quantityTypeIdentifier: .dietaryProtein, unit: .gram(), completionHandler: completionHandler)
     }
 
-    static func readTotalCarbs(completionHandler: @escaping (Double) -> Void) {
+    static func readTotalCarbs(completionHandler: @escaping @Sendable (Double) -> Void) {
         fetchHealthData(quantityTypeIdentifier: .dietaryCarbohydrates, unit: .gram(), completionHandler: completionHandler)
     }
 
-    static func readWorkout(completionHandler: @escaping (Double) -> Void) {
+    static func readWorkout(completionHandler: @escaping @Sendable (Double) -> Void) {
         let workoutType = HKWorkoutType.workoutType()
         let now = Date()
         let startDate = Calendar.current.date(byAdding: .day, value: -1, to: now)

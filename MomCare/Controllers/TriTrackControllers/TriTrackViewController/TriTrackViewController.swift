@@ -7,7 +7,7 @@
 
 import UIKit
 import FSCalendar
-import EventKit
+@preconcurrency import EventKit
 
 enum TriTrackContainerViewType: Int {
     case meAndBabyContainerView = 0
@@ -37,9 +37,6 @@ class TriTrackViewController: UIViewController, FSCalendarDelegate, FSCalendarDa
     var eventsViewController: EventsViewController?
 
     var currentSegmentValue: Int = 0
-
-    var activityIndicator: UIActivityIndicatorView?
-
     var selectedDate: Date = .init()
 
     override func viewDidLoad() {
@@ -48,8 +45,10 @@ class TriTrackViewController: UIViewController, FSCalendarDelegate, FSCalendarDa
         calendarView.appearance.todayColor = .clear
         calendarView.appearance.titleTodayColor = .red
 
-        requestAccessForCalendar()
-        requestAccessForReminders()
+        Task {
+//            await requestAccessForCalendar()
+//            await requestAccessForReminders()
+        }
 
         navigationController?.navigationBar.isTranslucent = false
     }

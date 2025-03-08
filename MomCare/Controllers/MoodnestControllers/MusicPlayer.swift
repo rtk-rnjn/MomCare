@@ -7,6 +7,7 @@
 
 import UIKit
 
+@MainActor
 protocol MusicPlayerDelegate: AnyObject {
     func playPauseButtonTapped(_ sender: UIButton)
     func forwardButtonTapped(_ sender: UIButton)

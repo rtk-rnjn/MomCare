@@ -44,8 +44,7 @@ class ExerciseAVPlayerViewController: UIViewController, YTPlayerViewDelegate {
         }
     }
 
-    // MARK: - YTPlayerViewDelegate Methods
-    func playerViewDidBecomeReady(_ playerView: YTPlayerView) {
+    nonisolated func playerViewDidBecomeReady(_ playerView: YTPlayerView) {
         DispatchQueue.main.async { [weak self] in
             guard let self else { return }
             playPauseButton.isEnabled = true
@@ -74,7 +73,7 @@ class ExerciseAVPlayerViewController: UIViewController, YTPlayerViewDelegate {
         view.layer.insertSublayer(gradientLayer, at: 0)
     }
 
-    func playerView(_ playerView: YTPlayerView, didChangeTo state: YTPlayerState) {
+    nonisolated func playerView(_ playerView: YTPlayerView, didChangeTo state: YTPlayerState) {
         DispatchQueue.main.async { [weak self] in
             guard let self else { return }
 

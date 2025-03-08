@@ -11,8 +11,6 @@ import HealthKit
 import HealthKitUI
 import EventKit
 
-private let refreshControl: UIRefreshControl = .init()
-
 class DashboardViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate {
 
     // MARK: Internal
@@ -91,6 +89,8 @@ class DashboardViewController: UIViewController, UICollectionViewDataSource, UIC
 
     // MARK: Private
 
+    private let refreshControl: UIRefreshControl = .init()
+
     private let cellIdentifiers = ["WelcomeHeaderCell", "WeekCard", "EventCard", "DietProgress", "ExerciseProgress", "FocusCard", "TipCard"]
     private let headerIdentifier = "SectionHeaderView"
     private let interItemSpacing: CGFloat = 15
@@ -102,7 +102,7 @@ class DashboardViewController: UIViewController, UICollectionViewDataSource, UIC
 
             DispatchQueue.main.async {
                 self.collectionView.reloadData()
-                refreshControl.endRefreshing()
+                self.refreshControl.endRefreshing()
             }
         }
     }

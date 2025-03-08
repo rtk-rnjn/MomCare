@@ -104,7 +104,7 @@ class RemindersTableViewController: UITableViewController {
         let ekCalendars = getCalendar(with: "TriTrackReminder")
 
         // Thank you Kiran Ma'am for pointing it out.
-        let selectedDate = eventsViewController?.triTrackViewController?.selectedDate ?? Date()
+//        let selectedDate = eventsViewController?.triTrackViewController?.selectedDate ?? Date()
 
         guard let store, let ekCalendars else { return }
 
