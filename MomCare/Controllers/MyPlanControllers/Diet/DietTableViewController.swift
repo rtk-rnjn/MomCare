@@ -83,7 +83,6 @@ class DietTableViewController: UITableViewController {
         if segue.identifier == "segueShowSearchViewController" {
             let navigationController = segue.destination as? UINavigationController
             let searchViewController = navigationController?.topViewController as? SearchViewController
-            searchViewController?.refreshHandler = refreshHandler
             searchViewController?.mealName = sender as? String
         }
     }

@@ -132,7 +132,7 @@ extension UIButton {
         activityIndicator.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
     }
 
-    func stopLoadingAnimation(with title: String) {
+    func stopLoadingAnimation(withRestoreLabel title: String) {
         setTitle(title, for: .normal)
 
         for subview in subviews where subview is UIActivityIndicatorView {

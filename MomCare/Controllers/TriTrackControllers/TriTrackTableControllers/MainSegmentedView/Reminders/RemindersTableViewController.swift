@@ -25,7 +25,7 @@ class RemindersTableViewController: UITableViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        refreshData()
+//        refreshData()
     }
 
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -39,7 +39,8 @@ class RemindersTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "ReminderCell", for: indexPath) as? RemindersTableViewCell
 
-        guard let cell, let reminders else { fatalError("aaj fir tum pe pyar aaya hai") }
+        guard let cell else { fatalError("Failed to dequeue RemindersTableViewCell") }
+        guard let reminders else { return cell }
 
         cell.updateElements(with: reminders[indexPath.section], for: store)
         cell.showsReorderControl = false

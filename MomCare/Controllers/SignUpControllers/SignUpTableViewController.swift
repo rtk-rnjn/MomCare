@@ -86,7 +86,7 @@ class SignUpTableViewController: UITableViewController {
             userCreated = await MomCareUser.shared.createNewUser(user)
 
             DispatchQueue.main.async {
-                self.createButton.stopLoadingAnimation(with: "Create")
+                self.createButton.stopLoadingAnimation(withRestoreLabel: "Create")
                 if !userCreated {
                     self.showErrorAlert(title: "User Creation Failed", message: "An error occurred while creating your account. Please try again.")
                 } else {

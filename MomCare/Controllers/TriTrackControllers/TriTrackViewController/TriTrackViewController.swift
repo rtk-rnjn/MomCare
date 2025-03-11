@@ -90,9 +90,9 @@ class TriTrackViewController: UIViewController, FSCalendarDelegate, FSCalendarDa
     }
 
     nonisolated func calendar(_ calendar: FSCalendar, didSelect date: Date, at monthPosition: FSCalendarMonthPosition) {
-        DispatchQueue.main.async {
-            self.selectedDate = date
-        }
+//        DispatchQueue.main.async {
+//            self.selectedDate = date
+//        }
     }
 
     @IBAction func segmentTapped(_ sender: UISegmentedControl) {

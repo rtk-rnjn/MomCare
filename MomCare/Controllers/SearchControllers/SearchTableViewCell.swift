@@ -60,14 +60,8 @@ class SearchTableViewCell: UITableViewCell {
         default:
             break
         }
-
-        viewController?.dismiss(animated: true) {
-            self.viewController?.refreshHandler?()
-        }
-
     }
 
     private func alertCancelTapped(_ actionAlert: UIAlertAction) {
-        print("Cancel Tapped")
     }
 }

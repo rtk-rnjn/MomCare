@@ -15,7 +15,7 @@ class AppointmentsTableViewController: UITableViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        refreshData()
+//        refreshData()
     }
 
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -31,7 +31,8 @@ class AppointmentsTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "AppointmentCell", for: indexPath) as? AppointmentsTableViewCell
 
-        guard let cell, let events else { fatalError("mere rang me rangne wali 🎶") }
+        guard let cell else { fatalError("Failed to dequeue AppointmentsTableViewCell") }
+        guard let events else { return cell }
 
         cell.updateElements(with: events[indexPath.section])
         cell.showsReorderControl = false

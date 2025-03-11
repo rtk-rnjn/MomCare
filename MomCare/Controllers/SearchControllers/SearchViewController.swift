@@ -14,7 +14,6 @@ class SearchViewController: UIViewController {
     let allFoods: [FoodItem] = SampleFoodData.uniqueFoodItems
     var searchedFood: [FoodItem] = []
 
-    var refreshHandler: (() -> Void)?
     var mealName: String?
 
     override func viewDidLoad() {
@@ -54,10 +53,6 @@ extension SearchViewController: UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         searchedFood = allFoods.filter { $0.name.lowercased().contains(searchText.lowercased()) }
         searchTableView.reloadData()
-    }
-
-    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        searchBar.resignFirstResponder()
     }
 
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
