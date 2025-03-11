@@ -13,7 +13,7 @@ class SymptomsTableViewController: UITableViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-//        refreshData()
+        refreshData()
     }
 
     override func numberOfSections(in tableView: UITableView) -> Int {

@@ -62,6 +62,5 @@ class SearchTableViewCell: UITableViewCell {
         }
     }
 
-    private func alertCancelTapped(_ actionAlert: UIAlertAction) {
-    }
+    private func alertCancelTapped(_ actionAlert: UIAlertAction) {}
 }
