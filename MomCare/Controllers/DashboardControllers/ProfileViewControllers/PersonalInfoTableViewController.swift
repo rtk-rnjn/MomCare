@@ -30,7 +30,7 @@ class PersonalInfoTableViewController: UITableViewController, UIPickerViewDelega
     let dayValues = Array(1...7).map { "\($0)" }
     let weekValues = Array(1...40).map { "\($0)" }
     let trimesterValues = ["I", "II", "III"]
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         updateElements()

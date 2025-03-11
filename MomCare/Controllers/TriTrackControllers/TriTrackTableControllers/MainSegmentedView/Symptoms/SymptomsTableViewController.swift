@@ -40,21 +40,21 @@ class SymptomsTableViewController: UITableViewController {
 
         return cell
     }
-    
+
     override func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
         guard let events else {
                 return nil
         }
-        
+
         let event = events[indexPath.section]
-        
+
         return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in
             let deleteAction = UIAction(title: "Delete", image: UIImage(systemName: "trash"), attributes: .destructive) { _ in
                 print("delete")
                     try? TriTrackViewController.eventStore.remove(event, span: .thisEvent, commit: true)
                     self.refreshData()
                 }
-            
+
             return UIMenu(title: "", children: [deleteAction])
         }
     }

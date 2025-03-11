@@ -12,30 +12,30 @@ class HealthDetailsTableViewController: UITableViewController, UIPickerViewDeleg
     @IBOutlet var bloodGroupOutlet: UIButton!
     @IBOutlet var MedicalConditionsOutlet: UIButton!
     @IBOutlet var allergeisOutlet: UIButton!
-    
+
     var isEditingMode: Bool = false
     var pickerView: UIPickerView = .init()
     var activeButton: UIButton?
     var currentPickerData: [String] = .init()
-    
+
    //    Picker values
     let bloodGroupValues = ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"]
-    let MedicalConditionsValues = PreExistingCondition.allCases
-    let AllergiesValues = Intolerance.allCases
-    
+    let MedicalConditionsValues: PreExistingCondition = .allCases
+    let AllergiesValues: Intolerance = .allCases
+
     override func viewDidLoad() {
         super.viewDidLoad()
         updateElements()
         setUpPickers()
-        
+
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Edit", style: .plain, target: self, action: #selector(toggleEditingMode))
-        
+
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissPicker))
         tapGesture.cancelsTouchesInView = false
         view.addGestureRecognizer(tapGesture)
     }
-    
-    func setUpPickers(){
+
+    func setUpPickers() {
         pickerView.delegate = self
         pickerView.dataSource = self
         pickerView.backgroundColor = UIColor.systemGray5
@@ -43,22 +43,22 @@ class HealthDetailsTableViewController: UITableViewController, UIPickerViewDeleg
         pickerView.isHidden = true
         view.addSubview(pickerView)
     }
-    
+
     @objc func dismissPicker() {
         pickerView.isHidden = true
     }
-    
+
     @objc func toggleEditingMode() {
         isEditingMode = !isEditingMode
-        
+
         navigationItem.rightBarButtonItem?.title = isEditingMode ? "Save" : "Edit"
         UpdateUIForEditingMode()
         tableView.reloadData()
     }
-    
+
     @IBAction func buttonTapped(_ sender: UIButton) {
         activeButton = sender
-        
+
         switch sender {
         case bloodGroupOutlet:
             currentPickerData = bloodGroupValues
@@ -69,30 +69,30 @@ class HealthDetailsTableViewController: UITableViewController, UIPickerViewDeleg
         default:
             return
         }
-        
+
         pickerView.reloadAllComponents()
         pickerView.isHidden = false
         UIView.animate(withDuration: 0.3) {
                 self.pickerView.alpha = 1.0
         }
     }
-    
-    func UpdateUIForEditingMode(){
+
+    func UpdateUIForEditingMode() {
         dueDatePicker.isUserInteractionEnabled = isEditingMode
         bloodGroupOutlet.isUserInteractionEnabled = isEditingMode
         MedicalConditionsOutlet.isUserInteractionEnabled = isEditingMode
         allergeisOutlet.isUserInteractionEnabled = isEditingMode
     }
-    
-    func updateElements(){
+
+    func updateElements() {
         guard let medicalData = MomCareUser.shared.user?.medicalData else { return }
-        
+
         dueDatePicker.date = medicalData.dueDate!
         bloodGroupOutlet.setTitle("Not Set", for: .normal)
         MedicalConditionsOutlet.setTitle("None", for: .normal)
         allergeisOutlet.setTitle(String("None"), for: .normal)
     }
-    
+
     func numberOfComponents(in pickerView: UIPickerView) -> Int { return 1 }
 
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {

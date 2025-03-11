@@ -14,7 +14,7 @@ class SignUpExtendedTableViewController: UITableViewController {
     @IBOutlet var allergiesButton: UIButton!
     @IBOutlet var PreExistingCondtionButton: UIButton!
     @IBOutlet var dietaryPreferenceButton: UIButton!
-    
+
     var initialProgress: Float = 0.0
     var userMedical: UserMedical?
     var multipleSelectorTableViewController: MultipleSelectorTableViewController?
@@ -59,7 +59,7 @@ class SignUpExtendedTableViewController: UITableViewController {
         if let intolrence = Intolerance(rawValue: intoleranceRawValue) {
             userMedical.foodIntolerances.append(intolrence)
         }
-        
+
         let options = Intolerance.allCases.map { $0.rawValue }
         performSegue(withIdentifier: "segueShowMedicalDetailSelectorTableViewController", sender: (options, sender))
     }
@@ -74,7 +74,5 @@ class SignUpExtendedTableViewController: UITableViewController {
         performSegue(withIdentifier: "segueShowMedicalDetailSelectorTableViewController", sender: (options, sender))
     }
 
-    @IBAction func unwinToMedicalDetail(_ segue: UIStoryboardSegue) {
-        
-    }
+    @IBAction func unwinToMedicalDetail(_ segue: UIStoryboardSegue) {}
 }

@@ -9,7 +9,7 @@ import UIKit
 
 class SymptomsViewController: UIViewController {
     var triTrackViewController: TriTrackViewController?
-    
+
     var symptomsTableViewController: SymptomsTableViewController?
 
     override func viewWillAppear(_ animated: Bool) {
