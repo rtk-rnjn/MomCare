@@ -415,7 +415,7 @@
             </objects>
             <point key="canvasLocation" x="2232.8244274809158" y="437.32394366197184"/>
         </scene>
-        <!--Mom-->
+        <!--Mom Card View Controller-->
         <scene sceneID="DKA-1J-IDk">
             <objects>
                 <viewController storyboardIdentifier="FullScreenMomCardViewController" id="JXj-eN-8Sv" customClass="MomCardViewController" customModule="MomCare" customModuleProvider="target" sceneMemberID="viewController">
@@ -423,31 +423,40 @@
                         <rect key="frame" x="0.0" y="0.0" width="393" height="590"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Mom" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7Fy-UA-5dG">
+                                <rect key="frame" x="0.0" y="56" width="393" height="50"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="50" id="zH5-df-Ra0"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="45"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" usesAttributedText="YES" translatesAutoresizingMaskIntoConstraints="NO" id="5gD-yi-AGV">
-                                <rect key="frame" x="20" y="56" width="353" height="534"/>
+                                <rect key="frame" x="20" y="116" width="353" height="454"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <attributedString key="attributedText">
                                     <fragment>
                                         <mutableString key="content">At week 19, your baby is developing rapidly, and your body is working hard to support this growth. If your weight is lower than expected, focus on nutrient-rich foods like avocados, nuts, dairy, lean proteins, and whole grains to ensure both you and your baby get essential vitamins. You may also experience round ligament pain—a sharp ache in your lower belly. Try gentle stretching, proper posture, and warm compresses for relief. Staying hydrated and getting enough rest will also help. Listen to your body and consult your doctor if discomfort persists.                                 </mutableString>
                                         <attributes>
-                                            <color key="NSColor" systemColor="labelColor"/>
+                                            <color key="NSColor" name="textColor" catalog="System" colorSpace="catalog"/>
                                             <font key="NSFont" metaFont="system" size="17"/>
-                                            <paragraphStyle key="NSParagraphStyle" alignment="justified" lineBreakMode="wordWrapping" baseWritingDirection="natural" paragraphSpacing="4" tighteningFactorForTruncation="0.0"/>
+                                            <paragraphStyle key="NSParagraphStyle" alignment="justified" lineBreakMode="wordWrapping" baseWritingDirection="natural" lineSpacing="4" paragraphSpacing="4" tighteningFactorForTruncation="0.0"/>
                                         </attributes>
                                     </fragment>
                                     <fragment content="💖👶">
                                         <attributes>
-                                            <color key="NSColor" systemColor="labelColor"/>
+                                            <color key="NSColor" name="textColor" catalog="System" colorSpace="catalog"/>
                                             <font key="NSFont" size="17" name=".AppleColorEmojiUI"/>
                                             <font key="NSOriginalFont" metaFont="system" size="17"/>
-                                            <paragraphStyle key="NSParagraphStyle" alignment="justified" lineBreakMode="wordWrapping" baseWritingDirection="natural" paragraphSpacing="4" tighteningFactorForTruncation="0.0"/>
+                                            <paragraphStyle key="NSParagraphStyle" alignment="justified" lineBreakMode="wordWrapping" baseWritingDirection="natural" lineSpacing="4" paragraphSpacing="4" tighteningFactorForTruncation="0.0"/>
                                         </attributes>
                                     </fragment>
                                     <fragment content="          #HealthyPregnancy">
                                         <attributes>
-                                            <color key="NSColor" systemColor="labelColor"/>
+                                            <color key="NSColor" name="textColor" catalog="System" colorSpace="catalog"/>
                                             <font key="NSFont" metaFont="system" size="17"/>
-                                            <paragraphStyle key="NSParagraphStyle" alignment="justified" lineBreakMode="wordWrapping" baseWritingDirection="natural" paragraphSpacing="4" tighteningFactorForTruncation="0.0"/>
+                                            <paragraphStyle key="NSParagraphStyle" alignment="justified" lineBreakMode="wordWrapping" baseWritingDirection="natural" lineSpacing="4" paragraphSpacing="4" tighteningFactorForTruncation="0.0"/>
                                         </attributes>
                                     </fragment>
                                 </attributedString>
@@ -457,13 +466,16 @@
                         <viewLayoutGuide key="safeArea" id="BTc-KW-Aac"/>
                         <color key="backgroundColor" red="0.94117647059999998" green="0.74117647060000003" blue="0.72549019609999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="5gD-yi-AGV" firstAttribute="top" secondItem="BTc-KW-Aac" secondAttribute="top" id="8IC-xc-E0o"/>
-                            <constraint firstItem="BTc-KW-Aac" firstAttribute="bottom" secondItem="5gD-yi-AGV" secondAttribute="bottom" id="A2c-xM-Aab"/>
-                            <constraint firstItem="5gD-yi-AGV" firstAttribute="leading" secondItem="BTc-KW-Aac" secondAttribute="leading" constant="20" id="Ii0-KE-oSI"/>
-                            <constraint firstItem="BTc-KW-Aac" firstAttribute="trailing" secondItem="5gD-yi-AGV" secondAttribute="trailing" constant="20" id="RZj-Ar-Rze"/>
+                            <constraint firstAttribute="bottom" secondItem="5gD-yi-AGV" secondAttribute="bottom" constant="20" id="ByC-JE-X5Q"/>
+                            <constraint firstItem="5gD-yi-AGV" firstAttribute="leading" secondItem="BTc-KW-Aac" secondAttribute="leading" constant="20" id="EqL-ZO-zBo"/>
+                            <constraint firstItem="7Fy-UA-5dG" firstAttribute="top" secondItem="BTc-KW-Aac" secondAttribute="top" id="K6P-ja-Qju"/>
+                            <constraint firstItem="BTc-KW-Aac" firstAttribute="trailing" secondItem="5gD-yi-AGV" secondAttribute="trailing" constant="20" id="Mlo-g3-E9a"/>
+                            <constraint firstItem="7Fy-UA-5dG" firstAttribute="leading" secondItem="BTc-KW-Aac" secondAttribute="leading" id="VCn-cc-2Iy"/>
+                            <constraint firstItem="BTc-KW-Aac" firstAttribute="trailing" secondItem="7Fy-UA-5dG" secondAttribute="trailing" id="XXO-xS-8hH"/>
+                            <constraint firstItem="5gD-yi-AGV" firstAttribute="top" secondItem="7Fy-UA-5dG" secondAttribute="bottom" constant="10" id="jGN-62-omZ"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="Mom" largeTitleDisplayMode="always" id="2MN-dm-QWB">
+                    <navigationItem key="navigationItem" largeTitleDisplayMode="never" id="2MN-dm-QWB">
                         <barButtonItem key="rightBarButtonItem" style="done" systemItem="done" id="oj4-Bj-wKs">
                             <connections>
                                 <segue destination="Ocv-dR-NMT" kind="unwind" unwindAction="unwindToBabyMomTipViewController:" id="kqE-XF-9rA"/>
@@ -479,7 +491,7 @@
             </objects>
             <point key="canvasLocation" x="4476" y="175"/>
         </scene>
-        <!--Baby-->
+        <!--Baby Card View Controller-->
         <scene sceneID="065-1g-ToH">
             <objects>
                 <viewController storyboardIdentifier="FullScreenBabyCardViewController" id="MjJ-ur-pvK" customClass="BabyCardViewController" customModule="MomCare" customModuleProvider="target" sceneMemberID="viewController">
@@ -487,25 +499,56 @@
                         <rect key="frame" x="0.0" y="0.0" width="393" height="590"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="justified" translatesAutoresizingMaskIntoConstraints="NO" id="KiA-7v-zjY">
-                                <rect key="frame" x="20" y="56" width="353" height="534"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Baby" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6XP-oI-3by">
+                                <rect key="frame" x="0.0" y="56" width="393" height="42"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="35"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" usesAttributedText="YES" translatesAutoresizingMaskIntoConstraints="NO" id="KiA-7v-zjY">
+                                <rect key="frame" x="20" y="108" width="353" height="462"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <mutableString key="text">At week 19, your baby is about 6 inches long and developing tiny senses of touch, taste, and hearing! Their skin is covered in vernix caseosa, a protective layer to prevent dryness in the womb. You may feel more movement as they kick and stretch. Their brain is busy forming specialized areas for smell, vision, and hearing—so talking, reading, or playing soft music can help! If you're feeling light flutters, that's quickening, your baby's first noticeable movements. Stay hydrated, eat iron-rich foods, and rest well to support this phase of rapid growth. 💖👣 #GrowingStrong</mutableString>
-                                <color key="textColor" systemColor="labelColor"/>
-                                <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                                <attributedString key="attributedText">
+                                    <fragment>
+                                        <mutableString key="content">At week 19, your baby is about 6 inches long and developing tiny senses of touch, taste, and hearing! Their skin is covered in vernix caseosa, a protective layer to prevent dryness in the womb. You may feel more movement as they kick and stretch. Their brain is busy forming specialized areas for smell, vision, and hearing—so talking, reading, or playing soft music can help! If you're feeling light flutters, that's quickening, your baby's first noticeable movements. Stay hydrated, eat iron-rich foods, and rest well to support this phase of rapid growth. </mutableString>
+                                        <attributes>
+                                            <color key="NSColor" systemColor="labelColor"/>
+                                            <font key="NSFont" metaFont="system" size="17"/>
+                                            <paragraphStyle key="NSParagraphStyle" alignment="justified" lineBreakMode="wordWrapping" baseWritingDirection="natural" lineSpacing="4" tighteningFactorForTruncation="0.0"/>
+                                        </attributes>
+                                    </fragment>
+                                    <fragment content="💖👣">
+                                        <attributes>
+                                            <color key="NSColor" systemColor="labelColor"/>
+                                            <font key="NSFont" size="17" name=".AppleColorEmojiUI"/>
+                                            <font key="NSOriginalFont" metaFont="system" size="17"/>
+                                            <paragraphStyle key="NSParagraphStyle" alignment="justified" lineBreakMode="wordWrapping" baseWritingDirection="natural" lineSpacing="4" tighteningFactorForTruncation="0.0"/>
+                                        </attributes>
+                                    </fragment>
+                                    <fragment content=" #GrowingStrong">
+                                        <attributes>
+                                            <color key="NSColor" systemColor="labelColor"/>
+                                            <font key="NSFont" metaFont="system" size="17"/>
+                                            <paragraphStyle key="NSParagraphStyle" alignment="justified" lineBreakMode="wordWrapping" baseWritingDirection="natural" lineSpacing="4" tighteningFactorForTruncation="0.0"/>
+                                        </attributes>
+                                    </fragment>
+                                </attributedString>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                             </textView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="Xfy-HW-579"/>
                         <color key="backgroundColor" red="0.94117647059999998" green="0.74117647060000003" blue="0.72549019609999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="Xfy-HW-579" firstAttribute="bottom" secondItem="KiA-7v-zjY" secondAttribute="bottom" id="5Bu-2D-e5J"/>
-                            <constraint firstItem="KiA-7v-zjY" firstAttribute="leading" secondItem="Xfy-HW-579" secondAttribute="leading" constant="20" id="6Xu-Hk-m5I"/>
-                            <constraint firstItem="Xfy-HW-579" firstAttribute="trailing" secondItem="KiA-7v-zjY" secondAttribute="trailing" constant="20" id="W6u-OP-Fiy"/>
-                            <constraint firstItem="KiA-7v-zjY" firstAttribute="top" secondItem="Xfy-HW-579" secondAttribute="top" id="f7m-Pr-zRS"/>
+                            <constraint firstItem="6XP-oI-3by" firstAttribute="top" secondItem="Xfy-HW-579" secondAttribute="top" id="6QX-Ar-inz"/>
+                            <constraint firstItem="Xfy-HW-579" firstAttribute="trailing" secondItem="KiA-7v-zjY" secondAttribute="trailing" constant="20" id="6e2-DX-cnF"/>
+                            <constraint firstItem="6XP-oI-3by" firstAttribute="leading" secondItem="Xfy-HW-579" secondAttribute="leading" id="Bcy-As-JUC"/>
+                            <constraint firstItem="KiA-7v-zjY" firstAttribute="leading" secondItem="Xfy-HW-579" secondAttribute="leading" constant="20" id="EYH-tG-dnh"/>
+                            <constraint firstItem="Xfy-HW-579" firstAttribute="trailing" secondItem="6XP-oI-3by" secondAttribute="trailing" id="GSY-8R-lwa"/>
+                            <constraint firstItem="KiA-7v-zjY" firstAttribute="top" secondItem="6XP-oI-3by" secondAttribute="bottom" constant="10" id="LrW-aM-bWI"/>
+                            <constraint firstAttribute="bottom" secondItem="KiA-7v-zjY" secondAttribute="bottom" constant="20" id="qO8-BE-3TI"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="Baby" largeTitleDisplayMode="always" id="V17-wI-BEw">
+                    <navigationItem key="navigationItem" largeTitleDisplayMode="never" id="V17-wI-BEw">
                         <barButtonItem key="rightBarButtonItem" style="done" systemItem="done" id="SkR-Eg-9cd">
                             <connections>
                                 <segue destination="sjs-01-Vzc" kind="unwind" unwindAction="unwindToBabyMomTipViewController:" id="gXT-7y-49A"/>
