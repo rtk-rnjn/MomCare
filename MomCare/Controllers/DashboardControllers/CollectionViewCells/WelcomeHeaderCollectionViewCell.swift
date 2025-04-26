@@ -20,7 +20,7 @@ class WelcomeHeaderCollectionViewCell: UICollectionViewCell {
         titleLabel.text = title
         self.tapHandler = tapHandler
 
-        setupGesture()
+//        setupGesture()
     }
 
     // MARK: Private

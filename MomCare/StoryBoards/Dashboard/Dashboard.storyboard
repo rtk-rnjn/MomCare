@@ -18,7 +18,7 @@
                 </viewControllerPlaceholder>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="2FZ-Xn-H2s" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2162" y="-870"/>
+            <point key="canvasLocation" x="2302" y="-870"/>
         </scene>
         <!--ProgressHub-->
         <scene sceneID="s0d-6b-0kx">
@@ -30,7 +30,7 @@
                         <subviews>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="3fr-wh-mP1">
                                 <rect key="frame" x="0.0" y="162" width="393" height="622"/>
-                                <color key="backgroundColor" red="0.96078431372549022" green="0.96470588235294119" blue="0.97647058823529409" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="backgroundColor" systemColor="groupTableViewBackgroundColor"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="10" id="4ns-fZ-ftx">
                                     <size key="itemSize" width="128" height="128"/>
                                     <size key="headerReferenceSize" width="0.0" height="0.0"/>
@@ -50,7 +50,7 @@
                             </collectionView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="vDu-zF-Fre"/>
-                        <color key="backgroundColor" red="0.94901960784313721" green="0.94901960784313721" blue="0.96862745098039216" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="backgroundColor" systemColor="groupTableViewBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="vDu-zF-Fre" firstAttribute="trailing" secondItem="3fr-wh-mP1" secondAttribute="trailing" id="4kP-6F-9Tu"/>
                             <constraint firstItem="3fr-wh-mP1" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" id="Iwk-SE-2le"/>
@@ -58,10 +58,18 @@
                             <constraint firstItem="3fr-wh-mP1" firstAttribute="top" secondItem="vDu-zF-Fre" secondAttribute="top" id="tWE-LK-fKu"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="ProgressHub" largeTitleDisplayMode="always" id="Ujh-Pd-5Ms"/>
+                    <navigationItem key="navigationItem" title="ProgressHub" largeTitleDisplayMode="always" id="Ujh-Pd-5Ms">
+                        <barButtonItem key="rightBarButtonItem" id="y5V-lM-g1G">
+                            <imageReference key="image" image="person.crop.circle.fill" catalog="system" symbolScale="large" variableValue="1"/>
+                            <imageReference key="largeContentSizeImage" image="person.crop.circle.fill" catalog="system" symbolScale="large"/>
+                            <color key="tintColor" systemColor="viewFlipsideBackgroundColor"/>
+                            <connections>
+                                <segue destination="vuh-qh-hgR" kind="show" identifier="segueShowProfilePageTableViewController" id="O6J-qf-Yix"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
                         <outlet property="collectionView" destination="3fr-wh-mP1" id="W6A-WM-eNG"/>
-                        <segue destination="vuh-qh-hgR" kind="show" identifier="segueShowProfilePageTableViewController" id="hfQ-xl-p5d"/>
                         <segue destination="duG-kr-TwT" kind="presentation" identifier="segueShowAddEventTableViewController" id="Xr0-G1-98n"/>
                     </connections>
                 </viewController>
@@ -1184,7 +1192,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ien-zO-ZCE" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2164.1221374045799" y="-37.323943661971832"/>
+            <point key="canvasLocation" x="1607" y="-37"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="CV6-ce-wOC">
@@ -1202,7 +1210,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Lc9-Ul-Dsv" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2162.5954198473282" y="-870.4225352112677"/>
+            <point key="canvasLocation" x="1607" y="-870"/>
         </scene>
         <!--ProgressHub-->
         <scene sceneID="7Gh-Pb-BAL">
@@ -1233,7 +1241,11 @@
     </inferredMetricsTieBreakers>
     <resources>
         <image name="person.crop.circle" catalog="system" width="128" height="123"/>
+        <image name="person.crop.circle.fill" catalog="system" width="128" height="123"/>
         <image name="trophy.fill" catalog="system" width="128" height="128"/>
+        <systemColor name="groupTableViewBackgroundColor">
+            <color red="0.94901960784313721" green="0.94901960784313721" blue="0.96862745098039216" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
         <systemColor name="secondarySystemGroupedBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
@@ -1242,6 +1254,9 @@
         </systemColor>
         <systemColor name="systemRedColor">
             <color red="1" green="0.23137254901960785" blue="0.18823529411764706" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+        <systemColor name="viewFlipsideBackgroundColor">
+            <color red="0.12156862745098039" green="0.12941176470588237" blue="0.14117647058823529" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>
