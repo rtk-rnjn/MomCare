@@ -43,11 +43,11 @@
                                     <userDefinedRuntimeAttribute type="boolean" keyPath="layer.maskstoBounds" value="YES"/>
                                 </userDefinedRuntimeAttributes>
                             </view>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6rn-Tc-0Bn">
-                                <rect key="frame" x="8" y="8" width="102" height="35"/>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="leading" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6rn-Tc-0Bn">
+                                <rect key="frame" x="4" y="8" width="102" height="35"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="plain" title="Add Event"/>
+                                <buttonConfiguration key="configuration" style="plain" title="Add Event" titleAlignment="leading"/>
                                 <connections>
                                     <action selector="addEventButtonTapped:" destination="t1y-Ib-jg4" eventType="touchUpInside" id="UJE-8S-e4Z"/>
                                 </connections>
