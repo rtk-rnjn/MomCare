@@ -12,31 +12,15 @@ extension DashboardViewController {
         UICollectionViewCompositionalLayout { sectionIndex, _ -> NSCollectionLayoutSection? in
             switch sectionIndex {
             case 0:
-                return self.createLayoutForHeading()
-            case 1:
                 return self.createLayoutForWeekEventCard()
-            case 2:
+            case 1:
                 return self.createLayoutForDietExerciseProgress()
-            case 3:
+            case 2:
                 return self.createLayoutForDailyInsights()
             default:
                 fatalError("the sunset is beautiful, ins't it?")
             }
         }
-    }
-
-    private func createLayoutForHeading() -> NSCollectionLayoutSection {
-        let userHeadingLayoutSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(100))
-        let userHeading = NSCollectionLayoutItem(layoutSize: userHeadingLayoutSize)
-
-        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(100))
-        let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [userHeading])
-
-        group.contentInsets = NSDirectionalEdgeInsets(top: 5, leading: 0, bottom: 5, trailing: 0)
-        let section = NSCollectionLayoutSection(group: group)
-        section.contentInsets = NSDirectionalEdgeInsets(top: 10, leading: 15, bottom: 5, trailing: 15)
-
-        return section
     }
 
     private func createLayoutForWeekEventCard() -> NSCollectionLayoutSection {
@@ -52,7 +36,7 @@ extension DashboardViewController {
         group.interItemSpacing = .fixed(10)
         group.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 5, bottom: 0, trailing: 5)
         let section = NSCollectionLayoutSection(group: group)
-        section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 10, bottom: 10, trailing: 10)
+        section.contentInsets = NSDirectionalEdgeInsets(top: 30, leading: 10, bottom: 10, trailing: 10)
 
         return section
 
@@ -81,15 +65,20 @@ extension DashboardViewController {
     private func createLayoutForDailyInsights() -> NSCollectionLayoutSection {
         let dailyInsightsLayoutSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.5), heightDimension: .absolute(154))
         let dailyInsights = NSCollectionLayoutItem(layoutSize: dailyInsightsLayoutSize)
-        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(137))
+
+        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(154)) // <-- changed from 137 to 154
         let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [dailyInsights])
+
         group.interItemSpacing = .fixed(20)
         group.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 5, bottom: 10, trailing: 5)
+
         let section = NSCollectionLayoutSection(group: group)
         section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 15, bottom: 45, trailing: 15)
         section.boundarySupplementaryItems = [createHeader()]
+
         return section
     }
+
 
     private func createHeader() -> NSCollectionLayoutBoundarySupplementaryItem {
         let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(50))

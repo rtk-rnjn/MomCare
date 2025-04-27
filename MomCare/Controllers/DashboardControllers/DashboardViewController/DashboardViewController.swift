@@ -11,7 +11,7 @@ import HealthKit
 import HealthKitUI
 import EventKit
 
-class DashboardViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate {
+class DashboardViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UIScrollViewDelegate {
 
     // MARK: Internal
 
@@ -19,7 +19,7 @@ class DashboardViewController: UIViewController, UICollectionViewDataSource, UIC
 
     @IBOutlet var collectionView: UICollectionView!
     var addEventTableViewController: AddEventTableViewController?
-
+    var profileButton: UIButton?
     override func viewDidLoad() {
         super.viewDidLoad()
         prepareCollectionView()
@@ -28,6 +28,10 @@ class DashboardViewController: UIViewController, UICollectionViewDataSource, UIC
         collectionView.refreshControl = refreshControl
         requestAccessForHealth()
 
+        collectionView.delegate = self
+        navigationController?.navigationBar.prefersLargeTitles = true
+        setupProfileButton()
+        
         Task {
             await requestAccessForNotification()
 
@@ -67,11 +71,11 @@ class DashboardViewController: UIViewController, UICollectionViewDataSource, UIC
     }
 
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return 4
+        return 3
     }
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return section == 0 ? 1 : 2
+        return 2
     }
 
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
@@ -91,7 +95,7 @@ class DashboardViewController: UIViewController, UICollectionViewDataSource, UIC
 
     private let refreshControl: UIRefreshControl = .init()
 
-    private let cellIdentifiers = ["WelcomeHeaderCell", "WeekCard", "EventCard", "DietProgress", "ExerciseProgress", "FocusCard", "TipCard"]
+    private let cellIdentifiers = ["WeekCard", "EventCard", "DietProgress", "ExerciseProgress", "FocusCard", "TipCard"]
     private let headerIdentifier = "SectionHeaderView"
     private let interItemSpacing: CGFloat = 15
 
@@ -185,5 +189,67 @@ class DashboardViewController: UIViewController, UICollectionViewDataSource, UIC
 
         return newCalendar
     }
+    
+    func setupProfileButton() {
+        if let navigationBar = self.navigationController?.navigationBar {
+            let customView = UIView()
+            customView.backgroundColor = .clear
+            
+            let profileBtn = UIButton()
+            if let profileImage = UIImage(named: "person.crop.circle.fill") {
+                profileBtn.setImage(profileImage, for: .normal)
+            }
+            
+            profileBtn.addTarget(self, action: #selector(profileIconTapped), for: .touchUpInside)
+            
+            profileBtn.tintColor = .gray
+            
+            customView.addSubview(profileBtn)
+            navigationBar.addSubview(customView)
+            
+            profileBtn.translatesAutoresizingMaskIntoConstraints = false
+            customView.translatesAutoresizingMaskIntoConstraints = false
+            
+            NSLayoutConstraint.activate([
+                // Place custom view at the bottom right
+                customView.trailingAnchor.constraint(equalTo: navigationBar.trailingAnchor, constant: -16),
+                customView.bottomAnchor.constraint(equalTo: navigationBar.bottomAnchor, constant: -10),
+                customView.widthAnchor.constraint(equalToConstant: 40),
+                customView.heightAnchor.constraint(equalToConstant: 40),
+                
+                profileBtn.centerXAnchor.constraint(equalTo: customView.centerXAnchor),
+                profileBtn.centerYAnchor.constraint(equalTo: customView.centerYAnchor),
+                profileBtn.widthAnchor.constraint(equalToConstant: 36),
+                profileBtn.heightAnchor.constraint(equalToConstant: 36)
+            ])
+            
+            self.profileButton = profileBtn
+        }
+    }
 
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        let offsetY = scrollView.contentOffset.y
+        if offsetY > 0 {
+            hideProfileButton()
+        } else {
+            showProfileButton()
+        }
+    }
+
+    private func hideProfileButton() {
+        if let profileBtn = profileButton {
+            profileBtn.alpha = 0
+        }
+    }
+
+    private func showProfileButton() {
+        if let profileBtn = profileButton {
+            UIView.animate(withDuration: 0.5){
+                profileBtn.alpha = 1
+            }
+        }
+    }
+    @objc func profileIconTapped() {
+        performSegue(withIdentifier: "segueShowProfilePageTableViewController", sender: nil)
+    }
 }
