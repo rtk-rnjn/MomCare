@@ -55,7 +55,7 @@
                                 </userDefinedRuntimeAttributes>
                             </view>
                         </subviews>
-                        <color key="backgroundColor" red="0.91372549020000005" green="0.82745098039999998" blue="0.82745098039999998" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="backgroundColor" red="0.91372549020000005" green="0.82745098039999998" blue="0.82745098039999998" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="qcz-ON-fgw" secondAttribute="trailing" constant="10" id="1Ok-lP-jgR"/>
                             <constraint firstAttribute="bottom" secondItem="qcz-ON-fgw" secondAttribute="bottom" constant="30" id="1PW-Ie-2Ig"/>
@@ -106,6 +106,8 @@
                 <outlet property="currentDayLabel" destination="4hE-5Q-NoJ" id="n6W-zQ-34S"/>
                 <outlet property="currentTrimesterLabel" destination="wxO-xS-gha" id="jpE-Bd-Cn3"/>
                 <outlet property="currentWeekLabel" destination="Hs4-jE-uvO" id="JmE-tm-Uvh"/>
+                <outlet property="yourView" destination="l4e-Ak-oA3" id="z1B-Ui-9PZ"/>
+                <outlet property="yourView2" destination="qcz-ON-fgw" id="5Cp-mf-Fgj"/>
             </connections>
             <point key="canvasLocation" x="280.15267175572518" y="94.718309859154928"/>
         </collectionViewCell>
