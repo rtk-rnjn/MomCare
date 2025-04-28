@@ -67,7 +67,7 @@
                         </constraints>
                     </view>
                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" translatesAutoresizingMaskIntoConstraints="NO" id="Q3B-07-XVm">
-                        <rect key="frame" x="16" y="26.666666666666668" width="93" height="44.333333333333329"/>
+                        <rect key="frame" x="16" y="23.000000000000004" width="93" height="44.333333333333343"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Week NaN" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Hs4-jE-uvO">
                                 <rect key="frame" x="0.0" y="0.0" width="93" height="24"/>
@@ -88,9 +88,9 @@
                 <constraints>
                     <constraint firstItem="l4e-Ak-oA3" firstAttribute="leading" secondItem="R7i-Bs-XTB" secondAttribute="leading" id="2rW-DZ-8Eb"/>
                     <constraint firstAttribute="trailing" secondItem="l4e-Ak-oA3" secondAttribute="trailing" id="N1D-Ot-l0e"/>
-                    <constraint firstItem="l4e-Ak-oA3" firstAttribute="top" secondItem="Q3B-07-XVm" secondAttribute="bottom" constant="16" id="gT8-Ch-k9A"/>
                     <constraint firstAttribute="bottom" secondItem="l4e-Ak-oA3" secondAttribute="bottom" id="gUU-eU-fOR"/>
                     <constraint firstItem="l4e-Ak-oA3" firstAttribute="centerX" secondItem="R7i-Bs-XTB" secondAttribute="centerX" id="jj9-dd-uq5"/>
+                    <constraint firstItem="Q3B-07-XVm" firstAttribute="top" secondItem="R7i-Bs-XTB" secondAttribute="top" constant="23" id="obk-bk-NTk"/>
                     <constraint firstItem="Q3B-07-XVm" firstAttribute="leading" secondItem="R7i-Bs-XTB" secondAttribute="leading" constant="16" id="uod-CZ-kga"/>
                 </constraints>
             </collectionViewCellContentView>
