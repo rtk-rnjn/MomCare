@@ -6,152 +6,160 @@
 //
 
 import Foundation
+import OSLog
 
 struct CreateResponse: Codable {
     enum CodingKeys: String, CodingKey {
         case success
         case insertedId = "inserted_id"
+        case accessToken = "access_token"
     }
 
     let success: Bool
     let insertedId: String
+    let accessToken: String
 }
 
 struct UpdateResponse: Codable {
     enum CodingKeys: String, CodingKey {
         case success
         case modifiedCount = "modified_count"
-        case detail
+        case matchedCount = "matched_count"
     }
 
     let success: Bool
     let modifiedCount: Int
-    let detail: String?
+    let matchedCount: Int
 }
 
-enum UserDefaultsKey: String {
-    case signedUp
-    case mongoUserId
-    case savedUser
-}
-
-enum UserEndpoints {
-    static let base = "/user"
-
-    static func createUser() -> String { "\(base)/create" }
-    static func fetchUser(with mongoID: String) -> String { "\(base)/fetch/\(mongoID)" }
-    static func fetchUserWithEmail(_ email: String) -> String { "\(base)/fetch" }
-    static func updateUser(mongoID: String) -> String { "\(base)/update/\(mongoID)" }
-}
-
-enum SavepointScope {
-    case iPhone
-    case database
-}
-
-extension MomCareUser {
-    private func updateUserToUserDefaults() {
-        guard let userData = try? JSONEncoder().encode(user) else { return }
-        Utils.save(forKey: .savedUser, withValue: userData)
+struct Credentials: Codable {
+    enum CodingKeys: String, CodingKey {
+        case emailAddress = "email_address"
+        case password
     }
 
-    private func fetchUserFromUserDefaults() -> User? {
-        let savedData: Data? = Utils.get(fromKey: UserDefaultsKey.savedUser.rawValue, withDefaultValue: nil)
-        guard let savedData else { return nil }
-        return try? JSONDecoder().decode(User.self, from: savedData)
+    let emailAddress: String
+    let password: String
+}
+
+enum AuthenticationEndpoints {
+    static let base = "/auth"
+
+    static func registerUser() -> String { "\(base)/register" }
+    static func loginUser() -> String { "\(base)/login" }
+    static func refreshToken() -> String { "\(base)/refresh" }
+    static func fetchUser() -> String { "\(base)/fetch" }
+}
+
+private let accessTokenValidDuration: TimeInterval = 5 * 60 - 10 // 5 minutes
+private let logger: Logger = .init(subsystem: "com.MomCare.MomCareUser", category: "Network")
+
+extension MomCareUser {
+
+    private func serializeAndPost<T: Codable, R: Codable>(
+        _ object: T,
+        endpoint: String,
+        onFailureMessage: String
+    ) async -> R? {
+        guard let body = object.toData() else {
+            logger.error("Failed to serialize data.")
+            return nil
+        }
+
+        let response: R? = await NetworkManager.shared.post(url: endpoint, body: body)
+        if response == nil {
+            logger.error("\(onFailureMessage)")
+        }
+        return response
+    }
+
+    private func handleSuccessfulAuth(_ response: CreateResponse, email: String, password: String) {
+        KeychainHelper.set(email, forKey: "emailAddress")
+        KeychainHelper.set(password, forKey: "password")
+        KeychainHelper.set(response.accessToken, forKey: "accessToken")
+        accessTokenExpiresAt = Date().addingTimeInterval(accessTokenValidDuration)
     }
 
     func createNewUser(_ user: User) async -> Bool {
-        guard let body = user.toData() else { return false }
-        let response: CreateResponse? = await MiddlewareManager.shared.post(url: UserEndpoints.createUser(), body: body)
+        logger.info("Creating new user for email: \(user.emailAddress, privacy: .private)")
 
-        guard let response, response.success else { return false }
-
-        Utils.save(forKey: .mongoUserId, withValue: response.insertedId)
-
-        if response.success {
-            await updateUser(to: .iPhone)
+        guard let response: CreateResponse = await serializeAndPost(user,
+            endpoint: AuthenticationEndpoints.registerUser(),
+            onFailureMessage: "User registration failed."
+        ), response.success else {
+            return false
         }
 
-        setUser(user)
-        updateUserToUserDefaults()
+        handleSuccessfulAuth(response, email: user.emailAddress, password: user.password)
+        return true
+    }
 
-        return response.success
+    func loginUser(email: String, password: String) async -> Bool {
+        logger.info("Logging in user: \(email, privacy: .private)")
+
+        let credentials = Credentials(emailAddress: email, password: password)
+        guard let response: CreateResponse = await serializeAndPost(credentials,
+            endpoint: AuthenticationEndpoints.loginUser(),
+            onFailureMessage: "Login failed for email: \(email)"
+        ), response.success else {
+            return false
+        }
+
+        handleSuccessfulAuth(response, email: email, password: password)
+        Utils.save(forKey: "isUserSignedUp", withValue: true)
+        return true
+    }
+
+    func refreshToken() async -> Bool {
+        logger.info("Refreshing access token")
+
+        guard let email = KeychainHelper.get("emailAddress"),
+              let password = KeychainHelper.get("password") else {
+            logger.error("No stored credentials found for token refresh.")
+            return false
+        }
+
+        let credentials = Credentials(emailAddress: email, password: password)
+        guard let response: CreateResponse = await serializeAndPost(credentials,
+            endpoint: AuthenticationEndpoints.refreshToken(),
+            onFailureMessage: "Token refresh failed."
+        ), response.success else {
+            return false
+        }
+
+        KeychainHelper.set(response.accessToken, forKey: "accessToken")
+        accessTokenExpiresAt = Date().addingTimeInterval(accessTokenValidDuration)
+        return true
     }
 
     func isUserSignedUp() -> Bool {
-        let isSignedUp: Bool? = Utils.get(fromKey: UserDefaultsKey.signedUp.rawValue, withDefaultValue: false)
-        let mongoUserID: String? = Utils.get(fromKey: UserDefaultsKey.mongoUserId.rawValue)
-
-        guard let isSignedUp, let mongoUserID else { return false }
-        return isSignedUp && !mongoUserID.isEmpty
-    }
-
-    private func fetchUserFromDatabase() async -> Bool {
-        let mongoUserID: String? = Utils.get(fromKey: UserDefaultsKey.mongoUserId.rawValue)
-        guard let mongoUserID else { return false }
-
-        let user: User? = await MiddlewareManager.shared.get(url: UserEndpoints.fetchUser(with: mongoUserID))
-        if let user {
-            setUser(user)
-        }
-        return user != nil
+        Utils.get(fromKey: "isUserSignedUp", withDefaultValue: false) ?? false
     }
 
     func fetchUserFromDatabase(with email: String, and password: String) async -> Bool {
-        let user: User? = await MiddlewareManager.shared.get(url: UserEndpoints.fetchUserWithEmail(email), queryParameters: ["email": email, "password": password])
-
-        if let user {
-            setUser(user)
-            await updateUser(to: .iPhone)
-
-            Utils.save(forKey: .mongoUserId, withValue: user.id)
-            return true
+        if let expiration = accessTokenExpiresAt, expiration <= Date() {
+            logger.info("Access token expired. Attempting to refresh.")
+            guard await refreshToken() else {
+                logger.error("Failed to refresh token before fetching user.")
+                return false
+            }
         }
 
-        return false
-    }
-
-    private func updateUserToDatabase() async -> Bool {
-        let mongoUserID: String? = Utils.get(fromKey: UserDefaultsKey.mongoUserId.rawValue)
-        guard let userData = user?.toData(), let mongoUserID else {
+        logger.info("Fetching user from DB for email: \(email, privacy: .private)")
+        let credentials = Credentials(emailAddress: email, password: password)
+        guard let body = credentials.toData() else {
+            logger.error("Failed to serialize credentials.")
             return false
         }
 
-        guard user?.id == mongoUserID else {
+        guard let user: User = await NetworkManager.shared.post(url: AuthenticationEndpoints.fetchUser(), body: body) else {
+            logger.error("Failed to fetch user from DB.")
             return false
         }
 
-        let response: UpdateResponse? = await MiddlewareManager.shared.put(url: UserEndpoints.updateUser(mongoID: mongoUserID), body: userData)
-        return response?.success ?? false
-    }
-
-    func updateUser(to scope: SavepointScope = .iPhone) async {
-        switch scope {
-        case .iPhone:
-            updateUserToUserDefaults()
-        case .database:
-            if await updateUserToDatabase() {
-                updateUserToUserDefaults()
-            }
-        }
-    }
-
-    func fetchUser(from scope: SavepointScope = .iPhone) async -> Bool {
-        switch scope {
-        case .iPhone:
-            let user = fetchUserFromUserDefaults()
-            if let user {
-                setUser(user)
-            }
-            return user != nil
-
-        case .database:
-            let success = await fetchUserFromDatabase()
-            if success {
-                await updateUser(to: .iPhone)
-            }
-            return success
-        }
+        self.user = user
+        KeychainHelper.set(user.emailAddress, forKey: "emailAddress")
+        KeychainHelper.set(user.password, forKey: "password")
+        return true
     }
 }

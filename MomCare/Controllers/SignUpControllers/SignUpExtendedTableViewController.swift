@@ -45,7 +45,7 @@ class SignUpExtendedTableViewController: UITableViewController {
         userMedical.dueDate = dueDate
         MomCareUser.shared.setMedicalData(userMedical)
 
-        Utils.save(forKey: .signedUp, withValue: true)
+//        Utils.save(forKey: .signedUp, withValue: true)
 
         performSegue(withIdentifier: "segueShowInitialTabBarController", sender: nil)
     }

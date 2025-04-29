@@ -18,29 +18,26 @@ class MomCareUser {
 
     let queue: DispatchQueue = .init(label: "MomCareUserQueue")
 
+    var accessTokenExpiresAt: Date?
+
     var user: User? {
         didSet {
-            if oldValue != user {
+            if let user, oldValue != user {
+                LocalStore.shared.save(user)
                 updateToDatabase()
             }
         }
     }
 
-    // https://medium.com/@harshaag99/understanding-dispatchqueue-in-swift-c73058df6b37
-
-    func updateFromDatabase() {
-        queue.async {
-            Task {
-                await self.fetchUser(from: .database)
-            }
-        }
+    private init()  {
+        self.user = LocalStore.shared.load()
     }
+
+    // https://medium.com/@harshaag99/understanding-dispatchqueue-in-swift-c73058df6b37
 
     func updateToDatabase() {
         queue.async {
-            Task {
-                await self.updateUser(to: .database)
-            }
+            Task {}
         }
     }
 

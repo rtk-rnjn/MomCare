@@ -9,6 +9,7 @@ import Foundation
 import UIKit
 import Network
 import UserNotifications
+import Security
 
 enum AlertType {
     case ok
@@ -51,9 +52,9 @@ enum Utils {
 
     // MARK: - User Defaults
 
-    public static func save<T>(forKey key: UserDefaultsKey, withValue value: T?) {
+    public static func save<T>(forKey key: String, withValue value: T?) {
         if let value {
-            UserDefaults.standard.set(value, forKey: key.rawValue)
+            UserDefaults.standard.set(value, forKey: key)
         }
     }
 
@@ -124,5 +125,75 @@ enum Utils {
         default:
             return 0
         }
+    }
+}
+
+enum KeychainHelper {
+    // I have no idea, how any of these function actually works
+    // https://www.avanderlee.com/swift/discardableresult/
+    @discardableResult
+    public static func set(_ value: String, forKey key: String) -> Bool {
+        guard let data = value.data(using: .utf8) else { return false }
+        let query: [String: Any] = [
+            kSecClass as String: kSecClassGenericPassword,
+            kSecAttrAccount as String: key,
+            kSecValueData as String: data
+        ]
+
+        SecItemDelete(query as CFDictionary)
+        return SecItemAdd(query as CFDictionary, nil) == errSecSuccess
+    }
+
+    @discardableResult
+    public static func get(_ key: String) -> String? {
+        let query: [String: Any] = [
+            kSecClass as String: kSecClassGenericPassword,
+            kSecAttrAccount as String: key,
+            kSecReturnData as String: true,
+            kSecMatchLimit as String: kSecMatchLimitOne
+        ]
+
+        var dataTypeRef: CFTypeRef?
+        let status = SecItemCopyMatching(query as CFDictionary, &dataTypeRef)
+
+        if status == errSecSuccess {
+            if let data = dataTypeRef as? Data {
+                return String(data: data, encoding: .utf8)
+            }
+        }
+        return nil
+    }
+
+    @discardableResult
+    public static func remove(_ key: String) -> Bool {
+        let query: [String: Any] = [
+            kSecClass as String: kSecClassGenericPassword,
+            kSecAttrAccount as String: key
+        ]
+        return SecItemDelete(query as CFDictionary) == errSecSuccess
+    }
+}
+
+
+class LocalStore {
+    public static let shared: LocalStore = .init()
+
+    let fileURL: URL = {
+        let path = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
+        return path.appendingPathComponent("data.json")
+    }()
+
+    func save(_ profile: User) {
+        let encoder = JSONEncoder()
+        if let data = try? encoder.encode(profile) {
+            try? data.write(to: fileURL)
+        }
+    }
+
+    func load() -> User? {
+        if let data = try? Data(contentsOf: fileURL) {
+            return try? JSONDecoder().decode(User.self, from: data)
+        }
+        return nil
     }
 }

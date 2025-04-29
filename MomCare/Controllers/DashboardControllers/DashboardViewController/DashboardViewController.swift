@@ -107,15 +107,7 @@ class DashboardViewController: UIViewController, UICollectionViewDataSource, UIC
         }
     }
 
-    private func loadUser() async {
-        let success = await MomCareUser.shared.fetchUser(from: .iPhone)
-        if !success {
-            let fetched = await MomCareUser.shared.fetchUser(from: .database)
-            if !fetched {
-                fatalError("seriously fucked up bro")
-            }
-        }
-    }
+    private func loadUser() async {}
 
     private func prepareCollectionView() {
         registerCells()
