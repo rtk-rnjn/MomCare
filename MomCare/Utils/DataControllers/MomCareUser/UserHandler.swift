@@ -48,6 +48,7 @@ enum AuthenticationEndpoints {
     static func registerUser() -> String { "\(base)/register" }
     static func loginUser() -> String { "\(base)/login" }
     static func refreshToken() -> String { "\(base)/refresh" }
+    static func updateUser() -> String { "\(base)/update" }
     static func fetchUser() -> String { "\(base)/fetch" }
 }
 
@@ -91,6 +92,9 @@ extension MomCareUser {
         }
 
         handleSuccessfulAuth(response, email: user.emailAddress, password: user.password)
+
+        self.user = user
+
         return true
     }
 
@@ -131,9 +135,28 @@ extension MomCareUser {
         accessTokenExpiresAt = Date().addingTimeInterval(accessTokenValidDuration)
         return true
     }
+    
+    func updateUser(_ updatedUser: User?) async -> Bool {
+        guard let updatedUser else {
+            logger.error("No user data to update.")
+            return false
+        }
+
+        logger.info("Updating user for email: \(updatedUser.emailAddress, privacy: .private)")
+
+        guard let response: UpdateResponse = await serializeAndPost(updatedUser,
+            endpoint: AuthenticationEndpoints.updateUser(),
+            onFailureMessage: "User update failed."
+        ), response.success else {
+            return false
+        }
+
+        self.user = updatedUser
+        return true
+    }
 
     func isUserSignedUp() -> Bool {
-        Utils.get(fromKey: "isUserSignedUp", withDefaultValue: false) ?? false
+        return Utils.get(fromKey: "isUserSignedUp", withDefaultValue: false) ?? false
     }
 
     func fetchUserFromDatabase(with email: String, and password: String) async -> Bool {
@@ -143,16 +166,16 @@ extension MomCareUser {
                 logger.error("Failed to refresh token before fetching user.")
                 return false
             }
+        } else if accessTokenExpiresAt == nil {
+            logger.info("Access token not set. Attempting to login.")
+            guard await loginUser(email: email, password: password) else {
+                logger.error("Failed to login before fetching user.")
+                return false
+            }
         }
 
         logger.info("Fetching user from DB for email: \(email, privacy: .private)")
-        let credentials = Credentials(emailAddress: email, password: password)
-        guard let body = credentials.toData() else {
-            logger.error("Failed to serialize credentials.")
-            return false
-        }
-
-        guard let user: User = await NetworkManager.shared.post(url: AuthenticationEndpoints.fetchUser(), body: body) else {
+        guard let user: User = await NetworkManager.shared.get(url: AuthenticationEndpoints.fetchUser()) else {
             logger.error("Failed to fetch user from DB.")
             return false
         }

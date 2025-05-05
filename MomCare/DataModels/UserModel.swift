@@ -62,7 +62,7 @@ struct Mood: Codable {
 
 struct User: Codable, Sendable, Equatable {
     enum CodingKeys: String, CodingKey {
-        case id = "_id"
+        case id
         case firstName = "first_name"
         case lastName = "last_name"
         case emailAddress = "email_address"
