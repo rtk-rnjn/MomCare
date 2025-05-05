@@ -13,6 +13,9 @@ class EventCardCollectionViewCell: UICollectionViewCell {
 
     // MARK: Lifecycle
 
+    @IBOutlet weak var eventCardView1: UIView!
+    @IBOutlet weak var eventCardView2: UIView!
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupGesture()
@@ -32,6 +35,18 @@ class EventCardCollectionViewCell: UICollectionViewCell {
     var segueHandler: (() -> Void)?
     var event: EKEvent?
 
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        
+        eventCardView1.backgroundColor = UIColor { trait in
+            trait.userInterfaceStyle == .dark ? UIColor(hex: "#924350") : UIColor(hex: "#E9D3D3")
+        }
+        
+        eventCardView2.backgroundColor = UIColor { trait in
+            trait.userInterfaceStyle == .dark ? UIColor(hex: "#924350") : UIColor(hex: "#E9D3D3")
+        }
+    }
+    
     func updateElements(with event: EKEvent?, tapHandler: (() -> Void)? = nil, segueHandler: @escaping (() -> Void)) {
         if let event {
             upcomingEventLabel.text = event.title

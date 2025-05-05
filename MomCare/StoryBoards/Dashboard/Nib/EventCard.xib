@@ -99,6 +99,8 @@
                 <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
             </userDefinedRuntimeAttributes>
             <connections>
+                <outlet property="eventCardView1" destination="iyF-9F-32h" id="Oso-gA-2BG"/>
+                <outlet property="eventCardView2" destination="qBD-uw-ovo" id="nQv-Ik-bFN"/>
                 <outlet property="eventDateLabel" destination="qRi-OX-TIw" id="6Qt-VX-Q8n"/>
                 <outlet property="upcomingEventLabel" destination="LpH-hz-lI4" id="ZXA-nn-Zzv"/>
             </connections>
@@ -108,7 +110,7 @@
     <resources>
         <image name="calendar.badge.clock" catalog="system" width="128" height="109"/>
         <systemColor name="linkColor">
-            <color red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.0" green="0.47843137254901963" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="tableCellGroupedBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
