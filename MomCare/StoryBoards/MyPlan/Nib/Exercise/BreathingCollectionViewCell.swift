@@ -13,6 +13,8 @@ class BreathingCollectionViewCell: UICollectionViewCell {
     @IBOutlet var breathingTime: UILabel!
     @IBOutlet var breathingImage: UIImageView!
     @IBOutlet var breathingStartButton: UIButton!
+    @IBOutlet var breathingCompletedPercent: UILabel!
+    
     var completedPercentage: Double = 0
 
     var segueHandler: (() -> Void)?

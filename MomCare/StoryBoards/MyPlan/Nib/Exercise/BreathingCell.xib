@@ -108,6 +108,7 @@
                 <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
             </userDefinedRuntimeAttributes>
             <connections>
+                <outlet property="breathingCompletedPercent" destination="kjt-Iv-zfB" id="Nd7-0l-Mby"/>
                 <outlet property="breathingExerciseName" destination="o1o-GA-tKR" id="FjN-jZ-Vfq"/>
                 <outlet property="breathingImage" destination="yXa-eU-Mk0" id="z9S-LY-GSY"/>
                 <outlet property="breathingStartButton" destination="DrK-HL-rQJ" id="KNg-rI-bH3"/>
