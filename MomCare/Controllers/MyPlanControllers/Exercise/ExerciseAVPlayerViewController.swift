@@ -1,141 +1,194 @@
 import UIKit
-import YouTubeiOSPlayerHelper
+import AVKit
 
-class ExerciseAVPlayerViewController: UIViewController, YTPlayerViewDelegate {
 
-    // MARK: Internal
-
+class ExerciseAVPlayerViewController: UIViewController {
+    
+    @IBOutlet var videoContainerView: UIView!
+    @IBOutlet var playerView: UIView!
+    @IBOutlet var controlBarView: UIView!
     @IBOutlet var playPauseButton: UIButton!
-    @IBOutlet var restartButton: UIButton!
-    @IBOutlet var videoView: UIView!
-    var videoURL: String = "https://www.youtube.com/watch?v=UItWltVZZmE"
-
+    @IBOutlet var forwardButton: UIButton!
+    @IBOutlet var backwardButton: UIButton!
+    @IBOutlet var progressSlider: UISlider!
+    @IBOutlet var startTimeLabel: UILabel!
+    @IBOutlet var endTimeLabel: UILabel!
+    
+    
+    private let fullScreenButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.setImage(UIImage(systemName: "arrow.up.left.and.arrow.down.right"), for: .normal)
+        button.tintColor = .white
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
+    }()
+        
+    
+    // MARK: - Properties
+    private var player: AVPlayer?
+    private var playerLayer: AVPlayerLayer?
+    private var timeObserver: Any?
+    private var isFullScreen = false
+    var controlsTimer: Timer?
+    var url: URL = URL(string: "https://www.dropbox.com/scl/fi/s1nk7zl5zr4qlus11e0ip/childs_pose.mp4?rlkey=0d8i16og8asc4a0vk8kg0cd03&st=haf9grdo&raw=1")!
+    
+    // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        updateGradientBackground()
-        setupYouTubePlayer()
-        setupButtons()
+        setupPlayer(with: url)
+        setupActions()
+        
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(toggleControlsVisibility))
+        videoContainerView.addGestureRecognizer(tapGesture)
+        
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(playerDidFinishPlaying),
+            name: .AVPlayerItemDidPlayToEndTime,
+            object: player?.currentItem
+        )
+        
     }
-
+    
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        ytPlayer.frame = videoView.bounds
+        playerLayer?.frame = playerView.bounds
+        
     }
 
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        ytPlayer.stopVideo()
+    private func setupPlayer(with: URL) {
+        player = AVPlayer(url: url)
+        
+        playerLayer = AVPlayerLayer(player: player)
+        playerLayer?.videoGravity = .resizeAspect
+        playerLayer?.frame = playerView.bounds
+        playerView.layer.addSublayer(playerLayer!)
+        
+        player?.currentItem?.addObserver(self, forKeyPath: "duration", options: [.new, .initial], context: nil)
+        
+        // Add time observer
+        let interval = CMTime(seconds: 0.5, preferredTimescale: CMTimeScale(NSEC_PER_SEC))
+        timeObserver = player?.addPeriodicTimeObserver(forInterval: interval, queue: .main) { [weak self] time in
+        self?.updateTimeLabel()
+        }
+    }
+    
+    override func observeValue(forKeyPath keyPath: String?, of object: Any?,
+                               change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
+        if keyPath == "duration", let item = object as? AVPlayerItem {
+            let seconds = CMTimeGetSeconds(item.duration)
+            if seconds.isFinite {
+                endTimeLabel.text = formatTime(seconds)
+            }
+        }
     }
 
-    @IBAction func playPauseButtonTapped(_ sender: UIButton) {
-        if isPlaying {
-            ytPlayer.pauseVideo()
+    
+    private func setupActions() {
+        playPauseButton.addTarget(self, action: #selector(playPauseTapped), for: .touchUpInside)
+        progressSlider.addTarget(self, action: #selector(sliderValueChanged), for: .valueChanged)
+        forwardButton.addTarget(self, action: #selector(skipForward), for: .touchUpInside)
+        backwardButton.addTarget(self, action: #selector(skipBackward), for: .touchUpInside)
+    }
+        
+    // MARK: - Actions
+    @objc private func playPauseTapped() {
+        if player?.rate == 0 {
+            player?.play()
+            playPauseButton.setImage(UIImage(systemName: "pause.fill"), for: .normal)
         } else {
-            ytPlayer.playVideo()
+            player?.pause()
+            playPauseButton.setImage(UIImage(systemName: "play.fill"), for: .normal)
+        }
+    }
+    
+    @objc private func sliderValueChanged() {
+        guard let duration = player?.currentItem?.duration else { return }
+        let value = Float64(progressSlider.value) * CMTimeGetSeconds(duration)
+        let time = CMTime(value: Int64(value), timescale: 1)
+        player?.seek(to: time)
+    }
+    
+    @objc private func skipForward() {
+        guard let currentTime = player?.currentTime() else { return }
+        let newTime = CMTimeAdd(currentTime, CMTime(seconds: 10, preferredTimescale: 1))
+        player?.seek(to: newTime)
+    }
+
+    @objc private func skipBackward() {
+        guard let currentTime = player?.currentTime() else { return }
+        var newTime = CMTimeSubtract(currentTime, CMTime(seconds: 10, preferredTimescale: 1))
+        if CMTimeGetSeconds(newTime) < 0 {
+            newTime = CMTime(seconds: 0, preferredTimescale: 1)
+        }
+        player?.seek(to: newTime)
+    }
+    
+    @objc private func playerDidFinishPlaying() {
+        playPauseButton.setImage(UIImage(systemName: "play.fill"), for: .normal)
+        player?.seek(to: .zero)
+    }
+    
+    @objc private func toggleControlsVisibility() {
+        let shouldShow = controlBarView.alpha == 0
+        UIView.animate(withDuration: 0.3) {
+            self.controlBarView.alpha = shouldShow ? 1 : 0
+        }
+        
+        if shouldShow {
+            resetAutoHideTimer()
+        } else {
+            controlsTimer?.invalidate()
         }
     }
 
-    @IBAction func restartButtonTapped(_ sender: UIButton) {
-        ytPlayer.seek(toSeconds: 0, allowSeekAhead: true)
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) { [weak self] in
-            self?.ytPlayer.playVideo()
-            self?.isPlaying = true
-            self?.playPauseButton.setImage(UIImage(systemName: "pause.circle.fill"), for: .normal)
-        }
-    }
-
-    nonisolated func playerViewDidBecomeReady(_ playerView: YTPlayerView) {
-        DispatchQueue.main.async { [weak self] in
-            guard let self else { return }
-            playPauseButton.isEnabled = true
-            restartButton.isEnabled = true
-            playPauseButton.setImage(UIImage(systemName: "play.circle.fill"), for: .normal)
-            isPlaying = false
-        }
-    }
-
-    func updateGradientBackground() {
-        let gradientLayer = CAGradientLayer()
-        gradientLayer.frame = view.bounds
-
-        let upperColor = UIColor(hex: "#1e0d31")
-        let middleColor = UIColor(hex: "#13102f")
-        let bottomColor = UIColor(hex: "#0f102e")
-
-        gradientLayer.colors = [
-            upperColor.withAlphaComponent(1.0).cgColor,
-            middleColor.withAlphaComponent(1.0).cgColor,
-            bottomColor.withAlphaComponent(1.0).cgColor
-        ]
-        gradientLayer.startPoint = CGPoint(x: 0.5, y: 0.0)
-        gradientLayer.endPoint = CGPoint(x: 0.5, y: 1.0)
-
-        view.layer.insertSublayer(gradientLayer, at: 0)
-    }
-
-    nonisolated func playerView(_ playerView: YTPlayerView, didChangeTo state: YTPlayerState) {
-        DispatchQueue.main.async { [weak self] in
-            guard let self else { return }
-
-            playPauseButton.isEnabled = true
-
-            switch state {
-            case .ended:
-                playPauseButton.setImage(UIImage(systemName: "play.circle.fill"), for: .normal)
-                isPlaying = false
-
-            case .paused:
-                playPauseButton.setImage(UIImage(systemName: "play.circle.fill"), for: .normal)
-                isPlaying = false
-
-            case .playing:
-                playPauseButton.setImage(UIImage(systemName: "pause.circle.fill"), for: .normal)
-                isPlaying = true
-
-            case .buffering:
-                break
-            default:
-                break
+    private func resetAutoHideTimer() {
+        controlsTimer?.invalidate()
+        controlsTimer = Timer.scheduledTimer(withTimeInterval: 3.0, repeats: false) { [weak self] _ in
+            UIView.animate(withDuration: 0.3) {
+                self?.controlBarView.alpha = 0
             }
         }
     }
 
-    // MARK: Private
-
-    private var ytPlayer: YTPlayerView!
-    private var isPlaying = false
-
-    private func setupYouTubePlayer() {
-        ytPlayer = YTPlayerView()
-        ytPlayer.delegate = self
-        ytPlayer.frame = videoView.bounds
-        videoView.addSubview(ytPlayer)
-
-        let videoID = extractYouTubeID(from: videoURL)
-        ytPlayer.load(withVideoId: videoID)
+    private func updateTimeLabel() {
+        guard let currentTime = player?.currentTime(),
+              let duration = player?.currentItem?.duration else { return }
+        
+        let endTime = duration - currentTime
+        
+        let currentSeconds = CMTimeGetSeconds(currentTime)
+        let durationSeconds = CMTimeGetSeconds(duration)
+        let remainingDurationSeconds = CMTimeGetSeconds(endTime)
+        
+        let currentTimeString = formatTime(currentSeconds)
+        let remaingDurationString = formatTime(max(remainingDurationSeconds, 0))
+        
+        startTimeLabel.text = "\(currentTimeString)"
+        endTimeLabel.text = "-\(remaingDurationString)"
+        
+        progressSlider.value = Float(currentSeconds / durationSeconds)
     }
-
-    private func extractYouTubeID(from url: String) -> String {
-        if let url = URL(string: url) {
-            if let queryItems = URLComponents(url: url, resolvingAgainstBaseURL: false)?.queryItems {
-                if let videoID = queryItems.first(where: { $0.name == "v" })?.value {
-                    return videoID
-                }
-            }
-
-            if url.host == "youtu.be" {
-                return url.lastPathComponent
-            }
+    
+    private func formatTime(_ seconds: Double) -> String {
+        let minutes = Int(seconds) / 60
+        let remainingSeconds = Int(seconds) % 60
+        return String(format: "%d:%02d", minutes, remainingSeconds)
+    }
+    
+    func configure(with videoURL: URL) {
+        let playerItem = AVPlayerItem(url: videoURL)
+        player?.replaceCurrentItem(with: playerItem)
+    }
+    
+    deinit {
+        if let playerItem = player?.currentItem,
+        let observer = timeObserver {
+            playerItem.removeObserver(self, forKeyPath: "duration")
+            player?.removeTimeObserver(observer)
+            timeObserver = nil
         }
-        return ""
+        NotificationCenter.default.removeObserver(self)
     }
-
-    private func setupButtons() {
-        playPauseButton.setImage(UIImage(systemName: "play.circle.fill"), for: .normal)
-        playPauseButton.isEnabled = true
-
-        restartButton.setImage(UIImage(systemName: "arrow.counterclockwise.circle.fill"), for: .normal)
-        restartButton.isEnabled = true
-    }
-
 }
+
