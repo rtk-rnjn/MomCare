@@ -18,10 +18,13 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let storyboard = userSignedUp ? UIStoryboard(name: "InitialStoryboard", bundle: nil) : UIStoryboard(name: "Main", bundle: nil)
 
         let initialViewController = storyboard.instantiateInitialViewController()
+        
 
         window.rootViewController = initialViewController
         self.window = window
         window.makeKeyAndVisible()
+        
+        
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {

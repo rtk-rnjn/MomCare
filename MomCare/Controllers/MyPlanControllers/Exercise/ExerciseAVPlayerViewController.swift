@@ -14,23 +14,13 @@ class ExerciseAVPlayerViewController: UIViewController {
     @IBOutlet var startTimeLabel: UILabel!
     @IBOutlet var endTimeLabel: UILabel!
     
-    
-    private let fullScreenButton: UIButton = {
-        let button = UIButton(type: .system)
-        button.setImage(UIImage(systemName: "arrow.up.left.and.arrow.down.right"), for: .normal)
-        button.tintColor = .white
-        button.translatesAutoresizingMaskIntoConstraints = false
-        return button
-    }()
-        
-    
     // MARK: - Properties
     private var player: AVPlayer?
     private var playerLayer: AVPlayerLayer?
     private var timeObserver: Any?
     private var isFullScreen = false
     var controlsTimer: Timer?
-    var url: URL = URL(string: "https://www.dropbox.com/scl/fi/s1nk7zl5zr4qlus11e0ip/childs_pose.mp4?rlkey=0d8i16og8asc4a0vk8kg0cd03&st=haf9grdo&raw=1")!
+    var url: URL = URL(string: "https://www.dropbox.com/scl/fi/hwyegto90ygyuagxrh29u/full_body_stretch.mp4?rlkey=kr6jqrkchuyxbclj30rexihyp&e=1&st=1losozl7&raw=1")!
     
     // MARK: - Lifecycle
     override func viewDidLoad() {
@@ -48,6 +38,8 @@ class ExerciseAVPlayerViewController: UIViewController {
             object: player?.currentItem
         )
         
+        NotificationCenter.default.addObserver(self, selector: #selector(handleOrientationChange), name: UIDevice.orientationDidChangeNotification, object: nil)
+        
     }
     
     override func viewDidLayoutSubviews() {
@@ -55,8 +47,8 @@ class ExerciseAVPlayerViewController: UIViewController {
         playerLayer?.frame = playerView.bounds
         
     }
-
-    private func setupPlayer(with: URL) {
+    
+    private func setupPlayer(with url: URL) {
         player = AVPlayer(url: url)
         
         playerLayer = AVPlayerLayer(player: player)
@@ -141,6 +133,17 @@ class ExerciseAVPlayerViewController: UIViewController {
             controlsTimer?.invalidate()
         }
     }
+    
+    @objc private func handleOrientationChange() {
+            switch UIDevice.current.orientation {
+            case .landscapeLeft, .landscapeRight:
+                playerLayer?.videoGravity = .resizeAspectFill
+            case .portrait, .portraitUpsideDown:
+                playerLayer?.videoGravity = .resizeAspect
+            default:
+                break
+            }
+        }
 
     private func resetAutoHideTimer() {
         controlsTimer?.invalidate()
@@ -179,6 +182,22 @@ class ExerciseAVPlayerViewController: UIViewController {
     func configure(with videoURL: URL) {
         let playerItem = AVPlayerItem(url: videoURL)
         player?.replaceCurrentItem(with: playerItem)
+    }
+    
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+        
+        coordinator.animate(alongsideTransition: { _ in
+            self.playerLayer?.frame = self.playerView.bounds
+        })
+    }
+    
+    override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
+        return .allButUpsideDown
+    }
+
+    override var shouldAutorotate: Bool {
+        return true
     }
     
     deinit {
