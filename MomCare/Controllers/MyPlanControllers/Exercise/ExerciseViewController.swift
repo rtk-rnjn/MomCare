@@ -95,20 +95,38 @@ class ExerciseViewController: UIViewController, UICollectionViewDelegate, UIColl
         ExerciseDetailsViewController(rootViewController: self).show()
     }
 
-    func updateExerciseCardItems(buttonValue: String, completedPercent: Double) {
+    func updateBreathingCardItem(buttonValue: String, completedPercent: Double) {
         if let cell = collectionView.cellForItem(at: IndexPath(item: 2, section: 0)) as? BreathingCollectionViewCell {
             cell.breathingStartButton.setTitle(buttonValue, for: .normal)
             cell.breathingCompletedPercent.text = "\(Int(completedPercent))% completed"
         }
     }
-
+    
+    func updateExerciseCardItems(currentTimeWatched: Int, totalDuration: Int) {
+        let completedPercentage = (Double(currentTimeWatched) / Double(totalDuration)) * 100
+            let buttonValue = (currentTimeWatched == totalDuration) ? "Completed" : "Continue"
+            DispatchQueue.main.async{
+            if let cell = self.collectionView.cellForItem(at: IndexPath(item: 3, section: 0)) as? ExerciseCollectionViewCell {
+                cell.exerciseStartButton.setTitle(buttonValue, for: .normal)
+                cell.exerciseCompletionPercentage.text = "\(Int(completedPercentage))% completed"
+            }
+        }
+    }
+    
     @IBAction func unwindToMyPlanExercisePage(segue: UIStoryboardSegue) {
         if let sourceVC = segue.source as? BreathingPlayerViewController {
             if sourceVC.completedPercentage < 100 {
-                updateExerciseCardItems(buttonValue: "Continue", completedPercent: sourceVC.completedPercentage)
+                updateBreathingCardItem(buttonValue: "Continue", completedPercent: sourceVC.completedPercentage)
             }
         }
-        
+        else if let avPlayerVC = segue.source as? ExerciseAVPlayerViewController {
+            avPlayerVC.onDismiss = {time in
+                let totalTime = 20
+                print(time)
+                print(totalTime)
+            self.updateExerciseCardItems(currentTimeWatched: time, totalDuration: totalTime)
+            }
+        }
     }
-
+    
 }

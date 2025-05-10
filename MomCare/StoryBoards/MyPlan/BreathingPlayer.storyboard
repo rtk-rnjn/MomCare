@@ -55,7 +55,7 @@
                                                 </buttonConfiguration>
                                                 <connections>
                                                     <action selector="breathingStopButtonTapped:" destination="Y6W-OH-hqX" eventType="touchUpInside" id="og6-mK-RqN"/>
-                                                    <segue destination="9z3-j2-v26" kind="unwind" unwindAction="unwindToMyPlanExercisePageWithSegue:" id="7tw-dF-BqA"/>
+                                                    <segue destination="9z3-j2-v26" kind="unwind" identifier="unwindFromBreathingPlayer" unwindAction="unwindToMyPlanExercisePageWithSegue:" id="7tw-dF-BqA"/>
                                                 </connections>
                                             </button>
                                         </subviews>
@@ -80,7 +80,7 @@
                         <barButtonItem key="leftBarButtonItem" title="Item" image="chevron.down" catalog="system" id="eta-fF-e23">
                             <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <connections>
-                                <segue destination="9z3-j2-v26" kind="unwind" unwindAction="unwindToMyPlanExercisePageWithSegue:" id="Ze9-7e-1i6"/>
+                                <segue destination="9z3-j2-v26" kind="unwind" identifier="UnwindFromBreathingPlayer" unwindAction="unwindToMyPlanExercisePageWithSegue:" id="Ze9-7e-1i6"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>

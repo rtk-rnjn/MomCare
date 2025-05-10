@@ -8,6 +8,7 @@
 import UIKit
 
 class ExerciseCollectionViewCell: UICollectionViewCell {
+    
     @IBOutlet var exerciseLevel: UILabel!
     @IBOutlet var exerciseName: UILabel!
     @IBOutlet var exerciseTime: UILabel!

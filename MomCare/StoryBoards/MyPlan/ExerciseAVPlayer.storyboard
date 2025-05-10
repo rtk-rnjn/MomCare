@@ -16,6 +16,21 @@
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rgQ-ja-KMj">
+                                <rect key="frame" x="120" y="120" width="153" height="50"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="50" id="mJl-m9-UmT"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" style="UICTFontTextStyleTitle0"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                        <integer key="value" value="10"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
+                                </userDefinedRuntimeAttributes>
+                            </label>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="k08-6p-KbZ">
                                 <rect key="frame" x="0.0" y="103" width="393" height="715"/>
                                 <subviews>
@@ -36,10 +51,10 @@
                                                             <rect key="frame" x="0.0" y="0.0" width="360" height="80"/>
                                                             <subviews>
                                                                 <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="QuE-nJ-Rwi">
-                                                                    <rect key="frame" x="90" y="0.0" width="180" height="50"/>
+                                                                    <rect key="frame" x="94" y="0.0" width="172" height="50"/>
                                                                     <subviews>
                                                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8Tc-S9-eXh">
-                                                                            <rect key="frame" x="0.0" y="0.0" width="56.666666666666664" height="50"/>
+                                                                            <rect key="frame" x="0.0" y="0.0" width="54" height="50"/>
                                                                             <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                             <state key="normal" title="Button"/>
                                                                             <buttonConfiguration key="configuration" style="plain" image="backward.fill" catalog="system">
@@ -47,7 +62,7 @@
                                                                             </buttonConfiguration>
                                                                         </button>
                                                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="czT-8T-7J1">
-                                                                            <rect key="frame" x="61.666666666666671" y="0.0" width="56.666666666666671" height="50"/>
+                                                                            <rect key="frame" x="58.999999999999986" y="0.0" width="54" height="50"/>
                                                                             <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                             <state key="normal" title="Button"/>
                                                                             <buttonConfiguration key="configuration" style="plain" image="play.fill" catalog="system">
@@ -55,7 +70,7 @@
                                                                             </buttonConfiguration>
                                                                         </button>
                                                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ip2-OX-gFR">
-                                                                            <rect key="frame" x="123.33333333333333" y="0.0" width="56.666666666666671" height="50"/>
+                                                                            <rect key="frame" x="118" y="0.0" width="54" height="50"/>
                                                                             <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                             <state key="normal" title="Button"/>
                                                                             <buttonConfiguration key="configuration" style="plain" image="forward.fill" catalog="system">
@@ -90,9 +105,9 @@
                                                             <constraints>
                                                                 <constraint firstAttribute="trailing" secondItem="72U-wZ-0wd" secondAttribute="trailing" constant="10" id="5JK-3X-cbQ"/>
                                                                 <constraint firstItem="72U-wZ-0wd" firstAttribute="leading" secondItem="2sK-dC-UzF" secondAttribute="leading" constant="10" id="6RF-zn-fPX"/>
-                                                                <constraint firstItem="QuE-nJ-Rwi" firstAttribute="leading" secondItem="2sK-dC-UzF" secondAttribute="leading" constant="90" id="8cD-jS-lEf"/>
+                                                                <constraint firstItem="QuE-nJ-Rwi" firstAttribute="leading" secondItem="2sK-dC-UzF" secondAttribute="leading" constant="94" id="8cD-jS-lEf"/>
                                                                 <constraint firstAttribute="bottom" secondItem="72U-wZ-0wd" secondAttribute="bottom" id="CVe-wc-5eb"/>
-                                                                <constraint firstAttribute="trailing" secondItem="QuE-nJ-Rwi" secondAttribute="trailing" constant="90" id="YQ3-11-2be"/>
+                                                                <constraint firstAttribute="trailing" secondItem="QuE-nJ-Rwi" secondAttribute="trailing" constant="94" id="YQ3-11-2be"/>
                                                                 <constraint firstItem="72U-wZ-0wd" firstAttribute="top" secondItem="QuE-nJ-Rwi" secondAttribute="bottom" id="gbR-AO-Hud"/>
                                                                 <constraint firstItem="QuE-nJ-Rwi" firstAttribute="top" secondItem="2sK-dC-UzF" secondAttribute="top" id="ivZ-vf-5O0"/>
                                                             </constraints>
@@ -142,9 +157,12 @@
                         <viewLayoutGuide key="safeArea" id="vDu-zF-Fre"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
+                            <constraint firstItem="rgQ-ja-KMj" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" constant="120" id="NRh-3p-04b"/>
+                            <constraint firstItem="vDu-zF-Fre" firstAttribute="trailing" secondItem="rgQ-ja-KMj" secondAttribute="trailing" constant="120" id="PsP-1t-DVM"/>
                             <constraint firstItem="vDu-zF-Fre" firstAttribute="trailing" secondItem="k08-6p-KbZ" secondAttribute="trailing" id="jpm-t5-EFm"/>
                             <constraint firstItem="vDu-zF-Fre" firstAttribute="bottom" secondItem="k08-6p-KbZ" secondAttribute="bottom" id="ntv-cA-kAV"/>
                             <constraint firstItem="k08-6p-KbZ" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" id="snt-9v-mFO"/>
+                            <constraint firstItem="rgQ-ja-KMj" firstAttribute="top" secondItem="5EZ-qb-Rvc" secondAttribute="top" constant="120" id="vyn-AN-a14"/>
                             <constraint firstItem="k08-6p-KbZ" firstAttribute="top" secondItem="vDu-zF-Fre" secondAttribute="top" id="zJ4-c6-IL2"/>
                         </constraints>
                     </view>
@@ -152,13 +170,14 @@
                         <barButtonItem key="leftBarButtonItem" image="chevron.down" catalog="system" id="Vtd-Mb-SJo">
                             <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <connections>
-                                <segue destination="X82-tb-6I2" kind="unwind" unwindAction="unwindToMyPlanExercisePageWithSegue:" id="lMa-E4-4Fg"/>
+                                <segue destination="X82-tb-6I2" kind="unwind" identifier="unwindFromExercisePlayer" unwindAction="unwindToMyPlanExercisePageWithSegue:" id="lMa-E4-4Fg"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
                     <connections>
                         <outlet property="backwardButton" destination="8Tc-S9-eXh" id="206-p1-XWO"/>
                         <outlet property="controlBarView" destination="P9S-Ny-5Ne" id="oZN-lZ-xh6"/>
+                        <outlet property="countdownLabel" destination="rgQ-ja-KMj" id="M3Z-LT-AS6"/>
                         <outlet property="endTimeLabel" destination="BBC-Qt-V6U" id="di8-1V-KJP"/>
                         <outlet property="forwardButton" destination="ip2-OX-gFR" id="B57-6o-YjN"/>
                         <outlet property="playPauseButton" destination="czT-8T-7J1" id="yPp-ge-6rW"/>

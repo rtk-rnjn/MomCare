@@ -13,20 +13,30 @@ class ExerciseAVPlayerViewController: UIViewController {
     @IBOutlet var progressSlider: UISlider!
     @IBOutlet var startTimeLabel: UILabel!
     @IBOutlet var endTimeLabel: UILabel!
+    @IBOutlet var countdownLabel: UILabel!
     
     // MARK: - Properties
     private var player: AVPlayer?
     private var playerLayer: AVPlayerLayer?
     private var timeObserver: Any?
     private var isFullScreen = false
-    var controlsTimer: Timer?
-    var url: URL = URL(string: "https://www.dropbox.com/scl/fi/hwyegto90ygyuagxrh29u/full_body_stretch.mp4?rlkey=kr6jqrkchuyxbclj30rexihyp&e=1&st=1losozl7&raw=1")!
+    private var controlsTimer: Timer?
+    private var countdownTimer: Timer?
+    private var hasStartedCountdown = false
+    var totalDuration: Int = 20
+    var currentWatchedTime: Int = 0
+    
+    var onDismiss: ((Int) -> Void)?
+    
+    var url: URL = URL(string: "https://www.dropbox.com/scl/fi/hzuv70x2gto0m7hl2i2bn/plow_pose.mp4?rlkey=owrxlszivrr3snerqyskkxaev&st=tioyz75a&raw=1")!
     
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
+        controlBarView.alpha = 0
         setupPlayer(with: url)
         setupActions()
+        setupCountdownLabel()
         
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(toggleControlsVisibility))
         videoContainerView.addGestureRecognizer(tapGesture)
@@ -39,18 +49,32 @@ class ExerciseAVPlayerViewController: UIViewController {
         )
         
         NotificationCenter.default.addObserver(self, selector: #selector(handleOrientationChange), name: UIDevice.orientationDidChangeNotification, object: nil)
-        
+    
     }
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         playerLayer?.frame = playerView.bounds
-        
+        view.addSubview(countdownLabel)
     }
     
-    private func setupPlayer(with url: URL) {
-        player = AVPlayer(url: url)
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+
+        let totalDuration = 20
+//        let remainingTime = extractSeconds(from: countdownLabel.text ?? "00:00")
+//        let timeWatched = totalDuration - remainingTime
+//        currentWatchedTime = timeWatched
         
+        onDismiss?(currentWatchedTime)
+    }
+
+    private func setupPlayer(with url: URL) {
+        let playerItem = AVPlayerItem(url: url)
+        player = AVPlayer(playerItem: playerItem)
+            
+        playerItem.addObserver(self, forKeyPath: "status", options: [.new, .initial], context: nil)
+
         playerLayer = AVPlayerLayer(player: player)
         playerLayer?.videoGravity = .resizeAspect
         playerLayer?.frame = playerView.bounds
@@ -65,6 +89,21 @@ class ExerciseAVPlayerViewController: UIViewController {
         }
     }
     
+    func setupCountdownLabel(){
+        Task{
+            let isLandscape = await isVideoLandscape()
+            if isLandscape {
+                countdownLabel.textColor = .white
+                countdownLabel.backgroundColor = UIColor.white.withAlphaComponent(0.3)
+                updateCountdownLabel()
+            } else {
+                countdownLabel.textColor = .white
+                countdownLabel.backgroundColor =  UIColor.black.withAlphaComponent(0.3)
+                updateCountdownLabel()
+            }
+        }
+    }
+    
     override func observeValue(forKeyPath keyPath: String?, of object: Any?,
                                change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
         if keyPath == "duration", let item = object as? AVPlayerItem {
@@ -73,9 +112,18 @@ class ExerciseAVPlayerViewController: UIViewController {
                 endTimeLabel.text = formatTime(seconds)
             }
         }
+        
+        if keyPath == "status", let item = object as? AVPlayerItem {
+                if item.status == .readyToPlay {
+                    DispatchQueue.main.async {
+                        self.controlBarView?.alpha = 1
+                    }
+                } else if item.status == .failed {
+                    dismiss(animated: true, completion: { self.onDismiss?(self.currentWatchedTime)})
+                    }
+         }
     }
 
-    
     private func setupActions() {
         playPauseButton.addTarget(self, action: #selector(playPauseTapped), for: .touchUpInside)
         progressSlider.addTarget(self, action: #selector(sliderValueChanged), for: .valueChanged)
@@ -88,6 +136,11 @@ class ExerciseAVPlayerViewController: UIViewController {
         if player?.rate == 0 {
             player?.play()
             playPauseButton.setImage(UIImage(systemName: "pause.fill"), for: .normal)
+            
+            if !hasStartedCountdown {
+                 startCountdown()
+                 hasStartedCountdown = true
+            }
         } else {
             player?.pause()
             playPauseButton.setImage(UIImage(systemName: "play.fill"), for: .normal)
@@ -144,6 +197,19 @@ class ExerciseAVPlayerViewController: UIViewController {
                 break
             }
         }
+    
+    @objc func updateTimer() {
+        if totalDuration > 0 {
+            totalDuration -= 1
+            updateCountdownLabel()
+        } else {
+            countdownTimer?.invalidate()
+            countdownLabel.text = "Done!"
+            player?.pause()
+            player = nil
+            dismiss(animated: true, completion: { self.onDismiss?(self.currentWatchedTime)})
+        }
+    }
 
     private func resetAutoHideTimer() {
         controlsTimer?.invalidate()
@@ -184,6 +250,35 @@ class ExerciseAVPlayerViewController: UIViewController {
         player?.replaceCurrentItem(with: playerItem)
     }
     
+    func startCountdown() {
+        updateCountdownLabel()
+        countdownTimer = Timer.scheduledTimer(timeInterval: 1.0,
+                                              target: self,
+                                              selector: #selector(updateTimer),
+                                              userInfo: nil,
+                                              repeats: true)
+    }
+    
+    func updateCountdownLabel() {
+        let minutes = totalDuration / 60
+        let seconds = totalDuration % 60
+        countdownLabel.text = String(format: "%02d:%02d", minutes, seconds)
+    }
+    
+    func isVideoLandscape() async -> Bool {
+        guard let track = try? await player?.currentItem?.asset.loadTracks(withMediaType: .video).first else {
+            return false
+        }
+
+        guard let naturalSize = try? await track.load(.naturalSize),
+              let preferredTransform = try? await track.load(.preferredTransform) else {
+            return false
+        }
+
+        let size = naturalSize.applying(preferredTransform)
+        return abs(size.width) > abs(size.height)
+    }
+
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
         
@@ -192,22 +287,30 @@ class ExerciseAVPlayerViewController: UIViewController {
         })
     }
     
-    override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
-        return .allButUpsideDown
+    func extractSeconds(from timeString: String) -> Int {
+        let components = timeString.split(separator: ":").compactMap { Int($0) }
+        if components.count == 2 {
+            let minutes = components[0]
+            let seconds = components[1]
+            return minutes * 60 + seconds
+        }
+        return 0
     }
 
-    override var shouldAutorotate: Bool {
-        return true
-    }
-    
     deinit {
-        if let playerItem = player?.currentItem,
-        let observer = timeObserver {
-            playerItem.removeObserver(self, forKeyPath: "duration")
+        if let observer = timeObserver {
             player?.removeTimeObserver(observer)
             timeObserver = nil
         }
+
+        if let playerItem = player?.currentItem {
+            playerItem.removeObserver(self, forKeyPath: "status")
+            playerItem.removeObserver(self, forKeyPath: "duration")
+        }
+
         NotificationCenter.default.removeObserver(self)
+        countdownTimer?.invalidate()
+        controlsTimer?.invalidate()
     }
 }
 
