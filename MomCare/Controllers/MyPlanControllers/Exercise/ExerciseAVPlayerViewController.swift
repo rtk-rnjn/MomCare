@@ -23,12 +23,12 @@ class ExerciseAVPlayerViewController: UIViewController {
     private var controlsTimer: Timer?
     private var countdownTimer: Timer?
     private var hasStartedCountdown = false
-    var totalDuration: Int = 20
+    var totalDuration: Int = 5 * 60
     var currentWatchedTime: Int = 0
     
     var onDismiss: ((Int) -> Void)?
     
-    var url: URL = URL(string: "https://www.dropbox.com/scl/fi/hzuv70x2gto0m7hl2i2bn/plow_pose.mp4?rlkey=owrxlszivrr3snerqyskkxaev&st=tioyz75a&raw=1")!
+    var url: URL = URL(string: "https://www.dropbox.com/scl/fi/o9olkxs9z2i2fn0d0ljls/Chair_pose.mp4?rlkey=w4epqhgu3vd2sk8hkrbrq3zs4&st=880ygbe9&raw=1")!
     
     // MARK: - Lifecycle
     override func viewDidLoad() {
@@ -61,10 +61,10 @@ class ExerciseAVPlayerViewController: UIViewController {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
 
-        let totalDuration = 20
-//        let remainingTime = extractSeconds(from: countdownLabel.text ?? "00:00")
-//        let timeWatched = totalDuration - remainingTime
-//        currentWatchedTime = timeWatched
+        let totalduration = 5 * 60
+        let remainingTime = extractSeconds(from: countdownLabel.text ?? "00:00")
+        let timeWatched = totalduration - remainingTime
+        currentWatchedTime = timeWatched
         
         onDismiss?(currentWatchedTime)
     }
