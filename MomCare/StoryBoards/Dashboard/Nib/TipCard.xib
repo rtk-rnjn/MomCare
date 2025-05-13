@@ -62,12 +62,13 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <string key="text">Did you know? 
 Staying active during pregnancy helps reduce discomfort</string>
+
                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
                     </label>
                 </subviews>
-                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                <color key="backgroundColor" systemColor="tableCellGroupedBackgroundColor"/>
                 <constraints>
                     <constraint firstAttribute="trailing" secondItem="8xu-6Q-LvC" secondAttribute="trailing" id="Art-Lr-8gz"/>
                     <constraint firstAttribute="bottom" secondItem="7lJ-kw-vhX" secondAttribute="bottom" constant="30" id="HJE-oY-IPA"/>
@@ -91,5 +92,8 @@ Staying active during pregnancy helps reduce discomfort</string>
     </objects>
     <resources>
         <image name="lightbulb.max" catalog="system" width="121" height="128"/>
+        <systemColor name="tableCellGroupedBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
     </resources>
 </document>

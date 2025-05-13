@@ -25,12 +25,27 @@ class EventCardCollectionViewCell: UICollectionViewCell {
 
     // MARK: Internal
 
+    @IBOutlet var eventCardView1: UIView!
+    @IBOutlet var eventCardView2: UIView!
+
     @IBOutlet var upcomingEventLabel: UILabel!
     @IBOutlet var eventDateLabel: UILabel!
 
     var tapHandler: (() -> Void)?
     var segueHandler: (() -> Void)?
     var event: EKEvent?
+
+    override func awakeFromNib() {
+        super.awakeFromNib()
+
+        eventCardView1.backgroundColor = UIColor { trait in
+            trait.userInterfaceStyle == .dark ? UIColor(hex: "#924350") : UIColor(hex: "#E9D3D3")
+        }
+
+        eventCardView2.backgroundColor = UIColor { trait in
+            trait.userInterfaceStyle == .dark ? UIColor(hex: "#924350") : UIColor(hex: "#E9D3D3")
+        }
+    }
 
     func updateElements(with event: EKEvent?, tapHandler: (() -> Void)? = nil, segueHandler: @escaping (() -> Void)) {
         if let event {

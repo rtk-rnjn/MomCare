@@ -60,6 +60,7 @@
                             <constraint firstAttribute="height" constant="50" id="yvc-c9-NkP"/>
                         </constraints>
                     </view>
+
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="10" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dwZ-Ju-E2Z">
                         <rect key="frame" x="7" y="5" width="150" height="87"/>
                         <string key="text">Did you know? 
@@ -69,7 +70,7 @@ Staying active during pregnancy helps reduce discomfort</string>
                         <nil key="highlightedColor"/>
                     </label>
                 </subviews>
-                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                <color key="backgroundColor" systemColor="tableCellGroupedBackgroundColor"/>
                 <constraints>
                     <constraint firstItem="dwZ-Ju-E2Z" firstAttribute="leading" secondItem="fHC-SX-wkN" secondAttribute="leading" constant="7" id="EBE-KV-chU"/>
                     <constraint firstItem="gOD-lT-oaq" firstAttribute="centerX" secondItem="dwZ-Ju-E2Z" secondAttribute="centerX" id="FVu-mT-0KF"/>
@@ -94,5 +95,8 @@ Staying active during pregnancy helps reduce discomfort</string>
     </objects>
     <resources>
         <image name="target" catalog="system" width="128" height="123"/>
+        <systemColor name="tableCellGroupedBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
     </resources>
 </document>
