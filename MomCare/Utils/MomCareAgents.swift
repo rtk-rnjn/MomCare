@@ -8,22 +8,26 @@
 import Foundation
 
 struct Tip: Codable, Sendable {
-    var todaysFocus: String
-    var dailyTip: String
-    
     enum CodingKeys: String, CodingKey {
         case todaysFocus = "todays_focus"
         case dailyTip = "daily_tip"
     }
+
+    var todaysFocus: String
+    var dailyTip: String
+
 }
-    
 
 class MomCareAgents {
-    
+
+    // MARK: Public
+
     public static var shared: MomCareAgents = .init()
-    
+
     public private(set) var cachedPlan: MyPlan?
     public private(set) var cachedTips: Tip?
+
+    // MARK: Internal
 
     func fetchPlan(from userMedical: UserMedical) async -> MyPlan {
         if let cachedPlan {
@@ -34,11 +38,11 @@ class MomCareAgents {
         guard let plan else {
             return MyPlan()
         }
-        
-        self.cachedPlan = plan
+
+        cachedPlan = plan
         return plan
     }
-    
+
     @discardableResult
     func fetchTips(from user: User) async -> Tip {
         if let cachedTips {
@@ -49,8 +53,8 @@ class MomCareAgents {
         guard let tips else {
             return Tip(todaysFocus: "Unable to fetch Today's Focus from the server", dailyTip: "Unable to fetch Daily Tip from the server")
         }
-        
-        self.cachedTips = tips
+
+        cachedTips = tips
         return tips
     }
 }

@@ -174,9 +174,13 @@ enum KeychainHelper {
     }
 }
 
-
 class LocalStore {
+
+    // MARK: Public
+
     public static let shared: LocalStore = .init()
+
+    // MARK: Internal
 
     let fileURL: URL = {
         let path = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]

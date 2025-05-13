@@ -10,6 +10,12 @@ import Foundation
 @MainActor
 class MomCareUser {
 
+    // MARK: Lifecycle
+
+    private init() {
+        user = LocalStore.shared.load()
+    }
+
     // MARK: Public
 
     public static var shared: MomCareUser = .init()
@@ -27,10 +33,6 @@ class MomCareUser {
                 updateToDatabase()
             }
         }
-    }
-
-    private init()  {
-        self.user = LocalStore.shared.load()
     }
 
     // https://medium.com/@harshaag99/understanding-dispatchqueue-in-swift-c73058df6b37

@@ -13,8 +13,4 @@ class InitialTabBarController: UITabBarController {
         navigationController?.isNavigationBarHidden = true
         navigationController?.setNavigationBarHidden(true, animated: false)
     }
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-    }
 }

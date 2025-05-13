@@ -135,7 +135,7 @@ extension MomCareUser {
         accessTokenExpiresAt = Date().addingTimeInterval(accessTokenValidDuration)
         return true
     }
-    
+
     func updateUser(_ updatedUser: User?) async -> Bool {
         guard let updatedUser else {
             logger.error("No user data to update.")
@@ -151,7 +151,7 @@ extension MomCareUser {
             return false
         }
 
-        self.user = updatedUser
+        user = updatedUser
         return true
     }
 

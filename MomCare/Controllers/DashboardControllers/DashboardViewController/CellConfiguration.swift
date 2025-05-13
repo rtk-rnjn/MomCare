@@ -30,7 +30,7 @@ extension DashboardViewController {
         case 0:
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "FocusCard", for: indexPath) as? FocusCardCollectionViewCell
             guard let cell else { fatalError("'FocusCard' not found") }
-            
+
             if let tip = MomCareAgents.shared.cachedTips {
                 cell.updateElements(with: tip)
             }
@@ -40,7 +40,7 @@ extension DashboardViewController {
         case 1:
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "TipCard", for: indexPath) as? TipCardCollectionViewCell
             guard let cell else { fatalError("'TipCard' not found") }
-            
+
             if let tip = MomCareAgents.shared.cachedTips {
                 cell.updateElements(with: tip)
             }

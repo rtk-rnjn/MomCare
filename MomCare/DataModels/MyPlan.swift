@@ -39,6 +39,9 @@ enum Difficulty: String, Codable, Equatable {
 }
 
 struct FoodItem: Codable, Sendable, Equatable {
+
+    // MARK: Internal
+
     enum CodingKeys: String, CodingKey {
         case name
         case imageUri = "image_uri"
@@ -63,11 +66,33 @@ struct FoodItem: Codable, Sendable, Equatable {
 
     var image: UIImage? {
         get async {
+            if let image = fetchFromFileSystem(uri: imageUri) {
+                return image
+            }
             guard let url = URL(string: imageUri) else { return nil }
             let (data, _) = try! await URLSession.shared.data(from: url)
-            
+
+            saveToFileSystem(uri: imageUri, data: data)
             return UIImage(data: data)
         }
+    }
+
+    // MARK: Private
+
+    private func fetchFromFileSystem(uri: String) -> UIImage? {
+        let fileManager = FileManager.default
+        let documentsDirectory = fileManager.urls(for: .documentDirectory, in: .userDomainMask).first!
+        let fileURL = documentsDirectory.appendingPathComponent(uri)
+
+        return UIImage(contentsOfFile: fileURL.path)
+    }
+
+    private func saveToFileSystem(uri: String, data: Data) {
+        let fileManager = FileManager.default
+        let documentsDirectory = fileManager.urls(for: .documentDirectory, in: .userDomainMask).first!
+        let fileURL = documentsDirectory.appendingPathComponent(uri)
+
+        try? data.write(to: fileURL)
     }
 }
 
