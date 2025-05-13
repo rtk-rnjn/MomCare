@@ -36,7 +36,7 @@ class LoginTableViewController: UITableViewController {
                 sender.startLoadingAnimation()
             }
 
-            let success = await MomCareUser.shared.fetchUserFromDatabase(with: email, and: password)
+            let success = await MomCareUser.shared.fetchUserFromDatabase(email: email, password: password)
             DispatchQueue.main.async {
                 sender.stopLoadingAnimation(withRestoreLabel: "Sign In")
             }

@@ -62,8 +62,12 @@ struct FoodItem: Codable, Sendable, Equatable {
     var consumed: Bool = false
 
     var image: UIImage? {
-        return UIImage(named: imageUri)
-        // TODO: Handle image loading from URL
+        get async {
+            guard let url = URL(string: imageUri) else { return nil }
+            let (data, _) = try! await URLSession.shared.data(from: url)
+            
+            return UIImage(data: data)
+        }
     }
 }
 
@@ -79,6 +83,10 @@ struct MyPlan: Codable, Sendable, Equatable {
     var lunch: [FoodItem] = []
     var snacks: [FoodItem] = []
     var dinner: [FoodItem] = []
+
+    func allMeals() -> [FoodItem] {
+        return breakfast + lunch + snacks + dinner
+    }
 
     subscript(index: Int) -> [FoodItem] {
         mutating get {

@@ -39,9 +39,10 @@ class DashboardViewController: UIViewController, UICollectionViewDataSource, UIC
             await self.loadUser()
 
             if var user = MomCareUser.shared.user, let medical = user.medicalData {
-                let meals = await MyPlanMLModel.fetchPlans(from: medical)
+                let meals = await MomCareAgents.shared.fetchPlan(from: medical)
                 user.plan = meals
 
+                await MomCareAgents.shared.fetchTips(from: user)
                 MomCareUser.shared.setUser(user)
             }
 

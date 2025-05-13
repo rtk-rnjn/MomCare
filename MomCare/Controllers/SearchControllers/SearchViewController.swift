@@ -11,7 +11,7 @@ class SearchViewController: UIViewController {
     @IBOutlet var searchBar: UISearchBar!
     @IBOutlet var searchTableView: UITableView!
 
-    let allFoods: [FoodItem] = SampleFoodData.uniqueFoodItems
+    let allFoods: [FoodItem] = []
     var searchedFood: [FoodItem] = []
 
     var mealName: String?

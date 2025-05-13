@@ -7,15 +7,15 @@ class DietTableViewController: UITableViewController {
     var dietViewController: DietViewController?
 
     final var proteinGoal: Double {
-        return Double(SampleFoodData.uniqueFoodItems.reduce(0) { $0 + $1.protein })
+        return Double(MomCareAgents.shared.cachedPlan?.allMeals().reduce(0) { $0 + $1.protein } ?? 0)
     }
 
     final var carbsGoal: Double {
-        return Double(SampleFoodData.uniqueFoodItems.reduce(0) { $0 + $1.carbs })
+        return Double(MomCareAgents.shared.cachedPlan?.allMeals().reduce(0) { $0 + $1.carbs } ?? 0)
     }
 
     final var fatsGoal: Double {
-        return Double(SampleFoodData.uniqueFoodItems.reduce(0) { $0 + $1.fat })
+        return Double(MomCareAgents.shared.cachedPlan?.allMeals().reduce(0) { $0 + $1.fat } ?? 0)
     }
 
     override func viewWillAppear(_ animated: Bool) {

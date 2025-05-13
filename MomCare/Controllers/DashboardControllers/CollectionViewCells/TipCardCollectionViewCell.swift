@@ -10,5 +10,9 @@ import UIKit
 class TipCardCollectionViewCell: UICollectionViewCell {
 
     @IBOutlet var currentTipLabel: UILabel!
+    
+    func updateElements(with tip: Tip) {
+        currentTipLabel.text = tip.dailyTip
+    }
 
 }

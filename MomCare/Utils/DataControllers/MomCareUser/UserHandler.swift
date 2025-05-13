@@ -159,7 +159,7 @@ extension MomCareUser {
         return Utils.get(fromKey: "isUserSignedUp", withDefaultValue: false) ?? false
     }
 
-    func fetchUserFromDatabase(with email: String, and password: String) async -> Bool {
+    func fetchUserFromDatabase(email: String, password: String) async -> Bool {
         if let expiration = accessTokenExpiresAt, expiration <= Date() {
             logger.info("Access token expired. Attempting to refresh.")
             guard await refreshToken() else {
