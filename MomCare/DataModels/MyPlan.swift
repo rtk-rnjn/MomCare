@@ -41,7 +41,7 @@ enum Difficulty: String, Codable, Equatable {
 struct FoodItem: Codable, Sendable, Equatable {
     enum CodingKeys: String, CodingKey {
         case name
-        case imageName = "image_name"
+        case imageUri = "image_uri"
         case calories
         case protein
         case carbs
@@ -52,17 +52,18 @@ struct FoodItem: Codable, Sendable, Equatable {
     }
 
     let name: String
-    let imageName: String
-    var calories: Int = 0
-    var protein: Int = 0
-    var carbs: Int = 0
-    var fat: Int = 0
-    var sodium: Int = 0
-    var sugar: Int = 0
+    let imageUri: String
+    var calories: Double = 0
+    var protein: Double = 0
+    var carbs: Double = 0
+    var fat: Double = 0
+    var sodium: Double = 0
+    var sugar: Double = 0
     var consumed: Bool = false
 
     var image: UIImage? {
-        return UIImage(named: imageName)
+        return UIImage(named: imageUri)
+        // TODO: Handle image loading from URL
     }
 }
 

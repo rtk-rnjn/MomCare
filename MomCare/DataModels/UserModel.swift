@@ -8,11 +8,11 @@
 import Foundation
 import UIKit
 
-enum Country: String, Codable, Equatable {
+enum Country: String, Codable {
     case india = "India"
 }
 
-public enum PreExistingCondition: String, Codable, CaseIterable, Equatable, Hashable, Sendable {
+public enum PreExistingCondition: String, Codable, CaseIterable, Sendable {
     case diabetes = "Diabetes"
     case hypertension = "Hypertension"
     case pcos = "PCOS"
@@ -22,7 +22,7 @@ public enum PreExistingCondition: String, Codable, CaseIterable, Equatable, Hash
     case kidneyDisease = "Kidney Disease"
 }
 
-public enum Intolerance: String, Codable, CaseIterable, Equatable, Hashable, Sendable {
+public enum Intolerance: String, Codable, CaseIterable, Sendable {
     case gluten = "Gluten"
     case lactose = "Lactose"
     case egg = "Egg"
@@ -32,7 +32,7 @@ public enum Intolerance: String, Codable, CaseIterable, Equatable, Hashable, Sen
     case wheat = "Wheat"
 }
 
-public enum DietaryPreference: String, Codable, CaseIterable, Equatable, Hashable, Sendable {
+public enum DietaryPreference: String, Codable, CaseIterable, Sendable {
     case vegetarian = "Vegetarian"
     case nonVegetarian = "Non-Vegetarian"
     case vegan = "Vegan"
@@ -44,7 +44,7 @@ public enum DietaryPreference: String, Codable, CaseIterable, Equatable, Hashabl
     case dairyFree = "Dairy-Free"
 }
 
-public enum MoodType: String, Codable, Sendable, Equatable {
+public enum MoodType: String, Codable, Sendable {
    case happy = "Happy"
    case sad = "Sad"
    case stressed = "Stressed"
@@ -75,7 +75,6 @@ struct User: Codable, Sendable, Equatable {
         case plan
         case exercises
         case history
-        case createdAt = "created_at"
     }
 
     var id: String = UUID().uuidString
@@ -91,7 +90,6 @@ struct User: Codable, Sendable, Equatable {
     var plan: MyPlan = .init()
     var exercises: [Exercise] = []
     var history: [History] = []
-    var createdAt: Date = .init()
 
     var fullName: String {
         let fullName = "\(firstName) \(lastName ?? "")"
