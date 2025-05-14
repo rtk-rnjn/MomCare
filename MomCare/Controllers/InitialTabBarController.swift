@@ -13,4 +13,38 @@ class InitialTabBarController: UITabBarController {
         navigationController?.isNavigationBarHidden = true
         navigationController?.setNavigationBarHidden(true, animated: false)
     }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        Task {
+            let refreshed = await MomCareUser.shared.refreshToken()
+            if !refreshed {
+                DispatchQueue.main.async {
+                    self.navigateToLogin()
+                }
+            }
+            
+            if var user = MomCareUser.shared.user, let medical = user.medicalData {
+                if user.plan.isEmpty() {
+                    let meals = await MomCareAgents.shared.fetchPlan(from: medical)
+                    user.plan = meals
+                }
+
+                await MomCareAgents.shared.fetchTips(from: user)
+            }
+        }
+    }
+    
+    private func navigateToLogin() {
+        let actions = [
+            AlertActionHandler(title: "OK", style: .default) { alertAction in
+                self.performSegue(withIdentifier: "segueShowFrontPageNavigationController", sender: nil)
+            }
+        ]
+        let alert = Utils.getAlert(title: "Login Expired", message: "Please login again.", actions: actions)
+        present(alert, animated: true) {
+            Utils.remove("isUserSignedUp")
+        }
+    }
 }

@@ -23,15 +23,45 @@ class MomCareAgents {
     // MARK: Public
 
     public static var shared: MomCareAgents = .init()
+    
+    private var cachedPlan: MyPlan?
+    private var cachedTips: Tip?
 
-    public private(set) var cachedPlan: MyPlan?
-    public private(set) var cachedTips: Tip?
+    var plan: MyPlan?
+    var tips: Tip? {
+        get {
+            if let tips = self.fetchFromUserDefaults() {
+                return tips
+            }
+            
+            return nil
+        }
+        set {
+            if let newValue {
+                self.saveToUserDefaults(newValue)
+            }
+        }
+    }
+    
+    private func fetchFromUserDefaults() -> Tip? {
+        guard let data = UserDefaults.standard.data(forKey: "tips") else { return nil }
+
+        let tips = try? JSONDecoder().decode(Tip.self, from: data)
+        return tips
+    }
+    
+    private func saveToUserDefaults(_ tips: Tip) {
+        guard let data = tips.toData() else {
+            return
+        }
+        UserDefaults.standard.set(data, forKey: "tips")
+    }
 
     // MARK: Internal
 
     func fetchPlan(from userMedical: UserMedical) async -> MyPlan {
-        if let cachedPlan {
-            return cachedPlan
+        if let plan {
+            return plan
         }
 
         let plan: MyPlan? = await NetworkManager.shared.get(url: "/plan")
@@ -39,14 +69,14 @@ class MomCareAgents {
             return MyPlan()
         }
 
-        cachedPlan = plan
+        self.plan = plan
         return plan
     }
 
     @discardableResult
     func fetchTips(from user: User) async -> Tip {
-        if let cachedTips {
-            return cachedTips
+        if let tips {
+            return tips
         }
 
         let tips: Tip? = await NetworkManager.shared.get(url: "/plan/tips")
@@ -54,7 +84,7 @@ class MomCareAgents {
             return Tip(todaysFocus: "Unable to fetch Today's Focus from the server", dailyTip: "Unable to fetch Daily Tip from the server")
         }
 
-        cachedTips = tips
+        self.tips = tips
         return tips
     }
 }

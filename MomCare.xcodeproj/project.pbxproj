@@ -196,7 +196,7 @@
 				INFOPLIST_KEY_CFBundleDisplayName = "MomCare+";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.healthcare-fitness";
 				INFOPLIST_KEY_NSHealthShareUsageDescription = "App needs to sync your data with native Apple apps";
-				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "App needs to update data to your local Health app";
+				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "Application need permission as to work perfectly";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
@@ -208,7 +208,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 0.1;
-				PRODUCT_BUNDLE_IDENTIFIER = com.MomCare.TeamVision;
+				PRODUCT_BUNDLE_IDENTIFIER = com.MomCare.TeamVision1;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
@@ -234,7 +234,7 @@
 				INFOPLIST_KEY_CFBundleDisplayName = "MomCare+";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.healthcare-fitness";
 				INFOPLIST_KEY_NSHealthShareUsageDescription = "App needs to sync your data with native Apple apps";
-				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "App needs to update data to your local Health app";
+				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "Application need permission as to work perfectly";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
