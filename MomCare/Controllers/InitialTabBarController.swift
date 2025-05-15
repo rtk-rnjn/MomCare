@@ -8,15 +8,18 @@
 import UIKit
 
 class InitialTabBarController: UITabBarController {
+
+    // MARK: Internal
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.isNavigationBarHidden = true
         navigationController?.setNavigationBarHidden(true, animated: false)
     }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         Task {
             let refreshed = await MomCareUser.shared.refreshToken()
             if !refreshed {
@@ -26,10 +29,12 @@ class InitialTabBarController: UITabBarController {
             }
         }
     }
-    
+
+    // MARK: Private
+
     private func navigateToLogin() {
         let actions = [
-            AlertActionHandler(title: "OK", style: .default) { alertAction in
+            AlertActionHandler(title: "OK", style: .default) { _ in
                 self.performSegue(withIdentifier: "segueShowFrontPageNavigationController", sender: nil)
             }
         ]

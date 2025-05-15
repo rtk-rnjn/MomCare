@@ -119,7 +119,7 @@ struct MyPlan: Codable, Sendable, Equatable {
     func allMeals() -> [FoodItem] {
         return breakfast + lunch + snacks + dinner
     }
-    
+
     func isEmpty() -> Bool {
         return breakfast.isEmpty && lunch.isEmpty && snacks.isEmpty && dinner.isEmpty
     }

@@ -84,8 +84,7 @@ actor NetworkManager {
             let decoder = JSONDecoder()
             decoder.dateDecodingStrategy = .iso8601
 
-            let decodedObject = try decoder.decode(T.self, from: data)
-            return decodedObject
+            return try decoder.decode(T.self, from: data)
 
         } catch {
             logger.error("Request error for URL: \(url.absoluteString, privacy: .public), error: \(String(describing: error), privacy: .public)")

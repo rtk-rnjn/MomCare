@@ -24,24 +24,10 @@ class MomCareAgents {
 
     public static var shared: MomCareAgents = .init()
 
+    // MARK: Internal
+
     var plan: MyPlan?
     var tips: Tip?
-    
-    private func fetchFromUserDefaults() -> Tip? {
-        guard let data = UserDefaults.standard.data(forKey: "tips") else { return nil }
-
-        let tips = try? JSONDecoder().decode(Tip.self, from: data)
-        return tips
-    }
-    
-    private func saveToUserDefaults(_ tips: Tip) {
-        guard let data = tips.toData() else {
-            return
-        }
-        UserDefaults.standard.set(data, forKey: "tips")
-    }
-
-    // MARK: Internal
 
     @discardableResult
     func fetchPlan(from userMedical: UserMedical) async -> MyPlan {
@@ -72,4 +58,20 @@ class MomCareAgents {
         self.tips = tips
         return tips
     }
+
+    // MARK: Private
+
+    private func fetchFromUserDefaults() -> Tip? {
+        guard let data = UserDefaults.standard.data(forKey: "tips") else { return nil }
+
+        return try? JSONDecoder().decode(Tip.self, from: data)
+    }
+
+    private func saveToUserDefaults(_ tips: Tip) {
+        guard let data = tips.toData() else {
+            return
+        }
+        UserDefaults.standard.set(data, forKey: "tips")
+    }
+
 }
