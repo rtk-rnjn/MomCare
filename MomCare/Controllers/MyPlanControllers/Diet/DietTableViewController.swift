@@ -20,7 +20,19 @@ class DietTableViewController: UITableViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        tableView.reloadData()
+
+        Task {
+            if let user = MomCareUser.shared.user, let medical = user.medicalData {
+                if user.plan.isEmpty() {
+                    let meals = await MomCareAgents.shared.fetchPlan(from: medical)
+                    MomCareUser.shared.user?.plan = meals
+                }
+
+                DispatchQueue.main.async {
+                    self.tableView.reloadData()
+                }
+            }
+        }
     }
 
     override func viewDidLoad() {

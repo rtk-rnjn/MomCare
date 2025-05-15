@@ -24,15 +24,6 @@ class InitialTabBarController: UITabBarController {
                     self.navigateToLogin()
                 }
             }
-            
-            if var user = MomCareUser.shared.user, let medical = user.medicalData {
-                if user.plan.isEmpty() {
-                    let meals = await MomCareAgents.shared.fetchPlan(from: medical)
-                    user.plan = meals
-                }
-
-                await MomCareAgents.shared.fetchTips(from: user)
-            }
         }
     }
     

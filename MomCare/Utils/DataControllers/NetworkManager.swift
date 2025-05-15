@@ -9,7 +9,7 @@ import Foundation
 import OSLog
 
 private let logger: Logger = .init(subsystem: "com.MomCare.NetworkManager", category: "Network")
-private let endpoint = "http://localhost:8000"
+private let endpoint = "http://13.233.139.216:8000"
 
 actor NetworkManager {
 

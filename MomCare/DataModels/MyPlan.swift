@@ -56,12 +56,14 @@ struct FoodItem: Codable, Sendable, Equatable {
 
     let name: String
     let imageUri: String
+
     var calories: Double = 0
     var protein: Double = 0
     var carbs: Double = 0
     var fat: Double = 0
     var sodium: Double = 0
     var sugar: Double = 0
+
     var consumed: Bool = false
 
     var image: UIImage? {
@@ -70,10 +72,15 @@ struct FoodItem: Codable, Sendable, Equatable {
                 return image
             }
             guard let url = URL(string: imageUri) else { return nil }
-            let (data, _) = try! await URLSession.shared.data(from: url)
 
-            saveToFileSystem(uri: imageUri, data: data)
-            return UIImage(data: data)
+            do {
+                let (data, _) = try await URLSession.shared.data(from: url)
+
+                saveToFileSystem(uri: imageUri, data: data)
+                return UIImage(data: data)
+            } catch {
+                return nil
+            }
         }
     }
 

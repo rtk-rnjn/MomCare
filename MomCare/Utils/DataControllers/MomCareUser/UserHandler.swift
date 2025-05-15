@@ -185,4 +185,21 @@ extension MomCareUser {
         KeychainHelper.set(user.password, forKey: "password")
         return true
     }
+
+    @discardableResult
+    func automaticFetchUserFromDatabase() async -> Bool {
+        guard let email = KeychainHelper.get("emailAddress"),
+              let password = KeychainHelper.get("password") else {
+            logger.error("No stored credentials found for automatic fetch.")
+            return false
+        }
+
+        if await fetchUserFromDatabase(email: email, password: password) {
+            logger.info("User fetched successfully.")
+            return true
+        } else {
+            logger.error("Failed to fetch user automatically.")
+            return false
+        }
+    }
 }

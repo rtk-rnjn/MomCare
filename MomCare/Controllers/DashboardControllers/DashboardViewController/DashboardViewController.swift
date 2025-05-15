@@ -35,8 +35,11 @@ class DashboardViewController: UIViewController, UICollectionViewDataSource, UIC
 
         Task {
             await requestAccessForNotification()
-
             await self.loadUser()
+
+            if let user = MomCareUser.shared.user {
+                await MomCareAgents.shared.fetchTips(from: user)
+            }
 
             DispatchQueue.main.async {
                 self.collectionView.reloadData()
@@ -155,7 +158,9 @@ class DashboardViewController: UIViewController, UICollectionViewDataSource, UIC
         }
     }
 
-    private func loadUser() async {}
+    private func loadUser() async {
+        await MomCareUser.shared.automaticFetchUserFromDatabase()
+    }
 
     private func prepareCollectionView() {
         registerCells()

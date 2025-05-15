@@ -23,25 +23,9 @@ class MomCareAgents {
     // MARK: Public
 
     public static var shared: MomCareAgents = .init()
-    
-    private var cachedPlan: MyPlan?
-    private var cachedTips: Tip?
 
     var plan: MyPlan?
-    var tips: Tip? {
-        get {
-            if let tips = self.fetchFromUserDefaults() {
-                return tips
-            }
-            
-            return nil
-        }
-        set {
-            if let newValue {
-                self.saveToUserDefaults(newValue)
-            }
-        }
-    }
+    var tips: Tip?
     
     private func fetchFromUserDefaults() -> Tip? {
         guard let data = UserDefaults.standard.data(forKey: "tips") else { return nil }
@@ -59,6 +43,7 @@ class MomCareAgents {
 
     // MARK: Internal
 
+    @discardableResult
     func fetchPlan(from userMedical: UserMedical) async -> MyPlan {
         if let plan {
             return plan
