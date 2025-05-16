@@ -109,7 +109,7 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
-                        <outlet property="searchTableView" destination="XNi-jM-IuX" id="a0Z-Vk-wif"/>
+                        <outlet property="tableView" destination="XNi-jM-IuX" id="a0Z-Vk-wif"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ief-a0-LHa" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
