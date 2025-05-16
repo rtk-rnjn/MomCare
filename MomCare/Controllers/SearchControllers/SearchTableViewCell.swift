@@ -44,7 +44,7 @@ class SearchTableViewCell: UITableViewCell {
         alert.addAction(confirmAction)
         alert.addAction(cancelAction)
 
-        viewController?.present(alert, animated: true, completion: nil)
+        viewController?.present(alert, animated: true)
     }
 
     private func alertConfirmTapped(_ actionAlert: UIAlertAction) {
@@ -61,6 +61,12 @@ class SearchTableViewCell: UITableViewCell {
             MomCareUser.shared.user?.plan.dinner.append(foodItem)
         default:
             break
+        }
+
+        viewController?.searchBarController.dismiss(animated: true) {
+            self.viewController?.dismiss(animated: true) {
+                self.viewController?.completionHandlerOnFoodItemAdd?()
+            }
         }
     }
 

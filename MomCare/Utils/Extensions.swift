@@ -57,11 +57,19 @@ extension UIImage {
 }
 
 extension Encodable {
-    func toDictionary() -> [String: Any]? {
+    func toDictionary<T>(snakeCase: Bool = false) -> T? {
         let encoder = JSONEncoder()
         guard let data = try? encoder.encode(self) else { return nil }
 
-        return try? JSONSerialization.jsonObject(with: data, options: .allowFragments) as? [String: Any]
+        if snakeCase {
+            encoder.keyEncodingStrategy = .convertToSnakeCase
+        }
+
+        do {
+            return try JSONSerialization.jsonObject(with: data) as? T
+        } catch {
+            return nil
+        }
     }
 
     func toData(keyEncodingStrategy: JSONEncoder.KeyEncodingStrategy = .convertToSnakeCase) -> Data? {

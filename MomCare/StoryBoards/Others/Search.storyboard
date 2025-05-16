@@ -8,7 +8,7 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Search View Controller-->
+        <!--Search Food-->
         <scene sceneID="s0d-6b-0kx">
             <objects>
                 <viewController id="Y6W-OH-hqX" customClass="SearchViewController" customModule="MomCare" customModuleProvider="target" sceneMemberID="viewController">
@@ -16,15 +16,8 @@
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <searchBar contentMode="redraw" placeholder="Unkown Item" translatesAutoresizingMaskIntoConstraints="NO" id="4Bk-Ur-59O">
-                                <rect key="frame" x="0.0" y="103" width="393" height="56"/>
-                                <textInputTraits key="textInputTraits" autocorrectionType="no" returnKeyType="search"/>
-                                <connections>
-                                    <outlet property="delegate" destination="Y6W-OH-hqX" id="s5Y-Lz-A3w"/>
-                                </connections>
-                            </searchBar>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="XNi-jM-IuX">
-                                <rect key="frame" x="0.0" y="159" width="393" height="659"/>
+                                <rect key="frame" x="0.0" y="103" width="393" height="715"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="SearchTableViewCell" id="gJQ-yo-rTk" customClass="SearchTableViewCell" customModule="MomCare" customModuleProvider="target">
@@ -38,25 +31,25 @@
                                                     <rect key="frame" x="20" y="5.0000000000000036" width="353" height="60.333333333333343"/>
                                                     <subviews>
                                                         <stackView opaque="NO" contentMode="scaleToFill" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="ERz-q1-yuV">
-                                                            <rect key="frame" x="0.0" y="0.0" width="306" height="60.333333333333336"/>
+                                                            <rect key="frame" x="0.0" y="5.3333333333333357" width="306" height="50"/>
                                                             <subviews>
                                                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="0oF-1q-IJB">
-                                                                    <rect key="frame" x="0.0" y="0.0" width="60.333333333333336" height="60.333333333333336"/>
+                                                                    <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
                                                                     <constraints>
                                                                         <constraint firstAttribute="width" secondItem="0oF-1q-IJB" secondAttribute="height" id="rtc-iu-htC"/>
                                                                     </constraints>
                                                                 </imageView>
                                                                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="J74-vG-Odv">
-                                                                    <rect key="frame" x="70.333333333333329" y="0.0" width="235.66666666666669" height="60.333333333333336"/>
+                                                                    <rect key="frame" x="60" y="0.0" width="246" height="50"/>
                                                                     <subviews>
                                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Cf8-7x-63D">
-                                                                            <rect key="frame" x="0.0" y="0.0" width="235.66666666666666" height="30.333333333333332"/>
+                                                                            <rect key="frame" x="0.0" y="0.0" width="246" height="25"/>
                                                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                                             <nil key="textColor"/>
                                                                             <nil key="highlightedColor"/>
                                                                         </label>
                                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZMJ-hX-d5F">
-                                                                            <rect key="frame" x="0.0" y="30.333333333333336" width="235.66666666666666" height="30"/>
+                                                                            <rect key="frame" x="0.0" y="25" width="246" height="25"/>
                                                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                                             <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                             <nil key="highlightedColor"/>
@@ -104,14 +97,11 @@
                         <constraints>
                             <constraint firstItem="XNi-jM-IuX" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" id="3VM-Se-DVM"/>
                             <constraint firstItem="vDu-zF-Fre" firstAttribute="trailing" secondItem="XNi-jM-IuX" secondAttribute="trailing" id="KcM-wC-hAj"/>
+                            <constraint firstItem="XNi-jM-IuX" firstAttribute="top" secondItem="vDu-zF-Fre" secondAttribute="top" id="RmM-gV-le0"/>
                             <constraint firstItem="vDu-zF-Fre" firstAttribute="bottom" secondItem="XNi-jM-IuX" secondAttribute="bottom" id="Tcc-6M-6R7"/>
-                            <constraint firstItem="4Bk-Ur-59O" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" id="bEd-lv-14d"/>
-                            <constraint firstItem="4Bk-Ur-59O" firstAttribute="trailing" secondItem="vDu-zF-Fre" secondAttribute="trailing" id="bH7-9g-46n"/>
-                            <constraint firstItem="4Bk-Ur-59O" firstAttribute="top" secondItem="vDu-zF-Fre" secondAttribute="top" id="mBU-f0-0Ie"/>
-                            <constraint firstItem="XNi-jM-IuX" firstAttribute="top" secondItem="4Bk-Ur-59O" secondAttribute="bottom" id="xUf-13-o4O"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" id="jLh-6u-h5O">
+                    <navigationItem key="navigationItem" title="Search Food" id="jLh-6u-h5O">
                         <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="61L-oU-K8T">
                             <connections>
                                 <segue destination="amh-z7-d6a" kind="unwind" unwindAction="unwindToMyPlanDiet:" id="woA-kD-sqz"/>
@@ -119,7 +109,6 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
-                        <outlet property="searchBar" destination="4Bk-Ur-59O" id="AAF-E2-TKm"/>
                         <outlet property="searchTableView" destination="XNi-jM-IuX" id="a0Z-Vk-wif"/>
                     </connections>
                 </viewController>
