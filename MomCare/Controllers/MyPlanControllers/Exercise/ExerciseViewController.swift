@@ -104,7 +104,6 @@ class ExerciseViewController: UIViewController, UICollectionViewDelegate, UIColl
     
     func updateExerciseCardItems(currentTimeWatched: Int, totalDuration: Int) {
         let completedPercentage = (Double(currentTimeWatched) / Double(totalDuration)) * 100
-        print(completedPercentage)
             let buttonValue = (currentTimeWatched == totalDuration) ? "Completed" : "Continue"
         print(buttonValue)
             DispatchQueue.main.async{
@@ -124,9 +123,7 @@ class ExerciseViewController: UIViewController, UICollectionViewDelegate, UIColl
         else if let avPlayerVC = segue.source as? ExerciseAVPlayerViewController {
             avPlayerVC.onDismiss = {time in
                 let totalTime = 5 * 60
-                print(time)
-                print(totalTime)
-            self.updateExerciseCardItems(currentTimeWatched: time, totalDuration: totalTime)
+                self.updateExerciseCardItems(currentTimeWatched: time, totalDuration: totalTime)
             }
         }
     }
