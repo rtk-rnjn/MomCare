@@ -12,15 +12,12 @@ extension DashboardViewController {
         switch indexPath.section {
 
         case 0:
-            return prepareWelcomeHeaderCell(at: indexPath)
-
-        case 1:
             return prepareWeekEventCell(at: indexPath)
 
-        case 2:
+        case 1:
             return prepareDietExersiceCell(at: indexPath)
 
-        case 3:
+        case 2:
             return prepareFocusTipCell(at: indexPath)
 
         default:
@@ -34,11 +31,19 @@ extension DashboardViewController {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "FocusCard", for: indexPath) as? FocusCardCollectionViewCell
             guard let cell else { fatalError("'FocusCard' not found") }
 
+            if let tip = MomCareAgents.shared.tips {
+                cell.updateElements(with: tip)
+            }
+
             return cell
 
         case 1:
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "TipCard", for: indexPath) as? TipCardCollectionViewCell
             guard let cell else { fatalError("'TipCard' not found") }
+
+            if let tip = MomCareAgents.shared.tips {
+                cell.updateElements(with: tip)
+            }
 
             return cell
 
@@ -93,14 +98,6 @@ extension DashboardViewController {
         }
     }
 
-    private func prepareWelcomeHeaderCell(at indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "WelcomeHeaderCell", for: indexPath) as? WelcomeHeaderCollectionViewCell
-
-        guard let cell else { fatalError("'WelcomeHeaderCell' not found") }
-        cell.updateElements(with: MomCareUser.shared.user?.fullName ?? "User", tapHandler: profileIconTapped)
-
-        return cell
-    }
 }
 
 // MARK: - Event Handlers (When tapped on cards)
@@ -141,9 +138,5 @@ extension DashboardViewController {
                 destinationVC.currentSegmentValue = 0
             }
         }
-    }
-
-    func profileIconTapped() {
-        performSegue(withIdentifier: "segueShowProfilePageTableViewController", sender: nil)
     }
 }

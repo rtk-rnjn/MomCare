@@ -23,6 +23,9 @@ class WeekCardCollectionViewCell: UICollectionViewCell {
 
     // MARK: Internal
 
+    @IBOutlet var weekCardView1: UIView!
+    @IBOutlet var weekCardView2: UIView!
+
     @IBOutlet var currentWeekLabel: UILabel!
     @IBOutlet var currentDayLabel: UILabel!
     @IBOutlet var currentTrimesterLabel: UILabel!
@@ -31,6 +34,14 @@ class WeekCardCollectionViewCell: UICollectionViewCell {
 
     override func awakeFromNib() {
         super.awakeFromNib()
+
+        weekCardView1.backgroundColor = UIColor { trait in
+            trait.userInterfaceStyle == .dark ? UIColor(hex: "#924350") : UIColor(hex: "#E9D3D3")
+        }
+
+        weekCardView2.backgroundColor = UIColor { trait in
+            trait.userInterfaceStyle == .dark ? UIColor(hex: "#924350") : UIColor(hex: "#E9D3D3")
+        }
 
         DispatchQueue.main.async {
             self.contentView.layer.cornerRadius = 16

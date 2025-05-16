@@ -39,9 +39,12 @@ enum Difficulty: String, Codable, Equatable {
 }
 
 struct FoodItem: Codable, Sendable, Equatable {
+
+    // MARK: Internal
+
     enum CodingKeys: String, CodingKey {
         case name
-        case imageName = "image_name"
+        case imageUri = "image_uri"
         case calories
         case protein
         case carbs
@@ -52,17 +55,51 @@ struct FoodItem: Codable, Sendable, Equatable {
     }
 
     let name: String
-    let imageName: String
-    var calories: Int = 0
-    var protein: Int = 0
-    var carbs: Int = 0
-    var fat: Int = 0
-    var sodium: Int = 0
-    var sugar: Int = 0
+    let imageUri: String
+
+    var calories: Double = 0
+    var protein: Double = 0
+    var carbs: Double = 0
+    var fat: Double = 0
+    var sodium: Double = 0
+    var sugar: Double = 0
+
     var consumed: Bool = false
 
     var image: UIImage? {
-        return UIImage(named: imageName)
+        get async {
+            if let image = fetchFromFileSystem(uri: imageUri) {
+                return image
+            }
+            guard let url = URL(string: imageUri) else { return nil }
+
+            do {
+                let (data, _) = try await URLSession.shared.data(from: url)
+
+                saveToFileSystem(uri: imageUri, data: data)
+                return UIImage(data: data)
+            } catch {
+                return nil
+            }
+        }
+    }
+
+    // MARK: Private
+
+    private func fetchFromFileSystem(uri: String) -> UIImage? {
+        let fileManager = FileManager.default
+        let documentsDirectory = fileManager.urls(for: .documentDirectory, in: .userDomainMask).first!
+        let fileURL = documentsDirectory.appendingPathComponent(uri)
+
+        return UIImage(contentsOfFile: fileURL.path)
+    }
+
+    private func saveToFileSystem(uri: String, data: Data) {
+        let fileManager = FileManager.default
+        let documentsDirectory = fileManager.urls(for: .documentDirectory, in: .userDomainMask).first!
+        let fileURL = documentsDirectory.appendingPathComponent(uri)
+
+        try? data.write(to: fileURL)
     }
 }
 
@@ -72,12 +109,32 @@ struct MyPlan: Codable, Sendable, Equatable {
         case lunch
         case snacks
         case dinner
+        case createdAt = "created_at"
     }
 
     var breakfast: [FoodItem] = []
     var lunch: [FoodItem] = []
     var snacks: [FoodItem] = []
     var dinner: [FoodItem] = []
+
+    var createdAt: Date?
+
+    func allMeals() -> [FoodItem] {
+        return breakfast + lunch + snacks + dinner
+    }
+
+    func isEmpty() -> Bool {
+        return breakfast.isEmpty && lunch.isEmpty && snacks.isEmpty && dinner.isEmpty
+    }
+
+    func isOutdated() -> Bool {
+        guard let createdAt else { return false }
+
+        let calendar = Calendar.current
+        let yesterday = calendar.date(byAdding: .day, value: -1, to: createdAt)
+        let now = Date()
+        return calendar.isDate(createdAt, inSameDayAs: yesterday!) || createdAt < now
+    }
 
     subscript(index: Int) -> [FoodItem] {
         mutating get {

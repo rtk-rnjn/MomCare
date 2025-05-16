@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="23504" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="23727" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23506"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23721"/>
         <capability name="collection view cell content view" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -60,9 +60,11 @@
                             <constraint firstAttribute="height" constant="50" id="yvc-c9-NkP"/>
                         </constraints>
                     </view>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Jot down three things you're grateful for today" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="10" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dwZ-Ju-E2Z">
-                        <rect key="frame" x="7" y="5" width="150" height="75"/>
-                        <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="10" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dwZ-Ju-E2Z">
+                        <rect key="frame" x="7" y="5" width="150" height="87"/>
+                        <string key="text">Did you know? 
+Staying active during pregnancy helps reduce discomfort</string>
+                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
                     </label>
@@ -73,8 +75,8 @@
                     <constraint firstItem="gOD-lT-oaq" firstAttribute="centerX" secondItem="dwZ-Ju-E2Z" secondAttribute="centerX" id="FVu-mT-0KF"/>
                     <constraint firstAttribute="trailing" secondItem="dwZ-Ju-E2Z" secondAttribute="trailing" constant="7" id="Go7-ED-0dp"/>
                     <constraint firstItem="dwZ-Ju-E2Z" firstAttribute="top" secondItem="fHC-SX-wkN" secondAttribute="top" constant="5" id="VaJ-Oh-3bd"/>
+                    <constraint firstItem="gOD-lT-oaq" firstAttribute="top" secondItem="dwZ-Ju-E2Z" secondAttribute="bottom" constant="12" id="aVY-dk-qND"/>
                     <constraint firstAttribute="bottom" secondItem="gOD-lT-oaq" secondAttribute="bottom" id="cGV-lH-VnL"/>
-                    <constraint firstAttribute="bottom" secondItem="dwZ-Ju-E2Z" secondAttribute="bottom" constant="74" id="fux-9w-C3E"/>
                     <constraint firstItem="gOD-lT-oaq" firstAttribute="leading" secondItem="fHC-SX-wkN" secondAttribute="leading" id="yFJ-tS-rbv"/>
                 </constraints>
             </collectionViewCellContentView>

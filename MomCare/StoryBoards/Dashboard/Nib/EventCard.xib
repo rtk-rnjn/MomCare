@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="23504" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="23727" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23506"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23721"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="collection view cell content view" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -43,11 +44,12 @@
                                     <userDefinedRuntimeAttribute type="boolean" keyPath="layer.maskstoBounds" value="YES"/>
                                 </userDefinedRuntimeAttributes>
                             </view>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6rn-Tc-0Bn">
-                                <rect key="frame" x="8" y="8" width="102" height="35"/>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="leading" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6rn-Tc-0Bn">
+                                <rect key="frame" x="4" y="8" width="102" height="35"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="tintColor" systemColor="linkColor"/>
                                 <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="plain" title="Add Event"/>
+                                <buttonConfiguration key="configuration" style="plain" title="Add Event" titleAlignment="leading"/>
                                 <connections>
                                     <action selector="addEventButtonTapped:" destination="t1y-Ib-jg4" eventType="touchUpInside" id="UJE-8S-e4Z"/>
                                 </connections>
@@ -61,29 +63,29 @@
                         </constraints>
                     </view>
                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="B7y-Xb-hxj">
-                        <rect key="frame" x="12" y="26" width="238" height="18"/>
+                        <rect key="frame" x="12" y="22" width="238" height="24"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No Upcoming Event" lineBreakMode="wordWrap" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LpH-hz-lI4">
-                                <rect key="frame" x="0.0" y="0.0" width="238" height="18"/>
-                                <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
+                                <rect key="frame" x="0.0" y="0.0" width="238" height="24"/>
+                                <fontDescription key="fontDescription" style="UICTFontTextStyleTitle3"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No Upcoming Event" lineBreakMode="wordWrap" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qRi-OX-TIw">
                                 <rect key="frame" x="0.0" y="0.0" width="238" height="0.0"/>
-                                <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
+                                <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
                     </stackView>
                 </subviews>
-                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                <color key="backgroundColor" systemColor="tableCellGroupedBackgroundColor"/>
                 <gestureRecognizers/>
                 <constraints>
                     <constraint firstItem="iyF-9F-32h" firstAttribute="leading" secondItem="8rU-ab-Wbe" secondAttribute="leading" id="HDc-VR-6ys"/>
                     <constraint firstItem="B7y-Xb-hxj" firstAttribute="leading" secondItem="8rU-ab-Wbe" secondAttribute="leading" constant="12" id="NiO-2b-LbV"/>
-                    <constraint firstItem="B7y-Xb-hxj" firstAttribute="top" secondItem="8rU-ab-Wbe" secondAttribute="top" constant="26" id="PcJ-jm-tnw"/>
+                    <constraint firstItem="B7y-Xb-hxj" firstAttribute="top" secondItem="8rU-ab-Wbe" secondAttribute="top" constant="22" id="PcJ-jm-tnw"/>
                     <constraint firstAttribute="trailing" secondItem="iyF-9F-32h" secondAttribute="trailing" id="hSg-NF-zVp"/>
                     <constraint firstAttribute="trailing" secondItem="B7y-Xb-hxj" secondAttribute="trailing" constant="12" id="naQ-Hv-R2U"/>
                     <constraint firstAttribute="bottom" secondItem="iyF-9F-32h" secondAttribute="bottom" id="wRV-qE-rBe"/>
@@ -97,6 +99,8 @@
                 <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
             </userDefinedRuntimeAttributes>
             <connections>
+                <outlet property="eventCardView1" destination="iyF-9F-32h" id="Oso-gA-2BG"/>
+                <outlet property="eventCardView2" destination="qBD-uw-ovo" id="nQv-Ik-bFN"/>
                 <outlet property="eventDateLabel" destination="qRi-OX-TIw" id="6Qt-VX-Q8n"/>
                 <outlet property="upcomingEventLabel" destination="LpH-hz-lI4" id="ZXA-nn-Zzv"/>
             </connections>
@@ -105,5 +109,11 @@
     </objects>
     <resources>
         <image name="calendar.badge.clock" catalog="system" width="128" height="109"/>
+        <systemColor name="linkColor">
+            <color red="0.0" green="0.47843137254901963" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+        <systemColor name="tableCellGroupedBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
     </resources>
 </document>

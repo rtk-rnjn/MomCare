@@ -36,15 +36,15 @@ class LoginTableViewController: UITableViewController {
                 sender.startLoadingAnimation()
             }
 
-            let success = await MomCareUser.shared.fetchUserFromDatabase(with: email, and: password)
+            let success = await MomCareUser.shared.fetchUserFromDatabase(email: email, password: password)
             DispatchQueue.main.async {
                 sender.stopLoadingAnimation(withRestoreLabel: "Sign In")
             }
             if !success {
                 self.showErrorAlert(title: "Sign In Failed", message: "An error occurred while signing in. Please try again.")
             } else {
-                Utils.save(forKey: .mongoUserId, withValue: MomCareUser.shared.user?.id)
-                Utils.save(forKey: .signedUp, withValue: true)
+//                Utils.save(forKey: .mongoUserId, withValue: MomCareUser.shared.user?.id)
+//                Utils.save(forKey: .signedUp, withValue: true)
 
                 if MomCareUser.shared.user?.medicalData == nil {
                     performSegue(withIdentifier: "segueShowSignUpDetailsTableViewController", sender: nil)

@@ -24,7 +24,9 @@ class SearchTableViewCell: UITableViewCell {
     }
 
     func updateElements(with foodItem: FoodItem, sender viewController: SearchViewController?) {
-        foodImageView.image = foodItem.image
+        Task {
+            foodImageView.image = await foodItem.image
+        }
         foodLabel.text = foodItem.name
         foodMetadata.text = "\(foodItem.calories) calories"
 

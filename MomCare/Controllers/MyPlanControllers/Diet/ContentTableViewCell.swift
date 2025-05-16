@@ -27,8 +27,9 @@ class ContentTableViewCell: UITableViewCell {
     func updateElements(with foodItem: FoodItem, refreshHandler: (() -> Void)? = nil, buttonTapHandler: @escaping (() -> Bool)) {
         foodItemLabel.text = foodItem.name
         kalcLabel.text = "\(String(foodItem.calories)) cal."
-        foodImageView.image = foodItem.image
-
+        Task {
+            foodImageView.image = await foodItem.image
+        }
         self.foodItem = foodItem
 
         self.buttonTapHandler = buttonTapHandler

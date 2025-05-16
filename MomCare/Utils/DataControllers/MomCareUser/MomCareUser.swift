@@ -10,6 +10,12 @@ import Foundation
 @MainActor
 class MomCareUser {
 
+    // MARK: Lifecycle
+
+    private init() {
+        user = LocalStore.shared.load()
+    }
+
     // MARK: Public
 
     public static var shared: MomCareUser = .init()
@@ -18,9 +24,12 @@ class MomCareUser {
 
     let queue: DispatchQueue = .init(label: "MomCareUserQueue")
 
+    var accessTokenExpiresAt: Date?
+
     var user: User? {
         didSet {
-            if oldValue != user {
+            if let user, oldValue != user {
+                LocalStore.shared.save(user)
                 updateToDatabase()
             }
         }
@@ -28,18 +37,10 @@ class MomCareUser {
 
     // https://medium.com/@harshaag99/understanding-dispatchqueue-in-swift-c73058df6b37
 
-    func updateFromDatabase() {
-        queue.async {
-            Task {
-                await self.fetchUser(from: .database)
-            }
-        }
-    }
-
     func updateToDatabase() {
         queue.async {
             Task {
-                await self.updateUser(to: .database)
+                await self.updateUser(self.user)
             }
         }
     }
