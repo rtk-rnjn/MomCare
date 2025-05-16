@@ -117,7 +117,7 @@ struct MyPlan: Codable, Sendable, Equatable {
     var snacks: [FoodItem] = []
     var dinner: [FoodItem] = []
 
-    var createdAt: Date = .init()
+    var createdAt: Date?
 
     func allMeals() -> [FoodItem] {
         return breakfast + lunch + snacks + dinner
@@ -128,6 +128,8 @@ struct MyPlan: Codable, Sendable, Equatable {
     }
 
     func isOutdated() -> Bool {
+        guard let createdAt else { return false }
+
         let calendar = Calendar.current
         let yesterday = calendar.date(byAdding: .day, value: -1, to: createdAt)
         let now = Date()
