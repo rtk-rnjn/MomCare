@@ -23,7 +23,7 @@ class DietTableViewController: UITableViewController {
 
         Task {
             if let user = MomCareUser.shared.user, let medical = user.medicalData {
-                if user.plan.isEmpty() {
+                if user.plan.isEmpty() || user.plan.isOutdated() {
                     let meals = await MomCareAgents.shared.fetchPlan(from: medical)
                     MomCareUser.shared.user?.plan = meals
                 }

@@ -109,6 +109,7 @@ struct MyPlan: Codable, Sendable, Equatable {
         case lunch
         case snacks
         case dinner
+        case createdAt = "created_at"
     }
 
     var breakfast: [FoodItem] = []
@@ -116,12 +117,21 @@ struct MyPlan: Codable, Sendable, Equatable {
     var snacks: [FoodItem] = []
     var dinner: [FoodItem] = []
 
+    var createdAt: Date = .init()
+
     func allMeals() -> [FoodItem] {
         return breakfast + lunch + snacks + dinner
     }
 
     func isEmpty() -> Bool {
         return breakfast.isEmpty && lunch.isEmpty && snacks.isEmpty && dinner.isEmpty
+    }
+
+    func isOutdated() -> Bool {
+        let calendar = Calendar.current
+        let yesterday = calendar.date(byAdding: .day, value: -1, to: createdAt)
+        let now = Date()
+        return calendar.isDate(createdAt, inSameDayAs: yesterday!) || createdAt < now
     }
 
     subscript(index: Int) -> [FoodItem] {
