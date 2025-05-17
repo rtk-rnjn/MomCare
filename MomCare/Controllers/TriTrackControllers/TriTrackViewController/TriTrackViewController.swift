@@ -90,6 +90,7 @@ class TriTrackViewController: UIViewController, FSCalendarDelegate, FSCalendarDa
     nonisolated func calendar(_ calendar: FSCalendar, didSelect date: Date, at monthPosition: FSCalendarMonthPosition) {
         DispatchQueue.main.async {
             self.selectedFSCalendarDate = date
+            self.refreshAll()
         }
     }
 
@@ -98,14 +99,18 @@ class TriTrackViewController: UIViewController, FSCalendarDelegate, FSCalendarDa
     }
 
     @IBAction func refreshButtonTapped(_ sender: UIBarButtonItem) {
-        symptomsViewController?.symptomsTableViewController?.refreshData()
-        eventsViewController?.appointmentsTableViewController?.refreshData()
-        eventsViewController?.remindersTableViewController?.refreshData()
+        refreshAll()
     }
 
     // MARK: Private
 
     private var calendarView: FSCalendar!
+
+    private func refreshAll() {
+        symptomsViewController?.symptomsTableViewController?.refreshData()
+        eventsViewController?.appointmentsTableViewController?.refreshData()
+        eventsViewController?.remindersTableViewController?.refreshData()
+    }
 
     private func prepareFSCalendar() {
         calendarView = FSCalendar(frame: CGRect(x: 0, y: 0, width: calendarUIView.frame.width, height: calendarUIView.frame.height + 150))

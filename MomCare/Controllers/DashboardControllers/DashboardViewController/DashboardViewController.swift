@@ -7,15 +7,11 @@
 
 import UIKit
 import UserNotifications
-import HealthKit
-import HealthKitUI
 import EventKit
 
 class DashboardViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UIScrollViewDelegate {
 
     // MARK: Internal
-
-    static let healthStore: HKHealthStore = .init()
 
     @IBOutlet var collectionView: UICollectionView!
     var addEventTableViewController: AddEventTableViewController?
@@ -27,13 +23,13 @@ class DashboardViewController: UIViewController, UICollectionViewDataSource, UIC
         collectionView.showsVerticalScrollIndicator = false
         collectionView.alwaysBounceVertical = true
         collectionView.refreshControl = refreshControl
-        requestAccessForHealth()
 
         collectionView.delegate = self
         navigationController?.navigationBar.prefersLargeTitles = true
         setupProfileButton()
 
         Task {
+            await HealthKitHandler.shared.requestAccess()
             await requestAccessForNotification()
             await self.loadUser()
 

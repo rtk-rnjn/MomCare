@@ -87,9 +87,8 @@ class AppointmentsTableViewController: UITableViewController {
     }
 
     func fetchEvents() -> [EKEvent]? {
-        let startDate = Calendar.current.startOfDay(for: Date())
-        let selectedFSCalendarDate = eventsViewController?.triTrackViewController?.selectedFSCalendarDate ?? Date()
-        let endDate = Calendar.current.date(byAdding: .day, value: 1, to: selectedFSCalendarDate)!
+        let startDate = eventsViewController?.triTrackViewController?.selectedFSCalendarDate ?? Date()
+        let endDate = Calendar.current.date(byAdding: .day, value: 1, to: startDate)!
 
         return EventKitHandler.shared.fetchAppointments(startDate: startDate, endDate: endDate)
     }
