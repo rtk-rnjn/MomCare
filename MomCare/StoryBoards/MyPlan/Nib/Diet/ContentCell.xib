@@ -51,6 +51,12 @@
                                             <constraint firstAttribute="width" secondItem="RGb-Qi-D9L" secondAttribute="height" multiplier="1:1" id="oxt-Pe-Kru"/>
                                             <constraint firstAttribute="height" constant="55" id="y7Q-pn-Je5"/>
                                         </constraints>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                <integer key="value" value="16"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
+                                        </userDefinedRuntimeAttributes>
                                     </imageView>
                                 </subviews>
                             </stackView>
@@ -116,7 +122,7 @@
                 <outlet property="kalcLabel" destination="KgL-ck-2je" id="9Cf-ZP-NGB"/>
                 <outlet property="qualtityLabel" destination="fzi-oU-yj2" id="BtS-Ba-fRl"/>
             </connections>
-            <point key="canvasLocation" x="377.86259541984731" y="1.7605633802816902"/>
+            <point key="canvasLocation" x="338" y="-27"/>
         </tableViewCell>
     </objects>
     <resources>
