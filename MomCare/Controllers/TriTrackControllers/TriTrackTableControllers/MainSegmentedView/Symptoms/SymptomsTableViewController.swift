@@ -9,6 +9,8 @@ import UIKit
 import EventKit
 
 class SymptomsTableViewController: UITableViewController {
+    var symptomsViewController: SymptomsViewController?
+    
     var events: [EKEvent]? = []
 
     override func viewWillAppear(_ animated: Bool) {
@@ -40,6 +42,35 @@ class SymptomsTableViewController: UITableViewController {
 
         return cell
     }
+    
+    override func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
+    
+        guard let triTrackVC = symptomsViewController?.triTrackViewController else { return nil }
+        
+        guard let events else { return nil }
+            
+        let event = events[indexPath.row]
+
+        return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in
+            let editAction = UIAction(title: "Edit", image: UIImage(systemName: "pencil")) { _ in
+                triTrackVC.presentEKEventEditViewController(with: event)
+            }
+
+            let deleteAction = UIAction(title: "Delete", image: UIImage(systemName: "trash"), attributes: .destructive) { _ in
+                try? TriTrackViewController.eventStore.remove(event, span: .thisEvent, commit: true)
+                self.refreshData()
+            }
+
+            return UIMenu(title: "", children: [editAction, deleteAction])
+        }
+    }
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        guard let triTrackVC = symptomsViewController?.triTrackViewController, let events else { return }
+        triTrackVC.presentEKEventViewController(with: events[indexPath.section])
+        tableView.deselectRow(at: indexPath, animated: true)
+    }
+
 
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return 1

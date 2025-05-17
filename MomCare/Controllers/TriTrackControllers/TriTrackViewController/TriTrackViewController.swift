@@ -76,6 +76,7 @@ class TriTrackViewController: UIViewController, FSCalendarDelegate, FSCalendarDa
         case "embedShowSymptomsViewController":
             if let destinationVC = segue.destination as? SymptomsViewController {
                 symptomsViewController = destinationVC
+                destinationVC.triTrackViewController = self
             }
 
         case "embedShowEventsViewController":
