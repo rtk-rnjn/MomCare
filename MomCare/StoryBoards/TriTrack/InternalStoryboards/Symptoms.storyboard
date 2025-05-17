@@ -2,7 +2,7 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="23504" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="n3o-1m-7wH">
     <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23506"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23504"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -15,33 +15,45 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="0.91372549020000005" green="0.82745098039999998" blue="0.82745098039999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="AllSymptomsTableViewCell" id="qad-tw-Rof" customClass="AllSymptomsTableViewCell" customModule="MomCare" customModuleProvider="target">
-                                <rect key="frame" x="20" y="55.333332061767578" width="353" height="65.333335876464844"/>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="AllSymptomsTableViewCell" id="qad-tw-Rof" customClass="AllSymptomsTableViewCell" customModule="MomCare" customModuleProvider="target">
+                                <rect key="frame" x="20" y="55.333332061767578" width="353" height="54.666667938232422"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="qad-tw-Rof" id="NSc-1q-ljQ">
-                                    <rect key="frame" x="0.0" y="0.0" width="353" height="65.333335876464844"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="353" height="54.666667938232422"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kw8-Pr-crA">
-                                            <rect key="frame" x="20" y="5.0000000000000036" width="313" height="55.333333333333343"/>
+                                            <rect key="frame" x="20" y="10" width="178" height="34.666666666666664"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4OI-vs-aVy">
-                                                    <rect key="frame" x="0.0" y="0.0" width="41.333333333333336" height="55.333333333333336"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4OI-vs-aVy">
+                                                    <rect key="frame" x="0.0" y="0.0" width="178" height="34.666666666666664"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <datePicker contentMode="scaleToFill" contentHorizontalAlignment="trailing" contentVerticalAlignment="center" datePickerMode="dateAndTime" minuteInterval="1" translatesAutoresizingMaskIntoConstraints="NO" id="IGz-Ci-HJi">
-                                                    <rect key="frame" x="41.333333333333343" y="0.0" width="271.66666666666663" height="55.333333333333336"/>
-                                                </datePicker>
                                             </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="trailing" secondItem="4OI-vs-aVy" secondAttribute="trailing" id="FdM-IS-tgt"/>
+                                                <constraint firstAttribute="bottom" secondItem="4OI-vs-aVy" secondAttribute="bottom" id="Iqg-LI-xMm"/>
+                                                <constraint firstItem="4OI-vs-aVy" firstAttribute="top" secondItem="kw8-Pr-crA" secondAttribute="top" id="asS-uH-pK9"/>
+                                                <constraint firstItem="4OI-vs-aVy" firstAttribute="leading" secondItem="kw8-Pr-crA" secondAttribute="leading" id="oYy-cA-dw1"/>
+                                            </constraints>
                                         </stackView>
+                                        <datePicker contentMode="scaleToFill" contentHorizontalAlignment="trailing" contentVerticalAlignment="center" datePickerMode="date" translatesAutoresizingMaskIntoConstraints="NO" id="IGz-Ci-HJi">
+                                            <rect key="frame" x="203" y="10" width="140" height="34.666666666666664"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" constant="140" id="X5K-3b-rSE"/>
+                                            </constraints>
+                                        </datePicker>
                                     </subviews>
                                     <constraints>
-                                        <constraint firstItem="kw8-Pr-crA" firstAttribute="top" secondItem="NSc-1q-ljQ" secondAttribute="top" constant="5" id="3jp-ee-xsk"/>
-                                        <constraint firstAttribute="bottom" secondItem="kw8-Pr-crA" secondAttribute="bottom" constant="5" id="SUL-tw-rMb"/>
-                                        <constraint firstItem="kw8-Pr-crA" firstAttribute="leading" secondItem="NSc-1q-ljQ" secondAttribute="leading" constant="20" id="XiT-5X-yUS"/>
-                                        <constraint firstAttribute="trailing" secondItem="kw8-Pr-crA" secondAttribute="trailing" constant="20" id="Zlx-09-Hjo"/>
+                                        <constraint firstItem="kw8-Pr-crA" firstAttribute="top" secondItem="NSc-1q-ljQ" secondAttribute="top" constant="10" id="3lc-OV-d2a"/>
+                                        <constraint firstItem="kw8-Pr-crA" firstAttribute="leading" secondItem="NSc-1q-ljQ" secondAttribute="leading" constant="20" id="NwZ-YU-4rv"/>
+                                        <constraint firstItem="IGz-Ci-HJi" firstAttribute="top" secondItem="NSc-1q-ljQ" secondAttribute="top" constant="10" id="PWh-iM-SPo"/>
+                                        <constraint firstAttribute="bottom" secondItem="IGz-Ci-HJi" secondAttribute="bottom" constant="10" id="SON-1a-dQy"/>
+                                        <constraint firstAttribute="bottom" secondItem="kw8-Pr-crA" secondAttribute="bottom" constant="10" id="TOm-1W-qZa"/>
+                                        <constraint firstItem="IGz-Ci-HJi" firstAttribute="leading" secondItem="kw8-Pr-crA" secondAttribute="trailing" constant="5" id="a6l-1p-86k"/>
+                                        <constraint firstAttribute="trailing" secondItem="IGz-Ci-HJi" secondAttribute="trailing" constant="10" id="er2-v5-jhv"/>
                                     </constraints>
                                 </tableViewCellContentView>
                                 <connections>
