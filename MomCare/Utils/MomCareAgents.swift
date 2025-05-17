@@ -18,6 +18,16 @@ struct Tip: Codable, Sendable {
 
 }
 
+struct FoodSearchQuery: Codable, Sendable {
+    enum CodingKeys: String, CodingKey {
+        case foodName = "food_name"
+        case limit
+    }
+
+    var foodName: String
+    var limit: Int = 10
+}
+
 class MomCareAgents {
 
     // MARK: Public
@@ -57,6 +67,19 @@ class MomCareAgents {
 
         self.tips = tips
         return tips
+    }
+
+    func searchFoods(with query: String) async -> [FoodItem] {
+        let searchQeury = FoodSearchQuery(foodName: query)
+        let _sendableQeury: [String: Any]? = searchQeury.toDictionary(snakeCase: true)
+
+        let foods: [FoodItem]? = await NetworkManager.shared.get(url: "/plan/search", queryParameters: _sendableQeury)
+
+        guard let foods else {
+            return []
+        }
+
+        return foods
     }
 
     // MARK: Private

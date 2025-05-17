@@ -19,7 +19,7 @@ actor NetworkManager {
 
     // MARK: Internal
 
-    func get<T: Codable>(url: String, queryParameters: [String: String]? = nil) async -> T? {
+    func get<T: Codable>(url: String, queryParameters: [String: Any]? = nil) async -> T? {
         return await request(url: url, method: "GET", queryParameters: queryParameters)
     }
 
@@ -42,12 +42,14 @@ actor NetworkManager {
 
     // MARK: Private
 
-    private func request<T: Codable>(url: String = "", method: String, body: Data? = nil, queryParameters: [String: String]? = nil) async -> T? {
+    private func request<T: Codable>(url: String = "", method: String, body: Data? = nil, queryParameters: [String: Any]? = nil) async -> T? {
         var urlString = "\(endpoint)\(url)"
 
         if let queryParameters, !queryParameters.isEmpty {
             var urlComponents = URLComponents(string: urlString)
-            urlComponents?.queryItems = queryParameters.map { URLQueryItem(name: $0.key, value: $0.value) }
+            urlComponents?.queryItems = queryParameters.map {
+                return URLQueryItem(name: $0.key, value: "\($0.value)")
+            }
             urlString = urlComponents?.url?.absoluteString ?? urlString
         }
 

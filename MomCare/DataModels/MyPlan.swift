@@ -55,7 +55,7 @@ struct FoodItem: Codable, Sendable, Equatable {
     }
 
     let name: String
-    let imageUri: String
+    let imageUri: String?
 
     var calories: Double = 0
     var protein: Double = 0
@@ -68,6 +68,10 @@ struct FoodItem: Codable, Sendable, Equatable {
 
     var image: UIImage? {
         get async {
+            guard let imageUri else {
+                return nil
+            }
+
             if let image = fetchFromFileSystem(uri: imageUri) {
                 return image
             }

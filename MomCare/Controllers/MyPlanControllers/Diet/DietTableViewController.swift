@@ -96,6 +96,9 @@ class DietTableViewController: UITableViewController {
             let navigationController = segue.destination as? UINavigationController
             let searchViewController = navigationController?.topViewController as? SearchViewController
             searchViewController?.mealName = sender as? String
+            searchViewController?.completionHandlerOnFoodItemAdd = {
+                self.refreshHandler()
+            }
         }
     }
 

@@ -7,26 +7,94 @@
 
 import UIKit
 
-class SearchViewController: UIViewController {
-    @IBOutlet var searchBar: UISearchBar!
-    @IBOutlet var searchTableView: UITableView!
+class SearchViewController: UIViewController, UISearchResultsUpdating, UISearchControllerDelegate, UISearchBarDelegate {
 
-    let allFoods: [FoodItem] = []
+    // MARK: Internal
+
+    @IBOutlet var tableView: UITableView!
+
+    var searchBarController: UISearchController = .init()
+    var refreshControl: UIRefreshControl = .init()
+
+    var completionHandlerOnFoodItemAdd: (() -> Void)?
+
     var searchedFood: [FoodItem] = []
 
     var mealName: String?
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        navigationItem.searchController = searchBarController
+        searchBarController.searchResultsUpdater = self
+
+        searchBarController.delegate = self
+        searchBarController.searchBar.delegate = self
+
+        tableView.refreshControl = refreshControl
+        refreshControl.addTarget(self, action: #selector(refresh), for: .valueChanged)
+
         prepareTable()
-        prepareSearchBar()
     }
+
+    func updateSearchResults(for searchController: UISearchController) {
+        let searchText = searchController.searchBar.text ?? ""
+
+        debounceTask?.cancel()
+        debounceTask = Task {
+            try? await Task.sleep(nanoseconds: UInt64(0.7) * 1_000_000_000)
+            await searchFood(query: searchText)
+
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
+            }
+        }
+    }
+
+    @objc func refresh() {
+        Task {
+            let searchText = searchBarController.searchBar.text ?? ""
+            await searchFood(query: searchText)
+
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
+            }
+        }
+
+        refreshControl.endRefreshing()
+    }
+
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        searchBar.text = ""
+        searchedFood = []
+        tableView.reloadData()
+    }
+
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        searchBar.resignFirstResponder()
+        searchBar.text = ""
+        searchedFood = []
+        tableView.reloadData()
+    }
+
+    // MARK: Private
+    private var debounceTask: Task<Void, Never>?
+
+    private func searchFood(query: String) async {
+        guard !query.isEmpty else {
+            searchedFood = []
+            return
+        }
+
+        searchedFood = await MomCareAgents.shared.searchFoods(with: query)
+    }
+
 }
 
 extension SearchViewController: UITableViewDelegate, UITableViewDataSource {
     func prepareTable() {
-        searchTableView.delegate = self
-        searchTableView.dataSource = self
+        tableView.delegate = self
+        tableView.dataSource = self
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -42,23 +110,5 @@ extension SearchViewController: UITableViewDelegate, UITableViewDataSource {
 
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1
-    }
-}
-
-extension SearchViewController: UISearchBarDelegate {
-    func prepareSearchBar() {
-        searchBar.delegate = self
-    }
-
-    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        searchedFood = allFoods.filter { $0.name.lowercased().contains(searchText.lowercased()) }
-        searchTableView.reloadData()
-    }
-
-    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-        searchBar.text = ""
-        searchBar.resignFirstResponder()
-        searchedFood = []
-        searchTableView.reloadData()
     }
 }
