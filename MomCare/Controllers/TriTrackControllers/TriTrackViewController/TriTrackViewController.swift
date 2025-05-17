@@ -19,8 +19,6 @@ class TriTrackViewController: UIViewController, FSCalendarDelegate, FSCalendarDa
 
     // MARK: Internal
 
-    static var eventStore: EKEventStore = .init()
-
     @IBOutlet var triTrackInternalView: UIView!
 
     @IBOutlet var addButton: UIBarButtonItem!
@@ -37,7 +35,7 @@ class TriTrackViewController: UIViewController, FSCalendarDelegate, FSCalendarDa
     var eventsViewController: EventsViewController?
 
     var currentSegmentValue: Int = 0
-    var selectedDate: Date = .init()
+    var selectedFSCalendarDate: Date = .init()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -46,8 +44,8 @@ class TriTrackViewController: UIViewController, FSCalendarDelegate, FSCalendarDa
         calendarView.appearance.titleTodayColor = .red
 
         Task {
-//            await requestAccessForCalendar()
-//            await requestAccessForReminders()
+            await EventKitHandler.shared.requestAccessForEvent()
+            await EventKitHandler.shared.requestAccessForReminder()
         }
 
         navigationController?.navigationBar.isTranslucent = false
@@ -90,9 +88,9 @@ class TriTrackViewController: UIViewController, FSCalendarDelegate, FSCalendarDa
     }
 
     nonisolated func calendar(_ calendar: FSCalendar, didSelect date: Date, at monthPosition: FSCalendarMonthPosition) {
-//        DispatchQueue.main.async {
-//            self.selectedDate = date
-//        }
+        DispatchQueue.main.async {
+            self.selectedFSCalendarDate = date
+        }
     }
 
     @IBAction func segmentTapped(_ sender: UISegmentedControl) {
@@ -112,7 +110,7 @@ class TriTrackViewController: UIViewController, FSCalendarDelegate, FSCalendarDa
     private func prepareFSCalendar() {
         calendarView = FSCalendar(frame: CGRect(x: 0, y: 0, width: calendarUIView.frame.width, height: calendarUIView.frame.height + 150))
         calendarView.scope = .week
-        calendarView.select(selectedDate)
+        calendarView.select(selectedFSCalendarDate)
 
         calendarView.dataSource = self
         calendarView.delegate = self

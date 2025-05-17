@@ -185,50 +185,26 @@ class DashboardViewController: UIViewController, UICollectionViewDataSource, UIC
     @objc private func doneAddEvent() {
         guard let eventTVC = addEventTableViewController,
               let title = eventTVC.titleField.text else { return }
-        let event = EKEvent(eventStore: TriTrackViewController.eventStore)
-        event.title = title
-        event.location = ((eventTVC.locationField.text?.isEmpty) != nil) ? eventTVC.locationField.text : nil
-        event.startDate = eventTVC.startDateTimePicker.date
-        event.isAllDay = eventTVC.allDaySwitch.isOn
 
-        if let repeatAfter = eventTVC.selectedRepeatOption {
-            event.recurrenceRules = TriTrackViewController.createRecurrenceRule(for: repeatAfter)
-        }
-        if let alertTime = eventTVC.selectedAlertTimeOption {
-            event.addAlarm(EKAlarm(relativeOffset: -alertTime))
-        }
-        event.endDate = eventTVC.allDaySwitch.isOn ? event.startDate : eventTVC.endDateTimePicker.date.addingTimeInterval(eventTVC.selectedTravelTimeOption ?? 0)
-        event.calendar = createOrGetEvent()
+        let recurrenceRules = eventTVC.selectedRepeatOption.map { TriTrackViewController.createRecurrenceRule(for: $0) }
+        let alarm = eventTVC.selectedAlertTimeOption.map { EKAlarm(relativeOffset: -$0) }
 
-        try? TriTrackViewController.eventStore.save(event, span: .thisEvent, commit: true)
+        let startDate = eventTVC.startDateTimePicker.date
+        let endDate = eventTVC.allDaySwitch.isOn ? startDate : eventTVC.endDateTimePicker.date.addingTimeInterval(eventTVC.selectedTravelTimeOption ?? 0)
+
+        EventKitHandler.shared.createEvent(
+            title: title,
+            startDate: startDate,
+            endDate: endDate,
+            isAllDay: eventTVC.allDaySwitch.isOn,
+            notes: nil,
+            recurrenceRules: recurrenceRules,
+            location: eventTVC.locationField.text,
+            alarm: alarm
+        )
         dismiss(animated: true) {
             self.collectionView.reloadSections([1])
         }
-    }
-
-    private func createOrGetEvent() -> EKCalendar? {
-        return createOrGetCalendar(identifierKey: "TriTrackEvent", eventType: .event, title: "MomCare - TriTrack Calendar", defaultCalendar: TriTrackViewController.eventStore.defaultCalendarForNewEvents)
-    }
-
-    private func createOrGetCalendar(identifierKey: String, eventType: EKEntityType, title: String, defaultCalendar: EKCalendar?) -> EKCalendar? {
-        let identifier: String? = Utils.get(fromKey: identifierKey)
-        if let identifier {
-            return TriTrackViewController.eventStore.calendar(withIdentifier: identifier)
-        }
-
-        let newCalendar = EKCalendar(for: eventType, eventStore: TriTrackViewController.eventStore)
-        newCalendar.title = title
-        if let localSource = TriTrackViewController.eventStore.sources.first(where: { $0.sourceType == .local }) {
-            newCalendar.source = localSource
-        } else {
-            newCalendar.source = defaultCalendar?.source
-        }
-
-        UserDefaults.standard.set(newCalendar.calendarIdentifier, forKey: identifierKey)
-
-        try? TriTrackViewController.eventStore.saveCalendar(newCalendar, commit: true)
-
-        return newCalendar
     }
 
     private func hideProfileButton() {

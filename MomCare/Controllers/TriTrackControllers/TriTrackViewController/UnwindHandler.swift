@@ -51,15 +51,8 @@ extension TriTrackViewController {
         guard let title = viewController.addSymptomsTableViewController?.titleField.text,
               let dateTime = viewController.addSymptomsTableViewController?.dateTime.date else { return }
 
-        let event = EKEvent(eventStore: TriTrackViewController.eventStore)
-        event.title = title
-        event.startDate = dateTime
-        event.endDate = dateTime
-        event.calendar = createOrGetEvent()
-        event.isAllDay = true
-        event.notes = "Symptom event"
+        EventKitHandler.shared.createEvent(title: title, startDate: dateTime, endDate: dateTime, notes: "Symptom event")
 
-        try? TriTrackViewController.eventStore.save(event, span: .thisEvent, commit: true)
         symptomsViewController?.symptomsTableViewController?.refreshData()
     }
 
@@ -67,25 +60,22 @@ extension TriTrackViewController {
         guard let eventTVC = viewController.addEventTableViewController,
               let title = eventTVC.titleField.text else { return }
 
-        let event = EKEvent(eventStore: TriTrackViewController.eventStore)
-        event.title = title
-        if let location = eventTVC.locationField.text, !location.trimmingCharacters(in: .whitespaces).isEmpty {
-            event.location = location
-        }
+        let recurrenceRules = eventTVC.selectedRepeatOption.map { TriTrackViewController.createRecurrenceRule(for: $0) }
+        let alarm = eventTVC.selectedAlertTimeOption.map { EKAlarm(relativeOffset: -$0) }
 
-        event.startDate = eventTVC.startDateTimePicker.date
-        event.isAllDay = eventTVC.allDaySwitch.isOn
+        let startDate = eventTVC.startDateTimePicker.date
+        let endDate = eventTVC.allDaySwitch.isOn ? startDate : eventTVC.endDateTimePicker.date.addingTimeInterval(eventTVC.selectedTravelTimeOption ?? 0)
 
-        if let repeatAfter = eventTVC.selectedRepeatOption {
-            event.recurrenceRules = TriTrackViewController.createRecurrenceRule(for: repeatAfter)
-        }
-        if let alertTime = eventTVC.selectedAlertTimeOption {
-            event.addAlarm(EKAlarm(relativeOffset: -alertTime))
-        }
-        event.endDate = eventTVC.allDaySwitch.isOn ? event.startDate : eventTVC.endDateTimePicker.date.addingTimeInterval(eventTVC.selectedTravelTimeOption ?? 0)
-        event.calendar = createOrGetEvent()
-
-        try? TriTrackViewController.eventStore.save(event, span: .thisEvent, commit: true)
+        EventKitHandler.shared.createEvent(
+            title: title,
+            startDate: startDate,
+            endDate: endDate,
+            isAllDay: eventTVC.allDaySwitch.isOn,
+            notes: nil,
+            recurrenceRules: recurrenceRules,
+            location: eventTVC.locationField.text,
+            alarm: alarm
+        )
         eventsViewController?.appointmentsTableViewController?.refreshData()
     }
 
@@ -93,15 +83,10 @@ extension TriTrackViewController {
         guard let reminderTVC = viewController.addReminderTableViewController,
               let title = reminderTVC.titleField.text else { return }
 
-        let reminder = EKReminder(eventStore: TriTrackViewController.eventStore)
-        reminder.title = title
-        reminder.notes = reminderTVC.notesField.text
-        reminder.dueDateComponents = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute], from: reminderTVC.dateTime.date)
-        reminder.calendar = createOrGetReminder()
-        reminder.recurrenceRules = TriTrackViewController.createRecurrenceRule(for: reminderTVC.selectedRepeatOption)
+        let dueDateComponents = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute], from: reminderTVC.dateTime.date)
+        let recurrenceRules = TriTrackViewController.createRecurrenceRule(for: reminderTVC.selectedRepeatOption)
 
-        Utils.createNotification(title: reminder.title, body: reminder.notes, date: reminder.dueDateComponents?.date!)
-        try? TriTrackViewController.eventStore.save(reminder, commit: true)
+        let reminder = EventKitHandler.shared.createReminder(title: title, notes: reminderTVC.notesField.text, dueDateComponents: dueDateComponents, recurrenceRules: recurrenceRules)
         eventsViewController?.remindersTableViewController?.refreshData()
     }
 

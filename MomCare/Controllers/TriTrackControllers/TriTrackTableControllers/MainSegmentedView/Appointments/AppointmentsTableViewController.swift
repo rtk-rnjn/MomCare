@@ -10,8 +10,15 @@ import EventKit
 
 class AppointmentsTableViewController: UITableViewController {
 
+    var delegate: EventKitHandlerDelegate = .init()
     var eventsViewController: EventsViewController?
     var events: [EKEvent]? = []
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+
+        delegate.viewController = self
+    }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -46,18 +53,17 @@ class AppointmentsTableViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
-        guard let triTrackVC = eventsViewController?.triTrackViewController else { return nil }
         guard let events else { return nil }
 
         let event = events[indexPath.row]
 
         return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in
             let editAction = UIAction(title: "Edit", image: UIImage(systemName: "pencil")) { _ in
-                triTrackVC.presentEKEventEditViewController(with: event)
+                self.delegate.presentEKEventEditViewController(with: event)
             }
 
             let deleteAction = UIAction(title: "Delete", image: UIImage(systemName: "trash"), attributes: .destructive) { _ in
-                try? TriTrackViewController.eventStore.remove(event, span: .thisEvent, commit: true)
+                EventKitHandler.shared.deleteEvent(event: event)
                 self.refreshData()
             }
 
@@ -66,8 +72,9 @@ class AppointmentsTableViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        guard let triTrackVC = eventsViewController?.triTrackViewController, let events else { return }
-        triTrackVC.presentEKEventViewController(with: events[indexPath.section])
+        guard let event = events?[indexPath.section] else { return }
+
+        delegate.presentEKEventViewController(with: event)
         tableView.deselectRow(at: indexPath, animated: true)
     }
 
@@ -79,38 +86,16 @@ class AppointmentsTableViewController: UITableViewController {
         return 3
     }
 
-    static func fetchEvents() -> [EKEvent]? {
+    func fetchEvents() -> [EKEvent]? {
         let startDate = Calendar.current.startOfDay(for: Date())
-        let endDate = Calendar.current.date(byAdding: .year, value: 1, to: startDate)!
-        let ekCalendars = AppointmentsTableViewController.getCalendar(with: "TriTrackEvent")
+        let selectedFSCalendarDate = eventsViewController?.triTrackViewController?.selectedFSCalendarDate ?? Date()
+        let endDate = Calendar.current.date(byAdding: .day, value: 1, to: selectedFSCalendarDate)!
 
-        let predicate = TriTrackViewController.eventStore.predicateForEvents(withStart: startDate, end: endDate, calendars: ekCalendars)
-        let events = TriTrackViewController.eventStore.events(matching: predicate)
-
-        return events.filter { $0.notes != "Symptom event" }
-    }
-
-    static func fetchOldEvents() -> [EKEvent]? {
-        let startDate = Calendar.current.date(byAdding: .year, value: -1, to: Date())!
-        let endDate = Date()
-        let ekCalendars = AppointmentsTableViewController.getCalendar(with: "TriTrackEvent")
-
-        let predicate = TriTrackViewController.eventStore.predicateForEvents(withStart: startDate, end: endDate, calendars: ekCalendars)
-        let events = TriTrackViewController.eventStore.events(matching: predicate)
-
-        return events.filter { $0.notes == "Symptom event" }
-    }
-
-    static func getCalendar(with identifierKey: String) -> [EKCalendar]? {
-        if let identifier = UserDefaults.standard.string(forKey: identifierKey), let calendar = TriTrackViewController.eventStore.calendar(withIdentifier: identifier) {
-            return [calendar]
-        }
-
-        return []
+        return EventKitHandler.shared.fetchAppointments(startDate: startDate, endDate: endDate)
     }
 
     func refreshData() {
-        events = AppointmentsTableViewController.fetchEvents()
+        events = fetchEvents()
         tableView.reloadData()
     }
 }
