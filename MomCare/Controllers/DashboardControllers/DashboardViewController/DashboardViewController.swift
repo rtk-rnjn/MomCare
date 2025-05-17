@@ -81,7 +81,7 @@ class DashboardViewController: UIViewController, UICollectionViewDataSource, UIC
 
         guard let headerView else { fatalError() }
 
-        headerView.titleLabel.text = (indexPath.section == 2) ? "Progress" : "Daily Insights"
+        headerView.titleLabel.text = (indexPath.section == 2) ? "Daily Insights" : "Progress"
 
         return headerView
     }
