@@ -10,6 +10,10 @@ on:
 permissions:
   contents: write
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   lint:
     name: Autofix - SwiftLint & SwiftFormat
@@ -32,18 +36,14 @@ jobs:
       - name: Run SwiftFormat Fix
         run: swiftformat .
 
-      - name: Check for changes
-        id: git-diff
-        run: echo "CHANGED=$(git status --porcelain | wc -l)" >> $GITHUB_ENV
-
       - name: Commit & Push Changes
-        if: env.CHANGED != '0'
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git add .
           git commit -m "Auto-fix SwiftLint & SwiftFormat issues"
           git push
+        continue-on-error: true
 
       - name: Run SwiftLint in Lint Mode
         run: swiftlint lint --strict --quiet --reporter github-actions-logging
