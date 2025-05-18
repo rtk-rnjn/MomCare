@@ -59,7 +59,7 @@ class SymptomsTableViewController: UITableViewController {
             }
 
             let deleteAction = UIAction(title: "Delete", image: UIImage(systemName: "trash"), attributes: .destructive) { _ in
-                try? TriTrackViewController.eventStore.remove(event, span: .thisEvent, commit: true)
+                EventKitHandler.shared.deleteEvent(event: event)
                 self.refreshData()
             }
 

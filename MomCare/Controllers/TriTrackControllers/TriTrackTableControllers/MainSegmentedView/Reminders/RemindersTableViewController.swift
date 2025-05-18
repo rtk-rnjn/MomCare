@@ -70,7 +70,6 @@ class RemindersTableViewController: UITableViewController {
                 EventKitHandler.shared.deleteReminder(reminder: reminder)
                 self.refreshData()
             }
-
             return UIMenu(title: "", children: [deleteAction])
         }
     }
