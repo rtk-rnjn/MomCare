@@ -13,10 +13,12 @@ class AllRemindersTableViewController: UITableViewController {
     // MARK: Internal
 
     var reminders: [EKReminder] = []
-
+    var store: EKEventStore?
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-
+        
+        store = TriTrackViewController.eventStore
         fetchReminders()
     }
 
@@ -41,6 +43,30 @@ class AllRemindersTableViewController: UITableViewController {
     // MARK: Private
 
     private func fetchReminders() {
-        reminders = EventKitHandler.shared.fetchReminders()
+        let ekCalendars = getCalendar(with: "TriTrackReminder")
+
+        guard let store, let ekCalendars else { return }
+
+        let predicate = store.predicateForReminders(in: ekCalendars)
+        store.fetchReminders(matching: predicate) { reminders in
+            guard let reminders else { return }
+
+            self.reminders = reminders
+
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
+            }
+        }
     }
+
+    private func getCalendar(with identifierKey: String) -> [EKCalendar]? {
+        guard let store else { return [] }
+
+        if let identifier = UserDefaults.standard.string(forKey: identifierKey), let calendar = store.calendar(withIdentifier: identifier) {
+            return [calendar]
+        }
+
+        return []
+    }
+
 }
