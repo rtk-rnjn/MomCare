@@ -18,6 +18,7 @@ enum TriTrackContainerViewType: Int {
 class TriTrackViewController: UIViewController, FSCalendarDelegate, FSCalendarDataSource {
 
     // MARK: Internal
+    static var eventStore: EKEventStore = .init()
 
     @IBOutlet var triTrackInternalView: UIView!
 
