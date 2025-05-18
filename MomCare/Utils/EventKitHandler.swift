@@ -98,7 +98,7 @@ class EventKitHandler {
         let startDate = Calendar.current.date(byAdding: .month, value: -1, to: now)
         let endDate = Calendar.current.date(byAdding: .month, value: 1, to: now)
 
-        return fetchEvents(startDate: startDate, endDate: endDate)
+        return fetchAppointments(startDate: startDate, endDate: endDate)
     }
 
     func fetchUpcomingAppointment() -> EKEvent? {
@@ -112,6 +112,15 @@ class EventKitHandler {
     func fetchSymptoms(startDate: Date? = nil, endDate: Date? = nil) -> [EKEvent] {
         let events = fetchEvents(startDate: startDate, endDate: endDate)
         return events.filter { $0.notes == "Symptom event" }
+    }
+
+    func fetchAllSymptoms() -> [EKEvent] {
+        let now = Date()
+
+        let startDate = Calendar.current.date(byAdding: .month, value: -3, to: now)
+        let endDate = Calendar.current.date(byAdding: .month, value: 3, to: now)
+
+        return fetchSymptoms(startDate: startDate, endDate: endDate)
     }
 
     func deleteEvent(event: EKEvent) {
@@ -203,7 +212,8 @@ class EventKitHandler {
         }
     }
 
-    func fetchReminders(startDate: Date = .init(), endDate: Date? = nil) -> [EKReminder] {
+    func fetchReminders(startDate: Date? = nil, endDate: Date? = nil) -> [EKReminder] {
+        let startDate = startDate ?? Date()
         let endDate = endDate ?? Date().addingTimeInterval(60 * 60 * 24)
 
         let calendar = createOrGetReminder()
@@ -217,6 +227,15 @@ class EventKitHandler {
         }
 
         return reminders
+    }
+
+    func fetchAllReminders() -> [EKReminder] {
+        let now = Date()
+
+        let startDate = Calendar.current.date(byAdding: .month, value: -1, to: now)
+        let endDate = Calendar.current.date(byAdding: .month, value: 1, to: now)
+
+        return fetchReminders(startDate: startDate, endDate: endDate)
     }
 
     // MARK: Private

@@ -87,6 +87,7 @@ class RemindersTableViewController: UITableViewController {
 
     func refreshData() {
         fetchReminders()
+        tableView.reloadData()
     }
 
     @IBAction func unwindToRemindersTableViewController(_ segue: UIStoryboardSegue) {}

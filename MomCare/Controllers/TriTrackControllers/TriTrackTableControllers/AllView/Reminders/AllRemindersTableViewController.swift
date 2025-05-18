@@ -18,6 +18,7 @@ class AllRemindersTableViewController: UITableViewController {
         super.viewWillAppear(animated)
 
         fetchReminders()
+        tableView.reloadData()
     }
 
     override func numberOfSections(in tableView: UITableView) -> Int {
