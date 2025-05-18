@@ -69,8 +69,14 @@ class TriTrackViewController: UIViewController, FSCalendarDelegate, FSCalendarDa
         switch identifier {
         case "segueShowTriTrackAddEventViewController":
             if let navController = segue.destination as? UINavigationController {
-                let triTrackAddEventViewController = navController.topViewController as? TriTrackAddEventViewController
-                triTrackAddEventViewController?.viewControllerValue = TriTrackViewControlSegmentValue(rawValue: triTrackSegmentedControl.selectedSegmentIndex)
+                if let triTrackAddEventViewController = navController.topViewController as? TriTrackAddEventViewController{
+                    if let symptom = sender as? EKEvent {
+                        triTrackAddEventViewController.symptomToEdit = symptom
+                    } else{
+                        triTrackAddEventViewController.symptomToEdit = nil
+                    }
+                    triTrackAddEventViewController.viewControllerValue = TriTrackViewControlSegmentValue(rawValue: triTrackSegmentedControl.selectedSegmentIndex)
+                }
             }
 
         case "embedShowSymptomsViewController":
@@ -119,5 +125,9 @@ class TriTrackViewController: UIViewController, FSCalendarDelegate, FSCalendarDa
         calendarView.delegate = self
 
         calendarUIView.addSubview(calendarView)
+    }
+    
+    func presentEditSymptomsViewController(with symptom: EKEvent){
+        performSegue(withIdentifier: "segueShowTriTrackAddEventViewController", sender: symptom)
     }
 }

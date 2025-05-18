@@ -39,6 +39,7 @@ class TriTrackAddEventViewController: UIViewController {
     var addReminderTableViewController: AddReminderTableViewController?
     var addSymptomsTableViewController: AddSymptomsTableViewController?
     var addEventTableViewController: AddEventTableViewController?
+    var symptomToEdit: EKEvent?
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -52,7 +53,9 @@ class TriTrackAddEventViewController: UIViewController {
         case "embedShowAddEventTableViewController":
             addEventTableViewController = segue.destination as? AddEventTableViewController
         case "embedShowAddSymptomsTableViewController":
-            addSymptomsTableViewController = segue.destination as? AddSymptomsTableViewController
+                if let addSymptomsTableViewController = segue.destination as? AddSymptomsTableViewController{
+                addSymptomsTableViewController.symptomToEdit = self.symptomToEdit
+            }
         default:
             break
             // OwO! What's this?
@@ -101,10 +104,14 @@ class TriTrackAddEventViewController: UIViewController {
         eventContainerView.isHidden = true
         reminderContainerView.isHidden = true
         eventReminderSegmentControl.isHidden = true
-
+        
         symptomsContainerView.isHidden = false
-
-        navigationItem.title = "Add Symptoms"
+        
+        if symptomToEdit != nil{
+            navigationItem.title = "Edit Symptoms"
+        }else{
+            navigationItem.title = "Add Symptoms"
+        }
     }
 
 }

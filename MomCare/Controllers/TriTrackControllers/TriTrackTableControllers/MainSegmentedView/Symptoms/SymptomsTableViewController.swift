@@ -19,18 +19,18 @@ class SymptomsTableViewController: UITableViewController {
     }
 
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return events?.count ?? 0
+        return 1
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 1
+        return events?.count ?? 0
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "SymptomsCell", for: indexPath) as? SymptomsTableViewCell
 
         guard let cell else { fatalError() }
-        guard let event = events?[indexPath.section] else { return cell }
+        guard let event = events?[indexPath.row] else { return cell }
 
         cell.updateElements(with: event)
 
@@ -53,7 +53,7 @@ class SymptomsTableViewController: UITableViewController {
 
         return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in
             let editAction = UIAction(title: "Edit", image: UIImage(systemName: "pencil")) { _ in
-                triTrackVC.presentEKEventEditViewController(with: event)
+                triTrackVC.presentEditSymptomsViewController(with: event)
             }
 
             let deleteAction = UIAction(title: "Delete", image: UIImage(systemName: "trash"), attributes: .destructive) { _ in
@@ -65,13 +65,6 @@ class SymptomsTableViewController: UITableViewController {
         }
     }
     
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        guard let triTrackVC = symptomsViewController?.triTrackViewController, let events else { return }
-        triTrackVC.presentEKEventViewController(with: events[indexPath.section])
-        tableView.deselectRow(at: indexPath, animated: true)
-    }
-
-
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return 1
     }
