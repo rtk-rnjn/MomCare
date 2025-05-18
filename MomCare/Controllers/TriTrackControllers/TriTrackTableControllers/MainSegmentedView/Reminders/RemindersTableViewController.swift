@@ -63,14 +63,14 @@ class RemindersTableViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard let reminders else { return }
-        performSegue(withIdentifier: "segueShowEKReminderViewController", sender: reminders[indexPath.row])
+        performSegue(withIdentifier: "segueShowEKReminderViewController", sender: reminders[indexPath.section])
         tableView.deselectRow(at: indexPath, animated: true)
     }
 
     override func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
         guard let reminders else { return nil }
 
-        let reminder = reminders[indexPath.row]
+        let reminder = reminders[indexPath.section]
 
         return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in
             let deleteAction = UIAction(title: "Delete", image: UIImage(systemName: "trash"), attributes: .destructive) { _ in

@@ -19,18 +19,20 @@ class SymptomsTableViewController: UITableViewController {
     }
 
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
+        guard let events else { return 0 }
+        
+        return events.count
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return events?.count ?? 0
+        return 1
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "SymptomsCell", for: indexPath) as? SymptomsTableViewCell
 
         guard let cell else { fatalError() }
-        guard let event = events?[indexPath.row] else { return cell }
+        guard let event = events?[indexPath.section] else { return cell }
 
         cell.updateElements(with: event)
 
@@ -49,7 +51,7 @@ class SymptomsTableViewController: UITableViewController {
         
         guard let events else { return nil }
             
-        let event = events[indexPath.row]
+        let event = events[indexPath.section]
 
         return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in
             let editAction = UIAction(title: "Edit", image: UIImage(systemName: "pencil")) { _ in

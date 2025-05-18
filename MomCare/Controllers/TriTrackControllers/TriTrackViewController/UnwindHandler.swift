@@ -12,8 +12,6 @@ import UserNotifications
 extension TriTrackViewController {
     @IBAction func unwinToTriTrack(_ sender: UIStoryboardSegue) {
         guard let sourceVC = sender.source as? TriTrackAddEventViewController else { return }
-        print("uwind ho gya")
-        print(sender.identifier ?? "Unknown")
         switch sender.identifier {
         case "unwindToTriTrackViaDone":
             handleDoneButtonTapped(with: sourceVC)
@@ -25,8 +23,7 @@ extension TriTrackViewController {
     }
 
     private func handleDoneButtonTapped(with viewController: TriTrackAddEventViewController) {
-        print("done button called")
-        print(viewController.viewControllerValue ?? -1)
+        
         switch viewController.viewControllerValue {
         case .eventsReminderView:
             handleEventsReminders(with: viewController)
@@ -52,11 +49,9 @@ extension TriTrackViewController {
 
     private func handleSymptomsView(with viewController: TriTrackAddEventViewController) {
 
-        print("handle symptoms called")
-        print(viewController)
         guard let title = viewController.addSymptomsTableViewController?.titleField.text,
               let dateTime = viewController.addSymptomsTableViewController?.dateTime.date else { return }
-        print(title)
+
         let event = EKEvent(eventStore: TriTrackViewController.eventStore)
         event.title = title
         event.startDate = dateTime

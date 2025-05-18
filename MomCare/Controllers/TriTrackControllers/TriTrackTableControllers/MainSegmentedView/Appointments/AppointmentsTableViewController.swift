@@ -49,7 +49,7 @@ class AppointmentsTableViewController: UITableViewController {
         guard let triTrackVC = eventsViewController?.triTrackViewController else { return nil }
         guard let events else { return nil }
 
-        let event = events[indexPath.row]
+        let event = events[indexPath.section]
 
         return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in
             let editAction = UIAction(title: "Edit", image: UIImage(systemName: "pencil")) { _ in
