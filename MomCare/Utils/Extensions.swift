@@ -33,17 +33,17 @@ extension UIImage {
 
         let filter = CIFilter.areaAverage()
         filter.inputImage = inputImage
-        filter.extent = inputImage.extent // Use CGRect directly
+        filter.extent = inputImage.extent
 
         let context = CIContext()
         guard let outputImage = filter.outputImage else { return nil }
 
-        var bitmap = [UInt8](repeating: 0, count: 4) // RGBA format
+        var bitmap = [UInt8](repeating: 0, count: 4)
         context.render(
             outputImage,
             toBitmap: &bitmap,
             rowBytes: 4,
-            bounds: CGRect(x: 0, y: 0, width: 1, height: 1), // 1x1 pixel
+            bounds: CGRect(x: 0, y: 0, width: 1, height: 1),
             format: .RGBA8,
             colorSpace: CGColorSpaceCreateDeviceRGB()
         )
@@ -53,6 +53,42 @@ extension UIImage {
             blue: CGFloat(bitmap[2]) / 255.0,
             alpha: CGFloat(bitmap[3]) / 255.0
         )
+    }
+
+    func fetchImage(from imageUri: String?, default defaultImage: UIImage? = nil) async -> UIImage? {
+        guard let imageUri else {
+            return defaultImage
+        }
+
+        if let image = fetchFromFileSystem(uri: imageUri) {
+            return image
+        }
+        guard let url = URL(string: imageUri) else { return defaultImage }
+
+        do {
+            let (data, _) = try await URLSession.shared.data(from: url)
+
+            saveToFileSystem(uri: imageUri, data: data)
+            return UIImage(data: data)
+        } catch {
+            return defaultImage
+        }
+    }
+
+    private func fetchFromFileSystem(uri: String) -> UIImage? {
+        let fileManager = FileManager.default
+        let documentsDirectory = fileManager.urls(for: .documentDirectory, in: .userDomainMask).first!
+        let fileURL = documentsDirectory.appendingPathComponent(uri)
+
+        return UIImage(contentsOfFile: fileURL.path)
+    }
+
+    private func saveToFileSystem(uri: String, data: Data) {
+        let fileManager = FileManager.default
+        let documentsDirectory = fileManager.urls(for: .documentDirectory, in: .userDomainMask).first!
+        let fileURL = documentsDirectory.appendingPathComponent(uri)
+
+        try? data.write(to: fileURL)
     }
 }
 

@@ -26,10 +26,7 @@ class BabyMomTipViewController: UIViewController {
         momStack.layer.cornerRadius = 16
         momStack.layer.masksToBounds = true
 
-        guard let trimesterData = meAndMyBabyViewController?.trimesterData else { return }
-
-        babyTipTextView.text = trimesterData.babyTipText
-        momTipTextView.text = trimesterData.momTipText
+        updateUI()
     }
 
     @IBAction func BabySeeMoreTapped(_ sender: UIButton) {
@@ -42,4 +39,10 @@ class BabyMomTipViewController: UIViewController {
 
     @IBAction func unwindToBabyMomTipViewController(_ segue: UIStoryboardSegue) {}
 
+    func updateUI() {
+        guard let trimesterData = meAndMyBabyViewController?.trimesterData else { return }
+
+        babyTipTextView.text = trimesterData.babyTipText
+        momTipTextView.text = trimesterData.momTipText
+    }
 }

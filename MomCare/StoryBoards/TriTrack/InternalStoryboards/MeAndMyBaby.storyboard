@@ -153,9 +153,6 @@
                             <constraint firstItem="sFS-00-EZe" firstAttribute="top" secondItem="cz6-iJ-8fj" secondAttribute="bottom" id="wHU-54-2O6"/>
                         </constraints>
                     </view>
-                    <connections>
-                        <outlet property="BabyMomStatsTipLoweView" destination="Jwm-qL-4b5" id="lrC-ZJ-VQn"/>
-                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="u8S-mt-msd" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
@@ -428,7 +425,7 @@
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <attributedString key="attributedText">
                                     <fragment>
-                                        <mutableString key="content">At week 19, your baby is developing rapidly, and your body is working hard to support this growth. If your weight is lower than expected, focus on nutrient-rich foods like avocados, nuts, dairy, lean proteins, and whole grains to ensure both you and your baby get essential vitamins. You may also experience round ligament pain—a sharp ache in your lower belly. Try gentle stretching, proper posture, and warm compresses for relief. Staying hydrated and getting enough rest will also help. Listen to your body and consult your doctor if discomfort persists.                                 </mutableString>
+                                        <string key="content">At week 19, your baby is developing rapidly, and your body is working hard to support this growth. If your weight is lower than expected, focus on nutrient-rich foods like avocados, nuts, dairy, lean proteins, and whole grains to ensure both you and your baby get essential vitamins. You may also experience round ligament pain—a sharp ache in your lower belly. Try gentle stretching, proper posture, and warm compresses for relief. Staying hydrated and getting enough rest will also help. Listen to your body and consult your doctor if discomfort persists.                                 </string>
                                         <attributes>
                                             <color key="NSColor" systemColor="labelColor"/>
                                             <font key="NSFont" metaFont="system" size="17"/>
@@ -438,7 +435,7 @@
                                     <fragment content="💖👶">
                                         <attributes>
                                             <color key="NSColor" systemColor="labelColor"/>
-                                            <font key="NSFont" size="17" name=".AppleColorEmojiUI"/>
+                                            <font key="NSFont" metaFont="system" size="17"/>
                                             <font key="NSOriginalFont" metaFont="system" size="17"/>
                                             <paragraphStyle key="NSParagraphStyle" alignment="justified" lineBreakMode="wordWrapping" baseWritingDirection="natural" paragraphSpacing="4" tighteningFactorForTruncation="0.0"/>
                                         </attributes>
@@ -490,7 +487,7 @@
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="justified" translatesAutoresizingMaskIntoConstraints="NO" id="KiA-7v-zjY">
                                 <rect key="frame" x="20" y="56" width="353" height="534"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <mutableString key="text">At week 19, your baby is about 6 inches long and developing tiny senses of touch, taste, and hearing! Their skin is covered in vernix caseosa, a protective layer to prevent dryness in the womb. You may feel more movement as they kick and stretch. Their brain is busy forming specialized areas for smell, vision, and hearing—so talking, reading, or playing soft music can help! If you're feeling light flutters, that's quickening, your baby's first noticeable movements. Stay hydrated, eat iron-rich foods, and rest well to support this phase of rapid growth. 💖👣 #GrowingStrong</mutableString>
+                                <string key="text">At week 19, your baby is about 6 inches long and developing tiny senses of touch, taste, and hearing! Their skin is covered in vernix caseosa, a protective layer to prevent dryness in the womb. You may feel more movement as they kick and stretch. Their brain is busy forming specialized areas for smell, vision, and hearing—so talking, reading, or playing soft music can help! If you're feeling light flutters, that's quickening, your baby's first noticeable movements. Stay hydrated, eat iron-rich foods, and rest well to support this phase of rapid growth. 💖👣 #GrowingStrong</string>
                                 <color key="textColor" systemColor="labelColor"/>
                                 <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>

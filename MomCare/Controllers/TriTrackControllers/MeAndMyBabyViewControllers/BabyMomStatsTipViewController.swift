@@ -10,20 +10,36 @@ import UIKit
 class BabyMomStatsTipViewController: UIViewController {
     var meAndMyBabyViewController: MeAndMyBabyViewController?
 
-    @IBOutlet var BabyMomStatsTipLoweView: UIView!
+    var babyStatsViewController: BabyStatsViewController?
+    var babyMomTipViewController: BabyMomTipViewController?
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+
+        updateUI()
+    }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         switch segue.identifier {
         case "embedShowBabyStatsViewController":
-            let babyStatsViewController = segue.destination as? BabyStatsViewController
-            babyStatsViewController?.meAndMyBabyViewController = meAndMyBabyViewController
+            if let babyStatsViewController = segue.destination as? BabyStatsViewController {
+                babyStatsViewController.meAndMyBabyViewController = meAndMyBabyViewController
+                self.babyStatsViewController = babyStatsViewController
+            }
 
         case "embedShowBabyMomTipViewController":
-            let babyMomTipViewController = segue.destination as? BabyMomTipViewController
-            babyMomTipViewController?.meAndMyBabyViewController = meAndMyBabyViewController
+            if let babyMomTipViewController = segue.destination as? BabyMomTipViewController {
+                babyMomTipViewController.meAndMyBabyViewController = meAndMyBabyViewController
+                self.babyMomTipViewController = babyMomTipViewController
+            }
 
         default:
             break
         }
+    }
+
+    func updateUI() {
+        babyStatsViewController?.updateUI()
+        babyMomTipViewController?.updateUI()
     }
 }
