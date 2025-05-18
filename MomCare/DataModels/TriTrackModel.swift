@@ -10,14 +10,14 @@ import UIKit
 
 struct TrimesterData: Codable {
     var weekNumber: Int
-    var dayNumber: Int? = nil
-    var quote: String? = nil
+    var dayNumber: Int?
+    var quote: String?
 
-    var leftImageUri: String? = nil
-    var rightImageUri: String? = nil
+    var leftImageUri: String?
+    var rightImageUri: String?
 
-    var babyHeightInCentimeters: Double? = nil
-    var babyWeightInKilograms: Double? = nil
+    var babyHeightInCentimeters: Double?
+    var babyWeightInGrams: Double?
 
     var babyTipText: String
     var momTipText: String

@@ -92,6 +92,15 @@ class EventKitHandler {
         return events.filter { $0.notes != "Symptom event" }
     }
 
+    func fetchAllAppointments() -> [EKEvent] {
+        let now = Date()
+
+        let startDate = Calendar.current.date(byAdding: .month, value: -1, to: now)
+        let endDate = Calendar.current.date(byAdding: .month, value: 1, to: now)
+
+        return fetchEvents(startDate: startDate, endDate: endDate)
+    }
+
     func fetchUpcomingAppointment() -> EKEvent? {
         let calendar = createOrGetEvent()
         let predicate = eventStore.predicateForEvents(withStart: Date(), end: Date().addingTimeInterval(60 * 60 * 24), calendars: [calendar])
@@ -214,8 +223,8 @@ class EventKitHandler {
 
     private func fetchEvents(startDate: Date?, endDate: Date?) -> [EKEvent] {
         let currentCalendar = Calendar.current
-        let startDate = currentCalendar.startOfDay(for: startDate ?? Date())
-        let endDate = currentCalendar.date(byAdding: .day, value: 1, to: startDate) ?? Date()
+        let startDate = startDate ?? currentCalendar.startOfDay(for: startDate ?? Date())
+        let endDate = endDate ?? currentCalendar.date(byAdding: .day, value: 1, to: startDate) ?? Date()
 
         let calendar = createOrGetEvent()
         let predicate = eventStore.predicateForEvents(withStart: startDate, end: endDate, calendars: [calendar])

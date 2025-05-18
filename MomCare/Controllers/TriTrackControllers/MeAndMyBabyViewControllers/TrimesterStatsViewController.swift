@@ -23,6 +23,6 @@ class TrimesterStatsViewController: UIViewController {
         guard let trimesterData = meAndMyBabyViewController?.trimesterData else { return }
 
         trimesterLabel.text = "Trimester \(trimesterData.trimesterNumber)"
-        weekDayLabel.text = "Week \(trimesterData.weekNumber), Day \(trimesterData.dayNumber)"
+        weekDayLabel.text = "Week \(trimesterData.weekNumber), Day \(trimesterData.dayNumber ?? 1)"
     }
 }
