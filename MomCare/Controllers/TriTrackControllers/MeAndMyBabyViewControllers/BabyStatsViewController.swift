@@ -25,11 +25,26 @@ class BabyStatsViewController: UIViewController {
         heightImage.layer.cornerRadius = 14
         heightImage.layer.masksToBounds = true
 
-        guard let trimesterData = meAndMyBabyViewController?.trimesterData else { return }
+        updateUI()
+    }
 
-        heightLabel.text = "\(trimesterData.babyHeightInCentimeters) cm"
-        weightLabel.text = "\(trimesterData.babyWeightInKilograms * 1000) g"
+    func updateUI() {
+        let trimesterData = meAndMyBabyViewController?.trimesterData
 
+        let height: Double? = trimesterData?.babyHeightInCentimeters
+        let weight: Double? = trimesterData?.babyWeightInKilograms != nil ? trimesterData!.babyWeightInKilograms! * 1000 : nil
+
+        if height != nil {
+            heightLabel.text = "\(height!) cm"
+        } else {
+            heightLabel.text = "N/A"
+        }
+
+        if weight != nil {
+            weightLabel.text = "\(weight!) g"
+        } else {
+            weightLabel.text = "N/A"
+        }
     }
 
 }

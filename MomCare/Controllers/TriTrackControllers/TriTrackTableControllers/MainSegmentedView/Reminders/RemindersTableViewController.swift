@@ -15,13 +15,6 @@ class RemindersTableViewController: UITableViewController {
     var eventsViewController: EventsViewController?
 
     var reminders: [EKReminder]? = []
-    var store: EKEventStore?
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-        store = TriTrackViewController.eventStore
-    }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -42,7 +35,7 @@ class RemindersTableViewController: UITableViewController {
         guard let cell else { fatalError("Failed to dequeue RemindersTableViewCell") }
         guard let reminders else { return cell }
 
-        cell.updateElements(with: reminders[indexPath.section], for: store)
+        cell.updateElements(with: reminders[indexPath.section])
         cell.showsReorderControl = false
 
         cell.backgroundColor = UIColor(hex: "F2F2F7")
@@ -74,7 +67,7 @@ class RemindersTableViewController: UITableViewController {
 
         return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in
             let deleteAction = UIAction(title: "Delete", image: UIImage(systemName: "trash"), attributes: .destructive) { _ in
-                try? self.store?.remove(reminder, commit: true)
+                EventKitHandler.shared.deleteReminder(reminder: reminder)
                 self.refreshData()
             }
 
@@ -87,7 +80,6 @@ class RemindersTableViewController: UITableViewController {
             if let destinationNC = segue.destination as? UINavigationController {
                 if let destinationVC = destinationNC.topViewController as? EKReminderViewController {
                     destinationVC.reminder = sender as? EKReminder
-                    destinationVC.store = store
                 }
             }
         }
@@ -102,33 +94,12 @@ class RemindersTableViewController: UITableViewController {
     // MARK: Private
 
     private func fetchReminders() {
-        let ekCalendars = getCalendar(with: "TriTrackReminder")
+        let selectedFSCalendarDate = eventsViewController?.triTrackViewController?.selectedFSCalendarDate ?? Date()
+        reminders = EventKitHandler.shared.fetchReminders(endDate: selectedFSCalendarDate)
 
-        // Thank you Kiran Ma'am for pointing it out.
-//        let selectedDate = eventsViewController?.triTrackViewController?.selectedDate ?? Date()
-
-        guard let store, let ekCalendars else { return }
-
-        let predicate = store.predicateForReminders(in: ekCalendars)
-        store.fetchReminders(matching: predicate) { reminders in
-            guard let reminders else { return }
-
-            self.reminders = reminders
-
-            DispatchQueue.main.async {
-                self.tableView.reloadData()
-            }
-        }
-    }
-
-    private func getCalendar(with identifierKey: String) -> [EKCalendar]? {
-        guard let store else { return [] }
-
-        if let identifier = UserDefaults.standard.string(forKey: identifierKey), let calendar = store.calendar(withIdentifier: identifier) {
-            return [calendar]
+        DispatchQueue.main.async {
+            self.tableView.reloadData()
         }
 
-        return []
     }
-
 }

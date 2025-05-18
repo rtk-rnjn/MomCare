@@ -16,6 +16,10 @@ class TrimesterStatsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        updateUI()
+    }
+
+    func updateUI() {
         guard let trimesterData = meAndMyBabyViewController?.trimesterData else { return }
 
         trimesterLabel.text = "Trimester \(trimesterData.trimesterNumber)"

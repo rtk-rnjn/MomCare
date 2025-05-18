@@ -17,9 +17,8 @@ class RemindersTableViewCell: UITableViewCell {
     @IBOutlet var relativeTimeLabel: UILabel!
 
     var reminder: EKReminder?
-    var store: EKEventStore?
 
-    func updateElements(with reminder: EKReminder, for store: EKEventStore?) {
+    func updateElements(with reminder: EKReminder) {
         titleLabel.text = reminder.title
         relativeTimeLabel.text = Date().relativeString(from: reminder.dueDateComponents?.date)
 
@@ -33,16 +32,15 @@ class RemindersTableViewCell: UITableViewCell {
         button.setImage(circleImage, for: .normal)
 
         self.reminder = reminder
-        self.store = store
     }
 
     @IBAction func buttonTapped(_ sender: UIButton) {
-        guard let reminder, let store else { fatalError() }
+        guard let reminder else { fatalError() }
 
         reminder.isCompleted = !reminder.isCompleted
-        try? store.save(reminder, commit: true)
+        EventKitHandler.shared.updateReminder(reminder: reminder)
 
-        updateElements(with: reminder, for: store)
+        updateElements(with: reminder)
     }
 
     // MARK: Private

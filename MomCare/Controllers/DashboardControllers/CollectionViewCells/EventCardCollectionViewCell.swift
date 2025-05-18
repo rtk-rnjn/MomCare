@@ -35,18 +35,6 @@ class EventCardCollectionViewCell: UICollectionViewCell {
     var segueHandler: (() -> Void)?
     var event: EKEvent?
 
-    override func awakeFromNib() {
-        super.awakeFromNib()
-
-        eventCardView1.backgroundColor = UIColor { trait in
-            trait.userInterfaceStyle == .dark ? UIColor(hex: "#924350") : UIColor(hex: "#E9D3D3")
-        }
-
-        eventCardView2.backgroundColor = UIColor { trait in
-            trait.userInterfaceStyle == .dark ? UIColor(hex: "#924350") : UIColor(hex: "#E9D3D3")
-        }
-    }
-
     func updateElements(with event: EKEvent?, tapHandler: (() -> Void)? = nil, segueHandler: @escaping (() -> Void)) {
         if let event {
             upcomingEventLabel.text = event.title
@@ -66,18 +54,6 @@ class EventCardCollectionViewCell: UICollectionViewCell {
         let status = EKEventStore.authorizationStatus(for: .event)
 
         switch status {
-        case .denied, .restricted, .notDetermined:
-            TriTrackViewController.eventStore.requestFullAccessToEvents { success, _ in
-                TriTrackViewController.eventStore = .init()
-                if success {
-                    TriTrackViewController.eventStore = EKEventStore()
-                    DispatchQueue.main.async {
-                        _ = self.createOrGetEvent()
-                        self.segueHandler?()
-                    }
-                }
-            }
-
         case .authorized:
             segueHandler?()
         default:
@@ -86,31 +62,6 @@ class EventCardCollectionViewCell: UICollectionViewCell {
     }
 
     // MARK: Private
-
-    private func createOrGetEvent() -> EKCalendar? {
-        return createOrGetCalendar(identifierKey: "TriTrackEvent", eventType: .event, title: "MomCare - TriTrack Calendar", defaultCalendar: TriTrackViewController.eventStore.defaultCalendarForNewEvents)
-    }
-
-    private func createOrGetCalendar(identifierKey: String, eventType: EKEntityType, title: String, defaultCalendar: EKCalendar?) -> EKCalendar? {
-        let identifier: String? = Utils.get(fromKey: identifierKey)
-        if let identifier {
-            return TriTrackViewController.eventStore.calendar(withIdentifier: identifier)
-        }
-
-        let newCalendar = EKCalendar(for: eventType, eventStore: TriTrackViewController.eventStore)
-        newCalendar.title = title
-        if let localSource = TriTrackViewController.eventStore.sources.first(where: { $0.sourceType == .local }) {
-            newCalendar.source = localSource
-        } else {
-            newCalendar.source = defaultCalendar?.source
-        }
-
-        UserDefaults.standard.set(newCalendar.calendarIdentifier, forKey: identifierKey)
-
-        try? TriTrackViewController.eventStore.saveCalendar(newCalendar, commit: true)
-
-        return newCalendar
-    }
 
     private func setupGesture() {
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap))

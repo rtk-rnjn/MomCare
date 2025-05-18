@@ -46,7 +46,7 @@ class DietViewController: UIViewController {
         guard let quantityType = HKQuantityType.quantityType(forIdentifier: typeIdentifier) else { return }
         let quantity = HKQuantity(unit: unit, doubleValue: amount * (consumed ? 1 : -1))
         let sample = HKQuantitySample(type: quantityType, quantity: quantity, start: date, end: date)
-        DashboardViewController.healthStore.save(sample) { success, _ in if success {} }
+        HealthKitHandler.shared.healthStore.save(sample) { success, _ in if success {} }
     }
 
     static func addCalories(energy: Double, consumed: Bool) {
@@ -90,9 +90,9 @@ class DietViewController: UIViewController {
     private func prepareProgress() {
         guard let dietTableViewController else { return }
         let goals = [
-            (proteinProgressBar, proteinProgressLabel, dietTableViewController.proteinGoal, DashboardViewController.readTotalProtein),
-            (carbsProgressBar, carbsProgressLabel, dietTableViewController.carbsGoal, DashboardViewController.readTotalCarbs),
-            (fatsProgressBar, fatsProgressLabel, dietTableViewController.fatsGoal, DashboardViewController.readTotalFat)
+            (proteinProgressBar, proteinProgressLabel, dietTableViewController.proteinGoal, HealthKitHandler.shared.readTotalProtein),
+            (carbsProgressBar, carbsProgressLabel, dietTableViewController.carbsGoal, HealthKitHandler.shared.readTotalCarbs),
+            (fatsProgressBar, fatsProgressLabel, dietTableViewController.fatsGoal, HealthKitHandler.shared.readTotalFat)
         ]
 
         for (progressBar, label, goal, readFunction) in goals {
@@ -106,7 +106,7 @@ class DietViewController: UIViewController {
     }
 
     private func prepareCaloricProgress() {
-        DashboardViewController.readCaloriesIntake { currentCaloriesIntake in
+        HealthKitHandler.shared.readCaloriesIntake { currentCaloriesIntake in
             DispatchQueue.main.async {
                 guard let dueDate = MomCareUser.shared.user?.medicalData?.dueDate,
                       let pregnancyData = Utils.pregnancyWeekAndDay(dueDate: dueDate) else { return }

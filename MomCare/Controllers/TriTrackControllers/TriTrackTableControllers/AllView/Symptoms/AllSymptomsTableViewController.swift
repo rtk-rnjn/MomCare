@@ -14,7 +14,7 @@ class AllSymptomsTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        symptoms = AppointmentsTableViewController.fetchOldEvents()
+        symptoms = EventKitHandler.shared.fetchSymptoms()
     }
 
     override func numberOfSections(in tableView: UITableView) -> Int {

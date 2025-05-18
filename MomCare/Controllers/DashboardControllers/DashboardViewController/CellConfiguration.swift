@@ -64,9 +64,8 @@ extension DashboardViewController {
         case 1:
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "EventCard", for: indexPath) as? EventCardCollectionViewCell
             guard let cell else { fatalError("'EventCard' not found") }
-            let events = AppointmentsTableViewController.fetchEvents()
-            let event = events?.isEmpty ?? true ? nil : events?[0]
-            cell.updateElements(with: event ?? nil, tapHandler: eventCardTapped) {
+            let event = EventKitHandler.shared.fetchUpcomingAppointment()
+            cell.updateElements(with: event, tapHandler: eventCardTapped) {
                 self.performSegue(withIdentifier: "segueShowAddEventTableViewController", sender: nil)
             }
             return cell
@@ -104,10 +103,7 @@ extension DashboardViewController {
 
 extension DashboardViewController {
     func eventCardTapped() {
-        let events = AppointmentsTableViewController.fetchEvents()
-        guard let event = events?.isEmpty ?? true ? nil : events?[0] else { return }
-
-        presentEKEventViewController(with: event)
+        // TODO:
     }
 
     func weekCardTapped() {

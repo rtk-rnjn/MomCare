@@ -78,6 +78,7 @@ class SearchViewController: UIViewController, UISearchResultsUpdating, UISearchC
     }
 
     // MARK: Private
+
     private var debounceTask: Task<Void, Never>?
 
     private func searchFood(query: String) async {

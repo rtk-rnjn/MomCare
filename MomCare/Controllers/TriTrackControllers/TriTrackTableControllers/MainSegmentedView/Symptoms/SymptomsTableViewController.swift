@@ -76,7 +76,7 @@ class SymptomsTableViewController: UITableViewController {
     }
 
     func refreshData() {
-        events = AppointmentsTableViewController.fetchOldEvents()
+        events = EventKitHandler.shared.fetchSymptoms()
         tableView.reloadData()
     }
 

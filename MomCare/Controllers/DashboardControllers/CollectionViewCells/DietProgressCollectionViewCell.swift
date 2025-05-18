@@ -64,7 +64,7 @@ class DietProgressCollectionViewCell: UICollectionViewCell {
     // MARK: Private
 
     private func updateLabels() {
-        DashboardViewController.readCaloriesIntake { caloriesIntake in
+        HealthKitHandler.shared.readCaloriesIntake { caloriesIntake in
             DispatchQueue.main.async {
                 self.currentKcalLabel.text = "\(Int(caloriesIntake))"
                 self.currentCaloriesIntake = Int(caloriesIntake)

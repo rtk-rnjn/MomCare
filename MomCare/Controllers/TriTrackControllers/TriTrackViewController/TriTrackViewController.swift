@@ -19,8 +19,6 @@ class TriTrackViewController: UIViewController, FSCalendarDelegate, FSCalendarDa
 
     // MARK: Internal
 
-    static var eventStore: EKEventStore = .init()
-
     @IBOutlet var triTrackInternalView: UIView!
 
     @IBOutlet var addButton: UIBarButtonItem!
@@ -35,9 +33,10 @@ class TriTrackViewController: UIViewController, FSCalendarDelegate, FSCalendarDa
 
     var symptomsViewController: SymptomsViewController?
     var eventsViewController: EventsViewController?
+    var meAndMyBabyViewController: MeAndMyBabyViewController?
 
     var currentSegmentValue: Int = 0
-    var selectedDate: Date = .init()
+    var selectedFSCalendarDate: Date = .init()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -46,8 +45,8 @@ class TriTrackViewController: UIViewController, FSCalendarDelegate, FSCalendarDa
         calendarView.appearance.titleTodayColor = .red
 
         Task {
-//            await requestAccessForCalendar()
-//            await requestAccessForReminders()
+            await EventKitHandler.shared.requestAccessForEvent()
+            await EventKitHandler.shared.requestAccessForReminder()
         }
 
         navigationController?.navigationBar.isTranslucent = false
@@ -91,15 +90,23 @@ class TriTrackViewController: UIViewController, FSCalendarDelegate, FSCalendarDa
                 destinationVC.triTrackViewController = self
             }
 
+        case "embedShowMeAndMyBabyViewController":
+            if let destinationVC = segue.destination as? MeAndMyBabyViewController {
+                meAndMyBabyViewController = destinationVC
+                destinationVC.triTrackViewController = self
+            }
+
         default:
-            break
+            fatalError("pretty little baby, I am in love with you")
         }
     }
 
     nonisolated func calendar(_ calendar: FSCalendar, didSelect date: Date, at monthPosition: FSCalendarMonthPosition) {
-//        DispatchQueue.main.async {
-//            self.selectedDate = date
-//        }
+        DispatchQueue.main.async {
+            self.selectedFSCalendarDate = date
+            self.refreshAll()
+            self.meAndMyBabyViewController?.refreshData()
+        }
     }
 
     @IBAction func segmentTapped(_ sender: UISegmentedControl) {
@@ -107,19 +114,23 @@ class TriTrackViewController: UIViewController, FSCalendarDelegate, FSCalendarDa
     }
 
     @IBAction func refreshButtonTapped(_ sender: UIBarButtonItem) {
-        symptomsViewController?.symptomsTableViewController?.refreshData()
-        eventsViewController?.appointmentsTableViewController?.refreshData()
-        eventsViewController?.remindersTableViewController?.refreshData()
+        refreshAll()
     }
 
     // MARK: Private
 
     private var calendarView: FSCalendar!
 
+    private func refreshAll() {
+        symptomsViewController?.symptomsTableViewController?.refreshData()
+        eventsViewController?.appointmentsTableViewController?.refreshData()
+        eventsViewController?.remindersTableViewController?.refreshData()
+    }
+
     private func prepareFSCalendar() {
         calendarView = FSCalendar(frame: CGRect(x: 0, y: 0, width: calendarUIView.frame.width, height: calendarUIView.frame.height + 150))
         calendarView.scope = .week
-        calendarView.select(selectedDate)
+        calendarView.select(selectedFSCalendarDate)
 
         calendarView.dataSource = self
         calendarView.delegate = self

@@ -9,25 +9,42 @@ import Foundation
 import UIKit
 
 struct TrimesterData: Codable {
-    let trimesterNumber: Int
-    let weekNumber: Int
-    let dayNumber: Int
-    let quote: String
+    var weekNumber: Int
+    var dayNumber: Int? = nil
+    var quote: String? = nil
 
-    let leftImageName: String
-    let rightImageName: String
-    let babyHeightInCentimeters: Double
-    let babyWeightInKilograms: Double
+    var leftImageUri: String? = nil
+    var rightImageUri: String? = nil
 
-    let babyTipText: String
-    let momTipText: String
+    var babyHeightInCentimeters: Double? = nil
+    var babyWeightInKilograms: Double? = nil
+
+    var babyTipText: String
+    var momTipText: String
+
+    var trimesterNumber: Int {
+        switch weekNumber {
+        case 1...13:
+            return 1
+        case 14...27:
+            return 2
+        case 28...40:
+            return 3
+        default:
+            return 0
+        }
+    }
 
     var leftImage: UIImage? {
-        UIImage(named: leftImageName)
+        get async {
+            return await UIImage().fetchImage(from: leftImageUri)
+        }
     }
 
     var rightImage: UIImage? {
-        UIImage(named: rightImageName)
+        get async {
+            return await UIImage().fetchImage(from: rightImageUri)
+        }
     }
 
 }

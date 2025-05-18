@@ -41,7 +41,7 @@ class ExerciseProgressCollectionViewCell: UICollectionViewCell {
     // MARK: Private
 
     private func updateStepsLabel() {
-        DashboardViewController.readStepCount { steps in
+        HealthKitHandler.shared.readStepCount { steps in
             DispatchQueue.main.async {
                 self.stepsLabel.text = "\(Int(steps))"
             }
@@ -49,7 +49,7 @@ class ExerciseProgressCollectionViewCell: UICollectionViewCell {
     }
 
     private func updateExerciseDurationLabel() {
-        DashboardViewController.readWorkout { duration in
+        HealthKitHandler.shared.readWorkout { duration in
             DispatchQueue.main.async {
                 self.exerciseDurationLabel.text = "\(round(Double(duration)))"
             }
@@ -57,7 +57,7 @@ class ExerciseProgressCollectionViewCell: UICollectionViewCell {
     }
 
     private func updateCaloriesBurnedLabel() {
-        DashboardViewController.readCaloriesBurned { calories in
+        HealthKitHandler.shared.readCaloriesBurned { calories in
             DispatchQueue.main.async {
                 self.caloriesBurnedLabel.text = "\(Int(calories))"
             }
