@@ -66,7 +66,7 @@ class RemindersTableViewController: UITableViewController {
             let deleteAction = UIAction(title: "Delete", image: UIImage(systemName: "trash"), attributes: .destructive) { _ in
                 EventKitHandler.shared.deleteReminder(reminder: reminder)
                 self.reminders.remove(at: indexPath.row)
-                self.tableView.deleteRows(at: [indexPath], with: .automatic)
+                self.tableView.reloadData()
             }
 
             return UIMenu(title: "", children: [deleteAction])

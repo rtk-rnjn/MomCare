@@ -22,7 +22,9 @@ class AppointmentsTableViewController: UITableViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        refreshData()
+        
+        events = fetchEvents()
+        tableView.reloadData()
     }
 
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -87,10 +89,12 @@ class AppointmentsTableViewController: UITableViewController {
     }
 
     func fetchEvents() -> [EKEvent]? {
-        let startDate = eventsViewController?.triTrackViewController?.selectedFSCalendarDate ?? Date()
+        let selectedDate = eventsViewController?.triTrackViewController?.selectedFSCalendarDate ?? Date()
+        let startDate = Calendar.current.startOfDay(for: selectedDate)
         let endDate = Calendar.current.date(byAdding: .day, value: 1, to: startDate)!
 
-        return EventKitHandler.shared.fetchAppointments(startDate: startDate, endDate: endDate)
+        let events = EventKitHandler.shared.fetchAppointments(startDate: startDate, endDate: endDate)
+        return events
     }
 
     func refreshData() {

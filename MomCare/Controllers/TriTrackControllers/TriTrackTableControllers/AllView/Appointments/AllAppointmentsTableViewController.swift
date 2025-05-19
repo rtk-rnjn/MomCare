@@ -9,32 +9,59 @@ import UIKit
 import EventKit
 
 class AllAppointmentsTableViewController: UITableViewController {
-
+    
+    
+    var searchController: UISearchController = .init(searchResultsController: nil)
     var events: [EKEvent] = []
+    var groupedEvents: [Date: [EKEvent]] = [:]
+
     var delegate: EventKitHandlerDelegate = .init()
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
         events = EventKitHandler.shared.fetchAllAppointments()
+        groupEventsByDate()
         tableView.reloadData()
 
         delegate.viewController = self
+        
+        tableView.sectionHeaderTopPadding = 10
+    }
+    
+    func groupEventsByDate() {
+        groupedEvents = [:]
+        
+        for event in events {
+            let date = Calendar.current.startOfDay(for: event.startDate)
+            if groupedEvents[date] == nil {
+                groupedEvents[date] = []
+            }
+            groupedEvents[date]?.append(event)
+        }
     }
 
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
+        return groupedEvents.keys.count
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return events.count
+        return groupedEvents[groupedEvents.keys.sorted()[section]]?.count ?? 0
+    }
+    
+    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        let date = groupedEvents.keys.sorted()[section]
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateStyle = .medium
+        return dateFormatter.string(from: date)
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "AllAppointmentsTableViewCell", for: indexPath) as? AllAppointmentsTableViewCell
         guard let cell else { fatalError("likhe jo khat tujhe, wo teri yaad me 🎶") }
 
-        let appointment = events[indexPath.row]
+        let appointment = groupedEvents[groupedEvents.keys.sorted()[indexPath.section]]?[indexPath.row]
+        guard let appointment else { return cell }
         cell.updateElements(with: appointment)
 
         return cell
@@ -42,7 +69,8 @@ class AllAppointmentsTableViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
 
-        let event = events[indexPath.row]
+        let event = groupedEvents[groupedEvents.keys.sorted()[indexPath.section]]?[indexPath.row]
+        guard let event else { return nil }
 
         return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in
             let editAction = UIAction(title: "Edit", image: UIImage(systemName: "pencil")) { _ in
@@ -59,7 +87,10 @@ class AllAppointmentsTableViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let event = events[indexPath.row]
+        let event = groupedEvents[groupedEvents.keys.sorted()[indexPath.section]]?[indexPath.row]
+        
+        guard let event else { return }
+
         delegate.presentEKEventViewController(with: event)
         tableView.deselectRow(at: indexPath, animated: true)
     }

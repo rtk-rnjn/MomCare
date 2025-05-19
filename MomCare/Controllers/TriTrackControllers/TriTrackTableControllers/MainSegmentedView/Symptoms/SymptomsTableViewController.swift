@@ -10,11 +10,13 @@ import EventKit
 
 class SymptomsTableViewController: UITableViewController {
     var triTrackViewController: TriTrackViewController?
-
+    var delegate: EventKitHandlerDelegate = .init()
+    
     var events: [EKEvent] = []
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        self.delegate.viewController = self
         refreshData()
     }
 
@@ -34,13 +36,36 @@ class SymptomsTableViewController: UITableViewController {
 
         cell.updateElements(with: event)
 
-        // config as per prototype
         cell.backgroundColor = UIColor(hex: "F2F2F7")
         cell.contentView.layer.cornerRadius = 10
         cell.contentView.layer.masksToBounds = true
         cell.clipsToBounds = true
 
         return cell
+    }
+
+    override func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
+        let event = events[indexPath.row]
+
+        return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in
+            let editAction = UIAction(title: "Edit", image: UIImage(systemName: "pencil")) { _ in
+                self.delegate.presentEKEventEditViewController(with: event)
+            }
+
+            let deleteAction = UIAction(title: "Delete", image: UIImage(systemName: "trash"), attributes: .destructive) { _ in
+                EventKitHandler.shared.deleteEvent(event: event)
+                self.refreshData()
+            }
+
+            return UIMenu(title: "", children: [editAction, deleteAction])
+        }
+    }
+
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let event = events[indexPath.section]
+
+        delegate.presentEKEventViewController(with: event)
+        tableView.deselectRow(at: indexPath, animated: true)
     }
 
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
