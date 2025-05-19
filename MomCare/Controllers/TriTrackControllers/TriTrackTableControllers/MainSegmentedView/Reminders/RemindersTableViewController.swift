@@ -14,13 +14,7 @@ class RemindersTableViewController: UITableViewController {
 
     var eventsViewController: EventsViewController?
 
-    var reminders: [EKReminder]? = []
-    var store: EKEventStore?
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        store = TriTrackViewController.eventStore
-    }
+    var reminders: [EKReminder] = []
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -28,7 +22,7 @@ class RemindersTableViewController: UITableViewController {
     }
 
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return reminders?.count ?? 0
+        return reminders.count
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -39,7 +33,6 @@ class RemindersTableViewController: UITableViewController {
         let cell = tableView.dequeueReusableCell(withIdentifier: "ReminderCell", for: indexPath) as? RemindersTableViewCell
 
         guard let cell else { fatalError("Failed to dequeue RemindersTableViewCell") }
-        guard let reminders else { return cell }
 
         cell.updateElements(with: reminders[indexPath.section])
         cell.showsReorderControl = false
@@ -61,21 +54,21 @@ class RemindersTableViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        guard let reminders else { return }
-        performSegue(withIdentifier: "segueShowEKReminderViewController", sender: reminders[indexPath.section])
+        performSegue(withIdentifier: "segueShowEKReminderViewController", sender: reminders[indexPath.row])
         tableView.deselectRow(at: indexPath, animated: true)
     }
 
     override func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
-        guard let reminders else { return nil }
 
-        let reminder = reminders[indexPath.section]
+        let reminder = reminders[indexPath.row]
 
         return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in
             let deleteAction = UIAction(title: "Delete", image: UIImage(systemName: "trash"), attributes: .destructive) { _ in
-                try? self.store?.remove(reminder, commit: true)
-                self.refreshData()
+                EventKitHandler.shared.deleteReminder(reminder: reminder)
+                self.reminders.remove(at: indexPath.row)
+                self.tableView.deleteRows(at: [indexPath], with: .automatic)
             }
+
             return UIMenu(title: "", children: [deleteAction])
         }
     }
@@ -85,7 +78,9 @@ class RemindersTableViewController: UITableViewController {
             if let destinationNC = segue.destination as? UINavigationController {
                 if let destinationVC = destinationNC.topViewController as? EKReminderViewController {
                     destinationVC.reminder = sender as? EKReminder
-                    destinationVC.store = store
+                    destinationVC.reloadHandler = {
+                        self.refreshData()
+                    }
                 }
             }
         }
@@ -93,7 +88,6 @@ class RemindersTableViewController: UITableViewController {
 
     func refreshData() {
         fetchReminders()
-        tableView.reloadData()
     }
 
     @IBAction func unwindToRemindersTableViewController(_ segue: UIStoryboardSegue) {}
@@ -101,33 +95,14 @@ class RemindersTableViewController: UITableViewController {
     // MARK: Private
 
     private func fetchReminders() {
-        let ekCalendars = getCalendar(with: "TriTrackReminder")
-
-        // Thank you Kiran Ma'am for pointing it out.
-//        let selectedDate = eventsViewController?.triTrackViewController?.selectedDate ?? Date()
-
-        guard let store, let ekCalendars else { return }
-
-        let predicate = store.predicateForReminders(in: ekCalendars)
-        store.fetchReminders(matching: predicate) { reminders in
-            guard let reminders else { return }
-
+        let selectedFSCalendarDate = eventsViewController?.triTrackViewController?.selectedFSCalendarDate ?? Date()
+        let startDate = Calendar.current.startOfDay(for: selectedFSCalendarDate)
+        let endDate = Calendar.current.date(byAdding: .day, value: 1, to: startDate)!
+        EventKitHandler.shared.fetchReminders(startDate: startDate, endDate: endDate) { reminders in
             self.reminders = reminders
-
             DispatchQueue.main.async {
                 self.tableView.reloadData()
             }
         }
     }
-
-    private func getCalendar(with identifierKey: String) -> [EKCalendar]? {
-        guard let store else { return [] }
-
-        if let identifier = UserDefaults.standard.string(forKey: identifierKey), let calendar = store.calendar(withIdentifier: identifier) {
-            return [calendar]
-        }
-
-        return []
-    }
-
 }

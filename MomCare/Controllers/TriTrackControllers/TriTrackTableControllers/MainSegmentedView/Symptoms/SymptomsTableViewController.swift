@@ -9,10 +9,9 @@ import UIKit
 import EventKit
 
 class SymptomsTableViewController: UITableViewController {
-    var symptomsViewController: SymptomsViewController?
     var triTrackViewController: TriTrackViewController?
-    
-    var events: [EKEvent]? = []
+
+    var events: [EKEvent] = []
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -20,8 +19,6 @@ class SymptomsTableViewController: UITableViewController {
     }
 
     override func numberOfSections(in tableView: UITableView) -> Int {
-        guard let events else { return 0 }
-        
         return events.count
     }
 
@@ -33,7 +30,7 @@ class SymptomsTableViewController: UITableViewController {
         let cell = tableView.dequeueReusableCell(withIdentifier: "SymptomsCell", for: indexPath) as? SymptomsTableViewCell
 
         guard let cell else { fatalError() }
-        guard let event = events?[indexPath.section] else { return cell }
+        let event = events[indexPath.section]
 
         cell.updateElements(with: event)
 
@@ -45,29 +42,7 @@ class SymptomsTableViewController: UITableViewController {
 
         return cell
     }
-    
-    override func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
-    
-        guard let triTrackVC = symptomsViewController?.triTrackViewController else { return nil }
-        
-        guard let events else { return nil }
-            
-        let event = events[indexPath.section]
 
-        return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in
-            let editAction = UIAction(title: "Edit", image: UIImage(systemName: "pencil")) { _ in
-                triTrackVC.presentEditSymptomsViewController(with: event)
-        }
-
-            let deleteAction = UIAction(title: "Delete", image: UIImage(systemName: "trash"), attributes: .destructive) { _ in
-                EventKitHandler.shared.deleteEvent(event: event)
-                self.refreshData()
-            }
-
-            return UIMenu(title: "", children: [editAction, deleteAction])
-        }
-    }
-    
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return 1
     }
@@ -77,7 +52,8 @@ class SymptomsTableViewController: UITableViewController {
     }
 
     func refreshData() {
-        events = EventKitHandler.shared.fetchSymptoms()
+        let selectedFSCalendarDate = triTrackViewController?.selectedFSCalendarDate
+        events = EventKitHandler.shared.fetchSymptoms(endDate: selectedFSCalendarDate)
         tableView.reloadData()
     }
 
