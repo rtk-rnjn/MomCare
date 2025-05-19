@@ -21,6 +21,12 @@ class TrimesterStatsViewController: UIViewController {
         updateUI()
     }
 
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "embedShowBabyComparisionViewController", let destination = segue.destination as? BabyComparisionViewController {
+            babyComparisionViewController = destination
+        }
+    }
+
     func updateUI() {
         guard let trimesterData = meAndMyBabyViewController?.trimesterData else { return }
 
@@ -33,9 +39,4 @@ class TrimesterStatsViewController: UIViewController {
         }
     }
 
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "embedShowBabyComparisionViewController", let destination = segue.destination as? BabyComparisionViewController {
-            self.babyComparisionViewController = destination
-        }
-    }
 }
