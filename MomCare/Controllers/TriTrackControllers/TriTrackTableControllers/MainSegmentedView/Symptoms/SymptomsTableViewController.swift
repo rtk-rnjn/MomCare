@@ -10,6 +10,7 @@ import EventKit
 
 class SymptomsTableViewController: UITableViewController {
     var symptomsViewController: SymptomsViewController?
+    var triTrackViewController: TriTrackViewController?
     
     var events: [EKEvent]? = []
 
