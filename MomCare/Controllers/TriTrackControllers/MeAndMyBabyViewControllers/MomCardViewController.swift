@@ -10,6 +10,7 @@ import UIKit
 class MomCardViewController: UIViewController {
 
     @IBOutlet var momCardTextView: UITextView!
+    var momCardText: String?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -17,6 +18,7 @@ class MomCardViewController: UIViewController {
         view.backgroundColor = UIColor(hex: "ECC7BA")
         momCardTextView.backgroundColor = UIColor(hex: "ECC7BA")
 
+        momCardTextView.text = momCardText
     }
 
     @IBAction func MomCardCancelButtonTapped(_ sender: UIButton) {
