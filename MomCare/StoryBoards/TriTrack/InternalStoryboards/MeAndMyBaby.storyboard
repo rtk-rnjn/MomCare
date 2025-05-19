@@ -203,6 +203,10 @@
                             <constraint firstItem="MRX-ky-DOU" firstAttribute="trailing" secondItem="Ia9-sb-ut1" secondAttribute="trailing" constant="30" id="kW9-CX-D9R"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="imageView" destination="5i1-cG-aJe" id="DQS-0R-NWH"/>
+                        <outlet property="quoteLabel" destination="3Ee-xq-r4C" id="LSF-EP-WdD"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="iRK-0v-1eT" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>

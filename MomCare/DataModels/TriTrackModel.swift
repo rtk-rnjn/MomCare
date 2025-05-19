@@ -13,8 +13,7 @@ struct TrimesterData: Codable {
     var dayNumber: Int?
     var quote: String?
 
-    var leftImageUri: String?
-    var rightImageUri: String?
+    var imageUri: String?
 
     var babyHeightInCentimeters: Double?
     var babyWeightInGrams: Double?
@@ -35,15 +34,9 @@ struct TrimesterData: Codable {
         }
     }
 
-    var leftImage: UIImage? {
+    var image: UIImage? {
         get async {
-            return await UIImage().fetchImage(from: leftImageUri)
-        }
-    }
-
-    var rightImage: UIImage? {
-        get async {
-            return await UIImage().fetchImage(from: rightImageUri)
+            return await UIImage().fetchImage(from: imageUri)
         }
     }
 

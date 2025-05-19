@@ -98,6 +98,12 @@ class ContentHandler {
         return await NetworkManager.shared.get(url: path)
     }
 
+    func fetchTuneNames(tuneType: String, category: String) async -> [String]? {
+        let path = "/content/tunes/\(tuneType)/\(category)"
+
+        return await NetworkManager.shared.get(url: path)
+    }
+
     func fetchAudio(from url: String) async -> Data? {
         guard let url = URL(string: url) else { return nil }
 

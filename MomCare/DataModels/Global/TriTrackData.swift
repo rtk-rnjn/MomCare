@@ -25,7 +25,7 @@ enum TriTrackData {
         .init(
             weekNumber: 4,
             quote: "I’m currently the size of a poppy seed",
-            leftImageUri: "https://img.icons8.com/material-two-tone/24/lentil.png",
+            imageUri: "https://img.icons8.com/material-two-tone/24/lentil.png",
             babyHeightInCentimeters: 0.2,
             babyWeightInGrams: 0.002,
             babyTipText: "The blastocyst has implanted in the uterine wall and is now called an embryo. It is forming two layers: the epiblast and the hypoblast, which will eventually give rise to the baby and supporting tissues. The amniotic sac and yolk sac begin to form, providing protection and nourishment. The embryo is about the size of a poppy seed.",
@@ -34,7 +34,7 @@ enum TriTrackData {
         .init(
             weekNumber: 5,
             quote: "I’m currently the size of a sesame seed",
-            leftImageUri: "https://img.icons8.com/plumpy/48/black-sesame-seeds.png",
+            imageUri: "https://img.icons8.com/plumpy/48/black-sesame-seeds.png",
             babyHeightInCentimeters: 0.3,
             babyWeightInGrams: 0.004,
             babyTipText: "At this stage, your baby is still very small, about the size of a sesame seed. The embryo now consists of three layers: the ectoderm (which will form the nervous system, skin, and hair), the mesoderm (which will form muscles, bones, and the circulatory system), and the endoderm (which will form organs like the liver and lungs). The neural tube, which will develop into the brain and spinal cord, is starting to form. A tiny heart is beginning to beat, though it's not yet detectable by a standard ultrasound.",
@@ -43,7 +43,7 @@ enum TriTrackData {
         .init(
             weekNumber: 6,
             quote: "I’m currently the size of a lentil seed",
-            leftImageUri: "https://img.icons8.com/plasticine/100/lentil.png",
+            imageUri: "https://img.icons8.com/plasticine/100/lentil.png",
             babyHeightInCentimeters: 0.5,
             babyWeightInGrams: 0.01,
             babyTipText: "Your baby is about the size of a lentil and continues to grow rapidly. By now, the heart has begun to form and is beating, though the beats may not yet be heard on an ultrasound. The facial features, like the eyes and nostrils, are starting to take shape. Small buds that will eventually develop into arms and legs are forming. The brain and spinal cord are becoming more advanced as the embryo’s organs continue to develop.",
@@ -52,7 +52,7 @@ enum TriTrackData {
         .init(
             weekNumber: 7,
             quote: "I’m currently the size of a blueberry",
-            leftImageUri: "https://img.icons8.com/color/48/blueberry.png",
+            imageUri: "https://img.icons8.com/color/48/blueberry.png",
             babyHeightInCentimeters: 1.0,
             babyWeightInGrams: 0.02,
             babyTipText: "Your baby is now about the size of a blueberry. The brain, heart, and other major organs are growing rapidly. Tiny arms and legs are becoming more defined, and the embryo is starting to resemble a human form, though still very small. The heart is beating faster, and blood is starting to circulate through the growing circulatory system. The digestive system, including the intestines, is beginning to form.",
@@ -61,7 +61,7 @@ enum TriTrackData {
         .init(
             weekNumber: 8,
             quote: "I’m currently the size of a raspberry",
-            leftImageUri: "https://img.icons8.com/arcade/64/raspberry.png",
+            imageUri: "https://img.icons8.com/arcade/64/raspberry.png",
             babyHeightInCentimeters: 1.6,
             babyWeightInGrams: 1,
             babyTipText: "Your baby is now about the size of a raspberry. All the major organs and systems are in place and continuing to develop. The arms and legs are more distinguishable, and the fingers and toes are beginning to form. Tiny veins can be seen underneath the translucent skin. The baby’s mouth, nose, and ears are developing, and the brain is growing rapidly, becoming more complex. Though the baby is still small, it’s starting to move, but the movements are too tiny to feel.",
@@ -70,7 +70,7 @@ enum TriTrackData {
         .init(
             weekNumber: 9,
             quote: "I’m currently the size of an grape",
-            leftImageUri: "https://img.icons8.com/external-line-colors-royyan-wijaya/64/external-eat-heiyo-food-collections-line-colors-royyan-wijaya-16.png",
+            imageUri: "https://img.icons8.com/external-line-colors-royyan-wijaya/64/external-eat-heiyo-food-collections-line-colors-royyan-wijaya-16.png",
             babyHeightInCentimeters: 2.3,
             babyWeightInGrams: 2,
             babyTipText: "Your baby is about the size of a grape and is rapidly growing. The arms and legs have become more defined, and the fingers and toes are starting to take shape, though they are still webbed. The heart is now fully formed and beating at a faster rate. Internal organs like the liver, kidneys, and intestines are continuing to develop, and the baby’s eyes are moving closer together on the face. The baby’s facial features are becoming more recognizable, and the head is now larger than the rest of the body. The baby is also beginning to practice small, reflexive movements.",
@@ -79,7 +79,7 @@ enum TriTrackData {
         .init(
             weekNumber: 10,
             quote: "I’m currently the size of a date",
-            leftImageUri: "https://img.icons8.com/color/48/date-fruit.png",
+            imageUri: "https://img.icons8.com/color/48/date-fruit.png",
             babyHeightInCentimeters: 3.1,
             babyWeightInGrams: 4,
             babyTipText: "At this stage, your baby is about the size of a date. The body is now growing faster than the head, and the neck is starting to develop, elongating the head. The baby’s arms and legs are becoming more defined, and the fingers and toes are fully separated. The digestive system is beginning to function, and the kidneys are producing urine. The baby’s skin is still very thin and translucent, and the facial features are becoming more distinct. Hair follicles and nails are starting to form, and the baby’s movements are becoming more coordinated.",
@@ -88,7 +88,7 @@ enum TriTrackData {
         .init(
             weekNumber: 11,
             quote: "I’m currently the size of a lime",
-            leftImageUri: "https://img.icons8.com/color/96/lime.png",
+            imageUri: "https://img.icons8.com/color/96/lime.png",
             babyHeightInCentimeters: 4.1,
             babyWeightInGrams: 7,
             babyTipText: "Your baby is now about the size of a lime, and most of its major organs are fully formed. The baby is starting to look more human, with well-defined fingers and toes. The external genitalia are developing, although it’s still too early to determine the baby’s sex with an ultrasound. The kidneys are starting to produce urine, and the liver is making bile. The baby’s heart is beating strongly, and you may be able to hear it on an ultrasound. The baby is also starting to make small movements, though they are still too subtle for you to feel.",
@@ -97,7 +97,7 @@ enum TriTrackData {
         .init(
             weekNumber: 12,
             quote: "I’m currently the size of a plum",
-            leftImageUri: "https://img.icons8.com/cotton/64/plum--v1.png",
+            imageUri: "https://img.icons8.com/cotton/64/plum--v1.png",
             babyHeightInCentimeters: 5.4,
             babyWeightInGrams: 14,
             babyTipText: "At 12 weeks, your baby is about the size of a plum. Most of the major organs and systems are fully formed, though they will continue to mature. The baby’s body is now more proportional, and it has begun to gain muscle tone. The baby’s kidneys are working to produce urine, which is excreted into the amniotic fluid. The baby’s eyelids are still fused, but they are forming a more distinct shape. The baby’s head is more upright, and it is beginning to exhibit small movements that will eventually become more noticeable.",
@@ -106,7 +106,7 @@ enum TriTrackData {
         .init(
             weekNumber: 13,
             quote: "I’m currently the size of a kiwi",
-            leftImageUri: "https://img.icons8.com/external-smashingstocks-flat-smashing-stocks/66/external-Kiwi-fruit-smashingstocks-flat-smashing-stocks.png",
+            imageUri: "https://img.icons8.com/external-smashingstocks-flat-smashing-stocks/66/external-Kiwi-fruit-smashingstocks-flat-smashing-stocks.png",
             babyHeightInCentimeters: 7.4,
             babyWeightInGrams: 23,
             babyTipText: "At week 13, your baby is about the size of a kiwi. The baby’s facial features are becoming more distinct, with the eyes moving closer together and the ears moving to their final position. The arms and legs are almost fully formed, and the baby is able to make small, jerky movements, though you still cannot feel them. The bones are beginning to harden, and the baby’s fingerprints are starting to form. The digestive system is maturing, and the baby may be swallowing amniotic fluid, which helps to develop the digestive system.",
@@ -115,7 +115,7 @@ enum TriTrackData {
         .init(
             weekNumber: 14,
             quote: "I’m currently the size of a peach",
-            leftImageUri: "https://img.icons8.com/external-icongeek26-linear-colour-icongeek26/64/external-peach-fruits-icongeek26-linear-colour-icongeek26.png",
+            imageUri: "https://img.icons8.com/external-icongeek26-linear-colour-icongeek26/64/external-peach-fruits-icongeek26-linear-colour-icongeek26.png",
             babyHeightInCentimeters: 8.7,
             babyWeightInGrams: 43,
             babyTipText: "At this point, your baby is the size of a peach. The baby is developing more muscle and bone tissue, and while the baby still has a lot of growing to do, it’s starting to look more human. The baby’s vocal cords are developing, and the intestines are moving into the abdominal cavity, where they will soon start to function more effectively. You may notice that the baby is starting to develop tiny, fine hair called lanugo, which covers the entire body for protection and warmth.",
@@ -124,7 +124,7 @@ enum TriTrackData {
         .init(
             weekNumber: 15,
             quote: "I’m currently the size of a pear",
-            leftImageUri: "https://img.icons8.com/cotton/64/pear--v1.png",
+            imageUri: "https://img.icons8.com/cotton/64/pear--v1.png",
             babyHeightInCentimeters: 10.1,
             babyWeightInGrams: 70,
             babyTipText: "Your baby is now about the size of a pear. The baby’s bones are becoming more defined and harder, and muscle development is progressing rapidly. The baby is able to make more coordinated movements, although you won’t feel them yet. The skin is translucent and thin, but it’s starting to develop a layer of fat underneath, which will help keep the baby warm in the coming weeks. The baby is now able to move its arms and legs, and the brain is growing rapidly, allowing for more complex movements in the future.",
@@ -133,7 +133,7 @@ enum TriTrackData {
         .init(
             weekNumber: 16,
             quote: "I’m currently the size of an avocado",
-            leftImageUri: "https://img.icons8.com/external-justicon-flat-justicon/64/external-avocado-healthy-food-and-vegan-justicon-flat-justicon.png",
+            imageUri: "https://img.icons8.com/external-justicon-flat-justicon/64/external-avocado-healthy-food-and-vegan-justicon-flat-justicon.png",
             babyHeightInCentimeters: 11.6,
             babyWeightInGrams: 100,
             babyTipText: "At week 16, your baby is about the size of an avocado. The baby’s skeleton is hardening, and muscles are continuing to develop. The baby’s face is becoming more recognizable, and fine hair is growing on the head. The baby’s circulatory and urinary systems are fully functioning, and the kidneys are producing urine, which is excreted into the amniotic fluid. The baby’s reflexes are becoming more coordinated, and it may even begin sucking its thumb or moving its limbs.",
@@ -142,7 +142,7 @@ enum TriTrackData {
         .init(
             weekNumber: 17,
             quote: "I’m currently the size of an orange",
-            leftImageUri: "https://img.icons8.com/cotton/64/orange--v2.png",
+            imageUri: "https://img.icons8.com/cotton/64/orange--v2.png",
             babyHeightInCentimeters: 13.0,
             babyWeightInGrams: 140,
             babyTipText: "At 17 weeks, your baby is about the size of an orange. The baby is becoming more active, and you might start feeling the first signs of movement, especially if this isn’t your first pregnancy. The baby’s muscles and bones are becoming stronger, and the baby’s skeleton is hardening. The skin is still very thin and translucent, but it’s beginning to develop a layer of fat beneath it. The baby’s digestive system is continuing to mature, and the kidneys are functioning properly. Your baby is now able to hear sounds, and you might notice that the baby responds to louder noises.",
@@ -151,7 +151,7 @@ enum TriTrackData {
         .init(
             weekNumber: 18,
             quote: "I’m currently the size of a sweet potato",
-            leftImageUri: "https://img.icons8.com/external-goofy-color-kerismaker/96/external-Sweet-Potato-vegetable-goofy-color-kerismaker.png",
+            imageUri: "https://img.icons8.com/external-goofy-color-kerismaker/96/external-Sweet-Potato-vegetable-goofy-color-kerismaker.png",
             babyHeightInCentimeters: 14.2,
             babyWeightInGrams: 190,
             babyTipText: "At 18 weeks, your baby is about the size of a sweet potato. The baby’s sensory systems are maturing, and the baby is developing the ability to hear external sounds. Fine hair, known as lanugo, covers the baby’s body, and the skin is becoming less transparent. The baby’s bones are continuing to harden, and the muscles are getting stronger, allowing the baby to perform small movements. The baby’s heart is beating steadily, and the circulatory system is becoming more developed. At this stage, the baby is practicing breathing by inhaling amniotic fluid, which helps develop the lungs.",
@@ -160,7 +160,7 @@ enum TriTrackData {
         .init(
             weekNumber: 19,
             quote: "I’m currently the size of a mango",
-            leftImageUri: "https://img.icons8.com/external-vitaliy-gorbachev-flat-vitaly-gorbachev/58/external-mango-fruit-vitaliy-gorbachev-flat-vitaly-gorbachev.png",
+            imageUri: "https://img.icons8.com/external-vitaliy-gorbachev-flat-vitaly-gorbachev/58/external-mango-fruit-vitaliy-gorbachev-flat-vitaly-gorbachev.png",
             babyHeightInCentimeters: 15.3,
             babyWeightInGrams: 240,
             babyTipText: "At 19 weeks, your baby is about the size of a mango. The baby is becoming more active, and you may begin to feel movements known as \"quickening.\" The baby’s muscles are continuing to strengthen, and the bones are growing harder. The baby’s ears are now fully developed, and it can hear sounds from the outside world, including your voice and any noises around you. The baby is now producing meconium, which is the first stool and is stored in the intestines. The baby’s skin remains translucent, but it’s beginning to thicken as fat develops underneath.",
@@ -169,7 +169,7 @@ enum TriTrackData {
         .init(
             weekNumber: 20,
             quote: "I’m currently the size of a banana",
-            leftImageUri: "https://img.icons8.com/cotton/64/banana.png",
+            imageUri: "https://img.icons8.com/cotton/64/banana.png",
             babyHeightInCentimeters: 16.4,
             babyWeightInGrams: 300,
             babyTipText: "At 20 weeks, your baby is about the size of a banana. This is the halfway point of your pregnancy! The baby’s movements are becoming more noticeable, and you might feel more kicks and rolls. The baby’s hair, eyebrows, and eyelashes are beginning to grow, and the skin is becoming less transparent. The baby’s bones are continuing to harden, and the circulatory system is fully functioning. The baby is now able to suck its thumb and practice swallowing, and it’s even developing a sense of taste as it swallows amniotic fluid. The baby’s brain is growing rapidly, and its nervous system is continuing to mature.",
@@ -178,7 +178,7 @@ enum TriTrackData {
         .init(
             weekNumber: 21,
             quote: "I’m currently the size of a pomegranate",
-            leftImageUri: "https://img.icons8.com/external-febrian-hidayat-outline-color-febrian-hidayat/64/external-Pomegranate-fruits-febrian-hidayat-outline-color-febrian-hidayat.png",
+            imageUri: "https://img.icons8.com/external-febrian-hidayat-outline-color-febrian-hidayat/64/external-Pomegranate-fruits-febrian-hidayat-outline-color-febrian-hidayat.png",
             babyHeightInCentimeters: 26.7,
             babyWeightInGrams: 360,
             babyTipText: "At 21 weeks, your baby is about the size of a pomegranate. The baby’s movements are becoming more noticeable and coordinated, and you may feel kicks, rolls, or even hiccups. The baby’s skin is still translucent, but it’s thickening and developing a layer of fat underneath. The baby’s organs are maturing, and the kidneys are producing more urine. The baby’s senses continue to develop, and it can now hear your voice, as well as other sounds from the outside world. The baby’s lungs are still developing, but they are not yet functional. The baby is also beginning to develop a unique pattern of sleeping and waking.",
@@ -187,7 +187,7 @@ enum TriTrackData {
         .init(
             weekNumber: 22,
             quote: "I’m currently the size of a papaya",
-            leftImageUri: "https://img.icons8.com/external-icongeek26-flat-icongeek26/64/external-papaya-fruits-icongeek26-flat-icongeek26.png",
+            imageUri: "https://img.icons8.com/external-icongeek26-flat-icongeek26/64/external-papaya-fruits-icongeek26-flat-icongeek26.png",
             babyHeightInCentimeters: 27.8,
             babyWeightInGrams: 430,
             babyTipText: "At 22 weeks, your baby is about the size of a papaya. The baby’s movements are becoming more noticeable, and you may even begin to see small shifts in the shape of your belly as the baby moves around. The baby’s skin is still very thin and translucent, but it’s starting to thicken and develop more fat underneath. The baby’s eyes are now fully formed, though the eyelids are still fused shut. The baby is growing rapidly, and its taste buds are starting to develop, allowing it to begin to taste the amniotic fluid. The baby’s brain is also rapidly growing and developing more complex neural pathways.",
@@ -196,7 +196,7 @@ enum TriTrackData {
         .init(
             weekNumber: 23,
             quote: "I’m currently the size of an grapefruit",
-            leftImageUri: "https://img.icons8.com/external-smashingstocks-flat-smashing-stocks/66/external-Grapefruit-fruit-smashingstocks-flat-smashing-stocks.png",
+            imageUri: "https://img.icons8.com/external-smashingstocks-flat-smashing-stocks/66/external-Grapefruit-fruit-smashingstocks-flat-smashing-stocks.png",
             babyHeightInCentimeters: 28.9,
             babyWeightInGrams: 501,
             babyTipText: "At 23 weeks, your baby is about the size of a grapefruit. The baby’s skin is still thin and wrinkled but is gradually becoming more opaque. Fine hair (lanugo) covers the baby’s body, and the baby is developing more fat underneath the skin. The baby’s ears are fully developed, and it can hear sounds clearly now, including your voice and your heartbeat. The baby’s movements are becoming more coordinated and can include kicking, stretching, and rolling around in the womb. The baby’s lungs are developing but are not yet functional. The baby is also practicing breathing by inhaling and exhaling amniotic fluid.",
@@ -205,7 +205,7 @@ enum TriTrackData {
         .init(
             weekNumber: 24,
             quote: "I’m currently the size of a cantaloupe",
-            leftImageUri: "https://img.icons8.com/external-icongeek26-flat-icongeek26/64/external-cantaloupe-fruits-icongeek26-flat-icongeek26.png",
+            imageUri: "https://img.icons8.com/external-icongeek26-flat-icongeek26/64/external-cantaloupe-fruits-icongeek26-flat-icongeek26.png",
             babyHeightInCentimeters: 30.0,
             babyWeightInGrams: 600,
             babyTipText: "At 24 weeks, your baby is about the size of a cantaloupe. The baby’s skin is beginning to look less translucent, although it still has a reddish hue. The baby is growing rapidly, and the movements you feel are likely to be stronger and more noticeable. The baby’s eyes are opening and closing, and the baby’s eyelashes are fully formed. The baby is also developing more fat under the skin and is becoming more chubby as it prepares for the next stage of growth. The baby’s lungs are continuing to develop, and it may even start practicing breathing movements. The brain is growing rapidly, forming complex connections for future development.",
@@ -214,7 +214,7 @@ enum TriTrackData {
         .init(
             weekNumber: 25,
             quote: "I’m currently the size of an cauliflower",
-            leftImageUri: "https://img.icons8.com/external-flat-andi-nur-abdillah/64/external-cauliflower-vegetable-and-fruit-flat-flat-andi-nur-abdillah.png",
+            imageUri: "https://img.icons8.com/external-flat-andi-nur-abdillah/64/external-cauliflower-vegetable-and-fruit-flat-flat-andi-nur-abdillah.png",
             babyHeightInCentimeters: 34.6,
             babyWeightInGrams: 660,
             babyTipText: "At 25 weeks, your baby is about the size of a cauliflower. Weighing around 1.5 pounds and measuring over 13 inches long, the baby is beginning to look more like a newborn. The skin, though still wrinkled, is gradually smoothing out as fat builds up beneath the surface. The baby's heartbeat is strong enough to be heard through a standard stethoscope. The lungs are maturing rapidly, preparing for breathing after birth, and tiny capillaries are forming in the lungs to help oxygenate blood after delivery. The baby's hands are fully developed, complete with fingerprints, and reflexes like grasping may be starting. The baby is also more responsive to sounds and can recognize your voice. If you play music or talk, the baby might move in response.",
@@ -223,7 +223,7 @@ enum TriTrackData {
         .init(
             weekNumber: 26,
             quote: "I’m currently the size of a lettuce",
-            leftImageUri: "https://img.icons8.com/external-ddara-lineal-color-ddara/64/external-lettuce-vegetables-ddara-lineal-color-ddara.png",
+            imageUri: "https://img.icons8.com/external-ddara-lineal-color-ddara/64/external-lettuce-vegetables-ddara-lineal-color-ddara.png",
             babyHeightInCentimeters: 35.6,
             babyWeightInGrams: 760,
             babyTipText: "At 26 weeks, your baby is about the size of a lettuce, measuring nearly 14 inches and weighing about 2 pounds. The baby’s eyes, which have been fused shut, are now beginning to open, revealing the iris beneath. Although vision is limited in the womb, light and shadows can be detected. Brain wave activity is increasing, and the baby can now respond to touch and sound with more intention. Nerve pathways in the ears are developing, allowing the baby to hear internal sounds like your heartbeat, digestive noises, and external sounds like voices or music. The baby practices breathing by inhaling amniotic fluid, and its nostrils are starting to open, paving the way for the first breaths at birth.",
@@ -232,7 +232,7 @@ enum TriTrackData {
         .init(
             weekNumber: 27,
             quote: "I’m currently the size of a turnip",
-            leftImageUri: "https://img.icons8.com/external-goofy-color-kerismaker/96/external-Turnip-vegetable-goofy-color-kerismaker.png",
+            imageUri: "https://img.icons8.com/external-goofy-color-kerismaker/96/external-Turnip-vegetable-goofy-color-kerismaker.png",
             babyHeightInCentimeters: 36.6,
             babyWeightInGrams: 875,
             babyTipText: "At 27 weeks, your baby is roughly the size of a head of turnip. Weighing about 2.2 pounds and measuring around 14.5 inches, the baby is growing quickly. The lungs are developing more air sacs, and surfactant—an essential substance that helps keep airways open after birth—is starting to be produced. The baby is continuing to practice breathing motions and hiccupping, which you might feel as rhythmic tapping. The nervous system is maturing, and sleep cycles are developing; the baby may now experience REM sleep, suggesting the possibility of dreaming. The baby’s movements might now include stretching, rolling, and strong kicks. Eyelids are open, and the baby is blinking, giving it a more human-like appearance.",
@@ -241,7 +241,7 @@ enum TriTrackData {
         .init(
             weekNumber: 28,
             quote: "I’m currently the size of an Eggplant",
-            leftImageUri: "https://img.icons8.com/external-icongeek26-flat-icongeek26/64/external-eggplant-vegan-icongeek26-flat-icongeek26.png",
+            imageUri: "https://img.icons8.com/external-icongeek26-flat-icongeek26/64/external-eggplant-vegan-icongeek26-flat-icongeek26.png",
             babyHeightInCentimeters: 37.6,
             babyWeightInGrams: 1005,
             babyTipText: "At 28 weeks, your baby is about the size of a large eggplant. Weighing nearly 2.5 pounds and measuring around 15 inches, the baby is getting chubbier as fat stores increase, giving the skin a smoother appearance. The brain is developing more grooves and folds, allowing for increased surface area and cognitive growth. The baby’s heartbeat is strong, and muscle tone is improving. The lungs, though not fully mature, are capable of supporting breathing with medical help if the baby were to be born prematurely. The baby’s eyes can now perceive changes in light, and the pupils can dilate and contract. The baby is more responsive to stimuli and can feel pain and touch. It may respond to your voice with increased movement.",
@@ -250,7 +250,7 @@ enum TriTrackData {
         .init(
             weekNumber: 29,
             quote: "I’m currently the size of an acorn squash",
-            leftImageUri: "https://img.icons8.com/plasticine/100/squash.png",
+            imageUri: "https://img.icons8.com/plasticine/100/squash.png",
             babyHeightInCentimeters: 38.6,
             babyWeightInGrams: 1153,
             babyTipText: "At 29 weeks, your baby is about the size of a acorn squash, weighing approximately 2.7 to 3 pounds and measuring over 15 inches long. The brain is developing rapidly, forming grooves and increasing in complexity, and the head is growing to accommodate this growth. Muscles and lungs continue to mature, and fat deposits under the skin make the baby look more plump and less wrinkled. The skeleton is hardening, although the skull remains soft and flexible for birth. The baby’s movements are more forceful and coordinated now — kicks, rolls, and even stretches may be frequent and noticeable. The senses are well-developed: the baby can now taste, see dim light, hear muffled sounds, and respond to touch. Some babies begin to settle into the head-down position in preparation for birth.",
@@ -259,7 +259,7 @@ enum TriTrackData {
         .init(
             weekNumber: 30,
             quote: "I’m currently the size of a cabbage",
-            leftImageUri: "https://img.icons8.com/external-smashingstocks-flat-smashing-stocks/66/external-Cabbage-vegetables-smashingstocks-flat-smashing-stocks-2.png",
+            imageUri: "https://img.icons8.com/external-smashingstocks-flat-smashing-stocks/66/external-Cabbage-vegetables-smashingstocks-flat-smashing-stocks-2.png",
             babyHeightInCentimeters: 39.9,
             babyWeightInGrams: 1319,
             babyTipText: "At 30 weeks, your baby is approximately the size of a large cabbage, weighing about 3 pounds and stretching 15.7 inches long. The baby’s brain is now controlling body temperature and rhythmic breathing movements. Bone marrow has taken over production of red blood cells — an important step in preparation for life outside the womb. The baby’s hands are fully formed and can grasp with more strength; fingernails are visible. Eyelashes have grown in, and the baby may blink in response to light changes. Inside the womb, the baby swallows amniotic fluid and passes it as urine. The digestive tract is nearly mature. Although space is tighter, the baby is still moving frequently, though the motions may feel more like rolls than sharp kicks.",
@@ -268,7 +268,7 @@ enum TriTrackData {
         .init(
             weekNumber: 31,
             quote: "I’m currently the size of a coconut ",
-            leftImageUri: "https://img.icons8.com/external-goofy-color-kerismaker/96/external-Coconut-fruit-goofy-color-kerismaker.png",
+            imageUri: "https://img.icons8.com/external-goofy-color-kerismaker/96/external-Coconut-fruit-goofy-color-kerismaker.png",
             babyHeightInCentimeters: 41.1,
             babyWeightInGrams: 1502,
             babyTipText: "Your baby is now about the size of a coconut, weighing nearly 3.3 pounds and measuring around 16 inches. The brain and nervous system are maturing quickly, and connections are being made between neurons at a rapid pace. The baby can turn its head from side to side, and the bones are hardening — except for the skull, which remains flexible. The lungs continue to develop, and the baby is practicing breathing movements regularly. The baby is also gaining more white fat, which helps regulate temperature and energy after birth. By now, the baby’s immune system is developing in preparation for life outside the womb. The baby sleeps in regular cycles and may even exhibit REM sleep, suggesting dreaming might be possible.",
@@ -277,7 +277,7 @@ enum TriTrackData {
         .init(
             weekNumber: 32,
             quote: "I’m currently the size of an jicama",
-            leftImageUri: "https://img.icons8.com/cotton/64/potato--v1.png",
+            imageUri: "https://img.icons8.com/cotton/64/potato--v1.png",
             babyHeightInCentimeters: 42.4,
             babyWeightInGrams: 1702,
             babyTipText: "At 32 weeks, your baby is about the size of a jicama or small pumpkin, weighing close to 3.8 to 4 pounds and measuring about 16.5 to 17 inches long. The baby is getting stronger and more coordinated with movements — you may feel frequent jabs, rolls, and stretches. The skin is now more opaque and smoother thanks to the fat accumulating underneath. Hair continues to grow on the scalp, and fingernails may reach the tips of the fingers. The digestive system is nearly complete, and the baby is practicing swallowing and breathing to prepare for life outside. If born now, the baby would likely do very well with medical support, as most major organs are developed.",
@@ -286,7 +286,7 @@ enum TriTrackData {
         .init(
             weekNumber: 33,
             quote: "I’m currently the size of a pomelo",
-            leftImageUri: "https://img.icons8.com/external-febrian-hidayat-flat-febrian-hidayat/64/external-Pomelo-fruits-febrian-hidayat-flat-febrian-hidayat.png",
+            imageUri: "https://img.icons8.com/external-febrian-hidayat-flat-febrian-hidayat/64/external-Pomelo-fruits-febrian-hidayat-flat-febrian-hidayat.png",
             babyHeightInCentimeters: 43.7,
             babyWeightInGrams: 1918,
             babyTipText: "Your baby is now about the size of a pomelo, weighing close to 4.2 to 4.5 pounds (1.9 to 2.1 kg) and measuring around 17 to 17.5 inches (43–44.5 cm) long. Inside the womb, your baby is continuing to plump up, gaining nearly half a pound per week as fat stores accumulate under the skin, making the body look fuller and rounder. The bones are fully developed, although still soft and flexible to prepare for the journey through the birth canal. The skull remains pliable for the same reason. At this point, the baby’s immune system is getting stronger, with antibodies being transferred from your body through the placenta. The lungs and brain continue maturing, and the baby is practicing breathing by inhaling amniotic fluid. Your baby’s pupils can now constrict and dilate in response to light. Space is becoming more cramped, so kicks might feel more like nudges or shifts, but movements should remain frequent and strong.",
@@ -295,7 +295,7 @@ enum TriTrackData {
         .init(
             weekNumber: 34,
             quote: "I’m currently the size of an butternut squash",
-            leftImageUri: "https://img.icons8.com/external-icongeek26-flat-icongeek26/64/external-butternut-squash-fruits-and-vegetables-icongeek26-flat-icongeek26.png",
+            imageUri: "https://img.icons8.com/external-icongeek26-flat-icongeek26/64/external-butternut-squash-fruits-and-vegetables-icongeek26-flat-icongeek26.png",
             babyHeightInCentimeters: 45.0,
             babyWeightInGrams: 2146,
             babyTipText: "At 34 weeks, your baby weighs approximately 4.7 to 5 pounds (2.1 to 2.3 kg) and measures about 17.5 to 18 inches (44.5–45.7 cm) long — around the size of a butternut squash. The fat layers beneath the skin are thickening, helping the baby maintain warmth after birth. The central nervous system and lungs are in their final stages of development, and while most babies born at this stage can survive outside the womb, they may still require some medical support, especially with breathing or temperature regulation. The baby can now blink, close the eyes during sleep, and open them when awake. Your little one is practicing vital skills like sucking, breathing, and swallowing. If the baby is in a head-down position already, this may remain the final position for delivery.",
@@ -304,7 +304,7 @@ enum TriTrackData {
         .init(
             weekNumber: 35,
             quote: "I’m currently the size of a pineapple",
-            leftImageUri: "https://img.icons8.com/external-smashingstocks-flat-smashing-stocks/66/external-Pineapple-food-smashingstocks-flat-smashing-stocks.png",
+            imageUri: "https://img.icons8.com/external-smashingstocks-flat-smashing-stocks/66/external-Pineapple-food-smashingstocks-flat-smashing-stocks.png",
             babyHeightInCentimeters: 46.2,
             babyWeightInGrams: 2383,
             babyTipText: "Your baby now weighs about 5.3 to 5.5 pounds (2.4 to 2.5 kg) and measures roughly 18 to 18.5 inches (45.7–47 cm) long — comparable to a pineapple. At this stage, the baby’s development is largely focused on fine-tuning the organs and gaining weight. The skin is becoming less red and wrinkled and more smooth and pink due to increased fat. The brain is growing rapidly, and the baby is storing calcium and iron from the mother. The kidneys are fully developed, and the liver can now process some waste products. The lungs are nearly mature, and surfactant production continues — this chemical prevents the lungs from collapsing after the baby takes their first breath. The baby continues practicing movements like sucking and breathing and may respond to your voice or familiar music. If not yet in a head-down position, your healthcare provider may begin discussing your options.",
@@ -313,7 +313,7 @@ enum TriTrackData {
         .init(
             weekNumber: 36,
             quote: "I’m currently the size of a honeydew",
-            leftImageUri: "https://img.icons8.com/external-others-iconmarket/64/external-cantaloupe-fruit-and-veggies-others-iconmarket-2.png",
+            imageUri: "https://img.icons8.com/external-others-iconmarket/64/external-cantaloupe-fruit-and-veggies-others-iconmarket-2.png",
             babyHeightInCentimeters: 47.4,
             babyWeightInGrams: 2622,
             babyTipText: "At 36 weeks, your baby is about the size of a honeydew or small watermelon, weighing around 5.8 to 6 pounds (2.6 to 2.7 kg) and measuring about 18.5 to 19 inches (47–48.3 cm) in length. The baby is considered late preterm this week, but by the end of this week, many care providers consider the baby full-term. The lungs are usually developed enough to support breathing outside the womb. Most body systems — including the immune and digestive systems — are fully functional or very close. The baby continues to shed vernix (the creamy protective coating) and lanugo (fine body hair), swallowing both, which will become part of the baby’s first bowel movement (meconium). The baby’s head may begin to engage in the pelvis (a process called lightening), which makes breathing easier but can increase pressure on your bladder.",
@@ -322,7 +322,7 @@ enum TriTrackData {
         .init(
             weekNumber: 37,
             quote: "I’m currently the size of a small jackfruit",
-            leftImageUri: "https://img.icons8.com/external-icongeek26-flat-icongeek26/64/external-jackfruit-fruits-and-vegetables-icongeek26-flat-icongeek26.png",
+            imageUri: "https://img.icons8.com/external-icongeek26-flat-icongeek26/64/external-jackfruit-fruits-and-vegetables-icongeek26-flat-icongeek26.png",
             babyHeightInCentimeters: 48.6,
             babyWeightInGrams: 2859,
             babyTipText: "Your baby is now considered early term, meaning most major organs are mature enough to function independently outside the womb. Your little one weighs about 6.2 to 6.5 pounds (2.8 to 3 kg) and measures about 19 to 19.5 inches (48.3–49.5 cm) long — about the size of a small jackfruit. The baby’s body continues building fat stores, especially around the arms and legs, making the skin look fuller and less wrinkled. The lungs are producing surfactant to help with breathing after birth, and the brain is still developing rapidly — this process continues even after birth. Your baby is also practicing gripping and turning the head side to side. By now, the head may have dropped into your pelvis (if it's a first pregnancy), and most babies are positioned head-down in preparation for delivery. Fingernails may now extend beyond the fingertips, and tiny toenails are fully formed.",
@@ -331,7 +331,7 @@ enum TriTrackData {
         .init(
             weekNumber: 38,
             quote: "I’m currently the size of a Swiss chard",
-            leftImageUri: "https://img.icons8.com/external-goofy-flat-kerismaker/96/external-Chard-vegetable-goofy-flat-kerismaker.png",
+            imageUri: "https://img.icons8.com/external-goofy-flat-kerismaker/96/external-Chard-vegetable-goofy-flat-kerismaker.png",
             babyHeightInCentimeters: 49.8,
             babyWeightInGrams: 3083,
             babyTipText: "Your baby is now about the size of a Swiss chard, weighing 6.8 to 7 pounds (3.1 to 3.2 kg) and measuring around 19.5 to 20 inches (49.5–50.8 cm). At this point, all of the baby’s organs, including the lungs, are ready for life outside the womb. The baby continues to gain weight steadily, about half an ounce (15 grams) per day, and is perfecting coordination for life outside, such as sucking, grasping, and responding to sounds. Vernix (the creamy protective coating) continues to shed, and the baby is swallowing amniotic fluid, which becomes part of the first poop — meconium. The baby’s skin is now smooth, the body rounded, and the head may already be engaged in your pelvis, especially if this is your first pregnancy. Most babies are now in the optimal position for delivery, and movements may feel different — more like squirming or stretching than kicks.",
@@ -340,7 +340,7 @@ enum TriTrackData {
         .init(
             weekNumber: 39,
             quote: "I’m currently the size of an small pumpkin",
-            leftImageUri: "https://img.icons8.com/external-flaticons-flat-flat-icons/64/external-pumpkin-gardening-flaticons-flat-flat-icons.png",
+            imageUri: "https://img.icons8.com/external-flaticons-flat-flat-icons/64/external-pumpkin-gardening-flaticons-flat-flat-icons.png",
             babyHeightInCentimeters: 50.7,
             babyWeightInGrams: 3288,
             babyTipText: "Your baby is considered full term, weighing around 7.2 to 7.6 pounds (3.3 to 3.4 kg) and measuring 20 to 20.5 inches (50.8–52 cm) long — about the size of a mini pumpkin. The brain continues growing at a fast pace, gaining about 30% in mass during the last four weeks, and this development will continue well into infancy. The baby’s skin is no longer translucent, and fat continues to develop, especially around the cheeks and limbs, giving your baby that adorable chubby appearance. The umbilical cord is about 20 inches long and half an inch thick. At this stage, the placenta is providing antibodies that will help protect your baby’s immune system after birth. The bones in the skull are soft and unfused to allow flexibility during delivery. Your baby is ready — just waiting for the perfect time to meet you.",
@@ -349,7 +349,7 @@ enum TriTrackData {
         .init(
             weekNumber: 40,
             quote: "I’m currently the size of an watermelon",
-            leftImageUri: "https://img.icons8.com/external-flat-gradient-andi-nur-abdillah/64/external-watermelon-vegetable-and-fruit-flat-gradient-flat-gradient-andi-nur-abdillah.png",
+            imageUri: "https://img.icons8.com/external-flat-gradient-andi-nur-abdillah/64/external-watermelon-vegetable-and-fruit-flat-gradient-flat-gradient-andi-nur-abdillah.png",
             babyHeightInCentimeters: 51.2,
             babyWeightInGrams: 3462,
             babyTipText: "You’ve reached the official due date, though many babies arrive a little before or after. Your baby weighs about 7.5 to 8 pounds (3.4 to 3.6 kg) and is around 20.5 to 21 inches (52–53.3 cm) long — about the size of a small pumpkin. Most of the lanugo (fine body hair) is gone, and only a small amount of vernix may remain. Your baby's organs are fully developed, and the lungs are secreting surfactant to help with the transition to breathing air. The fingernails and toenails may now reach the fingertips. The skull bones are still soft and not yet fused to allow for flexibility during birth. While the baby is completely developed, the placenta is still supplying oxygen and nutrients. Baby may be in a very low position, ready to descend into the birth canal when labor begins. Don’t worry if labor hasn’t started yet — only about 5% of babies are born on their actual due date.",
