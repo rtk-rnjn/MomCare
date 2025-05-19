@@ -21,6 +21,7 @@ class SymptomsViewController: UIViewController {
         if segue.identifier == identifier {
             symptomsTableViewController = segue.destination as? SymptomsTableViewController
             symptomsTableViewController?.symptomsViewController = self
+            symptomsTableViewController?.triTrackViewController = triTrackViewController
         }
     }
 }
