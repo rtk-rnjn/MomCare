@@ -77,8 +77,9 @@ class SymptomsTableViewController: UITableViewController {
     }
 
     func refreshData() {
-        events = EventKitHandler.shared.fetchSymptoms()
-        tableView.reloadData()
-    }
+            let selectedFSCalendarDate = triTrackViewController?.selectedFSCalendarDate
+            events = EventKitHandler.shared.fetchSymptoms(endDate: selectedFSCalendarDate)
+            tableView.reloadData()
+        }
 
 }
