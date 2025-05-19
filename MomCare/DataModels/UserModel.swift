@@ -51,13 +51,9 @@ public enum MoodType: String, Codable, Sendable {
    case angry = "Angry"
 }
 
-struct Mood: Codable {
-    var imageName: String
-    var type: MoodType
-
-    var image: UIImage? {
-        return UIImage(named: imageName)
-    }
+struct MoodHistory: Codable, Sendable, Equatable {
+    var date: Date = .init()
+    var mood: MoodType
 }
 
 struct User: Codable, Sendable, Equatable {
@@ -71,22 +67,28 @@ struct User: Codable, Sendable, Equatable {
         case country
         case phoneNumber = "phone_number"
         case medicalData = "medical_data"
-        case mood
+        case moodHistory = "mood_history"
         case plan
         case exercises
         case history
     }
 
     var id: String = UUID().uuidString
+
     var firstName: String
     var lastName: String?
+
     var emailAddress: String
     var password: String
+
     var countryCode: String = "91"
     var country: Country = .india
+
     var phoneNumber: String
     var medicalData: UserMedical?
-    var mood: MoodType?
+
+    var moodHistory: [MoodHistory] = []
+
     var plan: MyPlan = .init()
     var exercises: [Exercise] = []
     var history: [History] = []
@@ -102,11 +104,13 @@ struct History: Codable, Sendable, Equatable {
         case date
         case plan
         case exercises
+        case moods
     }
 
     var date: Date = .init()
     var plan: MyPlan?
     var exercises: [Exercise] = []
+    var moods: [MoodHistory] = []
 }
 
 struct UserMedical: Codable, Sendable, Equatable {

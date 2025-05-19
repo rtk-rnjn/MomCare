@@ -87,7 +87,7 @@ class SearchViewController: UIViewController, UISearchResultsUpdating, UISearchC
             return
         }
 
-        searchedFood = await MomCareAgents.shared.searchFoods(with: query)
+        searchedFood = await ContentHandler.shared.searchFoods(with: query)
     }
 
 }

@@ -10,13 +10,15 @@ import EventKit
 
 class AllAppointmentsTableViewController: UITableViewController {
 
-    var events: [EKEvent]? = []
+    var events: [EKEvent] = []
     var delegate: EventKitHandlerDelegate = .init()
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
-        events = EventKitHandler.shared.fetchAppointments()
+        events = EventKitHandler.shared.fetchAllAppointments()
+        tableView.reloadData()
+
         delegate.viewController = self
     }
 
@@ -25,21 +27,20 @@ class AllAppointmentsTableViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return events?.count ?? 0
+        return events.count
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "AllAppointmentsTableViewCell", for: indexPath) as? AllAppointmentsTableViewCell
         guard let cell else { fatalError("likhe jo khat tujhe, wo teri yaad me 🎶") }
 
-        guard let appointment = events?[indexPath.row] else { return cell }
+        let appointment = events[indexPath.row]
         cell.updateElements(with: appointment)
 
         return cell
     }
 
     override func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
-        guard let events else { return nil }
 
         let event = events[indexPath.row]
 
@@ -55,5 +56,11 @@ class AllAppointmentsTableViewController: UITableViewController {
 
             return UIMenu(title: "", children: [editAction, deleteAction])
         }
+    }
+
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let event = events[indexPath.row]
+        delegate.presentEKEventViewController(with: event)
+        tableView.deselectRow(at: indexPath, animated: true)
     }
 }

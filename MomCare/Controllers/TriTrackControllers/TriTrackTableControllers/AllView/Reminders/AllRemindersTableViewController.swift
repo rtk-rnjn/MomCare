@@ -20,6 +20,7 @@ class AllRemindersTableViewController: UITableViewController {
         
         store = TriTrackViewController.eventStore
         fetchReminders()
+        tableView.reloadData()
     }
 
     override func numberOfSections(in tableView: UITableView) -> Int {

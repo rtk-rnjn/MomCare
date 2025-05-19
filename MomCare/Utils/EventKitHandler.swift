@@ -92,6 +92,15 @@ class EventKitHandler {
         return events.filter { $0.notes != "Symptom event" }
     }
 
+    func fetchAllAppointments() -> [EKEvent] {
+        let now = Date()
+
+        let startDate = Calendar.current.date(byAdding: .month, value: -1, to: now)
+        let endDate = Calendar.current.date(byAdding: .month, value: 1, to: now)
+
+        return fetchAppointments(startDate: startDate, endDate: endDate)
+    }
+
     func fetchUpcomingAppointment() -> EKEvent? {
         let calendar = createOrGetEvent()
         let predicate = eventStore.predicateForEvents(withStart: Date(), end: Date().addingTimeInterval(60 * 60 * 24), calendars: [calendar])
@@ -103,6 +112,15 @@ class EventKitHandler {
     func fetchSymptoms(startDate: Date? = nil, endDate: Date? = nil) -> [EKEvent] {
         let events = fetchEvents(startDate: startDate, endDate: endDate)
         return events.filter { $0.notes == "Symptom event" }
+    }
+
+    func fetchAllSymptoms() -> [EKEvent] {
+        let now = Date()
+
+        let startDate = Calendar.current.date(byAdding: .month, value: -3, to: now)
+        let endDate = Calendar.current.date(byAdding: .month, value: 3, to: now)
+
+        return fetchSymptoms(startDate: startDate, endDate: endDate)
     }
 
     func deleteEvent(event: EKEvent) {
@@ -194,7 +212,8 @@ class EventKitHandler {
         }
     }
 
-    func fetchReminders(startDate: Date = .init(), endDate: Date? = nil) -> [EKReminder] {
+    func fetchReminders(startDate: Date? = nil, endDate: Date? = nil) -> [EKReminder] {
+        let startDate = startDate ?? Date()
         let endDate = endDate ?? Date().addingTimeInterval(60 * 60 * 24)
 
         let calendar = createOrGetReminder()
@@ -210,12 +229,21 @@ class EventKitHandler {
         return reminders
     }
 
+    func fetchAllReminders() -> [EKReminder] {
+        let now = Date()
+
+        let startDate = Calendar.current.date(byAdding: .month, value: -1, to: now)
+        let endDate = Calendar.current.date(byAdding: .month, value: 1, to: now)
+
+        return fetchReminders(startDate: startDate, endDate: endDate)
+    }
+
     // MARK: Private
 
     private func fetchEvents(startDate: Date?, endDate: Date?) -> [EKEvent] {
         let currentCalendar = Calendar.current
-        let startDate = currentCalendar.startOfDay(for: startDate ?? Date())
-        let endDate = currentCalendar.date(byAdding: .day, value: 1, to: startDate) ?? Date()
+        let startDate = startDate ?? currentCalendar.startOfDay(for: startDate ?? Date())
+        let endDate = endDate ?? currentCalendar.date(byAdding: .day, value: 1, to: startDate) ?? Date()
 
         let calendar = createOrGetEvent()
         let predicate = eventStore.predicateForEvents(withStart: startDate, end: endDate, calendars: [calendar])

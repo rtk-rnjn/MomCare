@@ -32,7 +32,7 @@ class BabyStatsViewController: UIViewController {
         let trimesterData = meAndMyBabyViewController?.trimesterData
 
         let height: Double? = trimesterData?.babyHeightInCentimeters
-        let weight: Double? = trimesterData?.babyWeightInKilograms != nil ? trimesterData!.babyWeightInKilograms! * 1000 : nil
+        let weight: Double? = trimesterData?.babyWeightInGrams
 
         if height != nil {
             heightLabel.text = "\(height!) cm"
