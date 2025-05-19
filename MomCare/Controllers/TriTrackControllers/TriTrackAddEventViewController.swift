@@ -53,8 +53,9 @@ class TriTrackAddEventViewController: UIViewController {
         case "embedShowAddEventTableViewController":
             addEventTableViewController = segue.destination as? AddEventTableViewController
         case "embedShowAddSymptomsTableViewController":
-                if let addSymptomsTableViewController = segue.destination as? AddSymptomsTableViewController{
-                addSymptomsTableViewController.symptomToEdit = self.symptomToEdit
+                if let addSymptomsVC = segue.destination as? AddSymptomsTableViewController{
+                    self.addSymptomsTableViewController = addSymptomsVC
+                    addSymptomsVC.symptomToEdit = self.symptomToEdit
             }
         default:
             break
@@ -63,8 +64,8 @@ class TriTrackAddEventViewController: UIViewController {
     }
 
     @IBAction func eventReminderTapped(_ sender: UISegmentedControl) {
-        prepareEventReminderContainerView()
-    }
+           prepareEventReminderContainerView()
+        }
 
     // MARK: Private
 

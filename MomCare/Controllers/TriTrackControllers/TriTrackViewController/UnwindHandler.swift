@@ -51,10 +51,24 @@ extension TriTrackViewController {
         guard let title = viewController.addSymptomsTableViewController?.titleField.text,
               let dateTime = viewController.addSymptomsTableViewController?.dateTime.date else { return }
 
-        EventKitHandler.shared.createEvent(title: title, startDate: dateTime, endDate: dateTime, notes: "Symptom event")
+        if let existingSymptom = viewController.symptomToEdit {
+            existingSymptom.title = title
+            existingSymptom.startDate = dateTime
+            existingSymptom.endDate = dateTime
+
+            do {
+                try EventKitHandler.shared.eventStore.save(existingSymptom, span: .thisEvent)
+            } catch {
+                fatalError("Cannot Update Value")
+            }
+
+        } else {
+            EventKitHandler.shared.createEvent(title: title, startDate: dateTime, endDate: dateTime, notes: "Symptom event")
+        }
 
         symptomsViewController?.symptomsTableViewController?.refreshData()
     }
+
 
     private func handleEventsView(with viewController: TriTrackAddEventViewController) {
         guard let eventTVC = viewController.addEventTableViewController,

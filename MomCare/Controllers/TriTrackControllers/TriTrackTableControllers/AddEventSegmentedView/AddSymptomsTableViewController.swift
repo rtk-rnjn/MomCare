@@ -18,9 +18,9 @@ class AddSymptomsTableViewController: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        titleField.text = symptomToEdit?.title
-        notesField.text = symptomToEdit?.notes ?? ""
-        dateTime.date = symptomToEdit?.startDate ?? dateTime.date
+        
+            titleField.text = symptomToEdit?.title
+            notesField.text = symptomToEdit?.notes ?? ""
+            dateTime.date = symptomToEdit?.startDate ?? dateTime.date
     }
 }

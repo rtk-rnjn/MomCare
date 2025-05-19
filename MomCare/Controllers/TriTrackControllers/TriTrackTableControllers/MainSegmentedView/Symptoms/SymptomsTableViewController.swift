@@ -56,7 +56,7 @@ class SymptomsTableViewController: UITableViewController {
         return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in
             let editAction = UIAction(title: "Edit", image: UIImage(systemName: "pencil")) { _ in
                 triTrackVC.presentEditSymptomsViewController(with: event)
-            }
+        }
 
             let deleteAction = UIAction(title: "Delete", image: UIImage(systemName: "trash"), attributes: .destructive) { _ in
                 EventKitHandler.shared.deleteEvent(event: event)
