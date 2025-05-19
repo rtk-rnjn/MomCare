@@ -14,6 +14,7 @@ struct TrimesterData: Codable {
     var quote: String?
 
     var imageUri: String?
+    var babyImageUri: String?
 
     var babyHeightInCentimeters: Double?
     var babyWeightInGrams: Double?
@@ -39,5 +40,14 @@ struct TrimesterData: Codable {
             return await UIImage().fetchImage(from: imageUri)
         }
     }
-
+    
+    var babyImage: UIImage? {
+        get async {
+            guard let babyImageUri else {
+                return UIImage(named: "Month1")!
+            }
+            let defaultImage = UIImage(named: babyImageUri)
+            return await UIImage().fetchImage(from: babyImageUri, default: defaultImage)
+        }
+    }
 }
