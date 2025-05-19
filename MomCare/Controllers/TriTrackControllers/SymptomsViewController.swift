@@ -9,6 +9,7 @@ import UIKit
 
 class SymptomsViewController: UIViewController {
     var symptomsTableViewController: SymptomsTableViewController?
+    var triTrackViewController: TriTrackViewController?
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -19,6 +20,7 @@ class SymptomsViewController: UIViewController {
         let identifier = "embedShowSymptomsTabelViewController"
         if segue.identifier == identifier {
             symptomsTableViewController = segue.destination as? SymptomsTableViewController
+            symptomsTableViewController?.triTrackViewController = triTrackViewController
         }
     }
 }

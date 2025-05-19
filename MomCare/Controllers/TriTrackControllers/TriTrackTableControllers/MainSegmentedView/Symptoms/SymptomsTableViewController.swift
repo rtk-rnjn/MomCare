@@ -9,7 +9,9 @@ import UIKit
 import EventKit
 
 class SymptomsTableViewController: UITableViewController {
-    var events: [EKEvent]? = []
+    var triTrackViewController: TriTrackViewController?
+
+    var events: [EKEvent] = []
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -17,7 +19,7 @@ class SymptomsTableViewController: UITableViewController {
     }
 
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return events?.count ?? 0
+        return events.count
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -28,7 +30,7 @@ class SymptomsTableViewController: UITableViewController {
         let cell = tableView.dequeueReusableCell(withIdentifier: "SymptomsCell", for: indexPath) as? SymptomsTableViewCell
 
         guard let cell else { fatalError() }
-        guard let event = events?[indexPath.section] else { return cell }
+        let event = events[indexPath.section]
 
         cell.updateElements(with: event)
 
@@ -50,7 +52,8 @@ class SymptomsTableViewController: UITableViewController {
     }
 
     func refreshData() {
-        events = EventKitHandler.shared.fetchSymptoms()
+        let selectedFSCalendarDate = triTrackViewController?.selectedFSCalendarDate
+        events = EventKitHandler.shared.fetchSymptoms(endDate: selectedFSCalendarDate)
         tableView.reloadData()
     }
 

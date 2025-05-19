@@ -18,7 +18,6 @@ class AllRemindersTableViewController: UITableViewController {
         super.viewWillAppear(animated)
 
         fetchReminders()
-        tableView.reloadData()
     }
 
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -42,6 +41,11 @@ class AllRemindersTableViewController: UITableViewController {
     // MARK: Private
 
     private func fetchReminders() {
-        reminders = EventKitHandler.shared.fetchReminders()
+        EventKitHandler.shared.fetchReminders() { reminders in
+            DispatchQueue.main.async {
+                self.reminders = reminders
+                self.tableView.reloadData()
+            }
+        }
     }
 }
