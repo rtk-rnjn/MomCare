@@ -34,7 +34,7 @@ class DashboardViewController: UIViewController, UICollectionViewDataSource, UIC
             await self.loadUser()
 
             if let user = MomCareUser.shared.user {
-                await MomCareAgents.shared.fetchTips(from: user)
+                await ContentHandler.shared.fetchTips(from: user)
             }
 
             DispatchQueue.main.async {

@@ -7,15 +7,15 @@ class DietTableViewController: UITableViewController {
     var dietViewController: DietViewController?
 
     final var proteinGoal: Double {
-        return Double(MomCareAgents.shared.plan?.allMeals().reduce(0) { $0 + $1.protein } ?? 0)
+        return Double(ContentHandler.shared.plan?.allMeals().reduce(0) { $0 + $1.protein } ?? 0)
     }
 
     final var carbsGoal: Double {
-        return Double(MomCareAgents.shared.plan?.allMeals().reduce(0) { $0 + $1.carbs } ?? 0)
+        return Double(ContentHandler.shared.plan?.allMeals().reduce(0) { $0 + $1.carbs } ?? 0)
     }
 
     final var fatsGoal: Double {
-        return Double(MomCareAgents.shared.plan?.allMeals().reduce(0) { $0 + $1.fat } ?? 0)
+        return Double(ContentHandler.shared.plan?.allMeals().reduce(0) { $0 + $1.fat } ?? 0)
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -24,7 +24,7 @@ class DietTableViewController: UITableViewController {
         Task {
             if let user = MomCareUser.shared.user, let medical = user.medicalData {
                 if user.plan.isEmpty() || user.plan.isOutdated() {
-                    let meals = await MomCareAgents.shared.fetchPlan(from: medical)
+                    let meals = await ContentHandler.shared.fetchPlan(from: medical)
                     MomCareUser.shared.user?.plan = meals
                 }
 
