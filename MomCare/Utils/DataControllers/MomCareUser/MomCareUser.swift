@@ -49,10 +49,6 @@ class MomCareUser {
         user?.medicalData = data
     }
 
-    func setCurrentMood(as mood: MoodType) {
-        user?.mood = mood
-    }
-
     func setUser(_ user: User) {
         self.user = user
     }
