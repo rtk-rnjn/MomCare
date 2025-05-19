@@ -212,28 +212,30 @@ class EventKitHandler {
         }
     }
 
-    func fetchReminders(startDate: Date? = nil, endDate: Date? = nil, completionHandler: @escaping ([EKReminder]) -> Void) {
+    func fetchReminders(startDate: Date? = nil, endDate: Date? = nil) -> [EKReminder] {
         let startDate = startDate ?? Date()
         let endDate = endDate ?? Date().addingTimeInterval(60 * 60 * 24)
 
         let calendar = createOrGetReminder()
         let predicate = eventStore.predicateForReminders(in: [calendar])
 
+        var reminders: [EKReminder] = []
         eventStore.fetchReminders(matching: predicate) { fetchedReminders in
             if let fetchedReminders {
-                let reminders = fetchedReminders.filter { $0.dueDateComponents?.date ?? Date() >= startDate && $0.dueDateComponents?.date ?? Date() <= endDate }
-                completionHandler(reminders)
+                reminders = fetchedReminders.filter { $0.dueDateComponents?.date ?? Date() >= startDate && $0.dueDateComponents?.date ?? Date() <= endDate }
             }
         }
+
+        return reminders
     }
 
-    func fetchAllReminders(completionHandler: @escaping ([EKReminder]) -> Void) {
+    func fetchAllReminders() -> [EKReminder] {
         let now = Date()
 
         let startDate = Calendar.current.date(byAdding: .month, value: -1, to: now)
         let endDate = Calendar.current.date(byAdding: .month, value: 1, to: now)
 
-        return fetchReminders(startDate: startDate, endDate: endDate, completionHandler: completionHandler)
+        return fetchReminders(startDate: startDate, endDate: endDate)
     }
 
     // MARK: Private
