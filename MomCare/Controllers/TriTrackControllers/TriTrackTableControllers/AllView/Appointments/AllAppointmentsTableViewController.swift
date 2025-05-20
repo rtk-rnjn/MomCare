@@ -56,6 +56,16 @@ class AllAppointmentsTableViewController: UITableViewController {
         return dateFormatter.string(from: date)
     }
 
+    override func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
+        guard let header = view as? UITableViewHeaderFooterView else { return }
+        // if todays date, set the text color to red
+        let date = groupedEvents.keys.sorted()[section]
+        let today = Calendar.current.startOfDay(for: Date())
+        if date == today {
+            header.textLabel?.textColor = .red
+        }
+    }
+
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "AllAppointmentsTableViewCell", for: indexPath) as? AllAppointmentsTableViewCell
         guard let cell else { fatalError("likhe jo khat tujhe, wo teri yaad me 🎶") }
