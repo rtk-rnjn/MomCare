@@ -11,12 +11,12 @@ import EventKit
 class SymptomsTableViewController: UITableViewController {
     var triTrackViewController: TriTrackViewController?
     var delegate: EventKitHandlerDelegate = .init()
-    
+
     var events: [EKEvent] = []
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self.delegate.viewController = self
+        delegate.viewController = self
         refreshData()
     }
 

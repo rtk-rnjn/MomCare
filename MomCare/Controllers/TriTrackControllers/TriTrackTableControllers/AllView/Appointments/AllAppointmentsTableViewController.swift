@@ -9,8 +9,7 @@ import UIKit
 import EventKit
 
 class AllAppointmentsTableViewController: UITableViewController {
-    
-    
+
     var searchController: UISearchController = .init(searchResultsController: nil)
     var events: [EKEvent] = []
     var groupedEvents: [Date: [EKEvent]] = [:]
@@ -25,20 +24,8 @@ class AllAppointmentsTableViewController: UITableViewController {
         tableView.reloadData()
 
         delegate.viewController = self
-        
+
         tableView.sectionHeaderTopPadding = 10
-    }
-    
-    func groupEventsByDate() {
-        groupedEvents = [:]
-        
-        for event in events {
-            let date = Calendar.current.startOfDay(for: event.startDate)
-            if groupedEvents[date] == nil {
-                groupedEvents[date] = []
-            }
-            groupedEvents[date]?.append(event)
-        }
     }
 
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -48,7 +35,7 @@ class AllAppointmentsTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return groupedEvents[groupedEvents.keys.sorted()[section]]?.count ?? 0
     }
-    
+
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         let date = groupedEvents.keys.sorted()[section]
         let dateFormatter = DateFormatter()
@@ -98,10 +85,23 @@ class AllAppointmentsTableViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let event = groupedEvents[groupedEvents.keys.sorted()[indexPath.section]]?[indexPath.row]
-        
+
         guard let event else { return }
 
         delegate.presentEKEventViewController(with: event)
         tableView.deselectRow(at: indexPath, animated: true)
     }
+
+    func groupEventsByDate() {
+        groupedEvents = [:]
+
+        for event in events {
+            let date = Calendar.current.startOfDay(for: event.startDate)
+            if groupedEvents[date] == nil {
+                groupedEvents[date] = []
+            }
+            groupedEvents[date]?.append(event)
+        }
+    }
+
 }

@@ -28,19 +28,24 @@ class EKReminderViewController: UITableViewController {
     @IBAction func deleteButtonTapped(_ sender: Any) {
         let alertActions = [
             AlertActionHandler(title: "Cancel", style: .cancel, handler: nil),
-            AlertActionHandler(title: "Delete", style: .destructive) {_ in
+            AlertActionHandler(title: "Delete", style: .destructive) { _ in
                 EventKitHandler.shared.deleteReminder(reminder: self.reminder)
                 self.dismiss(animated: true) {
                     self.reloadHandler?()
                 }
             }
         ]
-        
+
         let alert = Utils.getAlert(title: "Delete Reminder?", message: "Are you sure you want to delete this reminder?", actions: alertActions)
-        
+
         present(alert, animated: true)
     }
-    
+
+    @IBAction func markAsCompletedButtonTapped(_ sender: UIButton) {
+        updateView()
+        reminder.isCompleted = !reminder.isCompleted
+        EventKitHandler.shared.updateReminder(reminder: reminder)
+    }
 
     // MARK: Private
 
@@ -54,9 +59,4 @@ class EKReminderViewController: UITableViewController {
         }
     }
 
-    @IBAction func markAsCompletedButtonTapped(_ sender: UIButton) {
-        updateView()
-        reminder.isCompleted = !reminder.isCompleted
-        EventKitHandler.shared.updateReminder(reminder: reminder)
-    }
 }

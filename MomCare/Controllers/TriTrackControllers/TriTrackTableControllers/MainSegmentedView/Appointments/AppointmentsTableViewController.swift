@@ -22,7 +22,7 @@ class AppointmentsTableViewController: UITableViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
+
         events = fetchEvents()
         tableView.reloadData()
     }
@@ -93,8 +93,7 @@ class AppointmentsTableViewController: UITableViewController {
         let startDate = Calendar.current.startOfDay(for: selectedDate)
         let endDate = Calendar.current.date(byAdding: .day, value: 1, to: startDate)!
 
-        let events = EventKitHandler.shared.fetchAppointments(startDate: startDate, endDate: endDate)
-        return events
+        return EventKitHandler.shared.fetchAppointments(startDate: startDate, endDate: endDate)
     }
 
     func refreshData() {

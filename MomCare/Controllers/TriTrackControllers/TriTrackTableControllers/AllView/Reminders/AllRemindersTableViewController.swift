@@ -41,7 +41,7 @@ class AllRemindersTableViewController: UITableViewController {
     // MARK: Private
 
     private func fetchReminders() {
-        EventKitHandler.shared.fetchReminders() { reminders in
+        EventKitHandler.shared.fetchReminders { reminders in
             DispatchQueue.main.async {
                 self.reminders = reminders
                 self.tableView.reloadData()
