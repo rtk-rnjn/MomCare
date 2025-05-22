@@ -40,7 +40,7 @@ struct TrimesterData: Codable {
             return await UIImage().fetchImage(from: imageUri)
         }
     }
-    
+
     var babyImage: UIImage? {
         get async {
             guard let babyImageUri else {

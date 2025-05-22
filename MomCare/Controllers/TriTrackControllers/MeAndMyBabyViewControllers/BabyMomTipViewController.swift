@@ -29,27 +29,6 @@ class BabyMomTipViewController: UIViewController {
         updateUI()
     }
 
-    @IBAction func BabySeeMoreTapped(_ sender: UIButton) {
-        guard let trimesterData = meAndMyBabyViewController?.trimesterData else { return }
-        
-        performSegue(withIdentifier: "segueShowBabyCardViewController", sender: trimesterData.babyTipText)
-    }
-
-    @IBAction func MomSeeMoreTapped(_ sender: UIButton) {
-        guard let trimesterData = meAndMyBabyViewController?.trimesterData else { return }
-        
-        performSegue(withIdentifier: "segueShowMomCardViewController", sender: trimesterData.momTipText)
-    }
-
-    @IBAction func unwindToBabyMomTipViewController(_ segue: UIStoryboardSegue) {}
-
-    func updateUI() {
-        guard let trimesterData = meAndMyBabyViewController?.trimesterData else { return }
-
-        babyTipTextView.text = trimesterData.babyTipText
-        momTipTextView.text = trimesterData.momTipText
-    }
-    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "segueShowBabyCardViewController" {
             if let destinationViewController = segue.destination as? UINavigationController, let topViewController = destinationViewController.viewControllers.first as? BabyCardViewController {
@@ -62,4 +41,26 @@ class BabyMomTipViewController: UIViewController {
             }
         }
     }
+
+    @IBAction func BabySeeMoreTapped(_ sender: UIButton) {
+        guard let trimesterData = meAndMyBabyViewController?.trimesterData else { return }
+
+        performSegue(withIdentifier: "segueShowBabyCardViewController", sender: trimesterData.babyTipText)
+    }
+
+    @IBAction func MomSeeMoreTapped(_ sender: UIButton) {
+        guard let trimesterData = meAndMyBabyViewController?.trimesterData else { return }
+
+        performSegue(withIdentifier: "segueShowMomCardViewController", sender: trimesterData.momTipText)
+    }
+
+    @IBAction func unwindToBabyMomTipViewController(_ segue: UIStoryboardSegue) {}
+
+    func updateUI() {
+        guard let trimesterData = meAndMyBabyViewController?.trimesterData else { return }
+
+        babyTipTextView.text = trimesterData.babyTipText
+        momTipTextView.text = trimesterData.momTipText
+    }
+
 }

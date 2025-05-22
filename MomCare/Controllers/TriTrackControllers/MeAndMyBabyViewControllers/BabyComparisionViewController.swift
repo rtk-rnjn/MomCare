@@ -11,8 +11,8 @@ class BabyComparisionViewController: UIViewController {
 
     @IBOutlet var imageView: UIImageView!
     @IBOutlet var quoteLabel: UILabel!
-    @IBOutlet weak var babyFetalImage: UIImageView!
-    
+    @IBOutlet var babyFetalImage: UIImageView!
+
     func updateUI(withImageView: UIImage,withBabyImage: UIImage, andQuote: String) {
         imageView.image = withImageView
         babyFetalImage.image = withBabyImage

@@ -17,7 +17,7 @@ class BabyCardViewController: UIViewController {
 
         view.backgroundColor = UIColor(hex: "ECC7BA")
         babyCardTextView.backgroundColor = UIColor(hex: "ECC7BA")
-        
+
         babyCardTextView.text = babyCardText
     }
 
