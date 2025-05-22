@@ -14,10 +14,10 @@ class ExerciseCollectionViewCell: UICollectionViewCell {
     @IBOutlet var exerciseImage: UIImageView!
     @IBOutlet var exerciseCompletionPercentage: UILabel!
     @IBOutlet var exerciseStartButton: UIButton!
-    var completedPercentage: Double = 0
 
     var segueHandler: (() -> Void)?
-    var popUpHandler: (() -> Void)?
+    var popUpHandler: ((Exercise?) -> Void)?
+    var exercise: Exercise?
 
     @IBAction func startButtonTapped(_ sender: Any) {
         if let segueHandler {
@@ -25,15 +25,16 @@ class ExerciseCollectionViewCell: UICollectionViewCell {
         }
     }
 
-    func updateElements(segueHandler handler: (() -> Void)? = nil, popUpHandler: (() -> Void)? = nil) {
-        segueHandler = handler
-        self.popUpHandler = popUpHandler
-    }
-
     @IBAction func infoButtonTapped(_ sender: UIButton) {
         if let popUpHandler {
-            popUpHandler()
+            popUpHandler(exercise)
         }
+    }
+
+    func updateElements(with exercise: Exercise, segueHandler handler: (() -> Void)? = nil, popUpHandler: ((Exercise?) -> Void)? = nil) {
+        segueHandler = handler
+        self.popUpHandler = popUpHandler
+        self.exercise = exercise
     }
 
 }

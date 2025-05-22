@@ -92,6 +92,13 @@ class ContentHandler {
         return foods
     }
 
+    func searchStreamedFood(with query: String, onItem: @escaping (FoodItem) -> Void) async {
+        let searchQeury = FoodSearchQuery(foodName: query)
+        let _sendableQeury: [String: Any]? = searchQeury.toDictionary(snakeCase: true)
+
+        await NetworkManager.shared.fetchStreamedData(.GET, url: "/content/search", queryParameters: _sendableQeury, onItem: onItem)
+    }
+
     func fetchTune(tuneType: String, category: String, fileName: String) async -> MediaLink? {
         let path = "/content/tunes/\(tuneType)/\(category)/\(fileName)"
 
@@ -102,6 +109,14 @@ class ContentHandler {
         let path = "/content/tunes/\(tuneType)/\(category)"
 
         return await NetworkManager.shared.get(url: path)
+    }
+
+    func fetchExercise() async -> [Exercise]? {
+        return [
+            .init(name: "Name1", duration: 100, description: "Description1", exerciseImageUri: ""),
+            .init(name: "Name2", duration: 100, description: "Description2", exerciseImageUri: ""),
+            .init(name: "Name3", duration: 100, description: "Description3", exerciseImageUri: "")
+        ]
     }
 
     func fetchAudio(from url: String) async -> Data? {

@@ -83,10 +83,10 @@ extension TriTrackViewController {
         guard let reminderTVC = viewController.addReminderTableViewController,
               let title = reminderTVC.titleField.text else { return }
 
-        let dueDateComponents = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute], from: reminderTVC.dateTime.date)
+        let dueDateComponents = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute, .second, .nanosecond], from: reminderTVC.dateTime.date)
         let recurrenceRules = TriTrackViewController.createRecurrenceRule(for: reminderTVC.selectedRepeatOption)
 
-        let reminder = EventKitHandler.shared.createReminder(title: title, notes: reminderTVC.notesField.text, dueDateComponents: dueDateComponents, recurrenceRules: recurrenceRules)
+        EventKitHandler.shared.createReminder(title: title, notes: reminderTVC.notesField.text, dueDateComponents: dueDateComponents, recurrenceRules: recurrenceRules)
         eventsViewController?.remindersTableViewController?.refreshData()
     }
 

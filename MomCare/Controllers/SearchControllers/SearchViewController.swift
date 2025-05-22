@@ -7,6 +7,25 @@
 
 import UIKit
 
+actor Debouncer {
+
+    // MARK: Internal
+
+    func run(delay: TimeInterval, action: @escaping @Sendable () async -> Void) {
+        currentTask?.cancel()
+        currentTask = Task {
+            try? await Task.sleep(nanoseconds: UInt64(delay * 1_000_000_000))
+            guard !Task.isCancelled else { return }
+            await action()
+        }
+    }
+
+    // MARK: Private
+
+    private var currentTask: Task<Void, Never>?
+
+}
+
 class SearchViewController: UIViewController, UISearchResultsUpdating, UISearchControllerDelegate, UISearchBarDelegate {
 
     // MARK: Internal
@@ -40,13 +59,9 @@ class SearchViewController: UIViewController, UISearchResultsUpdating, UISearchC
     func updateSearchResults(for searchController: UISearchController) {
         let searchText = searchController.searchBar.text ?? ""
 
-        debounceTask?.cancel()
-        debounceTask = Task {
-            try? await Task.sleep(nanoseconds: UInt64(0.7) * 1_000_000_000)
-            await searchFood(query: searchText)
-
-            DispatchQueue.main.async {
-                self.tableView.reloadData()
+        Task {
+            await debouncer.run(delay: 0.5) {
+                await self.searchFood(query: searchText)
             }
         }
     }
@@ -79,15 +94,17 @@ class SearchViewController: UIViewController, UISearchResultsUpdating, UISearchC
 
     // MARK: Private
 
-    private var debounceTask: Task<Void, Never>?
+    private var debouncer: Debouncer = .init()
 
     private func searchFood(query: String) async {
-        guard !query.isEmpty else {
-            searchedFood = []
-            return
-        }
+        searchedFood = []
 
-        searchedFood = await ContentHandler.shared.searchFoods(with: query)
+        await ContentHandler.shared.searchStreamedFood(with: query) { foodItem in
+            DispatchQueue.main.async {
+                self.searchedFood.append(foodItem)
+                self.tableView.reloadData()
+            }
+        }
     }
 
 }

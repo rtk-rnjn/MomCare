@@ -28,7 +28,10 @@ class ContentTableViewCell: UITableViewCell {
         foodItemLabel.text = foodItem.name
         kalcLabel.text = "\(String(foodItem.calories)) cal."
         Task {
-            foodImageView.image = await foodItem.image
+            let image = await foodItem.image
+            DispatchQueue.main.async {
+                self.foodImageView.image = image
+            }
         }
         self.foodItem = foodItem
 

@@ -46,7 +46,10 @@ class DietViewController: UIViewController {
         guard let quantityType = HKQuantityType.quantityType(forIdentifier: typeIdentifier) else { return }
         let quantity = HKQuantity(unit: unit, doubleValue: amount * (consumed ? 1 : -1))
         let sample = HKQuantitySample(type: quantityType, quantity: quantity, start: date, end: date)
-        HealthKitHandler.shared.healthStore.save(sample) { success, _ in if success {} }
+
+        Task {
+            try? await HealthKitHandler.shared.healthStore.save(sample)
+        }
     }
 
     static func addCalories(energy: Double, consumed: Bool) {

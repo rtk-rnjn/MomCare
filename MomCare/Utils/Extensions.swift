@@ -8,6 +8,7 @@
 import Foundation
 import UIKit
 import CoreImage.CIFilterBuiltins
+import Kingfisher
 
 extension String {
     func isValidEmail() -> Bool {
@@ -56,39 +57,20 @@ extension UIImage {
     }
 
     func fetchImage(from imageUri: String?, default defaultImage: UIImage? = nil) async -> UIImage? {
-        guard let imageUri else {
+        guard let imageUri, let url = URL(string: imageUri) else {
             return defaultImage
         }
 
-        if let image = fetchFromFileSystem(uri: imageUri) {
-            return image
+        return await withCheckedContinuation { continuation in
+            KingfisherManager.shared.retrieveImage(with: url) { result in
+                switch result {
+                case let .success(value):
+                    continuation.resume(returning: value.image)
+                case .failure:
+                    continuation.resume(returning: defaultImage)
+                }
+            }
         }
-        guard let url = URL(string: imageUri) else { return defaultImage }
-
-        do {
-            let (data, _) = try await URLSession.shared.data(from: url)
-
-            saveToFileSystem(uri: imageUri, data: data)
-            return UIImage(data: data)
-        } catch {
-            return defaultImage
-        }
-    }
-
-    private func fetchFromFileSystem(uri: String) -> UIImage? {
-        let fileManager = FileManager.default
-        let documentsDirectory = fileManager.urls(for: .documentDirectory, in: .userDomainMask).first!
-        let fileURL = documentsDirectory.appendingPathComponent(uri)
-
-        return UIImage(contentsOfFile: fileURL.path)
-    }
-
-    private func saveToFileSystem(uri: String, data: Data) {
-        let fileManager = FileManager.default
-        let documentsDirectory = fileManager.urls(for: .documentDirectory, in: .userDomainMask).first!
-        let fileURL = documentsDirectory.appendingPathComponent(uri)
-
-        try? data.write(to: fileURL)
     }
 }
 

@@ -97,6 +97,10 @@ struct User: Codable, Sendable, Equatable {
         let fullName = "\(firstName) \(lastName ?? "")"
         return fullName.trimmingCharacters(in: .whitespaces)
     }
+
+    var pregancyData: (week: Int, day: Int, trimester: String)? {  // swiftlint:disable:this large_tuple
+        return Utils.pregnancyWeekAndDay(dueDate: medicalData?.dueDate ?? .init())
+    }
 }
 
 struct History: Codable, Sendable, Equatable {
@@ -111,6 +115,10 @@ struct History: Codable, Sendable, Equatable {
     var plan: MyPlan?
     var exercises: [Exercise] = []
     var moods: [MoodHistory] = []
+
+    var completionPercentage: Double {
+        return exercises.map { $0.completionPercentage }.reduce(0, +) / Double(exercises.count)
+    }
 }
 
 struct UserMedical: Codable, Sendable, Equatable {

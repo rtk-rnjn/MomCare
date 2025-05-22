@@ -1,5 +1,5 @@
 {
-  "originHash" : "2e426b58efc614fd3bc2343e314360fc887da902c8a3b8101b197b9661cc21ca",
+  "originHash" : "4ee1944c34d93b156154d286e2f0aed651d01eab526ea367f444622a8c39cca5",
   "pins" : [
     {
       "identity" : "fscalendar",
@@ -11,21 +11,21 @@
       }
     },
     {
+      "identity" : "kingfisher",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/onevcat/Kingfisher",
+      "state" : {
+        "revision" : "7deda23bbdca612076c5c315003d8638a08ed0f1",
+        "version" : "8.3.2"
+      }
+    },
+    {
       "identity" : "lnpopupcontroller",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/LeoNatan/LNPopupController.git",
       "state" : {
         "revision" : "80fe14a5f38f117f81dbf7d583fe867f012fee8c",
         "version" : "2.20.7"
-      }
-    },
-    {
-      "identity" : "youtube-ios-player-helper",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/youtube/youtube-ios-player-helper",
-      "state" : {
-        "revision" : "f57129cd4380ec0a74dd3a59da3270a1d653d59b",
-        "version" : "1.0.4"
       }
     }
   ],

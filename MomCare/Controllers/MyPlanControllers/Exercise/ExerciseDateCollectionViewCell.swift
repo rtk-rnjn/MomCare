@@ -1,15 +1,3 @@
-//
-
-//  DietDateCellCollectionViewCell.swift
-
-//  MomCare
-
-//
-
-//  Created by Nupur on 19/01/25.
-
-//
-
 import UIKit
 
 class ExerciseDateCellCollectionViewCell: UICollectionViewCell {
@@ -23,17 +11,40 @@ class ExerciseDateCellCollectionViewCell: UICollectionViewCell {
     @IBOutlet var thursdayRing: UIView!
     @IBOutlet var fridayRing: UIView!
     @IBOutlet var saturdayRing: UIView!
-    var index = 0
 
     var ringViews: [UIView] = []
 
     func prepareViewRings() {
+        let history: [History] = MomCareUser.shared.user?.history ?? []
+
+        let today = Date()
+        var calendar = Calendar.current
+        calendar.firstWeekday = 1 // Sunday
+
+        let weekday = calendar.component(.weekday, from: today)
+        let daysToLastSunday = weekday == 1 ? 7 : weekday
+        guard let lastSunday = calendar.date(byAdding: .day, value: -daysToLastSunday, to: today) else {
+            return
+        }
+
+        let exerciseHistory = history.filter {
+            $0.date >= lastSunday
+        }.sorted { $0.date < $1.date }
+
+        let todaysWeekday = calendar.component(.weekday, from: today)
+
         ringViews = [
             sundayRing, mondayRing, tuesdayRing, wednesdayRing, thursdayRing, fridayRing, saturdayRing
         ]
-        for view in ringViews {
-            prepareExerciseRing(with: view)
-            setupRing()
+
+        let startIndex = todaysWeekday - 1
+        let endIndex = startIndex - exerciseHistory.count + 1
+
+        guard endIndex >= 0 else { return } // just in case
+
+        for index in stride(from: startIndex, through: endIndex, by: -1) {
+            prepareExerciseRing(with: ringViews[index])
+            animateRings(to: 0)
         }
     }
 
@@ -45,10 +56,6 @@ class ExerciseDateCellCollectionViewCell: UICollectionViewCell {
         animation.timingFunction = CAMediaTimingFunction(name: .easeInEaseOut)
         shapeLayer.strokeEnd = value
         shapeLayer.add(animation, forKey: "ringAnimation")
-    }
-
-    func setupRing() {
-        animateRings(to: 0.5)
     }
 
     // MARK: Private

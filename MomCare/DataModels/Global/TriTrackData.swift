@@ -5,7 +5,7 @@
 //  Created by Ritik Ranjan on 04/03/25.
 //
 
-enum TriTrackData {
+enum TriTrackData {  // swiftlint:disable:this type_body_length
     public static let trimesterData: [TrimesterData] = [
         .init(
             weekNumber: 1,

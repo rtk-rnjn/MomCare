@@ -26,7 +26,7 @@ class ExerciseDetailsViewController: UIViewController {
     // MARK: Internal
 
     // https://rohittamkhane.medium.com/create-a-custom-alert-controller-in-swift-ef5d715839f5
-    func show() {
+    func show(_ exercise: Exercise?) {
         rootViewController?.present(self, animated: true, completion: nil)
     }
 

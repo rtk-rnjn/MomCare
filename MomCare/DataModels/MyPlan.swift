@@ -30,6 +30,7 @@ enum MealType: String, Codable, Equatable {
 enum ExerciseType: String, Codable, Equatable {
     case breathing = "Breathing"
     case stretching = "Stretching"
+    case yoga = "Yoga"
 }
 
 enum Difficulty: String, Codable, Equatable {
@@ -130,28 +131,36 @@ struct MyPlan: Codable, Sendable, Equatable {
 
 struct Exercise: Codable, Sendable, Equatable {
     enum CodingKeys: String, CodingKey {
+        case name
         case exerciseType = "exercise_type"
         case duration
         case description
         case tags
         case level
-        case exerciseImageName = "exercise_image_name"
+        case exerciseImageUri = "exercise_image_name"
         case durationCompleted = "duration_completed"
     }
 
-    let exerciseType: ExerciseType
-    let duration: TimeInterval
-    let description: String
-    let tags: [String]
+    var name: String
+    var exerciseType: ExerciseType = .breathing
+    var duration: TimeInterval
+    var description: String
+    var tags: [String] = []
     var level: Difficulty = .beginner
-    var exerciseImageName: String
+    var exerciseImageUri: String
     var durationCompleted: TimeInterval = 0
 
     var completed: Bool {
         return durationCompleted >= duration - 1
     }
 
+    var completionPercentage: Double {
+        return durationCompleted / duration
+    }
+
     var exerciseImage: UIImage? {
-        return UIImage(named: exerciseImageName)
+        get async {
+            return await UIImage().fetchImage(from: exerciseImageUri)
+        }
     }
 }

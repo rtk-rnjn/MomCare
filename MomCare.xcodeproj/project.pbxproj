@@ -10,7 +10,7 @@
 		053290F42D40AEC000295E58 /* FSCalendar in Frameworks */ = {isa = PBXBuildFile; productRef = 053290F32D40AEC000295E58 /* FSCalendar */; };
 		05BAA2152D771882008C89DB /* LNPopupController in Embed Frameworks */ = {isa = PBXBuildFile; productRef = F5F1D6112D739C6A00F65BA7 /* LNPopupController */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		05E7F9672D37748E00F4D81E /* .swiftlint.yml in Resources */ = {isa = PBXBuildFile; fileRef = 05E7F9662D37748300F4D81E /* .swiftlint.yml */; };
-		3A36E1032D73710800AAF5B7 /* YouTubeiOSPlayerHelper in Frameworks */ = {isa = PBXBuildFile; productRef = 3A36E1022D73710800AAF5B7 /* YouTubeiOSPlayerHelper */; };
+		F50F80252DDFB503007B43DD /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = F50F80242DDFB503007B43DD /* Kingfisher */; };
 		F5F1D6122D739C6A00F65BA7 /* LNPopupController in Frameworks */ = {isa = PBXBuildFile; productRef = F5F1D6112D739C6A00F65BA7 /* LNPopupController */; };
 /* End PBXBuildFile section */
 
@@ -64,9 +64,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F50F80252DDFB503007B43DD /* Kingfisher in Frameworks */,
 				053290F42D40AEC000295E58 /* FSCalendar in Frameworks */,
 				F5F1D6122D739C6A00F65BA7 /* LNPopupController in Frameworks */,
-				3A36E1032D73710800AAF5B7 /* YouTubeiOSPlayerHelper in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -114,8 +114,8 @@
 			name = MomCare;
 			packageProductDependencies = (
 				053290F32D40AEC000295E58 /* FSCalendar */,
-				3A36E1022D73710800AAF5B7 /* YouTubeiOSPlayerHelper */,
 				F5F1D6112D739C6A00F65BA7 /* LNPopupController */,
+				F50F80242DDFB503007B43DD /* Kingfisher */,
 			);
 			productName = MomCare;
 			productReference = 059C467D2D30D12400B4A15A /* MomCare.app */;
@@ -147,8 +147,8 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				053290F22D40AEC000295E58 /* XCRemoteSwiftPackageReference "FSCalendar" */,
-				3A36E1012D73710800AAF5B7 /* XCRemoteSwiftPackageReference "youtube-ios-player-helper" */,
 				F5F1D6102D739C6A00F65BA7 /* XCRemoteSwiftPackageReference "LNPopupController" */,
+				F50F80232DDFB503007B43DD /* XCRemoteSwiftPackageReference "Kingfisher" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 059C467E2D30D12400B4A15A /* Products */;
@@ -413,12 +413,12 @@
 				minimumVersion = 2.8.4;
 			};
 		};
-		3A36E1012D73710800AAF5B7 /* XCRemoteSwiftPackageReference "youtube-ios-player-helper" */ = {
+		F50F80232DDFB503007B43DD /* XCRemoteSwiftPackageReference "Kingfisher" */ = {
 			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/youtube/youtube-ios-player-helper";
+			repositoryURL = "https://github.com/onevcat/Kingfisher";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 1.0.4;
+				minimumVersion = 8.3.2;
 			};
 		};
 		F5F1D6102D739C6A00F65BA7 /* XCRemoteSwiftPackageReference "LNPopupController" */ = {
@@ -437,10 +437,10 @@
 			package = 053290F22D40AEC000295E58 /* XCRemoteSwiftPackageReference "FSCalendar" */;
 			productName = FSCalendar;
 		};
-		3A36E1022D73710800AAF5B7 /* YouTubeiOSPlayerHelper */ = {
+		F50F80242DDFB503007B43DD /* Kingfisher */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 3A36E1012D73710800AAF5B7 /* XCRemoteSwiftPackageReference "youtube-ios-player-helper" */;
-			productName = YouTubeiOSPlayerHelper;
+			package = F50F80232DDFB503007B43DD /* XCRemoteSwiftPackageReference "Kingfisher" */;
+			productName = Kingfisher;
 		};
 		F5F1D6112D739C6A00F65BA7 /* LNPopupController */ = {
 			isa = XCSwiftPackageProductDependency;
