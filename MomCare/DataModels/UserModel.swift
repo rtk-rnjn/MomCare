@@ -98,7 +98,7 @@ struct User: Codable, Sendable, Equatable {
         return fullName.trimmingCharacters(in: .whitespaces)
     }
 
-    var pregancyData: (week: Int, day: Int, trimester: String)? {  // swiftlint:disable:this large_tuple
+    var pregancyData: (week: Int, day: Int, trimester: String)? { // swiftlint:disable:this large_tuple
         return Utils.pregnancyWeekAndDay(dueDate: medicalData?.dueDate ?? .init())
     }
 

@@ -27,6 +27,25 @@ class MusicPlayerViewController: UIViewController {
     var delegate: MusicPlayerDelegate?
     var song: Song?
 
+    lazy var songSlider: UISlider = {
+        let slider = UISlider()
+        slider.value = 0.5
+        slider.minimumTrackTintColor = .white
+        slider.thumbTintColor = .clear
+        slider.translatesAutoresizingMaskIntoConstraints = false
+        slider.setContentHuggingPriority(.required, for: .horizontal)
+        slider.setContentHuggingPriority(.required, for: .vertical)
+        slider.setContentCompressionResistancePriority(.required, for: .horizontal)
+        slider.setContentCompressionResistancePriority(.required, for: .vertical)
+
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(durationSliderTapped))
+        slider.addGestureRecognizer(tapGesture)
+
+        slider.addTarget(self, action: #selector(sliderValueChanged), for: .valueChanged)
+
+        return slider
+    }()
+
     override func viewDidLoad() {
         super.viewDidLoad()
         prepareUI()
@@ -80,25 +99,6 @@ class MusicPlayerViewController: UIViewController {
         label.setContentCompressionResistancePriority(.required, for: .horizontal)
         label.setContentCompressionResistancePriority(.required, for: .vertical)
         return label
-    }()
-
-    lazy var songSlider: UISlider = {
-        let slider = UISlider()
-        slider.value = 0.5
-        slider.minimumTrackTintColor = .white
-        slider.thumbTintColor = .clear
-        slider.translatesAutoresizingMaskIntoConstraints = false
-        slider.setContentHuggingPriority(.required, for: .horizontal)
-        slider.setContentHuggingPriority(.required, for: .vertical)
-        slider.setContentCompressionResistancePriority(.required, for: .horizontal)
-        slider.setContentCompressionResistancePriority(.required, for: .vertical)
-
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(durationSliderTapped))
-        slider.addGestureRecognizer(tapGesture)
-
-        slider.addTarget(self, action: #selector(sliderValueChanged), for: .valueChanged)
-
-        return slider
     }()
 
     private let startDurationLabel: UILabel = {

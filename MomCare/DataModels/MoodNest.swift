@@ -21,8 +21,9 @@ struct Song: Codable {
     var isPlaying: Bool = false
 
     var uri: String?
+
     var url: URL? {
-        guard let uri = uri else { return nil }
+        guard let uri else { return nil }
         return URL(string: uri)
     }
 

@@ -145,9 +145,7 @@ extension PlaylistTableViewController: MusicPlayerDelegate {
         player?.volume = value
     }
 
-    func volumeButtonTapped(_ sender: UIButton) {
-
-    }
+    func volumeButtonTapped(_ sender: UIButton) {}
 }
 
 extension PlaylistTableViewController {
