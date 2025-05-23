@@ -17,8 +17,7 @@ struct Song: Codable {
     var name: String
     var artist: String
     var duration: TimeInterval
-    var imageUri: String
-    var isPlaying: Bool = false
+    var imageUri: String?
 
     var uri: String?
 
@@ -28,7 +27,8 @@ struct Song: Codable {
     }
 
     var image: UIImage? {
-        return UIImage(named: imageUri)
+        guard let imageUri else { return UIImage(named: "music.note") }
+        return UIImage(named: imageUri) ?? UIImage(named: "music.note")
     }
 
 }
@@ -40,7 +40,7 @@ struct Playlist: Codable, Sendable {
     var name: String
     var songs: [Song]
 
-    var forMood: MoodType?
+    var forMood: MoodType? = .happy
 
     var image: UIImage? {
         return UIImage(named: imageName)

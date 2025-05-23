@@ -24,6 +24,8 @@ class PlaylistTableViewController: UITableViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         songs = playlist.songs
+
+        setSongs()
     }
 
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -44,6 +46,28 @@ class PlaylistTableViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         setupMusicPlayer(with: songs[indexPath.row])
+    }
+
+    func setSongs() {
+        let mood = playlist.forMood!
+
+        Task {
+            let links: [String] = await ContentHandler.shared.fetchTuneNames(tuneType: mood) ?? []
+            var songs: [Song] = []
+            for link in links {
+                let songUri = await ContentHandler.shared.fetchTune(tuneType: mood, category: "", fileName: link)
+
+                let name = link.components(separatedBy: ".").first ?? ""
+                let song = Song(name: name, artist: "Unknown Artist", duration: 100, uri: songUri?.uri)
+
+                songs.append(song)
+            }
+
+            DispatchQueue.main.async {
+                self.songs = songs
+                self.tableView.reloadData()
+            }
+        }
     }
 
     @IBAction func unwindToSongPageViewController(_ segue: UIStoryboardSegue) {}

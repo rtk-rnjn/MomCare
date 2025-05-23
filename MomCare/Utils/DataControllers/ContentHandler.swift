@@ -38,6 +38,13 @@ struct MediaLink: Codable, Sendable {
     var expiryAt: Date?
 }
 
+private var mappedMoodTypes: [MoodType: String] = [
+    .happy: "Pleasant",
+    .sad: "Unpleasant",
+    .angry: "Very Unpleasant",
+    .stressed: "Neutral"
+]
+
 class ContentHandler {
 
     // MARK: Public
@@ -99,14 +106,23 @@ class ContentHandler {
         await NetworkManager.shared.fetchStreamedData(.GET, url: "/content/search", queryParameters: _sendableQeury, onItem: onItem)
     }
 
-    func fetchTune(tuneType: String, category: String, fileName: String) async -> MediaLink? {
-        let path = "/content/tunes/\(tuneType)/\(category)/\(fileName)"
+    func fetchTune(tuneType: MoodType, category: String, fileName: String, fileExtention: String = "mp3") async -> MediaLink? {
+        let type = mappedMoodTypes[tuneType] ?? "Pleasent"
+        let path = "/content/tunes/\(type)/\(category)/\(fileName).\(fileExtention)"
 
         return await NetworkManager.shared.get(url: path)
     }
 
-    func fetchTuneNames(tuneType: String, category: String) async -> [String]? {
-        let path = "/content/tunes/\(tuneType)/\(category)"
+    func fetchTuneNames(tuneType: MoodType, category: String? = nil) async -> [String]? {
+        let path: String
+
+        let type = mappedMoodTypes[tuneType] ?? "Pleasent"
+
+        if let category {
+            path = "/content/tunes/\(type)/\(category)"
+        } else {
+            path = "/content/tunes/\(type)"
+        }
 
         return await NetworkManager.shared.get(url: path)
     }
