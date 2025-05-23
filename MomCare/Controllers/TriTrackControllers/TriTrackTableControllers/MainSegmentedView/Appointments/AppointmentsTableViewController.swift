@@ -12,7 +12,7 @@ class AppointmentsTableViewController: UITableViewController {
 
     var delegate: EventKitHandlerDelegate = .init()
     var eventsViewController: EventsViewController?
-    var events: [EKEvent]? = []
+    var events: [EKEvent] = []
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -28,8 +28,6 @@ class AppointmentsTableViewController: UITableViewController {
     }
 
     override func numberOfSections(in tableView: UITableView) -> Int {
-        guard let events else { return 0 }
-
         return events.count
     }
 
@@ -41,7 +39,6 @@ class AppointmentsTableViewController: UITableViewController {
         let cell = tableView.dequeueReusableCell(withIdentifier: "AppointmentCell", for: indexPath) as? AppointmentsTableViewCell
 
         guard let cell else { fatalError("Failed to dequeue AppointmentsTableViewCell") }
-        guard let events else { return cell }
 
         cell.updateElements(with: events[indexPath.section])
         cell.showsReorderControl = false
@@ -55,7 +52,6 @@ class AppointmentsTableViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
-        guard let events else { return nil }
 
         let event = events[indexPath.row]
 
@@ -74,7 +70,7 @@ class AppointmentsTableViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        guard let event = events?[indexPath.section] else { return }
+        let event = events[indexPath.section]
 
         delegate.presentEKEventViewController(with: event)
         tableView.deselectRow(at: indexPath, animated: true)
@@ -88,7 +84,7 @@ class AppointmentsTableViewController: UITableViewController {
         return 3
     }
 
-    func fetchEvents() -> [EKEvent]? {
+    func fetchEvents() -> [EKEvent] {
         let selectedDate = eventsViewController?.triTrackViewController?.selectedFSCalendarDate ?? Date()
         let startDate = Calendar.current.startOfDay(for: selectedDate)
         let endDate = Calendar.current.date(byAdding: .day, value: 1, to: startDate)!

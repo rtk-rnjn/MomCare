@@ -55,7 +55,7 @@ class PlaylistTableViewController: UITableViewController {
             let links: [String] = await ContentHandler.shared.fetchTuneNames(tuneType: mood) ?? []
             var songs: [Song] = []
             for link in links {
-                let songUri = await ContentHandler.shared.fetchTune(tuneType: mood, category: "", fileName: link)
+                let songUri = await ContentHandler.shared.fetchTune(tuneType: mood, fileName: link)
 
                 let name = link.components(separatedBy: ".").first ?? ""
                 let song = Song(name: name, artist: "Unknown Artist", duration: 100, uri: songUri?.uri)
@@ -119,13 +119,12 @@ class PlaylistTableViewController: UITableViewController {
 
 extension PlaylistTableViewController: MusicPlayerDelegate {
     @objc func playPauseButtonTapped(_ sender: UIButton) {
-        if player?.timeControlStatus == .playing {
-            player?.pause()
-            sender.setImage(UIImage(systemName: "play.fill"), for: .normal)
-        } else {
-            player?.play()
-            sender.setImage(UIImage(systemName: "pause.fill"), for: .normal)
-        }
+        player?.play()
+//        if player?.timeControlStatus == .playing {
+//            player?.pause()
+//        } else {
+//            player?.play()
+//        }
     }
 
     @objc func forwardButtonTapped(_ sender: UIButton) {
