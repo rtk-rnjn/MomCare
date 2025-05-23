@@ -1,5 +1,5 @@
 //
-//  MusicPlayer.swift
+//  MusicPlayerViewController.swift
 //  MomCare
 //
 //  Created by RITIK RANJAN on 28/02/25.
@@ -20,7 +20,7 @@ protocol MusicPlayerDelegate: AnyObject {
     func volumeButtonTapped(_ sender: UIButton)
 }
 
-class MusicPlayer: UIViewController {
+class MusicPlayerViewController: UIViewController {
 
     // MARK: Internal
 
@@ -82,7 +82,7 @@ class MusicPlayer: UIViewController {
         return label
     }()
 
-    private lazy var songSlider: UISlider = {
+    lazy var songSlider: UISlider = {
         let slider = UISlider()
         slider.value = 0.5
         slider.minimumTrackTintColor = .white

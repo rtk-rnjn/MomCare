@@ -101,6 +101,10 @@ struct User: Codable, Sendable, Equatable {
     var pregancyData: (week: Int, day: Int, trimester: String)? {  // swiftlint:disable:this large_tuple
         return Utils.pregnancyWeekAndDay(dueDate: medicalData?.dueDate ?? .init())
     }
+
+    var lastMood: MoodType? {
+        return moodHistory.sorted(by: { $0.date > $1.date }).first?.mood
+    }
 }
 
 struct History: Codable, Sendable, Equatable {

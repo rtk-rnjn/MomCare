@@ -10,7 +10,8 @@ class PlaylistTableViewController: UITableViewController {
     var playlist: Playlist!
     var initialTabBarController: InitialTabBarController?
     var songElementsViewController: SongElementsViewController?
-    var musicPlayer: MusicPlayer = .init()
+    var musicPlayer: MusicPlayerViewController = .init()
+    var player: AVPlayer?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -52,9 +53,12 @@ class PlaylistTableViewController: UITableViewController {
         let forwardBarButton = createBarButtonItem(systemName: "forward.fill", action: #selector(forwardButtonTapped))
         let crossBarButton = createBarButtonItem(systemName: "x.circle.fill", action: #selector(crossButtonTapped))
 
-        musicPlayer = MusicPlayer()
+        musicPlayer = MusicPlayerViewController()
         musicPlayer.song = song
+
         configurePopupItem(for: musicPlayer, song: song, buttons: [playBarButton, forwardBarButton, crossBarButton])
+        guard let url = song.url else { return }
+        player = AVPlayer(playerItem: AVPlayerItem(url: url))
         musicPlayer.delegate = self
 
         initialTabBarController?.presentPopupBar(with: musicPlayer, animated: true)
@@ -74,7 +78,7 @@ class PlaylistTableViewController: UITableViewController {
         return UIBarButtonItem(image: UIImage(systemName: systemName), style: .plain, target: self, action: action)
     }
 
-    private func configurePopupItem(for player: MusicPlayer, song: Song, buttons: [UIBarButtonItem]) {
+    private func configurePopupItem(for player: MusicPlayerViewController, song: Song, buttons: [UIBarButtonItem]) {
         player.popupItem.title = song.name
         player.popupItem.subtitle = song.artist
         player.popupItem.progress = 0.34
@@ -91,31 +95,58 @@ class PlaylistTableViewController: UITableViewController {
 
 extension PlaylistTableViewController: MusicPlayerDelegate {
     @objc func playPauseButtonTapped(_ sender: UIButton) {
-        print("WORKS HERE")
+        if player?.timeControlStatus == .playing {
+            player?.pause()
+            sender.setImage(UIImage(systemName: "play.fill"), for: .normal)
+        } else {
+            player?.play()
+            sender.setImage(UIImage(systemName: "pause.fill"), for: .normal)
+        }
     }
 
     @objc func forwardButtonTapped(_ sender: UIButton) {
-        print("WORKS HERE")
+        guard let currentItem = player?.currentItem else { return }
+        let currentTime = CMTimeGetSeconds(currentItem.currentTime())
+        let duration = CMTimeGetSeconds(currentItem.duration)
+
+        if currentTime + 10 < duration {
+            player?.seek(to: CMTime(seconds: currentTime + 10, preferredTimescale: 1))
+        } else {
+            player?.seek(to: currentItem.duration)
+        }
     }
 
     func backwardButtonTapped(_ sender: UIButton) {
-        print("WORKS HERE")
+        guard let currentItem = player?.currentItem else { return }
+        let currentTime = CMTimeGetSeconds(currentItem.currentTime())
+
+        if currentTime - 10 > 0 {
+            player?.seek(to: CMTime(seconds: currentTime - 10, preferredTimescale: 1))
+        } else {
+            player?.seek(to: .zero)
+        }
     }
 
     func durationSliderValueChanged(value: Float) {
-        print("WORKS HERE")
+        guard let currentItem = player?.currentItem else { return }
+        let duration = CMTimeGetSeconds(currentItem.duration)
+        let newTime = Double(value) * duration
+        player?.seek(to: CMTime(seconds: newTime, preferredTimescale: 1))
     }
 
     func durationSliderTapped(_ gesture: UITapGestureRecognizer) {
-        print("WORKS HERE")
+        let location = gesture.location(in: musicPlayer.songSlider)
+        let percentage = location.x / musicPlayer.songSlider.bounds.width
+        let newTime = Double(percentage) * CMTimeGetSeconds(player?.currentItem?.duration ?? CMTime.zero)
+        player?.seek(to: CMTime(seconds: newTime, preferredTimescale: 1))
     }
 
     func volumeSliderValueChanged(value: Float) {
-        print("WORKS HERE")
+        player?.volume = value
     }
 
     func volumeButtonTapped(_ sender: UIButton) {
-        print("WORKS HERE")
+
     }
 }
 
