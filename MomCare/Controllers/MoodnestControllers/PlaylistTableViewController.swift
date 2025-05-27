@@ -4,6 +4,15 @@ import AVFoundation
 
 class PlaylistTableViewController: UITableViewController {
 
+    // MARK: Lifecycle
+
+    deinit {
+        if let token = timeObserverToken {
+            player?.removeTimeObserver(token)
+            timeObserverToken = nil
+        }
+    }
+
     // MARK: Internal
 
     var songs: [Song] = []
@@ -94,13 +103,15 @@ class PlaylistTableViewController: UITableViewController {
         initialTabBarController?.dismissPopupBar(animated: true)
         player?.pause()
         player = nil
-        
+
         if let token = timeObserverToken {
             player?.removeTimeObserver(token)
         }
     }
 
     // MARK: Private
+
+    private var timeObserverToken: Any?
 
     private func configureTableView() {
         tableView.showsVerticalScrollIndicator = false
@@ -133,15 +144,7 @@ class PlaylistTableViewController: UITableViewController {
             self.musicPlayer.popupItem.progress = progress * 100
         }
     }
-    
-    deinit {
-        if let token = timeObserverToken {
-            player?.removeTimeObserver(token)
-            timeObserverToken = nil
-        }
-    }
-    
-    private var timeObserverToken: Any?
+
 }
 
 extension PlaylistTableViewController: MusicPlayerDelegate {
