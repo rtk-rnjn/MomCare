@@ -6,8 +6,6 @@
 	<array>
 		<string>com.MomCare.RefreshToken</string>
 	</array>
-	<key>NSHealthUpdateUsageDescription</key>
-	<string>Application need permission as to work perfectly</string>
 	<key>NSAppTransportSecurity</key>
 	<dict>
 		<key>NSAllowsArbitraryLoads</key>

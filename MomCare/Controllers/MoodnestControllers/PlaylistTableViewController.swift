@@ -23,7 +23,6 @@ class PlaylistTableViewController: UITableViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        songs = playlist.songs
 
         setSongs()
     }
@@ -83,6 +82,9 @@ class PlaylistTableViewController: UITableViewController {
         configurePopupItem(for: musicPlayer, song: song, buttons: [playBarButton, forwardBarButton, crossBarButton])
         guard let url = song.url else { return }
         player = AVPlayer(playerItem: AVPlayerItem(url: url))
+        player?.rate = 1.0
+
+        observe(player)
         musicPlayer.delegate = self
 
         initialTabBarController?.presentPopupBar(with: musicPlayer, animated: true)
@@ -90,6 +92,12 @@ class PlaylistTableViewController: UITableViewController {
 
     @objc func crossButtonTapped(_ sender: UIButton) {
         initialTabBarController?.dismissPopupBar(animated: true)
+        player?.pause()
+        player = nil
+        
+        if let token = timeObserverToken {
+            player?.removeTimeObserver(token)
+        }
     }
 
     // MARK: Private
@@ -102,29 +110,47 @@ class PlaylistTableViewController: UITableViewController {
         return UIBarButtonItem(image: UIImage(systemName: systemName), style: .plain, target: self, action: action)
     }
 
-    private func configurePopupItem(for player: MusicPlayerViewController, song: Song, buttons: [UIBarButtonItem]) {
-        player.popupItem.title = song.name
-        player.popupItem.subtitle = song.artist
-        player.popupItem.progress = 0.34
-        player.popupItem.image = song.image
-        player.popupItem.barButtonItems = buttons
+    private func configurePopupItem(for playerViewController: MusicPlayerViewController, song: Song, buttons: [UIBarButtonItem]) {
+        playerViewController.popupItem.title = song.name
+        playerViewController.popupItem.subtitle = song.artist
+        playerViewController.popupItem.progress = 0.34
+        playerViewController.popupItem.image = song.image
+        playerViewController.popupItem.barButtonItems = buttons
 
-        player.popupItem.accessibilityUserInputLabels = ["Play", "Pause", "Next", "Previous"]
-        player.popupItem.accessibilityHint = "Tap to open the player"
-        player.popupItem.accessibilityLabel = "Playing now"
-        player.popupItem.accessibilityValue = "\(song.name) by \(song.artist)"
+        playerViewController.popupItem.accessibilityUserInputLabels = ["Play", "Pause", "Next", "Previous"]
+        playerViewController.popupItem.accessibilityHint = "Tap to open the player"
+        playerViewController.popupItem.accessibilityLabel = "Playing now"
+        playerViewController.popupItem.accessibilityValue = "\(song.name) by \(song.artist)"
     }
 
+    private func observe(_ player: AVPlayer?) {
+        let interval = CMTime(seconds: 1, preferredTimescale: 1)
+        timeObserverToken = player?.addPeriodicTimeObserver(forInterval: interval, queue: DispatchQueue.main) { time in
+            guard let currentItem = self.player?.currentItem else { return }
+            let duration = CMTimeGetSeconds(currentItem.duration)
+            let currentTime = CMTimeGetSeconds(time)
+            let progress = duration > 0 ? Float(currentTime / duration) : 0.0
+            self.musicPlayer.popupItem.progress = progress * 100
+        }
+    }
+    
+    deinit {
+        if let token = timeObserverToken {
+            player?.removeTimeObserver(token)
+            timeObserverToken = nil
+        }
+    }
+    
+    private var timeObserverToken: Any?
 }
 
 extension PlaylistTableViewController: MusicPlayerDelegate {
     @objc func playPauseButtonTapped(_ sender: UIButton) {
-        player?.play()
-//        if player?.timeControlStatus == .playing {
-//            player?.pause()
-//        } else {
-//            player?.play()
-//        }
+        if player?.timeControlStatus == .playing {
+            player?.pause()
+        } else {
+            player?.play()
+        }
     }
 
     @objc func forwardButtonTapped(_ sender: UIButton) {

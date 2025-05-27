@@ -106,9 +106,9 @@ class ContentHandler {
         await NetworkManager.shared.fetchStreamedData(.GET, url: "/content/search", queryParameters: _sendableQeury, onItem: onItem)
     }
 
-    func fetchTune(tuneType: MoodType, category: String = "nil", fileName: String, fileExtention: String = "mp3") async -> MediaLink? {
+    func fetchTune(tuneType: MoodType, category: String = "nil", fileName: String) async -> MediaLink? {
         let type = mappedMoodTypes[tuneType] ?? "Pleasent"
-        let path = "/content/tunes/\(type)/\(category)/\(fileName).\(fileExtention)"
+        let path = "/content/tunes/\(type)/\(category)/\(fileName)"
 
         return await NetworkManager.shared.get(url: path)
     }
