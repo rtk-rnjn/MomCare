@@ -8,7 +8,6 @@
 import Foundation
 import UIKit
 import CoreImage.CIFilterBuiltins
-import Kingfisher
 
 extension String {
     func isValidEmail() -> Bool {
@@ -61,16 +60,7 @@ extension UIImage {
             return defaultImage
         }
 
-        return await withCheckedContinuation { continuation in
-            KingfisherManager.shared.retrieveImage(with: url) { result in
-                switch result {
-                case let .success(value):
-                    continuation.resume(returning: value.image)
-                case .failure:
-                    continuation.resume(returning: defaultImage)
-                }
-            }
-        }
+        return await CacheHandler.shared.fetchImage(from: url) ?? defaultImage
     }
 }
 

@@ -114,7 +114,7 @@ extension MomCareUser {
         return true
     }
 
-    func refreshToken() async -> Bool {
+    @objc func refreshToken() async -> Bool {
         logger.info("Refreshing access token")
 
         guard let email = KeychainHelper.get("emailAddress"),

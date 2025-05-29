@@ -19,12 +19,17 @@ class MomCareUser {
     // MARK: Public
 
     public static var shared: MomCareUser = .init()
+    private var refreshTimer: Timer?
 
     // MARK: Internal
 
     let queue: DispatchQueue = .init(label: "MomCareUserQueue")
 
-    var accessTokenExpiresAt: Date?
+    var accessTokenExpiresAt: Date? {
+        didSet {
+            scheduleRefresh()
+        }
+    }
 
     var user: User? {
         didSet {
@@ -42,6 +47,22 @@ class MomCareUser {
             Task {
                 await self.updateUser(self.user)
             }
+        }
+    }
+
+    func scheduleRefresh() {
+        refreshTimer?.invalidate()
+
+        guard let expiryDate = accessTokenExpiresAt else { return }
+
+        let timeInterval = expiryDate.timeIntervalSinceNow - 10  // fuck you. I know you might ask why -10
+        guard timeInterval > 0 else {
+            Task { await refreshToken() }
+            return
+        }
+
+        refreshTimer = Timer.scheduledTimer(withTimeInterval: timeInterval, repeats: false) { _ in
+            Task { await self.refreshToken() }
         }
     }
 

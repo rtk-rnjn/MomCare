@@ -53,8 +53,27 @@ class ContentHandler {
 
     // MARK: Internal
 
-    var plan: MyPlan?
-    var tips: Tip?
+    var plan: MyPlan? {
+        set {
+            CacheHandler.shared.set(newValue, forKey: "plan")
+        }
+        get {
+            return CacheHandler.shared.get(forKey: "plan")
+        }
+    }
+    var tips: Tip? {
+        set {
+            CacheHandler.shared.set(newValue, forKey: "tips")
+//            guard let newValue else {
+//                UserDefaults.standard.removeObject(forKey: "tips")
+//                return
+//            }
+//            saveToUserDefaults(newValue)
+        }
+        get {
+            return CacheHandler.shared.get(forKey: "tips") ?? fetchFromUserDefaults()
+        }
+    }
 
     @discardableResult
     func fetchPlan(from userMedical: UserMedical) async -> MyPlan {
