@@ -19,7 +19,6 @@ class MomCareUser {
     // MARK: Public
 
     public static var shared: MomCareUser = .init()
-    private var refreshTimer: Timer?
 
     // MARK: Internal
 
@@ -55,7 +54,7 @@ class MomCareUser {
 
         guard let expiryDate = accessTokenExpiresAt else { return }
 
-        let timeInterval = expiryDate.timeIntervalSinceNow - 10  // fuck you. I know you might ask why -10
+        let timeInterval = expiryDate.timeIntervalSinceNow - 10 // fuck you. I know you might ask why -10
         guard timeInterval > 0 else {
             Task { await refreshToken() }
             return
@@ -146,4 +145,9 @@ class MomCareUser {
             user?.plan.dinner = user?.plan.dinner.map { var item = $0; item.consumed = consumed; return item } ?? []
         }
     }
+
+    // MARK: Private
+
+    private var refreshTimer: Timer?
+
 }

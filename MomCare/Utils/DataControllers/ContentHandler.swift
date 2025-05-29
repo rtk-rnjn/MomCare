@@ -61,6 +61,7 @@ class ContentHandler {
             return CacheHandler.shared.get(forKey: "plan")
         }
     }
+
     var tips: Tip? {
         set {
             CacheHandler.shared.set(newValue, forKey: "tips")

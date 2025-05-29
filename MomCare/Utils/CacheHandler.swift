@@ -12,8 +12,12 @@ import OSLog
 private var logger: Logger = .init(subsystem: "com.MomCare.CacheHandler", category: "Cache")
 
 class CacheHandler {
+
+    // MARK: Public
+
     public static let shared: CacheHandler = .init()
-    private var cache = NSCache<AnyObject, AnyObject>()
+
+    // MARK: Internal
 
     func fetchImage(from url: URL) async -> UIImage? {
         if let cachedImage = cache.object(forKey: url as AnyObject) as? UIImage {
@@ -47,4 +51,9 @@ class CacheHandler {
         logger.debug("No value found for key: \(key)")
         return nil
     }
+
+    // MARK: Private
+
+    private var cache: NSCache<AnyObject, AnyObject> = .init()
+
 }
