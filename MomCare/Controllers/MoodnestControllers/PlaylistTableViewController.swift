@@ -81,7 +81,6 @@ class PlaylistTableViewController: UITableViewController {
         configurePopupItem(for: musicPlayer, song: song, buttons: [playBarButton, forwardBarButton, crossBarButton])
         guard let url = song.url else { return }
         player = AVPlayer(playerItem: AVPlayerItem(url: url))
-        player?.rate = 1.0
 
         observe(player)
         musicPlayer.delegate = self
