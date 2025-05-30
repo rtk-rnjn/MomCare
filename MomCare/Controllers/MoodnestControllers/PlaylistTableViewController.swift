@@ -1,6 +1,7 @@
 import UIKit
 import LNPopupController
 import AVFoundation
+import MediaPlayer
 
 class PlaylistTableViewController: UITableViewController {
 
@@ -24,12 +25,17 @@ class PlaylistTableViewController: UITableViewController {
     var musicPlayer: MusicPlayerViewController = .init()
     var player: AVPlayer?
 
+    let commandCenter = MPRemoteCommandCenter.shared()
+
     override func viewDidLoad() {
         super.viewDidLoad()
         configureTableView()
 
         songElementsViewController?.playButton.addTarget(self, action: #selector(playFromSongElementsViewController), for: .touchUpInside)
         songElementsViewController?.shuffleButton.addTarget(self, action: #selector(shuffleFromSongElementsViewController), for: .touchUpInside)
+
+        try? configureAudioSession()
+        setupRemoteTransportControls()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -85,7 +91,7 @@ class PlaylistTableViewController: UITableViewController {
         observe(player)
         musicPlayer.delegate = self
 
-        initialTabBarController?.presentPopupBar(with: musicPlayer, animated: true)
+        initialTabBarController?.presentPopupBar(with: musicPlayer, openPopup: false, animated: true)
     }
 
     @objc func crossButtonTapped(_ sender: UIButton) {
@@ -113,32 +119,108 @@ class PlaylistTableViewController: UITableViewController {
     private func configurePopupItem(for playerViewController: MusicPlayerViewController, song: Song, buttons: [UIBarButtonItem]) {
         playerViewController.popupItem.title = song.metadata?.title
         playerViewController.popupItem.subtitle = song.metadata?.artist
-        playerViewController.popupItem.progress = 0.34
-//        playerViewController.popupItem.image = song.image
+
+        Task {
+            playerViewController.popupItem.image = await song.image
+        }
         playerViewController.popupItem.barButtonItems = buttons
 
-        playerViewController.popupBar.progressViewStyle = .top
+        initialTabBarController?.popupBar.progressViewStyle = .bottom
+        initialTabBarController?.popupBar.popupItem?.progress = 0.0
     }
 
     private func observe(_ player: AVPlayer?) {
-        let interval = CMTime(seconds: 1, preferredTimescale: 1)
+        let interval = CMTime(seconds: 0.02, preferredTimescale: 600)
         timeObserverToken = player?.addPeriodicTimeObserver(forInterval: interval, queue: DispatchQueue.main) { time in
             guard let currentItem = self.player?.currentItem else { return }
             let duration = CMTimeGetSeconds(currentItem.duration)
             let currentTime = CMTimeGetSeconds(time)
             let progress = duration > 0 ? Float(currentTime / duration) : 0.0
-            self.musicPlayer.popupItem.progress = progress * 100
+
+            self.initialTabBarController?.popupBar.popupItem?.progress = progress
+
+            self.musicPlayer.songSlider.value = progress
+            self.musicPlayer.startDurationLabel.text = self.getFormattedTime(from: time)
+            self.musicPlayer.endDurationLabel.text = self.getFormattedTime(from: currentItem.duration)
         }
     }
 
+    private func getFormattedTime(from time: CMTime) -> String {
+        let totalSeconds = CMTimeGetSeconds(time)
+
+        guard totalSeconds.isFinite && !totalSeconds.isNaN else {
+            return "--:--"
+        }
+        guard totalSeconds >= 0 else {
+            return "00:00"
+        }
+
+        let seconds = Int(totalSeconds)
+        let minutes = seconds / 60
+        let remainingSeconds = seconds % 60
+        return String(format: "%02d:%02d", minutes, remainingSeconds)
+    }
+
+    func setupRemoteTransportControls() {
+        commandCenter.playCommand.addTarget { [unowned self] event in
+            self.player?.play()
+            return .success
+        }
+
+        commandCenter.pauseCommand.addTarget { [unowned self] event in
+            self.player?.pause()
+            return .success
+        }
+    }
 }
 
 extension PlaylistTableViewController: MusicPlayerDelegate {
+
+    func configureAudioSession() throws {
+        try AVAudioSession.sharedInstance().setCategory(.playback, mode: .default, options: [.allowAirPlay, .defaultToSpeaker])
+        try AVAudioSession.sharedInstance().setActive(true)
+    }
+
+    private func updateNowPlayingInfo(_ song: Song) async {
+        var nowPlayingInfo: [String: Any] = [
+            MPMediaItemPropertyTitle: song.metadata?.title ?? "Unknown Title",
+            MPMediaItemPropertyArtist: song.metadata?.artist ?? "Unknown Artist"
+        ]
+        let image = await song.image
+        if let image {
+            nowPlayingInfo[MPMediaItemPropertyArtwork] = MPMediaItemArtwork(boundsSize: image.size) { _ in
+                return image
+            }
+        }
+
+        nowPlayingInfo[MPNowPlayingInfoPropertyElapsedPlaybackTime] = player?.currentTime().seconds
+        nowPlayingInfo[MPMediaItemPropertyPlaybackDuration] = try? await player?.currentItem?.asset.load(.duration).seconds
+        nowPlayingInfo[MPNowPlayingInfoPropertyPlaybackRate] = 1.0
+
+        MPNowPlayingInfoCenter.default().nowPlayingInfo = nowPlayingInfo
+    }
+
     @objc func playPauseButtonTapped(_ sender: Any?) {
+        let imageName: String
         if player?.timeControlStatus == .playing {
             player?.pause()
+            imageName = "play.fill"
         } else {
             player?.play()
+            imageName = "pause.fill"
+        }
+
+        let config = UIImage.SymbolConfiguration(font: UIFont.preferredFont(forTextStyle: .largeTitle))
+
+        if let button = sender as? UIButton {
+            button.setImage(UIImage(systemName: imageName, withConfiguration: config), for: .normal)
+        } else if let button = sender as? UIBarButtonItem {
+            button.image = UIImage(systemName: imageName)
+        }
+
+        Task {
+            guard let song = musicPlayer.song else { return }
+            await updateNowPlayingInfo(song)
         }
     }
 

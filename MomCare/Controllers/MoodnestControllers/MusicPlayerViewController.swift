@@ -29,7 +29,7 @@ class MusicPlayerViewController: UIViewController {
 
     lazy var songSlider: UISlider = {
         let slider = UISlider()
-        slider.value = 0.5
+        slider.value = 0.0
         slider.minimumTrackTintColor = .white
         slider.thumbTintColor = .clear
         slider.translatesAutoresizingMaskIntoConstraints = false
@@ -62,7 +62,13 @@ class MusicPlayerViewController: UIViewController {
         imageView.contentMode = .scaleAspectFit
         imageView.clipsToBounds = true
         imageView.layer.cornerRadius = 16
-//        imageView.image = song?.image
+        Task {
+            if let image = await song?.image {
+                imageView.image = image
+            } else {
+                imageView.image = UIImage(systemName: "music.note")
+            }
+        }
         imageView.translatesAutoresizingMaskIntoConstraints = false
 
         let _249Priority = UILayoutPriority(249)
@@ -101,9 +107,9 @@ class MusicPlayerViewController: UIViewController {
         return label
     }()
 
-    private let startDurationLabel: UILabel = {
+    lazy var startDurationLabel: UILabel = {
         let label = UILabel()
-        label.text = "Start Duration"
+        label.text = "-:--"
         label.font = UIFont.preferredFont(forTextStyle: .footnote)
         label.translatesAutoresizingMaskIntoConstraints = false
         label.setContentHuggingPriority(.required, for: .horizontal)
@@ -113,9 +119,9 @@ class MusicPlayerViewController: UIViewController {
         return label
     }()
 
-    private lazy var endDurationLabel: UILabel = {
+    lazy var endDurationLabel: UILabel = {
         let label = UILabel()
-        label.text = "End Duration"
+        label.text = "--:--"
         label.font = UIFont.preferredFont(forTextStyle: .footnote)
         label.textAlignment = .right
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -191,11 +197,10 @@ class MusicPlayerViewController: UIViewController {
 
     private lazy var volumeSlider: UISlider = {
         let slider = UISlider()
-        slider.value = 50
+        slider.value = 0.5
         slider.minimumValue = 0
-        slider.maximumValue = 100
+        slider.maximumValue = 1
         slider.minimumTrackTintColor = .white
-        slider.thumbTintColor = .clear
         slider.translatesAutoresizingMaskIntoConstraints = false
 
         let _999Priority = UILayoutPriority(999)

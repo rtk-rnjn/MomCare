@@ -92,7 +92,7 @@ class MoodNestViewController: UIViewController, UICollectionViewDataSource, UICo
             Task {
                 let image = await UIImage().fetchImage(from: playlist.imageUri)
                 DispatchQueue.main.async {
-                    cell.updateElements(image: nil, label: playlist.label)
+                    cell.updateElements(image: image, label: playlist.label)
                 }
             }
             cell.layer.cornerRadius = 20
