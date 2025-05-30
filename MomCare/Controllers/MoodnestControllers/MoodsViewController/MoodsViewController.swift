@@ -27,11 +27,17 @@ class MoodsViewController: UIViewController {
         makeSmile()
     }
 
-    @IBAction func SetMoodButtonTapped(_ sender: UIButton) {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "segueShowMoodNestViewController", let destination = segue.destination as? MoodNestViewController, let mood = sender as? MoodType {
+            destination.mood = mood
+        }
+    }
+
+    @IBAction func setMoodButtonTapped(_ sender: UIButton) {
         let moodHistory = MoodHistory(date: Date(), mood: MoodType(rawValue: moodLabel.text ?? "") ?? .happy)
         MomCareUser.shared.user?.moodHistory.append(moodHistory)
 
-        performSegue(withIdentifier: "segueShowMoodNestViewController", sender: nil)
+        performSegue(withIdentifier: "segueShowMoodNestViewController", sender: MoodType(rawValue: moodLabel.text ?? ""))
     }
 
     @IBAction func sliderValueChanged(_ sender: UISlider) {

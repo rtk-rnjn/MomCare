@@ -9,9 +9,9 @@ import UIKit
 
 @MainActor
 protocol MusicPlayerDelegate: AnyObject {
-    func playPauseButtonTapped(_ sender: UIButton)
-    func forwardButtonTapped(_ sender: UIButton)
-    func backwardButtonTapped(_ sender: UIButton)
+    func playPauseButtonTapped(_ sender: Any?)
+    func forwardButtonTapped(_ sender: Any?)
+    func backwardButtonTapped(_ sender: Any?)
 
     func durationSliderValueChanged(value: Float)
     func durationSliderTapped(_ gesture: UITapGestureRecognizer)
@@ -62,7 +62,7 @@ class MusicPlayerViewController: UIViewController {
         imageView.contentMode = .scaleAspectFit
         imageView.clipsToBounds = true
         imageView.layer.cornerRadius = 16
-        imageView.image = song?.image
+//        imageView.image = song?.image
         imageView.translatesAutoresizingMaskIntoConstraints = false
 
         let _249Priority = UILayoutPriority(249)
@@ -77,7 +77,7 @@ class MusicPlayerViewController: UIViewController {
 
     private lazy var songLabel: UILabel = {
         let label = UILabel()
-        label.text = song?.name
+        label.text = song?.metadata?.title
         label.font = UIFont.preferredFont(forTextStyle: .title1)
         label.lineBreakMode = .byTruncatingTail
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -90,7 +90,7 @@ class MusicPlayerViewController: UIViewController {
 
     private lazy var artistLabel: UILabel = {
         let label = UILabel()
-        label.text = song?.artist
+        label.text = song?.metadata?.artist
         label.font = UIFont.preferredFont(forTextStyle: .subheadline)
         label.lineBreakMode = .byTruncatingTail
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -291,7 +291,7 @@ class MusicPlayerViewController: UIViewController {
     }()
 
     private func prepareUI() {
-        let color = song?.image?.dominantColor() ?? .systemGray5
+        let color = /*song?.image?.dominantColor() ??*/ UIColor.systemGray5
         let gradientLayer = CAGradientLayer()
         gradientLayer.frame = view.bounds
 

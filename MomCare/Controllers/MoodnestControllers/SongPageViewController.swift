@@ -9,7 +9,8 @@ class SongPageViewController: UIViewController {
 
     @IBOutlet var upperContainer: UIView!
     @IBOutlet var lowerContainer: UIView!
-    var playlist: Playlist?
+
+    var playlist: (imageUri: String, label: String)?
     var playlistTableViewController: PlaylistTableViewController?
     var songElementsViewController: SongElementsViewController?
 
@@ -21,6 +22,7 @@ class SongPageViewController: UIViewController {
             if let destination = segue.destination as? PlaylistTableViewController {
                 playlistTableViewController = destination
                 playlistTableViewController?.playlist = playlist
+
                 playlistTableViewController?.initialTabBarController = tabBarController as? InitialTabBarController
                 playlistTableViewController?.songElementsViewController = songElementsViewController
             }

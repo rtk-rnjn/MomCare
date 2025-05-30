@@ -11,8 +11,8 @@ class MainImageCollectionViewCell: UICollectionViewCell {
     @IBOutlet var mainImageView: UIImageView!
     @IBOutlet var mainImageLabel: UILabel!
 
-    func updateElements(with playlist: Playlist) {
-        mainImageView.image = playlist.image
-        mainImageLabel.text = playlist.name
+    func updateElements(image: UIImage?, label: String) {
+        mainImageView.image = image
+        mainImageLabel.text = label
     }
 }

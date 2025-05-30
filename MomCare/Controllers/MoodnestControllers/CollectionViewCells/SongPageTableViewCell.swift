@@ -14,14 +14,20 @@ class SongPageTableViewCell: UITableViewCell {
     @IBOutlet var durationLabel: UILabel!
 
     func updateElements(with song: Song) {
-        songLabel.text = song.name
-        artistOrAlbumLabel.text = song.artist
-        songImageView.image = song.image
+        songLabel.text = song.metadata?.title
+        artistOrAlbumLabel.text = song.metadata?.artist
+        Task {
+            songImageView.image = await song.image
+        }
 
-        let seconds = song.duration
+        let seconds = song.metadata?.duration ?? 0.0
         let minutes = Int(seconds) / 60
         let remainingSeconds = Int(seconds) % 60
 
-        durationLabel.text = "\(minutes):\(remainingSeconds < 10 ? "0" : "")\(remainingSeconds)"
+        if seconds == 0 {
+            durationLabel.text = "--:--"
+        } else {
+            durationLabel.text = "\(minutes):\(remainingSeconds < 10 ? "0" : "")\(remainingSeconds)"
+        }
     }
 }

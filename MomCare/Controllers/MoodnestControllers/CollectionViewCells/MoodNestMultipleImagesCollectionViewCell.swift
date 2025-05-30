@@ -11,8 +11,8 @@ class MoodNestMultipleImagesCollectionViewCell: UICollectionViewCell {
     @IBOutlet var sideImagesView: UIImageView!
     @IBOutlet var sideImagesLabel: UILabel!
 
-    func updateElements(with playlist: Playlist) {
-        sideImagesView.image = playlist.image
-        sideImagesLabel.text = playlist.name
+    func updateElements(image: UIImage?, label: String) {
+        sideImagesView.image = image
+        sideImagesLabel.text = label
     }
 }

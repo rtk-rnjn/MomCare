@@ -16,9 +16,11 @@ class PlaylistTableViewController: UITableViewController {
     // MARK: Internal
 
     var songs: [Song] = []
-    var playlist: Playlist!
+    var playlist: (imageUri: String, label: String)?
+
     var initialTabBarController: InitialTabBarController?
     var songElementsViewController: SongElementsViewController?
+
     var musicPlayer: MusicPlayerViewController = .init()
     var player: AVPlayer?
 
@@ -32,8 +34,7 @@ class PlaylistTableViewController: UITableViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-
-        setSongs()
+        reloadData()
     }
 
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -56,20 +57,9 @@ class PlaylistTableViewController: UITableViewController {
         setupMusicPlayer(with: songs[indexPath.row])
     }
 
-    func setSongs() {
-        let mood = playlist.forMood!
-
+    func reloadData() {
         Task {
-            let links: [String] = await ContentHandler.shared.fetchTuneNames(tuneType: mood) ?? []
-            var songs: [Song] = []
-            for link in links {
-                let songUri = await ContentHandler.shared.fetchTune(tuneType: mood, fileName: link)
-
-                let name = link.components(separatedBy: ".").first ?? ""
-                let song = Song(name: name, artist: "Unknown Artist", duration: 100, uri: songUri?.uri)
-
-                songs.append(song)
-            }
+            let songs: [Song] = await ContentHandler.shared.fetchPlaylistSongs(forMood: .happy, playlistName: playlist?.label ?? "") ?? []
 
             DispatchQueue.main.async {
                 self.songs = songs
@@ -122,16 +112,13 @@ class PlaylistTableViewController: UITableViewController {
     }
 
     private func configurePopupItem(for playerViewController: MusicPlayerViewController, song: Song, buttons: [UIBarButtonItem]) {
-        playerViewController.popupItem.title = song.name
-        playerViewController.popupItem.subtitle = song.artist
+        playerViewController.popupItem.title = song.metadata?.title
+        playerViewController.popupItem.subtitle = song.metadata?.artist
         playerViewController.popupItem.progress = 0.34
-        playerViewController.popupItem.image = song.image
+//        playerViewController.popupItem.image = song.image
         playerViewController.popupItem.barButtonItems = buttons
 
-        playerViewController.popupItem.accessibilityUserInputLabels = ["Play", "Pause", "Next", "Previous"]
-        playerViewController.popupItem.accessibilityHint = "Tap to open the player"
-        playerViewController.popupItem.accessibilityLabel = "Playing now"
-        playerViewController.popupItem.accessibilityValue = "\(song.name) by \(song.artist)"
+        playerViewController.popupBar.progressViewStyle = .top
     }
 
     private func observe(_ player: AVPlayer?) {
@@ -148,7 +135,7 @@ class PlaylistTableViewController: UITableViewController {
 }
 
 extension PlaylistTableViewController: MusicPlayerDelegate {
-    @objc func playPauseButtonTapped(_ sender: UIButton) {
+    @objc func playPauseButtonTapped(_ sender: Any?) {
         if player?.timeControlStatus == .playing {
             player?.pause()
         } else {
@@ -156,7 +143,7 @@ extension PlaylistTableViewController: MusicPlayerDelegate {
         }
     }
 
-    @objc func forwardButtonTapped(_ sender: UIButton) {
+    @objc func forwardButtonTapped(_ sender: Any?) {
         guard let currentItem = player?.currentItem else { return }
         let currentTime = CMTimeGetSeconds(currentItem.currentTime())
         let duration = CMTimeGetSeconds(currentItem.duration)
@@ -168,7 +155,7 @@ extension PlaylistTableViewController: MusicPlayerDelegate {
         }
     }
 
-    func backwardButtonTapped(_ sender: UIButton) {
+    func backwardButtonTapped(_ sender: Any?) {
         guard let currentItem = player?.currentItem else { return }
         let currentTime = CMTimeGetSeconds(currentItem.currentTime())
 

@@ -17,19 +17,29 @@ class MoodNestViewController: UIViewController, UICollectionViewDataSource, UICo
 
     // MARK: Internal
 
-    @IBOutlet var moodnestCollectionView: UICollectionView!
+    @IBOutlet var collectionView: UICollectionView!
     @IBOutlet var outerView: UIView!
+
+    var playlists: [(imageUri: String, label: String)] = []
+    var mood: MoodType?
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
         outerView.layer.cornerRadius = 30
         registerAllNibs()
+
+        Task {
+            playlists = await ContentHandler.shared.fetchPlaylists(forMood: mood ?? .happy) ?? []
+            DispatchQueue.main.async {
+                self.collectionView.reloadData()
+            }
+        }
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let destinationVC = segue.destination as? SongPageViewController {
-            destinationVC.playlist = sender as? Playlist
+            destinationVC.playlist = sender as? (imageUri: String, label: String)
         }
     }
 
@@ -46,39 +56,45 @@ class MoodNestViewController: UIViewController, UICollectionViewDataSource, UICo
             return 1
 
         case .multipleImages:
-            return 6
+            return playlists.count
         }
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cellType = MoodNestCollectionViewCellType(rawValue: indexPath.section)
-        guard let cellType else { fatalError("cellType is nil") }
+        guard let cellType else { fatalError("Lag jaa gale ke phir yeh haseen raat ho na ho") }
+
         switch cellType {
         case .mainHeading:
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "MainHeading", for: indexPath) as? MainHeadingCollectionViewCell
-            guard let cell else { fatalError("'MainHeading' me dikkat hai") }
+            guard let cell else { fatalError("Chura liya hai tumne jo dil ko... Nazar nahi churaana sanam") }
 
-            cell.updateMainHeading(with: indexPath)
+            cell.updateElements(with: "Here comes a quote with a beautiful heading")
             cell.layer.cornerRadius = 20
 
             return cell
 
         case .mainImage:
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "MainImage", for: indexPath) as? MainImageCollectionViewCell
-            guard let cell else { fatalError("'MainImage' me dikkat hai") }
+            guard let cell else { fatalError("Pyaar hua ikraar hua hai... Pyaar se phir kyoon darta hai dil") }
 
-            let playlist = SampleFeaturedPlaylists.playlists[indexPath.row]
-            cell.updateElements(with: playlist)
+            cell.updateElements(image: nil, label: "Suggested for you")
             cell.layer.cornerRadius = 20
 
             return cell
 
         case .multipleImages:
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "MoodNestMultipleImages", for: indexPath) as? MoodNestMultipleImagesCollectionViewCell
-            guard let cell else { fatalError("'MoodNestMultipleImages' me dikkat hai") }
+            guard let cell else { fatalError("Yeh shaam mastani, madhosh kiye jaaye") }
 
-            let playlist = SampleFeaturedPlaylists.playlists[indexPath.row]
-            cell.updateElements(with: playlist)
+            let playlist = playlists[indexPath.row]
+
+            Task {
+                let image = await UIImage().fetchImage(from: playlist.imageUri)
+                DispatchQueue.main.async {
+                    cell.updateElements(image: nil, label: playlist.label)
+                }
+            }
             cell.layer.cornerRadius = 20
 
             return cell
@@ -169,24 +185,24 @@ class MoodNestViewController: UIViewController, UICollectionViewDataSource, UICo
     }
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let selectedPlaylist = SampleFeaturedPlaylists.playlists[indexPath.item]
+        let selectedPlaylist = playlists[indexPath.item]
         performSegue(withIdentifier: "segueShowSongPageViewController", sender: selectedPlaylist)
     }
 
     // MARK: Private
 
     private func registerAllNibs() {
-        moodnestCollectionView.showsVerticalScrollIndicator = false
-        moodnestCollectionView.backgroundColor = .clear
+        collectionView.showsVerticalScrollIndicator = false
+        collectionView.backgroundColor = .clear
 
-        moodnestCollectionView.register(UINib(nibName: "MainHeading", bundle: nil), forCellWithReuseIdentifier: "MainHeading")
-        moodnestCollectionView.register(UINib(nibName: "MainImage", bundle: nil), forCellWithReuseIdentifier: "MainImage")
-        moodnestCollectionView.register(UINib(nibName: "MoodNestMultipleImages", bundle: nil), forCellWithReuseIdentifier: "MoodNestMultipleImages")
-        moodnestCollectionView.register(SectionHeaderCollectionViewCell.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "SectionHeaderCollectionViewCell")
+        collectionView.register(UINib(nibName: "MainHeading", bundle: nil), forCellWithReuseIdentifier: "MainHeading")
+        collectionView.register(UINib(nibName: "MainImage", bundle: nil), forCellWithReuseIdentifier: "MainImage")
+        collectionView.register(UINib(nibName: "MoodNestMultipleImages", bundle: nil), forCellWithReuseIdentifier: "MoodNestMultipleImages")
+        collectionView.register(SectionHeaderCollectionViewCell.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "SectionHeaderCollectionViewCell")
 
-        moodnestCollectionView.dataSource = self
-        moodnestCollectionView.delegate = self
-        moodnestCollectionView.setCollectionViewLayout(generateLayout(), animated: true)
+        collectionView.dataSource = self
+        collectionView.delegate = self
+        collectionView.setCollectionViewLayout(generateLayout(), animated: true)
     }
 
 }

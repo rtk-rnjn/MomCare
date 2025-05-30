@@ -16,7 +16,7 @@ class SongElementsViewController: UIViewController {
     @IBOutlet var playButton: UIButton!
     @IBOutlet var shuffleButton: UIButton!
 
-    var playlist: Playlist?
+    var playlist: (imageUri: String, label: String)?
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -30,11 +30,10 @@ class SongElementsViewController: UIViewController {
 
     // MARK: Private
 
-    private func updateElements(with playlist: Playlist?) {
+    private func updateElements(with playlist: (imageUri: String, label: String)?) {
         guard let playlist else { return }
 
-        playlistSongLabel.text = playlist.name
-        playlistCoverImage.image = playlist.image
+        playlistSongLabel.text = playlist.label
     }
 
     // https://discord.com/channels/1283435123232079933/1285117124041244765/1334221772609945730

@@ -10,6 +10,8 @@
 		053290F42D40AEC000295E58 /* FSCalendar in Frameworks */ = {isa = PBXBuildFile; productRef = 053290F32D40AEC000295E58 /* FSCalendar */; };
 		05BAA2152D771882008C89DB /* LNPopupController in Embed Frameworks */ = {isa = PBXBuildFile; productRef = F5F1D6112D739C6A00F65BA7 /* LNPopupController */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		05E7F9672D37748E00F4D81E /* .swiftlint.yml in Resources */ = {isa = PBXBuildFile; fileRef = 05E7F9662D37748300F4D81E /* .swiftlint.yml */; };
+		F5AF1ECF2DE91021008B14F1 /* Realm in Frameworks */ = {isa = PBXBuildFile; productRef = F5AF1ECE2DE91021008B14F1 /* Realm */; };
+		F5AF1ED22DE919B1008B14F1 /* Realm in Embed Frameworks */ = {isa = PBXBuildFile; productRef = F5AF1ECE2DE91021008B14F1 /* Realm */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		F5F1D6122D739C6A00F65BA7 /* LNPopupController in Frameworks */ = {isa = PBXBuildFile; productRef = F5F1D6112D739C6A00F65BA7 /* LNPopupController */; };
 /* End PBXBuildFile section */
 
@@ -20,6 +22,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				F5AF1ED22DE919B1008B14F1 /* Realm in Embed Frameworks */,
 				05BAA2152D771882008C89DB /* LNPopupController in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
@@ -63,6 +66,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F5AF1ECF2DE91021008B14F1 /* Realm in Frameworks */,
 				053290F42D40AEC000295E58 /* FSCalendar in Frameworks */,
 				F5F1D6122D739C6A00F65BA7 /* LNPopupController in Frameworks */,
 			);
@@ -113,6 +117,7 @@
 			packageProductDependencies = (
 				053290F32D40AEC000295E58 /* FSCalendar */,
 				F5F1D6112D739C6A00F65BA7 /* LNPopupController */,
+				F5AF1ECE2DE91021008B14F1 /* Realm */,
 			);
 			productName = MomCare;
 			productReference = 059C467D2D30D12400B4A15A /* MomCare.app */;
@@ -145,6 +150,7 @@
 			packageReferences = (
 				053290F22D40AEC000295E58 /* XCRemoteSwiftPackageReference "FSCalendar" */,
 				F5F1D6102D739C6A00F65BA7 /* XCRemoteSwiftPackageReference "LNPopupController" */,
+				F5AF1ECD2DE91021008B14F1 /* XCRemoteSwiftPackageReference "realm-swift" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 059C467E2D30D12400B4A15A /* Products */;
@@ -242,7 +248,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 0.1;
-				PRODUCT_BUNDLE_IDENTIFIER = com.MomCare.TeamVision;
+				PRODUCT_BUNDLE_IDENTIFIER = com.MomCare.TeamVision1;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
@@ -409,6 +415,14 @@
 				minimumVersion = 2.8.4;
 			};
 		};
+		F5AF1ECD2DE91021008B14F1 /* XCRemoteSwiftPackageReference "realm-swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/realm/realm-swift";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
 		F5F1D6102D739C6A00F65BA7 /* XCRemoteSwiftPackageReference "LNPopupController" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/LeoNatan/LNPopupController.git";
@@ -424,6 +438,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 053290F22D40AEC000295E58 /* XCRemoteSwiftPackageReference "FSCalendar" */;
 			productName = FSCalendar;
+		};
+		F5AF1ECE2DE91021008B14F1 /* Realm */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = F5AF1ECD2DE91021008B14F1 /* XCRemoteSwiftPackageReference "realm-swift" */;
+			productName = Realm;
 		};
 		F5F1D6112D739C6A00F65BA7 /* LNPopupController */ = {
 			isa = XCSwiftPackageProductDependency;

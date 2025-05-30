@@ -4,8 +4,8 @@ class MainHeadingCollectionViewCell: UICollectionViewCell {
 
     @IBOutlet var mainHeadingLabel: UILabel!
 
-    func updateMainHeading(with indexPath: IndexPath) {
-        let text = "Take a moment to rewind with \"\(SampleFeaturedPlaylists.playlists[indexPath.row].name)\" playlists"
+    func updateElements(with label: String) {
+        let text = label
         mainHeadingLabel.text = text
     }
 }
