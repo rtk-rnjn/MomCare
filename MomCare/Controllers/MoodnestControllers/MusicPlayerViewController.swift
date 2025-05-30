@@ -149,7 +149,7 @@ class MusicPlayerViewController: UIViewController {
         return button
     }()
 
-    private lazy var playButton: UIButton = {
+    lazy var playButton: UIButton = {
         let button = UIButton(type: .system)
         let config = UIImage.SymbolConfiguration(font: UIFont.preferredFont(forTextStyle: .largeTitle))
         button.setImage(UIImage(systemName: "play.fill", withConfiguration: config), for: .normal)

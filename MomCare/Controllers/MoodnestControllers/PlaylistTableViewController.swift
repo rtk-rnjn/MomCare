@@ -212,11 +212,8 @@ extension PlaylistTableViewController: MusicPlayerDelegate {
 
         let config = UIImage.SymbolConfiguration(font: UIFont.preferredFont(forTextStyle: .largeTitle))
 
-        if let button = sender as? UIButton {
-            button.setImage(UIImage(systemName: imageName, withConfiguration: config), for: .normal)
-        } else if let button = sender as? UIBarButtonItem {
-            button.image = UIImage(systemName: imageName)
-        }
+        musicPlayer.playButton.setImage(UIImage(systemName: imageName, withConfiguration: config), for: .normal)
+        initialTabBarController?.popupBar.popupItem?.barButtonItems?.first(where: { $0.action == #selector(playPauseButtonTapped) })?.image = UIImage(systemName: imageName, withConfiguration: config)
 
         Task {
             guard let song = musicPlayer.song else { return }
