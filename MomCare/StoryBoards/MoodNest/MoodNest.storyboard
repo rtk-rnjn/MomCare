@@ -338,7 +338,7 @@
         <scene sceneID="3bx-ug-Uiy">
             <objects>
                 <tableViewController id="eev-1C-fby" customClass="PlaylistTableViewController" customModule="MomCare" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="66" estimatedRowHeight="-1" sectionHeaderHeight="28" estimatedSectionHeaderHeight="-1" sectionFooterHeight="28" estimatedSectionFooterHeight="-1" id="Idf-Zr-oWr">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" style="plain" rowHeight="66" estimatedRowHeight="-1" sectionHeaderHeight="28" estimatedSectionHeaderHeight="-1" sectionFooterHeight="28" estimatedSectionFooterHeight="-1" id="Idf-Zr-oWr">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="511.66666666666669"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -370,16 +370,16 @@
                                                     </userDefinedRuntimeAttributes>
                                                 </imageView>
                                                 <stackView opaque="NO" contentMode="center" axis="vertical" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="pnI-vX-LZ3">
-                                                    <rect key="frame" x="54.999999999999993" y="0.0" width="80.333333333333314" height="46"/>
+                                                    <rect key="frame" x="55" y="0.0" width="308" height="46"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="TopLeft" horizontalHuggingPriority="251" verticalHuggingPriority="1000" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AvU-Fn-W3T">
-                                                            <rect key="frame" x="0.0" y="0.0" width="80.333333333333329" height="21"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="308" height="21"/>
                                                             <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                             <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <stackView opaque="NO" contentMode="left" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="0Xf-gb-Obs">
-                                                            <rect key="frame" x="0.0" y="26" width="80.333333333333329" height="20"/>
+                                                            <rect key="frame" x="0.0" y="26" width="308" height="20"/>
                                                             <subviews>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="1000" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0P1-w8-7a0">
                                                                     <rect key="frame" x="0.0" y="0.0" width="35.333333333333336" height="20"/>
@@ -395,7 +395,7 @@
                                                                     </constraints>
                                                                 </imageView>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="TopLeft" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="2:50" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="epl-2f-Y4X">
-                                                                    <rect key="frame" x="50.333333333333329" y="0.0" width="30" height="20"/>
+                                                                    <rect key="frame" x="50.333333333333343" y="0.0" width="257.66666666666663" height="20"/>
                                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                                     <color key="textColor" systemColor="systemGrayColor"/>
                                                                     <nil key="highlightedColor"/>
@@ -407,39 +407,12 @@
                                                         </stackView>
                                                     </subviews>
                                                 </stackView>
-                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="trailing" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Bmy-bN-GBa">
-                                                    <rect key="frame" x="145.33333333333337" y="0.0" width="217.66666666666663" height="46"/>
-                                                    <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                    <state key="normal" title="Button"/>
-                                                    <buttonConfiguration key="configuration" style="plain" image="ellipsis" catalog="system"/>
-                                                </button>
                                             </subviews>
-                                            <constraints>
-                                                <constraint firstAttribute="trailing" secondItem="Bmy-bN-GBa" secondAttribute="trailing" id="LFk-47-O5d"/>
-                                            </constraints>
                                         </stackView>
-                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kmO-hs-iCs" userLabel="DividerView">
-                                            <rect key="frame" x="75" y="60" width="318" height="1"/>
-                                            <color key="backgroundColor" systemColor="opaqueSeparatorColor"/>
-                                            <constraints>
-                                                <constraint firstAttribute="height" constant="1" id="KbB-Ps-tGI"/>
-                                            </constraints>
-                                            <userDefinedRuntimeAttributes>
-                                                <userDefinedRuntimeAttribute type="number" keyPath="angle">
-                                                    <real key="value" value="0.0"/>
-                                                </userDefinedRuntimeAttribute>
-                                                <userDefinedRuntimeAttribute type="color" keyPath="fillColor">
-                                                    <color key="value" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                                                </userDefinedRuntimeAttribute>
-                                            </userDefinedRuntimeAttributes>
-                                        </view>
                                     </subviews>
                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <constraints>
                                         <constraint firstItem="pXc-GE-hXg" firstAttribute="leading" secondItem="ekD-HA-I2u" secondAttribute="leading" constant="20" id="64E-mG-jW6"/>
-                                        <constraint firstAttribute="trailing" secondItem="kmO-hs-iCs" secondAttribute="trailing" id="9C6-vC-gwL"/>
-                                        <constraint firstItem="kmO-hs-iCs" firstAttribute="leading" secondItem="ekD-HA-I2u" secondAttribute="leading" constant="75" id="H8O-JX-2pB"/>
-                                        <constraint firstAttribute="bottom" secondItem="kmO-hs-iCs" secondAttribute="bottom" constant="5" id="NdV-L2-vpe"/>
                                         <constraint firstAttribute="trailing" secondItem="pXc-GE-hXg" secondAttribute="trailing" constant="10" id="SdN-HP-UDH"/>
                                         <constraint firstItem="pXc-GE-hXg" firstAttribute="top" secondItem="ekD-HA-I2u" secondAttribute="top" constant="10" id="Tqi-z4-2is"/>
                                         <constraint firstAttribute="bottom" secondItem="pXc-GE-hXg" secondAttribute="bottom" constant="10" id="bP4-9U-sn5"/>
@@ -487,7 +460,6 @@
         <image name="Lofi" width="626" height="626"/>
         <image name="checkmark" catalog="system" width="128" height="114"/>
         <image name="circle.fill" catalog="system" width="128" height="123"/>
-        <image name="ellipsis" catalog="system" width="128" height="37"/>
         <image name="face.dashed.fill" catalog="system" width="128" height="123"/>
         <image name="music.note" catalog="system" width="96" height="128"/>
         <image name="play.fill" catalog="system" width="120" height="128"/>

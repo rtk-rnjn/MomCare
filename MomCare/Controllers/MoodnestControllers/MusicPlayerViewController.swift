@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import MediaPlayer
 
 @MainActor
 protocol MusicPlayerDelegate: AnyObject {
@@ -15,9 +16,6 @@ protocol MusicPlayerDelegate: AnyObject {
 
     func durationSliderValueChanged(value: Float)
     func durationSliderTapped(_ gesture: UITapGestureRecognizer)
-
-    func volumeSliderValueChanged(value: Float)
-    func volumeButtonTapped(_ sender: UIButton)
 }
 
 class MusicPlayerViewController: UIViewController {
@@ -49,6 +47,7 @@ class MusicPlayerViewController: UIViewController {
     lazy var startDurationLabel: UILabel = {
         let label = UILabel()
         label.text = "-:--"
+        label.textColor = .white
         label.font = UIFont.preferredFont(forTextStyle: .footnote)
         label.translatesAutoresizingMaskIntoConstraints = false
         label.setContentHuggingPriority(.required, for: .horizontal)
@@ -61,6 +60,7 @@ class MusicPlayerViewController: UIViewController {
     lazy var endDurationLabel: UILabel = {
         let label = UILabel()
         label.text = "--:--"
+        label.textColor = .white
         label.font = UIFont.preferredFont(forTextStyle: .footnote)
         label.textAlignment = .right
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -90,7 +90,10 @@ class MusicPlayerViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        prepareUI()
+        Task {
+            await prepareUI()
+        }
+        view.backgroundColor = .clear
     }
 
     @objc func durationSliderTapped(_ gesture: UITapGestureRecognizer) {
@@ -102,8 +105,11 @@ class MusicPlayerViewController: UIViewController {
     private lazy var albumImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFit
+
+        imageView.layer.masksToBounds = true
         imageView.clipsToBounds = true
-        imageView.layer.cornerRadius = 16
+        imageView.layer.cornerRadius = 20
+
         Task {
             let image = await song?.image ?? UIImage(systemName: "music.note")
             DispatchQueue.main.async {
@@ -126,6 +132,7 @@ class MusicPlayerViewController: UIViewController {
         let label = UILabel()
         label.text = song?.metadata?.title
         label.font = UIFont.preferredFont(forTextStyle: .title1)
+        label.textColor = .white
         label.lineBreakMode = .byTruncatingTail
         label.translatesAutoresizingMaskIntoConstraints = false
         label.setContentHuggingPriority(.required, for: .horizontal)
@@ -138,6 +145,7 @@ class MusicPlayerViewController: UIViewController {
     private lazy var artistLabel: UILabel = {
         let label = UILabel()
         label.text = song?.metadata?.artist
+        label.textColor = .white
         label.font = UIFont.preferredFont(forTextStyle: .subheadline)
         label.lineBreakMode = .byTruncatingTail
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -194,12 +202,9 @@ class MusicPlayerViewController: UIViewController {
         return button
     }()
 
-    private lazy var volumeSlider: UISlider = {
-        let slider = UISlider()
-        slider.value = 0.5
-        slider.minimumValue = 0
-        slider.maximumValue = 1
-        slider.minimumTrackTintColor = .white
+    private lazy var volumeSlider: MPVolumeView = {
+        let slider = MPVolumeView()
+        slider.tintColor = .white
         slider.translatesAutoresizingMaskIntoConstraints = false
 
         let _999Priority = UILayoutPriority(999)
@@ -208,11 +213,6 @@ class MusicPlayerViewController: UIViewController {
         slider.setContentHuggingPriority(_999Priority, for: .vertical)
         slider.setContentCompressionResistancePriority(_999Priority, for: .horizontal)
         slider.setContentCompressionResistancePriority(_999Priority, for: .vertical)
-
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(volumeButtonTapped))
-        slider.addGestureRecognizer(tapGesture)
-
-        slider.addTarget(self, action: #selector(volumeSliderValueChanged), for: .valueChanged)
 
         return slider
     }()
@@ -294,8 +294,8 @@ class MusicPlayerViewController: UIViewController {
         return stackView
     }()
 
-    private func prepareUI() {
-        let color = /*song?.image?.dominantColor() ??*/ UIColor.systemGray5
+    private func prepareUI() async {
+        let color = await song?.image?.dominantColor() ?? UIColor.systemGray5
         let gradientLayer = CAGradientLayer()
         gradientLayer.frame = view.bounds
 
@@ -307,16 +307,17 @@ class MusicPlayerViewController: UIViewController {
         gradientLayer.startPoint = CGPoint(x: 0.5, y: 0.0)
         gradientLayer.endPoint = CGPoint(x: 0.5, y: 1.0)
 
-        view.layer.insertSublayer(gradientLayer, at: 0)
+        DispatchQueue.main.async {
+            self.view.layer.insertSublayer(gradientLayer, at: 0)
+            self.view.addSubview(self.mainStackView)
 
-        view.addSubview(mainStackView)
-
-        NSLayoutConstraint.activate([
-            mainStackView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 0),
-            mainStackView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 20),
-            mainStackView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -20),
-            mainStackView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -40)
-        ])
+            NSLayoutConstraint.activate([
+                self.mainStackView.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: 0),
+                self.mainStackView.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor, constant: 20),
+                self.mainStackView.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor, constant: -20),
+                self.mainStackView.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor, constant: -40)
+            ])
+        }
     }
 
     @objc private func sliderValueChanged(_ sender: UISlider) {
@@ -333,13 +334,5 @@ class MusicPlayerViewController: UIViewController {
 
     @objc private func backwardTapped(sender: UIButton) {
         delegate?.backwardButtonTapped(sender)
-    }
-
-    @objc private func volumeSliderValueChanged(_ sender: UISlider) {
-        delegate?.volumeSliderValueChanged(value: sender.value)
-    }
-
-    @objc private func volumeButtonTapped(_ sender: UIButton) {
-        delegate?.volumeButtonTapped(sender)
     }
 }
