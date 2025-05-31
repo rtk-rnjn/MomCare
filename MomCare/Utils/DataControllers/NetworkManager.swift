@@ -48,7 +48,7 @@ actor NetworkManager {
         return await request(url: url, method: "PATCH", body: body)
     }
 
-    func fetchStreamedData<T: Codable>(_ method: HTTPMethod, url: String, queryParameters: [String: Any]? = nil, onItem: @escaping (T) -> Void, onError: ((Error) -> Void)? = nil) {
+    func fetchStreamedData<T: Codable>(_ method: HTTPMethod, url: String, queryParameters: [String: Any]? = nil, onItem: (@Sendable (T) -> Void)? = nil, onError: (@Sendable (Error) -> Void)? = nil) {
         var urlString = "\(endpoint)\(url)"
 
         if let queryParameters, !queryParameters.isEmpty {
@@ -87,9 +87,7 @@ actor NetworkManager {
                 if let jsonData = line.data(using: .utf8) {
                     do {
                         let item = try JSONDecoder().decode(T.self, from: jsonData)
-                        DispatchQueue.main.async {
-                            onItem(item)
-                        }
+                        onItem?(item)
                     } catch {
                         onError?(error)
                     }
@@ -97,7 +95,6 @@ actor NetworkManager {
             }
         }
         task.resume()
-
     }
 
     // MARK: Private

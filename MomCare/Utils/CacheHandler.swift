@@ -9,7 +9,7 @@ import Foundation
 import UIKit
 import OSLog
 
-private var logger: Logger = .init(subsystem: "com.MomCare.CacheHandler", category: "Cache")
+private let logger: Logger = .init(subsystem: "com.MomCare.CacheHandler", category: "Cache")
 
 class Entity<T> {
 
@@ -39,7 +39,7 @@ class CacheHandler {
 
     // MARK: Public
 
-    public static let shared: CacheHandler = .init()
+    @MainActor static let shared: CacheHandler = .init()
 
     // MARK: Internal
 

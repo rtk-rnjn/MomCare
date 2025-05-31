@@ -63,10 +63,9 @@ class MusicPlayerViewController: UIViewController {
         imageView.clipsToBounds = true
         imageView.layer.cornerRadius = 16
         Task {
-            if let image = await song?.image {
+            let image = await song?.image ?? UIImage(systemName: "music.note")
+            DispatchQueue.main.async {
                 imageView.image = image
-            } else {
-                imageView.image = UIImage(systemName: "music.note")
             }
         }
         imageView.translatesAutoresizingMaskIntoConstraints = false

@@ -57,7 +57,7 @@ private let logger: Logger = .init(subsystem: "com.MomCare.MomCareUser", categor
 
 extension MomCareUser {
 
-    private func serializeAndPost<T: Codable, R: Codable>(
+    private func serializeAndPost<T: Codable, R: Codable & Sendable>(
         _ object: T,
         endpoint: String,
         onFailureMessage: String

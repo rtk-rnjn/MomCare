@@ -14,7 +14,7 @@ class HealthKitHandler {
 
     // MARK: Public
 
-    public static let shared: HealthKitHandler = .init()
+    @MainActor static let shared: HealthKitHandler = .init()
 
     // MARK: Internal
 

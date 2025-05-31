@@ -7,16 +7,11 @@ class PlaylistTableViewController: UITableViewController {
 
     // MARK: Lifecycle
 
-    deinit {
-        if let token = timeObserverToken {
-            player?.removeTimeObserver(token)
-            timeObserverToken = nil
-        }
-    }
-
     // MARK: Internal
 
     var songs: [Song] = []
+    var songsFetched: Bool = false
+
     var playlist: (imageUri: String, label: String)?
 
     var initialTabBarController: InitialTabBarController?
@@ -48,6 +43,9 @@ class PlaylistTableViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if !songsFetched {
+            return 6
+        }
         return songs.count
     }
 
@@ -55,6 +53,21 @@ class PlaylistTableViewController: UITableViewController {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "songPageTableViewCell", for: indexPath) as? SongPageTableViewCell else {
             fatalError("Failed to dequeue SongPageTableViewCell")
         }
+
+        cell.songImageView.startShimmer()
+        cell.songLabel.startShimmer()
+        cell.durationLabel.startShimmer()
+        cell.artistOrAlbumLabel.startShimmer()
+
+        if !songsFetched {
+            return cell
+        }
+
+        cell.songImageView.stopShimmer()
+        cell.songLabel.stopShimmer()
+        cell.durationLabel.stopShimmer()
+        cell.artistOrAlbumLabel.stopShimmer()
+
         cell.updateElements(with: songs[indexPath.row])
         return cell
     }
@@ -69,6 +82,8 @@ class PlaylistTableViewController: UITableViewController {
 
             DispatchQueue.main.async {
                 self.songs = songs
+                self.songsFetched = true
+
                 self.tableView.reloadData()
             }
         }
@@ -106,7 +121,7 @@ class PlaylistTableViewController: UITableViewController {
 
     // MARK: Private
 
-    private var timeObserverToken: Any?
+    var timeObserverToken: Any?
 
     private func configureTableView() {
         tableView.showsVerticalScrollIndicator = false
@@ -132,16 +147,19 @@ class PlaylistTableViewController: UITableViewController {
     private func observe(_ player: AVPlayer?) {
         let interval = CMTime(seconds: 0.02, preferredTimescale: 600)
         timeObserverToken = player?.addPeriodicTimeObserver(forInterval: interval, queue: DispatchQueue.main) { time in
-            guard let currentItem = self.player?.currentItem else { return }
-            let duration = CMTimeGetSeconds(currentItem.duration)
-            let currentTime = CMTimeGetSeconds(time)
-            let progress = duration > 0 ? Float(currentTime / duration) : 0.0
+            DispatchQueue.main.async {
+                guard let currentItem = self.player?.currentItem else { return }
 
-            self.initialTabBarController?.popupBar.popupItem?.progress = progress
+                let duration = CMTimeGetSeconds(currentItem.duration)
+                let currentTime = CMTimeGetSeconds(time)
+                let progress = duration > 0 ? Float(currentTime / duration) : 0.0
 
-            self.musicPlayer.songSlider.value = progress
-            self.musicPlayer.startDurationLabel.text = self.getFormattedTime(from: time)
-            self.musicPlayer.endDurationLabel.text = self.getFormattedTime(from: currentItem.duration)
+                self.initialTabBarController?.popupBar.popupItem?.progress = progress
+
+                self.musicPlayer.songSlider.value = progress
+                self.musicPlayer.startDurationLabel.text = self.getFormattedTime(from: time)
+                self.musicPlayer.endDurationLabel.text = self.getFormattedTime(from: currentItem.duration)
+            }
         }
     }
 

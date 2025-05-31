@@ -178,7 +178,7 @@ class LocalStore {
 
     // MARK: Public
 
-    public static let shared: LocalStore = .init()
+    @MainActor public static let shared: LocalStore = .init()
 
     // MARK: Internal
 

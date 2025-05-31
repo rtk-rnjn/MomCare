@@ -10,11 +10,12 @@ import EventKitUI
 import UIKit
 import OSLog
 
-private var logger: Logger = .init(subsystem: "com.example.MomCare", category: "EventKitHandler")
+private let logger: Logger = .init(subsystem: "com.example.MomCare", category: "EventKitHandler")
 
-private var eventIdentifier: String = "TriTrackEvent"
-private var reminderIdentifier: String = "TriTrackReminder"
+private let eventIdentifier: String = "TriTrackEvent"
+private let reminderIdentifier: String = "TriTrackReminder"
 
+@MainActor
 class EventKitHandler {
 
     // MARK: Lifecycle
@@ -279,6 +280,7 @@ class EventKitHandler {
 
 }
 
+@MainActor
 class EventKitHandlerDelegate: NSObject, EKEventEditViewDelegate, EKEventViewDelegate {
     var eventStore: EKEventStore = EventKitHandler.shared.eventStore
     var viewController: UIViewController?

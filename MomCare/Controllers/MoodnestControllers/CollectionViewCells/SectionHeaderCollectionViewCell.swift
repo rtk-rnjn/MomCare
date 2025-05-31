@@ -13,12 +13,18 @@ class SectionHeaderCollectionViewCell: UICollectionViewCell {
 
     override init(frame: CGRect) {
         super.init(frame: frame)
-        updateSectionHeader()
+
+        DispatchQueue.main.async {
+            self.updateSectionHeader()
+        }
     }
 
     required init?(coder: NSCoder) {
         super.init(coder: coder)
-        updateSectionHeader()
+
+        DispatchQueue.main.async {
+            self.updateSectionHeader()
+        }
     }
 
     // MARK: Internal

@@ -20,8 +20,8 @@
                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="EZC-Wm-eDT">
                         <rect key="frame" x="0.0" y="0.0" width="338" height="101"/>
                     </imageView>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BVq-Ja-S3k">
-                        <rect key="frame" x="16" y="46.666666666666664" width="295" height="20.333333333333336"/>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Loading..." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BVq-Ja-S3k">
+                        <rect key="frame" x="25.333333333333343" y="53" width="287.33333333333326" height="20.333333333333329"/>
                         <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <nil key="highlightedColor"/>
@@ -29,25 +29,25 @@
                 </subviews>
                 <color key="backgroundColor" systemColor="systemGray2Color"/>
                 <constraints>
+                    <constraint firstItem="BVq-Ja-S3k" firstAttribute="centerX" secondItem="ehV-1i-e6x" secondAttribute="centerX" id="0TR-S8-dhb"/>
                     <constraint firstAttribute="trailing" secondItem="EZC-Wm-eDT" secondAttribute="trailing" id="1Xp-yt-7fx"/>
+                    <constraint firstItem="BVq-Ja-S3k" firstAttribute="width" secondItem="EZC-Wm-eDT" secondAttribute="width" multiplier="0.85" id="1cM-I5-DIc"/>
                     <constraint firstItem="EZC-Wm-eDT" firstAttribute="top" secondItem="ehV-1i-e6x" secondAttribute="top" id="AKY-aC-KSQ"/>
-                    <constraint firstAttribute="trailing" secondItem="BVq-Ja-S3k" secondAttribute="trailing" constant="27" id="Gxe-z8-t8n"/>
+                    <constraint firstItem="BVq-Ja-S3k" firstAttribute="centerY" secondItem="ehV-1i-e6x" secondAttribute="centerY" multiplier="1.25" id="FvD-ES-K5m"/>
                     <constraint firstAttribute="bottom" secondItem="EZC-Wm-eDT" secondAttribute="bottom" id="RsL-Ji-Gdg"/>
-                    <constraint firstItem="BVq-Ja-S3k" firstAttribute="leading" secondItem="ehV-1i-e6x" secondAttribute="leading" constant="16" id="bid-Z6-Pwd"/>
-                    <constraint firstAttribute="bottom" secondItem="BVq-Ja-S3k" secondAttribute="bottom" constant="34" id="icw-Ex-9aQ"/>
                     <constraint firstItem="EZC-Wm-eDT" firstAttribute="leading" secondItem="ehV-1i-e6x" secondAttribute="leading" id="uIu-EA-sgf"/>
                 </constraints>
             </collectionViewCellContentView>
             <connections>
-                <outlet property="sideImagesLabel" destination="BVq-Ja-S3k" id="670-O3-t1U"/>
-                <outlet property="sideImagesView" destination="EZC-Wm-eDT" id="HoV-3e-aD0"/>
+                <outlet property="imageLabel" destination="BVq-Ja-S3k" id="670-O3-t1U"/>
+                <outlet property="imageView" destination="EZC-Wm-eDT" id="HoV-3e-aD0"/>
             </connections>
             <point key="canvasLocation" x="154" y="-48"/>
         </collectionViewCell>
     </objects>
     <resources>
         <systemColor name="systemGray2Color">
-            <color red="0.68235294120000001" green="0.68235294120000001" blue="0.69803921570000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.68235294117647061" green="0.68235294117647061" blue="0.69803921568627447" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>

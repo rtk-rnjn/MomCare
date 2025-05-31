@@ -8,11 +8,11 @@
 import UIKit
 
 class MoodNestMultipleImagesCollectionViewCell: UICollectionViewCell {
-    @IBOutlet var sideImagesView: UIImageView!
-    @IBOutlet var sideImagesLabel: UILabel!
+    @IBOutlet var imageView: UIImageView!
+    @IBOutlet var imageLabel: UILabel!
 
     func updateElements(image: UIImage?, label: String) {
-        sideImagesView.image = image
-        sideImagesLabel.text = label
+        imageView.image = image
+        imageLabel.text = label
     }
 }

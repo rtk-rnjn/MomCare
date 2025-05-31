@@ -21,6 +21,8 @@ class MoodNestViewController: UIViewController, UICollectionViewDataSource, UICo
     @IBOutlet var outerView: UIView!
 
     var playlists: [(imageUri: String, label: String)] = []
+    var playlistsFetched: Bool = false
+
     var mood: MoodType?
 
     override func viewDidLoad() {
@@ -32,6 +34,7 @@ class MoodNestViewController: UIViewController, UICollectionViewDataSource, UICo
         Task {
             playlists = await ContentHandler.shared.fetchPlaylists(forMood: mood ?? .happy) ?? []
             DispatchQueue.main.async {
+                self.playlistsFetched = true
                 self.collectionView.reloadData()
             }
         }
@@ -56,6 +59,10 @@ class MoodNestViewController: UIViewController, UICollectionViewDataSource, UICo
             return 1
 
         case .multipleImages:
+            if !playlistsFetched {
+                return 6
+            }
+
             return playlists.count
         }
     }
@@ -69,8 +76,17 @@ class MoodNestViewController: UIViewController, UICollectionViewDataSource, UICo
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "MainHeading", for: indexPath) as? MainHeadingCollectionViewCell
             guard let cell else { fatalError("Chura liya hai tumne jo dil ko... Nazar nahi churaana sanam") }
 
-            cell.updateElements(with: "Here comes a quote with a beautiful heading")
+            cell.startShimmer()
+            cell.layer.masksToBounds = true
             cell.layer.cornerRadius = 20
+
+            if !playlistsFetched {
+                return cell
+            }
+
+            cell.stopShimmer()
+
+            cell.updateElements(with: "Here comes a quote with a beautiful heading")
 
             return cell
 
@@ -78,14 +94,33 @@ class MoodNestViewController: UIViewController, UICollectionViewDataSource, UICo
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "MainImage", for: indexPath) as? MainImageCollectionViewCell
             guard let cell else { fatalError("Pyaar hua ikraar hua hai... Pyaar se phir kyoon darta hai dil") }
 
-            cell.updateElements(image: nil, label: "Suggested for you")
+            cell.startShimmer()
+            cell.layer.masksToBounds = true
             cell.layer.cornerRadius = 20
+
+            if !playlistsFetched {
+                return cell
+            }
+
+            cell.stopShimmer()
+
+            cell.updateElements(image: nil, label: "Suggested for you")
 
             return cell
 
         case .multipleImages:
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "MoodNestMultipleImages", for: indexPath) as? MoodNestMultipleImagesCollectionViewCell
             guard let cell else { fatalError("Yeh shaam mastani, madhosh kiye jaaye") }
+
+            cell.startShimmer()
+            cell.layer.masksToBounds = true
+            cell.layer.cornerRadius = 20
+
+            if !playlistsFetched {
+                return cell
+            }
+
+            cell.stopShimmer()
 
             let playlist = playlists[indexPath.row]
 
@@ -95,20 +130,30 @@ class MoodNestViewController: UIViewController, UICollectionViewDataSource, UICo
                     cell.updateElements(image: image, label: playlist.label)
                 }
             }
-            cell.layer.cornerRadius = 20
 
             return cell
         }
     }
 
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-        let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "SectionHeaderCollectionViewCell", for: indexPath) as? SectionHeaderCollectionViewCell
+        let cell = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "SectionHeaderCollectionViewCell", for: indexPath) as? SectionHeaderCollectionViewCell
 
-        guard let header else { fatalError("the sunset is beautiful, isn't it?") }
-        header.headerLabel.text = "Featured Playlists"
-        header.headerLabel.font = UIFont.systemFont(ofSize: 24, weight: .semibold)
+        guard let cell else { fatalError("the sunset is beautiful, isn't it?") }
 
-        return header
+        cell.startShimmer()
+        cell.layer.masksToBounds = true
+        cell.layer.cornerRadius = 20
+
+        if !playlistsFetched {
+            return cell
+        }
+
+        cell.stopShimmer()
+
+        cell.headerLabel.text = "Featured Playlists"
+        cell.headerLabel.font = UIFont.systemFont(ofSize: 24, weight: .semibold)
+
+        return cell
     }
 
     func generateLayout() -> UICollectionViewLayout {
@@ -185,6 +230,10 @@ class MoodNestViewController: UIViewController, UICollectionViewDataSource, UICo
     }
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        if !playlistsFetched {
+            return
+        }
+
         let selectedPlaylist = playlists[indexPath.item]
         performSegue(withIdentifier: "segueShowSongPageViewController", sender: selectedPlaylist)
     }

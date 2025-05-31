@@ -21,7 +21,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="338" height="202"/>
                     </imageView>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cyb-Hh-ZQh">
-                        <rect key="frame" x="16" y="109" width="295" height="59"/>
+                        <rect key="frame" x="25.333333333333343" y="112.66666666666669" width="287.33333333333326" height="37"/>
                         <fontDescription key="fontDescription" type="boldSystem" pointSize="31"/>
                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <nil key="highlightedColor"/>
@@ -29,14 +29,13 @@
                 </subviews>
                 <color key="backgroundColor" systemColor="systemGray2Color"/>
                 <constraints>
-                    <constraint firstAttribute="trailing" secondItem="cyb-Hh-ZQh" secondAttribute="trailing" constant="27" id="33z-I0-fsc"/>
                     <constraint firstItem="qzb-R8-8jf" firstAttribute="leading" secondItem="go5-dB-X25" secondAttribute="leading" id="6aR-zx-Riw"/>
-                    <constraint firstAttribute="bottom" secondItem="cyb-Hh-ZQh" secondAttribute="bottom" constant="34" id="UaU-Pu-A8N"/>
-                    <constraint firstAttribute="trailing" secondItem="qzb-R8-8jf" secondAttribute="trailing" id="Ufq-jC-fp9"/>
+                    <constraint firstItem="cyb-Hh-ZQh" firstAttribute="width" secondItem="qzb-R8-8jf" secondAttribute="width" multiplier="0.85" id="GQ9-v9-kXS"/>
+                    <constraint firstItem="cyb-Hh-ZQh" firstAttribute="centerY" secondItem="go5-dB-X25" secondAttribute="centerY" multiplier="1.3" id="bg5-B6-dEm"/>
+                    <constraint firstAttribute="trailing" secondItem="qzb-R8-8jf" secondAttribute="trailing" id="dy6-RR-HrJ"/>
                     <constraint firstAttribute="bottom" secondItem="qzb-R8-8jf" secondAttribute="bottom" id="jiq-0d-FNH"/>
-                    <constraint firstItem="cyb-Hh-ZQh" firstAttribute="leading" secondItem="go5-dB-X25" secondAttribute="leading" constant="16" id="lLI-If-Fqw"/>
-                    <constraint firstItem="cyb-Hh-ZQh" firstAttribute="top" secondItem="go5-dB-X25" secondAttribute="top" constant="109" id="oiR-EH-1X1"/>
                     <constraint firstItem="qzb-R8-8jf" firstAttribute="top" secondItem="go5-dB-X25" secondAttribute="top" id="qOU-8Q-2qo"/>
+                    <constraint firstItem="cyb-Hh-ZQh" firstAttribute="centerX" secondItem="go5-dB-X25" secondAttribute="centerX" id="rhY-8E-DT6"/>
                 </constraints>
             </collectionViewCellContentView>
             <connections>
@@ -48,7 +47,7 @@
     </objects>
     <resources>
         <systemColor name="systemGray2Color">
-            <color red="0.68235294120000001" green="0.68235294120000001" blue="0.69803921570000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.68235294117647061" green="0.68235294117647061" blue="0.69803921568627447" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>

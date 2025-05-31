@@ -39,11 +39,12 @@ struct S3Response: Codable, Sendable {
     var expiryAt: Date?
 }
 
+@MainActor
 class ContentHandler {
 
     // MARK: Public
 
-    public static var shared: ContentHandler = .init()
+    static var shared: ContentHandler = .init()
 
     // MARK: Internal
 
@@ -95,7 +96,7 @@ class ContentHandler {
         return tips
     }
 
-    func searchStreamedFood(with query: String, onItem: @escaping (FoodItem) -> Void) async {
+    func searchStreamedFood(with query: String, onItem: (@Sendable (FoodItem) -> Void)?) async {
         let searchQeury = FoodSearchQuery(foodName: query)
         let sendableQeury: [String: Any]? = searchQeury.toDictionary(snakeCase: true)
 
