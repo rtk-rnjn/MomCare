@@ -5,8 +5,6 @@ import MediaPlayer
 
 class PlaylistTableViewController: UITableViewController {
 
-    // MARK: Lifecycle
-
     // MARK: Internal
 
     var songs: [Song] = []
@@ -20,7 +18,9 @@ class PlaylistTableViewController: UITableViewController {
     var musicPlayer: MusicPlayerViewController = .init()
     var player: AVPlayer?
 
-    let commandCenter = MPRemoteCommandCenter.shared()
+    let commandCenter: MPRemoteCommandCenter = .shared()
+
+    var timeObserverToken: Any?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -119,9 +119,19 @@ class PlaylistTableViewController: UITableViewController {
         }
     }
 
-    // MARK: Private
+    func setupRemoteTransportControls() {
+        commandCenter.playCommand.addTarget { [unowned self] _ in
+            player?.play()
+            return .success
+        }
 
-    var timeObserverToken: Any?
+        commandCenter.pauseCommand.addTarget { [unowned self] _ in
+            player?.pause()
+            return .success
+        }
+    }
+
+    // MARK: Private
 
     private func configureTableView() {
         tableView.showsVerticalScrollIndicator = false
@@ -179,17 +189,6 @@ class PlaylistTableViewController: UITableViewController {
         return String(format: "%02d:%02d", minutes, remainingSeconds)
     }
 
-    func setupRemoteTransportControls() {
-        commandCenter.playCommand.addTarget { [unowned self] event in
-            self.player?.play()
-            return .success
-        }
-
-        commandCenter.pauseCommand.addTarget { [unowned self] event in
-            self.player?.pause()
-            return .success
-        }
-    }
 }
 
 extension PlaylistTableViewController: MusicPlayerDelegate {

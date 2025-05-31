@@ -42,11 +42,9 @@ struct S3Response: Codable, Sendable {
 @MainActor
 class ContentHandler {
 
-    // MARK: Public
+    // MARK: Internal
 
     static var shared: ContentHandler = .init()
-
-    // MARK: Internal
 
     var plan: MyPlan? {
         set {

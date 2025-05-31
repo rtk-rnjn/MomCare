@@ -12,11 +12,9 @@ private let logger: Logger = .init(subsystem: "com.MomCare.HealthKit", category:
 
 class HealthKitHandler {
 
-    // MARK: Public
+    // MARK: Internal
 
     @MainActor static let shared: HealthKitHandler = .init()
-
-    // MARK: Internal
 
     let healthStore: HKHealthStore = .init()
 

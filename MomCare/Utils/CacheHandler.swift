@@ -37,11 +37,9 @@ class Entity<T> {
 
 class CacheHandler {
 
-    // MARK: Public
+    // MARK: Internal
 
     @MainActor static let shared: CacheHandler = .init()
-
-    // MARK: Internal
 
     func fetchImage(from url: URL) async -> UIImage? {
         if let cachedImage = cache.object(forKey: url as AnyObject) as? Entity<UIImage> {

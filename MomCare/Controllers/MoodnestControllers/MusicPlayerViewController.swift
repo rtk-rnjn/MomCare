@@ -46,6 +46,48 @@ class MusicPlayerViewController: UIViewController {
         return slider
     }()
 
+    lazy var startDurationLabel: UILabel = {
+        let label = UILabel()
+        label.text = "-:--"
+        label.font = UIFont.preferredFont(forTextStyle: .footnote)
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.setContentHuggingPriority(.required, for: .horizontal)
+        label.setContentHuggingPriority(.required, for: .vertical)
+        label.setContentCompressionResistancePriority(.required, for: .horizontal)
+        label.setContentCompressionResistancePriority(.required, for: .vertical)
+        return label
+    }()
+
+    lazy var endDurationLabel: UILabel = {
+        let label = UILabel()
+        label.text = "--:--"
+        label.font = UIFont.preferredFont(forTextStyle: .footnote)
+        label.textAlignment = .right
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.setContentHuggingPriority(.required, for: .horizontal)
+        label.setContentHuggingPriority(.required, for: .vertical)
+        label.setContentCompressionResistancePriority(.required, for: .horizontal)
+        label.setContentCompressionResistancePriority(.required, for: .vertical)
+        return label
+    }()
+
+    lazy var playButton: UIButton = {
+        let button = UIButton(type: .system)
+        let config = UIImage.SymbolConfiguration(font: UIFont.preferredFont(forTextStyle: .largeTitle))
+        button.setImage(UIImage(systemName: "play.fill", withConfiguration: config), for: .normal)
+        button.tintColor = .white
+        button.contentHorizontalAlignment = .center
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.setContentHuggingPriority(.required, for: .horizontal)
+        button.setContentHuggingPriority(.required, for: .vertical)
+        button.setContentCompressionResistancePriority(.required, for: .horizontal)
+        button.setContentCompressionResistancePriority(.required, for: .vertical)
+
+        button.addTarget(self, action: #selector(playPauseTapped), for: .touchUpInside)
+
+        return button
+    }()
+
     override func viewDidLoad() {
         super.viewDidLoad()
         prepareUI()
@@ -106,31 +148,6 @@ class MusicPlayerViewController: UIViewController {
         return label
     }()
 
-    lazy var startDurationLabel: UILabel = {
-        let label = UILabel()
-        label.text = "-:--"
-        label.font = UIFont.preferredFont(forTextStyle: .footnote)
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.setContentHuggingPriority(.required, for: .horizontal)
-        label.setContentHuggingPriority(.required, for: .vertical)
-        label.setContentCompressionResistancePriority(.required, for: .horizontal)
-        label.setContentCompressionResistancePriority(.required, for: .vertical)
-        return label
-    }()
-
-    lazy var endDurationLabel: UILabel = {
-        let label = UILabel()
-        label.text = "--:--"
-        label.font = UIFont.preferredFont(forTextStyle: .footnote)
-        label.textAlignment = .right
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.setContentHuggingPriority(.required, for: .horizontal)
-        label.setContentHuggingPriority(.required, for: .vertical)
-        label.setContentCompressionResistancePriority(.required, for: .horizontal)
-        label.setContentCompressionResistancePriority(.required, for: .vertical)
-        return label
-    }()
-
     private lazy var backwardButton: UIButton = {
         let button = UIButton(type: .system)
         let config = UIImage.SymbolConfiguration(font: UIFont.preferredFont(forTextStyle: .largeTitle))
@@ -144,23 +161,6 @@ class MusicPlayerViewController: UIViewController {
         button.setContentCompressionResistancePriority(.required, for: .vertical)
 
         button.addTarget(self, action: #selector(backwardTapped), for: .touchUpInside)
-
-        return button
-    }()
-
-    lazy var playButton: UIButton = {
-        let button = UIButton(type: .system)
-        let config = UIImage.SymbolConfiguration(font: UIFont.preferredFont(forTextStyle: .largeTitle))
-        button.setImage(UIImage(systemName: "play.fill", withConfiguration: config), for: .normal)
-        button.tintColor = .white
-        button.contentHorizontalAlignment = .center
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.setContentHuggingPriority(.required, for: .horizontal)
-        button.setContentHuggingPriority(.required, for: .vertical)
-        button.setContentCompressionResistancePriority(.required, for: .horizontal)
-        button.setContentCompressionResistancePriority(.required, for: .vertical)
-
-        button.addTarget(self, action: #selector(playPauseTapped), for: .touchUpInside)
 
         return button
     }()
