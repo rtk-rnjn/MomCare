@@ -19,7 +19,6 @@ class PlaylistTableViewController: UITableViewController {
     var player: AVPlayer?
 
     var currentPlayingIndex: IndexPath?
-    var currentPlayingSong: Song?
     var mood: MoodType?
 
     let commandCenter: MPRemoteCommandCenter = .shared()
@@ -109,7 +108,6 @@ class PlaylistTableViewController: UITableViewController {
 
         setupMusicPlayer(with: song)
         currentPlayingIndex = indexPath
-        currentPlayingSong = song
 
         tableView.deselectRow(at: indexPath, animated: true)
     }
@@ -172,8 +170,7 @@ class PlaylistTableViewController: UITableViewController {
         startObserving(player)
 
         initialTabBarController?.presentPopupBar(with: musicPlayer, openPopup: true, animated: true) {
-            self.player?.play()
-            DispatchQueue.main.async { self.updatePlayPauseUI() }
+            self.playPauseButtonTapped(nil)
         }
     }
 

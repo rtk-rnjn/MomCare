@@ -21,8 +21,8 @@
                         <rect key="frame" x="0.0" y="0.0" width="338" height="202"/>
                     </imageView>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cyb-Hh-ZQh">
-                        <rect key="frame" x="25.333333333333343" y="112.66666666666669" width="287.33333333333326" height="37"/>
-                        <fontDescription key="fontDescription" type="boldSystem" pointSize="31"/>
+                        <rect key="frame" x="25.333333333333343" y="111.00000000000001" width="287.33333333333326" height="40.666666666666671"/>
+                        <fontDescription key="fontDescription" style="UICTFontTextStyleTitle0"/>
                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <nil key="highlightedColor"/>
                     </label>

@@ -155,7 +155,7 @@ class MoodNestViewController: UIViewController, UICollectionViewDataSource, UICo
         cell.stopShimmer()
 
         cell.headerLabel.text = "Featured Playlists"
-        cell.headerLabel.font = UIFont.systemFont(ofSize: 24, weight: .semibold)
+        cell.headerLabel.font = UIFont.preferredFont(forTextStyle: .title2)
 
         return cell
     }
