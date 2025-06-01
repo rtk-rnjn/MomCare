@@ -12,6 +12,9 @@ class ContentTableViewCell: UITableViewCell {
 
     // MARK: Internal
 
+    var dietViewController: DietViewController?
+    var refreshHandler: (() -> Void)?
+
     @IBOutlet var qualtityLabel: UILabel!
     @IBOutlet var foodItemLabel: UILabel!
     @IBOutlet var kalcLabel: UILabel!
@@ -22,9 +25,8 @@ class ContentTableViewCell: UITableViewCell {
     var foodItem: FoodItem?
 
     var buttonTapHandler: (() -> Bool)?
-    var refreshHandler: (() -> Void)?
 
-    func updateElements(with foodItem: FoodItem, refreshHandler: (() -> Void)? = nil, buttonTapHandler: @escaping (() -> Bool)) {
+    func updateElements(with foodItem: FoodItem, buttonTapHandler: @escaping (() -> Bool)) {
         foodItemLabel.text = foodItem.name
         kalcLabel.text = "\(String(foodItem.calories)) cal."
         Task {
@@ -34,9 +36,7 @@ class ContentTableViewCell: UITableViewCell {
             }
         }
         self.foodItem = foodItem
-
         self.buttonTapHandler = buttonTapHandler
-        self.refreshHandler = refreshHandler
 
         let consumed = foodItem.consumed
 
@@ -54,12 +54,16 @@ class ContentTableViewCell: UITableViewCell {
 
         let consumed = buttonTapHandler()
 
-        DietViewController.addCalories(energy: Double(foodItem?.calories ?? 0), consumed: consumed)
-        DietViewController.addCarbs(carbs: Double(foodItem?.carbs ?? 0), consumed: consumed)
-        DietViewController.addProtein(protein: Double(foodItem?.protein ?? 0), consumed: consumed)
-        DietViewController.addFats(fats: Double(foodItem?.fat ?? 0), consumed: consumed)
+        Task {
+            await self.dietViewController?.addCalories(energy: Double(foodItem?.calories ?? 0), consumed: consumed)
+            await self.dietViewController?.addCarbs(carbs: Double(foodItem?.carbs ?? 0), consumed: consumed)
+            await self.dietViewController?.addProtein(protein: Double(foodItem?.protein ?? 0), consumed: consumed)
+            await self.dietViewController?.addFats(fats: Double(foodItem?.fat ?? 0), consumed: consumed)
 
-        refreshHandler?()
+            DispatchQueue.main.async {
+                self.refreshHandler?()
+            }
+        }
     }
 
     // MARK: Private

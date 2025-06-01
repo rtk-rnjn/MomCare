@@ -16,6 +16,7 @@ class DashboardViewController: UIViewController, UICollectionViewDataSource, UIC
     @IBOutlet var collectionView: UICollectionView!
     var addEventTableViewController: AddEventTableViewController?
     var profileButton: UIButton?
+    var dataFetched: Bool = false
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -38,6 +39,7 @@ class DashboardViewController: UIViewController, UICollectionViewDataSource, UIC
             }
 
             DispatchQueue.main.async {
+                self.dataFetched = true
                 self.collectionView.reloadData()
             }
         }
@@ -73,13 +75,19 @@ class DashboardViewController: UIViewController, UICollectionViewDataSource, UIC
 
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
 
-        let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "SectionHeaderView", for: indexPath) as? DashboardSectionHeaderCollectionViewCell
+        let cell = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "SectionHeaderView", for: indexPath) as? DashboardSectionHeaderCollectionViewCell
 
-        guard let headerView else { fatalError() }
+        guard let cell else { fatalError() }
+        cell.titleLabel.startShimmer()
+        if !dataFetched {
+            cell.titleLabel.text = "Loading..."
+            return cell
+        }
+        cell.titleLabel.stopShimmer()
 
-        headerView.titleLabel.text = (indexPath.section == 2) ? "Daily Insights" : "Progress"
+        cell.titleLabel.text = (indexPath.section == 2) ? "Daily Insights" : "Progress"
 
-        return headerView
+        return cell
     }
 
     @IBAction func unwinToDashboard(_ segue: UIStoryboardSegue) {}

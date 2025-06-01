@@ -32,7 +32,10 @@ class MoodNestViewController: UIViewController, UICollectionViewDataSource, UICo
         registerAllNibs()
 
         Task {
-            playlists = await ContentHandler.shared.fetchPlaylists(forMood: mood ?? .happy) ?? []
+            guard let mood else {
+                fatalError("Mood is not set before fetching playlists")
+            }
+            playlists = await ContentHandler.shared.fetchPlaylists(forMood: mood) ?? []
             DispatchQueue.main.async {
                 self.playlistsFetched = true
                 self.collectionView.reloadData()
@@ -41,8 +44,9 @@ class MoodNestViewController: UIViewController, UICollectionViewDataSource, UICo
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if let destinationVC = segue.destination as? SongPageViewController {
-            destinationVC.playlist = sender as? (imageUri: String, label: String)
+        if let viewController = segue.destination as? SongPageViewController {
+            viewController.playlist = sender as? (imageUri: String, label: String)
+            viewController.mood = mood
         }
     }
 

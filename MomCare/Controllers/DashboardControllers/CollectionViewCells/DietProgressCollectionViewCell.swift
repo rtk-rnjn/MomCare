@@ -43,26 +43,21 @@ class DietProgressCollectionViewCell: UICollectionViewCell {
         let caloriesGoal = Utils.getCaloriesGoal(trimester: pregnancyData?.trimester ?? "")
         caloriesGoalLabel.text = "/ \(Int(caloriesGoal)) kcal"
 
-        let progress = Float(currentCaloriesIntake) / Float(caloriesGoal)
-        progressBar.progress = progress
-
-        var displayProgress = Int(progress * 100)
-        displayProgress = displayProgress > 100 ? 100 : displayProgress
-        percentageLabel.text = "\(displayProgress)%"
-
-        updateLabels()
-    }
-
-    // MARK: Private
-
-    private func updateLabels() {
         HealthKitHandler.shared.readCaloriesIntake { caloriesIntake in
             DispatchQueue.main.async {
                 self.currentKcalLabel.text = "\(Int(caloriesIntake))"
                 self.currentCaloriesIntake = Int(caloriesIntake)
+                let progress = Float(self.currentCaloriesIntake) / Float(caloriesGoal)
+                self.progressBar.progress = progress
+
+                var displayProgress = Int(progress * 100)
+                displayProgress = displayProgress > 100 ? 100 : displayProgress
+                self.percentageLabel.text = "\(displayProgress)%"
             }
         }
     }
+
+    // MARK: Private
 
     private func setupGesture() {
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap))

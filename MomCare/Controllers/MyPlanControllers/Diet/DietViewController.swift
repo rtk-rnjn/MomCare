@@ -1,5 +1,8 @@
 import UIKit
 import HealthKit
+import OSLog
+
+private let logger: Logger = .init(subsystem: "com.momcare.DietViewController", category: "ViewController")
 
 class DietViewController: UIViewController {
 
@@ -20,16 +23,12 @@ class DietViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         prepareProgressRing()
-
-        prepareProgressBars([proteinProgressBar, carbsProgressBar, fatsProgressBar])
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
-        prepareProgressBars([proteinProgressBar, carbsProgressBar, fatsProgressBar])
-        prepareCaloricProgress()
-        prepareProgress()
+        refreshStats()
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -41,36 +40,40 @@ class DietViewController: UIViewController {
         }
     }
 
-    static func addNutrient(typeIdentifier: HKQuantityTypeIdentifier, unit: HKUnit, amount: Double, consumed: Bool) {
+    func addNutrient(typeIdentifier: HKQuantityTypeIdentifier, unit: HKUnit, amount: Double, consumed: Bool) async {
+        logger.debug("Adding nutrient: \(typeIdentifier.rawValue), amount: \(amount), consumed: \(consumed)")
         let date = Date()
         guard let quantityType = HKQuantityType.quantityType(forIdentifier: typeIdentifier) else { return }
         let quantity = HKQuantity(unit: unit, doubleValue: amount * (consumed ? 1 : -1))
         let sample = HKQuantitySample(type: quantityType, quantity: quantity, start: date, end: date)
 
-        Task {
-            try? await HealthKitHandler.shared.healthStore.save(sample)
-        }
+        try? await HealthKitHandler.shared.healthStore.save(sample)
     }
 
-    static func addCalories(energy: Double, consumed: Bool) {
-        addNutrient(typeIdentifier: .dietaryEnergyConsumed, unit: .kilocalorie(), amount: energy, consumed: consumed)
+    func addCalories(energy: Double, consumed: Bool) async {
+        await addNutrient(typeIdentifier: .dietaryEnergyConsumed, unit: .kilocalorie(), amount: energy, consumed: consumed)
     }
 
-    static func addProtein(protein: Double, consumed: Bool) {
-        addNutrient(typeIdentifier: .dietaryProtein, unit: .gram(), amount: protein, consumed: consumed)
+    func addProtein(protein: Double, consumed: Bool) async {
+        await addNutrient(typeIdentifier: .dietaryProtein, unit: .gram(), amount: protein, consumed: consumed)
     }
 
-    static func addCarbs(carbs: Double, consumed: Bool) {
-        addNutrient(typeIdentifier: .dietaryCarbohydrates, unit: .gram(), amount: carbs, consumed: consumed)
+    func addCarbs(carbs: Double, consumed: Bool) async {
+        await addNutrient(typeIdentifier: .dietaryCarbohydrates, unit: .gram(), amount: carbs, consumed: consumed)
     }
 
-    static func addFats(fats: Double, consumed: Bool) {
-        addNutrient(typeIdentifier: .dietaryFatTotal, unit: .gram(), amount: fats, consumed: consumed)
+    func addFats(fats: Double, consumed: Bool) async {
+        await addNutrient(typeIdentifier: .dietaryFatTotal, unit: .gram(), amount: fats, consumed: consumed)
     }
 
-    func refresh() {
+    func refreshStats() {
+        logger.debug("Refreshing diet progress bars and caloric progress")
         prepareProgressBars([proteinProgressBar, carbsProgressBar, fatsProgressBar])
+
+        logger.debug("Preparing caloric progress and nutrient progress bars")
         prepareCaloricProgress()
+
+        logger.debug("Preparing nutrient progress bars")
         prepareProgress()
     }
 

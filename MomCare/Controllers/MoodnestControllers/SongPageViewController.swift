@@ -11,6 +11,8 @@ class SongPageViewController: UIViewController {
     @IBOutlet var lowerContainer: UIView!
 
     var playlist: (imageUri: String, label: String)?
+    var mood: MoodType?
+
     var playlistTableViewController: PlaylistTableViewController?
     var songElementsViewController: SongElementsViewController?
 
@@ -25,6 +27,7 @@ class SongPageViewController: UIViewController {
 
                 playlistTableViewController?.initialTabBarController = tabBarController as? InitialTabBarController
                 playlistTableViewController?.songElementsViewController = songElementsViewController
+                playlistTableViewController?.mood = mood
             }
 
         case .songPageElementsVC:

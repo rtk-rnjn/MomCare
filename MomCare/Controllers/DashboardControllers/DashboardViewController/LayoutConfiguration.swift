@@ -24,27 +24,28 @@ extension DashboardViewController {
     }
 
     private func createLayoutForWeekEventCard() -> NSCollectionLayoutSection {
-        let weekCardLayoutSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.5), heightDimension: .absolute(137))
-        let eventCardLayoutSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.5), heightDimension: .absolute(137))
+        let weekCardLayoutSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.5), heightDimension: .fractionalHeight(1))
+        let eventCardLayoutSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.5), heightDimension: .fractionalHeight(1))
 
         let weekCard = NSCollectionLayoutItem(layoutSize: weekCardLayoutSize)
         let eventCard = NSCollectionLayoutItem(layoutSize: eventCardLayoutSize)
 
-        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(137))
+        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(0.225))
         let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [weekCard, eventCard])
 
         group.interItemSpacing = .fixed(10)
-        group.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 5, bottom: 0, trailing: 5)
+        group.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 10, bottom: 0, trailing: 10)
+
         let section = NSCollectionLayoutSection(group: group)
-        section.contentInsets = NSDirectionalEdgeInsets(top: 30, leading: 10, bottom: 10, trailing: 10)
+        section.contentInsets = NSDirectionalEdgeInsets(top: 20, leading: 10, bottom: 10, trailing: 10)
 
         return section
 
     }
 
     private func createLayoutForDietExerciseProgress() -> NSCollectionLayoutSection {
-        let dietLayoutSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(67))
-        let exerciseLayoutSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(179))
+        let dietLayoutSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(0.4))
+        let exerciseLayoutSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(1))
         let dietProgress = NSCollectionLayoutItem(layoutSize: dietLayoutSize)
         let exerciseProgress = NSCollectionLayoutItem(layoutSize: exerciseLayoutSize)
 
@@ -66,14 +67,14 @@ extension DashboardViewController {
         let dailyInsightsLayoutSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.5), heightDimension: .absolute(154))
         let dailyInsights = NSCollectionLayoutItem(layoutSize: dailyInsightsLayoutSize)
 
-        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(154)) // <-- changed from 137 to 154
+        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(0.225))
         let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [dailyInsights])
 
-        group.interItemSpacing = .fixed(20)
-        group.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 5, bottom: 10, trailing: 5)
+        group.interItemSpacing = .fixed(10)
+        group.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 10, bottom: 5, trailing: 10)
 
         let section = NSCollectionLayoutSection(group: group)
-        section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 15, bottom: 45, trailing: 15)
+        section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 10, bottom: 20, trailing: 10)
         section.boundarySupplementaryItems = [createHeader()]
 
         return section

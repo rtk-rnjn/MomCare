@@ -13,9 +13,9 @@ class HeaderTableViewCell: UITableViewCell {
     @IBOutlet var mealHeaderLabel: UILabel!
     @IBOutlet var mealHeaderButton: UIButton!
 
-    var buttonTapHandler: (() -> Bool)?
-    var segueHandler: ((Any?) -> Void)?
+    var buttonTapHandler: (() async -> Bool)?
     var refreshHandler: (() -> Void)?
+    var segueHandler: ((Any?) -> Void)?
     var allConsumed: Bool!
 
     override func awakeFromNib() {
@@ -26,12 +26,11 @@ class HeaderTableViewCell: UITableViewCell {
         }
     }
 
-    func updateElements(with title: String, segueHandler: ((Any?) -> Void)?, refreshHandler: (() -> Void)?, allConsumed: Bool, buttonTapHandler: @escaping (() -> Bool)) {
+    func updateElements(with title: String, segueHandler: ((Any?) -> Void)?, allConsumed: Bool, buttonTapHandler: @escaping (() async -> Bool)) {
         mealHeaderLabel.text = title
 
         self.buttonTapHandler = buttonTapHandler
         self.segueHandler = segueHandler
-        self.refreshHandler = refreshHandler
         self.allConsumed = allConsumed
 
         let configuration = UIImage.SymbolConfiguration(scale: .medium)
@@ -44,11 +43,13 @@ class HeaderTableViewCell: UITableViewCell {
     }
 
     @IBAction func mealHeaderButtonTapped(_ sender: UIButton) {
-        let consumed = buttonTapHandler?() ?? false
-
-        allConsumed = consumed
-
-        refreshHandler?()
+        Task {
+            let consumed = await buttonTapHandler?() ?? false
+            DispatchQueue.main.async {
+                self.allConsumed = consumed
+                self.refreshHandler?()
+            }
+        }
     }
 
     // MARK: Private

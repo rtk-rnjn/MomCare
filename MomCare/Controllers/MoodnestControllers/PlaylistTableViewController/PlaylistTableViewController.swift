@@ -20,6 +20,7 @@ class PlaylistTableViewController: UITableViewController {
 
     var currentPlayingIndex: IndexPath?
     var currentPlayingSong: Song?
+    var mood: MoodType?
 
     let commandCenter: MPRemoteCommandCenter = .shared()
 
@@ -126,7 +127,10 @@ class PlaylistTableViewController: UITableViewController {
 
     func reloadData() {
         Task {
-            let songs: [Song] = await ContentHandler.shared.fetchPlaylistSongs(forMood: .happy, playlistName: playlist?.label ?? "") ?? []
+            guard let mood else {
+                fatalError()
+            }
+            let songs: [Song] = await ContentHandler.shared.fetchPlaylistSongs(forMood: mood, playlistName: playlist?.label ?? "") ?? []
 
             DispatchQueue.main.async {
                 self.songs = songs

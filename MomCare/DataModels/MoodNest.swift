@@ -4,7 +4,6 @@
 
 import Foundation
 import UIKit
-@preconcurrency import AVFoundation
 
 struct SongMetadata: Codable, Sendable, Equatable {
     enum CodingKeys: String, CodingKey {
@@ -37,13 +36,6 @@ struct Song: Codable, Sendable, Equatable {
         get async {
             let defaultImage = UIImage(systemName: "music.note")
             return await UIImage().fetchImage(from: imageUri, default: defaultImage)
-        }
-    }
-
-    var asset: AVAsset? {
-        get async {
-            guard let url else { return nil }
-            return await AVAsset(url: url)
         }
     }
 

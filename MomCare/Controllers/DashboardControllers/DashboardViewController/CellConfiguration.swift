@@ -30,6 +30,11 @@ extension DashboardViewController {
         case 0:
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "FocusCard", for: indexPath) as? FocusCardCollectionViewCell
             guard let cell else { fatalError("'FocusCard' not found") }
+            cell.startShimmer()
+            if !dataFetched {
+                return cell
+            }
+            cell.stopShimmer()
 
             if let tip = ContentHandler.shared.tips {
                 cell.updateElements(with: tip)
@@ -40,7 +45,11 @@ extension DashboardViewController {
         case 1:
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "TipCard", for: indexPath) as? TipCardCollectionViewCell
             guard let cell else { fatalError("'TipCard' not found") }
-
+            cell.startShimmer()
+            if !dataFetched {
+                return cell
+            }
+            cell.stopShimmer()
             if let tip = ContentHandler.shared.tips {
                 cell.updateElements(with: tip)
             }
@@ -57,6 +66,11 @@ extension DashboardViewController {
         case 0:
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "WeekCard", for: indexPath) as? WeekCardCollectionViewCell
             guard let cell else { fatalError("'WeekCard' not found") }
+            cell.startShimmer()
+            if !dataFetched {
+                return cell
+            }
+            cell.stopShimmer()
             cell.updateElements(with: MomCareUser.shared.user, tapHandler: weekCardTapped)
 
             return cell
@@ -64,6 +78,11 @@ extension DashboardViewController {
         case 1:
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "EventCard", for: indexPath) as? EventCardCollectionViewCell
             guard let cell else { fatalError("'EventCard' not found") }
+            cell.startShimmer()
+            if !dataFetched {
+                return cell
+            }
+            cell.stopShimmer()
             let event = EventKitHandler.shared.fetchUpcomingAppointment()
             cell.updateElements(with: event, tapHandler: eventCardTapped) {
                 self.performSegue(withIdentifier: "segueShowAddEventTableViewController", sender: nil)
@@ -81,12 +100,22 @@ extension DashboardViewController {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "DietProgress", for: indexPath) as? DietProgressCollectionViewCell
 
             guard let cell else { fatalError("'DietProgress' not found") }
+            cell.startShimmer()
+            if !dataFetched {
+                return cell
+            }
+            cell.stopShimmer()
             cell.updateElements(withTapHandler: dietCardTapped)
             return cell
 
         case 1:
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ExerciseProgress", for: indexPath) as? ExerciseProgressCollectionViewCell
             guard let cell else { fatalError("'ExerciseProgress' not found") }
+            cell.startShimmer()
+            if !dataFetched {
+                return cell
+            }
+            cell.stopShimmer()
 
             cell.updateElements(withTapHandler: exersiceCardTapped)
             addHKActivityRing(to: cell.activityView, withSummary: nil)
