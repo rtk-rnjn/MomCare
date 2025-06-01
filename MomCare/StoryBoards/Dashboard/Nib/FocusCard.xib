@@ -61,7 +61,7 @@
                         </constraints>
                     </view>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="10" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dwZ-Ju-E2Z">
-                        <rect key="frame" x="7" y="5" width="204" height="87"/>
+                        <rect key="frame" x="7" y="10" width="204" height="82"/>
                         <string key="text">Did you know? 
 Staying active during pregnancy helps reduce discomfort</string>
                         <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
@@ -74,7 +74,7 @@ Staying active during pregnancy helps reduce discomfort</string>
                     <constraint firstItem="dwZ-Ju-E2Z" firstAttribute="leading" secondItem="fHC-SX-wkN" secondAttribute="leading" constant="7" id="EBE-KV-chU"/>
                     <constraint firstItem="gOD-lT-oaq" firstAttribute="centerX" secondItem="dwZ-Ju-E2Z" secondAttribute="centerX" id="FVu-mT-0KF"/>
                     <constraint firstAttribute="trailing" secondItem="dwZ-Ju-E2Z" secondAttribute="trailing" constant="7" id="Go7-ED-0dp"/>
-                    <constraint firstItem="dwZ-Ju-E2Z" firstAttribute="top" secondItem="fHC-SX-wkN" secondAttribute="top" constant="5" id="VaJ-Oh-3bd"/>
+                    <constraint firstItem="dwZ-Ju-E2Z" firstAttribute="top" secondItem="fHC-SX-wkN" secondAttribute="top" constant="10" id="VaJ-Oh-3bd"/>
                     <constraint firstItem="gOD-lT-oaq" firstAttribute="top" secondItem="dwZ-Ju-E2Z" secondAttribute="bottom" constant="12" id="aVY-dk-qND"/>
                     <constraint firstAttribute="bottom" secondItem="gOD-lT-oaq" secondAttribute="bottom" id="cGV-lH-VnL"/>
                     <constraint firstItem="gOD-lT-oaq" firstAttribute="leading" secondItem="fHC-SX-wkN" secondAttribute="leading" id="yFJ-tS-rbv"/>
