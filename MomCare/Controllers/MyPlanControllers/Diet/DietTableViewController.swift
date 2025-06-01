@@ -8,6 +8,7 @@ class DietTableViewController: UITableViewController {
     // MARK: Internal
 
     var dietViewController: DietViewController?
+    var dataFetched: Bool = false
 
     final var proteinGoal: Double {
         return sumNutrition(\.protein)
@@ -23,7 +24,7 @@ class DietTableViewController: UITableViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        loadOrUpdatePlan()
+        updatePlan()
     }
 
     override func viewDidLoad() {
@@ -35,10 +36,18 @@ class DietTableViewController: UITableViewController {
     }
 
     override func numberOfSections(in tableView: UITableView) -> Int {
+        if !dataFetched {
+            return 4
+        }
+
         return mealNames.count
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if !dataFetched {
+            return 2
+        }
+
         return (getFoods(with: IndexPath(row: 0, section: section))?.count ?? 0) + 1
     }
 
@@ -75,7 +84,7 @@ class DietTableViewController: UITableViewController {
         tableView.register(UINib(nibName: "ContentCell", bundle: nil), forCellReuseIdentifier: "ContentCell")
     }
 
-    private func loadOrUpdatePlan() {
+    private func updatePlan() {
         Task {
             guard let user = MomCareUser.shared.user, let medical = user.medicalData else {
                 logger.error("User or medical data not found")
@@ -89,6 +98,7 @@ class DietTableViewController: UITableViewController {
             }
 
             DispatchQueue.main.async {
+                self.dataFetched = true
                 self.tableView.reloadData()
             }
         }
@@ -102,6 +112,13 @@ class DietTableViewController: UITableViewController {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "HeaderCell", for: indexPath) as? HeaderTableViewCell else {
             fatalError("'HeaderCell' not found")
         }
+
+        cell.mealHeaderLabel.startShimmer()
+
+        if !dataFetched {
+            return cell
+        }
+        cell.mealHeaderLabel.stopShimmer()
 
         guard let foods = getFoods(with: indexPath) else {
             fatalError()
@@ -140,6 +157,18 @@ class DietTableViewController: UITableViewController {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "ContentCell", for: indexPath) as? ContentTableViewCell else {
             fatalError("'ContentCell' not found")
         }
+
+        cell.foodImageView.startShimmer()
+        cell.foodItemLabel.startShimmer()
+        cell.kalcLabel.startShimmer()
+        cell.qualtityLabel.startShimmer()
+        if !dataFetched {
+            return cell
+        }
+        cell.qualtityLabel.stopShimmer()
+        cell.kalcLabel.stopShimmer()
+        cell.foodItemLabel.stopShimmer()
+        cell.foodImageView.stopShimmer()
 
         guard let foodItems = getFoods(with: indexPath) else { return cell }
         let food = foodItems[indexPath.row - 1]

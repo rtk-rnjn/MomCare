@@ -17,52 +17,60 @@
                 <rect key="frame" x="0.0" y="0.0" width="393" height="80"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mES-YW-tkA">
-                        <rect key="frame" x="9" y="5" width="102" height="70"/>
+                    <stackView opaque="NO" contentMode="scaleToFill" distribution="equalCentering" alignment="center" spacing="129" translatesAutoresizingMaskIntoConstraints="NO" id="wDF-Db-pQu">
+                        <rect key="frame" x="10" y="20.000000000000004" width="363" height="40.333333333333343"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Rfh-vd-Dqe">
-                                <rect key="frame" x="0.0" y="0.0" width="50" height="70"/>
-                                <color key="tintColor" red="0.57254901960000004" green="0.26274509800000001" blue="0.31372549020000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="plain">
-                                    <imageReference key="image" image="circle" catalog="system" symbolScale="medium"/>
-                                    <preferredSymbolConfiguration key="preferredSymbolConfigurationForImage" configurationType="font" scale="large">
+                            <stackView opaque="NO" contentMode="scaleToFill" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="mES-YW-tkA">
+                                <rect key="frame" x="0.0" y="0.0" width="147.33333333333334" height="40.333333333333336"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Rfh-vd-Dqe">
+                                        <rect key="frame" x="0.0" y="0.0" width="50" height="40.333333333333336"/>
+                                        <color key="tintColor" red="0.57254901960000004" green="0.26274509800000001" blue="0.31372549020000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <state key="normal" title="Button"/>
+                                        <buttonConfiguration key="configuration" style="plain">
+                                            <imageReference key="image" image="circle" catalog="system" symbolScale="medium"/>
+                                            <preferredSymbolConfiguration key="preferredSymbolConfigurationForImage" configurationType="font" scale="large">
+                                                <fontDescription key="fontDescription" style="UICTFontTextStyleTitle2"/>
+                                            </preferredSymbolConfiguration>
+                                        </buttonConfiguration>
+                                        <connections>
+                                            <action selector="mealHeaderButtonTapped:" destination="kBj-Tz-aqb" eventType="touchUpInside" id="LgJ-ME-Qpg"/>
+                                        </connections>
+                                    </button>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Loading ..." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Bng-Wu-HTn">
+                                        <rect key="frame" x="49.999999999999993" y="6.9999999999999982" width="97.333333333333314" height="26.333333333333329"/>
                                         <fontDescription key="fontDescription" style="UICTFontTextStyleTitle2"/>
-                                    </preferredSymbolConfiguration>
-                                </buttonConfiguration>
-                                <connections>
-                                    <action selector="mealHeaderButtonTapped:" destination="kBj-Tz-aqb" eventType="touchUpInside" id="LgJ-ME-Qpg"/>
-                                </connections>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                <integer key="value" value="10"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="boolean" keyPath="layer.maskToBounds" value="YES"/>
+                                        </userDefinedRuntimeAttributes>
+                                    </label>
+                                </subviews>
+                            </stackView>
+                            <button opaque="NO" contentMode="scaleToFill" showsMenuAsPrimaryAction="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kic-HS-vTQ">
+                                <rect key="frame" x="336.33333333333331" y="6.6666666666666661" width="26.666666666666686" height="26.666666666666671"/>
+                                <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <menu key="menu" id="Oj2-Ux-trl">
+                                    <children>
+                                        <command title="Item 1" id="wLn-X8-Mvk"/>
+                                        <command title="Item 2" id="Kl2-th-Qom"/>
+                                    </children>
+                                </menu>
+                                <state key="normal" image="square.and.pencil" catalog="system">
+                                    <preferredSymbolConfiguration key="preferredSymbolConfiguration" scale="large"/>
+                                </state>
                             </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Bng-Wu-HTn">
-                                <rect key="frame" x="50" y="0.0" width="52" height="70"/>
-                                <fontDescription key="fontDescription" style="UICTFontTextStyleTitle2"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                         </subviews>
                     </stackView>
-                    <button opaque="NO" contentMode="scaleToFill" showsMenuAsPrimaryAction="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kic-HS-vTQ">
-                        <rect key="frame" x="351.33333333333331" y="10" width="26.666666666666686" height="60"/>
-                        <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                        <menu key="menu" id="Oj2-Ux-trl">
-                            <children>
-                                <command title="Item 1" id="wLn-X8-Mvk"/>
-                                <command title="Item 2" id="Kl2-th-Qom"/>
-                            </children>
-                        </menu>
-                        <state key="normal" image="square.and.pencil" catalog="system">
-                            <preferredSymbolConfiguration key="preferredSymbolConfiguration" scale="large"/>
-                        </state>
-                    </button>
                 </subviews>
                 <constraints>
-                    <constraint firstItem="kic-HS-vTQ" firstAttribute="top" secondItem="hxw-Iy-7Az" secondAttribute="top" constant="10" id="3NI-9s-RqY"/>
-                    <constraint firstItem="mES-YW-tkA" firstAttribute="leading" secondItem="hxw-Iy-7Az" secondAttribute="leading" constant="9" id="Bfj-q2-45k"/>
-                    <constraint firstAttribute="bottom" secondItem="mES-YW-tkA" secondAttribute="bottom" constant="5" id="IBR-qX-haa"/>
-                    <constraint firstAttribute="bottom" secondItem="kic-HS-vTQ" secondAttribute="bottom" constant="10" id="NSz-B4-9oY"/>
-                    <constraint firstAttribute="trailing" secondItem="kic-HS-vTQ" secondAttribute="trailing" constant="15" id="YfW-OP-jIR"/>
-                    <constraint firstItem="mES-YW-tkA" firstAttribute="top" secondItem="hxw-Iy-7Az" secondAttribute="top" constant="5" id="hED-1d-0EF"/>
+                    <constraint firstAttribute="trailing" secondItem="wDF-Db-pQu" secondAttribute="trailing" constant="20" symbolic="YES" id="1p0-2x-A5I"/>
+                    <constraint firstItem="wDF-Db-pQu" firstAttribute="centerY" secondItem="hxw-Iy-7Az" secondAttribute="centerY" id="SvL-In-Tuc"/>
+                    <constraint firstItem="wDF-Db-pQu" firstAttribute="leading" secondItem="hxw-Iy-7Az" secondAttribute="leading" constant="10" id="rVO-MB-Kv3"/>
                 </constraints>
             </tableViewCellContentView>
             <connections>
