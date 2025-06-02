@@ -10,8 +10,8 @@
 		053290F42D40AEC000295E58 /* FSCalendar in Frameworks */ = {isa = PBXBuildFile; productRef = 053290F32D40AEC000295E58 /* FSCalendar */; };
 		05BAA2152D771882008C89DB /* LNPopupController in Embed Frameworks */ = {isa = PBXBuildFile; productRef = F5F1D6112D739C6A00F65BA7 /* LNPopupController */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		05E7F9672D37748E00F4D81E /* .swiftlint.yml in Resources */ = {isa = PBXBuildFile; fileRef = 05E7F9662D37748300F4D81E /* .swiftlint.yml */; };
-		F5AF1ECF2DE91021008B14F1 /* Realm in Frameworks */ = {isa = PBXBuildFile; productRef = F5AF1ECE2DE91021008B14F1 /* Realm */; };
-		F5AF1ED22DE919B1008B14F1 /* Realm in Embed Frameworks */ = {isa = PBXBuildFile; productRef = F5AF1ECE2DE91021008B14F1 /* Realm */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		F59454F42DEDACAA00002917 /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = F59454F32DEDACAA00002917 /* RealmSwift */; };
+		F59454F52DEDACAA00002917 /* RealmSwift in Embed Frameworks */ = {isa = PBXBuildFile; productRef = F59454F32DEDACAA00002917 /* RealmSwift */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		F5F1D6122D739C6A00F65BA7 /* LNPopupController in Frameworks */ = {isa = PBXBuildFile; productRef = F5F1D6112D739C6A00F65BA7 /* LNPopupController */; };
 /* End PBXBuildFile section */
 
@@ -22,7 +22,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				F5AF1ED22DE919B1008B14F1 /* Realm in Embed Frameworks */,
+				F59454F52DEDACAA00002917 /* RealmSwift in Embed Frameworks */,
 				05BAA2152D771882008C89DB /* LNPopupController in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
@@ -66,7 +66,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F5AF1ECF2DE91021008B14F1 /* Realm in Frameworks */,
+				F59454F42DEDACAA00002917 /* RealmSwift in Frameworks */,
 				053290F42D40AEC000295E58 /* FSCalendar in Frameworks */,
 				F5F1D6122D739C6A00F65BA7 /* LNPopupController in Frameworks */,
 			);
@@ -81,6 +81,7 @@
 				05E7F9662D37748300F4D81E /* .swiftlint.yml */,
 				05E7F8CB2D376B8200F4D81E /* .github */,
 				059C467F2D30D12400B4A15A /* MomCare */,
+				F59454F22DEDACAA00002917 /* Frameworks */,
 				059C467E2D30D12400B4A15A /* Products */,
 			);
 			sourceTree = "<group>";
@@ -91,6 +92,13 @@
 				059C467D2D30D12400B4A15A /* MomCare.app */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		F59454F22DEDACAA00002917 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -117,7 +125,7 @@
 			packageProductDependencies = (
 				053290F32D40AEC000295E58 /* FSCalendar */,
 				F5F1D6112D739C6A00F65BA7 /* LNPopupController */,
-				F5AF1ECE2DE91021008B14F1 /* Realm */,
+				F59454F32DEDACAA00002917 /* RealmSwift */,
 			);
 			productName = MomCare;
 			productReference = 059C467D2D30D12400B4A15A /* MomCare.app */;
@@ -202,7 +210,7 @@
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -218,7 +226,7 @@
 				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -240,7 +248,7 @@
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -256,7 +264,7 @@
 				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
@@ -439,10 +447,10 @@
 			package = 053290F22D40AEC000295E58 /* XCRemoteSwiftPackageReference "FSCalendar" */;
 			productName = FSCalendar;
 		};
-		F5AF1ECE2DE91021008B14F1 /* Realm */ = {
+		F59454F32DEDACAA00002917 /* RealmSwift */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = F5AF1ECD2DE91021008B14F1 /* XCRemoteSwiftPackageReference "realm-swift" */;
-			productName = Realm;
+			productName = RealmSwift;
 		};
 		F5F1D6112D739C6A00F65BA7 /* LNPopupController */ = {
 			isa = XCSwiftPackageProductDependency;

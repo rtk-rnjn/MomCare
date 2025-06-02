@@ -113,7 +113,9 @@
                             <constraint firstItem="d02-Jn-FBn" firstAttribute="width" secondItem="5EZ-qb-Rvc" secondAttribute="width" multiplier="0.35" id="eyY-UC-bDy"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" id="mls-LA-dau"/>
+                    <navigationItem key="navigationItem" id="mls-LA-dau">
+                        <nil key="title"/>
+                    </navigationItem>
                     <connections>
                         <outlet property="leftEyeView" destination="d02-Jn-FBn" id="ZOO-bC-blC"/>
                         <outlet property="moodLabel" destination="8HA-j9-nLA" id="ESx-PF-bWl"/>
