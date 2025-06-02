@@ -1,5 +1,5 @@
 //
-//  APIEndpoints.swift
+//  Endpoint.swift
 //  MomCare
 //
 //  Created by RITIK RANJAN on 01/06/25.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-private let baseURLString = "http://13.233.139.216:8000"
+private let baseURLString = "http://192.168.1.175:8000"
 
 enum Endpoint: String {
     // Authentication
@@ -36,11 +36,11 @@ enum Endpoint: String {
 }
 
 extension Endpoint {
-    var url: String {
-        return baseURLString + self.rawValue
+    var urlString: String {
+        return baseURLString + rawValue
     }
 
-    func url(with parameters: String...) -> String {
-        return String(format: self.url, arguments: parameters)
+    func urlString(with parameters: String...) -> String {
+        return String(format: urlString, arguments: parameters)
     }
 }

@@ -9,6 +9,7 @@ import Foundation
 import UIKit
 import Network
 import UserNotifications
+import RealmSwift
 import Security
 
 enum AlertType {
@@ -176,7 +177,21 @@ enum KeychainHelper {
 
 class LocalStore {
 
+    // MARK: Lifecycle
+
+    private init() {
+        LocalStore.realm
+    }
+
     // MARK: Public
+
+    @MainActor public static let realm: Realm = {
+        do {
+            return try Realm()
+        } catch {
+            fatalError("Could not initialize Realm: \(error.localizedDescription)")
+        }
+    }()
 
     @MainActor public static let shared: LocalStore = .init()
 

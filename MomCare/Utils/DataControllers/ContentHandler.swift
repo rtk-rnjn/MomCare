@@ -12,11 +12,12 @@ struct Tip: Codable, Sendable {
     enum CodingKeys: String, CodingKey {
         case todaysFocus = "todays_focus"
         case dailyTip = "daily_tip"
+        case createdAt = "created_at"
     }
 
     var todaysFocus: String
     var dailyTip: String
-
+    var createdAt: Date?
 }
 
 struct FoodSearchQuery: Codable, Sendable {
@@ -70,7 +71,7 @@ class ContentHandler {
             return plan
         }
 
-        let plan: MyPlan? = await NetworkManager.shared.get(url: "/content/plan")
+        let plan: MyPlan? = await NetworkManager.shared.get(url: Endpoint.plan.urlString)
         guard let plan else {
             return MyPlan()
         }
@@ -85,7 +86,7 @@ class ContentHandler {
             return tips
         }
 
-        let tips: Tip? = await NetworkManager.shared.get(url: "/content/tips")
+        let tips: Tip? = await NetworkManager.shared.get(url: Endpoint.tips.urlString)
         guard let tips else {
             return Tip(todaysFocus: "Unable to fetch Today's Focus from the server", dailyTip: "Unable to fetch Daily Tip from the server")
         }
@@ -98,7 +99,7 @@ class ContentHandler {
         let searchQeury = FoodSearchQuery(foodName: query)
         let sendableQeury: [String: Any]? = searchQeury.toDictionary(snakeCase: true)
 
-        await NetworkManager.shared.fetchStreamedData(.GET, url: "/content/search", queryParameters: sendableQeury, onItem: onItem)
+        await NetworkManager.shared.fetchStreamedData(.GET, url: Endpoint.search.urlString, queryParameters: sendableQeury, onItem: onItem)
     }
 
     func fetchExercise() async -> [Exercise]? {
@@ -127,15 +128,18 @@ class ContentHandler {
 
 extension ContentHandler {
     func fetchS3File(_ path: String) async -> S3Response? {
-        await NetworkManager.shared.get(url: "/content/s3/file/\(path)")
+        let urlString = Endpoint.contentS3File.urlString(with: path)
+        return await NetworkManager.shared.get(url: urlString)
     }
 
     func fetchS3Files(_ path: String) async -> [String]? {
-        await NetworkManager.shared.get(url: "/content/s3/files/\(path)")
+        let urlString = Endpoint.contentS3Files.urlString(with: path)
+        return await NetworkManager.shared.get(url: urlString)
     }
 
     func fetchS3Directories(_ path: String) async -> [String]? {
-        await NetworkManager.shared.get(url: "/content/s3/directories/\(path)")
+        let urlString = Endpoint.contentS3Directories.urlString(with: path)
+        return await NetworkManager.shared.get(url: urlString)
     }
 }
 
@@ -204,7 +208,8 @@ extension ContentHandler {
             let fullImagePath = "\(imagePath)\(imageFile)"
             let actualImageUri = await fetchS3File(fullImagePath)?.uri
 
-            guard var songObject: Song = await NetworkManager.shared.get(url: "/content/s3/song/\(songPath)"),
+            let urlString = Endpoint.contentS3Song.urlString(with: songPath)
+            guard var songObject: Song = await NetworkManager.shared.get(url: urlString),
                   let actualImageUri else {
                 continue
             }

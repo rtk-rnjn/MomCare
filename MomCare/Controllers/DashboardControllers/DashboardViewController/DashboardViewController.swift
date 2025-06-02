@@ -16,7 +16,9 @@ class DashboardViewController: UIViewController, UICollectionViewDataSource, UIC
     @IBOutlet var collectionView: UICollectionView!
     var addEventTableViewController: AddEventTableViewController?
     var profileButton: UIButton?
+
     var dataFetched: Bool = false
+    var tip: Tip?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -29,28 +31,26 @@ class DashboardViewController: UIViewController, UICollectionViewDataSource, UIC
         navigationController?.navigationBar.prefersLargeTitles = true
         setupProfileButton()
 
-        Task {
-            await HealthKitHandler.shared.requestAccess()
-            await requestAccessForNotification()
-            await self.loadUser()
-
-            if let user = MomCareUser.shared.user {
-                await ContentHandler.shared.fetchTips(from: user)
-            }
-
-            DispatchQueue.main.async {
-                self.dataFetched = true
-                self.collectionView.reloadData()
-            }
-        }
-
         refreshControl.addTarget(self, action: #selector(didPullToRefresh(_:)), for: .valueChanged)
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
-        collectionView.reloadData()
+        Task {
+            await HealthKitHandler.shared.requestAccess()
+            await requestAccessForNotification()
+            await self.loadUser()
+
+            if let user = MomCareUser.shared.user {
+                self.tip = await ContentHandler.shared.fetchTips(from: user)
+
+                DispatchQueue.main.async {
+                    self.dataFetched = true
+                    self.collectionView.reloadData()
+                }
+            }
+        }
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {

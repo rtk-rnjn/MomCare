@@ -1,6 +1,6 @@
 import UIKit
 
-class LoginTableViewController: UITableViewController {
+class LoginTableViewController: UITableViewController, UITextFieldDelegate {
 
     // MARK: Internal
 
@@ -8,10 +8,31 @@ class LoginTableViewController: UITableViewController {
     @IBOutlet var passwordField: UITextField!
     @IBOutlet var signInButton: UIButton!
 
+    override func viewDidLoad() {
+        super.viewDidLoad()
+
+        emailAddressField.delegate = self
+        passwordField.delegate = self
+    }
+
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        if textField == emailAddressField {
+            passwordField.becomeFirstResponder()
+            return false
+        }
+        if textField == passwordField {
+            signInButtonTapped(signInButton)
+            return false
+        }
+        return true
+    }
+
     @IBAction func textFieldChanged(_ sender: UITextField) {}
 
     @IBAction func signInButtonTapped(_ sender: UIButton) {
         // swiftlint:disable large_tuple
+        view.endEditing(true)
+
         let requiredFields: [(UITextField, String, String)] = [
             (emailAddressField, "Email Required", "Please enter your email."),
             (passwordField, "Password Required", "Please enter your password.")

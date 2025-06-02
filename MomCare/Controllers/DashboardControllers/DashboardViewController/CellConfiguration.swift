@@ -36,7 +36,7 @@ extension DashboardViewController {
             }
             cell.stopShimmer()
 
-            if let tip = ContentHandler.shared.tips {
+            if let tip {
                 cell.updateElements(with: tip)
             }
 
@@ -50,7 +50,7 @@ extension DashboardViewController {
                 return cell
             }
             cell.stopShimmer()
-            if let tip = ContentHandler.shared.tips {
+            if let tip {
                 cell.updateElements(with: tip)
             }
 

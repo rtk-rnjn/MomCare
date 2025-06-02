@@ -6,6 +6,9 @@
 //
 
 import UIKit
+import OSLog
+
+private let logger: Logger = .init(subsystem: "com.MomCare.InitialTabBarController", category: "ViewController")
 
 class InitialTabBarController: UITabBarController {
 
@@ -21,12 +24,28 @@ class InitialTabBarController: UITabBarController {
         super.viewDidLoad()
 
         Task {
+            await self.refreshToken()
+        }
+    }
+
+    func refreshToken() async {
+        var retryCount = 0
+        while true {
             let refreshed = await MomCareUser.shared.refreshToken()
-            if !refreshed {
+            if refreshed {
+                logger.info("Refresh Token successful")
+                break
+            }
+            if !refreshed && retryCount > 5 {
+                logger.error("Refresh Token failed after 5 retries")
                 DispatchQueue.main.async {
                     self.navigateToLogin()
                 }
+                break
             }
+            retryCount += 1
+            logger.error("Refreshing Failed. Sleeping for \(retryCount) seconds before retrying. Retry count: \(retryCount)")
+            try? await Task.sleep(nanoseconds: UInt64(1_000_000_000 * retryCount))
         }
     }
 
@@ -34,13 +53,17 @@ class InitialTabBarController: UITabBarController {
 
     private func navigateToLogin() {
         let actions = [
-            AlertActionHandler(title: "OK", style: .default) { _ in
+            AlertActionHandler(title: "Login", style: .default) { _ in
+                Utils.remove("isUserSignedUp")
                 self.performSegue(withIdentifier: "segueShowFrontPageNavigationController", sender: nil)
+            },
+            AlertActionHandler(title: "Try Again", style: .default) { _ in
+                Task {
+                    await self.refreshToken()
+                }
             }
         ]
-        let alert = Utils.getAlert(title: "Login Expired", message: "Please login again.", actions: actions)
-        present(alert, animated: true) {
-            Utils.remove("isUserSignedUp")
-        }
+        let alert = Utils.getAlert(title: "Client-Server out of sync", message: "This is awkward. We failed to authenticate you. Please login again", actions: actions)
+        present(alert, animated: true)
     }
 }

@@ -42,16 +42,6 @@ struct Credentials: Codable {
     let password: String
 }
 
-enum AuthenticationEndpoints {
-    static let base = "/auth"
-
-    static func registerUser() -> String { "\(base)/register" }
-    static func loginUser() -> String { "\(base)/login" }
-    static func refreshToken() -> String { "\(base)/refresh" }
-    static func updateUser() -> String { "\(base)/update" }
-    static func fetchUser() -> String { "\(base)/fetch" }
-}
-
 private let accessTokenValidDuration: TimeInterval = 5 * 60 - 10 // 5 minutes
 private let logger: Logger = .init(subsystem: "com.MomCare.MomCareUser", category: "Network")
 
@@ -59,7 +49,7 @@ extension MomCareUser {
 
     private func serializeAndPost<T: Codable, R: Codable & Sendable>(
         _ object: T,
-        endpoint: String,
+        endpoint: Endpoint,
         onFailureMessage: String
     ) async -> R? {
         guard let body = object.toData() else {
@@ -67,7 +57,7 @@ extension MomCareUser {
             return nil
         }
 
-        let response: R? = await NetworkManager.shared.post(url: endpoint, body: body)
+        let response: R? = await NetworkManager.shared.post(url: endpoint.urlString, body: body)
         if response == nil {
             logger.error("\(onFailureMessage)")
         }
@@ -85,7 +75,7 @@ extension MomCareUser {
         logger.info("Creating new user for email: \(user.emailAddress, privacy: .private)")
 
         guard let response: CreateResponse = await serializeAndPost(user,
-            endpoint: AuthenticationEndpoints.registerUser(),
+            endpoint: .register,
             onFailureMessage: "User registration failed."
         ), response.success else {
             return false
@@ -103,7 +93,7 @@ extension MomCareUser {
 
         let credentials = Credentials(emailAddress: email, password: password)
         guard let response: CreateResponse = await serializeAndPost(credentials,
-            endpoint: AuthenticationEndpoints.loginUser(),
+            endpoint: .login,
             onFailureMessage: "Login failed for email: \(email)"
         ), response.success else {
             return false
@@ -125,7 +115,7 @@ extension MomCareUser {
 
         let credentials = Credentials(emailAddress: email, password: password)
         guard let response: CreateResponse = await serializeAndPost(credentials,
-            endpoint: AuthenticationEndpoints.refreshToken(),
+            endpoint: Endpoint.refresh,
             onFailureMessage: "Token refresh failed."
         ), response.success else {
             return false
@@ -145,7 +135,7 @@ extension MomCareUser {
         logger.info("Updating user for email: \(updatedUser.emailAddress, privacy: .private)")
 
         guard let response: UpdateResponse = await serializeAndPost(updatedUser,
-            endpoint: AuthenticationEndpoints.updateUser(),
+            endpoint: .update,
             onFailureMessage: "User update failed."
         ), response.success else {
             return false
@@ -175,7 +165,7 @@ extension MomCareUser {
         }
 
         logger.info("Fetching user from DB for email: \(email, privacy: .private)")
-        guard let user: User = await NetworkManager.shared.get(url: AuthenticationEndpoints.fetchUser()) else {
+        guard let user: User = await NetworkManager.shared.get(url: Endpoint.fetch.urlString) else {
             logger.error("Failed to fetch user from DB.")
             return false
         }

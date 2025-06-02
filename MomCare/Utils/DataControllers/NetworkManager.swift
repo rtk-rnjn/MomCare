@@ -9,7 +9,6 @@ import Foundation
 import OSLog
 
 private let logger: Logger = .init(subsystem: "com.MomCare.NetworkManager", category: "Network")
-private let endpoint = "http://13.233.139.216:8000"
 
 enum HTTPMethod: String {
     case GET
@@ -28,28 +27,28 @@ actor NetworkManager {
     // MARK: Internal
 
     func get<T: Codable>(url: String, queryParameters: [String: Any]? = nil) async -> T? {
-        return await request(url: url, method: "GET", queryParameters: queryParameters)
+        return await request(url: url, method: .GET, queryParameters: queryParameters)
     }
 
     func post<T: Codable>(url: String, body: Data) async -> T? {
-        return await request(url: url, method: "POST", body: body)
+        return await request(url: url, method: .POST, body: body)
     }
 
     func put<T: Codable>(url: String, body: Data) async -> T? {
-        return await request(url: url, method: "PUT", body: body)
+        return await request(url: url, method: .PUT, body: body)
     }
 
     func delete(url: String, body: Data) async -> Bool {
-        let result: Bool? = await request(url: url, method: "DELETE", body: body)
+        let result: Bool? = await request(url: url, method: .DELETE, body: body)
         return result != nil
     }
 
     func patch<T: Codable>(url: String, body: Data) async -> T? {
-        return await request(url: url, method: "PATCH", body: body)
+        return await request(url: url, method: .PATCH, body: body)
     }
 
     func fetchStreamedData<T: Codable>(_ method: HTTPMethod, url: String, queryParameters: [String: Any]? = nil, onItem: (@Sendable (T) -> Void)? = nil, onError: (@Sendable (Error) -> Void)? = nil) {
-        var urlString = "\(endpoint)\(url)"
+        var urlString = url
 
         if let queryParameters, !queryParameters.isEmpty {
             var urlComponents = URLComponents(string: urlString)
@@ -101,8 +100,8 @@ actor NetworkManager {
 
     private var delimiter: String = "\n"
 
-    private func request<T: Codable>(url: String = "", method: String, body: Data? = nil, queryParameters: [String: Any]? = nil) async -> T? {
-        var urlString = "\(endpoint)\(url)"
+    private func request<T: Codable>(url: String = "", method: HTTPMethod, body: Data? = nil, queryParameters: [String: Any]? = nil) async -> T? {
+        var urlString = url
 
         if let queryParameters, !queryParameters.isEmpty {
             var urlComponents = URLComponents(string: urlString)
@@ -117,7 +116,7 @@ actor NetworkManager {
         }
 
         var request = URLRequest(url: url)
-        request.httpMethod = method
+        request.httpMethod = method.rawValue
         if let body {
             request.httpBody = body
         }
@@ -127,30 +126,64 @@ actor NetworkManager {
             request.setValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization")
         }
 
-        do {
-            logger.debug("Preparing request: method=\(method, privacy: .public), url=\(url, privacy: .public), queryParameters=\(String(describing: queryParameters), privacy: .public), body=\(String(describing: body?.count), privacy: .public)")
-            let (data, response) = try await URLSession.shared.data(for: request)
-
-            guard let response = response as? HTTPURLResponse else {
-                logger.error("Response is not HTTPURLResponse.")
-                return nil
-            }
-
-            logger.debug("Response fetched, url=\(url, privacy: .public), status=\(response.statusCode, privacy: .public)")
-
-            guard response.statusCode == 200 else {
-                return nil
-            }
-
-            let decoder = JSONDecoder()
-            decoder.dateDecodingStrategy = .iso8601
-
-            return try decoder.decode(T.self, from: data)
-
-        } catch {
-            logger.error("Request error for URL: \(url.absoluteString, privacy: .public), error: \(String(describing: error), privacy: .public)")
-            return nil
-        }
+        logger.debug("Preparing request: method=\(method.rawValue, privacy: .public), url=\(url, privacy: .public), queryParameters=\(String(describing: queryParameters), privacy: .public), body=\(String(describing: body?.count), privacy: .public)")
+        return await handleRequest(request)
     }
 
+    private func handleRequest<T: Codable>(
+        _ request: URLRequest,
+        retryCount: Int = 3,
+        delay: TimeInterval = 2.0
+    ) async -> T? {
+        var attempt = 0
+
+        while attempt <= retryCount {
+            do {
+                return try await performRequest(request)
+            } catch {
+                let shouldRetryFlag = shouldRetry(for: error, response: nil)
+                attempt += 1
+
+                if shouldRetryFlag && attempt <= retryCount {
+                    try? await Task.sleep(nanoseconds: UInt64(delay * 1_000_000_000))
+                    continue
+                } else {
+                    logger.error("Request failed on attempt \(attempt): \(error.localizedDescription)")
+                    return nil
+                }
+            }
+        }
+
+        return nil
+    }
+
+    private func performRequest<T: Codable>(_ request: URLRequest) async throws -> T? {
+        let (data, response) = try await URLSession.shared.data(for: request)
+
+        guard let httpResponse = response as? HTTPURLResponse else {
+            logger.error("Response is not HTTPURLResponse.")
+            return nil
+        }
+
+        guard (200...299).contains(httpResponse.statusCode) else {
+            throw URLError(.badServerResponse)
+        }
+
+        let decoder = JSONDecoder()
+        decoder.dateDecodingStrategy = .iso8601
+
+        return try decoder.decode(T.self, from: data)
+    }
+
+    private func shouldRetry(for error: Error?, response: HTTPURLResponse?) -> Bool {
+        if let urlError = error as? URLError, urlError.code == .timedOut {
+            return true
+        }
+
+        if let statusCode = response?.statusCode, (502...504).contains(statusCode) {
+            return true
+        }
+
+        return false
+    }
 }
