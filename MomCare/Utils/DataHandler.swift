@@ -77,7 +77,7 @@ extension CacheHandler {
             return image
         }
 
-        if let image = await fetchImageFromDatabase(url: url) {
+        if let image = fetchImageFromDatabase(url: url) {
             return image
         }
 
@@ -86,18 +86,22 @@ extension CacheHandler {
 
     // MARK: Private
 
-    private func saveImageToDatabase(_ image: UIImage, url: URL, data: Data) async {
+    private func saveImageToDatabase(_ image: UIImage, url: URL, data: Data) {
         let imageObject = Images()
         imageObject.uri = url.absoluteString
         imageObject.imageData = data
-        await RealmHandler.shared.save(imageObject)
+
+        let realm = try? Realm()
+        try? realm?.write {
+            realm?.add(imageObject, update: .modified)
+        }
     }
 
-    private func fetchImageFromDatabase(url: URL) async -> UIImage? {
-        let predicate = NSPredicate(format: "url == %@", url.absoluteString)
-        let realmResult = await RealmHandler.shared.fetchFirst(Images.self, predicate: predicate)
+    private func fetchImageFromDatabase(url: URL) -> UIImage? {
+        let realm = try? Realm()
+        let results = realm?.objects(Images.self).filter("uri == %@", url.absoluteString)
 
-        if let imageData = realmResult?.imageData, let image = UIImage(data: imageData) {
+        if let imageData = results?.first?.imageData, let image = UIImage(data: imageData) {
             logger.debug("Image found in Realm for URL: \(url.absoluteString)")
             saveToCache(image, for: url)
             return image
@@ -113,7 +117,7 @@ extension CacheHandler {
             guard let image = UIImage(data: data) else { return nil }
 
             saveToCache(image, for: url)
-            await saveImageToDatabase(image, url: url, data: data)
+            saveImageToDatabase(image, url: url, data: data)
             return image
         } catch {
             logger.error("Failed to fetch image from URL: \(url.absoluteString), error: \(String(describing: error))")
@@ -139,107 +143,4 @@ extension CacheHandler {
         let entity = Entity<UIImage>(value: image)
         cache.setObject(entity, forKey: url as AnyObject)
     }
-}
-
-actor RealmHandler {
-
-    // MARK: Lifecycle
-
-    private init() {
-        do {
-            realm = try Realm()
-            logger.debug("Realm initialized successfully")
-        } catch {
-            logger.error("Failed to initialize Realm: \(String(describing: error))")
-            realm = nil
-        }
-    }
-
-    // MARK: Internal
-
-    @MainActor static let shared: RealmHandler = .init()
-
-    let realm: Realm?
-
-    func save<T: Object>(_ object: T) {
-        write { realm in
-            realm.add(object, update: .modified)
-        }
-        logger.debug("Saved object of type \(T.self) to Realm")
-    }
-
-    func fetch<T: Object>(_ type: T.Type, predicate: NSPredicate? = nil) -> Results<T>? {
-        guard let realm else {
-            logger.error("Failed to fetch objects of type \(T.self): Realm is nil")
-            return nil
-        }
-        let results = realm.objects(type).filter(predicate ?? NSPredicate(value: true))
-        logger.debug("Fetched \(results.count) objects of type \(T.self) from Realm")
-        return results
-    }
-
-    func fetchFirst<T: Object>(_ type: T.Type, predicate: NSPredicate? = nil) -> T? {
-        guard let realm else {
-            logger.error("Failed to fetch first object of type \(T.self): Realm is nil")
-            return nil
-        }
-        let results = realm.objects(type).filter(predicate ?? NSPredicate(value: true))
-        logger.debug("Fetched first object of type \(T.self) from Realm")
-        return results.first
-    }
-
-    func delete<T: Object>(_ object: T) {
-        write { realm in
-            realm.delete(object)
-        }
-        logger.debug("Deleted object of type \(T.self) from Realm")
-    }
-
-    func deleteAll<T: Object>(_ type: T.Type) {
-        write { realm in
-            realm.delete(realm.objects(type))
-        }
-        logger.debug("Deleted all objects of type \(T.self) from Realm")
-    }
-
-    func update<T: Object>(_ object: T, with block: (T) -> Void) {
-        write { realm in
-            block(object)
-            realm.add(object, update: .modified)
-        }
-        logger.debug("Updated object of type \(T.self) in Realm")
-    }
-
-    func observe<T: Object>(_ type: T.Type, predicate: NSPredicate? = nil, completion: @escaping (Results<T>) -> Void) -> (notification: NotificationToken, realm: Realm)? {
-        guard let realm else {
-            logger.error("Failed to observe objects of type \(T.self): Realm is nil")
-            return nil
-        }
-        let results = realm.objects(type).filter(predicate ?? NSPredicate(value: true))
-        let token = results.observe { changes in
-            switch changes {
-            case let .initial(results):
-                completion(results)
-            case let .update(results, _, _, _):
-                completion(results)
-            case let .error(error):
-                logger.error("Realm observation error: \(String(describing: error))")
-            }
-        }
-        return (notification: token, realm: realm)
-    }
-
-    // MARK: Private
-
-    private func write(_ block: (Realm) throws -> Void) {
-        guard let realm else { return }
-        do {
-            try realm.write {
-                try block(realm)
-            }
-        } catch {
-            logger.error("Realm write error: \(String(describing: error))")
-        }
-    }
-
 }
