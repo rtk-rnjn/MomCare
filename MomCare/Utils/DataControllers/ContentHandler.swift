@@ -127,7 +127,7 @@ class ContentHandler {
     private func fetchFromUserDefaults() -> Tip? {
         guard let data = UserDefaults.standard.data(forKey: "tips") else { return nil }
 
-        return try? JSONDecoder().decode(Tip.self, from: data)
+        return data.decode()
     }
 
     private func saveToUserDefaults(_ tips: Tip) {

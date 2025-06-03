@@ -47,7 +47,7 @@ actor NetworkManager {
         return await request(url: url, method: .PATCH, body: body)
     }
 
-    func fetchStreamedData<T: Codable>(_ method: HTTPMethod, url: String, queryParameters: [String: Any]? = nil, onItem: (@Sendable (T) -> Void)? = nil, onError: (@Sendable (Error) -> Void)? = nil) {
+    func fetchStreamedData<T: Codable>(_ method: HTTPMethod, url: String, queryParameters: [String: Any]? = nil, onItem: (@Sendable (T) -> Void)? = nil) {
         var urlString = url
 
         if let queryParameters, !queryParameters.isEmpty {
@@ -67,28 +67,23 @@ actor NetworkManager {
 
         let task = URLSession.shared.dataTask(with: reqeust) { data, response, error in
             if let error {
-                onError?(error)
                 return
             }
 
             guard let response = response as? HTTPURLResponse, response.statusCode == 200 else {
-                onError?(NSError(domain: "Response is not HTTPURLResponse", code: 0, userInfo: nil))
                 return
             }
 
             guard let data, let fullText = String(data: data, encoding: .utf8) else {
-                onError?(NSError(domain: "No data", code: 0, userInfo: nil))
                 return
             }
 
             let lines = fullText.split(separator: "\n")
             for line in lines {
                 if let jsonData = line.data(using: .utf8) {
-                    do {
-                        let item = try JSONDecoder().decode(T.self, from: jsonData)
+                    let item: T? = jsonData.decode()
+                    if let item {
                         onItem?(item)
-                    } catch {
-                        onError?(error)
                     }
                 }
             }
@@ -169,10 +164,7 @@ actor NetworkManager {
             throw URLError(.badServerResponse)
         }
 
-        let decoder = JSONDecoder()
-        decoder.dateDecodingStrategy = .iso8601
-
-        return try decoder.decode(T.self, from: data)
+        return data.decode()
     }
 
     private func shouldRetry(for error: Error?, response: HTTPURLResponse?) -> Bool {

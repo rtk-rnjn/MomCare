@@ -22,15 +22,14 @@ class _LocalStore {
     }()
 
     func saveUser(_ profile: User) {
-        let encoder = JSONEncoder()
-        if let data = try? encoder.encode(profile) {
+        if let data = profile.toData() {
             try? data.write(to: fileURL)
         }
     }
 
     func loadUser() -> User? {
         if let data = try? Data(contentsOf: fileURL) {
-            return try? JSONDecoder().decode(User.self, from: data)
+            return data.decode()
         }
         return nil
     }
