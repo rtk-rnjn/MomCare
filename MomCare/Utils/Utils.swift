@@ -123,7 +123,7 @@ enum Utils {
         case "III":
             return 2400
         default:
-            return 0
+            return 1
         }
     }
 }
