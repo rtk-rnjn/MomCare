@@ -109,6 +109,18 @@ class ContentHandler {
             .init(name: "Name3", duration: 100, description: "Description3", exerciseImageUri: "")
         ]
     }
+    
+    func fetchQuotes(for mood: MoodType) async -> String? {
+        let cachedQuote: String? = CacheHandler.shared.get(forKey: mood.rawValue)
+        if let cachedQuote {
+            return cachedQuote
+        }
+        let quote: String? = await NetworkManager.shared.get(url: Endpoint.contentQuotesMood.urlString(with: mood.rawValue))
+        
+        CacheHandler.shared.set(quote, forKey: mood.rawValue)
+        
+        return quote
+    }
 
     // MARK: Private
 

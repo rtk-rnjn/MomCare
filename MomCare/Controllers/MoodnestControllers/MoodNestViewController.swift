@@ -89,8 +89,18 @@ class MoodNestViewController: UIViewController, UICollectionViewDataSource, UICo
             }
 
             cell.stopShimmer()
-
-            cell.updateElements(with: "Here comes a quote with a beautiful heading")
+            Task {
+                guard let mood else {
+                    return
+                }
+                guard let quote = await ContentHandler.shared.fetchQuotes(for: mood) else {
+                    return
+                }
+                
+                DispatchQueue.main.async {
+                    cell.updateElements(with: quote)
+                }
+            }
 
             return cell
 

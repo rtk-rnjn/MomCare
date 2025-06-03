@@ -33,6 +33,8 @@ enum Endpoint: String {
     case contentS3Files = "/content/s3/files/%@"
     case contentS3Directories = "/content/s3/directories/%@"
     case contentS3Song = "/content/s3/song/%@"
+    
+    case contentQuotesMood = "/content/quotes/%@"
 }
 
 extension Endpoint {
