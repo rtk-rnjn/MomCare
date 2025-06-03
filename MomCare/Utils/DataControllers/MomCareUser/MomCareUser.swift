@@ -9,6 +9,9 @@ import Foundation
 
 @MainActor
 class _LocalStore {
+
+    // MARK: Public
+
     public static let shared: _LocalStore = .init()
 
     // MARK: Internal
@@ -32,7 +35,6 @@ class _LocalStore {
         return nil
     }
 }
-
 
 @MainActor
 class MomCareUser {

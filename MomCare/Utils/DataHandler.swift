@@ -38,6 +38,10 @@ class Entity<T> {
 
 class CacheHandler {
 
+    // MARK: Public
+
+    public private(set) var cache: NSCache<AnyObject, AnyObject> = .init()
+
     // MARK: Internal
 
     @MainActor static let shared: CacheHandler = .init()
@@ -62,11 +66,15 @@ class CacheHandler {
         return nil
     }
 
-    public private(set) var cache: NSCache<AnyObject, AnyObject> = .init()
 }
 
 class ImageCacheHandler: CacheHandler {
+
+    // MARK: Public
+
     public static let shared: ImageCacheHandler = .init()
+
+    // MARK: Internal
 
     func fetchImage(from url: URL) async -> UIImage? {
         if let image = fetchFromCache(url: url) {
@@ -79,6 +87,8 @@ class ImageCacheHandler: CacheHandler {
 
         return await fetchImageFromNetworkAndStore(url: url)
     }
+
+    // MARK: Private
 
     private func saveImageToDatabase(_ image: UIImage, url: URL, data: Data) async {
         let imageObject = Images()
@@ -135,9 +145,9 @@ class ImageCacheHandler: CacheHandler {
     }
 }
 
-
 class RealmHandler {
 
+    // MARK: Lifecycle
 
     private init() {
         do {
@@ -149,21 +159,11 @@ class RealmHandler {
         }
     }
 
+    // MARK: Internal
 
     @MainActor static let shared: RealmHandler = .init()
 
     let realm: Realm?
-
-    private func write(_ block: (Realm) throws -> Void) {
-        guard let realm else { return }
-        do {
-            try realm.write {
-                try block(realm)
-            }
-        } catch {
-            logger.error("Realm write error: \(String(describing: error))")
-        }
-    }
 
     func save<T: Object>(_ object: T) {
         write { realm in
@@ -222,15 +222,28 @@ class RealmHandler {
         let results = realm.objects(type).filter(predicate ?? NSPredicate(value: true))
         let token = results.observe { changes in
             switch changes {
-            case .initial(let results):
+            case let .initial(results):
                 completion(results)
-            case .update(let results, _, _, _):
+            case let .update(results, _, _, _):
                 completion(results)
-            case .error(let error):
+            case let .error(error):
                 logger.error("Realm observation error: \(String(describing: error))")
             }
         }
         return (notification: token, realm: realm)
+    }
+
+    // MARK: Private
+
+    private func write(_ block: (Realm) throws -> Void) {
+        guard let realm else { return }
+        do {
+            try realm.write {
+                try block(realm)
+            }
+        } catch {
+            logger.error("Realm write error: \(String(describing: error))")
+        }
     }
 
 }

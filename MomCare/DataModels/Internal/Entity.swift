@@ -1,5 +1,5 @@
 //
-//  Database.swift
+//  Entity.swift
 //  MomCare
 //
 //  Created by RITIK RANJAN on 03/06/25.
@@ -19,6 +19,24 @@ class Images: Object {
 }
 
 class FoodItems: Object {
+
+    // MARK: Lifecycle
+
+    convenience init(foodItem: FoodItem) {
+        self.init()
+
+        name = foodItem.name
+        imageUri = foodItem.imageUri
+        calories = foodItem.calories
+        protein = foodItem.protein
+        carbs = foodItem.carbs
+        fat = foodItem.fat
+        sodium = foodItem.sodium
+        sugar = foodItem.sugar
+    }
+
+    // MARK: Internal
+
     @Persisted var name: String
     @Persisted var imageUri: String?
 
@@ -29,18 +47,6 @@ class FoodItems: Object {
     @Persisted var sodium: Double = 0
     @Persisted var sugar: Double = 0
 
-    convenience init(foodItem: FoodItem) {
-        self.init()
-
-        self.name = foodItem.name
-        self.imageUri = foodItem.imageUri
-        self.calories = foodItem.calories
-        self.protein = foodItem.protein
-        self.carbs = foodItem.carbs
-        self.fat = foodItem.fat
-        self.sodium = foodItem.sodium
-        self.sugar = foodItem.sugar
-    }
 }
 
 class Songs: Object {
