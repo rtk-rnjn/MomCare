@@ -61,7 +61,7 @@ extension UIImage {
             return defaultImage
         }
 
-        let fetchedImage = await CacheHandler.shared.fetchImage(from: url)
+        let fetchedImage = await ImageCacheHandler.shared.fetchImage(from: url)
         return fetchedImage ?? defaultImage
     }
 }

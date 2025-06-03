@@ -8,12 +8,39 @@
 import Foundation
 
 @MainActor
+class _LocalStore {
+    public static let shared: _LocalStore = .init()
+
+    // MARK: Internal
+
+    let fileURL: URL = {
+        let path = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
+        return path.appendingPathComponent("data.json")
+    }()
+
+    func saveUser(_ profile: User) {
+        let encoder = JSONEncoder()
+        if let data = try? encoder.encode(profile) {
+            try? data.write(to: fileURL)
+        }
+    }
+
+    func loadUser() -> User? {
+        if let data = try? Data(contentsOf: fileURL) {
+            return try? JSONDecoder().decode(User.self, from: data)
+        }
+        return nil
+    }
+}
+
+
+@MainActor
 class MomCareUser {
 
     // MARK: Lifecycle
 
     private init() {
-        user = LocalStore.shared.load()
+        user = _LocalStore.shared.loadUser()
     }
 
     // MARK: Public
@@ -33,7 +60,7 @@ class MomCareUser {
     var user: User? {
         didSet {
             if let user, oldValue != user {
-                LocalStore.shared.save(user)
+                _LocalStore.shared.saveUser(user)
                 updateToDatabase()
             }
         }

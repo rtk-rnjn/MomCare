@@ -9,7 +9,6 @@ import Foundation
 import UIKit
 import Network
 import UserNotifications
-import RealmSwift
 import Security
 
 enum AlertType {
@@ -172,47 +171,5 @@ enum KeychainHelper {
             kSecAttrAccount as String: key
         ]
         return SecItemDelete(query as CFDictionary) == errSecSuccess
-    }
-}
-
-class LocalStore {
-
-    // MARK: Lifecycle
-
-    private init() {
-        LocalStore.realm
-    }
-
-    // MARK: Public
-
-    @MainActor public static let realm: Realm = {
-        do {
-            return try Realm()
-        } catch {
-            fatalError("Could not initialize Realm: \(error.localizedDescription)")
-        }
-    }()
-
-    @MainActor public static let shared: LocalStore = .init()
-
-    // MARK: Internal
-
-    let fileURL: URL = {
-        let path = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
-        return path.appendingPathComponent("data.json")
-    }()
-
-    func save(_ profile: User) {
-        let encoder = JSONEncoder()
-        if let data = try? encoder.encode(profile) {
-            try? data.write(to: fileURL)
-        }
-    }
-
-    func load() -> User? {
-        if let data = try? Data(contentsOf: fileURL) {
-            return try? JSONDecoder().decode(User.self, from: data)
-        }
-        return nil
     }
 }
