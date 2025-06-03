@@ -16,9 +16,9 @@
                 <rect key="frame" x="0.0" y="0.0" width="402" height="145"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Take  a moment to rewind with &quot;Spiritual&quot; Playlist" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UDJ-k9-MYK">
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" text="Take  a moment to rewind with &quot;Spiritual&quot; Playlist" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UDJ-k9-MYK">
                         <rect key="frame" x="5" y="0.0" width="397" height="145"/>
-                        <fontDescription key="fontDescription" style="UICTFontTextStyleTitle1"/>
+                        <fontDescription key="fontDescription" style="UICTFontTextStyleTitle3"/>
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
                     </label>
@@ -34,7 +34,7 @@
             <connections>
                 <outlet property="mainHeadingLabel" destination="UDJ-k9-MYK" id="YFs-C4-NJZ"/>
             </connections>
-            <point key="canvasLocation" x="36.641221374045799" y="86.971830985915503"/>
+            <point key="canvasLocation" x="63" y="-3"/>
         </collectionViewCell>
     </objects>
 </document>
