@@ -72,7 +72,7 @@
                             </stackView>
                         </subviews>
                         <constraints>
-                            <constraint firstItem="7VZ-jj-DFi" firstAttribute="width" secondItem="KUz-34-KEU" secondAttribute="width" multiplier="0.6" id="NYd-HY-vVk"/>
+                            <constraint firstItem="7VZ-jj-DFi" firstAttribute="width" secondItem="KUz-34-KEU" secondAttribute="width" multiplier="0.8" id="NYd-HY-vVk"/>
                         </constraints>
                     </stackView>
                 </subviews>
