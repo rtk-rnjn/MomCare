@@ -68,11 +68,7 @@ class CacheHandler {
 
 }
 
-class ImageCacheHandler: CacheHandler {
-
-    // MARK: Public
-
-    public static let shared: ImageCacheHandler = .init()
+extension CacheHandler {
 
     // MARK: Internal
 
@@ -145,7 +141,7 @@ class ImageCacheHandler: CacheHandler {
     }
 }
 
-class RealmHandler {
+actor RealmHandler {
 
     // MARK: Lifecycle
 
