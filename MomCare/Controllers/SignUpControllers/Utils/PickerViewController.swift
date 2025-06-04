@@ -16,9 +16,6 @@ class PickerViewController: UIViewController, UIPickerViewDelegate, UIPickerView
     var options: [String: String] = [:]
     var completionHandler: ((String, String) -> Void)?
 
-    private var sortedOptions: [(key: String, value: String)] = []
-    private var selectedOption: (key: String, value: String)?
-
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -55,6 +52,11 @@ class PickerViewController: UIViewController, UIPickerViewDelegate, UIPickerView
         selectedOption = selected
         completionHandler?(selected.key, selected.value)
     }
+
+    // MARK: Private
+
+    private var sortedOptions: [(key: String, value: String)] = []
+    private var selectedOption: (key: String, value: String)?
 
     private func sortOptions(_ dict: [String: String]) -> [(key: String, value: String)] {
         let isNumeric = dict.keys.allSatisfy { Int($0) != nil }
