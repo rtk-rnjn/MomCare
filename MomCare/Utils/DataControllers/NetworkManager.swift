@@ -65,7 +65,7 @@ actor NetworkManager {
         var reqeust = URLRequest(url: url)
         reqeust.httpMethod = method.rawValue
 
-        let task = URLSession.shared.dataTask(with: reqeust) { data, response, error in
+        let task = URLSession.shared.dataTask(with: reqeust) { data, response, _ in
             if let error {
                 return
             }

@@ -49,7 +49,7 @@ class DietProgressCollectionViewCell: UICollectionViewCell {
                 self.currentCaloriesIntake = Int(caloriesIntake)
                 let progress = Float(self.currentCaloriesIntake) / Float(caloriesGoal)
                 self.progressBar.progress = progress
-                
+
                 var displayProgress = Int(progress * 100)
                 displayProgress = displayProgress > 100 ? 100 : displayProgress
                 self.percentageLabel.text = "\(displayProgress)%"

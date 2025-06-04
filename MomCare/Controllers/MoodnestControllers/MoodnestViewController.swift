@@ -96,7 +96,7 @@ class MoodNestViewController: UIViewController, UICollectionViewDataSource, UICo
                 guard let quote = await ContentHandler.shared.fetchQuotes(for: mood) else {
                     return
                 }
-                
+
                 DispatchQueue.main.async {
                     cell.updateElements(with: quote)
                 }
