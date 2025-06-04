@@ -23,7 +23,13 @@ class SignUpExtendedTableViewController: UITableViewController {
             self.progressView.setProgress(1.0, animated: true)
         }
 
-        dueDatePicker.minimumDate = Date()
+        let calendar = Calendar.current
+        let today = Date()
+        let minDueDate = calendar.date(byAdding: .day, value: 7, to: today)!
+        let maxDueDate = calendar.date(byAdding: .day, value: 280, to: today)!
+
+        dueDatePicker.minimumDate = minDueDate
+        dueDatePicker.maximumDate = maxDueDate
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {

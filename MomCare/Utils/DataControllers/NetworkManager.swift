@@ -66,10 +66,6 @@ actor NetworkManager {
         reqeust.httpMethod = method.rawValue
 
         let task = URLSession.shared.dataTask(with: reqeust) { data, response, _ in
-            if let error {
-                return
-            }
-
             guard let response = response as? HTTPURLResponse, response.statusCode == 200 else {
                 return
             }

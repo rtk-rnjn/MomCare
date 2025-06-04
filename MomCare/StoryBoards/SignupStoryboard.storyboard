@@ -28,10 +28,10 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <textField opaque="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="First Name" adjustsFontForContentSizeCategory="YES" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="Ds9-IE-Erh">
-                                                    <rect key="frame" x="20" y="0.0" width="330" height="50"/>
+                                                    <rect key="frame" x="20" y="0.0" width="313" height="50"/>
                                                     <color key="backgroundColor" systemColor="systemGray6Color"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
-                                                    <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" keyboardType="alphabet" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no" textContentType="name"/>
+                                                    <textInputTraits key="textInputTraits" autocapitalizationType="words" autocorrectionType="no" spellCheckingType="no" keyboardType="alphabet" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no" textContentType="name"/>
                                                     <connections>
                                                         <action selector="editingChanged:" destination="9Xi-l9-W8d" eventType="editingChanged" id="z5j-TV-Evg"/>
                                                         <action selector="editingChanged:" destination="9Xi-l9-W8d" eventType="editingDidEnd" id="z7c-Qk-vyt"/>
@@ -42,8 +42,8 @@
                                             <constraints>
                                                 <constraint firstAttribute="bottom" secondItem="Ds9-IE-Erh" secondAttribute="bottom" id="OUx-0M-GTh"/>
                                                 <constraint firstItem="Ds9-IE-Erh" firstAttribute="top" secondItem="SJJ-pq-hTl" secondAttribute="top" id="Rrv-Qf-ztt"/>
-                                                <constraint firstItem="Ds9-IE-Erh" firstAttribute="leading" secondItem="SJJ-pq-hTl" secondAttribute="leading" constant="20" id="Z2h-LJ-p2q"/>
-                                                <constraint firstAttribute="trailing" secondItem="Ds9-IE-Erh" secondAttribute="trailing" constant="3" id="q9t-5J-X7y"/>
+                                                <constraint firstItem="Ds9-IE-Erh" firstAttribute="leading" secondItem="SJJ-pq-hTl" secondAttribute="leading" constant="20" symbolic="YES" id="Z2h-LJ-p2q"/>
+                                                <constraint firstAttribute="trailing" secondItem="Ds9-IE-Erh" secondAttribute="trailing" constant="20" symbolic="YES" id="q9t-5J-X7y"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
@@ -55,10 +55,10 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Last Name" adjustsFontForContentSizeCategory="YES" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="Wtv-Fl-XGg">
-                                                    <rect key="frame" x="20" y="0.0" width="330" height="50"/>
+                                                    <rect key="frame" x="20" y="0.0" width="313" height="50"/>
                                                     <color key="backgroundColor" systemColor="systemGray6Color"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
-                                                    <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" keyboardType="alphabet" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no" textContentType="family-name"/>
+                                                    <textInputTraits key="textInputTraits" autocapitalizationType="words" autocorrectionType="no" spellCheckingType="no" keyboardType="alphabet" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no" textContentType="family-name"/>
                                                     <connections>
                                                         <action selector="editingChanged:" destination="9Xi-l9-W8d" eventType="editingChanged" id="86d-rn-zDd"/>
                                                         <action selector="editingChanged:" destination="9Xi-l9-W8d" eventType="editingDidEnd" id="eVu-KM-phD"/>
@@ -69,8 +69,8 @@
                                             <constraints>
                                                 <constraint firstAttribute="bottom" secondItem="Wtv-Fl-XGg" secondAttribute="bottom" id="M63-QO-5pf"/>
                                                 <constraint firstItem="Wtv-Fl-XGg" firstAttribute="top" secondItem="sLq-eq-poU" secondAttribute="top" id="Mlq-22-pxY"/>
-                                                <constraint firstItem="Wtv-Fl-XGg" firstAttribute="leading" secondItem="sLq-eq-poU" secondAttribute="leading" constant="20" id="gfD-DQ-xfI"/>
-                                                <constraint firstAttribute="trailing" secondItem="Wtv-Fl-XGg" secondAttribute="trailing" constant="3" id="l8r-xi-XK0"/>
+                                                <constraint firstItem="Wtv-Fl-XGg" firstAttribute="leading" secondItem="sLq-eq-poU" secondAttribute="leading" constant="20" symbolic="YES" id="gfD-DQ-xfI"/>
+                                                <constraint firstAttribute="trailing" secondItem="Wtv-Fl-XGg" secondAttribute="trailing" constant="20" symbolic="YES" id="l8r-xi-XK0"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
@@ -86,10 +86,10 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Email Address" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="zFs-5c-kbt">
-                                                    <rect key="frame" x="20" y="0.0" width="330" height="50"/>
+                                                    <rect key="frame" x="20" y="0.0" width="313" height="50"/>
                                                     <color key="backgroundColor" systemColor="systemGray6Color"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
-                                                    <textInputTraits key="textInputTraits" keyboardType="emailAddress" textContentType="email"/>
+                                                    <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" keyboardType="emailAddress" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no" textContentType="email"/>
                                                     <connections>
                                                         <action selector="editingChanged:" destination="9Xi-l9-W8d" eventType="editingChanged" id="Q2V-J0-mKe"/>
                                                         <action selector="editingChanged:" destination="9Xi-l9-W8d" eventType="editingDidEnd" id="svg-9S-mV7"/>
@@ -98,8 +98,8 @@
                                             </subviews>
                                             <color key="backgroundColor" systemColor="systemGray6Color"/>
                                             <constraints>
-                                                <constraint firstAttribute="trailing" secondItem="zFs-5c-kbt" secondAttribute="trailing" constant="3" id="AlH-0p-1qj"/>
-                                                <constraint firstItem="zFs-5c-kbt" firstAttribute="leading" secondItem="jey-ik-tBO" secondAttribute="leading" constant="20" id="HMq-6Y-NgH"/>
+                                                <constraint firstAttribute="trailing" secondItem="zFs-5c-kbt" secondAttribute="trailing" constant="20" symbolic="YES" id="AlH-0p-1qj"/>
+                                                <constraint firstItem="zFs-5c-kbt" firstAttribute="leading" secondItem="jey-ik-tBO" secondAttribute="leading" constant="20" symbolic="YES" id="HMq-6Y-NgH"/>
                                                 <constraint firstAttribute="bottom" secondItem="zFs-5c-kbt" secondAttribute="bottom" id="UbZ-FS-JZL"/>
                                                 <constraint firstItem="zFs-5c-kbt" firstAttribute="top" secondItem="jey-ik-tBO" secondAttribute="top" id="kVB-DE-Epp"/>
                                             </constraints>
@@ -112,8 +112,8 @@
                                             <rect key="frame" x="0.0" y="0.0" width="353" height="50"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Password" clearsOnBeginEditing="YES" clearButtonMode="always" translatesAutoresizingMaskIntoConstraints="NO" id="Klb-XY-Bus">
-                                                    <rect key="frame" x="20" y="0.0" width="330" height="50"/>
+                                                <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Password" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="Klb-XY-Bus">
+                                                    <rect key="frame" x="20" y="0.0" width="313" height="50"/>
                                                     <color key="backgroundColor" systemColor="systemGray6Color"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                     <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" secureTextEntry="YES" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no" textContentType="new-password">
@@ -127,8 +127,8 @@
                                             </subviews>
                                             <color key="backgroundColor" systemColor="systemGray6Color"/>
                                             <constraints>
-                                                <constraint firstAttribute="trailing" secondItem="Klb-XY-Bus" secondAttribute="trailing" constant="3" id="GzB-Y9-Qqr"/>
-                                                <constraint firstItem="Klb-XY-Bus" firstAttribute="leading" secondItem="bdP-y1-TYd" secondAttribute="leading" constant="20" id="HGu-cJ-ca1"/>
+                                                <constraint firstAttribute="trailing" secondItem="Klb-XY-Bus" secondAttribute="trailing" constant="20" symbolic="YES" id="GzB-Y9-Qqr"/>
+                                                <constraint firstItem="Klb-XY-Bus" firstAttribute="leading" secondItem="bdP-y1-TYd" secondAttribute="leading" constant="20" symbolic="YES" id="HGu-cJ-ca1"/>
                                                 <constraint firstAttribute="bottom" secondItem="Klb-XY-Bus" secondAttribute="bottom" id="X9W-1M-GTf"/>
                                                 <constraint firstItem="Klb-XY-Bus" firstAttribute="top" secondItem="bdP-y1-TYd" secondAttribute="top" id="fbc-oF-Yco"/>
                                             </constraints>
@@ -141,8 +141,8 @@
                                             <rect key="frame" x="0.0" y="0.0" width="353" height="50"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Confirm Password" clearsOnBeginEditing="YES" minimumFontSize="17" clearButtonMode="always" translatesAutoresizingMaskIntoConstraints="NO" id="Kek-BE-ZD0">
-                                                    <rect key="frame" x="20" y="0.0" width="330" height="50"/>
+                                                <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Confirm Password" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="Kek-BE-ZD0">
+                                                    <rect key="frame" x="20" y="0.0" width="313" height="50"/>
                                                     <color key="backgroundColor" systemColor="systemGray6Color"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                     <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" secureTextEntry="YES" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no" textContentType="password"/>
@@ -156,8 +156,8 @@
                                             <constraints>
                                                 <constraint firstAttribute="bottom" secondItem="Kek-BE-ZD0" secondAttribute="bottom" id="2F0-lu-Qfy"/>
                                                 <constraint firstItem="Kek-BE-ZD0" firstAttribute="top" secondItem="VaK-YD-YcS" secondAttribute="top" id="N2W-SW-9Ia"/>
-                                                <constraint firstItem="Kek-BE-ZD0" firstAttribute="leading" secondItem="VaK-YD-YcS" secondAttribute="leading" constant="20" id="oz2-kB-doT"/>
-                                                <constraint firstAttribute="trailing" secondItem="Kek-BE-ZD0" secondAttribute="trailing" constant="3" id="wca-Pd-xok"/>
+                                                <constraint firstItem="Kek-BE-ZD0" firstAttribute="leading" secondItem="VaK-YD-YcS" secondAttribute="leading" constant="20" symbolic="YES" id="oz2-kB-doT"/>
+                                                <constraint firstAttribute="trailing" secondItem="Kek-BE-ZD0" secondAttribute="trailing" constant="20" symbolic="YES" id="wca-Pd-xok"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
@@ -173,10 +173,10 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" restorationIdentifier="countryCodeField" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Country Code" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="h6V-8D-q5K">
-                                                    <rect key="frame" x="20" y="0.0" width="333" height="50"/>
+                                                    <rect key="frame" x="20" y="0.0" width="313" height="50"/>
                                                     <color key="backgroundColor" systemColor="systemGray6Color"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
-                                                    <textInputTraits key="textInputTraits" returnKeyType="next"/>
+                                                    <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" keyboardType="numberPad" returnKeyType="next" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no"/>
                                                     <connections>
                                                         <action selector="countryCodeFieldTapped:" destination="9Xi-l9-W8d" eventType="editingDidBegin" id="b9e-Bl-B6S"/>
                                                         <action selector="countryCodeFieldTapped:" destination="9Xi-l9-W8d" eventType="touchUpInside" id="ihw-DQ-xj5"/>
@@ -188,9 +188,9 @@
                                             <color key="backgroundColor" systemColor="systemGray6Color"/>
                                             <constraints>
                                                 <constraint firstItem="h6V-8D-q5K" firstAttribute="top" secondItem="Lfb-S5-v5q" secondAttribute="top" id="DAF-aU-UGM"/>
-                                                <constraint firstItem="h6V-8D-q5K" firstAttribute="leading" secondItem="Lfb-S5-v5q" secondAttribute="leading" constant="20" id="Kfc-J7-Fan"/>
+                                                <constraint firstItem="h6V-8D-q5K" firstAttribute="leading" secondItem="Lfb-S5-v5q" secondAttribute="leading" constant="20" symbolic="YES" id="Kfc-J7-Fan"/>
                                                 <constraint firstAttribute="bottom" secondItem="h6V-8D-q5K" secondAttribute="bottom" id="eeG-uQ-sdL"/>
-                                                <constraint firstAttribute="trailing" secondItem="h6V-8D-q5K" secondAttribute="trailing" id="vhD-XP-7Gf"/>
+                                                <constraint firstAttribute="trailing" secondItem="h6V-8D-q5K" secondAttribute="trailing" constant="20" symbolic="YES" id="vhD-XP-7Gf"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
@@ -201,8 +201,8 @@
                                             <rect key="frame" x="0.0" y="0.0" width="353" height="50"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Mobile Number" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="UNi-7g-NYP">
-                                                    <rect key="frame" x="20" y="0.0" width="333" height="50"/>
+                                                <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Mobile Number" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="UNi-7g-NYP">
+                                                    <rect key="frame" x="20" y="0.0" width="313" height="50"/>
                                                     <color key="backgroundColor" systemColor="systemGray6Color"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                     <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" keyboardType="phonePad" returnKeyType="done" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no" textContentType="tel"/>
@@ -214,9 +214,9 @@
                                             </subviews>
                                             <color key="backgroundColor" systemColor="systemGray6Color"/>
                                             <constraints>
-                                                <constraint firstItem="UNi-7g-NYP" firstAttribute="leading" secondItem="A1v-mu-PzU" secondAttribute="leading" constant="20" id="PC1-gZ-jzW"/>
+                                                <constraint firstItem="UNi-7g-NYP" firstAttribute="leading" secondItem="A1v-mu-PzU" secondAttribute="leading" constant="20" symbolic="YES" id="PC1-gZ-jzW"/>
                                                 <constraint firstItem="UNi-7g-NYP" firstAttribute="top" secondItem="A1v-mu-PzU" secondAttribute="top" id="PZc-To-KmB"/>
-                                                <constraint firstAttribute="trailing" secondItem="UNi-7g-NYP" secondAttribute="trailing" id="UeG-r7-jTP"/>
+                                                <constraint firstAttribute="trailing" secondItem="UNi-7g-NYP" secondAttribute="trailing" constant="20" symbolic="YES" id="UeG-r7-jTP"/>
                                                 <constraint firstAttribute="bottom" secondItem="UNi-7g-NYP" secondAttribute="bottom" id="xh3-qY-ffu"/>
                                             </constraints>
                                         </tableViewCellContentView>

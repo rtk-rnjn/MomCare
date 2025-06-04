@@ -35,7 +35,23 @@ class BreathingPlayerViewController: UIViewController {
 
     @IBAction func stopButtonTapped(_ sender: UIButton) {
         pauseBreathing()
-        dismiss(animated: true)
+        isPaused = true
+
+        let cancelAction = AlertActionHandler(title: "Cancel", style: .cancel, handler: nil)
+        var confirmAction = AlertActionHandler(title: "Confirm", style: .destructive) { _ in
+            self.dismiss(animated: true)
+        }
+        let alert = Utils.getAlert(title: "Stop Session", message: "Do you want to stop the breathing session?", actions: [cancelAction, confirmAction])
+
+        if duration <= 0 {
+            alert.message = "The session is already completed. Do you want to dismiss?"
+            confirmAction.handler = { _ in
+                self.dismiss(animated: true)
+            }
+        } else {
+            alert.message = "Do you want to stop the breathing session?"
+        }
+        present(alert, animated: true)
     }
 
     // MARK: Private
@@ -68,7 +84,7 @@ class BreathingPlayerViewController: UIViewController {
     }
 
     private func runner() async {
-        while duration > 0 && !Task.isCancelled {
+        while duration >= 0 && !Task.isCancelled && !isPaused {
             let currentInstruction = instructions[phaseIndex % instructions.count]
 
             await MainActor.run {
@@ -76,7 +92,7 @@ class BreathingPlayerViewController: UIViewController {
                 triggerAnimationIfNeeded(for: currentInstruction)
             }
 
-            try? await Task.sleep(nanoseconds: 1_000_000_000)
+            try? await Task.sleep(nanoseconds: UInt64(1_000_000_000))
             duration -= 1
             phaseRemaining -= 1
 
@@ -87,7 +103,11 @@ class BreathingPlayerViewController: UIViewController {
         }
 
         await MainActor.run {
-            showCompletion()
+            if duration <= 0 {
+                showCompletion()
+            } else {
+                updateUI(for: instructions[phaseIndex % instructions.count])
+            }
         }
     }
 

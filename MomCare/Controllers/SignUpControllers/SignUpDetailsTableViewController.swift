@@ -34,7 +34,11 @@ class SignUpDetailsTableViewController: UITableViewController, UIViewControllerT
             self.progressView.setProgress(0.5, animated: true)
         }
 
-        dateOfBirthPicker.maximumDate = Date()
+        let calendar = Calendar.current
+        let today = Date()
+        let eighteenYearsAgo = calendar.date(byAdding: .year, value: -18, to: today)!
+
+        dateOfBirthPicker.maximumDate = eighteenYearsAgo
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {

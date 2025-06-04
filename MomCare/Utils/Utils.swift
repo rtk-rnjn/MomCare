@@ -17,9 +17,9 @@ enum AlertType {
 }
 
 struct AlertActionHandler {
-    let title: String
-    let style: UIAlertAction.Style
-    let handler: ((UIAlertAction) -> Void)?
+    var title: String
+    var style: UIAlertAction.Style
+    var handler: ((UIAlertAction) -> Void)?
 }
 
 enum Utils {
