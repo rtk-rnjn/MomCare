@@ -99,6 +99,7 @@ class SignUpTableViewController: UITableViewController {
     @IBAction func editingChanged(_ sender: UITextField) {}
 
     @IBAction func countryCodeFieldTapped(_ sender: UITextField) {
+        view.endEditing(true)
         performSegue(withIdentifier: "segueShowPickerViewController", sender: CountryData.countryCodes)
     }
 
