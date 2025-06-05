@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="23504" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="23727" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23506"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23721"/>
         <capability name="collection view cell content view" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -56,9 +56,6 @@
                             <progressView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="gXw-fw-i8m">
                                 <rect key="frame" x="0.0" y="66.666666666666657" width="325" height="4"/>
                                 <color key="tintColor" red="0.25882352941176467" green="0.25882352941176467" blue="0.25882352941176467" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="325" id="R2J-hL-94E"/>
-                                </constraints>
                             </progressView>
                         </subviews>
                     </stackView>
@@ -66,6 +63,7 @@
                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                 <constraints>
                     <constraint firstItem="MH9-ck-Jel" firstAttribute="leading" secondItem="XdG-gX-wgC" secondAttribute="leading" constant="20" symbolic="YES" id="58O-tq-eqV"/>
+                    <constraint firstItem="gXw-fw-i8m" firstAttribute="width" secondItem="XdG-gX-wgC" secondAttribute="width" multiplier="0.890411" id="Dde-gO-nX5"/>
                     <constraint firstItem="MH9-ck-Jel" firstAttribute="centerX" secondItem="XdG-gX-wgC" secondAttribute="centerX" id="ePc-lV-Kch"/>
                     <constraint firstAttribute="trailing" secondItem="MH9-ck-Jel" secondAttribute="trailing" constant="20" symbolic="YES" id="fjr-Rh-jwv"/>
                     <constraint firstItem="MH9-ck-Jel" firstAttribute="centerY" secondItem="XdG-gX-wgC" secondAttribute="centerY" id="zH8-k9-BfS"/>
@@ -91,7 +89,7 @@
                 <outlet property="stepsGoalLabel" destination="hRT-nl-lgo" id="EHs-fY-BOa"/>
                 <outlet property="stepsLabel" destination="giz-Qg-uGU" id="1sP-TM-PLG"/>
             </connections>
-            <point key="canvasLocation" x="537.40458015267177" y="59.507042253521128"/>
+            <point key="canvasLocation" x="537" y="56"/>
         </collectionViewCell>
     </objects>
 </document>

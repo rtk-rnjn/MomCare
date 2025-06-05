@@ -41,15 +41,6 @@ enum Utils {
         return alert
     }
 
-    public static func isConnectedToNetwork() -> Bool {
-        // https://stackoverflow.com/a/55039596
-
-        let monitor = NWPathMonitor()
-        let queue = DispatchQueue(label: "Network")
-        monitor.start(queue: queue)
-        return monitor.currentPath.status == .satisfied
-    }
-
     // MARK: - User Defaults
 
     public static func save<T>(forKey key: String, withValue value: T?) {
