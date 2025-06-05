@@ -30,6 +30,9 @@
                                                 <textField opaque="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="First Name" adjustsFontForContentSizeCategory="YES" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="Ds9-IE-Erh">
                                                     <rect key="frame" x="20" y="0.0" width="313" height="50"/>
                                                     <color key="backgroundColor" systemColor="systemGray6Color"/>
+                                                    <accessibility key="accessibilityConfiguration" hint="Enter your first name" label="First Name">
+                                                        <accessibilityTraits key="traits" none="YES"/>
+                                                    </accessibility>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                     <textInputTraits key="textInputTraits" autocapitalizationType="words" autocorrectionType="no" spellCheckingType="no" keyboardType="alphabet" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no" textContentType="name"/>
                                                     <connections>
@@ -998,7 +1001,7 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="hqu-E6-uUo"/>
+        <segue reference="zf3-jg-5xd"/>
     </inferredMetricsTieBreakers>
     <resources>
         <image name="chevron.up.chevron.down" catalog="system" width="109" height="128"/>

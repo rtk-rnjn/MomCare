@@ -27,6 +27,7 @@ enum Endpoint: String {
     case plan = "/content/plan"
     case search = "/content/search"
     case tips = "/content/tips"
+    case exercises = "/content/exercises"
 
     // Content S3
     case contentS3File = "/content/s3/file/%@"
@@ -35,6 +36,7 @@ enum Endpoint: String {
     case contentS3Song = "/content/s3/song/%@"
 
     case contentQuotesMood = "/content/quotes/%@"
+    case contentYoutube = "/content/youtube"
 }
 
 extension Endpoint {

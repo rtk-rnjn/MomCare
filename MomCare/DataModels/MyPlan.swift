@@ -132,35 +132,49 @@ struct MyPlan: Codable, Sendable, Equatable {
 struct Exercise: Codable, Sendable, Equatable {
     enum CodingKeys: String, CodingKey {
         case name
-        case exerciseType = "exercise_type"
+        case type = "exercise_type"
         case duration
         case description
         case tags
         case level
-        case exerciseImageUri = "exercise_image_name"
+        case week
+        case targetedBodyParts = "targeted_body_parts"
         case durationCompleted = "duration_completed"
+        case assignedAt = "assigned_at"
     }
 
     var name: String
-    var exerciseType: ExerciseType = .breathing
-    var duration: TimeInterval
+    var type: ExerciseType
+    var duration: TimeInterval?
     var description: String
     var tags: [String] = []
     var level: Difficulty = .beginner
-    var exerciseImageUri: String
+    var week: String
+    var targetedBodyParts: [String] = []
     var durationCompleted: TimeInterval = 0
 
-    var completed: Bool {
-        return durationCompleted >= duration - 1
+    var assignedAt: Date
+
+    var isCompleted: Bool {
+        return durationCompleted >= (duration ?? 0)
     }
 
     var completionPercentage: Double {
+        guard let duration, duration > 0 else { return 0 }
         return durationCompleted / duration
     }
 
     var exerciseImage: UIImage? {
         get async {
-            return await UIImage().fetchImage(from: exerciseImageUri)
+            return nil
+        }
+    }
+
+    var uri: String? {
+        get async {
+            let fileName = name.replacingOccurrences(of: " ", with: "_").lowercased()
+            let s3Response: S3Response? = await ContentHandler.shared.fetchS3File("Exercises/\(fileName).mp4")
+            return s3Response?.uri
         }
     }
 }

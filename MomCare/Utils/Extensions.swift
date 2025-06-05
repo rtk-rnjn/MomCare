@@ -9,6 +9,9 @@ import Foundation
 import UIKit
 import CoreImage.CIFilterBuiltins
 import ObjectiveC
+import OSLog
+
+private let logger: Logger = .init(subsystem: "com.MomCare.Extension", category: "Extension")
 
 extension String {
     func isValidEmail() -> Bool {
@@ -78,6 +81,7 @@ extension Encodable {
         do {
             return try JSONSerialization.jsonObject(with: data) as? T
         } catch {
+            logger.error("Failed to convert object to dictionary: \(String(describing: error))")
             return nil
         }
     }
@@ -87,7 +91,12 @@ extension Encodable {
         encoder.keyEncodingStrategy = keyEncodingStrategy
         encoder.dateEncodingStrategy = .iso8601
         encoder.outputFormatting = .prettyPrinted
-        return try? encoder.encode(self)
+        do {
+            return try encoder.encode(self)
+        } catch {
+            logger.error("Failed to encode object: \(String(describing: error))")
+            return nil
+        }
     }
 }
 
@@ -229,6 +238,7 @@ extension Data {
         do {
             return try decoder.decode(T.self, from: self)
         } catch {
+            logger.error("Failed to decode data: \(String(describing: error))")
             return nil
         }
     }

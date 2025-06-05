@@ -31,7 +31,7 @@ class ExerciseCollectionViewCell: UICollectionViewCell {
         }
     }
 
-    func updateElements(with exercise: Exercise, segueHandler handler: (() -> Void)? = nil, popUpHandler: ((Exercise?) -> Void)? = nil) {
+    func updateElements(with exercise: Exercise, popUpHandler: ((Exercise?) -> Void)? = nil, segueHandler handler: (() -> Void)? = nil) {
         segueHandler = handler
         self.popUpHandler = popUpHandler
         self.exercise = exercise

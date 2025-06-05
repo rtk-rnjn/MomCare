@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import AVKit
 
 class ExerciseViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
 
@@ -22,7 +23,7 @@ class ExerciseViewController: UIViewController, UICollectionViewDelegate, UIColl
         weekLabel.text = "Week \(week)"
 
         Task {
-            self.exercises = await ContentHandler.shared.fetchExercise() ?? []
+            self.exercises = await ContentHandler.shared.fetchExercises() ?? []
             DispatchQueue.main.async {
                 self.collectionView.reloadData()
             }
@@ -36,7 +37,6 @@ class ExerciseViewController: UIViewController, UICollectionViewDelegate, UIColl
         collectionView.register(UINib(nibName: "WalkCellMyPlan", bundle: nil), forCellWithReuseIdentifier: "WalkCellMyPlan")
 
         collectionView.register(UINib(nibName: "ExerciseCell", bundle: nil), forCellWithReuseIdentifier: "ExerciseCell")
-        collectionView.register(UINib(nibName: "BreathingCell", bundle: nil), forCellWithReuseIdentifier: "BreathingCell")
 
         collectionView.showsVerticalScrollIndicator = false
 
@@ -63,16 +63,16 @@ class ExerciseViewController: UIViewController, UICollectionViewDelegate, UIColl
         return exercises.count + 2
     }
 
-    func breathingSegueHandler() {
-        performSegue(withIdentifier: "segueShowBreathingPlayer", sender: nil)
-    }
-
     func exerciseSegueHandler() {
         // present AVKit
     }
 
     func popUpHandler(_ exercise: Exercise? = nil) {
-        ExerciseDetailsViewController(rootViewController: self).show(exercise)
+        guard let exercise else {
+            return
+        }
+
+        ExerciseDetailsViewController(rootViewController: self, exercise: exercise).show()
     }
 }
 
@@ -117,30 +117,43 @@ extension ExerciseViewController {
 
         let exercise = exercises[adjustedIndex]
 
-        switch exercise.exerciseType {
-        case .breathing:
-            return createBreathingCell(for: collectionView, at: indexPath, exercise: exercise)
-        case .stretching:
-            return createStretchingCell(for: collectionView, at: indexPath, exercise: exercise)
-        case .yoga:
-            return UICollectionViewCell()
-        }
+        return createCell(for: collectionView, at: indexPath, exercise: exercise)
     }
 
-    private func createBreathingCell(for collectionView: UICollectionView, at indexPath: IndexPath, exercise: Exercise) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "BreathingCell", for: indexPath) as? BreathingCollectionViewCell else {
-            fatalError()
-        }
-        cell.updateElements(with: exercise, segueHandler: breathingSegueHandler, popUpHandler: popUpHandler)
-        return cell
-    }
-
-    private func createStretchingCell(for collectionView: UICollectionView, at indexPath: IndexPath, exercise: Exercise) -> UICollectionViewCell {
+    private func createCell(for collectionView: UICollectionView, at indexPath: IndexPath, exercise: Exercise) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ExerciseCell", for: indexPath) as? ExerciseCollectionViewCell else {
             fatalError("error aa gaya gys")
         }
-        cell.updateElements(with: exercise, segueHandler: exerciseSegueHandler, popUpHandler: popUpHandler)
+        cell.updateElements(with: exercise, popUpHandler: popUpHandler) {
+            switch exercise.type {
+            case .breathing:
+                self.performSegue(withIdentifier: "segueShowBreathingPlayer", sender: nil)
+            default:
+                Task {
+                    await self.prepareAVPlayer(for: exercise)
+                }
+            }
+        }
         return cell
     }
 
+}
+
+extension ExerciseViewController: AVPlayerViewControllerDelegate {
+    func prepareAVPlayer(for exercise: Exercise) async {
+        guard let uri = await exercise.uri, let url = URL(string: uri) else {
+            return
+        }
+        let player = AVPlayer(url: url)
+        let playerViewController = AVPlayerViewController()
+        playerViewController.player = player
+        playerViewController.modalPresentationStyle = .fullScreen
+        playerViewController.delegate = self
+        playerViewController.title = exercise.name
+        DispatchQueue.main.async {
+            self.present(playerViewController, animated: true) {
+                playerViewController.player?.play()
+            }
+        }
+    }
 }

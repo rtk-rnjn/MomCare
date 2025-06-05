@@ -102,14 +102,6 @@ class ContentHandler {
         await NetworkManager.shared.fetchStreamedData(.GET, url: Endpoint.search.urlString, queryParameters: sendableQeury, onItem: onItem)
     }
 
-    func fetchExercise() async -> [Exercise]? {
-        return [
-            .init(name: "Name1", duration: 100, description: "Description1", exerciseImageUri: ""),
-            .init(name: "Name2", duration: 100, description: "Description2", exerciseImageUri: ""),
-            .init(name: "Name3", duration: 100, description: "Description3", exerciseImageUri: "")
-        ]
-    }
-
     func fetchQuotes(for mood: MoodType) async -> String? {
         let cachedQuote: String? = CacheHandler.shared.get(forKey: mood.rawValue)
         if let cachedQuote {
@@ -172,10 +164,10 @@ extension ContentHandler {
         var result: [(imageUri: String, label: String)] = []
 
         for directory in directories where !directory.isEmpty {
-            let uri = "\(directory)cover.jpg"
             let label = extractLastPathComponent(from: directory)
+            let imageUri = "\(directory)\(label.lowercased()).jpg"
 
-            if let response = await fetchS3File(uri) {
+            if let response = await fetchS3File(imageUri) {
                 result.append((imageUri: response.uri, label: label))
             }
         }
@@ -262,5 +254,16 @@ extension ContentHandler {
         let fileURL = FileManager.default.temporaryDirectory.appendingPathComponent(filename)
         try data.write(to: fileURL)
         return fileURL
+    }
+}
+
+extension ContentHandler {
+    func fetchExercises() async -> [Exercise]? {
+        let exercises: [Exercise]? = await NetworkManager.shared.get(url: Endpoint.exercises.urlString)
+        guard let exercises else {
+            return nil
+        }
+        MomCareUser.shared.user?.exercises = exercises
+        return exercises
     }
 }

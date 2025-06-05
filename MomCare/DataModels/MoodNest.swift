@@ -1,7 +1,3 @@
-// MoodNest.swift
-// MomCare
-// Created by Batch - 2 on 16/01/25.
-
 import Foundation
 import UIKit
 
