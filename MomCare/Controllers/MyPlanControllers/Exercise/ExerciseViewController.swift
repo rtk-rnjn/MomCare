@@ -10,11 +10,14 @@ import AVKit
 
 class ExerciseViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
 
-    private var timeControlStatusObservation: NSKeyValueObservation?
+    // MARK: Lifecycle
+
     deinit {
         timeControlStatusObservation?.invalidate()
         timeControlStatusObservation = nil
     }
+
+    // MARK: Internal
 
     var selectedExercise: Exercise?
     var myPlanViewController: MyPlanViewController?
@@ -95,6 +98,7 @@ class ExerciseViewController: UIViewController, UICollectionViewDelegate, UIColl
 
     // MARK: Private
 
+    private var timeControlStatusObservation: NSKeyValueObservation?
     private var player: AVPlayer?
 }
 
@@ -203,7 +207,7 @@ extension ExerciseViewController: AVPlayerViewControllerDelegate {
             }
         }
 
-        timeControlStatusObservation = player?.observe(\.timeControlStatus, options: [.old, .new]) { player, change in
+        timeControlStatusObservation = player?.observe(\.timeControlStatus, options: [.old, .new]) { player, _ in
             if player.timeControlStatus == .paused {
                 self.updateExerciseStats()
                 self.collectionView.reloadData()
