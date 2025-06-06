@@ -37,7 +37,7 @@ class ExerciseCollectionViewCell: UICollectionViewCell {
         self.exercise = exercise
 
         exerciseName.text = "Exercise: \(exercise.name)"
-        if let duration = exercise.duration {
+        if exercise.duration != nil {
             exerciseTime.isHidden = false
             exerciseTime.text = exercise.humanReadableDuration
             exerciseStartButton.setTitle("Resume", for: .normal)

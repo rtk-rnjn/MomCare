@@ -4,13 +4,14 @@
 //
 //  Created by Aryan Singh on 06/06/25.
 //
+
 import SwiftUI
 
 struct DietPlanLoadingScreen: View {
     @State private var currentText = 0
-    let pinkColor = Color(hex: "924350")
-    
-    // Different messages to show during diet plan generation
+    var stopAnimation = false
+    let pinkColor: Color = .init(hex: "924350")
+
     let messages = [
         "Analyzing your nutritional needs...",
         "Creating personalized meal options...",
@@ -18,33 +19,29 @@ struct DietPlanLoadingScreen: View {
         "Finalizing your perfect meal plan...",
         "Almost ready..."
     ]
-    
+
     var body: some View {
         ZStack {
             Color.white.edgesIgnoringSafeArea(.all)
-            
+
             VStack(spacing: 40) {
-                // Logo
                 Image("AppIcon")
                     .resizable()
                     .scaledToFit()
                     .frame(width: 80, height: 80)
-                
-                // Main heading
+
                 Text("Curating Your Diet Plan")
                     .font(.system(size: 28, weight: .bold, design: .rounded))
                     .foregroundColor(pinkColor)
-                
-                // Message that changes
+
                 Text(messages[currentText])
                     .font(.system(size: 18, design: .rounded))
                     .foregroundColor(.gray)
                     .multilineTextAlignment(.center)
                     .padding(.horizontal, 30)
                     .animation(.easeInOut, value: currentText)
-                    .id(currentText) // Forces a redraw with animation
-                
-                // Food items
+                    .id(currentText)
+
                 HStack(spacing: 25) {
                     FoodToAnimate(symbolName: "applelogo", delay: 0.0)
                     FoodToAnimate(symbolName: "carrot.fill", delay: 0.3)
@@ -59,8 +56,7 @@ struct DietPlanLoadingScreen: View {
             startMessageAnimation()
         }
     }
-    
-    // Function to animate through different messages
+
     private func startMessageAnimation() {
         let timer = Timer.scheduledTimer(withTimeInterval: 2.0, repeats: true) { _ in
             withAnimation {
@@ -71,14 +67,13 @@ struct DietPlanLoadingScreen: View {
     }
 }
 
-// A food item that pulses
 struct FoodToAnimate: View {
     let symbolName: String
     let delay: Double
     @State private var isPulsing = false
-    
-    let pinkColor = Color(hex: "924350")
-    
+
+    let pinkColor: Color = .init(hex: "924350")
+
     var body: some View {
         Image(systemName: symbolName)
             .font(.system(size: 24))
@@ -95,11 +90,4 @@ struct FoodToAnimate: View {
                 isPulsing = true
             }
     }
-}
-
-// Include the color extension in each file so they're self-contained
-
-
-#Preview {
-    DietPlanLoadingScreen()
 }

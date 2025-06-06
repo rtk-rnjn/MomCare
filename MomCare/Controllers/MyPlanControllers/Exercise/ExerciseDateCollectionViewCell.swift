@@ -44,6 +44,17 @@ class ExerciseDateCellCollectionViewCell: UICollectionViewCell {
 
         for index in stride(from: startIndex, through: endIndex, by: -1) {
             prepareExerciseRing(with: ringViews[index])
+            animateRings(to: exerciseHistory[abs(endIndex - startIndex)].completionPercentage / 100)
+        }
+
+        // fill the remaining rings with 0% completion
+        for index in stride(from: endIndex - 1, through: 0, by: -1) {
+            prepareExerciseRing(with: ringViews[index])
+            animateRings(to: 0)
+        }
+
+        for index in stride(from: startIndex + 1, to: ringViews.count, by: 1) {
+            prepareExerciseRing(with: ringViews[index])
             animateRings(to: 0)
         }
     }
@@ -52,7 +63,7 @@ class ExerciseDateCellCollectionViewCell: UICollectionViewCell {
         let animation = CABasicAnimation(keyPath: "strokeEnd")
         animation.fromValue = shapeLayer.strokeEnd
         animation.toValue = value
-        animation.duration = 3
+        animation.duration = 1.5
         animation.timingFunction = CAMediaTimingFunction(name: .easeInEaseOut)
         shapeLayer.strokeEnd = value
         shapeLayer.add(animation, forKey: "ringAnimation")

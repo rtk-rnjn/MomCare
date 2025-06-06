@@ -1,4 +1,5 @@
 import UIKit
+import SwiftUI
 
 enum MyPlanViewControlSegmentValue: Int {
     case dietContainerView = 0
@@ -16,6 +17,9 @@ class MyPlanViewController: UIViewController {
 
     var currentSegmentValue = 0
 
+    var exercisesLoaded: Bool = false
+    var dietsLoaded: Bool = false
+
     override func viewDidLoad() {
         super.viewDidLoad()
         updateView(with: currentSegmentValue)
@@ -28,6 +32,23 @@ class MyPlanViewController: UIViewController {
 
         prepareSegmentedControl()
         updateView()
+    }
+
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        switch segue.identifier {
+        case "embedShowExerciseViewController":
+            if let exerciseViewController = segue.destination as? ExerciseViewController {
+                exerciseViewController.myPlanViewController = self
+            }
+
+        case "embedShowDietViewController":
+            if let dietViewController = segue.destination as? DietViewController {
+                dietViewController.myPlanViewController = self
+            }
+
+        default:
+            break
+        }
     }
 
     @IBAction func segmentChanged(_ sender: UISegmentedControl) {

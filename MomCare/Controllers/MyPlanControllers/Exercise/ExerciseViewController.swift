@@ -13,6 +13,9 @@ class ExerciseViewController: UIViewController, UICollectionViewDelegate, UIColl
     // MARK: Internal
 
     var selectedExercise: Exercise?
+    var myPlanViewController: MyPlanViewController?
+
+    var dataFetched = false
 
     @IBOutlet var weekLabel: UILabel!
 
@@ -25,14 +28,7 @@ class ExerciseViewController: UIViewController, UICollectionViewDelegate, UIColl
         weekLabel.text = "Week \(week)"
 
         Task {
-            let exists = MomCareUser.shared.user?.exercises != nil && !(MomCareUser.shared.user?.exercises.isEmpty ?? true)
-            if !exists {
-                let exercises = await ContentHandler.shared.fetchExercises() ?? []
-                MomCareUser.shared.user?.exercises = exercises
-                DispatchQueue.main.async {
-                    self.collectionView.reloadData()
-                }
-            }
+            await fetchExercises()
         }
     }
 
@@ -51,6 +47,19 @@ class ExerciseViewController: UIViewController, UICollectionViewDelegate, UIColl
 
     }
 
+    func fetchExercises() async {
+        let exists = MomCareUser.shared.user?.exercises != nil && !(MomCareUser.shared.user?.exercises.isEmpty ?? true)
+        if !exists {
+            let exercises = await ContentHandler.shared.fetchExercises() ?? []
+            MomCareUser.shared.user?.exercises = exercises
+        }
+        DispatchQueue.main.async {
+            self.myPlanViewController?.exercisesLoaded = true
+            self.dataFetched = true
+            self.collectionView.reloadData()
+        }
+    }
+
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         switch indexPath.item {
         case 0:
@@ -66,6 +75,9 @@ class ExerciseViewController: UIViewController, UICollectionViewDelegate, UIColl
     }
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        if !dataFetched {
+            return 6
+        }
         return (MomCareUser.shared.user?.exercises.count ?? 0) + 2
     }
 
@@ -98,6 +110,12 @@ extension ExerciseViewController {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ExerciseDate", for: indexPath) as? ExerciseDateCellCollectionViewCell else {
             fatalError()
         }
+        cell.startShimmer()
+        if !dataFetched {
+            return cell
+        }
+        cell.stopShimmer()
+
         cell.prepareViewRings()
         return cell
     }
@@ -106,6 +124,12 @@ extension ExerciseViewController {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "WalkCellMyPlan", for: indexPath) as? WalkExerciseCollectionViewCell else {
             fatalError()
         }
+        cell.startShimmer()
+        if !dataFetched {
+            return cell
+        }
+        cell.stopShimmer()
+
         HealthKitHandler.shared.readStepCount { steps in
             DispatchQueue.main.async {
                 cell.steps = steps
@@ -134,6 +158,12 @@ extension ExerciseViewController {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ExerciseCell", for: indexPath) as? ExerciseCollectionViewCell else {
             fatalError("error aa gaya gys")
         }
+        cell.startShimmer()
+        if !dataFetched {
+            return cell
+        }
+        cell.stopShimmer()
+
         cell.updateElements(with: exercise, popUpHandler: popUpHandler) {
             self.selectedExercise = exercise
             switch exercise.type {

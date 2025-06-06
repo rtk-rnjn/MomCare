@@ -11,14 +11,22 @@ class DietViewController: UIViewController {
     @IBOutlet var proteinProgressBar: UIProgressView!
     @IBOutlet var carbsProgressBar: UIProgressView!
     @IBOutlet var fatsProgressBar: UIProgressView!
+
     @IBOutlet var proteinProgressLabel: UILabel!
     @IBOutlet var carbsProgressLabel: UILabel!
     @IBOutlet var fatsProgressLabel: UILabel!
 
     @IBOutlet var progressContainerView: UIView!
     @IBOutlet var caloricValueLabel: UILabel!
+    @IBOutlet var literalKcalLabel: UILabel!
+
+    @IBOutlet var literalProtienLabel: UILabel!
+    @IBOutlet var literalCarbsLabel: UILabel!
+    @IBOutlet var literalFatsLabel: UILabel!
 
     var dietTableViewController: DietTableViewController?
+
+    var myPlanViewController: MyPlanViewController?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -38,6 +46,32 @@ class DietViewController: UIViewController {
                 dietTableViewController.dietViewController = self
             }
         }
+    }
+
+    func startShimmering() {
+        caloricValueLabel.startShimmer()
+        literalKcalLabel.startShimmer()
+
+        proteinProgressLabel.startShimmer()
+        carbsProgressLabel.startShimmer()
+        fatsProgressLabel.startShimmer()
+
+        literalProtienLabel.startShimmer()
+        literalCarbsLabel.startShimmer()
+        literalFatsLabel.startShimmer()
+    }
+
+    func stopShimmering() {
+        caloricValueLabel.stopShimmer()
+        literalKcalLabel.stopShimmer()
+
+        proteinProgressLabel.stopShimmer()
+        carbsProgressLabel.stopShimmer()
+        fatsProgressLabel.stopShimmer()
+
+        literalProtienLabel.stopShimmer()
+        literalCarbsLabel.stopShimmer()
+        literalFatsLabel.stopShimmer()
     }
 
     func addNutrient(typeIdentifier: HKQuantityTypeIdentifier, unit: HKUnit, amount: Double, consumed: Bool) async {

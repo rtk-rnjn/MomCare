@@ -85,6 +85,10 @@ class DietTableViewController: UITableViewController {
     }
 
     private func updatePlan() {
+        if !dataFetched {
+            dietViewController?.startShimmering()
+        }
+
         Task {
             guard let user = MomCareUser.shared.user, let medical = user.medicalData else {
                 logger.error("User or medical data not found")
@@ -99,6 +103,8 @@ class DietTableViewController: UITableViewController {
 
             DispatchQueue.main.async {
                 self.dataFetched = true
+                self.dietViewController?.myPlanViewController?.dietsLoaded = true
+                self.dietViewController?.stopShimmering()
                 self.tableView.reloadData()
             }
         }
