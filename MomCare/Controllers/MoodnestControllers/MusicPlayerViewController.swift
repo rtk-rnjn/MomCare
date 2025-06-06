@@ -31,10 +31,7 @@ class MusicPlayerViewController: UIViewController {
         slider.minimumTrackTintColor = .white
         slider.thumbTintColor = .clear
         slider.translatesAutoresizingMaskIntoConstraints = false
-        slider.setContentHuggingPriority(.required, for: .horizontal)
-        slider.setContentHuggingPriority(.required, for: .vertical)
-        slider.setContentCompressionResistancePriority(.required, for: .horizontal)
-        slider.setContentCompressionResistancePriority(.required, for: .vertical)
+        slider.applyDefaultPriorities()
 
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(durationSliderTapped))
         slider.addGestureRecognizer(tapGesture)
@@ -50,10 +47,7 @@ class MusicPlayerViewController: UIViewController {
         label.textColor = .white
         label.font = UIFont.preferredFont(forTextStyle: .footnote)
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.setContentHuggingPriority(.required, for: .horizontal)
-        label.setContentHuggingPriority(.required, for: .vertical)
-        label.setContentCompressionResistancePriority(.required, for: .horizontal)
-        label.setContentCompressionResistancePriority(.required, for: .vertical)
+        label.applyDefaultPriorities()
         return label
     }()
 
@@ -64,10 +58,7 @@ class MusicPlayerViewController: UIViewController {
         label.font = UIFont.preferredFont(forTextStyle: .footnote)
         label.textAlignment = .right
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.setContentHuggingPriority(.required, for: .horizontal)
-        label.setContentHuggingPriority(.required, for: .vertical)
-        label.setContentCompressionResistancePriority(.required, for: .horizontal)
-        label.setContentCompressionResistancePriority(.required, for: .vertical)
+        label.applyDefaultPriorities()
         return label
     }()
 
@@ -78,10 +69,7 @@ class MusicPlayerViewController: UIViewController {
         button.tintColor = .white
         button.contentHorizontalAlignment = .center
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.setContentHuggingPriority(.required, for: .horizontal)
-        button.setContentHuggingPriority(.required, for: .vertical)
-        button.setContentCompressionResistancePriority(.required, for: .horizontal)
-        button.setContentCompressionResistancePriority(.required, for: .vertical)
+        button.applyDefaultPriorities()
 
         button.addTarget(self, action: #selector(playPauseTapped), for: .touchUpInside)
 
@@ -120,10 +108,7 @@ class MusicPlayerViewController: UIViewController {
 
         let _249Priority = UILayoutPriority(249)
 
-        imageView.setContentHuggingPriority(_249Priority, for: .horizontal)
-        imageView.setContentHuggingPriority(_249Priority, for: .vertical)
-        imageView.setContentCompressionResistancePriority(_249Priority, for: .horizontal)
-        imageView.setContentCompressionResistancePriority(_249Priority, for: .vertical)
+        imageView.applyDefaultPriorities(priority: _249Priority)
 
         return imageView
     }()
@@ -135,10 +120,7 @@ class MusicPlayerViewController: UIViewController {
         label.textColor = .white
         label.lineBreakMode = .byTruncatingTail
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.setContentHuggingPriority(.required, for: .horizontal)
-        label.setContentHuggingPriority(.required, for: .vertical)
-        label.setContentCompressionResistancePriority(.required, for: .horizontal)
-        label.setContentCompressionResistancePriority(.required, for: .vertical)
+        label.applyDefaultPriorities()
         return label
     }()
 
@@ -149,10 +131,7 @@ class MusicPlayerViewController: UIViewController {
         label.font = UIFont.preferredFont(forTextStyle: .subheadline)
         label.lineBreakMode = .byTruncatingTail
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.setContentHuggingPriority(.required, for: .horizontal)
-        label.setContentHuggingPriority(.required, for: .vertical)
-        label.setContentCompressionResistancePriority(.required, for: .horizontal)
-        label.setContentCompressionResistancePriority(.required, for: .vertical)
+        label.applyDefaultPriorities()
         return label
     }()
 
@@ -163,10 +142,7 @@ class MusicPlayerViewController: UIViewController {
         button.tintColor = .white
         button.contentHorizontalAlignment = .trailing
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.setContentHuggingPriority(.required, for: .horizontal)
-        button.setContentHuggingPriority(.required, for: .vertical)
-        button.setContentCompressionResistancePriority(.required, for: .horizontal)
-        button.setContentCompressionResistancePriority(.required, for: .vertical)
+        button.applyDefaultPriorities()
 
         button.addTarget(self, action: #selector(backwardTapped), for: .touchUpInside)
 
@@ -180,10 +156,7 @@ class MusicPlayerViewController: UIViewController {
         button.tintColor = .white
         button.contentHorizontalAlignment = .leading
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.setContentHuggingPriority(.required, for: .horizontal)
-        button.setContentHuggingPriority(.required, for: .vertical)
-        button.setContentCompressionResistancePriority(.required, for: .horizontal)
-        button.setContentCompressionResistancePriority(.required, for: .vertical)
+        button.applyDefaultPriorities()
 
         button.addTarget(self, action: #selector(forwardTapped), for: .touchUpInside)
 
@@ -195,10 +168,7 @@ class MusicPlayerViewController: UIViewController {
         button.setImage(UIImage(systemName: "speaker.fill"), for: .normal)
         button.tintColor = .white
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.setContentHuggingPriority(.required, for: .horizontal)
-        button.setContentHuggingPriority(.required, for: .vertical)
-        button.setContentCompressionResistancePriority(.required, for: .horizontal)
-        button.setContentCompressionResistancePriority(.required, for: .vertical)
+        button.applyDefaultPriorities()
         return button
     }()
 
@@ -209,10 +179,7 @@ class MusicPlayerViewController: UIViewController {
 
         let _999Priority = UILayoutPriority(999)
 
-        slider.setContentHuggingPriority(_999Priority, for: .horizontal)
-        slider.setContentHuggingPriority(_999Priority, for: .vertical)
-        slider.setContentCompressionResistancePriority(_999Priority, for: .horizontal)
-        slider.setContentCompressionResistancePriority(_999Priority, for: .vertical)
+        slider.applyDefaultPriorities(priority: _999Priority)
 
         return slider
     }()
@@ -222,10 +189,7 @@ class MusicPlayerViewController: UIViewController {
         button.setImage(UIImage(systemName: "speaker.wave.2.fill"), for: .normal)
         button.tintColor = .white
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.setContentHuggingPriority(.required, for: .horizontal)
-        button.setContentHuggingPriority(.required, for: .vertical)
-        button.setContentCompressionResistancePriority(.required, for: .horizontal)
-        button.setContentCompressionResistancePriority(.required, for: .vertical)
+        button.applyDefaultPriorities()
         return button
     }()
 

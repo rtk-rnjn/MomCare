@@ -230,6 +230,14 @@ extension UIView {
         shimmerLayer?.removeFromSuperlayer()
         shimmerLayer = nil
     }
+
+    func applyDefaultPriorities(priority: UILayoutPriority = .required) {
+        self.setContentHuggingPriority(priority, for: .horizontal)
+        self.setContentHuggingPriority(priority, for: .vertical)
+        self.setContentCompressionResistancePriority(priority, for: .horizontal)
+        self.setContentCompressionResistancePriority(priority, for: .vertical)
+    }
+
 }
 
 extension Data {
