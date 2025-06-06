@@ -8,9 +8,6 @@
 import Foundation
 import UIKit
 
-enum Country: String, Codable {
-    case india = "India"
-}
 
 public enum PreExistingCondition: String, Codable, CaseIterable, Sendable {
     case diabetes = "Diabetes"
@@ -82,7 +79,7 @@ struct User: Codable, Sendable, Equatable {
     var password: String
 
     var countryCode: String = "91"
-    var country: Country = .india
+    var country: String = "India"
 
     var phoneNumber: String
     var medicalData: UserMedical?

@@ -35,8 +35,11 @@ class TrimesterStatsViewController: UIViewController {
 
         Task {
             guard let image = await trimesterData.image else { return }
-            guard let babyImage = await trimesterData.babyImage else { return }
-            self.babyComparisionViewController?.updateUI(withImageView: image, withBabyImage: babyImage, andQuote: trimesterData.quote ?? "")
+            guard let babyImage = trimesterData.babyImage else { return }
+
+            DispatchQueue.main.async {
+                self.babyComparisionViewController?.updateUI(withImageView: image, withBabyImage: babyImage, andQuote: trimesterData.quote ?? "")
+            }
         }
     }
 

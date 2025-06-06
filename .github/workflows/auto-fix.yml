@@ -54,36 +54,16 @@ jobs:
 
       - name: Create Pull Request
         if: env.changes_made == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           gh pr create \
             --title "Auto-fix: SwiftLint & SwiftFormat" \
-            --body "### Description
-
-This pull request applies automatic fixes using **SwiftLint** and **SwiftFormat** to ensure consistent style and coding standards across the Swift codebase.
-
-#### What's included:
-- Applied `swiftlint --fix`
-- Applied `swiftformat .`
-- See the full diff below for exact code modifications
-
-<details>
-<summary>Click to view diff</summary>
-
-\`\`\`diff
-$(cat diff.log)
-\`\`\`
-
-</details>
-
-> This PR was created automatically by a GitHub Action. Please review and approve.
-
-" \
+            --body "$(echo -e '### Description\n\nThis pull request applies automatic fixes using **SwiftLint** and **SwiftFormat** to ensure consistent style and coding standards across the Swift codebase.\n\n#### What'\''s included:\n- Applied `swiftlint --fix`\n- Applied `swiftformat .`\n- See the full diff below for exact code modifications\n\n<details>\n<summary>Click to view diff</summary>\n\n```\ndiff\n$(cat diff.log)\n```\n\n</details>\n\n> This PR was created automatically by a GitHub Action. Please review and approve.')" \
             --base main \
-            --head ${{ env.branch_name }} \
+            --head "${{ env.branch_name }}" \
             --reviewer rtk-rnjn,write2nupu,khushi-rana-25,Arayauchiha \
             --label "autofix"
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Run SwiftLint in Lint Mode
         run: swiftlint lint --strict --quiet --reporter github-actions-logging

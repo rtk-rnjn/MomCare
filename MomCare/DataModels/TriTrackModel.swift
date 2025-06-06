@@ -42,12 +42,11 @@ struct TrimesterData: Codable {
     }
 
     var babyImage: UIImage? {
-        get async {
+        get {
             guard let babyImageUri else {
-                return UIImage(named: "Month1")!
+                return nil
             }
-            let defaultImage = UIImage(named: babyImageUri)
-            return await UIImage().fetchImage(from: babyImageUri, default: defaultImage)
+            return UIImage(named: babyImageUri)
         }
     }
 }
