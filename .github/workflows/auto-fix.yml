@@ -9,6 +9,7 @@ on:
 
 permissions:
   contents: write
+  pull-requests: write
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -22,13 +23,11 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-        with:
-          ref: ${{ github.head_ref }}
-          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Install SwiftLint & SwiftFormat
         run: |
           brew install swiftlint swiftformat
+          brew install gh
 
       - name: Run SwiftLint Fix
         run: swiftlint --fix
@@ -36,14 +35,55 @@ jobs:
       - name: Run SwiftFormat Fix
         run: swiftformat .
 
-      - name: Commit & Push Changes
+      - name: Commit changes and push to new branch
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          BRANCH_NAME="autofix/swiftlint-swiftformat-$(date +%s)"
+          git checkout -b "$BRANCH_NAME"
           git add .
-          git commit -m "Auto-fix SwiftLint & SwiftFormat issues"
-          git push
-        continue-on-error: true
+          git diff --cached > diff.log
+          if git commit -m "Auto-fix SwiftLint & SwiftFormat issues"; then
+            git push origin "$BRANCH_NAME"
+            echo "branch_name=$BRANCH_NAME" >> $GITHUB_ENV
+            echo "changes_made=true" >> $GITHUB_ENV
+          else
+            echo "No changes to commit"
+            echo "changes_made=false" >> $GITHUB_ENV
+          fi
+
+      - name: Create Pull Request
+        if: env.changes_made == 'true'
+        run: |
+          gh pr create \
+            --title "Auto-fix: SwiftLint & SwiftFormat" \
+            --body "### Description
+
+This pull request applies automatic fixes using **SwiftLint** and **SwiftFormat** to ensure consistent style and coding standards across the Swift codebase.
+
+#### What's included:
+- Applied `swiftlint --fix`
+- Applied `swiftformat .`
+- See the full diff below for exact code modifications
+
+<details>
+<summary>Click to view diff</summary>
+
+\`\`\`diff
+$(cat diff.log)
+\`\`\`
+
+</details>
+
+> This PR was created automatically by a GitHub Action. Please review and approve.
+
+" \
+            --base main \
+            --head ${{ env.branch_name }} \
+            --reviewer rtk-rnjn,write2nupu,khushi-rana-25,Arayauchiha \
+            --label "autofix"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Run SwiftLint in Lint Mode
         run: swiftlint lint --strict --quiet --reporter github-actions-logging

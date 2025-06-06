@@ -10,7 +10,11 @@ import AVKit
 
 class ExerciseViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
 
-    // MARK: Internal
+    private var timeControlStatusObservation: NSKeyValueObservation?
+    deinit {
+        timeControlStatusObservation?.invalidate()
+        timeControlStatusObservation = nil
+    }
 
     var selectedExercise: Exercise?
     var myPlanViewController: MyPlanViewController?
@@ -199,7 +203,13 @@ extension ExerciseViewController: AVPlayerViewControllerDelegate {
             }
         }
 
-        player?.addObserver(self, forKeyPath: "timeControlStatus", options: [.old, .new], context: nil)
+        timeControlStatusObservation = player?.observe(\.timeControlStatus, options: [.old, .new]) { player, change in
+            if player.timeControlStatus == .paused {
+                self.updateExerciseStats()
+                self.collectionView.reloadData()
+            }
+        }
+
         NotificationCenter.default.addObserver(self, selector: #selector(playerDidFinishPlaying),
                                                name: .AVPlayerItemDidPlayToEndTime,
                                                object: player?.currentItem)
@@ -208,17 +218,6 @@ extension ExerciseViewController: AVPlayerViewControllerDelegate {
 
     @objc func playerDidFinishPlaying(note: NSNotification) {
         updateExerciseStats()
-    }
-
-    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
-        if keyPath == "timeControlStatus" {
-            if let player = object as? AVPlayer {
-                if player.timeControlStatus == .paused {
-                    updateExerciseStats()
-                    collectionView.reloadData()
-                }
-            }
-        }
     }
 
     func updateExerciseStats() {

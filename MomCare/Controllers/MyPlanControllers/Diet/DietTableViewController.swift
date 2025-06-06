@@ -140,7 +140,12 @@ class DietTableViewController: UITableViewController {
             await self.toggleConsumption(for: foods, in: indexPath.section, allConsumed: allConsumed)
             return !allConsumed
         }
-        cell.refreshHandler = refreshHandler
+        cell.refreshHandler = {
+            let section = indexPath.section
+            let numberOfFoods = (self.getFoods(with: IndexPath(row: 0, section: section))?.count ?? 0) + 1
+            let indexPaths = (0..<numberOfFoods).map { IndexPath(row: $0, section: section) }
+            self.refreshHandler(with: indexPaths)
+        }
 
         return cell
     }
@@ -184,7 +189,9 @@ class DietTableViewController: UITableViewController {
             return MomCareUser.shared.toggleConsumed(for: food, in: meal) ?? false
         }
         cell.dietViewController = dietViewController
-        cell.refreshHandler = refreshHandler
+        cell.refreshHandler = {
+            self.refreshHandler(with: [indexPath])
+        }
         return cell
     }
 
@@ -224,10 +231,13 @@ class DietTableViewController: UITableViewController {
         }
     }
 
-    private func refreshHandler() {
+    private func refreshHandler(with indexPaths: [IndexPath]? = nil) {
         logger.debug("Refreshing diet table view data")
-        tableView.reloadData()
-
+        if let indexPaths {
+            tableView.reloadRows(at: indexPaths, with: .automatic)
+        } else {
+            tableView.reloadData()
+        }
         dietViewController?.refreshStats()
     }
 }
