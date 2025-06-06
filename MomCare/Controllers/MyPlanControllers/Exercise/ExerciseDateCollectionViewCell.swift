@@ -29,7 +29,7 @@ class ExerciseDateCellCollectionViewCell: UICollectionViewCell {
 
         let exerciseHistory = history.filter {
             $0.date >= lastSunday
-        }.sorted { $0.date < $1.date }
+        }.sorted { $0.date > $1.date }
 
         let todaysWeekday = calendar.component(.weekday, from: today)
 
@@ -44,7 +44,9 @@ class ExerciseDateCellCollectionViewCell: UICollectionViewCell {
 
         for index in stride(from: startIndex, through: endIndex, by: -1) {
             prepareExerciseRing(with: ringViews[index])
-            animateRings(to: exerciseHistory[abs(endIndex - startIndex)].completionPercentage / 100)
+            let history = exerciseHistory[abs(startIndex - index)]
+            let percent = history.completionPercentage / 100
+            animateRings(to: percent)
         }
 
         // fill the remaining rings with 0% completion
