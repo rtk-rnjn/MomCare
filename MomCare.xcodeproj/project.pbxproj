@@ -201,7 +201,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 777RNPN89P;
+				DEVELOPMENT_TEAM = 5F5GUA92X8;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = MomCare/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "MomCare+";
@@ -221,7 +221,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 0.1;
-				PRODUCT_BUNDLE_IDENTIFIER = com.MomCare.TeamVision10;
+				PRODUCT_BUNDLE_IDENTIFIER = com.MomCare.TeamVision23;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -262,7 +262,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 0.1;
-				PRODUCT_BUNDLE_IDENTIFIER = com.MomCare.TeamVision1;
+				PRODUCT_BUNDLE_IDENTIFIER = com.MomCare.TeamVision23;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;

@@ -263,7 +263,7 @@ extension ContentHandler {
         guard let exercises else {
             return nil
         }
-        MomCareUser.shared.user?.exercises = exercises
+
         return exercises
     }
 }

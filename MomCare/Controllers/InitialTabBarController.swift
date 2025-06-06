@@ -36,7 +36,7 @@ class InitialTabBarController: UITabBarController {
                 logger.info("Refresh Token successful")
                 break
             }
-            if !refreshed && retryCount > 5 {
+            if !refreshed && retryCount >= 5 {
                 logger.error("Refresh Token failed after 5 retries")
                 DispatchQueue.main.async {
                     self.navigateToLogin()

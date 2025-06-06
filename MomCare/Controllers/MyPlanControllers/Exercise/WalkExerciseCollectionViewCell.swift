@@ -21,7 +21,8 @@ class WalkExerciseCollectionViewCell: UICollectionViewCell {
         stepsLabel.text = "\(Int(steps)) Steps"
         stepsGoalLabel.text = "Goal: \(Int(stepsGoal)) Steps"
         let completionPercentage = Int((steps / stepsGoal) * 100)
-        completionPercentageLabel.text = "\(completionPercentage)% Completed"
+        let boundedCompletionPercentage = min(max(completionPercentage, 0), 100)
+        completionPercentageLabel.text = "\(boundedCompletionPercentage)% Completed"
 
         let progress = steps / stepsGoal
         progressView.setProgress(Float(progress), animated: true)

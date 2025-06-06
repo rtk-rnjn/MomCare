@@ -64,10 +64,10 @@ class LoginTableViewController: UITableViewController, UITextFieldDelegate {
             if !success {
                 self.showErrorAlert(title: "Sign In Failed", message: "An error occurred while signing in. Please try again.")
             } else {
-                Utils.save(forKey: "isUserSignedUp", withValue: true)
                 if MomCareUser.shared.user?.medicalData == nil {
                     performSegue(withIdentifier: "segueShowSignUpDetailsTableViewController", sender: nil)
                 } else {
+                    Utils.save(forKey: "isUserSignedUp", withValue: true)
                     performSegue(withIdentifier: "segueShowInitialTabBarController", sender: nil)
                 }
             }

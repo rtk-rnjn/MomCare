@@ -586,7 +586,7 @@
                         <outlet property="heightButton" destination="x6F-Th-jK1" id="fFv-hZ-NdF"/>
                         <outlet property="prePregnancyWeightButton" destination="6YW-Tn-lMm" id="ePR-ke-tuO"/>
                         <outlet property="progressView" destination="Uti-rD-FWY" id="ujA-G8-OaU"/>
-                        <segue destination="51c-gM-3lN" kind="presentation" identifier="segueShowPickerViewController" id="hqu-E6-uUo"/>
+                        <segue destination="51c-gM-3lN" kind="presentation" identifier="segueShowPickerViewController" modalPresentationStyle="pageSheet" id="hqu-E6-uUo"/>
                         <segue destination="8kZ-fK-sew" kind="show" identifier="segueShowSignUpExtendedTableViewController" id="iTF-mR-dGX"/>
                     </connections>
                 </tableViewController>
@@ -1001,7 +1001,7 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="zf3-jg-5xd"/>
+        <segue reference="hqu-E6-uUo"/>
     </inferredMetricsTieBreakers>
     <resources>
         <image name="chevron.up.chevron.down" catalog="system" width="109" height="128"/>

@@ -10,7 +10,9 @@ import AVKit
 
 class ExerciseViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
 
-    var exercises: [Exercise] = []
+    // MARK: Internal
+
+    var selectedExercise: Exercise?
 
     @IBOutlet var weekLabel: UILabel!
 
@@ -23,9 +25,13 @@ class ExerciseViewController: UIViewController, UICollectionViewDelegate, UIColl
         weekLabel.text = "Week \(week)"
 
         Task {
-            self.exercises = await ContentHandler.shared.fetchExercises() ?? []
-            DispatchQueue.main.async {
-                self.collectionView.reloadData()
+            let exists = MomCareUser.shared.user?.exercises != nil && !(MomCareUser.shared.user?.exercises.isEmpty ?? true)
+            if !exists {
+                let exercises = await ContentHandler.shared.fetchExercises() ?? []
+                MomCareUser.shared.user?.exercises = exercises
+                DispatchQueue.main.async {
+                    self.collectionView.reloadData()
+                }
             }
         }
     }
@@ -60,11 +66,7 @@ class ExerciseViewController: UIViewController, UICollectionViewDelegate, UIColl
     }
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return exercises.count + 2
-    }
-
-    func exerciseSegueHandler() {
-        // present AVKit
+        return (MomCareUser.shared.user?.exercises.count ?? 0) + 2
     }
 
     func popUpHandler(_ exercise: Exercise? = nil) {
@@ -74,6 +76,10 @@ class ExerciseViewController: UIViewController, UICollectionViewDelegate, UIColl
 
         ExerciseDetailsViewController(rootViewController: self, exercise: exercise).show()
     }
+
+    // MARK: Private
+
+    private var player: AVPlayer?
 }
 
 extension ExerciseViewController {
@@ -111,6 +117,10 @@ extension ExerciseViewController {
 
     private func createExerciseCell(for collectionView: UICollectionView, at indexPath: IndexPath) -> UICollectionViewCell {
         let adjustedIndex = indexPath.item - 2
+        guard let exercises = MomCareUser.shared.user?.exercises else {
+            fatalError()
+        }
+
         guard !exercises.isEmpty, adjustedIndex >= 0, adjustedIndex < exercises.count else {
             return UICollectionViewCell()
         }
@@ -125,6 +135,7 @@ extension ExerciseViewController {
             fatalError("error aa gaya gys")
         }
         cell.updateElements(with: exercise, popUpHandler: popUpHandler) {
+            self.selectedExercise = exercise
             switch exercise.type {
             case .breathing:
                 self.performSegue(withIdentifier: "segueShowBreathingPlayer", sender: nil)
@@ -144,7 +155,7 @@ extension ExerciseViewController: AVPlayerViewControllerDelegate {
         guard let uri = await exercise.uri, let url = URL(string: uri) else {
             return
         }
-        let player = AVPlayer(url: url)
+        player = AVPlayer(url: url)
         let playerViewController = AVPlayerViewController()
         playerViewController.player = player
         playerViewController.modalPresentationStyle = .fullScreen
@@ -152,7 +163,50 @@ extension ExerciseViewController: AVPlayerViewControllerDelegate {
         playerViewController.title = exercise.name
         DispatchQueue.main.async {
             self.present(playerViewController, animated: true) {
+                if exercise.durationCompleted > 0 {
+                    let seekTime = CMTime(seconds: exercise.durationCompleted, preferredTimescale: 1)
+                    playerViewController.player?.seek(to: seekTime, toleranceBefore: .zero, toleranceAfter: .zero)
+                } else {
+                    playerViewController.player?.seek(to: .zero, toleranceBefore: .zero, toleranceAfter: .zero)
+                }
                 playerViewController.player?.play()
+            }
+        }
+
+        player?.addObserver(self, forKeyPath: "timeControlStatus", options: [.old, .new], context: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(playerDidFinishPlaying),
+                                               name: .AVPlayerItemDidPlayToEndTime,
+                                               object: player?.currentItem)
+
+    }
+
+    @objc func playerDidFinishPlaying(note: NSNotification) {
+        updateExerciseStats()
+    }
+
+    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
+        if keyPath == "timeControlStatus" {
+            if let player = object as? AVPlayer {
+                if player.timeControlStatus == .paused {
+                    updateExerciseStats()
+                    collectionView.reloadData()
+                }
+            }
+        }
+    }
+
+    func updateExerciseStats() {
+        for index in MomCareUser.shared.user?.exercises.indices ?? [] as! Range<Int> {
+            if MomCareUser.shared.user?.exercises[index].name == selectedExercise?.name {
+                let totalDuration = player?.currentItem?.duration.seconds
+                let durationCompleted = player?.currentTime().seconds
+
+                guard let totalDuration, let durationCompleted else {
+                    return
+                }
+
+                MomCareUser.shared.user?.exercises[index].duration = totalDuration
+                MomCareUser.shared.user?.exercises[index].durationCompleted = durationCompleted
             }
         }
     }

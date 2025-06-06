@@ -161,7 +161,9 @@ struct Exercise: Codable, Sendable, Equatable {
 
     var completionPercentage: Double {
         guard let duration, duration > 0 else { return 0 }
-        return durationCompleted / duration
+        let percentage = (durationCompleted / duration) * 100
+        let boundedPercentage = min(max(percentage, 0), 100)
+        return round(boundedPercentage * 100) / 100.0
     }
 
     var exerciseImage: UIImage? {
@@ -175,6 +177,21 @@ struct Exercise: Codable, Sendable, Equatable {
             let fileName = name.replacingOccurrences(of: " ", with: "_").lowercased()
             let s3Response: S3Response? = await ContentHandler.shared.fetchS3File("Exercises/\(fileName).mp4")
             return s3Response?.uri
+        }
+    }
+
+    var humanReadableDuration: String {
+        guard let duration else { return "0s" }
+        let seconds = Int(duration) % 60
+        let minutes = (Int(duration) / 60) % 60
+        let hours = Int(duration) / 3600
+
+        if hours > 0 {
+            return "\(hours)h \(minutes)min \(seconds)sec"
+        } else if minutes > 0 {
+            return "\(minutes)min \(seconds)sec"
+        } else {
+            return "\(seconds)sec"
         }
     }
 }

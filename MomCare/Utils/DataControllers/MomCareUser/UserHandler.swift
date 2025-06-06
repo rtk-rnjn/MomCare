@@ -100,7 +100,6 @@ extension MomCareUser {
         }
 
         handleSuccessfulAuth(response, email: email, password: password)
-        Utils.save(forKey: "isUserSignedUp", withValue: true)
         return true
     }
 
