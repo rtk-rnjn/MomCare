@@ -72,80 +72,17 @@ class MoodNestViewController: UIViewController, UICollectionViewDataSource, UICo
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cellType = MoodNestCollectionViewCellType(rawValue: indexPath.section)
-        guard let cellType else { fatalError("Lag jaa gale ke phir yeh haseen raat ho na ho") }
+        guard let cellType = MoodNestCollectionViewCellType(rawValue: indexPath.section) else {
+            fatalError("Lag jaa gale ke phir yeh haseen raat ho na ho")
+        }
 
         switch cellType {
         case .mainHeading:
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "MainHeading", for: indexPath) as? MainHeadingCollectionViewCell
-            guard let cell else { fatalError("Chura liya hai tumne jo dil ko... Nazar nahi churaana sanam") }
-
-            cell.startShimmer()
-            cell.layer.masksToBounds = true
-            cell.layer.cornerRadius = 20
-
-            if !playlistsFetched {
-                return cell
-            }
-
-            cell.stopShimmer()
-            Task {
-                guard let mood else {
-                    return
-                }
-                guard let quote = await ContentHandler.shared.fetchQuotes(for: mood) else {
-                    return
-                }
-
-                DispatchQueue.main.async {
-                    cell.updateElements(with: quote)
-                }
-            }
-
-            return cell
-
+            return configureMainHeadingCell(collectionView, indexPath)
         case .mainImage:
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "MainImage", for: indexPath) as? MainImageCollectionViewCell
-            guard let cell else { fatalError("Pyaar hua ikraar hua hai... Pyaar se phir kyoon darta hai dil") }
-
-            cell.startShimmer()
-            cell.layer.masksToBounds = true
-            cell.layer.cornerRadius = 20
-
-            if !playlistsFetched {
-                return cell
-            }
-
-            cell.stopShimmer()
-
-            cell.updateElements(image: nil, label: "Suggested for you")
-
-            return cell
-
+            return configureMainImageCell(collectionView, indexPath)
         case .multipleImages:
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "MoodNestMultipleImages", for: indexPath) as? MoodNestMultipleImagesCollectionViewCell
-            guard let cell else { fatalError("Yeh shaam mastani, madhosh kiye jaaye") }
-
-            cell.startShimmer()
-            cell.layer.masksToBounds = true
-            cell.layer.cornerRadius = 20
-
-            if !playlistsFetched {
-                return cell
-            }
-
-            cell.stopShimmer()
-
-            let playlist = playlists[indexPath.row]
-
-            Task {
-                let image = await UIImage().fetchImage(from: playlist.imageUri)
-                DispatchQueue.main.async {
-                    cell.updateElements(image: image, label: playlist.label)
-                }
-            }
-
-            return cell
+            return configureMultipleImagesCell(collectionView, indexPath)
         }
     }
 
@@ -253,6 +190,83 @@ class MoodNestViewController: UIViewController, UICollectionViewDataSource, UICo
     }
 
     // MARK: Private
+
+    private func configureMainHeadingCell(_ collectionView: UICollectionView, _ indexPath: IndexPath) -> UICollectionViewCell {
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "MainHeading", for: indexPath) as? MainHeadingCollectionViewCell else {
+            fatalError("Chura liya hai tumne jo dil ko... Nazar nahi churaana sanam")
+        }
+
+        styleCell(cell)
+
+        if !playlistsFetched {
+            cell.startShimmer()
+            return cell
+        }
+
+        cell.stopShimmer()
+        fetchAndUpdateQuote(for: cell)
+
+        return cell
+    }
+
+    private func configureMainImageCell(_ collectionView: UICollectionView, _ indexPath: IndexPath) -> UICollectionViewCell {
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "MainImage", for: indexPath) as? MainImageCollectionViewCell else {
+            fatalError("Pyaar hua ikraar hua hai... Pyaar se phir kyoon darta hai dil")
+        }
+
+        styleCell(cell)
+
+        if !playlistsFetched {
+            cell.startShimmer()
+            return cell
+        }
+
+        cell.stopShimmer()
+        cell.updateElements(image: nil, label: "Suggested for you")
+
+        return cell
+    }
+
+    private func configureMultipleImagesCell(_ collectionView: UICollectionView, _ indexPath: IndexPath) -> UICollectionViewCell {
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "MoodNestMultipleImages", for: indexPath) as? MoodNestMultipleImagesCollectionViewCell else {
+            fatalError("Yeh shaam mastani, madhosh kiye jaaye")
+        }
+
+        styleCell(cell)
+
+        if !playlistsFetched {
+            cell.startShimmer()
+            return cell
+        }
+
+        cell.stopShimmer()
+
+        let playlist = playlists[indexPath.row]
+        Task {
+            let image = await UIImage().fetchImage(from: playlist.imageUri)
+            DispatchQueue.main.async {
+                cell.updateElements(image: image, label: playlist.label)
+            }
+        }
+
+        return cell
+    }
+
+    private func styleCell(_ cell: UICollectionViewCell) {
+        cell.layer.masksToBounds = true
+        cell.layer.cornerRadius = 20
+    }
+
+    private func fetchAndUpdateQuote(for cell: MainHeadingCollectionViewCell) {
+        Task {
+            guard let mood else { return }
+            guard let quote = await ContentHandler.shared.fetchQuotes(for: mood) else { return }
+
+            DispatchQueue.main.async {
+                cell.updateElements(with: quote)
+            }
+        }
+    }
 
     private func registerAllNibs() {
         collectionView.showsVerticalScrollIndicator = false

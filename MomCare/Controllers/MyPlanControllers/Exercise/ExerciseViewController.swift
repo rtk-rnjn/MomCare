@@ -145,10 +145,6 @@ extension ExerciseViewController {
             fatalError()
         }
 
-        guard !exercises.isEmpty, adjustedIndex >= 0, adjustedIndex < exercises.count else {
-            return UICollectionViewCell()
-        }
-
         let exercise = exercises[adjustedIndex]
 
         return createCell(for: collectionView, at: indexPath, exercise: exercise)
@@ -226,18 +222,21 @@ extension ExerciseViewController: AVPlayerViewControllerDelegate {
     }
 
     func updateExerciseStats() {
-        for index in MomCareUser.shared.user?.exercises.indices ?? [] as! Range<Int> {
-            if MomCareUser.shared.user?.exercises[index].name == selectedExercise?.name {
-                let totalDuration = player?.currentItem?.duration.seconds
+        guard let exercises = MomCareUser.shared.user?.exercises, let selectedExercise else {
+            return
+        }
+
+        for index in exercises.indices where exercises[index].name == selectedExercise.name {
+            guard
+                let totalDuration = player?.currentItem?.duration.seconds,
                 let durationCompleted = player?.currentTime().seconds
-
-                guard let totalDuration, let durationCompleted else {
-                    return
-                }
-
-                MomCareUser.shared.user?.exercises[index].duration = totalDuration
-                MomCareUser.shared.user?.exercises[index].durationCompleted = durationCompleted
+            else {
+                return
             }
+
+            MomCareUser.shared.user?.exercises[index].duration = totalDuration
+            MomCareUser.shared.user?.exercises[index].durationCompleted = durationCompleted
         }
     }
+
 }

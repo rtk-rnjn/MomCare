@@ -48,20 +48,20 @@ class ContentHandler {
     static var shared: ContentHandler = .init()
 
     var plan: MyPlan? {
-        set {
-            CacheHandler.shared.set(newValue, forKey: "plan")
-        }
         get {
             return CacheHandler.shared.get(forKey: "plan")
+        }
+        set {
+            CacheHandler.shared.set(newValue, forKey: "plan")
         }
     }
 
     var tips: Tip? {
-        set {
-            CacheHandler.shared.set(newValue, forKey: "tips")
-        }
         get {
             return CacheHandler.shared.get(forKey: "tips")
+        }
+        set {
+            CacheHandler.shared.set(newValue, forKey: "tips")
         }
     }
 
