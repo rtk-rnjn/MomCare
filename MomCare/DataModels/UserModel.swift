@@ -8,7 +8,6 @@
 import Foundation
 import UIKit
 
-
 public enum PreExistingCondition: String, Codable, CaseIterable, Sendable {
     case diabetes = "Diabetes"
     case hypertension = "Hypertension"
