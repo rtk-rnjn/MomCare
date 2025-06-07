@@ -25,18 +25,18 @@
                             <constraint firstAttribute="height" constant="160" id="n5J-gH-eWv"/>
                         </constraints>
                     </imageView>
-                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="14" translatesAutoresizingMaskIntoConstraints="NO" id="DCx-HD-2pe">
-                        <rect key="frame" x="20" y="20" width="169" height="130"/>
+                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="DCx-HD-2pe">
+                        <rect key="frame" x="20" y="20" width="235" height="130"/>
                         <subviews>
-                            <stackView opaque="NO" contentMode="scaleToFill" spacing="7" translatesAutoresizingMaskIntoConstraints="NO" id="27w-7U-5td">
-                                <rect key="frame" x="0.0" y="0.0" width="169" height="35"/>
+                            <stackView opaque="NO" contentMode="scaleToFill" distribution="fillProportionally" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="27w-7U-5td">
+                                <rect key="frame" x="0.0" y="0.0" width="235" height="40"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Beginner" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sdr-ru-DjM">
-                                        <rect key="frame" x="0.0" y="0.0" width="80" height="35"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="251" text="Intermediate" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sdr-ru-DjM">
+                                        <rect key="frame" x="0.0" y="0.0" width="105" height="40"/>
                                         <color key="backgroundColor" systemColor="systemGray6Color"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="35" id="F8K-a0-1q9"/>
-                                            <constraint firstAttribute="width" constant="80" id="Zc8-Q6-eb7"/>
+                                            <constraint firstAttribute="width" constant="105" id="fVS-Uv-CVe"/>
+                                            <constraint firstAttribute="height" constant="40" id="mA3-Dz-HMt"/>
                                         </constraints>
                                         <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                         <nil key="textColor"/>
@@ -48,8 +48,12 @@
                                             <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
                                         </userDefinedRuntimeAttributes>
                                     </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0% completed" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0RA-LP-vVk">
-                                        <rect key="frame" x="87" y="0.0" width="82" height="35"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="0.0% completed" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0RA-LP-vVk">
+                                        <rect key="frame" x="110" y="0.0" width="125" height="40"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="125" id="2Li-ro-LRN"/>
+                                            <constraint firstAttribute="height" constant="40" id="P5D-DN-AAV"/>
+                                        </constraints>
                                         <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
                                         <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <nil key="highlightedColor"/>
@@ -57,22 +61,22 @@
                                 </subviews>
                             </stackView>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="7O7-ri-zsE">
-                                <rect key="frame" x="0.0" y="49" width="169" height="81"/>
+                                <rect key="frame" x="0.0" y="48" width="235" height="82"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Exercise: Stretching" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mjp-wH-cYy">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" text="Exercise: Stretching" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mjp-wH-cYy">
                                         <rect key="frame" x="0.0" y="0.0" width="159.33333333333334" height="20.333333333333332"/>
                                         <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalCompressionResistancePriority="751" text="10 min" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aQA-b1-cOt">
-                                        <rect key="frame" x="0.0" y="24.333333333333329" width="50" height="22.666666666666671"/>
+                                        <rect key="frame" x="0.0" y="24.333333333333329" width="50" height="23.666666666666671"/>
                                         <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="A0q-ws-QUv">
-                                        <rect key="frame" x="0.0" y="51" width="100" height="30"/>
+                                        <rect key="frame" x="0.0" y="52" width="100" height="30"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="100" id="Hab-pH-L5l"/>
                                             <constraint firstAttribute="height" constant="30" id="bK2-t1-crQ"/>
@@ -131,7 +135,7 @@
                 <outlet property="exerciseStartButton" destination="A0q-ws-QUv" id="rdu-at-ovA"/>
                 <outlet property="exerciseTime" destination="aQA-b1-cOt" id="AIN-8Y-5tr"/>
             </connections>
-            <point key="canvasLocation" x="306.1068702290076" y="-39.436619718309863"/>
+            <point key="canvasLocation" x="91" y="-55"/>
         </collectionViewCell>
     </objects>
     <resources>

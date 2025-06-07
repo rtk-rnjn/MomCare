@@ -36,7 +36,7 @@ class ExerciseCollectionViewCell: UICollectionViewCell {
         self.popUpHandler = popUpHandler
         self.exercise = exercise
 
-        exerciseName.text = "Exercise: \(exercise.name)"
+        exerciseName.text = "\(exercise.name)"
         if exercise.duration != nil {
             exerciseTime.isHidden = false
             exerciseTime.text = exercise.humanReadableDuration

@@ -32,14 +32,15 @@
                                     <rect key="frame" x="0.0" y="0.0" width="333" height="34.333333333333336"/>
                                     <subviews>
                                         <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="3" translatesAutoresizingMaskIntoConstraints="NO" id="ofK-T1-Idu">
-                                            <rect key="frame" x="0.0" y="0.0" width="92.333333333333329" height="34.333333333333336"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="95.666666666666671" height="34.333333333333336"/>
                                             <subviews>
                                                 <button opaque="NO" userInteractionEnabled="NO" alpha="0.55000000000000004" contentMode="scaleToFill" horizontalHuggingPriority="251" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hmP-ow-Ojh">
-                                                    <rect key="frame" x="0.0" y="0.0" width="92.333333333333329" height="34.333333333333336"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="95.666666666666671" height="34.333333333333336"/>
                                                     <color key="tintColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <state key="normal" title="Button"/>
                                                     <buttonConfiguration key="configuration" style="filled" title="Beginner">
                                                         <backgroundConfiguration key="background" cornerRadius="10"/>
+                                                        <fontDescription key="titleFontDescription" style="UICTFontTextStyleHeadline"/>
                                                         <color key="baseForegroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <color key="baseBackgroundColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     </buttonConfiguration>
@@ -61,16 +62,16 @@
                                     <rect key="frame" x="0.0" y="34.3333333333333" width="333" height="207.66666666666663"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Deep Breathing" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fZY-Rq-ybb">
-                                            <rect key="frame" x="0.0" y="0.0" width="333" height="42"/>
-                                            <fontDescription key="fontDescription" type="boldSystem" pointSize="35"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="333" height="40.666666666666664"/>
+                                            <fontDescription key="fontDescription" style="UICTFontTextStyleTitle0"/>
                                             <color key="textColor" red="0.53333333329999999" green="0.2784313725" blue="0.31764705879999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" verticalCompressionResistancePriority="751" editable="NO" textAlignment="justified" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="I18-Ga-9QV">
-                                            <rect key="frame" x="0.0" y="42" width="333" height="131.33333333333334"/>
+                                            <rect key="frame" x="0.0" y="40.666666666666686" width="333" height="132.66666666666666"/>
                                             <string key="text">A calming breathing exercise that focuses on slow, deep breaths to improve oxygen flow, reduce stress, and promote relaxation for both the mother and baby.</string>
                                             <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                             <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                         </textView>
                                         <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacingType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="Fse-QC-ibq">
