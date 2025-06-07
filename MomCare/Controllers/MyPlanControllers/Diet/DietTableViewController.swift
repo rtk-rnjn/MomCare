@@ -211,13 +211,24 @@ class DietTableViewController: UITableViewController {
             return nil
         }
 
-        return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in
+        let previewProvider = self.previewProvider(for: indexPath)
+        return UIContextMenuConfiguration(identifier: nil, previewProvider: previewProvider) { _ in
             let deleteAction = UIAction(title: "Delete", image: UIImage(systemName: "trash"), attributes: .destructive) { _ in
                 self.deleteFood(at: indexPath)
                 self.tableView.reloadData()
             }
 
             return UIMenu(title: "", children: [deleteAction])
+        }
+    }
+
+    private func previewProvider(for indexPath: IndexPath) -> UIContextMenuContentPreviewProvider? {
+        guard let foods = getFoods(with: indexPath), !foods.isEmpty else { return nil }
+        let foodItem = foods[indexPath.row - 1]
+        let foodDetailsViewController = FoodDetailsViewController(foodItem: foodItem)
+
+        return {
+            foodDetailsViewController
         }
     }
 

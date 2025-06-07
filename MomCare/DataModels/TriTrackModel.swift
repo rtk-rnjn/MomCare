@@ -42,9 +42,9 @@ struct TrimesterData: Codable {
     }
 
     var babyImage: UIImage? {
-            guard let babyImageUri else {
-                return nil
-            }
-            return UIImage(named: babyImageUri)
+        guard let babyImageUri else {
+            return nil
         }
+        return UIImage(named: babyImageUri)
+    }
 }
