@@ -10,6 +10,9 @@ import UIKit
 import EventKit
 
 class EventDetailsViewController: UIHostingController<EventDetailsView> {
+
+    // MARK: Lifecycle
+
     init(event: EKEvent) {
         super.init(rootView: EventDetailsView(event: event))
     }
@@ -17,6 +20,8 @@ class EventDetailsViewController: UIHostingController<EventDetailsView> {
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+
+    // MARK: Internal
 
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()

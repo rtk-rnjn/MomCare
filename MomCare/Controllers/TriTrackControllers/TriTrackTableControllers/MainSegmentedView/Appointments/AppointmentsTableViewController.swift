@@ -10,6 +10,8 @@ import EventKit
 
 class AppointmentsTableViewController: UITableViewController {
 
+    // MARK: Internal
+
     var delegate: EventKitHandlerDelegate = .init()
     var eventsViewController: EventsViewController?
     var events: [EKEvent] = []
@@ -69,13 +71,6 @@ class AppointmentsTableViewController: UITableViewController {
         }
     }
 
-    private func previewProdiver(for indexPath: IndexPath) -> UIContextMenuContentPreviewProvider? {
-        let event = events[indexPath.section]
-        return {
-            EventDetailsViewController(event: event)
-        }
-    }
-
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let event = events[indexPath.section]
 
@@ -103,4 +98,14 @@ class AppointmentsTableViewController: UITableViewController {
         events = fetchEvents()
         tableView.reloadData()
     }
+
+    // MARK: Private
+
+    private func previewProdiver(for indexPath: IndexPath) -> UIContextMenuContentPreviewProvider? {
+        let event = events[indexPath.section]
+        return {
+            EventDetailsViewController(event: event)
+        }
+    }
+
 }

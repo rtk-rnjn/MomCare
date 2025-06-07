@@ -32,7 +32,7 @@ class SongPageTableViewCell: UITableViewCell {
             durationLabel.text = "--:--"
         } else {
             durationLabel.text = "\(minutes):\(remainingSeconds < 10 ? "0" : "")\(remainingSeconds)"
-            
+
         }
         durationLabel.accessibilityLabel = "Tune Duration: \(durationLabel.text ?? "Unknown"))"
     }

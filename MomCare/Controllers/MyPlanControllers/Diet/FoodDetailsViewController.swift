@@ -9,7 +9,8 @@ import SwiftUI
 import UIKit
 
 class FoodDetailsViewController: UIHostingController<FoodDetailsView> {
-    private let foodItem: FoodItem
+
+    // MARK: Lifecycle
 
     init(foodItem: FoodItem) {
         self.foodItem = foodItem
@@ -20,8 +21,15 @@ class FoodDetailsViewController: UIHostingController<FoodDetailsView> {
         fatalError("init(coder:) has not been implemented")
     }
 
+    // MARK: Internal
+
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         preferredContentSize = view.intrinsicContentSize
     }
+
+    // MARK: Private
+
+    private let foodItem: FoodItem
+
 }

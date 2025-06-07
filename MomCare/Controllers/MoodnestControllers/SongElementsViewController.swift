@@ -29,9 +29,10 @@ class SongElementsViewController: UIViewController {
     }
 
     // MARK: Private
+
     private func updateElements(with playlist: (imageUri: String, label: String)?) {
         guard let playlist else { return }
-        
+
         playlistSongLabel.text = playlist.label
         playlistSongLabel.accessibilityLabel = playlist.label
         Task {

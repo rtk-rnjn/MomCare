@@ -22,7 +22,7 @@ class MoodNestViewController: UIViewController, UICollectionViewDataSource, UICo
 
     var playlists: [(imageUri: String, label: String)] = []
     var playlistsFetched: Bool = false
-    var selectedMainPlayist: (imageUri: String, label: String)? = nil
+    var selectedMainPlayist: (imageUri: String, label: String)?
 
     var mood: MoodType?
 
@@ -187,11 +187,10 @@ class MoodNestViewController: UIViewController, UICollectionViewDataSource, UICo
         }
 
         let selectedPlaylist: (imageUri: String, label: String)
-        if indexPath.section == MoodNestCollectionViewCellType.mainImage.rawValue{
+        if indexPath.section == MoodNestCollectionViewCellType.mainImage.rawValue {
             guard let selectedMainPlayist else { fatalError() }
             selectedPlaylist = selectedMainPlayist
-        }
-        else{
+        } else {
             selectedPlaylist = playlists[indexPath.item]
         }
         performSegue(withIdentifier: "segueShowSongPageViewController", sender: selectedPlaylist)

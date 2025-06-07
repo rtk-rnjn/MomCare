@@ -9,9 +9,30 @@ import UIKit
 import SwiftUI
 
 struct FoodDetailsView: View {
-    let food: FoodItem
 
-    @State private var uiImage: UIImage? = nil
+    // MARK: Internal
+
+    struct NutrientView: View {
+        let symbol: String
+        let label: String
+        let value: Double
+
+        var body: some View {
+            VStack(spacing: 4) {
+                Image(systemName: symbol)
+                    .font(.headline)
+                    .foregroundColor(.blue)
+                Text("\(value, specifier: "%.0f")")
+                    .font(.subheadline)
+                    .fontWeight(.medium)
+                Text(label)
+                    .font(.caption2)
+                    .foregroundColor(.secondary)
+            }
+        }
+    }
+
+    let food: FoodItem
 
     var body: some View {
         HStack(spacing: 20) {
@@ -65,23 +86,8 @@ struct FoodDetailsView: View {
         }
     }
 
-    struct NutrientView: View {
-        let symbol: String
-        let label: String
-        let value: Double
+    // MARK: Private
 
-        var body: some View {
-            VStack(spacing: 4) {
-                Image(systemName: symbol)
-                    .font(.headline)
-                    .foregroundColor(.blue)
-                Text("\(value, specifier: "%.0f")")
-                    .font(.subheadline)
-                    .fontWeight(.medium)
-                Text(label)
-                    .font(.caption2)
-                    .foregroundColor(.secondary)
-            }
-        }
-    }
+    @State private var uiImage: UIImage?
+
 }
