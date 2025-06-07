@@ -2,8 +2,6 @@
 
 A personalized prenatal care app designed for expecting mothers. Offers health plans, milestone tracking, and expert tips to ensure a smooth journey through pregnancy. 
 
-## Development is in progress 🚀
-
 ## Backend
 
 The Backend for this app is available at [**MomCare Backend**](https://github.com/rtk-rnjn/MomCare-Backend). The backend is under development. API endpoints and Models are available [**here**](http://13.233.139.216:8000/redoc).
@@ -26,4 +24,3 @@ The Backend for this app is available at [**MomCare Backend**](https://github.co
 ## Lead Maintainers
 
 This project is maintained by iSDP Students at Galgotias University.
-
