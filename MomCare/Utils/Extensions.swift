@@ -232,10 +232,10 @@ extension UIView {
     }
 
     func applyDefaultPriorities(priority: UILayoutPriority = .required) {
-        self.setContentHuggingPriority(priority, for: .horizontal)
-        self.setContentHuggingPriority(priority, for: .vertical)
-        self.setContentCompressionResistancePriority(priority, for: .horizontal)
-        self.setContentCompressionResistancePriority(priority, for: .vertical)
+        setContentHuggingPriority(priority, for: .horizontal)
+        setContentHuggingPriority(priority, for: .vertical)
+        setContentCompressionResistancePriority(priority, for: .horizontal)
+        setContentCompressionResistancePriority(priority, for: .vertical)
     }
 
 }
