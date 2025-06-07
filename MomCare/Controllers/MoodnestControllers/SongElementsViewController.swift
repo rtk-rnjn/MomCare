@@ -29,11 +29,17 @@ class SongElementsViewController: UIViewController {
     }
 
     // MARK: Private
-
     private func updateElements(with playlist: (imageUri: String, label: String)?) {
         guard let playlist else { return }
-
+        
         playlistSongLabel.text = playlist.label
+        playlistSongLabel.accessibilityLabel = playlist.label
+        Task {
+            let image = await UIImage().fetchImage(from: playlist.imageUri)
+            DispatchQueue.main.async { [self] in
+                playlistCoverImage.image = image
+            }
+        }
     }
 
     // https://discord.com/channels/1283435123232079933/1285117124041244765/1334221772609945730

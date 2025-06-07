@@ -15,9 +15,13 @@ class SongPageTableViewCell: UITableViewCell {
 
     func updateElements(with song: Song) {
         songLabel.text = song.metadata?.title
+        songLabel.accessibilityLabel = "Tune name: \(songLabel.text ?? "Unknown")"
         artistOrAlbumLabel.text = song.metadata?.artist
+        artistOrAlbumLabel.accessibilityLabel = "Composure name: \(artistOrAlbumLabel.text ?? "Unknown")"
         Task {
             songImageView.image = await song.image
+            songImageView.accessibilityLabel = "Album Artwork for \(songLabel.text ?? "Unknown")"
+            songImageView.accessibilityHint = "Represent the cover image for the current song"
         }
 
         let seconds = song.metadata?.duration ?? 0.0
@@ -28,6 +32,8 @@ class SongPageTableViewCell: UITableViewCell {
             durationLabel.text = "--:--"
         } else {
             durationLabel.text = "\(minutes):\(remainingSeconds < 10 ? "0" : "")\(remainingSeconds)"
+            
         }
+        durationLabel.accessibilityLabel = "Tune Duration: \(durationLabel.text ?? "Unknown"))"
     }
 }

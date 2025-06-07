@@ -49,18 +49,22 @@ class MoodsViewController: UIViewController {
             case 0..<1:
                 self.makeHappyFace()
                 self.moodLabel.text = "Happy"
+                self.moodLabel.accessibilityLabel = "Mood name: Happy"
 
             case 1..<2:
                 self.makeStressedFace()
                 self.moodLabel.text = "Stressed"
+                self.moodLabel.accessibilityLabel = "Mood name: Stressed"
 
             case 2..<3:
                 self.makeSadFace()
                 self.moodLabel.text = "Sad"
+                self.moodLabel.accessibilityLabel = "Mood name: Sad"
 
             case 3:
                 self.makeAngryFace()
                 self.moodLabel.text = "Angry"
+                self.moodLabel.accessibilityLabel = "Mood name: Angry"
 
             default:
                 break

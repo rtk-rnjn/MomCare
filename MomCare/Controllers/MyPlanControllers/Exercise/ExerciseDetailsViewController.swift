@@ -66,16 +66,22 @@ class ExerciseDetailsViewController: UIViewController {
 
             let button = UIButton(configuration: .filled(), primaryAction: nil)
 
-            button.configuration?.buttonSize = .medium
+            button.configuration?.buttonSize = .mini
             button.configuration?.baseBackgroundColor = .lightGray
             button.configuration?.baseForegroundColor = .black
             button.tintColor = .lightGray
             button.alpha = 0.55
-
+            button.configuration?.contentInsets = NSDirectionalEdgeInsets(
+                top: 4,
+                leading: 4,
+                bottom: 4,
+                trailing: 4
+            )
+            button.titleLabel?.font = UIFont.systemFont(ofSize: 5, weight: .medium)
             button.setTitle(tag, for: .normal)
 
             tagsStack.addArrangedSubview(button)
-            if index > 3 {
+            if index > 2 {
                 break
             }
         }
