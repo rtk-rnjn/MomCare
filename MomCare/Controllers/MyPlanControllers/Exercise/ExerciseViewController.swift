@@ -153,9 +153,13 @@ extension ExerciseViewController {
             fatalError()
         }
 
-        let exercise = exercises[adjustedIndex]
-
-        return createCell(for: collectionView, at: indexPath, exercise: exercise)
+        if exercises.isEmpty {
+            let exercise = Exercise(name: "None", type: .breathing, description: "NA", week: "1-2", assignedAt: .init())
+            return createCell(for: collectionView, at: indexPath, exercise: exercise)
+        } else {
+            let exercise = exercises[adjustedIndex]
+            return createCell(for: collectionView, at: indexPath, exercise: exercise)
+        }
     }
 
     private func createCell(for collectionView: UICollectionView, at indexPath: IndexPath, exercise: Exercise) -> UICollectionViewCell {

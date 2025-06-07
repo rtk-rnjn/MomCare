@@ -55,7 +55,7 @@ class AppointmentsTableViewController: UITableViewController {
 
         let event = events[indexPath.row]
 
-        return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in
+        return UIContextMenuConfiguration(identifier: nil, previewProvider: previewProdiver(for: indexPath)) { _ in
             let editAction = UIAction(title: "Edit", image: UIImage(systemName: "pencil")) { _ in
                 self.delegate.presentEKEventEditViewController(with: event)
             }
@@ -66,6 +66,13 @@ class AppointmentsTableViewController: UITableViewController {
             }
 
             return UIMenu(title: "", children: [editAction, deleteAction])
+        }
+    }
+
+    private func previewProdiver(for indexPath: IndexPath) -> UIContextMenuContentPreviewProvider? {
+        let event = events[indexPath.section]
+        return {
+            EventDetailsViewController(event: event)
         }
     }
 
