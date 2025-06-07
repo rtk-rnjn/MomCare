@@ -13,6 +13,10 @@ class MoodNestMultipleImagesCollectionViewCell: UICollectionViewCell {
 
     func updateElements(image: UIImage?, label: String) {
         imageView.image = image
+        imageView.accessibilityLabel = label
+        imageView.accessibilityHint = "Album artwork for \(label)"
         imageLabel.text = label
+        imageLabel.accessibilityLabel = label
+        imageLabel.accessibilityHint = "Represents the cover image for the song \(label)"
     }
 }

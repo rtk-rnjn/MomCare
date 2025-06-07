@@ -22,6 +22,7 @@ class MoodNestViewController: UIViewController, UICollectionViewDataSource, UICo
 
     var playlists: [(imageUri: String, label: String)] = []
     var playlistsFetched: Bool = false
+    var selectedMainPlayist: (imageUri: String, label: String)? = nil
 
     var mood: MoodType?
 
@@ -185,7 +186,14 @@ class MoodNestViewController: UIViewController, UICollectionViewDataSource, UICo
             return
         }
 
-        let selectedPlaylist = playlists[indexPath.item]
+        let selectedPlaylist: (imageUri: String, label: String)
+        if indexPath.section == MoodNestCollectionViewCellType.mainImage.rawValue{
+            guard let selectedMainPlayist else { fatalError() }
+            selectedPlaylist = selectedMainPlayist
+        }
+        else{
+            selectedPlaylist = playlists[indexPath.item]
+        }
         performSegue(withIdentifier: "segueShowSongPageViewController", sender: selectedPlaylist)
     }
 
@@ -222,7 +230,14 @@ class MoodNestViewController: UIViewController, UICollectionViewDataSource, UICo
         }
 
         cell.stopShimmer()
-        cell.updateElements(image: nil, label: "Suggested for you")
+        let randomIndex = Int.random(in: 0..<playlists.count)
+        selectedMainPlayist = playlists[randomIndex]
+        Task {
+            let image = await UIImage().fetchImage(from: selectedMainPlayist?.imageUri)
+            DispatchQueue.main.async {
+                cell.updateElements(image: image, label: "Suggested For You")
+            }
+        }
 
         return cell
     }

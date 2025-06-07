@@ -81,7 +81,7 @@ class ExerciseDetailsViewController: UIViewController {
             button.setTitle(tag, for: .normal)
 
             tagsStack.addArrangedSubview(button)
-            if index > 3 {
+            if index > 2 {
                 break
             }
         }
