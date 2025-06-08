@@ -104,7 +104,11 @@ class AppointmentsTableViewController: UITableViewController {
     private func previewProdiver(for indexPath: IndexPath) -> UIContextMenuContentPreviewProvider? {
         let event = events[indexPath.section]
         return {
-            EventDetailsViewController(event: event)
+            let cell = self.tableView.dequeueReusableCell(withIdentifier: "AppointmentCell") as? AppointmentsTableViewCell
+            guard let cell else {
+                fatalError("Failed to dequeue AppointmentsTableViewCell for preview")
+            }
+            return EventDetailsViewController(event: event, cell: cell)
         }
     }
 

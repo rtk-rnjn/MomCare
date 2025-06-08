@@ -10,6 +10,7 @@ import EventKit
 
 struct EventDetailsView: View {
     let event: EKEvent
+    let cellWidth: CGFloat
 
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
@@ -24,10 +25,9 @@ struct EventDetailsView: View {
                         .lineLimit(2)
 
                     if let location = event.location, !location.isEmpty {
-                        Label(location, systemImage: "mappin.and.ellipse")
+                        Text(location)
                             .font(.subheadline)
                             .foregroundColor(.secondary)
-                            .lineLimit(1)
                     }
                 }
             }
@@ -37,10 +37,12 @@ struct EventDetailsView: View {
                     .foregroundColor(.orange)
 
                 VStack(alignment: .leading, spacing: 2) {
-                    Text(event.startDate.formatted(date: .abbreviated, time: .shortened))
-                    if event.endDate > event.startDate {
-                        Text("to \(event.endDate.formatted(date: .abbreviated, time: .shortened))")
-                            .foregroundColor(.secondary)
+                    if Calendar.current.isDate(event.startDate, inSameDayAs: event.endDate) {
+                        Text(event.startDate.formatted(.dateTime.weekday(.wide).day().month(.wide).year()))
+                        Text("from \(event.startDate.formatted(.dateTime.hour(.defaultDigits(amPM: .abbreviated)).minute())) to \(event.endDate.formatted(.dateTime.hour(.defaultDigits(amPM: .abbreviated)).minute()))")
+                    } else {
+                        Text("from \(event.startDate.formatted(.dateTime.hour(.defaultDigits(amPM: .abbreviated)).minute().weekday(.abbreviated).day().month().year()))")
+                        Text("to \(event.endDate.formatted(.dateTime.hour(.defaultDigits(amPM: .abbreviated)).minute().weekday(.abbreviated).day().month().year()))")
                     }
                 }
                 .font(.subheadline)
@@ -55,11 +57,7 @@ struct EventDetailsView: View {
             }
         }
         .padding()
-        .background(
-            RoundedRectangle(cornerRadius: 16)
-                .fill(Color(.systemBackground))
-                .shadow(radius: 4)
-        )
+        .frame(width: cellWidth - 16, alignment: .leading)
         .fixedSize(horizontal: false, vertical: true)
     }
 }

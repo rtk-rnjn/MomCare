@@ -62,7 +62,7 @@ class RemindersTableViewController: UITableViewController {
 
         let reminder = reminders[indexPath.row]
 
-        return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in
+        return UIContextMenuConfiguration(identifier: nil, previewProvider: previewProdiver(for: indexPath)) { _ in
             let deleteAction = UIAction(title: "Delete", image: UIImage(systemName: "trash"), attributes: .destructive) { _ in
                 EventKitHandler.shared.deleteReminder(reminder: reminder)
                 self.reminders.remove(at: indexPath.row)
@@ -74,14 +74,10 @@ class RemindersTableViewController: UITableViewController {
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "segueShowEKReminderViewController" {
-            if let destinationNC = segue.destination as? UINavigationController {
-                if let destinationVC = destinationNC.topViewController as? EKReminderViewController {
-                    destinationVC.reminder = sender as? EKReminder
-                    destinationVC.reloadHandler = {
-                        self.refreshData()
-                    }
-                }
+        if segue.identifier == "segueShowEKReminderViewController", let destinationNC = segue.destination as? UINavigationController, let destinationVC = destinationNC.topViewController as? EKReminderViewController {
+            destinationVC.reminder = sender as? EKReminder
+            destinationVC.reloadHandler = {
+                self.refreshData()
             }
         }
     }
@@ -93,6 +89,15 @@ class RemindersTableViewController: UITableViewController {
     @IBAction func unwindToRemindersTableViewController(_ segue: UIStoryboardSegue) {}
 
     // MARK: Private
+
+    private func previewProdiver(for indexPath: IndexPath) -> () -> UIViewController? {
+        return {
+            let cell = self.tableView.dequeueReusableCell(withIdentifier: "ReminderCell", for: indexPath) as? RemindersTableViewCell
+            guard let cell else { fatalError("Failed to dequeue RemindersTableViewCell") }
+            let reminder = self.reminders[indexPath.row]
+            return ReminderDetailsViewController(reminder: reminder, cell: cell)
+        }
+    }
 
     private func fetchReminders() {
         let selectedFSCalendarDate = eventsViewController?.triTrackViewController?.selectedFSCalendarDate ?? Date()

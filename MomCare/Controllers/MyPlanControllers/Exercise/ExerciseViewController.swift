@@ -148,21 +148,6 @@ extension ExerciseViewController {
     }
 
     private func createExerciseCell(for collectionView: UICollectionView, at indexPath: IndexPath) -> UICollectionViewCell {
-        let adjustedIndex = indexPath.item - 2
-        guard let exercises = MomCareUser.shared.user?.exercises else {
-            fatalError()
-        }
-
-        if exercises.isEmpty {
-            let exercise = Exercise(name: "None", type: .breathing, description: "NA", week: "1-2", assignedAt: .init())
-            return createCell(for: collectionView, at: indexPath, exercise: exercise)
-        } else {
-            let exercise = exercises[adjustedIndex]
-            return createCell(for: collectionView, at: indexPath, exercise: exercise)
-        }
-    }
-
-    private func createCell(for collectionView: UICollectionView, at indexPath: IndexPath, exercise: Exercise) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ExerciseCell", for: indexPath) as? ExerciseCollectionViewCell else {
             fatalError("error aa gaya gys")
         }
@@ -171,6 +156,13 @@ extension ExerciseViewController {
             return cell
         }
         cell.stopShimmer()
+
+        let adjustedIndex = indexPath.item - 2
+        guard let exercises = MomCareUser.shared.user?.exercises else {
+            fatalError()
+        }
+
+        let exercise = exercises[adjustedIndex]
 
         cell.updateElements(with: exercise, popUpHandler: popUpHandler) {
             self.selectedExercise = exercise
@@ -185,7 +177,6 @@ extension ExerciseViewController {
         }
         return cell
     }
-
 }
 
 extension ExerciseViewController: AVPlayerViewControllerDelegate {

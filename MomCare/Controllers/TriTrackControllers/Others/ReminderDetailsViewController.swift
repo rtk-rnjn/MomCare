@@ -1,5 +1,5 @@
 //
-//  EventDetailsViewController.swift
+//  ReminderDetailsViewController.swift
 //  MomCare
 //
 //  Created by RITIK RANJAN on 08/06/25.
@@ -9,12 +9,12 @@ import SwiftUI
 import UIKit
 import EventKit
 
-class EventDetailsViewController: UIHostingController<EventDetailsView> {
+class ReminderDetailsViewController: UIHostingController<ReminderDetailsView> {
 
     // MARK: Lifecycle
 
-    init(event: EKEvent, cell: UITableViewCell) {
-        super.init(rootView: EventDetailsView(event: event, cellWidth: cell.frame.width))
+    init(reminder: EKReminder, cell: UITableViewCell) {
+        super.init(rootView: ReminderDetailsView(reminder: reminder, cellWidth: cell.frame.width))
     }
 
     required init?(coder aDecoder: NSCoder) {
