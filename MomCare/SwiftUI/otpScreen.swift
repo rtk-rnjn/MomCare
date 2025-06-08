@@ -41,6 +41,7 @@ struct otpScreen: View {
                 }
                 
                 // Actual input field (invisible)
+                TextField("", text: $otpString)
                     .frame(width: 1, height: 1)
                     .opacity(0.01)
                     .keyboardType(.numberPad)
