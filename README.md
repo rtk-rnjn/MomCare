@@ -18,9 +18,3 @@ The Backend for this app is available at [**MomCare Backend**](https://github.co
 ## More stats?
 
 ![Alt](https://repobeats.axiom.co/api/embed/b1bae23496c5d73f5f4a63e03c6cca7de9836f31.svg "Repobeats analytics image")
-
----
-
-## Lead Maintainers
-
-This project is maintained by iSDP Students at Galgotias University.
