@@ -45,6 +45,7 @@ struct otpScreen: View {
                     .frame(width: 1, height: 1)
                     .opacity(0.01)
                     .keyboardType(.numberPad)
+                    .textContentType(.oneTimeCode)
                     .focused($isFieldFocused)
                     .onChange(of: otpString) { _, newValue in
                         // Limit to maximum length
@@ -56,6 +57,8 @@ struct otpScreen: View {
                         otpString = newValue.filter { "0123456789".contains($0) }
                     }
                     .onAppear {
+                        // Making this optional since SMS autofill might make it unnecessary
+                        // but keeping it as a fallback for when autofill doesn't happen
                         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                             isFieldFocused = true
                         }
