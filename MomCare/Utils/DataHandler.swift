@@ -86,15 +86,17 @@ extension CacheHandler {
 
     // MARK: Private
 
-    @MainActor
-    private func saveImageToDatabase(_ image: UIImage, url: URL, data: Data) async {
-        let imageObject = Images()
-        imageObject.uri = url.absoluteString
-        imageObject.imageData = data
+    private func saveImageToDatabase(_ image: UIImage, url: URL, data: Data) {
+        DispatchQueue.global().async {
+            if let realm = try? Realm() {
+                let imageObject = Images()
+                imageObject.uri = url.absoluteString
+                imageObject.imageData = data
 
-        let realm = try? await Realm()
-        try? realm?.write {
-            realm?.add(imageObject, update: .modified)
+                try? realm.write {
+                    realm.add(imageObject, update: .modified)
+                }
+            }
         }
     }
 
@@ -118,7 +120,7 @@ extension CacheHandler {
             guard let image = UIImage(data: data) else { return nil }
 
             saveToCache(image, for: url)
-            await saveImageToDatabase(image, url: url, data: data)
+            saveImageToDatabase(image, url: url, data: data)
             return image
         } catch {
             logger.error("Failed to fetch image from URL: \(url.absoluteString), error: \(String(describing: error))")

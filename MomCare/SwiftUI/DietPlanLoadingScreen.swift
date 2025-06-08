@@ -57,10 +57,12 @@ struct DietPlanLoadingScreen: View {
         }
     }
 
-    private func startMessageAnimation() {
+    @MainActor private func startMessageAnimation() {
         let timer = Timer.scheduledTimer(withTimeInterval: 2.0, repeats: true) { _ in
-            withAnimation {
-                currentText = (currentText + 1) % messages.count
+            Task { @MainActor in
+                withAnimation {
+                    currentText = (currentText + 1) % messages.count
+                }
             }
         }
         timer.fire()

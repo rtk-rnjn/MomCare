@@ -48,17 +48,7 @@ actor NetworkManager {
     }
 
     func fetchStreamedData<T: Codable>(_ method: HTTPMethod, url: String, queryParameters: [String: Any]? = nil, onItem: (@Sendable (T) -> Void)? = nil) {
-        var urlString = url
-
-        if let queryParameters, !queryParameters.isEmpty {
-            var urlComponents = URLComponents(string: urlString)
-            urlComponents?.queryItems = queryParameters.map {
-                return URLQueryItem(name: $0.key, value: "\($0.value)")
-            }
-            urlString = urlComponents?.url?.absoluteString ?? urlString
-        }
-
-        guard let url = URL(string: urlString) else {
+        guard let url = buildURLString(url: url, queryParameters: queryParameters) else {
             fatalError("Oo haseena zulfon waali jaane jahan")
         }
 
@@ -91,7 +81,7 @@ actor NetworkManager {
 
     private var delimiter: String = "\n"
 
-    private func request<T: Codable>(url: String = "", method: HTTPMethod, body: Data? = nil, queryParameters: [String: Any]? = nil) async -> T? {
+    private func buildURLString(url: String = "", queryParameters: [String: Any]? = nil) -> URL? {
         var urlString = url
 
         if let queryParameters, !queryParameters.isEmpty {
@@ -102,7 +92,11 @@ actor NetworkManager {
             urlString = urlComponents?.url?.absoluteString ?? urlString
         }
 
-        guard let url = URL(string: urlString) else {
+        return URL(string: urlString)
+    }
+
+    private func request<T: Codable>(url: String = "", method: HTTPMethod, body: Data? = nil, queryParameters: [String: Any]? = nil) async -> T? {
+        guard let url = buildURLString(url: url, queryParameters: queryParameters) else {
             fatalError("Oo haseena zulfon waali jaane jahan")
         }
 

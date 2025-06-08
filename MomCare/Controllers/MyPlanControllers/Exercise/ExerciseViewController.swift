@@ -204,8 +204,10 @@ extension ExerciseViewController: AVPlayerViewControllerDelegate {
 
         timeControlStatusObservation = player?.observe(\.timeControlStatus, options: [.old, .new]) { player, _ in
             if player.timeControlStatus == .paused {
-                self.updateExerciseStats()
-                self.collectionView.reloadData()
+                DispatchQueue.main.async {
+                    self.updateExerciseStats()
+                    self.collectionView.reloadData()
+                }
             }
         }
 

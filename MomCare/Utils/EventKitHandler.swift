@@ -41,17 +41,14 @@ class EventKitHandler {
 
         case .denied, .notDetermined, .restricted:
             logger.info("Event Store Access: Not Authorized")
-            eventStore.requestFullAccessToEvents { granted, error in
-                if let error {
-                    logger.error("Event store access error: \(String(describing: error))")
-                } else if granted {
-                    logger.info("Event Store Access: Granted")
-                    completion?(true)
-                } else {
-                    logger.info("Event Store Access: Denied")
-                    completion?(false)
-                }
+            let success = try? await EKEventStore().requestFullAccessToEvents()
+            guard let success else {
+                logger.error("Event store access failed")
+                completion?(false)
+                return
             }
+            eventStore = EKEventStore()
+            completion?(success)
 
         default:
             logger.info("Event Store Access: Unknown status")
@@ -68,19 +65,14 @@ class EventKitHandler {
 
         case .denied, .notDetermined, .restricted:
             logger.info("Reminder Store Access: Not Authorized")
-            eventStore.requestFullAccessToReminders { granted, error in
-                if let error {
-                    logger.error("Reminder store access error: \(String(describing: error))")
-                } else if granted {
-                    logger.info("Reminder Store Access: Granted")
-                    self.eventStore = .init()
-
-                    completion?(true)
-                } else {
-                    logger.info("Reminder Store Access: Denied")
-                    completion?(false)
-                }
+            let success = try? await EKEventStore().requestFullAccessToReminders()
+            guard let success else {
+                logger.error("Reminder store access failed")
+                completion?(false)
+                return
             }
+            eventStore = EKEventStore()
+            completion?(success)
 
         default:
             logger.info("Reminder Store Access: Unknown status")
