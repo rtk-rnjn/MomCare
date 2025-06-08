@@ -1,5 +1,5 @@
 //
-//  otpScreen.swift
+//  OTPScreen.swift
 //  MomCare
 //
 //  Created by Aryan Singh on 08/06/25.
@@ -8,7 +8,7 @@
 import SwiftUI
 import Combine
 
-struct otpScreen: View {
+struct OTPScreen: View {
     @State private var otpString: String = ""
     @FocusState private var isFieldFocused: Bool
     private let otpLength = 6
@@ -28,7 +28,6 @@ struct otpScreen: View {
                     .padding(.horizontal)
             }
             
-            // OTP Input Field
             ZStack(alignment: .center) {
                 HStack(spacing: 12) {
                     ForEach(0..<otpLength, id: \.self) { index in
@@ -40,7 +39,6 @@ struct otpScreen: View {
                     }
                 }
                 
-                // Actual input field (invisible)
                 TextField("", text: $otpString)
                     .frame(width: 1, height: 1)
                     .opacity(0.01)
@@ -48,17 +46,13 @@ struct otpScreen: View {
                     .textContentType(.oneTimeCode)
                     .focused($isFieldFocused)
                     .onChange(of: otpString) { _, newValue in
-                        // Limit to maximum length
                         if newValue.count > otpLength {
                             otpString = String(newValue.prefix(otpLength))
                         }
                         
-                        // Filter to numbers only
                         otpString = newValue.filter { "0123456789".contains($0) }
                     }
                     .onAppear {
-                        // Making this optional since SMS autofill might make it unnecessary
-                        // but keeping it as a fallback for when autofill doesn't happen
                         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                             isFieldFocused = true
                         }
@@ -107,18 +101,15 @@ struct otpScreen: View {
     }
 }
 
-// A visual box for displaying one digit of the OTP
 struct OTPBox: View {
     let index: Int
     let otpString: String
     let isActive: Bool
     
-    // Cursor blinking state
     @State private var showCursor = false
     
     var body: some View {
         ZStack {
-            // Box
             RoundedRectangle(cornerRadius: 8)
                 .stroke(isActive ? Color(hex: "924350") : Color.gray.opacity(0.3), lineWidth: isActive ? 2 : 1)
                 .background(
@@ -126,15 +117,12 @@ struct OTPBox: View {
                         .fill(Color(.systemBackground))
                 )
             
-            // Text or cursor
             if index < otpString.count {
-                // Show the digit
                 let startIndex = otpString.startIndex
                 let charIndex = otpString.index(startIndex, offsetBy: index)
                 Text(String(otpString[charIndex]))
                     .font(.title2.weight(.semibold))
             } else if isActive {
-                // Show blinking cursor
                 Rectangle()
                     .fill(Color(hex: "924350"))
                     .frame(width: 2, height: 24)
@@ -147,8 +135,4 @@ struct OTPBox: View {
         }
         .frame(width: 45, height: 55)
     }
-}
-
-#Preview {
-    otpScreen()
 }
