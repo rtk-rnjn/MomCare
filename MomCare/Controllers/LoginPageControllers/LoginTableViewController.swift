@@ -13,7 +13,7 @@ class LoginTableViewController: UITableViewController, UITextFieldDelegate {
 
         emailAddressField.delegate = self
         passwordField.delegate = self
-        
+
         emailAddressField.becomeFirstResponder()
     }
 
