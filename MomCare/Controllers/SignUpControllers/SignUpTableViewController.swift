@@ -40,6 +40,14 @@ class SignUpTableViewController: UITableViewController {
                 }
             }
         }
+
+        if segue.identifier == "segueShowOTPScreenViewController" {
+            if let destination = segue.destination as? OTPScreenViewController {
+                destination.emailAddress = emailField.text ?? ""
+                destination.password = passwordField.text ?? ""
+                destination.segueIdentifier = sender as? String
+            }
+        }
     }
 
     @IBAction func createButtonTapped(_ sender: UIButton) {
@@ -90,7 +98,7 @@ class SignUpTableViewController: UITableViewController {
                 if !userCreated {
                     self.showErrorAlert(title: "User Creation Failed", message: "An error occurred while creating your account. Please try again.")
                 } else {
-                    self.performSegue(withIdentifier: "segueShowSignUpDetailsTableViewController", sender: nil)
+                    self.performSegue(withIdentifier: "segueShowOTPScreenViewController", sender: "segueShowSignUpDetailsTableViewController")
                 }
             }
         }

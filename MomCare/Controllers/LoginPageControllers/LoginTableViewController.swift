@@ -15,6 +15,15 @@ class LoginTableViewController: UITableViewController, UITextFieldDelegate {
         passwordField.delegate = self
     }
 
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "segueShowOTPScreenViewController", let destinationVC = segue.destination as? OTPScreenViewController {
+            let data = sender as? (email: String, password: String)
+            destinationVC.emailAddress = data?.email
+            destinationVC.password = data?.password
+            destinationVC.segueIdentifier = "segueShowInitialTabBarController"
+        }
+    }
+
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         if textField == emailAddressField {
             passwordField.becomeFirstResponder()
@@ -57,19 +66,14 @@ class LoginTableViewController: UITableViewController, UITextFieldDelegate {
                 sender.startLoadingAnimation()
             }
 
-            let success = await MomCareUser.shared.fetchUserFromDatabase(email: email, password: password)
+            let success = await MomCareUser.shared.loginUser(email: email, password: password)
             DispatchQueue.main.async {
                 sender.stopLoadingAnimation(withRestoreLabel: "Sign In")
             }
             if !success {
                 self.showErrorAlert(title: "Sign In Failed", message: "An error occurred while signing in. Please try again.")
             } else {
-                if MomCareUser.shared.user?.medicalData == nil {
-                    performSegue(withIdentifier: "segueShowSignUpDetailsTableViewController", sender: nil)
-                } else {
-                    Utils.save(forKey: "isUserSignedUp", withValue: true)
-                    performSegue(withIdentifier: "segueShowInitialTabBarController", sender: nil)
-                }
+                performSegue(withIdentifier: "segueShowOTPScreenViewController", sender: (email: email, password: password))
             }
         }
     }

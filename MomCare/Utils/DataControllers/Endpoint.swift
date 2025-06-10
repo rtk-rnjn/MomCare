@@ -37,6 +37,10 @@ enum Endpoint: String {
 
     case contentQuotesMood = "/content/quotes/%@"
     case contentYoutube = "/content/youtube"
+
+    // OTP Auth
+    case reqeustOTP = "/auth/otp"
+    case verifyOTP = "/auth/otp/verify"
 }
 
 extension Endpoint {

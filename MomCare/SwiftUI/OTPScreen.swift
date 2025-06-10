@@ -9,10 +9,11 @@ import SwiftUI
 import Combine
 
 struct OTPScreen: View {
-    @State private var otpString: String = ""
-    @FocusState private var isFieldFocused: Bool
-    private let otpLength = 6
-    
+
+    // MARK: Internal
+
+    var viewController: OTPScreenViewController?
+
     var body: some View {
         VStack(spacing: 24) {
             VStack(spacing: 8) {
@@ -20,25 +21,25 @@ struct OTPScreen: View {
                     .font(.largeTitle)
                     .fontWeight(.bold)
                     .padding(.top)
-                
-                Text("Enter the code we sent to your phone number")
+
+                Text("Enter the code we sent to your email address")
                     .font(.subheadline)
                     .foregroundColor(.secondary)
                     .multilineTextAlignment(.center)
                     .padding(.horizontal)
             }
-            
+
             ZStack(alignment: .center) {
                 HStack(spacing: 12) {
                     ForEach(0..<otpLength, id: \.self) { index in
                         OTPBox(
-                            index: index, 
+                            index: index,
                             otpString: otpString,
                             isActive: isFieldFocused && index == otpString.count
                         )
                     }
                 }
-                
+
                 TextField("", text: $otpString)
                     .frame(width: 1, height: 1)
                     .opacity(0.01)
@@ -49,7 +50,7 @@ struct OTPScreen: View {
                         if newValue.count > otpLength {
                             otpString = String(newValue.prefix(otpLength))
                         }
-                        
+
                         otpString = newValue.filter { "0123456789".contains($0) }
                     }
                     .onAppear {
@@ -79,35 +80,49 @@ struct OTPScreen: View {
                 Text("Didn't receive a code?")
                     .foregroundColor(Color(hex: "924350"))
                     .padding(.top)
+                // TODO: @aryansingh
             }
-            
+
             Spacer()
         }
         .padding()
     }
-    
+
+    // MARK: Private
+
+    @State private var otpString: String = ""
+    @FocusState private var isFieldFocused: Bool
+
+    private let otpLength = 6
+
     private func isOTPComplete() -> Bool {
         return otpString.count == otpLength
     }
-    
+
     private func verifyOTP() {
-        print("OTP Verification requested with code: \(otpString)")
-        // Here you would add your verification logic
+        Task {
+            let success = await viewController?.verifyOTP(otp: otpString)
+            if let success, success {
+                await viewController?.navigate()
+            }
+        }
     }
-    
+
     private func resendCode() {
-        print("Resend code requested")
-        // Here you would add your resend logic
+        Task {
+            await viewController?.resendOTP()
+        }
     }
 }
 
 struct OTPBox: View {
+
+    // MARK: Internal
+
     let index: Int
     let otpString: String
     let isActive: Bool
-    
-    @State private var showCursor = false
-    
+
     var body: some View {
         ZStack {
             RoundedRectangle(cornerRadius: 8)
@@ -116,7 +131,7 @@ struct OTPBox: View {
                     RoundedRectangle(cornerRadius: 8)
                         .fill(Color(.systemBackground))
                 )
-            
+
             if index < otpString.count {
                 let startIndex = otpString.startIndex
                 let charIndex = otpString.index(startIndex, offsetBy: index)
@@ -135,4 +150,9 @@ struct OTPBox: View {
         }
         .frame(width: 45, height: 55)
     }
+
+    // MARK: Private
+
+    @State private var showCursor = false
+
 }

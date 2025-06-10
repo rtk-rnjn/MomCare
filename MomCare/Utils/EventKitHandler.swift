@@ -41,13 +41,13 @@ class EventKitHandler {
 
         case .denied, .notDetermined, .restricted:
             logger.info("Event Store Access: Not Authorized")
-            let success = try? await EKEventStore().requestFullAccessToEvents()
+            let success = try? await eventStore.requestFullAccessToEvents()
             guard let success else {
                 logger.error("Event store access failed")
                 completion?(false)
                 return
             }
-            eventStore = EKEventStore()
+            eventStore = .init()
             completion?(success)
 
         default:
@@ -65,13 +65,13 @@ class EventKitHandler {
 
         case .denied, .notDetermined, .restricted:
             logger.info("Reminder Store Access: Not Authorized")
-            let success = try? await EKEventStore().requestFullAccessToReminders()
+            let success = try? await eventStore.requestFullAccessToReminders()
             guard let success else {
                 logger.error("Reminder store access failed")
                 completion?(false)
                 return
             }
-            eventStore = EKEventStore()
+            eventStore = .init()
             completion?(success)
 
         default:

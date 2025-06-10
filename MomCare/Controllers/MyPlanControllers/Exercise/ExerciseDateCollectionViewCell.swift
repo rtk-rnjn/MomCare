@@ -19,7 +19,6 @@ class ExerciseDateCellCollectionViewCell: UICollectionViewCell {
 
         let today = Date()
         var calendar = Calendar.current
-        calendar.firstWeekday = 1 // Sunday
 
         let weekday = calendar.component(.weekday, from: today)
         let daysToLastSunday = weekday == 1 ? 7 : weekday
@@ -29,15 +28,13 @@ class ExerciseDateCellCollectionViewCell: UICollectionViewCell {
 
         let exerciseHistory = history.filter {
             $0.date >= lastSunday
-        }.sorted { $0.date > $1.date }
-
-        let todaysWeekday = calendar.component(.weekday, from: today)
+        }.sorted { $0.date < $1.date }
 
         ringViews = [
             sundayRing, mondayRing, tuesdayRing, wednesdayRing, thursdayRing, fridayRing, saturdayRing
         ]
 
-        let startIndex = todaysWeekday - 1
+        let startIndex = weekday - 1
         let endIndex = startIndex - exerciseHistory.count + 1
 
         guard endIndex >= 0 else { return } // just in case

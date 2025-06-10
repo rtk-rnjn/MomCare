@@ -42,6 +42,24 @@ struct Credentials: Codable {
     let password: String
 }
 
+struct EmailAddress: Codable {
+    enum CodingKeys: String, CodingKey {
+        case emailAddress = "email_address"
+    }
+
+    let emailAddress: String
+}
+
+struct VerifyOTP: Codable {
+    enum CodingKeys: String, CodingKey {
+        case emailAddress = "email_address"
+        case otp
+    }
+
+    let emailAddress: String
+    let otp: String
+}
+
 private let accessTokenValidDuration: TimeInterval = 5 * 60 - 10 // 5 minutes
 private let logger: Logger = .init(subsystem: "com.MomCare.MomCareUser", category: "Network")
 
@@ -68,6 +86,7 @@ extension MomCareUser {
         KeychainHelper.set(email, forKey: "emailAddress")
         KeychainHelper.set(password, forKey: "password")
         KeychainHelper.set(response.accessToken, forKey: "accessToken")
+        logger.info("User authenticated successfully. Email: \(email, privacy: .private). Token: \(response.accessToken, privacy: .private(mask: .hash))")
         accessTokenExpiresAt = Date().addingTimeInterval(accessTokenValidDuration)
     }
 
@@ -121,6 +140,7 @@ extension MomCareUser {
         }
 
         KeychainHelper.set(response.accessToken, forKey: "accessToken")
+        logger.info("Access token refreshed successfully for email: \(email, privacy: .private). Token: \(response.accessToken, privacy: .private(mask: .hash))")
         accessTokenExpiresAt = Date().addingTimeInterval(accessTokenValidDuration)
         return true
     }
@@ -148,7 +168,7 @@ extension MomCareUser {
         return Utils.get(fromKey: "isUserSignedUp", withDefaultValue: false) ?? false
     }
 
-    func fetchUserFromDatabase(email: String, password: String) async -> Bool {
+    func fetchUserFromDatabase(email: String, password: String, forceRefresh: Bool = false) async -> Bool {
         if let expiration = accessTokenExpiresAt, expiration <= Date() {
             logger.info("Access token expired. Attempting to refresh.")
             guard await refreshToken() else {
@@ -190,5 +210,34 @@ extension MomCareUser {
             logger.error("Failed to fetch user automatically.")
             return false
         }
+    }
+
+    func requestOTP() async -> Bool? {
+        guard let emailAddress = KeychainHelper.get("emailAddress") else {
+            return false
+        }
+
+        guard let data = EmailAddress(emailAddress: emailAddress).toData() else {
+            return false
+        }
+
+        return await NetworkManager.shared.post(url: Endpoint.reqeustOTP.urlString, body: data)
+    }
+
+    func resendOTP() async -> Bool? {
+        return await requestOTP()
+    }
+
+    func verifyOTP(otp: String) async -> Bool? {
+        guard let emailAddress = KeychainHelper.get("emailAddress") else {
+            return false
+        }
+
+        let verifyOTP = VerifyOTP(emailAddress: emailAddress, otp: otp)
+        guard let data = verifyOTP.toData() else {
+            return false
+        }
+
+        return await NetworkManager.shared.post(url: Endpoint.verifyOTP.urlString, body: data)
     }
 }
