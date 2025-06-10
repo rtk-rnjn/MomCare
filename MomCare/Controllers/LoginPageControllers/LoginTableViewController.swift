@@ -13,6 +13,8 @@ class LoginTableViewController: UITableViewController, UITextFieldDelegate {
 
         emailAddressField.delegate = self
         passwordField.delegate = self
+        
+        emailAddressField.becomeFirstResponder()
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {

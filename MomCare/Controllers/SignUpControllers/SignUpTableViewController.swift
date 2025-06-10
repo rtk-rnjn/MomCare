@@ -7,7 +7,7 @@
 
 import UIKit
 
-class SignUpTableViewController: UITableViewController {
+class SignUpTableViewController: UITableViewController, UITextFieldDelegate {
 
     // MARK: Internal
 
@@ -27,6 +27,8 @@ class SignUpTableViewController: UITableViewController {
         super.viewDidLoad()
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
         view.addGestureRecognizer(tapGesture)
+        
+        firstNameField.becomeFirstResponder()
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -108,6 +110,9 @@ class SignUpTableViewController: UITableViewController {
 
     @IBAction func countryCodeFieldTapped(_ sender: UITextField) {
         view.endEditing(true)
+        if sender.isFirstResponder {
+            sender.resignFirstResponder()
+        }
         performSegue(withIdentifier: "segueShowPickerViewController", sender: CountryData.countryCodes)
     }
 
