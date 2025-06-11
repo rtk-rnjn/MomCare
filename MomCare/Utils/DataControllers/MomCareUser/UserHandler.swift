@@ -165,8 +165,6 @@ extension MomCareUser {
     }
 
     func updateUserMedical(_ medicalData: UserMedical) async -> Bool {
-        logger.info("Updating user medical data for email: \(user?.emailAddress ?? "unknown", privacy: .private)")
-
         guard let response: UpdateResponse = await serializeAndPost(medicalData,
             endpoint: .updateMedicalData,
             onFailureMessage: "User medical data update failed."

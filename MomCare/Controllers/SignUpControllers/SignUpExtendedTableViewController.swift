@@ -83,6 +83,7 @@ class SignUpExtendedTableViewController: UITableViewController {
                 self.present(alert, animated: true)
                 return
             } else {
+                Utils.save(forKey: "isUserSignedUp", withValue: true)
                 self.performSegue(withIdentifier: "segueShowInitialTabBarController", sender: nil)
             }
         }
