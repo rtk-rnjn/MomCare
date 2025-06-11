@@ -87,14 +87,19 @@ extension CacheHandler {
     // MARK: Private
 
     private func saveImageToDatabase(_ image: UIImage, url: URL, data: Data) {
-        DispatchQueue.global().async {
-            if let realm = try? Realm() {
-                let imageObject = Images()
-                imageObject.uri = url.absoluteString
-                imageObject.imageData = data
+        Task.detached(priority: .background) {
+            autoreleasepool {
+                do {
+                    let realm = try Realm()
+                    let imageObject = Images()
+                    imageObject.uri = url.absoluteString
+                    imageObject.imageData = data
 
-                realm.writeAsync {
-                    realm.add(imageObject, update: .modified)
+                    try realm.write {
+                        realm.add(imageObject, update: .modified)
+                    }
+                } catch {
+                    logger.error("Realm write failed: \(String(describing: error))")
                 }
             }
         }
