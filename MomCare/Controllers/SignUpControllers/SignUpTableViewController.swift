@@ -27,7 +27,7 @@ class SignUpTableViewController: UITableViewController, UITextFieldDelegate {
         super.viewDidLoad()
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
         view.addGestureRecognizer(tapGesture)
-        
+
         firstNameField.becomeFirstResponder()
     }
 

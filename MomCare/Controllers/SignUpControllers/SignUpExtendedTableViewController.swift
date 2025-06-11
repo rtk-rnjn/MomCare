@@ -9,6 +9,8 @@ import UIKit
 
 class SignUpExtendedTableViewController: UITableViewController {
 
+    // MARK: Internal
+
     @IBOutlet var progressView: UIProgressView!
     @IBOutlet var dueDatePicker: UIDatePicker!
 
@@ -49,9 +51,9 @@ class SignUpExtendedTableViewController: UITableViewController {
         guard var userMedical else { fatalError() }
 
         userMedical.dueDate = dueDate
-        MomCareUser.shared.setMedicalData(userMedical)
-
-        performSegue(withIdentifier: "segueShowInitialTabBarController", sender: nil)
+        Task {
+            await handleSignUpExtended(userMedical: userMedical)
+        }
     }
 
     @IBAction func intoleranceButtonTapped(_ sender: UIButton) {
@@ -70,4 +72,20 @@ class SignUpExtendedTableViewController: UITableViewController {
     }
 
     @IBAction func unwinToMedicalDetail(_ segue: UIStoryboardSegue) {}
+
+    // MARK: Private
+
+    private func handleSignUpExtended(userMedical: UserMedical) async {
+        let success = await MomCareUser.shared.updateUserMedical(userMedical)
+        DispatchQueue.main.async {
+            if !success {
+                let alert = Utils.getAlert(title: "Error", message: "Failed to update medical data. Please try again.")
+                self.present(alert, animated: true)
+                return
+            } else {
+                self.performSegue(withIdentifier: "segueShowInitialTabBarController", sender: nil)
+            }
+        }
+    }
+
 }

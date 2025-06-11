@@ -93,7 +93,7 @@ extension CacheHandler {
                 imageObject.uri = url.absoluteString
                 imageObject.imageData = data
 
-                try? realm.write {
+                realm.writeAsync {
                     realm.add(imageObject, update: .modified)
                 }
             }

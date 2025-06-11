@@ -50,7 +50,6 @@ struct OTPScreen: View {
                         if newValue.count > otpLength {
                             otpString = String(newValue.prefix(otpLength))
                         }
-
                         otpString = newValue.filter { "0123456789".contains($0) }
                     }
                     .onAppear {
@@ -64,6 +63,7 @@ struct OTPScreen: View {
             .onTapGesture {
                 isFieldFocused = true
             }
+
             Button(action: verifyOTP) {
                 Text("Verify")
                     .fontWeight(.semibold)
@@ -77,23 +77,35 @@ struct OTPScreen: View {
             .disabled(!isOTPComplete())
 
             Button(action: resendCode) {
-                Text("Didn't receive a code?")
-                    .foregroundColor(Color(hex: "924350"))
+                Text(resendTimer > 0 ? "Resend in \(resendTimer)s" : "Didn't receive a code?")
+                    .foregroundColor(resendTimer > 0 ? .gray : Color(hex: "924350"))
                     .padding(.top)
-                // TODO: @aryansingh
             }
+            .disabled(resendTimer > 0)
 
             Spacer()
         }
         .padding()
+        .alert(isPresented: $showAlert) {
+            Alert(title: Text(alertTitle), message: nil, dismissButton: .default(Text("OK")))
+        }
+        .onReceive(timer) { _ in
+            if resendTimer > 0 {
+                resendTimer -= 1
+            }
+        }
     }
 
     // MARK: Private
 
     @State private var otpString: String = ""
     @FocusState private var isFieldFocused: Bool
+    @State private var showAlert = false
+    @State private var alertTitle = ""
+    @State private var resendTimer = 0
 
     private let otpLength = 6
+    private let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
 
     private func isOTPComplete() -> Bool {
         return otpString.count == otpLength
@@ -102,15 +114,24 @@ struct OTPScreen: View {
     private func verifyOTP() {
         Task {
             let success = await viewController?.verifyOTP(otp: otpString)
-            if let success, success {
-                await viewController?.navigate()
+            if let success {
+                if success {
+                    await viewController?.navigate()
+                } else {
+                    alertTitle = "Invalid OTP"
+                    showAlert = true
+                }
             }
         }
     }
 
     private func resendCode() {
         Task {
-            await viewController?.resendOTP()
+            if let otpSent = await viewController?.resendOTP(), otpSent {
+                resendTimer = 30
+                alertTitle = "OTP Sent"
+                showAlert = true
+            }
         }
     }
 }

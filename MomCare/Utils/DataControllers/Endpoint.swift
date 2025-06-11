@@ -15,6 +15,7 @@ enum Endpoint: String {
     case login = "/auth/login"
     case refresh = "/auth/refresh"
     case update = "/auth/update"
+    case updateMedicalData = "/auth/update/medical-data"
     case fetch = "/auth/fetch"
 
     // Meta

@@ -26,9 +26,10 @@ class MomCareUser {
 
     var user: User? {
         didSet {
-            if let user, oldValue != user {
-                updateToDatabase()
+            guard let user, oldValue != user else {
+                return
             }
+            updateToDatabase()
         }
     }
 
@@ -56,18 +57,6 @@ class MomCareUser {
         refreshTimer = Timer.scheduledTimer(withTimeInterval: timeInterval, repeats: false) { _ in
             Task { await self.refreshToken() }
         }
-    }
-
-    func setMedicalData(_ data: UserMedical) {
-        user?.medicalData = data
-    }
-
-    func setUser(_ user: User) {
-        self.user = user
-    }
-
-    func setUserPlan(_ plan: MyPlan) {
-        user?.plan = plan
     }
 
     func addFoodItem(_ foodItem: FoodItem, to meal: MealType) {
