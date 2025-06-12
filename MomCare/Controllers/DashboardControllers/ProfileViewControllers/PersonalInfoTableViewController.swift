@@ -64,7 +64,6 @@ class PersonalInfoTableViewController: UITableViewController, UIPickerViewDelega
 
     func updateUIForEditingMode() {
         userName.isUserInteractionEnabled = isEditingMode
-        userAge.isUserInteractionEnabled = isEditingMode
         userDOB.isUserInteractionEnabled = isEditingMode
         userHeight.isUserInteractionEnabled = isEditingMode
         userCurrentWeight.isUserInteractionEnabled = isEditingMode
@@ -72,7 +71,6 @@ class PersonalInfoTableViewController: UITableViewController, UIPickerViewDelega
         userPregnancyDay.isUserInteractionEnabled = isEditingMode
         userPregnancyWeek.isUserInteractionEnabled = isEditingMode
         userTrimester.isUserInteractionEnabled = isEditingMode
-        userPhoneNumber.isUserInteractionEnabled = isEditingMode
     }
 
     @IBAction func buttonTapped(_ sender: UIButton) {
@@ -136,11 +134,9 @@ class PersonalInfoTableViewController: UITableViewController, UIPickerViewDelega
         userPregnancyDay.setTitle(String(weekAndDay?.day ?? 0), for: .normal)
         userPregnancyWeek.setTitle(String(weekAndDay?.week ?? 0), for: .normal)
         userTrimester.setTitle(String(weekAndDay?.trimester ?? "Not Set"), for: .normal)
-        userPhoneNumber.text = user.phoneNumber
 
         let dob = userMedical.dateOfBirth
         let age = calculateAge(from: dob)
-        userAge.text = "\(age)"
 
         userDOB.date = userMedical.dateOfBirth
     }
