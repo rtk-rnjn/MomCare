@@ -7,10 +7,9 @@
 
 import UIKit
 
-class PersonalInfoTableViewController: UITableViewController, UIPickerViewDelegate, UIPickerViewDataSource {
+class PersonalInfoTableViewController: UITableViewController {
 
     @IBOutlet var userName: UITextField!
-    @IBOutlet var userAge: UITextField!
     @IBOutlet var userDOB: UIDatePicker!
     @IBOutlet var userHeight: UIButton!
     @IBOutlet var userCurrentWeight: UIButton!
@@ -18,7 +17,6 @@ class PersonalInfoTableViewController: UITableViewController, UIPickerViewDelega
     @IBOutlet var userPregnancyDay: UIButton!
     @IBOutlet var userPregnancyWeek: UIButton!
     @IBOutlet var userTrimester: UIButton!
-    @IBOutlet var userPhoneNumber: UITextField!
 
     var isEditingMode = false
     var pickerView: UIPickerView = .init()
@@ -45,21 +43,16 @@ class PersonalInfoTableViewController: UITableViewController, UIPickerViewDelega
 
     @objc func toggleEditMode() {
     isEditingMode.toggle()
-
     navigationItem.rightBarButtonItem?.title = isEditingMode ? "Save" : "Edit"
     updateUIForEditingMode()
+        
+        if !isEditingMode {
+            Task{
+                await saveUser()
+            }
+        }
 
     tableView.reloadData()
-    }
-
-    func setupPickers() {
-        pickerView.delegate = self
-        pickerView.dataSource = self
-        pickerView.backgroundColor = UIColor.systemGray5
-        pickerView.frame = CGRect(x: 0, y: view.frame.height - 350, width: view.frame.width, height: 215)
-
-        pickerView.isHidden = true
-        view.addSubview(pickerView)
     }
 
     func updateUIForEditingMode() {
@@ -68,12 +61,9 @@ class PersonalInfoTableViewController: UITableViewController, UIPickerViewDelega
         userHeight.isUserInteractionEnabled = isEditingMode
         userCurrentWeight.isUserInteractionEnabled = isEditingMode
         userPrePregnancyWeight.isUserInteractionEnabled = isEditingMode
-        userPregnancyDay.isUserInteractionEnabled = isEditingMode
-        userPregnancyWeek.isUserInteractionEnabled = isEditingMode
-        userTrimester.isUserInteractionEnabled = isEditingMode
     }
 
-    @IBAction func buttonTapped(_ sender: UIButton) {
+    @IBAction func fieldValuesButtonTapped(_ sender: UIButton) {
             activeButton = sender
             switch sender {
             case userHeight:
@@ -134,26 +124,63 @@ class PersonalInfoTableViewController: UITableViewController, UIPickerViewDelega
         userPregnancyDay.setTitle(String(weekAndDay?.day ?? 0), for: .normal)
         userPregnancyWeek.setTitle(String(weekAndDay?.week ?? 0), for: .normal)
         userTrimester.setTitle(String(weekAndDay?.trimester ?? "Not Set"), for: .normal)
-
-        let dob = userMedical.dateOfBirth
-        let age = calculateAge(from: dob)
-
         userDOB.date = userMedical.dateOfBirth
     }
-
-        // MARK: - UIPickerView Delegate & DataSource
-        func numberOfComponents(in pickerView: UIPickerView) -> Int { return 1 }
-
-        func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-            return currentPickerData.count
+    
+    func saveUser() async{
+        guard var user = MomCareUser.shared.user else { return }
+        guard var medicalData = user.medicalData else { return }
+        
+        medicalData.dateOfBirth = userDOB.date
+        
+        if let fullName = userName.text {
+            let nameParts = fullName.split(separator: " ")
+            user.firstName = nameParts.first.map(String.init) ?? ""
+            user.lastName = nameParts.dropFirst().joined(separator: " ")
+        }
+        
+        if let heightText = userHeight.title(for: .normal)?.replacingOccurrences(of: " cm", with: ""),
+               let height = Double(heightText) {
+                medicalData.height = height
+        }
+        
+        if let weightText = userCurrentWeight.title(for: .normal)?.replacingOccurrences(of: " kgs", with: ""),
+               let weight = Double(weightText) {
+                medicalData.currentWeight = weight
         }
 
-        func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-            return currentPickerData[row]
+        if let preWeightText = userPrePregnancyWeight.title(for: .normal)?.replacingOccurrences(of: " kgs", with: ""),
+           let preWeight = Double(preWeightText) {
+            medicalData.prePregnancyWeight = preWeight
         }
+        
+        await MomCareUser.shared.updateUser(user)
+        await MomCareUser.shared.updateUserMedical(medicalData)
+    }
+}
 
-    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        activeButton?.setTitle(currentPickerData[row], for: .normal)
+extension PersonalInfoTableViewController: UIPickerViewDelegate, UIPickerViewDataSource {
+    
+    func setupPickers() {
+        pickerView.delegate = self
+        pickerView.dataSource = self
+        pickerView.backgroundColor = UIColor.systemGray5
+        pickerView.frame = CGRect(x: 0, y: view.frame.height - 350, width: view.frame.width, height: 215)
+
+        pickerView.isHidden = true
+        view.addSubview(pickerView)
+    }
+    
+    func numberOfComponents(in pickerView: UIPickerView) -> Int { return 1 }
+
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        return currentPickerData.count
     }
 
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        return currentPickerData[row]
+    }
+
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {   activeButton?.setTitle(currentPickerData[row], for: .normal)
+    }
 }

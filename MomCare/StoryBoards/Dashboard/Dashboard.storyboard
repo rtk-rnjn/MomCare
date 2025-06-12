@@ -809,7 +809,7 @@
                                                                 <fontDescription key="titleFontDescription" style="UICTFontTextStyleSubhead"/>
                                                             </buttonConfiguration>
                                                             <connections>
-                                                                <action selector="buttonTapped:" destination="4dk-vA-dKF" eventType="touchUpInside" id="r4U-No-UQJ"/>
+                                                                <action selector="fieldValuesButtonTapped:" destination="4dk-vA-dKF" eventType="touchUpInside" id="r4U-No-UQJ"/>
                                                             </connections>
                                                         </button>
                                                     </subviews>
@@ -846,7 +846,7 @@
                                                                 <fontDescription key="titleFontDescription" style="UICTFontTextStyleSubhead"/>
                                                             </buttonConfiguration>
                                                             <connections>
-                                                                <action selector="buttonTapped:" destination="4dk-vA-dKF" eventType="touchUpInside" id="wbw-RJ-H1w"/>
+                                                                <action selector="fieldValuesButtonTapped:" destination="4dk-vA-dKF" eventType="touchUpInside" id="wbw-RJ-H1w"/>
                                                             </connections>
                                                         </button>
                                                     </subviews>
@@ -883,7 +883,7 @@
                                                                 <fontDescription key="titleFontDescription" style="UICTFontTextStyleSubhead"/>
                                                             </buttonConfiguration>
                                                             <connections>
-                                                                <action selector="buttonTapped:" destination="4dk-vA-dKF" eventType="touchUpInside" id="XEk-qw-KSW"/>
+                                                                <action selector="fieldValuesButtonTapped:" destination="4dk-vA-dKF" eventType="touchUpInside" id="XEk-qw-KSW"/>
                                                             </connections>
                                                         </button>
                                                     </subviews>
@@ -920,7 +920,7 @@
                                                                 <fontDescription key="titleFontDescription" style="UICTFontTextStyleSubhead"/>
                                                             </buttonConfiguration>
                                                             <connections>
-                                                                <action selector="buttonTapped:" destination="4dk-vA-dKF" eventType="touchUpInside" id="aKw-QU-ubi"/>
+                                                                <action selector="fieldValuesButtonTapped:" destination="4dk-vA-dKF" eventType="touchUpInside" id="aKw-QU-ubi"/>
                                                             </connections>
                                                         </button>
                                                     </subviews>
@@ -957,7 +957,7 @@
                                                                 <fontDescription key="titleFontDescription" style="UICTFontTextStyleSubhead"/>
                                                             </buttonConfiguration>
                                                             <connections>
-                                                                <action selector="buttonTapped:" destination="4dk-vA-dKF" eventType="touchUpInside" id="WgP-q7-yZc"/>
+                                                                <action selector="fieldValuesButtonTapped:" destination="4dk-vA-dKF" eventType="touchUpInside" id="WgP-q7-yZc"/>
                                                             </connections>
                                                         </button>
                                                     </subviews>
@@ -994,7 +994,7 @@
                                                                 <fontDescription key="titleFontDescription" style="UICTFontTextStyleSubhead"/>
                                                             </buttonConfiguration>
                                                             <connections>
-                                                                <action selector="buttonTapped:" destination="4dk-vA-dKF" eventType="touchUpInside" id="pe4-VO-ii4"/>
+                                                                <action selector="fieldValuesButtonTapped:" destination="4dk-vA-dKF" eventType="touchUpInside" id="pe4-VO-ii4"/>
                                                             </connections>
                                                         </button>
                                                     </subviews>
