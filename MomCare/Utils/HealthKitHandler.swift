@@ -132,3 +132,29 @@ class HealthKitHandler {
         healthStore.execute(query)
     }
 }
+
+extension HealthKitHandler {
+    func readStepCount() async -> Double {
+        await withCheckedContinuation { continuation in
+            fetchHealthData(quantityTypeIdentifier: .stepCount, unit: .count()) {
+                continuation.resume(returning: $0)
+            }
+        }
+    }
+
+    func readWorkout() async -> Double {
+        await withCheckedContinuation { continuation in
+            fetchHealthData(quantityTypeIdentifier: .appleExerciseTime, unit: .minute()) {
+                continuation.resume(returning: $0)
+            }
+        }
+    }
+
+    func readCaloriesBurned() async -> Double {
+        await withCheckedContinuation { continuation in
+            fetchHealthData(quantityTypeIdentifier: .activeEnergyBurned, unit: .kilocalorie()) {
+                continuation.resume(returning: $0)
+            }
+        }
+    }
+}

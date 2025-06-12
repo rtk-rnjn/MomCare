@@ -15,7 +15,7 @@ class WalkExerciseCollectionViewCell: UICollectionViewCell {
     @IBOutlet var stepsGoalLabel: UILabel!
 
     var steps: Double = 0
-    var stepsGoal: Double = 1200
+    var stepsGoal: Double = Utils.getStepGoal(week: MomCareUser.shared.user?.pregancyData?.week ?? 1)
 
     func updateElements() {
         stepsLabel.text = "\(Int(steps)) Steps"

@@ -13,47 +13,36 @@ extension DashboardViewController {
     func addHKActivityRing(to cellView: UIView, withSummary summary: HKActivitySummary? = nil) {
         cellView.layer.sublayers?.forEach { $0.removeFromSuperlayer() }
 
-        let activitySummary = summary ?? sampleHKSummary()
-
         let ringColors: [UIColor] = [
             UIColor(hex: "DF433D"),
             UIColor(hex: "30D130"),
             UIColor(hex: "DA6239")
         ]
 
-        let maxValues = extractMaxValues(from: activitySummary)
-        let currentValues = extractCurrentValues(from: activitySummary)
-
-        drawActivityRings(in: cellView, colors: ringColors, maxValues: maxValues, currentValues: currentValues)
+        Task {
+            let maxValues = await extractMaxValues()
+            let currentValues = await extractCurrentValues()
+            
+            DispatchQueue.main.async {
+                self.drawActivityRings(in: cellView, colors: ringColors, maxValues: maxValues, currentValues: currentValues)
+            }
+        }
     }
 
-    private func sampleHKSummary() -> HKActivitySummary {
-        let summary = HKActivitySummary()
-        summary.activeEnergyBurned = HKQuantity(unit: .kilocalorie(), doubleValue: 0.001)
-        summary.activeEnergyBurnedGoal = HKQuantity(unit: .kilocalorie(), doubleValue: 1)
-
-        summary.appleExerciseTime = HKQuantity(unit: .minute(), doubleValue: 0.001)
-        summary.appleExerciseTimeGoal = HKQuantity(unit: .minute(), doubleValue: 1)
-
-        summary.appleStandHours = HKQuantity(unit: .count(), doubleValue: 0.001)
-        summary.appleStandHoursGoal = HKQuantity(unit: .count(), doubleValue: 1)
-        return summary
-    }
-
-    private func extractMaxValues(from summary: HKActivitySummary) -> [Double] {
+    private func extractMaxValues() async -> [Double] {
         return [
-            summary.activeEnergyBurnedGoal.doubleValue(for: .kilocalorie()),
-            summary.appleExerciseTimeGoal.doubleValue(for: .minute()),
-            summary.appleStandHoursGoal.doubleValue(for: .count())
+            Utils.getStepGoal(week: MomCareUser.shared.user?.pregancyData?.week ?? 1),
+            await Utils.getWorkoutGoal(),
+            Utils.getCaloriesGoal(trimester: MomCareUser.shared.user?.pregancyData?.trimester ?? ""),
         ]
     }
 
-    private func extractCurrentValues(from summary: HKActivitySummary) -> [Double] {
-        return [
-            summary.activeEnergyBurned.doubleValue(for: .kilocalorie()),
-            summary.appleExerciseTime.doubleValue(for: .minute()),
-            summary.appleStandHours.doubleValue(for: .count())
-        ]
+    private func extractCurrentValues() async -> [Double] {
+        async let stepCountValue = await HealthKitHandler.shared.readStepCount()
+        async let exerciseMinutesValue = await HealthKitHandler.shared.readWorkout()
+        async let caloriesBurnedValue = await HealthKitHandler.shared.readCaloriesBurned()
+        
+        return await [stepCountValue, exerciseMinutesValue, caloriesBurnedValue]
     }
 
     private func drawActivityRings(in cellView: UIView, colors: [UIColor], maxValues: [Double], currentValues: [Double]) {

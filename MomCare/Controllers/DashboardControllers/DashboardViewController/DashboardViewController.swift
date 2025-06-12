@@ -22,20 +22,6 @@ class DashboardViewController: UIViewController, UICollectionViewDataSource, UIC
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        prepareCollectionView()
-        collectionView.showsVerticalScrollIndicator = false
-        collectionView.alwaysBounceVertical = true
-        collectionView.refreshControl = refreshControl
-
-        collectionView.delegate = self
-        navigationController?.navigationBar.prefersLargeTitles = true
-        setupProfileButton()
-
-        refreshControl.addTarget(self, action: #selector(didPullToRefresh(_:)), for: .valueChanged)
-    }
-
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
 
         Task {
             await HealthKitHandler.shared.requestAccess()
@@ -51,6 +37,26 @@ class DashboardViewController: UIViewController, UICollectionViewDataSource, UIC
                 }
             }
         }
+    }
+    
+    private func prepareElements() {
+        prepareCollectionView()
+        collectionView.showsVerticalScrollIndicator = false
+        collectionView.alwaysBounceVertical = true
+        collectionView.refreshControl = refreshControl
+
+        collectionView.delegate = self
+        navigationController?.navigationBar.prefersLargeTitles = true
+        setupProfileButton()
+
+        refreshControl.addTarget(self, action: #selector(didPullToRefresh(_:)), for: .valueChanged)
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        prepareElements()
+
+        collectionView.reloadItems(at: [IndexPath(row: 0, section: 1)])
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
