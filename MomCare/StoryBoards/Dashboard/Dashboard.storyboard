@@ -471,7 +471,7 @@
         <!--Health Details-->
         <scene sceneID="Nhz-Tp-3DX">
             <objects>
-                <tableViewController id="Fti-hv-RJM" sceneMemberID="viewController">
+                <tableViewController id="Fti-hv-RJM" customClass="HealthDetailsTableViewController" customModule="MomCare" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="insetGrouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" estimatedSectionHeaderHeight="-1" sectionFooterHeight="18" estimatedSectionFooterHeight="-1" id="ASv-8J-DP9">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="842"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -510,48 +510,10 @@
                                     </tableViewCell>
                                 </cells>
                             </tableViewSection>
-                            <tableViewSection id="Z1a-Sp-mSY">
-                                <cells>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" rowHeight="55" id="0KD-CD-H5G">
-                                        <rect key="frame" x="20" y="109" width="353" height="55"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="0KD-CD-H5G" id="8Yb-MT-xGD">
-                                            <rect key="frame" x="0.0" y="0.0" width="353" height="55"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="GvY-la-N2V">
-                                                    <rect key="frame" x="18" y="0.0" width="333" height="55"/>
-                                                    <subviews>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Blood Group" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qPK-gI-0S9">
-                                                            <rect key="frame" x="0.0" y="0.0" width="166.66666666666666" height="55"/>
-                                                            <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
-                                                            <nil key="textColor"/>
-                                                            <nil key="highlightedColor"/>
-                                                        </label>
-                                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kJU-6H-VRK">
-                                                            <rect key="frame" x="166.66666666666663" y="0.0" width="166.33333333333337" height="55"/>
-                                                            <state key="normal" title="Button"/>
-                                                            <buttonConfiguration key="configuration" style="plain" title="Not Set">
-                                                                <fontDescription key="titleFontDescription" style="UICTFontTextStyleBody"/>
-                                                            </buttonConfiguration>
-                                                        </button>
-                                                    </subviews>
-                                                </stackView>
-                                            </subviews>
-                                            <constraints>
-                                                <constraint firstAttribute="trailing" secondItem="GvY-la-N2V" secondAttribute="trailing" constant="2" id="BvX-2P-eAq"/>
-                                                <constraint firstItem="GvY-la-N2V" firstAttribute="leading" secondItem="8Yb-MT-xGD" secondAttribute="leading" constant="18" id="Swv-k9-3Fd"/>
-                                                <constraint firstAttribute="bottom" secondItem="GvY-la-N2V" secondAttribute="bottom" id="jmR-cP-Vme"/>
-                                                <constraint firstItem="GvY-la-N2V" firstAttribute="top" secondItem="8Yb-MT-xGD" secondAttribute="top" id="mTg-hd-JWG"/>
-                                            </constraints>
-                                        </tableViewCellContentView>
-                                    </tableViewCell>
-                                </cells>
-                            </tableViewSection>
                             <tableViewSection id="6Uz-Ys-yip">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" rowHeight="55" id="6tF-po-3Mk">
-                                        <rect key="frame" x="20" y="200" width="353" height="55"/>
+                                        <rect key="frame" x="20" y="109" width="353" height="55"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="6tF-po-3Mk" id="riw-kL-ZFK">
                                             <rect key="frame" x="0.0" y="0.0" width="353" height="55"/>
@@ -589,7 +551,7 @@
                             <tableViewSection id="wya-70-U1c">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" rowHeight="55" id="EcI-WK-g09">
-                                        <rect key="frame" x="20" y="291" width="353" height="55"/>
+                                        <rect key="frame" x="20" y="200" width="353" height="55"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="EcI-WK-g09" id="o8I-X5-xPn">
                                             <rect key="frame" x="0.0" y="0.0" width="353" height="55"/>
@@ -627,7 +589,7 @@
                             <tableViewSection id="dVH-Ug-O3a">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" rowHeight="55" id="CEU-Dc-UIX">
-                                        <rect key="frame" x="20" y="382" width="353" height="55"/>
+                                        <rect key="frame" x="20" y="291" width="353" height="55"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="CEU-Dc-UIX" id="3Ek-dC-kYw">
                                             <rect key="frame" x="0.0" y="0.0" width="353" height="55"/>
@@ -671,6 +633,12 @@
                     <navigationItem key="navigationItem" title="Health Details" id="2gV-6z-aXa">
                         <barButtonItem key="rightBarButtonItem" style="done" systemItem="edit" id="uf6-8L-dFs"/>
                     </navigationItem>
+                    <connections>
+                        <outlet property="userAllergies" destination="bwm-fg-idG" id="CuF-wK-asK"/>
+                        <outlet property="userDietaryPreferences" destination="yFy-ha-quh" id="ASd-SR-4oA"/>
+                        <outlet property="userDueDate" destination="kTv-3b-yXS" id="9h4-8I-HJ9"/>
+                        <outlet property="userMedicalConditions" destination="1ju-Dr-mx1" id="k2s-HH-TMY"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="IuO-CW-qz4" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
@@ -679,7 +647,7 @@
         <!--Personal Info-->
         <scene sceneID="iRU-kW-izF">
             <objects>
-                <tableViewController id="4dk-vA-dKF" customClass="PersonalInfoTableViewController" customModule="MomCare" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController id="4dk-vA-dKF" customClass="PersonalDetailsTableViewController" customModule="MomCare" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="insetGrouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" estimatedSectionHeaderHeight="-1" sectionFooterHeight="18" estimatedSectionFooterHeight="-1" id="nJ0-pn-axl">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="842"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
