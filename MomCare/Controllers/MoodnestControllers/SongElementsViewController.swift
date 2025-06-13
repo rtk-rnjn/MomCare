@@ -13,7 +13,7 @@ class SongElementsViewController: UIViewController {
 
     @IBOutlet var playlistSongLabel: UILabel!
     @IBOutlet var playlistCoverImage: UIImageView!
-    @IBOutlet var playButton: UIButton!
+    @IBOutlet var playPauseButton: UIButton!
     @IBOutlet var shuffleButton: UIButton!
 
     var playlist: (imageUri: String, label: String)?

@@ -7,11 +7,6 @@
 
 import UIKit
 
-enum MoodNestCollectionViewCellType: Int {
-    case mainHeading = 0
-    case mainImage = 1
-    case multipleImages = 2
-}
 
 class MoodNestViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
 
@@ -22,7 +17,6 @@ class MoodNestViewController: UIViewController, UICollectionViewDataSource, UICo
 
     var playlists: [(imageUri: String, label: String)] = []
     var playlistsFetched: Bool = false
-    var selectedMainPlayist: (imageUri: String, label: String)?
 
     var mood: MoodType?
 
@@ -56,34 +50,29 @@ class MoodNestViewController: UIViewController, UICollectionViewDataSource, UICo
     }
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        let cellType = MoodNestCollectionViewCellType(rawValue: section)
-        guard let cellType else { fatalError("cellType is nil") }
-
-        switch cellType {
-        case .mainHeading, .mainImage:
+        switch section {
+        case 0, 1:
             return 1
 
-        case .multipleImages:
+        case 2:
             if !playlistsFetched {
                 return 6
             }
 
             return playlists.count
+        default:
+            fatalError("Unexpected section index")
         }
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cellType = MoodNestCollectionViewCellType(rawValue: indexPath.section) else {
-            fatalError("Lag jaa gale ke phir yeh haseen raat ho na ho")
-        }
-
-        switch cellType {
-        case .mainHeading:
+        switch indexPath.section {
+        case 0:
             return configureMainHeadingCell(collectionView, indexPath)
-        case .mainImage:
-            return configureMainImageCell(collectionView, indexPath)
-        case .multipleImages:
-            return configureMultipleImagesCell(collectionView, indexPath)
+        case 1, 2:
+            return configurePlaylistCollectionViewCell(collectionView, indexPath)
+        default:
+            fatalError("Unexpected section index")
         }
     }
 
@@ -111,19 +100,16 @@ class MoodNestViewController: UIViewController, UICollectionViewDataSource, UICo
     func generateLayout() -> UICollectionViewLayout {
         return UICollectionViewCompositionalLayout { (sectionIndex: Int, _: NSCollectionLayoutEnvironment) -> NSCollectionLayoutSection? in
             let section: NSCollectionLayoutSection
-            let cellType = MoodNestCollectionViewCellType(rawValue: sectionIndex)
-            guard let cellType else { fatalError("dekha hai pehli baar, saajan ki aankhon mein pyaar") }
+            switch sectionIndex {
 
-            switch cellType {
-
-            case .mainHeading:
+            case 0:
                 section = self.generateMainHeadingLayout()
 
-            case .mainImage:
-                section = self.generateMainImageLayout()
+            case 1:
+                section = self.generateSuggestedPlaylistLayout()
 
-            case .multipleImages:
-                section = self.generateMultipleImageLayout()
+            case 2:
+                section = self.generatePlaylistLayout()
 
                 let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(44))
                 let header = NSCollectionLayoutBoundarySupplementaryItem(
@@ -131,6 +117,8 @@ class MoodNestViewController: UIViewController, UICollectionViewDataSource, UICo
                 )
 
                 section.boundarySupplementaryItems = [header]
+            default:
+                fatalError("Unexpected section index")
             }
             return section
         }
@@ -149,7 +137,7 @@ class MoodNestViewController: UIViewController, UICollectionViewDataSource, UICo
         return section
     }
 
-    func generateMainImageLayout() -> NSCollectionLayoutSection {
+    func generateSuggestedPlaylistLayout() -> NSCollectionLayoutSection {
         let mainImageLayoutSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(1.0))
         let mainImage = NSCollectionLayoutItem(layoutSize: mainImageLayoutSize)
 
@@ -162,7 +150,7 @@ class MoodNestViewController: UIViewController, UICollectionViewDataSource, UICo
         return section
     }
 
-    func generateMultipleImageLayout() -> NSCollectionLayoutSection {
+    func generatePlaylistLayout() -> NSCollectionLayoutSection {
         let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.5), heightDimension: .fractionalWidth(0.4))
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
 
@@ -186,14 +174,9 @@ class MoodNestViewController: UIViewController, UICollectionViewDataSource, UICo
             return
         }
 
-        let selectedPlaylist: (imageUri: String, label: String)
-        if indexPath.section == MoodNestCollectionViewCellType.mainImage.rawValue {
-            guard let selectedMainPlayist else { fatalError() }
-            selectedPlaylist = selectedMainPlayist
-        } else {
-            selectedPlaylist = playlists[indexPath.item]
-        }
-        performSegue(withIdentifier: "segueShowSongPageViewController", sender: selectedPlaylist)
+        let cell = collectionView.cellForItem(at: indexPath) as? PlaylistCollectionViewCell
+
+        performSegue(withIdentifier: "segueShowSongPageViewController", sender: cell?.playlist)
     }
 
     // MARK: Private
@@ -216,33 +199,8 @@ class MoodNestViewController: UIViewController, UICollectionViewDataSource, UICo
         return cell
     }
 
-    private func configureMainImageCell(_ collectionView: UICollectionView, _ indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "MainImage", for: indexPath) as? MainImageCollectionViewCell else {
-            fatalError("Pyaar hua ikraar hua hai... Pyaar se phir kyoon darta hai dil")
-        }
-
-        styleCell(cell)
-
-        if !playlistsFetched {
-            cell.startShimmer()
-            return cell
-        }
-
-        cell.stopShimmer()
-        let randomIndex = Int.random(in: 0..<playlists.count)
-        selectedMainPlayist = playlists[randomIndex]
-        Task {
-            let image = await UIImage().fetchImage(from: selectedMainPlayist?.imageUri)
-            DispatchQueue.main.async {
-                cell.updateElements(image: image, label: "Suggested For You")
-            }
-        }
-
-        return cell
-    }
-
-    private func configureMultipleImagesCell(_ collectionView: UICollectionView, _ indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "MoodNestMultipleImages", for: indexPath) as? MoodNestMultipleImagesCollectionViewCell else {
+    private func configurePlaylistCollectionViewCell(_ collectionView: UICollectionView, _ indexPath: IndexPath) -> UICollectionViewCell {
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Playlist", for: indexPath) as? PlaylistCollectionViewCell else {
             fatalError("Yeh shaam mastani, madhosh kiye jaaye")
         }
 
@@ -255,13 +213,9 @@ class MoodNestViewController: UIViewController, UICollectionViewDataSource, UICo
 
         cell.stopShimmer()
 
-        let playlist = playlists[indexPath.row]
-        Task {
-            let image = await UIImage().fetchImage(from: playlist.imageUri)
-            DispatchQueue.main.async {
-                cell.updateElements(image: image, label: playlist.label)
-            }
-        }
+        let playlist = indexPath.section == 1 ? playlists.randomElement() : playlists[indexPath.row]
+        let applyLargeTitle = indexPath.section == 1
+        cell.updateElements(with: playlist, applyLargeTitle: applyLargeTitle)
 
         return cell
     }
@@ -287,8 +241,7 @@ class MoodNestViewController: UIViewController, UICollectionViewDataSource, UICo
         collectionView.backgroundColor = .clear
 
         collectionView.register(UINib(nibName: "MainHeading", bundle: nil), forCellWithReuseIdentifier: "MainHeading")
-        collectionView.register(UINib(nibName: "MainImage", bundle: nil), forCellWithReuseIdentifier: "MainImage")
-        collectionView.register(UINib(nibName: "MoodNestMultipleImages", bundle: nil), forCellWithReuseIdentifier: "MoodNestMultipleImages")
+        collectionView.register(UINib(nibName: "Playlist", bundle: nil), forCellWithReuseIdentifier: "Playlist")
         collectionView.register(SectionHeaderCollectionViewCell.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "SectionHeaderCollectionViewCell")
 
         collectionView.dataSource = self
