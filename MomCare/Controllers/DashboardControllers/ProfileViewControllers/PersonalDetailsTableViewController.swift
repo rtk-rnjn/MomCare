@@ -7,7 +7,7 @@
 
 import UIKit
 
-class PersonalInfoTableViewController: UITableViewController {
+class PersonalDetailsTableViewController: UITableViewController {
 
     @IBOutlet var userName: UITextField!
     @IBOutlet var userDOB: UIDatePicker!
@@ -159,7 +159,7 @@ class PersonalInfoTableViewController: UITableViewController {
     }
 }
 
-extension PersonalInfoTableViewController: UIPickerViewDelegate, UIPickerViewDataSource {
+extension PersonalDetailsTableViewController: UIPickerViewDelegate, UIPickerViewDataSource {
     
     func setupPickers() {
         pickerView.delegate = self
