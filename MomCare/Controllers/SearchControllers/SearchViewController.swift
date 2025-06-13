@@ -42,7 +42,7 @@ class SearchViewController: UIViewController, UISearchResultsUpdating, UISearchC
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         navigationItem.searchController = searchBarController
         searchBarController.searchResultsUpdater = self
 
@@ -54,10 +54,10 @@ class SearchViewController: UIViewController, UISearchResultsUpdating, UISearchC
 
         prepareTable()
     }
-    
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
+
         searchBarController.isActive = true
 
         DispatchQueue.main.async {
@@ -84,7 +84,7 @@ class SearchViewController: UIViewController, UISearchResultsUpdating, UISearchC
             DispatchQueue.main.async {
                 self.tableView.reloadData()
             }
-        }    }
+        } }
 
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         searchBar.text = ""
@@ -128,7 +128,7 @@ extension SearchViewController: UITableViewDelegate, UITableViewDataSource {
         cell.updateElements(with: searchedFood[indexPath.row], sender: self)
         return cell
     }
-    
+
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
     }

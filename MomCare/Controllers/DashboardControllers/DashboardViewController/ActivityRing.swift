@@ -33,7 +33,7 @@ extension DashboardViewController {
         return [
             Utils.getStepGoal(week: MomCareUser.shared.user?.pregancyData?.week ?? 1),
             await Utils.getWorkoutGoal(),
-            Utils.getCaloriesGoal(trimester: MomCareUser.shared.user?.pregancyData?.trimester ?? ""),
+            Utils.getCaloriesGoal(trimester: MomCareUser.shared.user?.pregancyData?.trimester ?? "")
         ]
     }
 

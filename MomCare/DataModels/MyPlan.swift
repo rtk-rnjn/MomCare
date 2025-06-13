@@ -70,7 +70,7 @@ struct FoodItem: Codable, Sendable, Equatable {
             return await UIImage().fetchImage(from: imageUri)
         }
     }
-    
+
     var serving: String {
         return "1 serving"
         // TODO: Implement serving size logic

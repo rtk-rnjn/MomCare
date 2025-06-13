@@ -196,7 +196,7 @@ class DietTableViewController: UITableViewController {
               !foods[indexPath.row - 1].consumed else {
             return nil
         }
-        
+
         let foodName = foods[indexPath.row - 1].name
         let mealName = mealNames[indexPath.section]
 
@@ -210,7 +210,7 @@ class DietTableViewController: UITableViewController {
                         self.tableView.reloadData()
                     }
                 ]
-                
+
                 let alert = Utils.getAlert(title: "", message: "\(foodName) will be deleted from your \(mealName) plan", actions: actionHandlers)
 
                 self.present(alert, animated: true)

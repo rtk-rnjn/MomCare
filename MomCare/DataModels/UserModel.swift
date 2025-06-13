@@ -101,11 +101,11 @@ struct User: Codable, Sendable, Equatable {
     var lastMood: MoodType? {
         return moodHistory.sorted(by: { $0.date > $1.date }).first?.mood
     }
-    
+
     var totalExercisesSeconds: Double {
         return exercises.reduce(0) { $0 + ($1.duration ?? 0) }
     }
-    
+
     var totalExercisesDurationComplete: Double {
         return exercises.reduce(0) { $0 + ($1.durationCompleted) }
     }
