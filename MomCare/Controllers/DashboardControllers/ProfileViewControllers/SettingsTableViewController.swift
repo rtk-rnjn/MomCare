@@ -25,9 +25,4 @@ class SettingsTableViewController: UITableViewController {
         userEmail.text = user.emailAddress
         userPhoneNumber.text = user.phoneNumber
     }
-    
-    @IBAction func chnagePassButtonTapped(_ sender: UIButton) {
-        
-    }
-    
 }
