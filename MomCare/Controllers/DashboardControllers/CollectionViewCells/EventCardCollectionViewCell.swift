@@ -32,7 +32,7 @@ class EventCardCollectionViewCell: UICollectionViewCell {
     @IBOutlet var eventDateLabel: UILabel!
 
     @IBOutlet var addEventButton: UIButton!
-    
+
     var tapHandler: (() -> Void)?
     var segueHandler: (() -> Void)?
     var event: EKEvent?

@@ -88,6 +88,22 @@ struct MyPlan: Codable, Sendable, Equatable {
 
     var createdAt: Date?
 
+    var totalProtien: Double {
+        return allMeals().reduce(0) { $0 + $1.protein }
+    }
+
+    var totalCalories: Double {
+        return allMeals().reduce(0) { $0 + $1.calories }
+    }
+
+    var totalCarbs: Double {
+        return allMeals().reduce(0) { $0 + $1.carbs }
+    }
+
+    var totalFat: Double {
+        return allMeals().reduce(0) { $0 + $1.fat }
+    }
+
     func allMeals() -> [FoodItem] {
         return breakfast + lunch + snacks + dinner
     }
@@ -127,6 +143,7 @@ struct MyPlan: Codable, Sendable, Equatable {
             }
         }
     }
+
 }
 
 struct Exercise: Codable, Sendable, Equatable {

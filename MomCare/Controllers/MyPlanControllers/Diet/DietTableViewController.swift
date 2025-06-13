@@ -10,18 +10,6 @@ class DietTableViewController: UITableViewController {
     var dietViewController: DietViewController?
     var dataFetched: Bool = false
 
-    final var proteinGoal: Double {
-        return sumNutrition(\.protein)
-    }
-
-    final var carbsGoal: Double {
-        return sumNutrition(\.carbs)
-    }
-
-    final var fatsGoal: Double {
-        return sumNutrition(\.fat)
-    }
-
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         updatePlan()
@@ -74,10 +62,6 @@ class DietTableViewController: UITableViewController {
     // MARK: Private
 
     private let mealNames = ["Breakfast", "Lunch", "Snacks", "Dinner"]
-
-    private func sumNutrition(_ keyPath: KeyPath<FoodItem, Double>) -> Double {
-        return Double(ContentHandler.shared.plan?.allMeals().reduce(0) { $0 + $1[keyPath: keyPath] } ?? 0)
-    }
 
     private func registerCells() {
         tableView.register(UINib(nibName: "HeaderCell", bundle: nil), forCellReuseIdentifier: "HeaderCell")

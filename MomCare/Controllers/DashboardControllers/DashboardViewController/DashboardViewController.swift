@@ -38,20 +38,7 @@ class DashboardViewController: UIViewController, UICollectionViewDataSource, UIC
             }
         }
     }
-    
-    private func prepareElements() {
-        prepareCollectionView()
-        collectionView.showsVerticalScrollIndicator = false
-        collectionView.alwaysBounceVertical = true
-        collectionView.refreshControl = refreshControl
 
-        collectionView.delegate = self
-        navigationController?.navigationBar.prefersLargeTitles = true
-        setupProfileButton()
-
-        refreshControl.addTarget(self, action: #selector(didPullToRefresh(_:)), for: .valueChanged)
-    }
-    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         prepareElements()
@@ -155,6 +142,19 @@ class DashboardViewController: UIViewController, UICollectionViewDataSource, UIC
     private let cellIdentifiers = ["WeekCard", "EventCard", "DietProgress", "ExerciseProgress", "FocusCard", "TipCard"]
     private let headerIdentifier = "SectionHeaderView"
     private let interItemSpacing: CGFloat = 15
+
+    private func prepareElements() {
+        prepareCollectionView()
+        collectionView.showsVerticalScrollIndicator = false
+        collectionView.alwaysBounceVertical = true
+        collectionView.refreshControl = refreshControl
+
+        collectionView.delegate = self
+        navigationController?.navigationBar.prefersLargeTitles = true
+        setupProfileButton()
+
+        refreshControl.addTarget(self, action: #selector(didPullToRefresh(_:)), for: .valueChanged)
+    }
 
     @objc private func didPullToRefresh(_ sender: Any) {
         refreshControl.beginRefreshing()

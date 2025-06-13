@@ -22,7 +22,7 @@ extension DashboardViewController {
         Task {
             let maxValues = await extractMaxValues()
             let currentValues = await extractCurrentValues()
-            
+
             DispatchQueue.main.async {
                 self.drawActivityRings(in: cellView, colors: ringColors, maxValues: maxValues, currentValues: currentValues)
             }
@@ -41,7 +41,7 @@ extension DashboardViewController {
         async let stepCountValue = await HealthKitHandler.shared.readStepCount()
         async let exerciseMinutesValue = await HealthKitHandler.shared.readWorkout()
         async let caloriesBurnedValue = await HealthKitHandler.shared.readCaloriesBurned()
-        
+
         return await [stepCountValue, exerciseMinutesValue, caloriesBurnedValue]
     }
 

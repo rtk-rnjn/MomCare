@@ -117,12 +117,12 @@ enum Utils {
             return 1
         }
     }
-    
+
     static func getStepGoal(week: Int) -> Double {
         return 1200
         // TODO: fix this shit
     }
-    
+
     static func getWorkoutGoal() async -> Double {
         return 2
         // TODO: fix this
