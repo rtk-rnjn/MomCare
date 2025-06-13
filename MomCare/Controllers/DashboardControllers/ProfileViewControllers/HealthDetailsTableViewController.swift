@@ -18,6 +18,7 @@ class HealthDetailsTableViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        updatePageElements()
         
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Edit", style: .plain, target: self, action: #selector(toggleEditMode))
     }
@@ -26,6 +27,7 @@ class HealthDetailsTableViewController: UITableViewController {
         isEditingMode.toggle()
         navigationItem.rightBarButtonItem?.title = isEditingMode ? "Save" : "Edit"
         updateUIForEditingMode()
+        
     }
     
     func updateUIForEditingMode(){
@@ -39,7 +41,15 @@ class HealthDetailsTableViewController: UITableViewController {
         guard let userMedical = MomCareUser.shared.user?.medicalData else { return }
         
         userDueDate.date = userMedical.dueDate!
-            
-        }
+        userMedicalConditions.setTitle("\(userMedical.preExistingConditions.count)", for: .normal)
+        userDietaryPreferences.setTitle("\(userMedical.dietaryPreferences.count)", for: .normal)
+        userAllergies.setTitle("\(userMedical.foodIntolerances.count)", for: .normal)
+    }
+    
+    func saveHealtghDetails(){
+        
+    }
+        
+    
 }
 
