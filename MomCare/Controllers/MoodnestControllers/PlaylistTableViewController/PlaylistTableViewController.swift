@@ -113,14 +113,11 @@ class PlaylistTableViewController: UITableViewController {
     }
 
     func setupInitialUI() {
-        songElementsViewController?.playButton.addTarget(self, action: #selector(playFromSongElementsViewController), for: .touchUpInside)
+        songElementsViewController?.playPauseButton.addTarget(self, action: #selector(playPauseFromSongElementsViewController), for: .touchUpInside)
         songElementsViewController?.shuffleButton.addTarget(self, action: #selector(shuffleFromSongElementsViewController), for: .touchUpInside)
 
-        songElementsViewController?.playButton.isEnabled = false
+        songElementsViewController?.playPauseButton.isEnabled = false
         songElementsViewController?.shuffleButton.isEnabled = false
-
-        songElementsViewController?.playButton.startShimmer()
-        songElementsViewController?.shuffleButton.startShimmer()
     }
 
     func reloadData() {
@@ -137,11 +134,11 @@ class PlaylistTableViewController: UITableViewController {
                 self.tableView.reloadData()
 
                 if !self.songs.isEmpty {
-                    self.songElementsViewController?.playButton.isEnabled = true
+                    self.songElementsViewController?.playPauseButton.isEnabled = true
                     self.songElementsViewController?.shuffleButton.isEnabled = true
                 }
 
-                self.songElementsViewController?.playButton.stopShimmer()
+                self.songElementsViewController?.playPauseButton.stopShimmer()
                 self.songElementsViewController?.shuffleButton.stopShimmer()
             }
         }
@@ -288,7 +285,15 @@ class PlaylistTableViewController: UITableViewController {
 }
 
 extension PlaylistTableViewController {
-    @objc func playFromSongElementsViewController() {}
+    @objc func playPauseFromSongElementsViewController() {
+        guard let song = songs.first else { return }
+
+        if player == nil {
+            setupMusicPlayer(with: song)
+        } else {
+            playPauseButtonTapped(songElementsViewController?.playPauseButton)
+        }
+    }
 
     @objc func shuffleFromSongElementsViewController() {
         if player == nil {

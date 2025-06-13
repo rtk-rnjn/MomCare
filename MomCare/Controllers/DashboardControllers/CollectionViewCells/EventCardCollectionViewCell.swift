@@ -31,6 +31,8 @@ class EventCardCollectionViewCell: UICollectionViewCell {
     @IBOutlet var upcomingEventLabel: UILabel!
     @IBOutlet var eventDateLabel: UILabel!
 
+    @IBOutlet var addEventButton: UIButton!
+
     var tapHandler: (() -> Void)?
     var segueHandler: (() -> Void)?
     var event: EKEvent?
@@ -42,6 +44,7 @@ class EventCardCollectionViewCell: UICollectionViewCell {
             let dateFormatter = DateFormatter()
             dateFormatter.dateFormat = "dd MMMM"
             eventDateLabel.isHidden = false
+            addEventButton.isHidden = !eventDateLabel.isHidden
             eventDateLabel.text = dateFormatter.string(from: event.startDate)
         }
 

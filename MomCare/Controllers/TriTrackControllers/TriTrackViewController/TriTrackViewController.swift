@@ -41,8 +41,8 @@ class TriTrackViewController: UIViewController, FSCalendarDelegate, FSCalendarDa
     override func viewDidLoad() {
         super.viewDidLoad()
         prepareFSCalendar()
-        calendarView.appearance.todayColor = .clear
-        calendarView.appearance.titleTodayColor = .red
+        fsCalendarView.appearance.todayColor = .clear
+        fsCalendarView.appearance.titleTodayColor = .red
 
         Task {
             await EventKitHandler.shared.requestAccessForEvent()
@@ -113,7 +113,7 @@ class TriTrackViewController: UIViewController, FSCalendarDelegate, FSCalendarDa
 
     // MARK: Private
 
-    private var calendarView: FSCalendar!
+    private var fsCalendarView: FSCalendar!
 
     private func refreshAll() {
         symptomsViewController?.symptomsTableViewController?.refreshData()
@@ -122,13 +122,14 @@ class TriTrackViewController: UIViewController, FSCalendarDelegate, FSCalendarDa
     }
 
     private func prepareFSCalendar() {
-        calendarView = FSCalendar(frame: CGRect(x: 0, y: 0, width: calendarUIView.frame.width, height: calendarUIView.frame.height + 150))
-        calendarView.scope = .week
-        calendarView.select(selectedFSCalendarDate)
+        fsCalendarView = FSCalendar(frame: CGRect(x: 0, y: 0, width: calendarUIView.frame.width, height: calendarUIView.frame.height + 150))
+        fsCalendarView.scope = .week
+        fsCalendarView.select(selectedFSCalendarDate)
 
-        calendarView.dataSource = self
-        calendarView.delegate = self
+        fsCalendarView.dataSource = self
+        fsCalendarView.delegate = self
+        // TODO: @aryansingh
 
-        calendarUIView.addSubview(calendarView)
+        calendarUIView.addSubview(fsCalendarView)
     }
 }

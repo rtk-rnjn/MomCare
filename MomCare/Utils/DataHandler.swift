@@ -77,6 +77,11 @@ extension CacheHandler {
             return image
         }
 
+        let s3Link = parseIfS3Link(url: url)
+        if let image = fetchFromCache(url: s3Link) {
+            return image
+        }
+
         if let image = fetchImageFromDatabase(url: url) {
             return image
         }
@@ -124,6 +129,8 @@ extension CacheHandler {
             let (data, _) = try await URLSession.shared.data(from: url)
             guard let image = UIImage(data: data) else { return nil }
 
+            let url = parseIfS3Link(url: url)
+
             saveToCache(image, for: url)
             saveImageToDatabase(image, url: url, data: data)
             return image
@@ -131,6 +138,21 @@ extension CacheHandler {
             logger.error("Failed to fetch image from URL: \(url.absoluteString), error: \(String(describing: error))")
             return nil
         }
+    }
+
+    private func parseIfS3Link(url: URL) -> URL {
+        if !url.absoluteString.contains("amazonaws.com") {
+            return url
+        }
+
+        var components = URLComponents(url: url, resolvingAgainstBaseURL: false)
+        components?.query = nil
+        guard let url = components?.url else {
+            logger.error("Failed to parse URL: \(url.absoluteString)")
+            return url
+        }
+
+        return url
     }
 
     private func fetchFromCache(url: URL) -> UIImage? {
@@ -149,6 +171,7 @@ extension CacheHandler {
 
     private func saveToCache(_ image: UIImage, for url: URL) {
         let entity = Entity<UIImage>(value: image)
+        logger.debug("Saving image to cache for URL: \(url.absoluteString)")
         cache.setObject(entity, forKey: url as AnyObject)
     }
 }

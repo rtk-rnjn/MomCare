@@ -14,11 +14,16 @@ extension PlaylistTableViewController: MusicPlayerDelegate {
         try AVAudioSession.sharedInstance().setActive(true)
     }
 
-    func updateNowPlayingInfo(_ song: Song) async {
-        var nowPlayingInfo: [String: Any] = [
-            MPMediaItemPropertyTitle: song.metadata?.title ?? "Unknown Title",
-            MPMediaItemPropertyArtist: song.metadata?.artist ?? "Unknown Artist"
-        ]
+    private func updateNowPlayingInfo(_ song: Song) async {
+        var nowPlayingInfo: [String: Any] = [:]
+
+        if let title = song.metadata?.title {
+            nowPlayingInfo[MPMediaItemPropertyTitle] = title
+        }
+
+        if let artist = song.metadata?.artist {
+            nowPlayingInfo[MPMediaItemPropertyArtist] = artist
+        }
         let image = await song.image
         if let image {
             nowPlayingInfo[MPMediaItemPropertyArtwork] = MPMediaItemArtwork(boundsSize: image.size) { _ in
@@ -45,9 +50,9 @@ extension PlaylistTableViewController: MusicPlayerDelegate {
 
         updatePlayPauseUI(setImage: imageName)
 
-        Task {
-            guard let song = musicPlayer.song else { return }
-            await updateNowPlayingInfo(song)
+        Task.detached(priority: .background) {
+            guard let song = await self.musicPlayer.song else { return }
+            await self.updateNowPlayingInfo(song)
         }
     }
 
@@ -58,8 +63,8 @@ extension PlaylistTableViewController: MusicPlayerDelegate {
         initialTabBarController?.popupBar.popupItem?.barButtonItems?.first(where: { $0.action == #selector(playPauseButtonTapped) })?.image = UIImage(systemName: imageName, withConfiguration: config)
 
         if let viewController = songElementsViewController {
-            viewController.playButton.setImage(UIImage(systemName: imageName), for: .normal)
-            viewController.playButton.titleLabel?.text = imageName == "play.fill" ? "Play" : "Pause"
+            viewController.playPauseButton.setImage(UIImage(systemName: imageName), for: .normal)
+            viewController.playPauseButton.titleLabel?.text = imageName == "play.fill" ? "Play" : "Pause"
         }
     }
 
@@ -101,13 +106,32 @@ extension PlaylistTableViewController: MusicPlayerDelegate {
     }
 
     func setupRemoteTransportControls() {
-        commandCenter.playCommand.addTarget { [unowned self] _ in
-            player?.play()
+        commandCenter.playCommand.addTarget { _ in
+            self.player?.play()
             return .success
         }
 
-        commandCenter.pauseCommand.addTarget { [unowned self] _ in
-            player?.pause()
+        commandCenter.pauseCommand.addTarget { _ in
+            self.player?.pause()
+            return .success
+        }
+
+        commandCenter.togglePlayPauseCommand.addTarget { _ in
+            self.playPauseButtonTapped(nil)
+            return .success
+        }
+
+        commandCenter.skipForwardCommand.isEnabled = true
+        commandCenter.skipForwardCommand.preferredIntervals = [15]
+        commandCenter.skipForwardCommand.addTarget { _ in
+            self.player?.seek(to: CMTime(seconds: (self.player?.currentTime().seconds ?? 0) + 15, preferredTimescale: 1))
+            return .success
+        }
+
+        commandCenter.skipBackwardCommand.isEnabled = true
+        commandCenter.skipBackwardCommand.preferredIntervals = [15]
+        commandCenter.skipBackwardCommand.addTarget { _ in
+            self.player?.seek(to: CMTime(seconds: (self.player?.currentTime().seconds ?? 0) - 15, preferredTimescale: 1))
             return .success
         }
     }

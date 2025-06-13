@@ -62,7 +62,7 @@ class RemindersTableViewController: UITableViewController {
 
         let reminder = reminders[indexPath.row]
 
-        return UIContextMenuConfiguration(identifier: nil, previewProvider: previewProdiver(for: indexPath)) { _ in
+        return UIContextMenuConfiguration(identifier: nil, previewProvider: previewProvider(for: indexPath)) { _ in
             let deleteAction = UIAction(title: "Delete", image: UIImage(systemName: "trash"), attributes: .destructive) { _ in
                 EventKitHandler.shared.deleteReminder(reminder: reminder)
                 self.reminders.remove(at: indexPath.row)
@@ -90,7 +90,7 @@ class RemindersTableViewController: UITableViewController {
 
     // MARK: Private
 
-    private func previewProdiver(for indexPath: IndexPath) -> () -> UIViewController? {
+    private func previewProvider(for indexPath: IndexPath) -> () -> UIViewController? {
         return {
             let cell = self.tableView.dequeueReusableCell(withIdentifier: "ReminderCell", for: indexPath) as? RemindersTableViewCell
             guard let cell else { fatalError("Failed to dequeue RemindersTableViewCell") }

@@ -22,20 +22,6 @@ class DashboardViewController: UIViewController, UICollectionViewDataSource, UIC
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        prepareCollectionView()
-        collectionView.showsVerticalScrollIndicator = false
-        collectionView.alwaysBounceVertical = true
-        collectionView.refreshControl = refreshControl
-
-        collectionView.delegate = self
-        navigationController?.navigationBar.prefersLargeTitles = true
-        setupProfileButton()
-
-        refreshControl.addTarget(self, action: #selector(didPullToRefresh(_:)), for: .valueChanged)
-    }
-
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
 
         Task {
             await HealthKitHandler.shared.requestAccess()
@@ -51,6 +37,13 @@ class DashboardViewController: UIViewController, UICollectionViewDataSource, UIC
                 }
             }
         }
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        prepareElements()
+
+        collectionView.reloadItems(at: [IndexPath(row: 0, section: 1)])
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -150,6 +143,19 @@ class DashboardViewController: UIViewController, UICollectionViewDataSource, UIC
     private let headerIdentifier = "SectionHeaderView"
     private let interItemSpacing: CGFloat = 15
 
+    private func prepareElements() {
+        prepareCollectionView()
+        collectionView.showsVerticalScrollIndicator = false
+        collectionView.alwaysBounceVertical = true
+        collectionView.refreshControl = refreshControl
+
+        collectionView.delegate = self
+        navigationController?.navigationBar.prefersLargeTitles = true
+        setupProfileButton()
+
+        refreshControl.addTarget(self, action: #selector(didPullToRefresh(_:)), for: .valueChanged)
+    }
+
     @objc private func didPullToRefresh(_ sender: Any) {
         refreshControl.beginRefreshing()
         Task {
@@ -224,5 +230,76 @@ class DashboardViewController: UIViewController, UICollectionViewDataSource, UIC
             }
         }
     }
+}
 
+extension DashboardViewController {
+    func collectionView(_ collectionView: UICollectionView, contextMenuConfigurationForItemsAt indexPaths: [IndexPath], point: CGPoint) -> UIContextMenuConfiguration? {
+        let previewProvider: () -> UIViewController? = {
+            for indexPath in indexPaths {
+                if let provider = self.previewProvider(for: indexPath) {
+                    return provider()
+                }
+            }
+
+            return nil
+        }
+
+        for indexPath in indexPaths {
+            if let contextMenu = contextMenu(indexPath) {
+                return contextMenu
+            }
+        }
+
+        return nil
+    }
+
+    private func previewCalendarProvider(for indexPath: IndexPath) -> UIViewController? {
+        let event = EventKitHandler.shared.fetchUpcomingAppointment()
+        let cell = collectionView.cellForItem(at: indexPath) as? EventCardCollectionViewCell
+
+        guard let cell, let event else {
+            return nil
+        }
+
+        return EventDetailsViewController(event: event, cell: cell)
+    }
+
+    private func contextMenuForEventCard(_ indexPath: IndexPath) -> UIContextMenuConfiguration? {
+        if let previewProvider = previewProvider(for: indexPath) {
+            return UIContextMenuConfiguration(previewProvider: previewProvider) { _ in
+                return UIMenu(children: [
+                    UIAction(title: "View event in calendar", image: UIImage(systemName: "calendar")) { _ in
+                        guard let event = EventKitHandler.shared.fetchUpcomingAppointment() else { return }
+                        let startDate = event.startDate
+                        let interval = startDate?.timeIntervalSinceReferenceDate
+
+                        guard let interval else { return }
+                        if let url = URL(string: "calshow:\(interval)") {
+                            UIApplication.shared.open(url, options: [:], completionHandler: nil)
+                        }
+                    }
+                ])
+            }
+        }
+
+        return nil
+    }
+
+    private func contextMenu(_ indexPath: IndexPath) -> UIContextMenuConfiguration? {
+        if indexPath.section == 0 && indexPath.row == 1 {
+            return contextMenuForEventCard(indexPath)
+        }
+
+        return nil
+    }
+
+    private func previewProvider(for indexPath: IndexPath) -> (() -> UIViewController?)? {
+        if indexPath.section == 0 && indexPath.row == 1 {
+            return {
+                return self.previewCalendarProvider(for: indexPath)
+            }
+        }
+
+        return nil
+    }
 }

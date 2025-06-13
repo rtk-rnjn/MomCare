@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="23504" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="Y6W-OH-hqX">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="23727" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="Y6W-OH-hqX">
     <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23506"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23721"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -17,16 +17,16 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="6jf-2I-5pA">
-                                <rect key="frame" x="0.0" y="59" width="393" height="759"/>
+                                <rect key="frame" x="0.0" y="118" width="393" height="666"/>
                                 <subviews>
                                     <containerView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="aGr-Se-l3b">
-                                        <rect key="frame" x="0.0" y="0.0" width="393" height="379.66666666666669"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="393" height="333"/>
                                         <connections>
                                             <segue destination="jC5-F0-ycI" kind="embed" identifier="embedShowTrimesterStatsViewController" id="seh-0c-8xr"/>
                                         </connections>
                                     </containerView>
                                     <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Emh-9T-5Vk">
-                                        <rect key="frame" x="0.0" y="379.66666666666674" width="393" height="379.33333333333326"/>
+                                        <rect key="frame" x="0.0" y="333" width="393" height="333"/>
                                         <connections>
                                             <segue destination="wGc-dr-JYr" kind="embed" identifier="embedShowBabyMomStatsTipViewController" id="rfg-cJ-AF6"/>
                                         </connections>
@@ -57,11 +57,11 @@
             <objects>
                 <viewController id="jC5-F0-ycI" customClass="TrimesterStatsViewController" customModule="MomCare" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="eo0-IJ-CGf">
-                        <rect key="frame" x="0.0" y="0.0" width="393" height="379.66666666666669"/>
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="333"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="23" translatesAutoresizingMaskIntoConstraints="NO" id="Nlp-Ei-UCG">
-                                <rect key="frame" x="16" y="69" width="361" height="276.66666666666669"/>
+                                <rect key="frame" x="16" y="127.99999999999999" width="361" height="217.66666666666663"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="nux-U4-nVO">
                                         <rect key="frame" x="0.0" y="0.0" width="361" height="23"/>
@@ -81,7 +81,7 @@
                                         </subviews>
                                     </stackView>
                                     <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="EEN-7L-OqU">
-                                        <rect key="frame" x="0.0" y="45.999999999999986" width="361" height="230.66666666666663"/>
+                                        <rect key="frame" x="0.0" y="45.999999999999986" width="361" height="171.66666666666663"/>
                                         <connections>
                                             <segue destination="exA-3n-zZ4" kind="embed" identifier="embedShowBabyComparisionViewController" id="txC-FX-peW"/>
                                         </connections>
@@ -112,27 +112,27 @@
             <objects>
                 <viewController id="wGc-dr-JYr" customClass="BabyMomStatsTipViewController" customModule="MomCare" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="MMG-0n-a47">
-                        <rect key="frame" x="0.0" y="0.0" width="393" height="379.33333333333331"/>
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="333"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cz6-iJ-8fj" userLabel="DividerView">
-                                <rect key="frame" x="16" y="59" width="361" height="1"/>
+                                <rect key="frame" x="16" y="118" width="361" height="1"/>
                                 <color key="backgroundColor" systemColor="systemGray6Color"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="1" id="of4-9P-NBA"/>
                                 </constraints>
                             </view>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillProportionally" translatesAutoresizingMaskIntoConstraints="NO" id="sFS-00-EZe">
-                                <rect key="frame" x="0.0" y="60" width="393" height="285.33333333333331"/>
+                                <rect key="frame" x="0.0" y="119.00000000000001" width="393" height="226.33333333333337"/>
                                 <subviews>
                                     <containerView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="ZBL-mR-uI9">
-                                        <rect key="frame" x="0.0" y="0.0" width="393" height="133.33333333333334"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="393" height="105.66666666666667"/>
                                         <connections>
                                             <segue destination="Saz-UF-WdO" kind="embed" identifier="embedShowBabyStatsViewController" id="Ez9-h5-HHT"/>
                                         </connections>
                                     </containerView>
                                     <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Jwm-qL-4b5">
-                                        <rect key="frame" x="0.0" y="133.33333333333334" width="393" height="152.00000000000003"/>
+                                        <rect key="frame" x="0.0" y="105.66666666666666" width="393" height="120.66666666666666"/>
                                         <connections>
                                             <segue destination="QJj-Wh-XkK" kind="embed" identifier="embedShowBabyMomTipViewController" id="Srj-JP-7Ox"/>
                                         </connections>
@@ -163,30 +163,30 @@
             <objects>
                 <viewController id="exA-3n-zZ4" customClass="BabyComparisionViewController" customModule="MomCare" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Avf-2p-BjB">
-                        <rect key="frame" x="0.0" y="0.0" width="361" height="230.66666666666666"/>
+                        <rect key="frame" x="0.0" y="0.0" width="361" height="171.66666666666666"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="Ia9-sb-ut1">
-                                <rect key="frame" x="30" y="59" width="301" height="137.66666666666666"/>
+                                <rect key="frame" x="30" y="118" width="301" height="19.666666666666657"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="viy-Rn-IPr">
-                                        <rect key="frame" x="0.0" y="0.0" width="301" height="69"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="301" height="10"/>
                                         <subviews>
-                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="apple-fruit-svgrepo-com" translatesAutoresizingMaskIntoConstraints="NO" id="5i1-cG-aJe" userLabel="Left Image View">
-                                                <rect key="frame" x="0.0" y="0.0" width="100.33333333333333" height="69"/>
+                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="5i1-cG-aJe" userLabel="Left Image View">
+                                                <rect key="frame" x="0.0" y="0.0" width="100.33333333333333" height="10"/>
                                             </imageView>
                                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="reference" translatesAutoresizingMaskIntoConstraints="NO" id="NmQ-SD-c6h" userLabel="Symbol Image View">
-                                                <rect key="frame" x="100.33333333333334" y="0.0" width="100.33333333333334" height="69"/>
+                                                <rect key="frame" x="100.33333333333334" y="0.0" width="100.33333333333334" height="10"/>
                                                 <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                 <preferredSymbolConfiguration key="preferredSymbolConfiguration" scale="small"/>
                                             </imageView>
                                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Month1" translatesAutoresizingMaskIntoConstraints="NO" id="fr9-2b-Si6" userLabel="Right Image View">
-                                                <rect key="frame" x="200.66666666666666" y="0.0" width="100.33333333333334" height="69"/>
+                                                <rect key="frame" x="200.66666666666666" y="0.0" width="100.33333333333334" height="10"/>
                                             </imageView>
                                         </subviews>
                                     </stackView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="“I’m currently the size of an Apple”" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3Ee-xq-r4C">
-                                        <rect key="frame" x="0.0" y="69" width="301" height="68.666666666666686"/>
+                                        <rect key="frame" x="0.0" y="10" width="301" height="9.6666666666666643"/>
                                         <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
@@ -218,29 +218,29 @@
             <objects>
                 <viewController id="Saz-UF-WdO" customClass="BabyStatsViewController" customModule="MomCare" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="XwW-ap-1MN">
-                        <rect key="frame" x="0.0" y="0.0" width="393" height="133.33333333333334"/>
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="105.66666666666667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="sXH-YE-FbT">
-                                <rect key="frame" x="20" y="59" width="353" height="40.333333333333343"/>
+                                <rect key="frame" x="20" y="118.00000000000001" width="353" height="49.666666666666671"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" alignment="center" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="Beo-S9-Zfp">
-                                        <rect key="frame" x="0.0" y="0.0" width="176.66666666666666" height="40.333333333333336"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="176.66666666666666" height="49.666666666666664"/>
                                         <subviews>
                                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" image="height-line" translatesAutoresizingMaskIntoConstraints="NO" id="yhD-x2-wyq">
-                                                <rect key="frame" x="0.0" y="0.0" width="85.666666666666671" height="40.333333333333336"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="85.666666666666671" height="49.666666666666664"/>
                                             </imageView>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" alignment="top" translatesAutoresizingMaskIntoConstraints="NO" id="gJU-9r-DRd">
-                                                <rect key="frame" x="90.666666666666686" y="3.6666666666666643" width="86" height="33"/>
+                                                <rect key="frame" x="90.666666666666686" y="4.6666666666666714" width="86" height="40.666666666666664"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="1000" verticalHuggingPriority="1000" text="Height" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="m9J-Fw-4b0">
-                                                        <rect key="frame" x="0.0" y="0.0" width="50.666666666666664" height="16.666666666666668"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="50.666666666666664" height="20.333333333333332"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                         <nil key="textColor"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="1000" verticalHuggingPriority="1000" text="NaN cm" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="M7k-Xp-T1b">
-                                                        <rect key="frame" x="0.0" y="16.666666666666664" width="64" height="16.333333333333336"/>
+                                                        <rect key="frame" x="0.0" y="20.333333333333329" width="64" height="20.333333333333329"/>
                                                         <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
                                                         <nil key="textColor"/>
                                                         <nil key="highlightedColor"/>
@@ -253,22 +253,22 @@
                                         </constraints>
                                     </stackView>
                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" alignment="center" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="7Ia-Lt-aHE">
-                                        <rect key="frame" x="176.66666666666663" y="0.0" width="176.33333333333337" height="40.333333333333336"/>
+                                        <rect key="frame" x="176.66666666666663" y="0.0" width="176.33333333333337" height="49.666666666666664"/>
                                         <subviews>
                                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" image="scale-line" translatesAutoresizingMaskIntoConstraints="NO" id="rfo-g6-Dj7">
-                                                <rect key="frame" x="0.0" y="0.0" width="85.666666666666671" height="40.333333333333336"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="85.666666666666671" height="49.666666666666664"/>
                                             </imageView>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" alignment="top" translatesAutoresizingMaskIntoConstraints="NO" id="JoQ-z5-duz">
-                                                <rect key="frame" x="90.666666666666657" y="3.6666666666666643" width="85.666666666666657" height="33"/>
+                                                <rect key="frame" x="90.666666666666657" y="4.6666666666666714" width="85.666666666666657" height="40.666666666666664"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="1000" verticalHuggingPriority="1000" text="Weight" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="spt-wI-g0X">
-                                                        <rect key="frame" x="0.0" y="0.0" width="53.666666666666664" height="16.666666666666668"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="53.666666666666664" height="20.333333333333332"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                         <nil key="textColor"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="1000" verticalHuggingPriority="1000" text="NaN g" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="khB-Rx-3Q7">
-                                                        <rect key="frame" x="0.0" y="16.666666666666664" width="49.333333333333336" height="16.333333333333336"/>
+                                                        <rect key="frame" x="0.0" y="20.333333333333329" width="49.333333333333336" height="20.333333333333329"/>
                                                         <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
                                                         <nil key="textColor"/>
                                                         <nil key="highlightedColor"/>
@@ -312,26 +312,26 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="KHH-Sa-mEg">
-                                <rect key="frame" x="20" y="59" width="353" height="197"/>
+                                <rect key="frame" x="20" y="118" width="353" height="138"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" translatesAutoresizingMaskIntoConstraints="NO" id="ERZ-Ax-Crg">
-                                        <rect key="frame" x="0.0" y="0.0" width="166.66666666666666" height="197"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="166.66666666666666" height="138"/>
                                         <subviews>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Baby" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6hy-Uf-rll">
-                                                <rect key="frame" x="0.0" y="0.0" width="166.66666666666666" height="32"/>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Baby" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6hy-Uf-rll">
+                                                <rect key="frame" x="0.0" y="0.0" width="166.66666666666666" height="21.666666666666668"/>
                                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" editable="NO" text="At week 19, your baby is about 6 inches long and developing tiny senses of touch, taste, and hearing!  " selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iKK-Vy-Poh">
-                                                <rect key="frame" x="0.0" y="48.666666666666664" width="166.66666666666666" height="99.666666666666686"/>
+                                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" scrollEnabled="NO" editable="NO" text="At week 19, your baby is about 6 inches long and developing tiny senses of touch, taste, and hearing!  " selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iKK-Vy-Poh">
+                                                <rect key="frame" x="0.0" y="21.666666666666664" width="166.66666666666666" height="94.666666666666686"/>
                                                 <color key="textColor" systemColor="labelColor"/>
                                                 <fontDescription key="fontDescription" name=".AppleSystemUIFont" family=".AppleSystemUIFont" pointSize="14"/>
                                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                                 <dataDetectorType key="dataDetectorTypes" lookupSuggestion="YES"/>
                                             </textView>
-                                            <button opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="249" contentHorizontalAlignment="right" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3mW-wo-ARg">
-                                                <rect key="frame" x="0.0" y="165" width="166.66666666666666" height="32"/>
+                                            <button opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="249" ambiguous="YES" contentHorizontalAlignment="right" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3mW-wo-ARg">
+                                                <rect key="frame" x="0.0" y="116.33333333333334" width="166.66666666666666" height="21.666666666666657"/>
                                                 <state key="normal" title="Button"/>
                                                 <buttonConfiguration key="configuration" style="plain" title="See More">
                                                     <fontDescription key="titleFontDescription" style="UICTFontTextStyleSubhead"/>
@@ -354,23 +354,23 @@
                                         </constraints>
                                     </stackView>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" translatesAutoresizingMaskIntoConstraints="NO" id="LZJ-0W-xTD">
-                                        <rect key="frame" x="186.66666666666663" y="0.0" width="166.33333333333337" height="197"/>
+                                        <rect key="frame" x="186.66666666666663" y="0.0" width="166.33333333333337" height="138"/>
                                         <subviews>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Mom" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="po0-Q1-J4d">
-                                                <rect key="frame" x="0.0" y="0.0" width="166.33333333333334" height="32"/>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Mom" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="po0-Q1-J4d">
+                                                <rect key="frame" x="0.0" y="0.0" width="166.33333333333334" height="21.666666666666668"/>
                                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" editable="NO" text="At week 19, your baby is developing rapidly, and your body is working hard to support this growth. " textAlignment="natural" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RRB-rF-KHN">
-                                                <rect key="frame" x="0.0" y="48.666666666666664" width="166.33333333333334" height="99.666666666666686"/>
+                                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" scrollEnabled="NO" editable="NO" text="At week 19, your baby is developing rapidly, and your body is working hard to support this growth. " textAlignment="natural" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RRB-rF-KHN">
+                                                <rect key="frame" x="0.0" y="21.666666666666664" width="166.33333333333334" height="94.666666666666686"/>
                                                 <color key="textColor" systemColor="labelColor"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                                 <dataDetectorType key="dataDetectorTypes" lookupSuggestion="YES"/>
                                             </textView>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0lb-Tc-FBe">
-                                                <rect key="frame" x="0.0" y="165" width="166.33333333333334" height="32"/>
+                                            <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="right" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0lb-Tc-FBe">
+                                                <rect key="frame" x="0.0" y="116.33333333333334" width="166.33333333333334" height="21.666666666666657"/>
                                                 <state key="normal" title="Button"/>
                                                 <buttonConfiguration key="configuration" style="plain" title="See More">
                                                     <fontDescription key="titleFontDescription" style="UICTFontTextStyleSubhead"/>
@@ -422,11 +422,11 @@
             <objects>
                 <viewController storyboardIdentifier="FullScreenMomCardViewController" id="JXj-eN-8Sv" customClass="MomCardViewController" customModule="MomCare" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="46v-Sd-amz">
-                        <rect key="frame" x="0.0" y="0.0" width="393" height="590"/>
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="531"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" usesAttributedText="YES" translatesAutoresizingMaskIntoConstraints="NO" id="5gD-yi-AGV">
-                                <rect key="frame" x="20" y="56" width="353" height="534"/>
+                                <rect key="frame" x="20" y="56" width="353" height="475"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <attributedString key="attributedText">
                                     <fragment>
@@ -486,11 +486,11 @@
             <objects>
                 <viewController storyboardIdentifier="FullScreenBabyCardViewController" id="MjJ-ur-pvK" customClass="BabyCardViewController" customModule="MomCare" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="1LM-oQ-pPE">
-                        <rect key="frame" x="0.0" y="0.0" width="393" height="590"/>
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="531"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="justified" translatesAutoresizingMaskIntoConstraints="NO" id="KiA-7v-zjY">
-                                <rect key="frame" x="20" y="56" width="353" height="534"/>
+                                <rect key="frame" x="20" y="56" width="353" height="475"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <string key="text">At week 19, your baby is about 6 inches long and developing tiny senses of touch, taste, and hearing! Their skin is covered in vernix caseosa, a protective layer to prevent dryness in the womb. You may feel more movement as they kick and stretch. Their brain is busy forming specialized areas for smell, vision, and hearing—so talking, reading, or playing soft music can help! If you're feeling light flutters, that's quickening, your baby's first noticeable movements. Stay hydrated, eat iron-rich foods, and rest well to support this phase of rapid growth. 💖👣 #GrowingStrong</string>
                                 <color key="textColor" systemColor="labelColor"/>
@@ -564,7 +564,6 @@
     </scenes>
     <resources>
         <image name="Month1" width="447" height="448"/>
-        <image name="apple-fruit-svgrepo-com" width="800" height="800"/>
         <image name="height-line" width="800" height="800"/>
         <image name="reference" width="74" height="80"/>
         <image name="scale-line" width="800" height="800"/>
