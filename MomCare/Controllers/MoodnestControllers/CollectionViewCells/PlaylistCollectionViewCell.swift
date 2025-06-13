@@ -8,6 +8,9 @@
 import UIKit
 
 class PlaylistCollectionViewCell: UICollectionViewCell {
+
+    // MARK: Internal
+
     @IBOutlet var imageView: UIImageView!
     @IBOutlet var playlistLabel: UILabel!
 
@@ -20,6 +23,8 @@ class PlaylistCollectionViewCell: UICollectionViewCell {
             await updateUI(with: playlist.imageUri, label: playlist.label, applyLargeTitle: applyLargeTitle)
         }
     }
+
+    // MARK: Private
 
     private func updateUI(with imageUri: String, label: String, applyLargeTitle: Bool) async {
         imageView.image = await UIImage().fetchImage(from: imageUri)

@@ -7,7 +7,6 @@
 
 import UIKit
 
-
 class MoodNestViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
 
     // MARK: Internal
@@ -60,6 +59,7 @@ class MoodNestViewController: UIViewController, UICollectionViewDataSource, UICo
             }
 
             return playlists.count
+
         default:
             fatalError("Unexpected section index")
         }
@@ -117,6 +117,7 @@ class MoodNestViewController: UIViewController, UICollectionViewDataSource, UICo
                 )
 
                 section.boundarySupplementaryItems = [header]
+
             default:
                 fatalError("Unexpected section index")
             }
