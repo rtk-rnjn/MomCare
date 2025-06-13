@@ -26,7 +26,5 @@ class SettingsTableViewController: UITableViewController {
         userPhoneNumber.text = user.phoneNumber
     }
     
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        <#code#>
-    }
+    
 }
