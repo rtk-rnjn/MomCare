@@ -36,7 +36,9 @@ class ProfilePageTableViewController: UITableViewController {
             AlertActionHandler(title: "Cancel", style: .cancel, handler: nil),
             AlertActionHandler(title: "Logout", style: .destructive) { _ in
                 Utils.remove("isUserSignedUp")
-                self.performSegue(withIdentifier: "segueShowFrontPageNavigationController", sender: nil)
+                self.dismiss(animated: true) {
+                    self.performSegue(withIdentifier: "segueShowFrontPageNavigationController", sender: nil)
+                }
             }
         ]
         let message = "Are you sure you want to logout?"

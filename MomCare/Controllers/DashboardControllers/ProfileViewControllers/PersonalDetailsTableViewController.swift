@@ -1,5 +1,5 @@
 //
-//  PersonalInfoTableViewController.swift
+//  PersonalDetailsTableViewController.swift
 //  MomCare
 //
 //  Created by Khushi Rana on 02/03/25.
@@ -45,9 +45,9 @@ class PersonalDetailsTableViewController: UITableViewController {
     isEditingMode.toggle()
     navigationItem.rightBarButtonItem?.title = isEditingMode ? "Save" : "Edit"
     updateUIForEditingMode()
-        
+
         if !isEditingMode {
-            Task{
+            Task {
                 await saveUser()
             }
         }
@@ -126,21 +126,21 @@ class PersonalDetailsTableViewController: UITableViewController {
         userTrimester.setTitle(String(weekAndDay?.trimester ?? "Not Set"), for: .normal)
         userDOB.date = userMedical.dateOfBirth
     }
-    
-    func saveUser() async{
+
+    func saveUser() async {
         MomCareUser.shared.user?.medicalData?.dateOfBirth = userDOB.date
-        
+
         if let fullName = userName.text {
             let nameParts = fullName.split(separator: " ")
             MomCareUser.shared.user?.firstName = nameParts.first.map(String.init) ?? ""
             MomCareUser.shared.user?.lastName = nameParts.dropFirst().joined(separator: " ")
         }
-        
+
         if let heightText = userHeight.title(for: .normal)?.replacingOccurrences(of: " cm", with: ""),
                let height = Double(heightText) {
             MomCareUser.shared.user?.medicalData?.height = height
         }
-        
+
         if let weightText = userCurrentWeight.title(for: .normal)?.replacingOccurrences(of: " kgs", with: ""),
                let weight = Double(weightText) {
             MomCareUser.shared.user?.medicalData?.currentWeight = weight
@@ -150,12 +150,12 @@ class PersonalDetailsTableViewController: UITableViewController {
            let preWeight = Double(preWeightText) {
             MomCareUser.shared.user?.medicalData?.prePregnancyWeight = preWeight
         }
-    
+
     }
 }
 
 extension PersonalDetailsTableViewController: UIPickerViewDelegate, UIPickerViewDataSource {
-    
+
     func setupPickers() {
         pickerView.delegate = self
         pickerView.dataSource = self
@@ -165,7 +165,7 @@ extension PersonalDetailsTableViewController: UIPickerViewDelegate, UIPickerView
         pickerView.isHidden = true
         view.addSubview(pickerView)
     }
-    
+
     func numberOfComponents(in pickerView: UIPickerView) -> Int { return 1 }
 
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
@@ -176,6 +176,6 @@ extension PersonalDetailsTableViewController: UIPickerViewDelegate, UIPickerView
         return currentPickerData[row]
     }
 
-    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {   activeButton?.setTitle(currentPickerData[row], for: .normal)
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) { activeButton?.setTitle(currentPickerData[row], for: .normal)
     }
 }
