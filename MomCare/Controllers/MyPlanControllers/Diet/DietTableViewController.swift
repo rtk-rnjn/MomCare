@@ -157,6 +157,7 @@ class DietTableViewController: UITableViewController {
         cell.foodItemLabel.startShimmer()
         cell.kalcLabel.startShimmer()
         cell.qualtityLabel.startShimmer()
+        cell.literalDotImageView.startShimmer()
         if !dataFetched {
             return cell
         }
@@ -164,6 +165,7 @@ class DietTableViewController: UITableViewController {
         cell.kalcLabel.stopShimmer()
         cell.foodItemLabel.stopShimmer()
         cell.foodImageView.stopShimmer()
+        cell.literalDotImageView.stopShimmer()
 
         guard let foodItems = getFoods(with: indexPath) else { return cell }
         let food = foodItems[indexPath.row - 1]
@@ -194,12 +196,24 @@ class DietTableViewController: UITableViewController {
               !foods[indexPath.row - 1].consumed else {
             return nil
         }
+        
+        let foodName = foods[indexPath.row - 1].name
+        let mealName = mealNames[indexPath.section]
 
         let previewProvider = previewProvider(for: indexPath)
         return UIContextMenuConfiguration(identifier: nil, previewProvider: previewProvider) { _ in
             let deleteAction = UIAction(title: "Delete", image: UIImage(systemName: "trash"), attributes: .destructive) { _ in
-                self.deleteFood(at: indexPath)
-                self.tableView.reloadData()
+                let actionHandlers = [
+                    AlertActionHandler(title: "Cancel", style: .cancel, handler: nil),
+                    AlertActionHandler(title: "Delete", style: .destructive) { _ in
+                        self.deleteFood(at: indexPath)
+                        self.tableView.reloadData()
+                    }
+                ]
+                
+                let alert = Utils.getAlert(title: "", message: "\(foodName) will be deleted from your \(mealName) plan", actions: actionHandlers)
+
+                self.present(alert, animated: true)
             }
 
             return UIMenu(title: "", children: [deleteAction])
