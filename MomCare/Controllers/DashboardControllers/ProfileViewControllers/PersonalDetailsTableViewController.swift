@@ -128,34 +128,29 @@ class PersonalDetailsTableViewController: UITableViewController {
     }
     
     func saveUser() async{
-        guard var user = MomCareUser.shared.user else { return }
-        guard var medicalData = user.medicalData else { return }
-        
-        medicalData.dateOfBirth = userDOB.date
+        MomCareUser.shared.user?.medicalData?.dateOfBirth = userDOB.date
         
         if let fullName = userName.text {
             let nameParts = fullName.split(separator: " ")
-            user.firstName = nameParts.first.map(String.init) ?? ""
-            user.lastName = nameParts.dropFirst().joined(separator: " ")
+            MomCareUser.shared.user?.firstName = nameParts.first.map(String.init) ?? ""
+            MomCareUser.shared.user?.lastName = nameParts.dropFirst().joined(separator: " ")
         }
         
         if let heightText = userHeight.title(for: .normal)?.replacingOccurrences(of: " cm", with: ""),
                let height = Double(heightText) {
-                medicalData.height = height
+            MomCareUser.shared.user?.medicalData?.height = height
         }
         
         if let weightText = userCurrentWeight.title(for: .normal)?.replacingOccurrences(of: " kgs", with: ""),
                let weight = Double(weightText) {
-                medicalData.currentWeight = weight
+            MomCareUser.shared.user?.medicalData?.currentWeight = weight
         }
 
         if let preWeightText = userPrePregnancyWeight.title(for: .normal)?.replacingOccurrences(of: " kgs", with: ""),
            let preWeight = Double(preWeightText) {
-            medicalData.prePregnancyWeight = preWeight
+            MomCareUser.shared.user?.medicalData?.prePregnancyWeight = preWeight
         }
-        
-        await MomCareUser.shared.updateUser(user)
-        await MomCareUser.shared.updateUserMedical(medicalData)
+    
     }
 }
 
