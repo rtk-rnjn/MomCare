@@ -8,7 +8,7 @@
 import UIKit
 
 class HealthDetailsCellTableViewController: UITableViewController {
-    
+
     var healthProfile: HealthProfileType?
     var selectedCells: Set<Int> = []
 
@@ -27,16 +27,7 @@ class HealthDetailsCellTableViewController: UITableViewController {
 
      override func viewDidLoad() {
          super.viewDidLoad()
-         self.title = healthListtitle()
-     }
-
-     func healthListtitle() -> String {
-         switch healthProfile {
-         case .preExistingCondition: return "Pre-Existing Conditions"
-         case .intolerance: return "Intolerances"
-         case .dietaryPreference: return "Dietary Preferences"
-         case .none: return ""
-         }
+         title = healthListtitle()
      }
 
      override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -46,12 +37,12 @@ class HealthDetailsCellTableViewController: UITableViewController {
      override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
          let cell = tableView.dequeueReusableCell(withIdentifier: "HealthDetailCell", for: indexPath)
          cell.textLabel?.text = healthList[indexPath.row]
-         
+
          cell.accessoryType = selectedCells.contains(indexPath.row) ? .checkmark : .none
-         
+
          return cell
      }
-    
+
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
 
@@ -63,5 +54,14 @@ class HealthDetailsCellTableViewController: UITableViewController {
 
         tableView.reloadRows(at: [indexPath], with: .automatic)
     }
+
+     func healthListtitle() -> String {
+         switch healthProfile {
+         case .preExistingCondition: return "Pre-Existing Conditions"
+         case .intolerance: return "Intolerances"
+         case .dietaryPreference: return "Dietary Preferences"
+         case .none: return ""
+         }
+     }
 
 }
