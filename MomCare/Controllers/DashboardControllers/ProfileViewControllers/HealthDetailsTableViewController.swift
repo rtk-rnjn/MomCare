@@ -19,10 +19,15 @@ class HealthDetailsTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         updatePageElements()
-
-        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Edit", style: .plain, target: self, action: #selector(toggleEditMode))
+        
     }
-
+    
+    @IBAction func editButtonTapped(_ sender: UIBarButtonItem) {
+        isEditingMode.toggle()
+        sender.title = isEditingMode ? "Save" : "Edit"
+        toggleEditMode()
+    }
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "showUserHealthProfile",
            let destination = segue.destination as? HealthDetailsCellTableViewController,
@@ -31,11 +36,18 @@ class HealthDetailsTableViewController: UITableViewController {
         }
     }
 
-    @objc func toggleEditMode() {
-        isEditingMode.toggle()
-        navigationItem.rightBarButtonItem?.title = isEditingMode ? "Save" : "Edit"
+    func toggleEditMode() {
         updateUIForEditingMode()
-
+        
+        if !isEditingMode {
+            Task{
+                saveUser()
+            }
+        }
+    }
+    
+    func saveUser(){
+        MomCareUser.shared.user?.medicalData?.dueDate = userDueDate.date
     }
 
     func updateUIForEditingMode() {
