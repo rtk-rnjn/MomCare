@@ -152,11 +152,12 @@ struct PregnancyProgressView: View {
     
     private var infoCardsView: some View {
         VStack(spacing: 16) {
-            // Baby info card
+            // Baby info card with actual truncated text and baby emoji
             InfoCardButton(
                 title: "Baby Development",
-                subtitle: "Your baby is fully developed and ready to meet you!",
-                iconName: "baby.head",
+                subtitle: getTruncatedText(from: babyInfo, maxLength: 80),
+                iconName: "👶", // Baby emoji instead of SF Symbol
+                isEmoji: true,
                 backgroundColor: Color(hex: "FBE8E5"),
                 accentColor: Color(hex: "924350")
             )
@@ -176,11 +177,12 @@ struct PregnancyProgressView: View {
                 }
             }
             
-            // Mom info card
+            // Mom info card with mom emoji
             InfoCardButton(
                 title: "Mom This Week",
-                subtitle: "You've made it to the final week! Your body is preparing for labor...",
-                iconName: "figure.dress.line.vertical.figure",
+                subtitle: getTruncatedText(from: momInfo, maxLength: 80),
+                iconName: "🤰", // Pregnant woman emoji instead of SF Symbol
+                isEmoji: true,
                 backgroundColor: Color(hex: "FBE8E5"),
                 accentColor: Color(hex: "924350")
             )
@@ -208,15 +210,23 @@ struct InfoCardButton: View {
     let title: String
     let subtitle: String
     let iconName: String
+    var isEmoji: Bool = false // Flag to determine if we're using emoji or SF Symbol
     let backgroundColor: Color
     let accentColor: Color
     
     var body: some View {
         HStack {
-            Image(systemName: iconName)
-                .font(.system(size: 24))
-                .foregroundColor(accentColor)
-                .padding(.trailing, 4)
+            // Use either emoji or SF Symbol based on isEmoji flag
+            if isEmoji {
+                Text(iconName)
+                    .font(.system(size: 30))
+                    .padding(.trailing, 4)
+            } else {
+                Image(systemName: iconName)
+                    .font(.system(size: 24))
+                    .foregroundColor(accentColor)
+                    .padding(.trailing, 4)
+            }
             
             VStack(alignment: .leading, spacing: 6) {
                 Text(title)
@@ -474,6 +484,24 @@ struct ComparisonView: View {
     }
 }
 
+
+// Helper method to truncate text with ellipsis
+private func getTruncatedText(from text: String, maxLength: Int) -> String {
+    if text.count <= maxLength {
+        return text
+    }
+    
+    // Find a good breaking point (space) near the maxLength
+    let index = text.index(text.startIndex, offsetBy: min(maxLength - 3, text.count))
+    let truncatedText = text[..<index]
+    
+    // Try to find the last space to make a clean break
+    if let lastSpace = truncatedText.lastIndex(of: " ") {
+        return text[..<lastSpace] + "..."
+    }
+    
+    return String(truncatedText) + "..."
+}
 
 // Preview provider with sample data
 struct PregnancyProgressView_Previews: PreviewProvider {
