@@ -10,9 +10,9 @@ import UIKit
 class HealthDetailsCellTableViewController: UITableViewController {
     
     var healthProfile: HealthProfileType?
-    var selectedIndices: Set<Int> = []
+    var selectedCells: Set<Int> = []
 
-     var stringList: [String] {
+     var healthList: [String] {
          switch healthProfile {
          case .preExistingCondition:
              return PreExistingCondition.allCases.map { $0.rawValue }
@@ -27,10 +27,10 @@ class HealthDetailsCellTableViewController: UITableViewController {
 
      override func viewDidLoad() {
          super.viewDidLoad()
-         self.title = titleForListType()
+         self.title = healthListtitle()
      }
 
-     func titleForListType() -> String {
+     func healthListtitle() -> String {
          switch healthProfile {
          case .preExistingCondition: return "Pre-Existing Conditions"
          case .intolerance: return "Intolerances"
@@ -40,14 +40,14 @@ class HealthDetailsCellTableViewController: UITableViewController {
      }
 
      override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-         return stringList.count
+         return healthList.count
      }
 
      override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
          let cell = tableView.dequeueReusableCell(withIdentifier: "HealthDetailCell", for: indexPath)
-         cell.textLabel?.text = stringList[indexPath.row]
+         cell.textLabel?.text = healthList[indexPath.row]
          
-         cell.accessoryType = selectedIndices.contains(indexPath.row) ? .checkmark : .none
+         cell.accessoryType = selectedCells.contains(indexPath.row) ? .checkmark : .none
          
          return cell
      }
@@ -55,10 +55,10 @@ class HealthDetailsCellTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
 
-        if selectedIndices.contains(indexPath.row) {
-            selectedIndices.remove(indexPath.row)
+        if selectedCells.contains(indexPath.row) {
+            selectedCells.remove(indexPath.row)
         } else {
-            selectedIndices.insert(indexPath.row)
+            selectedCells.insert(indexPath.row)
         }
 
         tableView.reloadRows(at: [indexPath], with: .automatic)
