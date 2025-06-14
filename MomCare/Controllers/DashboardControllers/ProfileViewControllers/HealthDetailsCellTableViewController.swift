@@ -8,39 +8,60 @@
 import UIKit
 
 class HealthDetailsCellTableViewController: UITableViewController {
-
-    @IBOutlet weak var HealthDetailLabel: UILabel!
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-    }
-    
-    override func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
-    }
+    var healthProfile: HealthProfileType?
+    var selectedIndices: Set<Int> = []
 
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return PreExistingCondition.allCases.count
-    }
-    
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        // Dequeue a reusable cell
-        let cell = tableView.dequeueReusableCell(withIdentifier: "HealthDetailCell", for: indexPath)
-        
-        let preExistingCondition = PreExistingCondition.allCases
-        // Set the data
-        cell.HealthDetailLabel?.text = preExistingCondition[indexPath.row]
+     var stringList: [String] {
+         switch healthProfile {
+         case .preExistingCondition:
+             return PreExistingCondition.allCases.map { $0.rawValue }
+         case .intolerance:
+             return Intolerance.allCases.map { $0.rawValue }
+         case .dietaryPreference:
+             return DietaryPreference.allCases.map { $0.rawValue }
+         case .none:
+             return []
+         }
+     }
 
-        return cell
-    }
+     override func viewDidLoad() {
+         super.viewDidLoad()
+         self.title = titleForListType()
+     }
 
+     func titleForListType() -> String {
+         switch healthProfile {
+         case .preExistingCondition: return "Pre-Existing Conditions"
+         case .intolerance: return "Intolerances"
+         case .dietaryPreference: return "Dietary Preferences"
+         case .none: return ""
+         }
+     }
+
+     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+         return stringList.count
+     }
+
+     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+         let cell = tableView.dequeueReusableCell(withIdentifier: "HealthDetailCell", for: indexPath)
+         cell.textLabel?.text = stringList[indexPath.row]
+         
+         cell.accessoryType = selectedIndices.contains(indexPath.row) ? .checkmark : .none
+         
+         return cell
+     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if let cell = tableView.cellForRow(at: indexPath) {
-            cell.accessoryType = (cell.accessoryType == .checkmark) ? .none : .checkmark
-        }
-    }
+        tableView.deselectRow(at: indexPath, animated: true)
 
+        if selectedIndices.contains(indexPath.row) {
+            selectedIndices.remove(indexPath.row)
+        } else {
+            selectedIndices.insert(indexPath.row)
+        }
+
+        tableView.reloadRows(at: [indexPath], with: .automatic)
+    }
 
 }

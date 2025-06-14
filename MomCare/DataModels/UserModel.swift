@@ -40,6 +40,12 @@ public enum DietaryPreference: String, Codable, CaseIterable, Sendable {
     case dairyFree = "Dairy-Free"
 }
 
+enum HealthProfileType {
+    case preExistingCondition
+    case intolerance
+    case dietaryPreference
+}
+
 public enum MoodType: String, Codable, Sendable {
    case happy = "Happy"
    case sad = "Sad"

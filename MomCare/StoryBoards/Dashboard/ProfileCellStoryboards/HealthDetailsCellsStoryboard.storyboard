@@ -2,7 +2,7 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="23727" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="1yC-bw-Thk">
     <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23727"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23721"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -20,19 +20,6 @@
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Oib-W0-22A" id="4Mi-t9-Ynf">
                                     <rect key="frame" x="0.0" y="0.0" width="353" height="53"/>
                                     <autoresizingMask key="autoresizingMask"/>
-                                    <subviews>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MP2-kh-lfc">
-                                            <rect key="frame" x="27" y="16" width="42" height="21"/>
-                                            <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
-                                            <nil key="textColor"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
-                                    </subviews>
-                                    <constraints>
-                                        <constraint firstAttribute="bottomMargin" secondItem="MP2-kh-lfc" secondAttribute="bottom" constant="5" id="2fu-dm-zKb"/>
-                                        <constraint firstItem="MP2-kh-lfc" firstAttribute="top" secondItem="4Mi-t9-Ynf" secondAttribute="topMargin" constant="5" id="Nqw-rx-AuU"/>
-                                        <constraint firstItem="MP2-kh-lfc" firstAttribute="leading" secondItem="4Mi-t9-Ynf" secondAttribute="leadingMargin" constant="7" id="Y0O-hg-MqK"/>
-                                    </constraints>
                                 </tableViewCellContentView>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </tableViewCell>
@@ -43,9 +30,6 @@
                             <outlet property="delegate" destination="1yC-bw-Thk" id="G43-1B-s27"/>
                         </connections>
                     </tableView>
-                    <connections>
-                        <outlet property="HealthDetailLabel" destination="MP2-kh-lfc" id="fHm-s1-rGl"/>
-                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="tJ8-lr-hjo" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
