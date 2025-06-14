@@ -33,7 +33,6 @@ class TriTrackViewController: UIViewController, FSCalendarDelegate, FSCalendarDa
 
     var symptomsViewController: SymptomsViewController?
     var eventsViewController: EventsViewController?
-    var meAndMyBabyViewController: MeAndMyBabyViewController?
 
     var currentSegmentValue: Int = 0
     var selectedFSCalendarDate: Date = .init()
@@ -84,14 +83,8 @@ class TriTrackViewController: UIViewController, FSCalendarDelegate, FSCalendarDa
                 destinationVC.triTrackViewController = self
             }
 
-        case "embedShowMeAndMyBabyViewController":
-            if let destinationVC = segue.destination as? MeAndMyBabyViewController {
-                meAndMyBabyViewController = destinationVC
-                destinationVC.triTrackViewController = self
-            }
-
         default:
-            fatalError("pretty little baby, I am in love with you")
+            break
         }
     }
 
@@ -99,7 +92,6 @@ class TriTrackViewController: UIViewController, FSCalendarDelegate, FSCalendarDa
         DispatchQueue.main.async {
             self.selectedFSCalendarDate = date
             self.refreshAll()
-            self.meAndMyBabyViewController?.refreshData()
         }
     }
 
