@@ -9,8 +9,6 @@ import UIKit
 
 class HealthDetailsCellTableViewController: UITableViewController {
 
-    @IBOutlet var HealthDetailLabel: UILabel!
-
     override func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
@@ -20,13 +18,7 @@ class HealthDetailsCellTableViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        // Dequeue a reusable cell
         let cell = tableView.dequeueReusableCell(withIdentifier: "HealthDetailCell", for: indexPath)
-
-        let preExistingCondition = PreExistingCondition.allCases
-        // Set the data
-        cell.HealthDetailLabel?.text = preExistingCondition[indexPath.row]
-
         return cell
     }
 
