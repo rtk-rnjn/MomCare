@@ -167,7 +167,7 @@
                             </tableViewSection>
                             <tableViewSection headerTitle="Settings" id="eJT-Z5-SFt">
                                 <cells>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" textLabel="8ky-xV-pK9" rowHeight="55" style="IBUITableViewCellStyleDefault" id="o5c-Vz-pXm">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" accessoryType="disclosureIndicator" indentationWidth="10" textLabel="8ky-xV-pK9" rowHeight="55" style="IBUITableViewCellStyleDefault" id="o5c-Vz-pXm">
                                         <rect key="frame" x="20" y="330.66666412353516" width="353" height="55"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="o5c-Vz-pXm" id="DaP-ic-oNz">
@@ -188,7 +188,7 @@
                                             <segue destination="oO8-UD-jq3" kind="show" identifier="segueShowAccountAndSecurity" id="aAd-Mf-9bv"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" textLabel="wTC-dN-36O" rowHeight="55" style="IBUITableViewCellStyleDefault" id="0FS-AT-hNW">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" accessoryType="disclosureIndicator" indentationWidth="10" textLabel="wTC-dN-36O" rowHeight="55" style="IBUITableViewCellStyleDefault" id="0FS-AT-hNW">
                                         <rect key="frame" x="20" y="385.66666412353516" width="353" height="55"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="0FS-AT-hNW" id="Mad-hp-cau">
@@ -213,7 +213,7 @@
                             </tableViewSection>
                             <tableViewSection headerTitle="Privacy" id="0ab-mB-edm">
                                 <cells>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" textLabel="Xpq-S1-jIu" rowHeight="55" style="IBUITableViewCellStyleDefault" id="eVs-bT-06L">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" accessoryType="disclosureIndicator" indentationWidth="10" textLabel="Xpq-S1-jIu" rowHeight="55" style="IBUITableViewCellStyleDefault" id="eVs-bT-06L">
                                         <rect key="frame" x="20" y="496.66666412353516" width="353" height="55"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="eVs-bT-06L" id="p3b-Nb-irv">
@@ -237,23 +237,32 @@
                             </tableViewSection>
                             <tableViewSection id="Yoy-l5-snG">
                                 <cells>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" textLabel="TwV-cU-EEY" rowHeight="55" style="IBUITableViewCellStyleDefault" id="UhG-tj-TfS">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="55" id="ge2-eS-6Mp">
                                         <rect key="frame" x="20" y="587.66666412353516" width="353" height="55"/>
                                         <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="UhG-tj-TfS" id="WKM-qn-Ugk">
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="ge2-eS-6Mp" id="rM9-jk-hhi">
                                             <rect key="frame" x="0.0" y="0.0" width="353" height="55"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Log Out" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="TwV-cU-EEY">
-                                                    <rect key="frame" x="20" y="0.0" width="313" height="55"/>
-                                                    <autoresizingMask key="autoresizingMask"/>
-                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
-                                                    <color key="textColor" systemColor="systemRedColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="T8V-ts-Eev">
+                                                    <rect key="frame" x="0.0" y="0.0" width="353" height="55"/>
+                                                    <state key="normal" title="Button"/>
+                                                    <buttonConfiguration key="configuration" style="plain" title="Log Out">
+                                                        <fontDescription key="titleFontDescription" style="UICTFontTextStyleBody"/>
+                                                        <color key="baseForegroundColor" systemColor="systemRedColor"/>
+                                                    </buttonConfiguration>
+                                                    <connections>
+                                                        <action selector="logoutTapped" destination="bqx-cP-ynl" eventType="touchUpInside" id="Itc-KC-p9s"/>
+                                                    </connections>
+                                                </button>
                                             </subviews>
+                                            <constraints>
+                                                <constraint firstItem="T8V-ts-Eev" firstAttribute="leading" secondItem="rM9-jk-hhi" secondAttribute="leading" id="41S-yB-QnO"/>
+                                                <constraint firstAttribute="bottom" secondItem="T8V-ts-Eev" secondAttribute="bottom" id="Tkz-Rq-7Lf"/>
+                                                <constraint firstAttribute="trailing" secondItem="T8V-ts-Eev" secondAttribute="trailing" id="YV0-ZQ-LVx"/>
+                                                <constraint firstItem="T8V-ts-Eev" firstAttribute="top" secondItem="rM9-jk-hhi" secondAttribute="top" id="eEK-44-del"/>
+                                            </constraints>
                                         </tableViewCellContentView>
-                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     </tableViewCell>
                                 </cells>
                             </tableViewSection>
@@ -271,7 +280,6 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
-                        <outlet property="logoutLabel" destination="TwV-cU-EEY" id="vqO-6L-gHL"/>
                         <outlet property="profileImageView" destination="t2U-Ce-jlT" id="Trm-jD-Hig"/>
                         <outlet property="usernameLabel" destination="uTv-qT-fIp" id="1Vd-EL-bvP"/>
                         <segue destination="fJ8-w7-I3e" kind="presentation" identifier="segueShowFrontPageNavigationController" modalPresentationStyle="fullScreen" modalTransitionStyle="crossDissolve" id="yVr-dt-hHZ"/>
@@ -338,36 +346,79 @@
                             </tableViewSection>
                             <tableViewSection headerTitle="Security" id="5GI-dB-v5M">
                                 <cells>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="55" id="ekK-BL-FHE">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="55" id="ekK-BL-FHE">
                                         <rect key="frame" x="20" y="221.33333015441895" width="353" height="55"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="ekK-BL-FHE" id="gfi-Rz-nnk">
                                             <rect key="frame" x="0.0" y="0.0" width="353" height="55"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yBj-Id-819">
+                                                <button opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="leading" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yBj-Id-819">
                                                     <rect key="frame" x="5" y="0.0" width="348" height="55"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <state key="normal" title="Button"/>
-                                                    <buttonConfiguration key="configuration" style="plain" title="Change Passsword">
+                                                    <buttonConfiguration key="configuration" style="plain" title="Change Password">
                                                         <fontDescription key="titleFontDescription" style="UICTFontTextStyleBody"/>
                                                     </buttonConfiguration>
                                                 </button>
                                             </subviews>
-                                            <constraints>
-                                                <constraint firstItem="yBj-Id-819" firstAttribute="top" secondItem="gfi-Rz-nnk" secondAttribute="top" id="JFJ-aA-IVb"/>
-                                                <constraint firstAttribute="trailing" secondItem="yBj-Id-819" secondAttribute="trailing" id="St6-AJ-QyD"/>
-                                                <constraint firstAttribute="bottom" secondItem="yBj-Id-819" secondAttribute="bottom" id="XGQ-CS-hvt"/>
-                                                <constraint firstItem="yBj-Id-819" firstAttribute="leading" secondItem="gfi-Rz-nnk" secondAttribute="leading" constant="5" id="gHm-xY-mRZ"/>
-                                            </constraints>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="default" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="55" id="VH6-uq-Fsc">
+                                        <rect key="frame" x="20" y="276.33333015441895" width="353" height="55"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="VH6-uq-Fsc" id="nCL-ON-d50">
+                                            <rect key="frame" x="0.0" y="0.0" width="353" height="55"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Old Password" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="vVf-rb-zhJ">
+                                                    <rect key="frame" x="15" y="0.0" width="338" height="55"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                                                    <textInputTraits key="textInputTraits"/>
+                                                </textField>
+                                            </subviews>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="default" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="55" id="Bpd-IS-TjU">
+                                        <rect key="frame" x="20" y="331.33333015441895" width="353" height="55"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Bpd-IS-TjU" id="DmF-bY-iCt">
+                                            <rect key="frame" x="0.0" y="0.0" width="353" height="55"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="New Password" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="vMb-ih-w9V">
+                                                    <rect key="frame" x="15" y="0.0" width="338" height="55"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                                                    <textInputTraits key="textInputTraits"/>
+                                                </textField>
+                                            </subviews>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="default" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="55" id="Sts-Fk-R7q">
+                                        <rect key="frame" x="20" y="386.33333015441895" width="353" height="55"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Sts-Fk-R7q" id="E89-HB-8bL">
+                                            <rect key="frame" x="0.0" y="0.0" width="353" height="55"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Confirm Password" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="2Q6-mC-EGt">
+                                                    <rect key="frame" x="15" y="0.0" width="338" height="55"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                                                    <textInputTraits key="textInputTraits"/>
+                                                </textField>
+                                            </subviews>
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                 </cells>
                             </tableViewSection>
                             <tableViewSection id="rNg-ac-j7j">
                                 <cells>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" textLabel="pKB-DP-tAq" rowHeight="55" style="IBUITableViewCellStyleDefault" id="CtP-u7-I2B">
-                                        <rect key="frame" x="20" y="312.33333015441895" width="353" height="55"/>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" textLabel="pKB-DP-tAq" rowHeight="55" style="IBUITableViewCellStyleDefault" id="CtP-u7-I2B">
+                                        <rect key="frame" x="20" y="477.33333015441895" width="353" height="55"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="CtP-u7-I2B" id="AtK-cu-0mb">
                                             <rect key="frame" x="0.0" y="0.0" width="353" height="55"/>
@@ -376,7 +427,7 @@
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Delete Account" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="pKB-DP-tAq">
                                                     <rect key="frame" x="20" y="0.0" width="313" height="55"/>
                                                     <autoresizingMask key="autoresizingMask"/>
-                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleTitle2"/>
+                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                     <color key="textColor" systemColor="systemRedColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
@@ -393,13 +444,17 @@
                     </tableView>
                     <navigationItem key="navigationItem" title="Settings" id="TTY-fl-17y" customClass="Setti"/>
                     <connections>
-                        <outlet property="userEmail" destination="e3p-0L-PGv" id="Ugn-Wv-U3E"/>
-                        <outlet property="userPhoneNumber" destination="jBx-g1-gNU" id="eFo-ph-cTD"/>
+                        <outlet property="changePasswordButton" destination="yBj-Id-819" id="rRg-RF-CK2"/>
+                        <outlet property="confirmPasswordField" destination="Sts-Fk-R7q" id="Mb7-9U-AWw"/>
+                        <outlet property="emailLabel" destination="e3p-0L-PGv" id="Ugn-Wv-U3E"/>
+                        <outlet property="newPasswordField" destination="Bpd-IS-TjU" id="xrn-A2-V5j"/>
+                        <outlet property="oldPasswordField" destination="VH6-uq-Fsc" id="Mpf-cm-dds"/>
+                        <outlet property="phoneNumberLabel" destination="jBx-g1-gNU" id="eFo-ph-cTD"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="DNa-Qh-vz9" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3091" y="565"/>
+            <point key="canvasLocation" x="3090.8396946564885" y="564.78873239436621"/>
         </scene>
         <!--View Controller-->
         <scene sceneID="gBy-T1-Rap">
@@ -1009,17 +1064,21 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Personal Info" id="fSx-GN-9fR">
-                        <barButtonItem key="rightBarButtonItem" style="done" systemItem="edit" id="JCM-oP-LW2"/>
+                        <barButtonItem key="rightBarButtonItem" title="Edit" style="done" id="JCM-oP-LW2">
+                            <connections>
+                                <action selector="editButtonTapped:" destination="4dk-vA-dKF" id="j8Y-oy-Tjb"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                     <connections>
-                        <outlet property="userCurrentWeight" destination="3sX-Uv-huM" id="5WO-Ib-C7G"/>
-                        <outlet property="userDOB" destination="IBk-Q3-oeJ" id="BTX-5d-oMO"/>
-                        <outlet property="userHeight" destination="DL1-df-SM3" id="2F7-eA-hPt"/>
-                        <outlet property="userName" destination="JeD-uj-YeP" id="x5n-ZF-U3c"/>
-                        <outlet property="userPrePregnancyWeight" destination="2sJ-WY-ViJ" id="nNB-t1-1sf"/>
-                        <outlet property="userPregnancyDay" destination="UOl-9i-ZAh" id="5TV-m8-HSh"/>
-                        <outlet property="userPregnancyWeek" destination="7wA-In-p7P" id="37e-23-Tgf"/>
-                        <outlet property="userTrimester" destination="Kdj-XY-5Wc" id="MF8-G8-R81"/>
+                        <outlet property="userCurrentWeightButton" destination="3sX-Uv-huM" id="5WO-Ib-C7G"/>
+                        <outlet property="userDatOfBirthPicker" destination="IBk-Q3-oeJ" id="BTX-5d-oMO"/>
+                        <outlet property="userHeightButton" destination="DL1-df-SM3" id="2F7-eA-hPt"/>
+                        <outlet property="userNameField" destination="JeD-uj-YeP" id="x5n-ZF-U3c"/>
+                        <outlet property="userPrePregnancyWeightButton" destination="2sJ-WY-ViJ" id="nNB-t1-1sf"/>
+                        <outlet property="userPregnancyDayButton" destination="UOl-9i-ZAh" id="5TV-m8-HSh"/>
+                        <outlet property="userPregnancyWeekButton" destination="7wA-In-p7P" id="37e-23-Tgf"/>
+                        <outlet property="userTrimesterButton" destination="Kdj-XY-5Wc" id="MF8-G8-R81"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="gYL-Mc-ioF" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
