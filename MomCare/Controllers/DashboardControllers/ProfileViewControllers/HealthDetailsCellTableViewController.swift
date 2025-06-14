@@ -8,23 +8,60 @@
 import UIKit
 
 class HealthDetailsCellTableViewController: UITableViewController {
+    
+    var healthProfile: HealthProfileType?
+    var selectedCells: Set<Int> = []
 
-    override func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
-    }
+     var healthList: [String] {
+         switch healthProfile {
+         case .preExistingCondition:
+             return PreExistingCondition.allCases.map { $0.rawValue }
+         case .intolerance:
+             return Intolerance.allCases.map { $0.rawValue }
+         case .dietaryPreference:
+             return DietaryPreference.allCases.map { $0.rawValue }
+         case .none:
+             return []
+         }
+     }
 
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return PreExistingCondition.allCases.count
-    }
+     override func viewDidLoad() {
+         super.viewDidLoad()
+         self.title = healthListtitle()
+     }
 
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        return tableView.dequeueReusableCell(withIdentifier: "HealthDetailCell", for: indexPath)
-    }
+     func healthListtitle() -> String {
+         switch healthProfile {
+         case .preExistingCondition: return "Pre-Existing Conditions"
+         case .intolerance: return "Intolerances"
+         case .dietaryPreference: return "Dietary Preferences"
+         case .none: return ""
+         }
+     }
 
+     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+         return healthList.count
+     }
+
+     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+         let cell = tableView.dequeueReusableCell(withIdentifier: "HealthDetailCell", for: indexPath)
+         cell.textLabel?.text = healthList[indexPath.row]
+         
+         cell.accessoryType = selectedCells.contains(indexPath.row) ? .checkmark : .none
+         
+         return cell
+     }
+    
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if let cell = tableView.cellForRow(at: indexPath) {
-            cell.accessoryType = (cell.accessoryType == .checkmark) ? .none : .checkmark
+        tableView.deselectRow(at: indexPath, animated: true)
+
+        if selectedCells.contains(indexPath.row) {
+            selectedCells.remove(indexPath.row)
+        } else {
+            selectedCells.insert(indexPath.row)
         }
+
+        tableView.reloadRows(at: [indexPath], with: .automatic)
     }
 
 }
