@@ -2,7 +2,31 @@ import SwiftUI
 
 struct PregnancyProgressView: View {
 
+    // MARK: Lifecycle
+
+    init?() {
+        guard let pregnancyData = MomCareUser.shared.user?.pregancyData else {
+            fatalError("Pregnancy data is not available")
+        }
+        trimester = pregnancyData.trimester
+        weekDay = "Week \(pregnancyData.week) - Day \(pregnancyData.day)"
+
+        let trimesterData = TriTrackData.getTrimesterData(for: pregnancyData.week)
+
+        babyWeight = "\(trimesterData?.babyWeightInGrams ?? 0) g"
+        babyHeight = "\(trimesterData?.babyHeightInCentimeters ?? 0) cm"
+        quote = trimesterData?.quote ?? "Keep growing strong!"
+
+        babyInfo = trimesterData?.babyTipText ?? "Your baby is developing rapidly this week. Keep up with your prenatal care!"
+        momInfo = trimesterData?.momTipText ?? "Remember to stay hydrated and get plenty of rest. Your body is doing amazing things!"
+
+        self.trimesterData = trimesterData
+    }
+
     // MARK: Internal
+
+    @State var fruitImage: UIImage?
+    @State var babyImage: UIImage?
 
     var trimester: String
     var weekDay: String
@@ -12,29 +36,7 @@ struct PregnancyProgressView: View {
     var momInfo: String
     var quote: String
 
-    @State var fruitImage: UIImage?
-    @State var babyImage: UIImage?
-
     var trimesterData: TrimesterData?
-
-    init?() {
-        guard let pregnancyData = MomCareUser.shared.user?.pregancyData else {
-            fatalError("Pregnancy data is not available")
-        }
-        self.trimester = pregnancyData.trimester
-        self.weekDay = "Week \(pregnancyData.week) - Day \(pregnancyData.day)"
-
-        let trimesterData = TriTrackData.getTrimesterData(for: pregnancyData.week)
-
-        self.babyWeight = "\(trimesterData?.babyWeightInGrams ?? 0) g"
-        self.babyHeight = "\(trimesterData?.babyHeightInCentimeters ?? 0) cm"
-        self.quote = trimesterData?.quote ?? "Keep growing strong!"
-
-        self.babyInfo = trimesterData?.babyTipText ?? "Your baby is developing rapidly this week. Keep up with your prenatal care!"
-        self.momInfo = trimesterData?.momTipText ?? "Remember to stay hydrated and get plenty of rest. Your body is doing amazing things!"
-
-        self.trimesterData = trimesterData
-    }
 
     // MARK: - Body
 
@@ -93,8 +95,8 @@ struct PregnancyProgressView: View {
             .scrollIndicators(.hidden)
         }
         .task {
-            self.fruitImage = await self.trimesterData?.image
-            self.babyImage = self.trimesterData?.babyImage
+            fruitImage = await trimesterData?.image
+            babyImage = trimesterData?.babyImage
         }
     }
 

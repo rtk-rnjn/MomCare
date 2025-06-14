@@ -18,6 +18,10 @@ class SignUpExtendedTableViewController: UITableViewController {
     var userMedical: UserMedical?
     var multipleSelectorTableViewController: MultipleSelectorTableViewController?
 
+    var intolerances: [String] = []
+    var preExistingConditions: [String] = []
+    var dietaryPreferences: [String] = []
+
     override func viewDidLoad() {
         super.viewDidLoad()
         progressView.progress = initialProgress
@@ -38,9 +42,9 @@ class SignUpExtendedTableViewController: UITableViewController {
         if let destination = segue.destination as? UINavigationController, let presentationController = destination.presentationController as? UISheetPresentationController {
             presentationController.detents = [.medium()]
             if let medicalDetailSelectorTableViewController = destination.viewControllers.first as? MultipleSelectorTableViewController {
-                guard let sender = sender as? (options: [String], button: UIButton) else { return }
+                guard let sender = sender as? (options: [String], dismissHandler: () -> Void) else { return }
+                medicalDetailSelectorTableViewController.dismissHandler = sender.dismissHandler
                 medicalDetailSelectorTableViewController.options = sender.options
-                medicalDetailSelectorTableViewController.button = sender.button
             }
         }
     }
@@ -51,29 +55,60 @@ class SignUpExtendedTableViewController: UITableViewController {
         guard var userMedical else { fatalError() }
 
         userMedical.dueDate = dueDate
+        userMedical.foodIntolerances = intolerances
+        userMedical.preExistingConditions = preExistingConditions
+        userMedical.dietaryPreferences = dietaryPreferences
+
         Task {
             await handleSignUpExtended(userMedical: userMedical)
         }
     }
 
     @IBAction func intoleranceButtonTapped(_ sender: UIButton) {
-        let options = Intolerance.allCases.map { $0.rawValue }
-        performSegue(withIdentifier: "segueShowMedicalDetailSelectorTableViewController", sender: (options, sender))
+        presentMedicalDetailSelector(
+            sender: sender,
+            options: Intolerance.allCases.map { $0.rawValue },
+            assignTo: { self.intolerances = $0 }
+        )
     }
 
     @IBAction func preExistingConditionTapped(_ sender: UIButton) {
-        let options = PreExistingCondition.allCases.map { $0.rawValue }
-        performSegue(withIdentifier: "segueShowMedicalDetailSelectorTableViewController", sender: (options, sender))
+        presentMedicalDetailSelector(
+            sender: sender,
+            options: PreExistingCondition.allCases.map { $0.rawValue },
+            assignTo: { self.preExistingConditions = $0 }
+        )
     }
 
     @IBAction func dietaryPreferenceTapped(_ sender: UIButton) {
-        let options = DietaryPreference.allCases.map { $0.rawValue }
-        performSegue(withIdentifier: "segueShowMedicalDetailSelectorTableViewController", sender: (options, sender))
+        presentMedicalDetailSelector(
+            sender: sender,
+            options: DietaryPreference.allCases.map { $0.rawValue },
+            assignTo: { self.dietaryPreferences = $0 }
+        )
     }
 
-    @IBAction func unwinToMedicalDetail(_ segue: UIStoryboardSegue) {}
+    @IBAction func unwinToMedicalDetail(_ segue: UIStoryboardSegue) {
+        multipleSelectorTableViewController?.dismissHandler?()
+    }
 
     // MARK: Private
+
+    private func presentMedicalDetailSelector(
+        sender: UIButton,
+        options: [String],
+        assignTo: @escaping ([String]) -> Void
+    ) {
+        let dismissHandler: () -> Void = {
+            let count = self.multipleSelectorTableViewController?.selectedMappedOptions.count ?? 0
+            let labelText = count == 0 ? "None" : "\(count) selected"
+            sender.setTitle(labelText, for: .normal)
+            let selectedMappedOptions: [String: Bool] = self.multipleSelectorTableViewController?.selectedMappedOptions ?? [:]
+            let selectedValues = selectedMappedOptions.filter { $0.value }.map { $0.key }
+            assignTo(selectedValues)
+        }
+        performSegue(withIdentifier: "segueShowMedicalDetailSelectorTableViewController", sender: (options, dismissHandler))
+    }
 
     private func handleSignUpExtended(userMedical: UserMedical) async {
         let success = await MomCareUser.shared.updateUserMedical(userMedical)
