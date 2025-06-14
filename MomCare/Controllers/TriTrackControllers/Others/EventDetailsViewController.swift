@@ -13,8 +13,8 @@ class EventDetailsViewController: UIHostingController<EventDetailsView> {
 
     // MARK: Lifecycle
 
-    init(event: EKEvent, cell: UITableViewCell) {
-        super.init(rootView: EventDetailsView(event: event, cellWidth: cell.frame.width))
+    init(event: EKEvent, cell: UIView) {
+        super.init(rootView: EventDetailsView(event: event, cellWidth: max(cell.frame.width, UIScreen.main.bounds.width / 1.5)))
     }
 
     required init?(coder aDecoder: NSCoder) {

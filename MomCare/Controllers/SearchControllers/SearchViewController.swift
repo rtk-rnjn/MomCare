@@ -33,7 +33,6 @@ class SearchViewController: UIViewController, UISearchResultsUpdating, UISearchC
     @IBOutlet var tableView: UITableView!
 
     var searchBarController: UISearchController = .init()
-    var refreshControl: UIRefreshControl = .init()
 
     var completionHandlerOnFoodItemAdd: (() -> Void)?
 
@@ -50,10 +49,21 @@ class SearchViewController: UIViewController, UISearchResultsUpdating, UISearchC
         searchBarController.delegate = self
         searchBarController.searchBar.delegate = self
 
-        tableView.refreshControl = refreshControl
-        refreshControl.addTarget(self, action: #selector(refresh), for: .valueChanged)
+        searchBarController.obscuresBackgroundDuringPresentation = false
+        definesPresentationContext = true
 
         prepareTable()
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+
+        searchBarController.isActive = true
+
+        DispatchQueue.main.async {
+            self.searchBarController.searchBar.becomeFirstResponder()
+            self.searchBarController.becomeFirstResponder()
+        }
     }
 
     func updateSearchResults(for searchController: UISearchController) {
@@ -74,10 +84,7 @@ class SearchViewController: UIViewController, UISearchResultsUpdating, UISearchC
             DispatchQueue.main.async {
                 self.tableView.reloadData()
             }
-        }
-
-        refreshControl.endRefreshing()
-    }
+        } }
 
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         searchBar.text = ""
@@ -120,6 +127,10 @@ extension SearchViewController: UITableViewDelegate, UITableViewDataSource {
         guard let cell else { fatalError("abhi na jao chhordke, ki dil abhi bhara nahi") }
         cell.updateElements(with: searchedFood[indexPath.row], sender: self)
         return cell
+    }
+
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {

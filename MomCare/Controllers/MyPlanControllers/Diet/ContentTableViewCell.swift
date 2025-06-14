@@ -19,6 +19,8 @@ class ContentTableViewCell: UITableViewCell {
     @IBOutlet var foodItemLabel: UILabel!
     @IBOutlet var kalcLabel: UILabel!
     @IBOutlet var foodImageView: UIImageView!
+    @IBOutlet var literalDotImageView: UIImageView!
+    @IBOutlet var servingLabel: UILabel!
 
     @IBOutlet var foodItemButton: UIButton!
 
@@ -37,7 +39,7 @@ class ContentTableViewCell: UITableViewCell {
         }
         self.foodItem = foodItem
         self.buttonTapHandler = buttonTapHandler
-
+        servingLabel.text = foodItem.serving
         let consumed = foodItem.consumed
 
         let configuration = UIImage.SymbolConfiguration(scale: .small)

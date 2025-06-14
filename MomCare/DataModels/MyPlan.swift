@@ -70,6 +70,11 @@ struct FoodItem: Codable, Sendable, Equatable {
             return await UIImage().fetchImage(from: imageUri)
         }
     }
+
+    var serving: String {
+        return "1 serving"
+        // TODO: Implement serving size logic
+    }
 }
 
 struct MyPlan: Codable, Sendable, Equatable {
@@ -87,6 +92,22 @@ struct MyPlan: Codable, Sendable, Equatable {
     var dinner: [FoodItem] = []
 
     var createdAt: Date?
+
+    var totalProtien: Double {
+        return allMeals().reduce(0) { $0 + $1.protein }
+    }
+
+    var totalCalories: Double {
+        return allMeals().reduce(0) { $0 + $1.calories }
+    }
+
+    var totalCarbs: Double {
+        return allMeals().reduce(0) { $0 + $1.carbs }
+    }
+
+    var totalFat: Double {
+        return allMeals().reduce(0) { $0 + $1.fat }
+    }
 
     func allMeals() -> [FoodItem] {
         return breakfast + lunch + snacks + dinner
@@ -127,6 +148,7 @@ struct MyPlan: Codable, Sendable, Equatable {
             }
         }
     }
+
 }
 
 struct Exercise: Codable, Sendable, Equatable {

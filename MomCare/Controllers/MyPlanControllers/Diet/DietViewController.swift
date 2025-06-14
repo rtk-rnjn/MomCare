@@ -30,6 +30,11 @@ class DietViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        literalFatsLabel.text = "Fats"
+        literalCarbsLabel.text = "Carbs"
+        literalProtienLabel.text = "Protein"
+
         prepareProgressRing()
     }
 
@@ -128,18 +133,21 @@ class DietViewController: UIViewController {
     }
 
     private func prepareProgress() {
-        guard let dietTableViewController else { return }
+        guard let plan = MomCareUser.shared.user?.plan else { return }
         let goals = [
-            (proteinProgressBar, proteinProgressLabel, dietTableViewController.proteinGoal, HealthKitHandler.shared.readTotalProtein),
-            (carbsProgressBar, carbsProgressLabel, dietTableViewController.carbsGoal, HealthKitHandler.shared.readTotalCarbs),
-            (fatsProgressBar, fatsProgressLabel, dietTableViewController.fatsGoal, HealthKitHandler.shared.readTotalFat)
+            (proteinProgressBar, proteinProgressLabel, plan.totalProtien, HealthKitHandler.shared.readTotalProtein),
+            (carbsProgressBar, carbsProgressLabel, plan.totalCarbs, HealthKitHandler.shared.readTotalCarbs),
+            (fatsProgressBar, fatsProgressLabel, plan.totalFat, HealthKitHandler.shared.readTotalFat)
         ]
 
         for (progressBar, label, goal, readFunction) in goals {
             readFunction { consumed in
                 DispatchQueue.main.async {
                     progressBar?.progress = Float(consumed / goal)
-                    label?.text = "\(consumed) / \(goal)g"
+                    let consumedValue = round(consumed * 100) / 100
+                    let goalValue = round(goal * 100) / 100
+
+                    label?.text = "\(consumedValue) / \(goalValue)g"
                 }
             }
         }
