@@ -1,8 +1,9 @@
 import SwiftUI
 
 struct PregnancyProgressView: View {
-    // MARK: - Properties
-    
+
+    // MARK: Internal
+
     // Sample data - you'll inject these from your existing model
     var trimester: String
     var weekDay: String
@@ -11,37 +12,32 @@ struct PregnancyProgressView: View {
     var babyInfo: String
     var momInfo: String
     var fruitComparisonName: String // e.g., "watermelon"
-    
-    // State for popup presentations
-    @State private var showingBabyInfo = false
-    @State private var showingMomInfo = false
-    @State private var selectedCardPosition: CGRect = .zero
-    
+
     // MARK: - Body
-    
+
     var body: some View {
-        GeometryReader { geometry in
+        GeometryReader { _ in
             VStack(spacing: 16) {
                 // Week/trimester info (without its own card background)
                 VStack(spacing: 2) {
                     Text(trimester)
                         .font(.title3)
                         .fontWeight(.semibold)
-                    
+
                     Text(weekDay)
                         .font(.title)
                         .fontWeight(.bold)
                         .foregroundColor(Color(hex: "924350"))
                 }
-                
+
                 // Content in cards with spacing
                 VStack(spacing: 16) {
                     // Baby size comparison with visuals
                     sizeComparisonView
-                    
+
                     // Growth stats cards
                     growthStatsView
-                    
+
                     // Information cards
                     infoCardsView
                 }
@@ -62,7 +58,7 @@ struct PregnancyProgressView: View {
                         removal: .scale(scale: 0.8).combined(with: .opacity)
                     ))
                 }
-                
+
                 if showingMomInfo {
                     PopupInfoCard(
                         title: "Mom This Week",
@@ -79,14 +75,21 @@ struct PregnancyProgressView: View {
             }
         }
     }
-    
+
+    // MARK: Private
+
+    // State for popup presentations
+    @State private var showingBabyInfo = false
+    @State private var showingMomInfo = false
+    @State private var selectedCardPosition: CGRect = .zero
+
     // MARK: - Component Views
-    
+
     private var sizeComparisonView: some View {
         VStack(spacing: 12) {
             // Interactive size comparison
             ComparisonView(fruitName: fruitComparisonName)
-            
+
             Text("I'm currently the size of a \(fruitComparisonName.lowercased())")
                 .font(.headline)
                 .multilineTextAlignment(.center)
@@ -99,7 +102,7 @@ struct PregnancyProgressView: View {
                 .shadow(color: Color.black.opacity(0.05), radius: 8, x: 0, y: 2)
         )
     }
-    
+
     private var growthStatsView: some View {
         HStack(spacing: 12) {
             // Height card
@@ -107,11 +110,11 @@ struct PregnancyProgressView: View {
                 HStack {
                     Image(systemName: "ruler")
                         .font(.system(size: 22))
-                    
+
                     Text("Height")
                         .font(.headline)
                 }
-                
+
                 Text(babyHeight)
                     .font(.title2)
                     .fontWeight(.bold)
@@ -124,17 +127,17 @@ struct PregnancyProgressView: View {
                     .fill(Color(.systemBackground))
                     .shadow(color: Color.black.opacity(0.05), radius: 8, x: 0, y: 2)
             )
-            
+
             // Weight card
             VStack(spacing: 8) {
                 HStack {
                     Image(systemName: "scalemass")
                         .font(.system(size: 22))
-                    
+
                     Text("Weight")
                         .font(.headline)
                 }
-                
+
                 Text(babyWeight)
                     .font(.title2)
                     .fontWeight(.bold)
@@ -149,7 +152,7 @@ struct PregnancyProgressView: View {
             )
         }
     }
-    
+
     private var infoCardsView: some View {
         VStack(spacing: 16) {
             // Baby info card with actual truncated text and baby emoji
@@ -176,7 +179,7 @@ struct PregnancyProgressView: View {
                     showingBabyInfo = true
                 }
             }
-            
+
             // Mom info card with mom emoji
             InfoCardButton(
                 title: "Mom This Week",
@@ -213,7 +216,7 @@ struct InfoCardButton: View {
     var isEmoji: Bool = false // Flag to determine if we're using emoji or SF Symbol
     let backgroundColor: Color
     let accentColor: Color
-    
+
     var body: some View {
         HStack {
             // Use either emoji or SF Symbol based on isEmoji flag
@@ -227,20 +230,20 @@ struct InfoCardButton: View {
                     .foregroundColor(accentColor)
                     .padding(.trailing, 4)
             }
-            
+
             VStack(alignment: .leading, spacing: 6) {
                 Text(title)
                     .font(.headline)
                     .foregroundColor(.primary)
-                
+
                 Text(subtitle)
                     .font(.subheadline)
                     .foregroundColor(.secondary)
                     .lineLimit(2)
             }
-            
+
             Spacer()
-            
+
             Image(systemName: "chevron.right")
                 .foregroundColor(.secondary)
         }
@@ -258,15 +261,15 @@ struct PopupInfoCard: View {
     let title: String
     let content: String
     @Binding var isShowing: Bool
-    let cardPosition: CGRect 
+    let cardPosition: CGRect
     let accentColor: Color
-    
-    @State private var cardOffset = CGSize(width: 0, height: -50)
+
+    @State private var cardOffset: CGSize = .init(width: 0, height: -50)
     @State private var opacity = 0.0
     @State private var scale = 0.8
     @State private var isContentVisible = false
     @State private var envelopeOpen = false
-    
+
     var body: some View {
         ZStack {
             // Background overlay
@@ -276,7 +279,7 @@ struct PopupInfoCard: View {
                 .onTapGesture {
                     closeCard()
                 }
-            
+
             // Paper card
             VStack(spacing: 0) {
                 // Cute envelope flap
@@ -290,7 +293,7 @@ struct PopupInfoCard: View {
                     }
                     .fill(Color(hex: "FBE8E5"))
                     .shadow(color: Color.black.opacity(0.1), radius: 3, x: 0, y: -2)
-                    
+
                     // Title on the envelope flap - fixed positioning
                     Text(title)
                         .font(.title3)
@@ -300,9 +303,9 @@ struct PopupInfoCard: View {
                 }
                 .frame(height: 60) // Increased height to give more space for the title
                 .animation(.spring(response: 0.5, dampingFraction: 0.7), value: envelopeOpen)
-                                
+
                 // Content area with decorative elements
-                VStack(spacing: 0) {                    
+                VStack(spacing: 0) {
                     // Decorative top border
                     HStack(spacing: 4) {
                         ForEach(0..<15) { _ in
@@ -312,7 +315,7 @@ struct PopupInfoCard: View {
                         }
                     }
                     .padding(.top, 12)
-                    
+
                     // Content
                     ScrollView {
                         Text(content)
@@ -323,7 +326,7 @@ struct PopupInfoCard: View {
                             .opacity(isContentVisible ? 1 : 0)
                     }
                     .frame(maxHeight: 350)
-                    
+
                     // Decorative bottom border
                     HStack(spacing: 4) {
                         ForEach(0..<15) { _ in
@@ -333,7 +336,7 @@ struct PopupInfoCard: View {
                         }
                     }
                     .padding(.bottom, 12)
-                    
+
                     // Close button
                     Button(action: closeCard) {
                         Text("Close")
@@ -371,13 +374,13 @@ struct PopupInfoCard: View {
                 scale = 1.0
                 cardOffset = .zero
             }
-            
+
             // Animate the envelope opening
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
                 withAnimation(.spring(response: 0.6, dampingFraction: 0.6)) {
                     envelopeOpen = true
                 }
-                
+
                 // Then show the content
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
                     withAnimation(.easeIn(duration: 0.4)) {
@@ -387,19 +390,19 @@ struct PopupInfoCard: View {
             }
         }
     }
-    
+
     private func closeCard() {
         // First hide the content
         withAnimation(.easeOut(duration: 0.2)) {
             isContentVisible = false
         }
-        
+
         // Close the envelope
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
             withAnimation(.spring(response: 0.4, dampingFraction: 0.7)) {
                 envelopeOpen = false
             }
-            
+
             // Then dismiss the card
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
                 withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) {
@@ -407,7 +410,7 @@ struct PopupInfoCard: View {
                     scale = 0.8
                     cardOffset = CGSize(width: 0, height: -50)
                 }
-                
+
                 // Finally set the state
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
                     isShowing = false
@@ -418,10 +421,11 @@ struct PopupInfoCard: View {
 }
 
 struct ComparisonView: View {
+
+    // MARK: Internal
+
     let fruitName: String
-    @State private var isShowingAnimation = false
-    @State private var wiggleAmount = false
-    
+
     var body: some View {
         HStack(spacing: 20) {
             // Fruit image
@@ -442,7 +446,7 @@ struct ComparisonView: View {
                     // Start gentle wiggle animation
                     wiggleAmount.toggle()
                 }
-            
+
             // Arrow that pulses when active
             Image(systemName: "arrow.right")
                 .font(.system(size: 24, weight: .bold))
@@ -453,13 +457,13 @@ struct ComparisonView: View {
                         .repeatCount(3, autoreverses: true),
                     value: isShowingAnimation
                 )
-            
+
             // Baby image
             ZStack {
                 Circle()
                     .fill(Color(hex: "E88683"))
                     .frame(width: 120, height: 120)
-                
+
                 Image("baby_fetus")
                     .resizable()
                     .aspectRatio(contentMode: .fit)
@@ -482,24 +486,29 @@ struct ComparisonView: View {
             }
         }
     }
-}
 
+    // MARK: Private
+
+    @State private var isShowingAnimation = false
+    @State private var wiggleAmount = false
+
+}
 
 // Helper method to truncate text with ellipsis
 private func getTruncatedText(from text: String, maxLength: Int) -> String {
     if text.count <= maxLength {
         return text
     }
-    
+
     // Find a good breaking point (space) near the maxLength
     let index = text.index(text.startIndex, offsetBy: min(maxLength - 3, text.count))
     let truncatedText = text[..<index]
-    
+
     // Try to find the last space to make a clean break
     if let lastSpace = truncatedText.lastIndex(of: " ") {
         return text[..<lastSpace] + "..."
     }
-    
+
     return String(truncatedText) + "..."
 }
 

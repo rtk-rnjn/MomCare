@@ -1,5 +1,5 @@
 //
-//  PersonalInfoTableViewController.swift
+//  PersonalDetailsTableViewController.swift
 //  MomCare
 //
 //  Created by Khushi Rana on 02/03/25.
@@ -33,24 +33,23 @@ class PersonalDetailsTableViewController: UITableViewController {
         super.viewDidLoad()
         updateElements()
         setupPickers()
-    
+
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissPicker))
         tapGesture.cancelsTouchesInView = false
         view.addGestureRecognizer(tapGesture)
     }
-    
-    
+
     @IBAction func editButtonTapped(_ sender: UIBarButtonItem) {
         isEditingMode.toggle()
         sender.title = isEditingMode ? "Save" : "Edit"
         toggleEditMode()
     }
-    
+
     func toggleEditMode() {
         updateUIForEditingMode()
-            
+
             if !isEditingMode {
-                Task{
+                Task {
                     await saveUser()
                 }
             }
@@ -88,7 +87,6 @@ class PersonalDetailsTableViewController: UITableViewController {
             }
         }
 
-
     @objc func donePicker() {
         if let button = activeButton {
             let selectedRow = pickerView.selectedRow(inComponent: 0)
@@ -124,21 +122,21 @@ class PersonalDetailsTableViewController: UITableViewController {
         userTrimesterButton.setTitle(String(weekAndDay?.trimester ?? "Not Set"), for: .normal)
         userDatOfBirthPicker.date = userMedical.dateOfBirth
     }
-    
-    func saveUser() async{
+
+    func saveUser() async {
         MomCareUser.shared.user?.medicalData?.dateOfBirth = userDatOfBirthPicker.date
-        
+
         if let fullName = userNameField.text {
             let nameParts = fullName.split(separator: " ")
             MomCareUser.shared.user?.firstName = nameParts.first.map(String.init) ?? ""
             MomCareUser.shared.user?.lastName = nameParts.dropFirst().joined(separator: " ")
         }
-        
+
         if let heightText = userHeightButton.title(for: .normal)?.replacingOccurrences(of: " cm", with: ""),
                let height = Double(heightText) {
             MomCareUser.shared.user?.medicalData?.height = height
         }
-        
+
         if let weightText = userCurrentWeightButton.title(for: .normal)?.replacingOccurrences(of: " kgs", with: ""),
                let weight = Double(weightText) {
             MomCareUser.shared.user?.medicalData?.currentWeight = weight
@@ -152,7 +150,7 @@ class PersonalDetailsTableViewController: UITableViewController {
 }
 
 extension PersonalDetailsTableViewController: UIPickerViewDelegate, UIPickerViewDataSource {
-    
+
     func setupPickers() {
         pickerView.delegate = self
         pickerView.dataSource = self
@@ -162,7 +160,7 @@ extension PersonalDetailsTableViewController: UIPickerViewDelegate, UIPickerView
         pickerView.isHidden = true
         view.addSubview(pickerView)
     }
-    
+
     func numberOfComponents(in pickerView: UIPickerView) -> Int { return 1 }
 
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
@@ -173,9 +171,9 @@ extension PersonalDetailsTableViewController: UIPickerViewDelegate, UIPickerView
         return currentPickerData[row]
     }
 
-    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {   activeButton?.setTitle(currentPickerData[row], for: .normal)
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) { activeButton?.setTitle(currentPickerData[row], for: .normal)
     }
-    
+
     @objc func dismissPicker() {
         pickerView.isHidden = true
     }
