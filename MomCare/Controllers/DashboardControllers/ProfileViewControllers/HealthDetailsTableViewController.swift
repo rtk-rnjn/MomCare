@@ -47,5 +47,24 @@ class HealthDetailsTableViewController: UITableViewController {
     }
 
     func saveHealtghDetails() {}
+    
+    @IBAction func preExistingTapped(_ sender: UIButton) {
+        performSegue(withIdentifier: "showUserHealthProfile", sender: HealthProfileType.preExistingCondition)
+    }
 
+    @IBAction func intoleranceTapped(_ sender: UIButton) {
+        performSegue(withIdentifier: "showUserHealthProfile", sender: HealthProfileType.intolerance)
+    }
+
+    @IBAction func dietaryTapped(_ sender: UIButton) {
+        performSegue(withIdentifier: "showUserHealthProfile", sender: HealthProfileType.dietaryPreference)
+    }
+
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "showUserHealthProfile",
+           let destination = segue.destination as? HealthDetailsCellTableViewController,
+           let type = sender as? HealthProfileType {
+            destination.healthProfile = type
+        }
+    }
 }

@@ -624,7 +624,7 @@
                                                                 <fontDescription key="titleFontDescription" style="UICTFontTextStyleBody"/>
                                                             </buttonConfiguration>
                                                             <connections>
-                                                                <segue destination="MeX-Vk-bHc" kind="show" id="gPp-Zd-jVd"/>
+                                                                <action selector="preExistingTapped:" destination="Fti-hv-RJM" eventType="touchUpInside" id="wYv-CD-0DU"/>
                                                             </connections>
                                                         </button>
                                                     </subviews>
@@ -664,6 +664,9 @@
                                                             <buttonConfiguration key="configuration" style="plain" title="Not Set">
                                                                 <fontDescription key="titleFontDescription" style="UICTFontTextStyleBody"/>
                                                             </buttonConfiguration>
+                                                            <connections>
+                                                                <action selector="dietaryTapped:" destination="Fti-hv-RJM" eventType="touchUpInside" id="Rpb-PO-VQg"/>
+                                                            </connections>
                                                         </button>
                                                     </subviews>
                                                 </stackView>
@@ -702,6 +705,9 @@
                                                             <buttonConfiguration key="configuration" style="plain" title="Not Set">
                                                                 <fontDescription key="titleFontDescription" style="UICTFontTextStyleBody"/>
                                                             </buttonConfiguration>
+                                                            <connections>
+                                                                <action selector="intoleranceTapped:" destination="Fti-hv-RJM" eventType="touchUpInside" id="Kvk-v6-KiB"/>
+                                                            </connections>
                                                         </button>
                                                     </subviews>
                                                 </stackView>
@@ -730,6 +736,7 @@
                         <outlet property="userDietaryPreferences" destination="yFy-ha-quh" id="ASd-SR-4oA"/>
                         <outlet property="userDueDate" destination="kTv-3b-yXS" id="9h4-8I-HJ9"/>
                         <outlet property="userMedicalConditions" destination="1ju-Dr-mx1" id="k2s-HH-TMY"/>
+                        <segue destination="MeX-Vk-bHc" kind="show" identifier="showUserHealthProfile" id="HDl-Mm-txa"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="IuO-CW-qz4" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
