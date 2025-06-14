@@ -174,7 +174,7 @@
                                             <rect key="frame" x="0.0" y="0.0" width="322.66666666666669" height="55"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Account And Security" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="8ky-xV-pK9">
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Account &amp; Security" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="8ky-xV-pK9">
                                                     <rect key="frame" x="20" y="0.0" width="294.66666666666669" height="55"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
@@ -298,7 +298,7 @@
             </objects>
             <point key="canvasLocation" x="3618" y="-194"/>
         </scene>
-        <!--Settings-->
+        <!--Account & Security-->
         <scene sceneID="0FX-O9-Fl2">
             <objects>
                 <tableViewController id="oO8-UD-jq3" customClass="SettingsTableViewController" customModule="MomCare" customModuleProvider="target" sceneMemberID="viewController">
@@ -424,8 +424,9 @@
                                             <rect key="frame" x="0.0" y="0.0" width="353" height="55"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pAj-W9-TAB">
+                                                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pAj-W9-TAB">
                                                     <rect key="frame" x="0.0" y="0.0" width="353" height="55"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <state key="normal" title="Button"/>
                                                     <buttonConfiguration key="configuration" style="plain" title="Change"/>
                                                     <connections>
@@ -433,12 +434,6 @@
                                                     </connections>
                                                 </button>
                                             </subviews>
-                                            <constraints>
-                                                <constraint firstItem="pAj-W9-TAB" firstAttribute="leading" secondItem="VLP-ID-0s2" secondAttribute="leading" id="B34-aV-Xk2"/>
-                                                <constraint firstAttribute="trailing" secondItem="pAj-W9-TAB" secondAttribute="trailing" id="OLL-tr-SXY"/>
-                                                <constraint firstAttribute="bottom" secondItem="pAj-W9-TAB" secondAttribute="bottom" id="cjd-Bh-UVq"/>
-                                                <constraint firstItem="pAj-W9-TAB" firstAttribute="top" secondItem="VLP-ID-0s2" secondAttribute="top" id="iWD-AU-snm"/>
-                                            </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                 </cells>
@@ -470,7 +465,7 @@
                             <outlet property="delegate" destination="oO8-UD-jq3" id="hUG-7V-o84"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Settings" id="TTY-fl-17y" customClass="Setti"/>
+                    <navigationItem key="navigationItem" title="Account &amp; Security" id="TTY-fl-17y" customClass="Setti"/>
                     <connections>
                         <outlet property="changePasswordButton" destination="L07-LO-9Na" id="rn1-rw-QmD"/>
                         <outlet property="confirmPasswordField" destination="2Q6-mC-EGt" id="4eL-sY-s8c"/>
