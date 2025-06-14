@@ -1,5 +1,5 @@
 //
-//  PersonalDetailsTableViewController.swift
+//  PersonalInfoTableViewController.swift
 //  MomCare
 //
 //  Created by Khushi Rana on 02/03/25.
@@ -9,14 +9,14 @@ import UIKit
 
 class PersonalDetailsTableViewController: UITableViewController {
 
-    @IBOutlet var userName: UITextField!
-    @IBOutlet var userDOB: UIDatePicker!
-    @IBOutlet var userHeight: UIButton!
-    @IBOutlet var userCurrentWeight: UIButton!
-    @IBOutlet var userPrePregnancyWeight: UIButton!
-    @IBOutlet var userPregnancyDay: UIButton!
-    @IBOutlet var userPregnancyWeek: UIButton!
-    @IBOutlet var userTrimester: UIButton!
+    @IBOutlet var userNameField: UITextField!
+    @IBOutlet var userDatOfBirthPicker: UIDatePicker!
+    @IBOutlet var userHeightButton: UIButton!
+    @IBOutlet var userCurrentWeightButton: UIButton!
+    @IBOutlet var userPrePregnancyWeightButton: UIButton!
+    @IBOutlet var userPregnancyDayButton: UIButton!
+    @IBOutlet var userPregnancyWeekButton: UIButton!
+    @IBOutlet var userTrimesterButton: UIButton!
 
     var isEditingMode = false
     var pickerView: UIPickerView = .init()
@@ -24,7 +24,7 @@ class PersonalDetailsTableViewController: UITableViewController {
     var currentPickerData: [String] = .init()
 
     let heightValues = Array(140...200).map { "\($0) cm" }
-    let weightValues = Array(40...120).map { "\($0) kgs" }
+    let weightValues = Array(40...200).map { "\($0) kgs" }
     let dayValues = Array(1...7).map { "\($0)" }
     let weekValues = Array(1...40).map { "\($0)" }
     let trimesterValues = ["I", "II", "III"]
@@ -33,48 +33,49 @@ class PersonalDetailsTableViewController: UITableViewController {
         super.viewDidLoad()
         updateElements()
         setupPickers()
-
-        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Edit", style: .plain, target: self, action: #selector(toggleEditMode))
-
+    
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissPicker))
         tapGesture.cancelsTouchesInView = false
         view.addGestureRecognizer(tapGesture)
     }
-
-    @objc func toggleEditMode() {
-    isEditingMode.toggle()
-    navigationItem.rightBarButtonItem?.title = isEditingMode ? "Save" : "Edit"
-    updateUIForEditingMode()
-
-        if !isEditingMode {
-            Task {
-                await saveUser()
+    
+    
+    @IBAction func editButtonTapped(_ sender: UIBarButtonItem) {
+        isEditingMode.toggle()
+        sender.title = isEditingMode ? "Save" : "Edit"
+        toggleEditMode()
+    }
+    
+    func toggleEditMode() {
+        updateUIForEditingMode()
+            
+            if !isEditingMode {
+                Task{
+                    await saveUser()
+                }
             }
-        }
-
-    tableView.reloadData()
     }
 
     func updateUIForEditingMode() {
-        userName.isUserInteractionEnabled = isEditingMode
-        userDOB.isUserInteractionEnabled = isEditingMode
-        userHeight.isUserInteractionEnabled = isEditingMode
-        userCurrentWeight.isUserInteractionEnabled = isEditingMode
-        userPrePregnancyWeight.isUserInteractionEnabled = isEditingMode
+        userNameField.isUserInteractionEnabled = isEditingMode
+        userDatOfBirthPicker.isUserInteractionEnabled = isEditingMode
+        userHeightButton.isUserInteractionEnabled = isEditingMode
+        userCurrentWeightButton.isUserInteractionEnabled = isEditingMode
+        userPrePregnancyWeightButton.isUserInteractionEnabled = isEditingMode
     }
 
     @IBAction func fieldValuesButtonTapped(_ sender: UIButton) {
             activeButton = sender
             switch sender {
-            case userHeight:
+            case userHeightButton:
                 currentPickerData = heightValues
-            case userCurrentWeight, userPrePregnancyWeight:
+            case userCurrentWeightButton, userPrePregnancyWeightButton:
                 currentPickerData = weightValues
-            case userPregnancyDay:
+            case userPregnancyDayButton:
                 currentPickerData = dayValues
-            case userPregnancyWeek:
+            case userPregnancyWeekButton:
                 currentPickerData = weekValues
-            case userTrimester:
+            case userTrimesterButton:
                 currentPickerData = trimesterValues
             default:
                 return
@@ -87,9 +88,6 @@ class PersonalDetailsTableViewController: UITableViewController {
             }
         }
 
-    @objc func dismissPicker() {
-        pickerView.isHidden = true
-    }
 
     @objc func donePicker() {
         if let button = activeButton {
@@ -113,49 +111,48 @@ class PersonalDetailsTableViewController: UITableViewController {
         guard let userMedical = MomCareUser.shared.user?.medicalData else { return }
         guard let user = MomCareUser.shared.user else { return }
 
-        userName.text = user.fullName
-        userDOB.date = userMedical.dateOfBirth
-        userHeight.setTitle("\(userMedical.height) cm", for: .normal)
-        userCurrentWeight.setTitle("\(userMedical.currentWeight) kgs", for: .normal)
-        userPrePregnancyWeight.setTitle("\(userMedical.prePregnancyWeight) kgs", for: .normal)
+        userNameField.text = user.fullName
+        userDatOfBirthPicker.date = userMedical.dateOfBirth
+        userHeightButton.setTitle("\(userMedical.height) cm", for: .normal)
+        userCurrentWeightButton.setTitle("\(userMedical.currentWeight) kgs", for: .normal)
+        userPrePregnancyWeightButton.setTitle("\(userMedical.prePregnancyWeight) kgs", for: .normal)
 
         let weekAndDay = Utils.pregnancyWeekAndDay(dueDate: userMedical.dueDate!)
 
-        userPregnancyDay.setTitle(String(weekAndDay?.day ?? 0), for: .normal)
-        userPregnancyWeek.setTitle(String(weekAndDay?.week ?? 0), for: .normal)
-        userTrimester.setTitle(String(weekAndDay?.trimester ?? "Not Set"), for: .normal)
-        userDOB.date = userMedical.dateOfBirth
+        userPregnancyDayButton.setTitle(String(weekAndDay?.day ?? 0), for: .normal)
+        userPregnancyWeekButton.setTitle(String(weekAndDay?.week ?? 0), for: .normal)
+        userTrimesterButton.setTitle(String(weekAndDay?.trimester ?? "Not Set"), for: .normal)
+        userDatOfBirthPicker.date = userMedical.dateOfBirth
     }
-
-    func saveUser() async {
-        MomCareUser.shared.user?.medicalData?.dateOfBirth = userDOB.date
-
-        if let fullName = userName.text {
+    
+    func saveUser() async{
+        MomCareUser.shared.user?.medicalData?.dateOfBirth = userDatOfBirthPicker.date
+        
+        if let fullName = userNameField.text {
             let nameParts = fullName.split(separator: " ")
             MomCareUser.shared.user?.firstName = nameParts.first.map(String.init) ?? ""
             MomCareUser.shared.user?.lastName = nameParts.dropFirst().joined(separator: " ")
         }
-
-        if let heightText = userHeight.title(for: .normal)?.replacingOccurrences(of: " cm", with: ""),
+        
+        if let heightText = userHeightButton.title(for: .normal)?.replacingOccurrences(of: " cm", with: ""),
                let height = Double(heightText) {
             MomCareUser.shared.user?.medicalData?.height = height
         }
-
-        if let weightText = userCurrentWeight.title(for: .normal)?.replacingOccurrences(of: " kgs", with: ""),
+        
+        if let weightText = userCurrentWeightButton.title(for: .normal)?.replacingOccurrences(of: " kgs", with: ""),
                let weight = Double(weightText) {
             MomCareUser.shared.user?.medicalData?.currentWeight = weight
         }
 
-        if let preWeightText = userPrePregnancyWeight.title(for: .normal)?.replacingOccurrences(of: " kgs", with: ""),
+        if let preWeightText = userPrePregnancyWeightButton.title(for: .normal)?.replacingOccurrences(of: " kgs", with: ""),
            let preWeight = Double(preWeightText) {
             MomCareUser.shared.user?.medicalData?.prePregnancyWeight = preWeight
         }
-
     }
 }
 
 extension PersonalDetailsTableViewController: UIPickerViewDelegate, UIPickerViewDataSource {
-
+    
     func setupPickers() {
         pickerView.delegate = self
         pickerView.dataSource = self
@@ -165,7 +162,7 @@ extension PersonalDetailsTableViewController: UIPickerViewDelegate, UIPickerView
         pickerView.isHidden = true
         view.addSubview(pickerView)
     }
-
+    
     func numberOfComponents(in pickerView: UIPickerView) -> Int { return 1 }
 
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
@@ -176,6 +173,10 @@ extension PersonalDetailsTableViewController: UIPickerViewDelegate, UIPickerView
         return currentPickerData[row]
     }
 
-    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) { activeButton?.setTitle(currentPickerData[row], for: .normal)
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {   activeButton?.setTitle(currentPickerData[row], for: .normal)
+    }
+    
+    @objc func dismissPicker() {
+        pickerView.isHidden = true
     }
 }
