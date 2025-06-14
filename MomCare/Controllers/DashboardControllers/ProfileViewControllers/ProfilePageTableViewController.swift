@@ -14,15 +14,15 @@ class ProfilePageTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         updateElements()
-        
+
     }
 
     func updateElements() {
         usernameLabel.text = MomCareUser.shared.user?.fullName
     }
-    
+
     @IBAction func logoutTapped() {
-        
+
         let actions = [
             AlertActionHandler(title: "Cancel", style: .cancel, handler: nil),
             AlertActionHandler(title: "Logout", style: .destructive) { _ in
