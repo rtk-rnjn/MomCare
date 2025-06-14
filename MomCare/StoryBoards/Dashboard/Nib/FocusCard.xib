@@ -60,7 +60,7 @@
                         </constraints>
                     </view>
                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="TopLeft" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dwZ-Ju-E2Z">
-                        <rect key="frame" x="7" y="7" width="204" height="88.666666666666671"/>
+                        <rect key="frame" x="7" y="11.999999999999996" width="204" height="51.666666666666657"/>
                         <string key="text">Did you know? 
 Staying active during pregnancy helps reduce discomfort</string>
                         <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
@@ -74,8 +74,8 @@ Staying active during pregnancy helps reduce discomfort</string>
                     <constraint firstItem="gOD-lT-oaq" firstAttribute="centerX" secondItem="dwZ-Ju-E2Z" secondAttribute="centerX" id="FVu-mT-0KF"/>
                     <constraint firstAttribute="trailing" secondItem="dwZ-Ju-E2Z" secondAttribute="trailing" constant="7" id="Go7-ED-0dp"/>
                     <constraint firstItem="gOD-lT-oaq" firstAttribute="height" secondItem="fHC-SX-wkN" secondAttribute="height" multiplier="0.3" id="VUU-xm-vf7"/>
-                    <constraint firstItem="dwZ-Ju-E2Z" firstAttribute="top" secondItem="fHC-SX-wkN" secondAttribute="top" constant="7" id="VaJ-Oh-3bd"/>
-                    <constraint firstItem="gOD-lT-oaq" firstAttribute="top" secondItem="dwZ-Ju-E2Z" secondAttribute="bottom" constant="12" id="aVY-dk-qND"/>
+                    <constraint firstItem="dwZ-Ju-E2Z" firstAttribute="top" secondItem="fHC-SX-wkN" secondAttribute="top" constant="12" id="VaJ-Oh-3bd"/>
+                    <constraint firstItem="gOD-lT-oaq" firstAttribute="top" relation="greaterThanOrEqual" secondItem="dwZ-Ju-E2Z" secondAttribute="bottom" constant="12" id="aVY-dk-qND"/>
                     <constraint firstAttribute="bottom" secondItem="gOD-lT-oaq" secondAttribute="bottom" id="cGV-lH-VnL"/>
                     <constraint firstItem="gOD-lT-oaq" firstAttribute="leading" secondItem="fHC-SX-wkN" secondAttribute="leading" id="yFJ-tS-rbv"/>
                 </constraints>
