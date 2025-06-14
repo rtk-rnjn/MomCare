@@ -23,6 +23,14 @@ class HealthDetailsTableViewController: UITableViewController {
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Edit", style: .plain, target: self, action: #selector(toggleEditMode))
     }
 
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "showUserHealthProfile",
+           let destination = segue.destination as? HealthDetailsCellTableViewController,
+           let type = sender as? HealthProfileType {
+            destination.healthProfile = type
+        }
+    }
+
     @objc func toggleEditMode() {
         isEditingMode.toggle()
         navigationItem.rightBarButtonItem?.title = isEditingMode ? "Save" : "Edit"
@@ -47,7 +55,7 @@ class HealthDetailsTableViewController: UITableViewController {
     }
 
     func saveHealtghDetails() {}
-    
+
     @IBAction func preExistingTapped(_ sender: UIButton) {
         performSegue(withIdentifier: "showUserHealthProfile", sender: HealthProfileType.preExistingCondition)
     }
@@ -60,11 +68,4 @@ class HealthDetailsTableViewController: UITableViewController {
         performSegue(withIdentifier: "showUserHealthProfile", sender: HealthProfileType.dietaryPreference)
     }
 
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "showUserHealthProfile",
-           let destination = segue.destination as? HealthDetailsCellTableViewController,
-           let type = sender as? HealthProfileType {
-            destination.healthProfile = type
-        }
-    }
 }
