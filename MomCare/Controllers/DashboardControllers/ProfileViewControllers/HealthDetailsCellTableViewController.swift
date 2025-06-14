@@ -18,8 +18,7 @@ class HealthDetailsCellTableViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "HealthDetailCell", for: indexPath)
-        return cell
+        return tableView.dequeueReusableCell(withIdentifier: "HealthDetailCell", for: indexPath)
     }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
