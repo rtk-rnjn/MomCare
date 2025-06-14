@@ -4,81 +4,102 @@ struct PregnancyProgressView: View {
 
     // MARK: Internal
 
-    // Sample data - you'll inject these from your existing model
     var trimester: String
     var weekDay: String
     var babyHeight: String
     var babyWeight: String
     var babyInfo: String
     var momInfo: String
-    var fruitComparisonName: String // e.g., "watermelon"
+    var quote: String
+
+    @State var fruitImage: UIImage?
+    @State var babyImage: UIImage?
+
+    var trimesterData: TrimesterData?
+
+    init?() {
+        guard let pregnancyData = MomCareUser.shared.user?.pregancyData else {
+            fatalError("Pregnancy data is not available")
+        }
+        self.trimester = pregnancyData.trimester
+        self.weekDay = "Week \(pregnancyData.week) - Day \(pregnancyData.day)"
+
+        let trimesterData = TriTrackData.getTrimesterData(for: pregnancyData.week)
+
+        self.babyWeight = "\(trimesterData?.babyWeightInGrams ?? 0) g"
+        self.babyHeight = "\(trimesterData?.babyHeightInCentimeters ?? 0) cm"
+        self.quote = trimesterData?.quote ?? "Keep growing strong!"
+
+        self.babyInfo = trimesterData?.babyTipText ?? "Your baby is developing rapidly this week. Keep up with your prenatal care!"
+        self.momInfo = trimesterData?.momTipText ?? "Remember to stay hydrated and get plenty of rest. Your body is doing amazing things!"
+
+        self.trimesterData = trimesterData
+    }
 
     // MARK: - Body
 
     var body: some View {
         GeometryReader { _ in
-            VStack(spacing: 16) {
-                // Week/trimester info (without its own card background)
-                VStack(spacing: 2) {
-                    Text(trimester)
-                        .font(.title3)
-                        .fontWeight(.semibold)
-
-                    Text(weekDay)
-                        .font(.title)
-                        .fontWeight(.bold)
-                        .foregroundColor(Color(hex: "924350"))
-                }
-
-                // Content in cards with spacing
+            ScrollView {
                 VStack(spacing: 16) {
-                    // Baby size comparison with visuals
-                    sizeComparisonView
+                    VStack(spacing: 2) {
+                        Text(trimester)
+                            .font(.title3)
+                            .fontWeight(.semibold)
 
-                    // Growth stats cards
-                    growthStatsView
+                        Text(weekDay)
+                            .font(.title)
+                            .fontWeight(.bold)
+                            .foregroundColor(Color(hex: "924350"))
+                    }
 
-                    // Information cards
-                    infoCardsView
+                    VStack(spacing: 16) {
+                        sizeComparisonView
+                        growthStatsView
+                        infoCardsView
+                    }
+                    .padding(.horizontal)
                 }
-                .padding(.horizontal)
+                .overlay {
+                    if showingBabyInfo {
+                        PopupInfoCard(
+                            title: "Baby Development",
+                            content: babyInfo,
+                            isShowing: $showingBabyInfo,
+                            cardPosition: selectedCardPosition,
+                            accentColor: Color(hex: "924350")
+                        )
+                        .transition(.asymmetric(
+                            insertion: .scale(scale: 0.8).combined(with: .opacity),
+                            removal: .scale(scale: 0.8).combined(with: .opacity)
+                        ))
+                    }
+
+                    if showingMomInfo {
+                        PopupInfoCard(
+                            title: "Mom This Week",
+                            content: momInfo,
+                            isShowing: $showingMomInfo,
+                            cardPosition: selectedCardPosition,
+                            accentColor: Color(hex: "924350")
+                        )
+                        .transition(.asymmetric(
+                            insertion: .scale(scale: 0.8).combined(with: .opacity),
+                            removal: .scale(scale: 0.8).combined(with: .opacity)
+                        ))
+                    }
+                }
             }
-            .overlay {
-                // Popup info card
-                if showingBabyInfo {
-                    PopupInfoCard(
-                        title: "Baby Development",
-                        content: babyInfo,
-                        isShowing: $showingBabyInfo,
-                        cardPosition: selectedCardPosition,
-                        accentColor: Color(hex: "924350")
-                    )
-                    .transition(.asymmetric(
-                        insertion: .scale(scale: 0.8).combined(with: .opacity),
-                        removal: .scale(scale: 0.8).combined(with: .opacity)
-                    ))
-                }
-
-                if showingMomInfo {
-                    PopupInfoCard(
-                        title: "Mom This Week",
-                        content: momInfo,
-                        isShowing: $showingMomInfo,
-                        cardPosition: selectedCardPosition,
-                        accentColor: Color(hex: "924350")
-                    )
-                    .transition(.asymmetric(
-                        insertion: .scale(scale: 0.8).combined(with: .opacity),
-                        removal: .scale(scale: 0.8).combined(with: .opacity)
-                    ))
-                }
-            }
+            .scrollIndicators(.hidden)
+        }
+        .task {
+            self.fruitImage = await self.trimesterData?.image
+            self.babyImage = self.trimesterData?.babyImage
         }
     }
 
     // MARK: Private
 
-    // State for popup presentations
     @State private var showingBabyInfo = false
     @State private var showingMomInfo = false
     @State private var selectedCardPosition: CGRect = .zero
@@ -87,10 +108,9 @@ struct PregnancyProgressView: View {
 
     private var sizeComparisonView: some View {
         VStack(spacing: 12) {
-            // Interactive size comparison
-            ComparisonView(fruitName: fruitComparisonName)
+            ComparisonView(fruitImage: fruitImage, babyImage: babyImage)
 
-            Text("I'm currently the size of a \(fruitComparisonName.lowercased())")
+            Text(quote)
                 .font(.headline)
                 .multilineTextAlignment(.center)
                 .padding(.top, 4)
@@ -155,7 +175,6 @@ struct PregnancyProgressView: View {
 
     private var infoCardsView: some View {
         VStack(spacing: 16) {
-            // Baby info card with actual truncated text and baby emoji
             InfoCardButton(
                 title: "Baby Development",
                 subtitle: getTruncatedText(from: babyInfo, maxLength: 80),
@@ -256,7 +275,6 @@ struct InfoCardButton: View {
     }
 }
 
-// Pop-up info card with envelope/message design
 struct PopupInfoCard: View {
     let title: String
     let content: String
@@ -272,19 +290,15 @@ struct PopupInfoCard: View {
 
     var body: some View {
         ZStack {
-            // Background overlay
             Color.black.opacity(0.4)
-                .edgesIgnoringSafeArea(.all) // Cover the entire screen
+                .edgesIgnoringSafeArea(.all)
                 .opacity(opacity)
                 .onTapGesture {
                     closeCard()
                 }
 
-            // Paper card
             VStack(spacing: 0) {
-                // Cute envelope flap
                 ZStack {
-                    // Envelope flap
                     Path { path in
                         path.move(to: CGPoint(x: 0, y: 0))
                         path.addLine(to: CGPoint(x: UIScreen.main.bounds.width * 0.9, y: 0))
@@ -294,19 +308,16 @@ struct PopupInfoCard: View {
                     .fill(Color(hex: "FBE8E5"))
                     .shadow(color: Color.black.opacity(0.1), radius: 3, x: 0, y: -2)
 
-                    // Title on the envelope flap - fixed positioning
                     Text(title)
                         .font(.title3)
                         .fontWeight(.bold)
                         .foregroundColor(Color(hex: "924350"))
-                        .offset(y: envelopeOpen ? 5 : 15) // Adjusted to be more visible
+                        .offset(y: envelopeOpen ? 5 : 15)
                 }
-                .frame(height: 60) // Increased height to give more space for the title
+                .frame(height: 60)
                 .animation(.spring(response: 0.5, dampingFraction: 0.7), value: envelopeOpen)
 
-                // Content area with decorative elements
                 VStack(spacing: 0) {
-                    // Decorative top border
                     HStack(spacing: 4) {
                         ForEach(0..<15) { _ in
                             Image(systemName: "heart.fill")
@@ -392,18 +403,15 @@ struct PopupInfoCard: View {
     }
 
     private func closeCard() {
-        // First hide the content
         withAnimation(.easeOut(duration: 0.2)) {
             isContentVisible = false
         }
 
-        // Close the envelope
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
             withAnimation(.spring(response: 0.4, dampingFraction: 0.7)) {
                 envelopeOpen = false
             }
 
-            // Then dismiss the card
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
                 withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) {
                     opacity = 0.0
@@ -411,7 +419,6 @@ struct PopupInfoCard: View {
                     cardOffset = CGSize(width: 0, height: -50)
                 }
 
-                // Finally set the state
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
                     isShowing = false
                 }
@@ -424,30 +431,30 @@ struct ComparisonView: View {
 
     // MARK: Internal
 
-    let fruitName: String
+    let fruitImage: UIImage?
+    let babyImage: UIImage?
 
     var body: some View {
         HStack(spacing: 20) {
-            // Fruit image
-            Image(fruitName.lowercased())
-                .resizable()
-                .aspectRatio(contentMode: .fit)
-                .frame(width: 100, height: 100)
-                .rotation3DEffect(
-                    .degrees(wiggleAmount ? 5 : -5),
-                    axis: (x: 0, y: 1, z: 0)
-                )
-                .animation(
-                    Animation.easeInOut(duration: 1.5)
-                        .repeatForever(autoreverses: true),
-                    value: wiggleAmount
-                )
-                .onAppear {
-                    // Start gentle wiggle animation
-                    wiggleAmount.toggle()
-                }
+            if let fruitImage {
+                Image(uiImage: fruitImage)
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(width: 100, height: 100)
+                    .rotation3DEffect(
+                        .degrees(wiggleAmount ? 5 : -5),
+                        axis: (x: 0, y: 1, z: 0)
+                    )
+                    .animation(
+                        Animation.easeInOut(duration: 1.5)
+                            .repeatForever(autoreverses: true),
+                        value: wiggleAmount
+                    )
+                    .onAppear {
+                        wiggleAmount.toggle()
+                    }
+            }
 
-            // Arrow that pulses when active
             Image(systemName: "arrow.right")
                 .font(.system(size: 24, weight: .bold))
                 .foregroundColor(isShowingAnimation ? Color(hex: "924350") : .secondary)
@@ -458,29 +465,29 @@ struct ComparisonView: View {
                     value: isShowingAnimation
                 )
 
-            // Baby image
             ZStack {
                 Circle()
                     .fill(Color(hex: "E88683"))
                     .frame(width: 120, height: 120)
 
-                Image("baby_fetus")
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .frame(width: 90, height: 90)
-                    .scaleEffect(isShowingAnimation ? 1.1 : 1.0)
-                    .rotationEffect(isShowingAnimation ? Angle(degrees: 10) : Angle(degrees: 0))
-                    .animation(
-                        Animation.easeInOut(duration: 1)
-                            .repeatCount(2, autoreverses: true),
-                        value: isShowingAnimation
-                    )
+                if let babyImage {
+                    Image(uiImage: babyImage)
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(width: 90, height: 90)
+                        .scaleEffect(isShowingAnimation ? 1.1 : 1.0)
+                        .rotationEffect(isShowingAnimation ? Angle(degrees: 10) : Angle(degrees: 0))
+                        .animation(
+                            Animation.easeInOut(duration: 1)
+                                .repeatCount(2, autoreverses: true),
+                            value: isShowingAnimation
+                        )
+                }
             }
         }
         .contentShape(Rectangle())
         .onTapGesture {
             isShowingAnimation = true
-            // Reset after animation completes
             DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
                 isShowingAnimation = false
             }
@@ -510,21 +517,4 @@ private func getTruncatedText(from text: String, maxLength: Int) -> String {
     }
 
     return String(truncatedText) + "..."
-}
-
-// Preview provider with sample data
-struct PregnancyProgressView_Previews: PreviewProvider {
-    static var previews: some View {
-        PregnancyProgressView(
-            trimester: "Trimester 3",
-            weekDay: "Week 40, Day 4",
-            babyHeight: "51.2 cm",
-            babyWeight: "3462.0 g",
-            babyInfo: "You've reached the official due date though many babies arrive a little before or after. Your baby weighs about 7.5 to 8 pounds (3.4 to 3.6 kg) and is around 20.5 to 21 inches (52–53.3 cm) long — about the size of a small pumpkin. Most of the lanugo (fine body hair) is gone, and only a small amount of vernix may remain. Your baby's organs are fully developed, and the lungs are secreting surfactant to help with the transition to breathing air. The fingernails and toenails may now reach the fingertips. The skull bones are still soft and not yet fused to allow for flexibility during birth. While the baby is completely developed, the placenta is still supplying oxygen and nutrients.",
-            momInfo: "You've made it to the final week! At this point, you might feel extremely impatient, uncomfortable, and ready to meet your baby. Your body is preparing for labor with potential signs like lightening (when the baby drops lower), more frequent Braxton Hicks contractions, mucus plug discharge, or diarrhea. You may notice more pressure on your pelvis and bladder but less pressure on your diaphragm, making breathing easier. Sleep might be difficult as finding a comfortable position becomes challenging. Stay hydrated, rest when possible, and continue gentle movement like walking to encourage labor.",
-            fruitComparisonName: "Watermelon"
-        )
-        .padding()
-        .previewLayout(.sizeThatFits)
-    }
 }
