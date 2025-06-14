@@ -55,9 +55,9 @@ class SignUpExtendedTableViewController: UITableViewController {
         guard var userMedical else { fatalError() }
 
         userMedical.dueDate = dueDate
-        userMedical.foodIntolerances = intolerances
-        userMedical.preExistingConditions = preExistingConditions
-        userMedical.dietaryPreferences = dietaryPreferences
+        userMedical.foodIntolerances = intolerances.map({ Intolerance(rawValue: $0) ?? .none })
+        userMedical.preExistingConditions = preExistingConditions.map({ PreExistingCondition(rawValue: $0) ?? .none })
+        userMedical.dietaryPreferences = dietaryPreferences.map({ DietaryPreference(rawValue: $0) ?? .none })
 
         Task {
             await handleSignUpExtended(userMedical: userMedical)

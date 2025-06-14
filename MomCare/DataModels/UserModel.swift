@@ -16,6 +16,7 @@ public enum PreExistingCondition: String, Codable, CaseIterable, Sendable {
     case asthma = "Asthma"
     case heartDisease = "Heart Disease"
     case kidneyDisease = "Kidney Disease"
+    case none
 }
 
 public enum Intolerance: String, Codable, CaseIterable, Sendable {
@@ -26,6 +27,7 @@ public enum Intolerance: String, Codable, CaseIterable, Sendable {
     case soy = "Soy"
     case dairy = "Dairy"
     case wheat = "Wheat"
+    case none
 }
 
 public enum DietaryPreference: String, Codable, CaseIterable, Sendable {
@@ -38,6 +40,7 @@ public enum DietaryPreference: String, Codable, CaseIterable, Sendable {
     case ketogenic = "Ketogenic"
     case highProtein = "High Protein"
     case dairyFree = "Dairy-Free"
+    case none
 }
 
 enum HealthProfileType {
