@@ -11,9 +11,9 @@ class SettingsTableViewController: UITableViewController {
 
     @IBOutlet var emailLabel: UILabel!
     @IBOutlet var phoneNumberLabel: UILabel!
-    @IBOutlet var oldPasswordField: UITableViewCell!
-    @IBOutlet var newPasswordField: UITableViewCell!
-    @IBOutlet var confirmPasswordField: UITableViewCell!
+    @IBOutlet var oldPasswordField: UITextField!
+    @IBOutlet var newPasswordField: UITextField!
+    @IBOutlet var confirmPasswordField: UITextField!
     @IBOutlet var changePasswordButton: UIButton!
     
     var isPasswordFieldsVisible = false
@@ -21,12 +21,11 @@ class SettingsTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         updatePageElements()
-        changePasswordButtonArrow()
     }
     
     func updatePageElements(){
         guard let user = MomCareUser.shared.user else { return }
-        
+        print(MomCareUser.shared.user?.password)
         emailLabel.text = user.emailAddress
         phoneNumberLabel.text = user.phoneNumber
     }
@@ -34,7 +33,6 @@ class SettingsTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if indexPath.section == 1 && indexPath.row == 0{
             isPasswordFieldsVisible.toggle()
-            changePasswordButtonArrow()
             
             tableView.beginUpdates()
             tableView.endUpdates()
@@ -42,21 +40,51 @@ class SettingsTableViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        if indexPath.section == 1 && [1, 2, 3].contains(indexPath.row) {
+        if indexPath.section == 2 && [0, 1, 2, 3].contains(indexPath.row) {
             return isPasswordFieldsVisible ? UITableView.automaticDimension : 0
         }
-
         return UITableView.automaticDimension
     }
     
-    func changePasswordButtonArrow() {
-        let imageName = isPasswordFieldsVisible ? "chevron.up" : "chevron.down"
-        let image = UIImage(systemName: imageName)
+    @IBAction func changeButtonTapped(_ sender: UIButton) {
+        guard let oldPassword = oldPasswordField.text,
+              let newPassword = newPasswordField.text,
+              let confirmPassowrd = confirmPasswordField.text else {
+            return
+        }
+            
+        guard !oldPassword.isEmpty && !newPassword.isEmpty && !confirmPassowrd.isEmpty else {
+            showAlert(title: "Error", message: "Please fill all fields")
+            return
+        }
         
-        changePasswordButton.contentHorizontalAlignment = .left
-        changePasswordButton.semanticContentAttribute = .forceRightToLeft
+        guard oldPassword == MomCareUser.shared.user?.password else {
+            showAlert(title: "Error", message: "Current password is incorrect")
+            return
+        }
         
-        changePasswordButton.setImage(image, for: .normal)
-        changePasswordButton.configuration?.imagePadding = 160
+        guard newPassword == confirmPassowrd else {
+            showAlert(title: "Error", message: "Passwords do not match")
+            return
+        }
+        
+        MomCareUser.shared.user?.password = newPassword
+        showAlert(title: "Success", message: "Password changed!") {
+                self.oldPasswordField.text = ""
+                self.newPasswordField.text = ""
+                self.confirmPasswordField.text = ""
+                
+                self.isPasswordFieldsVisible = false
+                self.tableView.beginUpdates()
+                self.tableView.endUpdates()
+            }
+    }
+    
+    func showAlert(title: String, message: String, completion: (() -> Void)? = nil) {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { _ in
+            completion?()
+        }))
+        present(alert, animated: true)
     }
 }

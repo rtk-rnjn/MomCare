@@ -22,6 +22,7 @@ class ProfilePageTableViewController: UITableViewController {
     }
     
     @IBAction func logoutTapped() {
+        
         let actions = [
             AlertActionHandler(title: "Cancel", style: .cancel, handler: nil),
             AlertActionHandler(title: "Logout", style: .destructive) { _ in
