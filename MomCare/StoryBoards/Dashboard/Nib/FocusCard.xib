@@ -17,7 +17,7 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gOD-lT-oaq" userLabel="BarView">
-                        <rect key="frame" x="0.0" y="104" width="218" height="50"/>
+                        <rect key="frame" x="0.0" y="107.66666666666667" width="218" height="46.333333333333329"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="p06-e3-dnu" userLabel="LogoView">
                                 <rect key="frame" x="168" y="-24" width="40" height="40"/>
@@ -44,7 +44,7 @@
                                 </userDefinedRuntimeAttributes>
                             </view>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Today's Focus" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="b4x-Go-GHK">
-                                <rect key="frame" x="10" y="15" width="114" height="20"/>
+                                <rect key="frame" x="10" y="12.999999999999998" width="114" height="20.333333333333329"/>
                                 <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -52,16 +52,15 @@
                         </subviews>
                         <color key="backgroundColor" red="0.9137254901960784" green="0.82745098039215681" blue="0.82745098039215681" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
-                            <constraint firstItem="b4x-Go-GHK" firstAttribute="top" secondItem="gOD-lT-oaq" secondAttribute="top" constant="15" id="BAy-cM-Qpf"/>
-                            <constraint firstAttribute="bottom" secondItem="b4x-Go-GHK" secondAttribute="bottom" constant="15" id="LrQ-f1-F5v"/>
+                            <constraint firstItem="b4x-Go-GHK" firstAttribute="top" secondItem="gOD-lT-oaq" secondAttribute="top" constant="13" id="BAy-cM-Qpf"/>
+                            <constraint firstAttribute="bottom" secondItem="b4x-Go-GHK" secondAttribute="bottom" constant="13" id="LrQ-f1-F5v"/>
                             <constraint firstItem="p06-e3-dnu" firstAttribute="top" secondItem="gOD-lT-oaq" secondAttribute="top" constant="-24" id="f7l-fh-9op"/>
                             <constraint firstItem="b4x-Go-GHK" firstAttribute="leading" secondItem="gOD-lT-oaq" secondAttribute="leading" constant="10" id="guV-xw-huQ"/>
                             <constraint firstAttribute="trailing" secondItem="p06-e3-dnu" secondAttribute="trailing" constant="10" id="jY4-m5-0eh"/>
-                            <constraint firstAttribute="height" constant="50" id="yvc-c9-NkP"/>
                         </constraints>
                     </view>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="TopLeft" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dwZ-Ju-E2Z">
-                        <rect key="frame" x="7" y="5" width="204" height="87"/>
+                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="TopLeft" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dwZ-Ju-E2Z">
+                        <rect key="frame" x="7" y="7" width="204" height="88.666666666666671"/>
                         <string key="text">Did you know? 
 Staying active during pregnancy helps reduce discomfort</string>
                         <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
@@ -74,7 +73,8 @@ Staying active during pregnancy helps reduce discomfort</string>
                     <constraint firstItem="dwZ-Ju-E2Z" firstAttribute="leading" secondItem="fHC-SX-wkN" secondAttribute="leading" constant="7" id="EBE-KV-chU"/>
                     <constraint firstItem="gOD-lT-oaq" firstAttribute="centerX" secondItem="dwZ-Ju-E2Z" secondAttribute="centerX" id="FVu-mT-0KF"/>
                     <constraint firstAttribute="trailing" secondItem="dwZ-Ju-E2Z" secondAttribute="trailing" constant="7" id="Go7-ED-0dp"/>
-                    <constraint firstItem="dwZ-Ju-E2Z" firstAttribute="top" secondItem="fHC-SX-wkN" secondAttribute="top" constant="5" id="VaJ-Oh-3bd"/>
+                    <constraint firstItem="gOD-lT-oaq" firstAttribute="height" secondItem="fHC-SX-wkN" secondAttribute="height" multiplier="0.3" id="VUU-xm-vf7"/>
+                    <constraint firstItem="dwZ-Ju-E2Z" firstAttribute="top" secondItem="fHC-SX-wkN" secondAttribute="top" constant="7" id="VaJ-Oh-3bd"/>
                     <constraint firstItem="gOD-lT-oaq" firstAttribute="top" secondItem="dwZ-Ju-E2Z" secondAttribute="bottom" constant="12" id="aVY-dk-qND"/>
                     <constraint firstAttribute="bottom" secondItem="gOD-lT-oaq" secondAttribute="bottom" id="cGV-lH-VnL"/>
                     <constraint firstItem="gOD-lT-oaq" firstAttribute="leading" secondItem="fHC-SX-wkN" secondAttribute="leading" id="yFJ-tS-rbv"/>
