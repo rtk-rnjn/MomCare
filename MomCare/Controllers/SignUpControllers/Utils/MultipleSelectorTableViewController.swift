@@ -14,7 +14,10 @@ class MultipleSelectorTableViewController: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        selectedMappedOptions = options.reduce(into: [:]) { $0[$1] = false }
+        if selectedMappedOptions.isEmpty {
+            selectedMappedOptions = options.reduce(into: [:]) { $0[$1] = false }
+        }
+        tableView.reloadData()
     }
 
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -31,7 +34,9 @@ class MultipleSelectorTableViewController: UITableViewController {
         var contentConfig = cell.defaultContentConfiguration()
         contentConfig.text = "\(options[indexPath.row])"
 
-        cell.accessoryType = selectedMappedOptions[options[indexPath.row]]! ? .checkmark : .none
+        let option = options[indexPath.row]
+        let isSelected = selectedMappedOptions[option] ?? false
+        cell.accessoryType = isSelected ? .checkmark : .none
         cell.contentConfiguration = contentConfig
         return cell
     }

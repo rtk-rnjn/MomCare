@@ -10,8 +10,10 @@ import UIKit
 class HealthDetailsCellTableViewController: UITableViewController {
 
     var healthProfile: HealthProfileType?
-    var selectedCells: Set<Int> = []
-
+    var selectedCells: [String] = []
+    
+    var onSelection: ((HealthProfileType, [String]) -> Void)?
+    
      var healthList: [String] {
          switch healthProfile {
          case .preExistingCondition:
@@ -29,6 +31,13 @@ class HealthDetailsCellTableViewController: UITableViewController {
          super.viewDidLoad()
          title = healthListtitle()
      }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        
+        guard let profile = healthProfile else { return }
+        onSelection?(profile, selectedCells)
+    }
 
      override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
          return healthList.count
@@ -36,24 +45,31 @@ class HealthDetailsCellTableViewController: UITableViewController {
 
      override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
          let cell = tableView.dequeueReusableCell(withIdentifier: "HealthDetailCell", for: indexPath)
-         cell.textLabel?.text = healthList[indexPath.row]
-
-         cell.accessoryType = selectedCells.contains(indexPath.row) ? .checkmark : .none
-
+         
+         let item  = healthList[indexPath.row]
+         var contentConfig = cell.defaultContentConfiguration()
+         contentConfig.text = item
+         cell.accessoryType = selectedCells.contains(item) ? .checkmark : .none
+         cell.contentConfiguration = contentConfig
+         
          return cell
      }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
 
-        if selectedCells.contains(indexPath.row) {
-            selectedCells.remove(indexPath.row)
+        let item = healthList[indexPath.row]
+
+        if selectedCells.contains(item) {
+            selectedCells.removeAll { $0 == item }
         } else {
-            selectedCells.insert(indexPath.row)
+            selectedCells.append(item)
         }
 
         tableView.reloadRows(at: [indexPath], with: .automatic)
     }
+    
+    
 
      func healthListtitle() -> String {
          switch healthProfile {

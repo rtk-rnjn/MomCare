@@ -43,7 +43,7 @@ public enum DietaryPreference: String, Codable, CaseIterable, Sendable {
     case none
 }
 
-enum HealthProfileType {
+enum HealthProfileType: String {
     case preExistingCondition
     case intolerance
     case dietaryPreference
