@@ -17,27 +17,27 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="13" translatesAutoresizingMaskIntoConstraints="NO" id="ioK-Nm-HnM">
-                        <rect key="frame" x="31.666666666666657" y="106.66666666666667" width="297" height="37.333333333333329"/>
+                        <rect key="frame" x="20" y="109" width="320" height="35"/>
                         <subviews>
-                            <stackView opaque="NO" contentMode="scaleToFill" spacing="176" translatesAutoresizingMaskIntoConstraints="NO" id="Vo0-rl-yLJ">
-                                <rect key="frame" x="0.0" y="0.0" width="297" height="20.333333333333332"/>
+                            <stackView opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" spacing="130" translatesAutoresizingMaskIntoConstraints="NO" id="Vo0-rl-yLJ">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="18"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="376 steps" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Sma-5a-ZgU">
-                                        <rect key="frame" x="0.0" y="0.0" width="82.666666666666671" height="20.333333333333332"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="68.333333333333329" height="18"/>
+                                        <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1000" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wT6-lc-E0f">
-                                        <rect key="frame" x="258.66666666666663" y="0.0" width="38.333333333333314" height="20.333333333333332"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1000" textAlignment="natural" lineBreakMode="wordWrap" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wT6-lc-E0f">
+                                        <rect key="frame" x="285.33333333333331" y="0.0" width="34.666666666666686" height="18"/>
+                                        <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                 </subviews>
                             </stackView>
                             <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="RFB-iT-NE6">
-                                <rect key="frame" x="0.0" y="33.333333333333329" width="297" height="4"/>
+                                <rect key="frame" x="0.0" y="31" width="320" height="4"/>
                                 <color key="tintColor" red="0.25098040700000002" green="0.25098040700000002" blue="0.25098040700000002" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                             </progressView>
                         </subviews>
@@ -62,6 +62,7 @@
                 </subviews>
                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                 <constraints>
+                    <constraint firstItem="ioK-Nm-HnM" firstAttribute="leading" secondItem="1Ad-Nk-UGy" secondAttribute="leading" constant="20" id="TH3-ZV-fkn"/>
                     <constraint firstItem="tfV-Qa-QCx" firstAttribute="leading" secondItem="1Ad-Nk-UGy" secondAttribute="leading" constant="20" id="b6i-Ag-BVh"/>
                     <constraint firstItem="ioK-Nm-HnM" firstAttribute="centerX" secondItem="1Ad-Nk-UGy" secondAttribute="centerX" id="ojO-9Y-DEy"/>
                     <constraint firstAttribute="bottom" secondItem="ioK-Nm-HnM" secondAttribute="bottom" constant="10" id="ssw-AO-6bF"/>
