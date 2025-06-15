@@ -124,7 +124,9 @@ class AppointmentsTableViewController: UITableViewController {
             guard let cell else {
                 fatalError("Failed to dequeue AppointmentsTableViewCell for preview")
             }
-            return EventDetailsViewController(event: event, cell: cell)
+            return EventDetailsViewController(cell: cell) {
+                return event
+            }
         }
     }
 

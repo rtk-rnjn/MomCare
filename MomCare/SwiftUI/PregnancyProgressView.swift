@@ -502,7 +502,7 @@ extension View {
 }
 
 // Helper struct to create a full screen overlay that integrates with UIKit
-class OverlayWindowManager {
+@MainActor class OverlayWindowManager {
 
     // MARK: Internal
 

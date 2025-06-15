@@ -18,7 +18,7 @@ class ExerciseDateCellCollectionViewCell: UICollectionViewCell {
         let history: [History] = MomCareUser.shared.user?.history ?? []
 
         let today = Date()
-        var calendar = Calendar.current
+        let calendar = Calendar.current
 
         let weekday = calendar.component(.weekday, from: today)
         let daysToLastSunday = weekday == 1 ? 7 : weekday

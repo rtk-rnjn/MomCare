@@ -8,8 +8,18 @@
 import SwiftUI
 
 struct EventDetailsView: View {
-    let event: EventInfo
+    var event: EventInfo?
     let cellWidth: CGFloat
+
+    var startDate: Date = .init()
+    var endDate: Date = .init()
+
+    init(event: EventInfo?, cellWidth: CGFloat) {
+        self.event = event
+        self.cellWidth = cellWidth
+        self.startDate = event?.startDate ?? Date()
+        self.endDate = event?.endDate ?? Date()
+    }
 
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
@@ -19,11 +29,11 @@ struct EventDetailsView: View {
                     .foregroundColor(.blue)
 
                 VStack(alignment: .leading, spacing: 4) {
-                    Text(event.title ?? "No Title")
+                    Text(event?.title ?? "No Title")
                         .font(.headline)
                         .lineLimit(2)
 
-                    if let location = event.location, !location.isEmpty {
+                    if let location = event?.location, !location.isEmpty {
                         Text(location)
                             .font(.subheadline)
                             .foregroundColor(.secondary)
@@ -36,18 +46,18 @@ struct EventDetailsView: View {
                     .foregroundColor(.orange)
 
                 VStack(alignment: .leading, spacing: 2) {
-                    if Calendar.current.isDate(event.startDate ?? Date(), inSameDayAs: event.endDate) {
-                        Text((event.startDate ?? Date()).formatted(.dateTime.weekday(.wide).day().month(.wide).year()))
-                        Text("from \((event.startDate ?? Date()).formatted(.dateTime.hour(.defaultDigits(amPM: .abbreviated)).minute())) to \(event.endDate.formatted(.dateTime.hour(.defaultDigits(amPM: .abbreviated)).minute()))")
+                    if Calendar.current.isDate(startDate, inSameDayAs: endDate) {
+                        Text(startDate.formatted(.dateTime.weekday(.wide).day().month(.wide).year()))
+                        Text("from \(startDate.formatted(.dateTime.hour(.defaultDigits(amPM: .abbreviated)).minute())) to \(endDate.formatted(.dateTime.hour(.defaultDigits(amPM: .abbreviated)).minute()))")
                     } else {
-                        Text("from \((event.startDate ?? Date()).formatted(.dateTime.hour(.defaultDigits(amPM: .abbreviated)).minute().weekday(.abbreviated).day().month().year()))")
-                        Text("to \(event.endDate.formatted(.dateTime.hour(.defaultDigits(amPM: .abbreviated)).minute().weekday(.abbreviated).day().month().year()))")
+                        Text("from \(startDate.formatted(.dateTime.hour(.defaultDigits(amPM: .abbreviated)).minute().weekday(.abbreviated).day().month().year()))")
+                        Text("to \(endDate.formatted(.dateTime.hour(.defaultDigits(amPM: .abbreviated)).minute().weekday(.abbreviated).day().month().year()))")
                     }
                 }
                 .font(.subheadline)
             }
 
-            if let notes = event.notes, !notes.isEmpty {
+            if let notes = event?.notes, !notes.isEmpty {
                 Divider()
                 Text(notes)
                     .font(.footnote)

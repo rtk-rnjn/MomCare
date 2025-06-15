@@ -239,16 +239,6 @@ class DashboardViewController: UIViewController, UICollectionViewDataSource, UIC
 
 extension DashboardViewController {
     func collectionView(_ collectionView: UICollectionView, contextMenuConfigurationForItemsAt indexPaths: [IndexPath], point: CGPoint) -> UIContextMenuConfiguration? {
-        let previewProvider: () -> UIViewController? = {
-            for indexPath in indexPaths {
-                if let provider = self.previewProvider(for: indexPath) {
-                    return provider()
-                }
-            }
-
-            return nil
-        }
-
         for indexPath in indexPaths {
             if let contextMenu = contextMenu(indexPath) {
                 return contextMenu
@@ -258,19 +248,8 @@ extension DashboardViewController {
         return nil
     }
 
-    private func previewCalendarProvider(for indexPath: IndexPath) async -> UIViewController? {
-        let event = await EventKitHandler.shared.fetchUpcomingAppointment()
-        let cell = collectionView.cellForItem(at: indexPath) as? EventCardCollectionViewCell
-
-        guard let cell, let event else {
-            return nil
-        }
-
-        return EventDetailsViewController(event: event, cell: cell)
-    }
-
     private func contextMenuForEventCard(_ indexPath: IndexPath) -> UIContextMenuConfiguration? {
-        if let previewProvider = previewProvider(for: indexPath) {
+        if let previewProvider = previewProvider(for: indexPath, sender: nil) {
             return UIContextMenuConfiguration(previewProvider: previewProvider) { _ in
                 return UIMenu(children: [
                     UIAction(title: "View event in calendar", image: UIImage(systemName: "calendar")) { _ in
@@ -302,44 +281,19 @@ extension DashboardViewController {
         return nil
     }
 
-    private func previewProvider(for indexPath: IndexPath) -> (() -> UIViewController?)? {
+    private func previewProvider(for indexPath: IndexPath, sender: Any?) -> (() -> UIViewController?)? {
         if indexPath.section == 0 && indexPath.row == 1 {
             return {
-                let placeholder = LoadingViewController()
-                Task {
-                    let event = await EventKitHandler.shared.fetchUpcomingAppointment()
-                    guard let event else { return }
-
-                    DispatchQueue.main.async {
-                        let cell = self.collectionView.cellForItem(at: indexPath) as? EventCardCollectionViewCell
-                        if let cell {
-                            let vc = EventDetailsViewController(event: event, cell: cell)
-                            placeholder.replace(with: vc)
-                        }
-                    }
+                let cell = self.collectionView.cellForItem(at: indexPath) as? EventCardCollectionViewCell
+                if let cell {
+                    return EventDetailsViewController(cell: cell)
                 }
 
-                return placeholder
+                return nil
             }
         }
 
         return nil
     }
 
-}
-
-class LoadingViewController: UIViewController {
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        view.backgroundColor = .systemBackground
-
-        let spinner = UIActivityIndicatorView(style: .large)
-        spinner.center = view.center
-        spinner.startAnimating()
-        view.addSubview(spinner)
-    }
-
-    func replace(with vc: UIViewController) {
-        present(vc, animated: false, completion: nil)
-    }
 }
