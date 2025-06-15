@@ -56,7 +56,7 @@ enum Utils {
     public static func remove(_ key: String) {
         UserDefaults.standard.removeObject(forKey: key)
     }
-
+ 
     public static func createNotification(title: String? = nil, body: String? = nil, date: Date? = nil, userInfo: [String: Any]? = nil) {
         let content = UNMutableNotificationContent()
 

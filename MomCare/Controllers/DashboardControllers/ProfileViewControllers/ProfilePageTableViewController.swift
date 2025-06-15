@@ -22,15 +22,20 @@ class ProfilePageTableViewController: UITableViewController {
     }
 
     @IBAction func logoutTapped() {
-
         let actions = [
             AlertActionHandler(title: "Cancel", style: .cancel, handler: nil),
             AlertActionHandler(title: "Logout", style: .destructive) { _ in
                 Utils.remove("isUserSignedUp")
-                self.dismiss(animated: true) {
-                    self.performSegue(withIdentifier: "segueShowFrontPageNavigationController", sender: nil)
-                }
-            }
+                if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+                let sceneDelegate = windowScene.delegate as? SceneDelegate {
+                 let storyboard = UIStoryboard(name: "Main", bundle: nil)
+                 let frontVC = storyboard.instantiateViewController(withIdentifier: "FrontViewController")
+
+                 let navController = UINavigationController(rootViewController: frontVC)
+                 sceneDelegate.window?.rootViewController = navController
+                 sceneDelegate.window?.makeKeyAndVisible()
+             }
+        }
         ]
         let message = "Are you sure you want to logout?"
         let alert = Utils.getAlert(title: "Logout?", message: message, actions: actions)
