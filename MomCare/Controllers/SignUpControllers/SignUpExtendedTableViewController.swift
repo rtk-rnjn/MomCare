@@ -45,6 +45,8 @@ class SignUpExtendedTableViewController: UITableViewController {
                 guard let sender = sender as? (options: [String], dismissHandler: () -> Void) else { return }
                 medicalDetailSelectorTableViewController.dismissHandler = sender.dismissHandler
                 medicalDetailSelectorTableViewController.options = sender.options
+
+                self.multipleSelectorTableViewController = medicalDetailSelectorTableViewController
             }
         }
     }
@@ -100,11 +102,13 @@ class SignUpExtendedTableViewController: UITableViewController {
         assignTo: @escaping ([String]) -> Void
     ) {
         let dismissHandler: () -> Void = {
-            let count = self.multipleSelectorTableViewController?.selectedMappedOptions.count ?? 0
-            let labelText = count == 0 ? "None" : "\(count) selected"
-            sender.setTitle(labelText, for: .normal)
             let selectedMappedOptions: [String: Bool] = self.multipleSelectorTableViewController?.selectedMappedOptions ?? [:]
             let selectedValues = selectedMappedOptions.filter { $0.value }.map { $0.key }
+            let count = selectedValues.count
+
+            let labelText = count == 0 ? "None" : "\(count) selected"
+            sender.setTitle(labelText, for: .normal)
+
             assignTo(selectedValues)
         }
         performSegue(withIdentifier: "segueShowMedicalDetailSelectorTableViewController", sender: (options, dismissHandler))
