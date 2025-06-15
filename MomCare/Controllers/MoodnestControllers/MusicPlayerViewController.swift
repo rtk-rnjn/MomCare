@@ -8,21 +8,11 @@
 import UIKit
 import MediaPlayer
 
-@MainActor
-protocol MusicPlayerDelegate: AnyObject {
-    func playPauseButtonTapped(_ sender: Any?)
-    func forwardButtonTapped(_ sender: Any?)
-    func backwardButtonTapped(_ sender: Any?)
-
-    func durationSliderValueChanged(value: Float)
-    func durationSliderTapped(_ gesture: UITapGestureRecognizer)
-}
-
 class MusicPlayerViewController: UIViewController {
 
     // MARK: Internal
 
-    var delegate: MusicPlayerDelegate?
+    var delegate: PlaylistTableViewController?
     var song: Song?
 
     lazy var songSlider: UISlider = {

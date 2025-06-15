@@ -150,6 +150,8 @@ actor NetworkManager {
             return nil
         }
 
+        logger.debug("Received response: statusCode=\(httpResponse.statusCode, privacy: .public), url=\(httpResponse.url?.absoluteString ?? "unknown", privacy: .public)")
+
         guard (200...299).contains(httpResponse.statusCode) else {
             throw URLError(.badServerResponse)
         }
@@ -157,12 +159,14 @@ actor NetworkManager {
         return data.decode()
     }
 
-    private func shouldRetry(for error: Error?, response: HTTPURLResponse?) -> Bool {
+    private func shouldRetry(for error: (any Error)?, response: HTTPURLResponse?) -> Bool {
         if let urlError = error as? URLError, urlError.code == .timedOut {
+            logger.error("Request timed out: \(urlError.localizedDescription)")
             return true
         }
 
         if let statusCode = response?.statusCode, (502...504).contains(statusCode) {
+            logger.error("Server error with status code: \(statusCode)")
             return true
         }
 

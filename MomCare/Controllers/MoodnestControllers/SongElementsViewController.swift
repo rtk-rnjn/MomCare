@@ -37,8 +37,8 @@ class SongElementsViewController: UIViewController {
         playlistSongLabel.accessibilityLabel = playlist.label
         Task {
             let image = await UIImage().fetchImage(from: playlist.imageUri)
-            DispatchQueue.main.async { [self] in
-                playlistCoverImage.image = image
+            DispatchQueue.main.async {
+                self.playlistCoverImage.image = image
             }
         }
     }

@@ -16,23 +16,15 @@ class PlaylistTableViewController: UITableViewController {
     var songElementsViewController: SongElementsViewController?
 
     var musicPlayer: MusicPlayerViewController = .init()
-    var player: AVPlayer?
 
     var currentPlayingIndex: IndexPath?
     var mood: MoodType?
-
-    let commandCenter: MPRemoteCommandCenter = .shared()
-
-    var timeObserverToken: Any?
 
     override func viewDidLoad() {
         super.viewDidLoad()
         configureTableView()
 
         setupInitialUI()
-
-        try? configureAudioSession()
-        setupRemoteTransportControls()
 
         tableView.isEditing = true
         tableView.allowsSelectionDuringEditing = true
@@ -147,8 +139,6 @@ class PlaylistTableViewController: UITableViewController {
     @IBAction func unwindToSongPageViewController(_ segue: UIStoryboardSegue) {}
 
     func setupMusicPlayer(with song: Song) {
-        discardPreviousPlayer()
-        guard let url = song.url else { return }
 
         let barButtons: [UIBarButtonItem] = [
             createBarButtonItem(systemName: "play.fill", action: #selector(playPauseButtonTapped)),
@@ -162,37 +152,36 @@ class PlaylistTableViewController: UITableViewController {
 
         configurePopupItem(for: musicPlayer, song: song, buttons: barButtons)
 
-        player = AVPlayer(url: url)
-
-        startObserving(player)
-
-        initialTabBarController?.presentPopupBar(with: musicPlayer, openPopup: true, animated: true) {
-            self.playPauseButtonTapped(nil)
+        MusicPlayerHandler.shared.preparePlayer(song: song, periodicUpdater: periodicUpdater, songFinishedCompletionHandler: prepareNextIfPossible) {
+            DispatchQueue.main.async {
+                self.initialTabBarController?.presentPopupBar(with: self.musicPlayer, openPopup: true, animated: true) {
+                    self.playPauseButtonTapped(nil)
+                }
+            }
         }
+    }
+
+    private func periodicUpdater(time: CMTime) {
+        guard let currentItem = MusicPlayerHandler.shared.player?.currentItem else { return }
+
+        let duration = CMTimeGetSeconds(currentItem.duration)
+        let currentTime = CMTimeGetSeconds(time)
+        let progress = duration > 0 ? Float(currentTime / duration) : 0.0
+
+        self.initialTabBarController?.popupBar.popupItem?.progress = progress
+
+        self.musicPlayer.songSlider.value = progress
+        self.musicPlayer.startDurationLabel.text = self.getFormattedTime(from: time)
+        self.musicPlayer.endDurationLabel.text = self.getFormattedTime(from: currentItem.duration)
     }
 
     @objc func crossButtonTapped(_ sender: UIButton) {
         initialTabBarController?.dismissPopupBar(animated: true)
-        player?.pause()
-        player = nil
-        if let token = timeObserverToken {
-            player?.removeTimeObserver(token)
-        }
-        timeObserverToken = nil
-        currentPlayingIndex = nil
+        MusicPlayerHandler.shared.stop()
     }
 
     @objc func songDidFinishPlaying(notification: Notification) {
-        guard let currentItem = notification.object as? AVPlayerItem else { return }
-        if currentItem == player?.currentItem {
-            initialTabBarController?.dismissPopupBar(animated: true)
-            player?.pause()
-            player = nil
-            timeObserverToken = nil
-        }
-
-        NotificationCenter.default.removeObserver(self, name: .AVPlayerItemDidPlayToEndTime, object: currentItem)
-
+        MusicPlayerHandler.shared.stop()
         prepareNextIfPossible()
     }
 
@@ -205,24 +194,11 @@ class PlaylistTableViewController: UITableViewController {
             currentPlayingIndex = nextIndex
         } else {
             initialTabBarController?.dismissPopupBar(animated: true)
-            player?.pause()
-            player = nil
-            timeObserverToken = nil
-            currentPlayingIndex = nil
+            MusicPlayerHandler.shared.stop()
         }
     }
 
     // MARK: Private
-
-    private func discardPreviousPlayer() {
-        if let token = timeObserverToken {
-            player?.removeTimeObserver(token)
-        }
-        timeObserverToken = nil
-        player?.pause()
-        player = nil
-        currentPlayingIndex = nil
-    }
 
     private func configureTableView() {
         tableView.showsVerticalScrollIndicator = false
@@ -243,27 +219,6 @@ class PlaylistTableViewController: UITableViewController {
 
         initialTabBarController?.popupBar.progressViewStyle = .bottom
         initialTabBarController?.popupBar.popupItem?.progress = 0.0
-    }
-
-    private func startObserving(_ player: AVPlayer?) {
-        let interval = CMTime(seconds: 0.02, preferredTimescale: 600)
-        timeObserverToken = player?.addPeriodicTimeObserver(forInterval: interval, queue: DispatchQueue.main) { time in
-            DispatchQueue.main.async {
-                guard let currentItem = self.player?.currentItem else { return }
-
-                let duration = CMTimeGetSeconds(currentItem.duration)
-                let currentTime = CMTimeGetSeconds(time)
-                let progress = duration > 0 ? Float(currentTime / duration) : 0.0
-
-                self.initialTabBarController?.popupBar.popupItem?.progress = progress
-
-                self.musicPlayer.songSlider.value = progress
-                self.musicPlayer.startDurationLabel.text = self.getFormattedTime(from: time)
-                self.musicPlayer.endDurationLabel.text = self.getFormattedTime(from: currentItem.duration)
-            }
-        }
-
-        NotificationCenter.default.addObserver(self, selector: #selector(songDidFinishPlaying), name: .AVPlayerItemDidPlayToEndTime, object: nil)
     }
 
     private func getFormattedTime(from time: CMTime) -> String {
@@ -288,7 +243,7 @@ extension PlaylistTableViewController {
     @objc func playPauseFromSongElementsViewController() {
         guard let song = songs.first else { return }
 
-        if player == nil {
+        if MusicPlayerHandler.shared.player == nil {
             setupMusicPlayer(with: song)
         } else {
             playPauseButtonTapped(songElementsViewController?.playPauseButton)
@@ -296,12 +251,11 @@ extension PlaylistTableViewController {
     }
 
     @objc func shuffleFromSongElementsViewController() {
-        if player == nil {
+        if MusicPlayerHandler.shared.player == nil {
             guard let song = songs.randomElement() else { return }
             setupMusicPlayer(with: song)
         } else {
-            player?.pause()
-            player = nil
+            MusicPlayerHandler.shared.stop()
             return shuffleFromSongElementsViewController()
         }
     }
