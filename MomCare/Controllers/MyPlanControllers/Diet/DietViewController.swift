@@ -132,35 +132,61 @@ class DietViewController: UIViewController {
         }
     }
 
-    private func prepareProgress() {
-        guard let plan = MomCareUser.shared.user?.plan else { return }
-        let goals = [
-            (proteinProgressBar, proteinProgressLabel, plan.totalProtien, HealthKitHandler.shared.readTotalProtein),
-            (carbsProgressBar, carbsProgressLabel, plan.totalCarbs, HealthKitHandler.shared.readTotalCarbs),
-            (fatsProgressBar, fatsProgressLabel, plan.totalFat, HealthKitHandler.shared.readTotalFat)
-        ]
+    private func updateProgress(
+        bar: UIProgressView?,
+        label: UILabel?,
+        goal: Double,
+        readFunction: @escaping () async -> Double
+    ) {
+        Task {
+            let consumed = await readFunction()
+            let progress = Float(consumed / goal)
 
-        for (progressBar, label, goal, readFunction) in goals {
-            readFunction { consumed in
-                DispatchQueue.main.async {
-                    progressBar?.progress = Float(consumed / goal)
-                    let consumedValue = round(consumed * 100) / 100
-                    let goalValue = round(goal * 100) / 100
+            let consumedRounded = round(consumed * 100) / 100
+            let goalRounded = round(goal * 100) / 100
 
-                    label?.text = "\(consumedValue) / \(goalValue)g"
-                }
+            DispatchQueue.main.async {
+                bar?.progress = progress
+                label?.text = "\(consumedRounded) / \(goalRounded)g"
             }
         }
     }
 
+    private func prepareProgress() {
+        guard let plan = MomCareUser.shared.user?.plan else { return }
+
+        updateProgress(
+            bar: proteinProgressBar,
+            label: proteinProgressLabel,
+            goal: plan.totalProtien,
+            readFunction: { await HealthKitHandler.shared.readTotalProtein() }
+        )
+
+        updateProgress(
+            bar: carbsProgressBar,
+            label: carbsProgressLabel,
+            goal: plan.totalCarbs,
+            readFunction: { await HealthKitHandler.shared.readTotalCarbs() }
+        )
+
+        updateProgress(
+            bar: fatsProgressBar,
+            label: fatsProgressLabel,
+            goal: plan.totalFat,
+            readFunction: { await HealthKitHandler.shared.readTotalFat() }
+        )
+    }
+
     private func prepareCaloricProgress() {
-        HealthKitHandler.shared.readCaloriesIntake { currentCaloriesIntake in
-            DispatchQueue.main.async {
-                guard let dueDate = MomCareUser.shared.user?.medicalData?.dueDate,
-                      let pregnancyData = Utils.pregnancyWeekAndDay(dueDate: dueDate) else { return }
-                let goal = Utils.getCaloriesGoal(trimester: pregnancyData.trimester)
-                self.animateKalcProgress(to: CGFloat(Float(currentCaloriesIntake) / Float(goal)))
-                self.caloricValueLabel.text = "\(Int(currentCaloriesIntake))/\(Int(goal))"
+        Task {
+            await HealthKitHandler.shared.readCaloriesIntake { currentCaloriesIntake in
+                DispatchQueue.main.async {
+                    guard let dueDate = MomCareUser.shared.user?.medicalData?.dueDate,
+                          let pregnancyData = Utils.pregnancyWeekAndDay(dueDate: dueDate) else { return }
+                    let goal = Utils.getCaloriesGoal(trimester: pregnancyData.trimester)
+                    self.animateKalcProgress(to: CGFloat(Float(currentCaloriesIntake) / Float(goal)))
+                    self.caloricValueLabel.text = "\(Int(currentCaloriesIntake))/\(Int(goal))"
+                }
             }
         }
     }

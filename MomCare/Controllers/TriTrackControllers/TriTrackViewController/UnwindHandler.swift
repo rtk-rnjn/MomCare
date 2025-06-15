@@ -51,9 +51,13 @@ extension TriTrackViewController {
         guard let title = viewController.addSymptomsTableViewController?.titleField.text,
               let dateTime = viewController.addSymptomsTableViewController?.dateTime.date else { return }
 
-        EventKitHandler.shared.createEvent(title: title, startDate: dateTime, endDate: dateTime, notes: "Symptom event")
+        Task {
+            await EventKitHandler.shared.createEvent(title: title, startDate: dateTime, endDate: dateTime, notes: "Symptom event")
 
-        symptomsViewController?.symptomsTableViewController?.refreshData()
+            DispatchQueue.main.async {
+                self.symptomsViewController?.symptomsTableViewController?.refreshData()
+            }
+        }
     }
 
     private func handleEventsView(with viewController: TriTrackAddEventViewController) {
@@ -66,17 +70,21 @@ extension TriTrackViewController {
         let startDate = eventTVC.startDateTimePicker.date
         let endDate = eventTVC.allDaySwitch.isOn ? startDate : eventTVC.endDateTimePicker.date.addingTimeInterval(eventTVC.selectedTravelTimeOption ?? 0)
 
-        EventKitHandler.shared.createEvent(
-            title: title,
-            startDate: startDate,
-            endDate: endDate,
-            isAllDay: eventTVC.allDaySwitch.isOn,
-            notes: nil,
-            recurrenceRules: recurrenceRules,
-            location: eventTVC.locationField.text,
-            alarm: alarm
-        )
-        eventsViewController?.appointmentsTableViewController?.refreshData()
+        Task {
+            await EventKitHandler.shared.createEvent(
+                title: title,
+                startDate: startDate,
+                endDate: endDate,
+                isAllDay: eventTVC.allDaySwitch.isOn,
+                notes: nil,
+                recurrenceRules: recurrenceRules,
+                location: eventTVC.locationField.text,
+                alarm: alarm
+            )
+            DispatchQueue.main.async {
+                self.eventsViewController?.appointmentsTableViewController?.refreshData()
+            }
+        }
     }
 
     private func handleRemindersView(with viewController: TriTrackAddEventViewController) {
@@ -86,8 +94,12 @@ extension TriTrackViewController {
         let dueDateComponents = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute, .second, .nanosecond], from: reminderTVC.dateTime.date)
         let recurrenceRules = TriTrackViewController.createRecurrenceRule(for: reminderTVC.selectedRepeatOption)
 
-        EventKitHandler.shared.createReminder(title: title, notes: reminderTVC.notesField.text, dueDateComponents: dueDateComponents, recurrenceRules: recurrenceRules)
-        eventsViewController?.remindersTableViewController?.refreshData()
+        Task {
+            await EventKitHandler.shared.createReminder(title: title, notes: reminderTVC.notesField.text, dueDateComponents: dueDateComponents, recurrenceRules: recurrenceRules)
+            DispatchQueue.main.async {
+                self.eventsViewController?.remindersTableViewController?.refreshData()
+            }
+        }
     }
 
     static func createRecurrenceRule(for interval: TimeInterval?) -> [EKRecurrenceRule] {

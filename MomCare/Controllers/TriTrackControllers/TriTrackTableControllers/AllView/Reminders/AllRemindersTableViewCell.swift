@@ -15,9 +15,9 @@ class AllRemindersTableViewCell: UITableViewCell {
     @IBOutlet var titleLabel: UILabel!
     @IBOutlet var relativeTimeLabel: UILabel!
     @IBOutlet var button: UIButton!
-    var reminder: EKReminder?
+    var reminder: ReminderInfo?
 
-    func updateElements(with reminder: EKReminder) {
+    func updateElements(with reminder: ReminderInfo) {
         titleLabel.text = reminder.title
         relativeTimeLabel.text = Date().relativeString(from: reminder.dueDateComponents?.date)
 
@@ -34,17 +34,22 @@ class AllRemindersTableViewCell: UITableViewCell {
     }
 
     @IBAction func buttonTapped(_ sender: UIButton) {
-        guard let reminder else { fatalError() }
+        reminder?.isCompleted = !(reminder?.isCompleted ?? false)
+        Task {
+            guard let reminder else {
+                return
+            }
+            await EventKitHandler.shared.updateReminder(reminder: reminder)
 
-        reminder.isCompleted = !reminder.isCompleted
-        EventKitHandler.shared.updateReminder(reminder: reminder)
-
-        updateElements(with: reminder)
+            DispatchQueue.main.async {
+                self.updateElements(with: reminder)
+            }
+        }
     }
 
     // MARK: Private
 
-    private func missed(_ reminder: EKReminder) -> Bool {
+    private func missed(_ reminder: ReminderInfo) -> Bool {
         if reminder.isCompleted {
             return false
         }

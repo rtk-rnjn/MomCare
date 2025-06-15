@@ -9,12 +9,17 @@ import UIKit
 import EventKit
 
 class AllSymptomsTableViewController: UITableViewController {
-    var symptoms: [EKEvent]? = []
+    var symptoms: [EventInfo]? = []
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        symptoms = EventKitHandler.shared.fetchAllSymptoms()
+        Task {
+            symptoms = await EventKitHandler.shared.fetchAllSymptoms()
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
+            }
+        }
     }
 
     override func numberOfSections(in tableView: UITableView) -> Int {

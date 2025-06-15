@@ -14,7 +14,7 @@ class AppointmentsTableViewController: UITableViewController {
 
     var delegate: EventKitHandlerDelegate = .init()
     var eventsViewController: EventsViewController?
-    var events: [EKEvent] = []
+    var events: [EventInfo] = []
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -25,8 +25,12 @@ class AppointmentsTableViewController: UITableViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
-        events = fetchEvents()
-        tableView.reloadData()
+        Task {
+            events = await fetchEvents()
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
+            }
+        }
     }
 
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -59,11 +63,15 @@ class AppointmentsTableViewController: UITableViewController {
 
         return UIContextMenuConfiguration(identifier: nil, previewProvider: previewProvider(for: indexPath)) { _ in
             let editAction = UIAction(title: "Edit", image: UIImage(systemName: "pencil")) { _ in
-                self.delegate.presentEKEventEditViewController(with: event)
+                Task {
+                    await self.delegate.presentEKEventEditViewController(with: event)
+                }
             }
 
             let deleteAction = UIAction(title: "Delete", image: UIImage(systemName: "trash"), attributes: .destructive) { _ in
-                EventKitHandler.shared.deleteEvent(event: event)
+                Task {
+                    await EventKitHandler.shared.deleteEvent(event: event)
+                }
                 self.refreshData()
             }
 
@@ -74,8 +82,12 @@ class AppointmentsTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let event = events[indexPath.section]
 
-        delegate.presentEKEventViewController(with: event)
-        tableView.deselectRow(at: indexPath, animated: true)
+        Task {
+            await delegate.presentEKEventViewController(with: event)
+            DispatchQueue.main.async {
+                self.tableView.deselectRow(at: indexPath, animated: true)
+            }
+        }
     }
 
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
@@ -86,17 +98,21 @@ class AppointmentsTableViewController: UITableViewController {
         return 3
     }
 
-    func fetchEvents() -> [EKEvent] {
+    func fetchEvents() async -> [EventInfo] {
         let selectedDate = eventsViewController?.triTrackViewController?.selectedFSCalendarDate ?? Date()
         let startDate = Calendar.current.startOfDay(for: selectedDate)
         let endDate = Calendar.current.date(byAdding: .day, value: 1, to: startDate)!
 
-        return EventKitHandler.shared.fetchAppointments(startDate: startDate, endDate: endDate)
+        return await EventKitHandler.shared.fetchAppointments(startDate: startDate, endDate: endDate)
     }
 
     func refreshData() {
-        events = fetchEvents()
-        tableView.reloadData()
+        Task {
+            events = await fetchEvents()
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
+            }
+        }
     }
 
     // MARK: Private

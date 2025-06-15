@@ -13,8 +13,8 @@ class AllSymptomsTableViewCell: UITableViewCell {
     @IBOutlet var titleLabel: UILabel!
     @IBOutlet var dateTimePicker: UIDatePicker!
 
-    func updateElements(with symptom: EKEvent) {
+    func updateElements(with symptom: EventInfo) {
         titleLabel.text = symptom.title
-        dateTimePicker.date = symptom.startDate
+        dateTimePicker.date = symptom.startDate ?? .init()
     }
 }

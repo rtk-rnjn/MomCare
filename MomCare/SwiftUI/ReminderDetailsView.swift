@@ -6,10 +6,9 @@
 //
 
 import SwiftUI
-import EventKit
 
 struct ReminderDetailsView: View {
-    let reminder: EKReminder
+    let reminder: ReminderInfo
     let cellWidth: CGFloat
 
     var body: some View {
@@ -26,7 +25,7 @@ struct ReminderDetailsView: View {
                 }
 
                 VStack(alignment: .leading, spacing: 4) {
-                    Text(reminder.title)
+                    Text(reminder.title ?? "Reminder Title")
                         .font(.headline)
                         .lineLimit(2)
                 }

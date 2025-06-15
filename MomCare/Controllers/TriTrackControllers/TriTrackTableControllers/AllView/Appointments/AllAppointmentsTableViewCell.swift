@@ -6,14 +6,13 @@
 //
 
 import UIKit
-import EventKit
 
 class AllAppointmentsTableViewCell: UITableViewCell {
 
     @IBOutlet var titleLabel: UILabel!
     @IBOutlet var notesLabel: UILabel!
 
-    func updateElements(with appointment: EKEvent) {
+    func updateElements(with appointment: EventInfo) {
         titleLabel.text = appointment.title
         notesLabel.text = appointment.location
 

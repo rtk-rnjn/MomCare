@@ -83,9 +83,13 @@ extension DashboardViewController {
                 return cell
             }
             cell.stopShimmer()
-            let event = EventKitHandler.shared.fetchUpcomingAppointment()
-            cell.updateElements(with: event, tapHandler: eventCardTapped) {
-                self.performSegue(withIdentifier: "segueShowAddEventTableViewController", sender: nil)
+            Task {
+                let event = await EventKitHandler.shared.fetchUpcomingAppointment()
+                DispatchQueue.main.async {
+                    cell.updateElements(with: event, tapHandler: self.eventCardTapped) {
+                        self.performSegue(withIdentifier: "segueShowAddEventTableViewController", sender: nil)
+                    }
+                }
             }
             return cell
 

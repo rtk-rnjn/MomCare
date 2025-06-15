@@ -6,15 +6,14 @@
 //
 
 import UIKit
-import EventKit
 
 class SymptomsTableViewCell: UITableViewCell {
 
     @IBOutlet var dateTime: UIDatePicker!
     @IBOutlet var titleLabel: UILabel!
 
-    func updateElements(with symptom: EKEvent) {
-        dateTime.date = symptom.startDate
+    func updateElements(with symptom: EventInfo) {
+        dateTime.date = symptom.startDate ?? .init()
         titleLabel.text = symptom.title
     }
 }

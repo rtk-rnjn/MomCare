@@ -12,7 +12,7 @@ class EKReminderViewController: UITableViewController {
 
     // MARK: Internal
 
-    var reminder: EKReminder!
+    var reminder: ReminderInfo!
 
     @IBOutlet var reminderLabel: UILabel!
     @IBOutlet var completeButton: UIButton!
@@ -29,9 +29,13 @@ class EKReminderViewController: UITableViewController {
         let alertActions = [
             AlertActionHandler(title: "Cancel", style: .cancel, handler: nil),
             AlertActionHandler(title: "Delete", style: .destructive) { _ in
-                EventKitHandler.shared.deleteReminder(reminder: self.reminder)
-                self.dismiss(animated: true) {
-                    self.reloadHandler?()
+                Task {
+                    await EventKitHandler.shared.deleteReminder(reminder: self.reminder)
+                    DispatchQueue.main.async {
+                        self.dismiss(animated: true) {
+                            self.reloadHandler?()
+                        }
+                    }
                 }
             }
         ]
@@ -44,7 +48,9 @@ class EKReminderViewController: UITableViewController {
     @IBAction func markAsCompletedButtonTapped(_ sender: UIButton) {
         updateView()
         reminder.isCompleted = !reminder.isCompleted
-        EventKitHandler.shared.updateReminder(reminder: reminder)
+        Task {
+            await EventKitHandler.shared.updateReminder(reminder: reminder)
+        }
     }
 
     // MARK: Private

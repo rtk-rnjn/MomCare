@@ -43,16 +43,18 @@ class DietProgressCollectionViewCell: UICollectionViewCell {
         let caloriesGoal = Utils.getCaloriesGoal(trimester: pregnancyData?.trimester ?? "")
         caloriesGoalLabel.text = "/ \(Int(caloriesGoal)) kcal"
 
-        HealthKitHandler.shared.readCaloriesIntake { caloriesIntake in
-            DispatchQueue.main.async {
-                self.currentKcalLabel.text = "\(Int(caloriesIntake))"
-                self.currentCaloriesIntake = Int(caloriesIntake)
-                let progress = Float(self.currentCaloriesIntake) / Float(caloriesGoal)
-                self.progressBar.progress = progress
+        Task {
+            await HealthKitHandler.shared.readCaloriesIntake { caloriesIntake in
+                DispatchQueue.main.async {
+                    self.currentKcalLabel.text = "\(Int(caloriesIntake))"
+                    self.currentCaloriesIntake = Int(caloriesIntake)
+                    let progress = Float(self.currentCaloriesIntake) / Float(caloriesGoal)
+                    self.progressBar.progress = progress
 
-                var displayProgress = Int(progress * 100)
-                displayProgress = displayProgress > 100 ? 100 : displayProgress
-                self.percentageLabel.text = "\(displayProgress)%"
+                    var displayProgress = Int(progress * 100)
+                    displayProgress = displayProgress > 100 ? 100 : displayProgress
+                    self.percentageLabel.text = "\(displayProgress)%"
+                }
             }
         }
     }

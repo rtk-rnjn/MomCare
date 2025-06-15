@@ -6,7 +6,6 @@
 //
 
 import UIKit
-import EventKit
 
 class RemindersTableViewCell: UITableViewCell {
 
@@ -16,9 +15,9 @@ class RemindersTableViewCell: UITableViewCell {
     @IBOutlet var titleLabel: UILabel!
     @IBOutlet var relativeTimeLabel: UILabel!
 
-    var reminder: EKReminder?
+    var reminder: ReminderInfo?
 
-    func updateElements(with reminder: EKReminder) {
+    func updateElements(with reminder: ReminderInfo) {
         titleLabel.text = reminder.title
         relativeTimeLabel.text = Date().relativeString(from: reminder.dueDateComponents?.date)
 
@@ -35,17 +34,20 @@ class RemindersTableViewCell: UITableViewCell {
     }
 
     @IBAction func buttonTapped(_ sender: UIButton) {
-        guard let reminder else { fatalError() }
+        reminder?.isCompleted = !(reminder?.isCompleted ?? false)
+        guard let reminder else { return }
 
-        reminder.isCompleted = !reminder.isCompleted
-        EventKitHandler.shared.updateReminder(reminder: reminder)
-
-        updateElements(with: reminder)
+        Task {
+            await EventKitHandler.shared.updateReminder(reminder: reminder)
+            DispatchQueue.main.async {
+                self.updateElements(with: reminder)
+            }
+        }
     }
 
     // MARK: Private
 
-    private func missed(_ reminder: EKReminder) -> Bool {
+    private func missed(_ reminder: ReminderInfo) -> Bool {
         if reminder.isCompleted {
             return false
         }

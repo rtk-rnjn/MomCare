@@ -12,7 +12,7 @@ class AllRemindersTableViewController: UITableViewController {
 
     // MARK: Internal
 
-    var reminders: [EKReminder] = []
+    var reminders: [ReminderInfo] = []
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -41,10 +41,12 @@ class AllRemindersTableViewController: UITableViewController {
     // MARK: Private
 
     private func fetchReminders() {
-        EventKitHandler.shared.fetchReminders { reminders in
-            DispatchQueue.main.async {
-                self.reminders = reminders
-                self.tableView.reloadData()
+        Task {
+            await EventKitHandler.shared.fetchReminders { reminders in
+                DispatchQueue.main.async {
+                    self.reminders = reminders
+                    self.tableView.reloadData()
+                }
             }
         }
     }

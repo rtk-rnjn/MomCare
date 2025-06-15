@@ -13,8 +13,8 @@ class AppointmentsTableViewCell: UITableViewCell {
     @IBOutlet var titleLabel: UILabel!
     @IBOutlet var dateTime: UIDatePicker!
 
-    func updateElements(with event: EKEvent) {
-        dateTime.date = event.startDate
+    func updateElements(with event: EventInfo) {
+        dateTime.date = event.startDate ?? .init()
         titleLabel.text = event.title
     }
 }

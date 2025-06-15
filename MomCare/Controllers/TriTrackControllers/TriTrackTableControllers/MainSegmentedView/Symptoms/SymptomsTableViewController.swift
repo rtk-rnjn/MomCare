@@ -11,7 +11,7 @@ class SymptomsTableViewController: UITableViewController {
     var triTrackViewController: TriTrackViewController?
     var delegate: EventKitHandlerDelegate = .init()
 
-    var events: [EKEvent] = []
+    var events: [EventInfo] = []
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -48,12 +48,18 @@ class SymptomsTableViewController: UITableViewController {
 
         return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in
             let editAction = UIAction(title: "Edit", image: UIImage(systemName: "pencil")) { _ in
-                self.delegate.presentEKEventEditViewController(with: event)
+                Task {
+                    await self.delegate.presentEKEventEditViewController(with: event)
+                }
             }
 
             let deleteAction = UIAction(title: "Delete", image: UIImage(systemName: "trash"), attributes: .destructive) { _ in
-                EventKitHandler.shared.deleteEvent(event: event)
-                self.refreshData()
+                Task {
+                    await EventKitHandler.shared.deleteEvent(event: event)
+                    DispatchQueue.main.async {
+                        self.refreshData()
+                    }
+                }
             }
 
             return UIMenu(title: "", children: [editAction, deleteAction])
@@ -63,8 +69,13 @@ class SymptomsTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let event = events[indexPath.section]
 
-        delegate.presentEKEventViewController(with: event)
-        tableView.deselectRow(at: indexPath, animated: true)
+        Task {
+            await delegate.presentEKEventViewController(with: event)
+
+            DispatchQueue.main.async {
+                self.tableView.deselectRow(at: indexPath, animated: true)
+            }
+        }
     }
 
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
@@ -82,9 +93,12 @@ class SymptomsTableViewController: UITableViewController {
         let startOfDay = calendar.startOfDay(for: selectedFSCalendarDate ?? Date())
         let endOfDay = calendar.date(byAdding: .day, value: 1, to: startOfDay)!
 
-        events = EventKitHandler.shared.fetchSymptoms(startDate: startOfDay, endDate: endOfDay)
-
-        tableView.reloadData()
+        Task {
+            events = await EventKitHandler.shared.fetchSymptoms(startDate: startOfDay, endDate: endOfDay)
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
+            }
+        }
     }
 
 }

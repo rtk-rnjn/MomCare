@@ -7,13 +7,12 @@
 
 import SwiftUI
 import UIKit
-import EventKit
 
 class ReminderDetailsViewController: UIHostingController<ReminderDetailsView> {
 
     // MARK: Lifecycle
 
-    init(reminder: EKReminder, cell: UITableViewCell) {
+    init(reminder: ReminderInfo, cell: UITableViewCell) {
         super.init(rootView: ReminderDetailsView(reminder: reminder, cellWidth: cell.frame.width))
     }
 

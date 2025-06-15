@@ -138,10 +138,12 @@ extension ExerciseViewController {
         }
         cell.stopShimmer()
 
-        HealthKitHandler.shared.readStepCount { steps in
-            DispatchQueue.main.async {
-                cell.steps = steps
-                cell.updateElements()
+        Task {
+            await HealthKitHandler.shared.readStepCount { steps in
+                DispatchQueue.main.async {
+                    cell.steps = steps
+                    cell.updateElements()
+                }
             }
         }
         return cell

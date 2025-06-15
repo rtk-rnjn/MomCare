@@ -41,25 +41,31 @@ class ExerciseProgressCollectionViewCell: UICollectionViewCell {
     // MARK: Private
 
     private func updateStepsLabel() {
-        HealthKitHandler.shared.readStepCount { steps in
-            DispatchQueue.main.async {
-                self.stepsLabel.text = "\(Int(steps))"
+        Task {
+            await HealthKitHandler.shared.readStepCount { steps in
+                DispatchQueue.main.async {
+                    self.stepsLabel.text = "\(Int(steps))"
+                }
             }
         }
     }
 
     private func updateExerciseDurationLabel() {
-        HealthKitHandler.shared.readWorkout { duration in
-            DispatchQueue.main.async {
-                self.exerciseDurationLabel.text = "\(round(Double(duration)))"
+        Task {
+            await HealthKitHandler.shared.readWorkout { duration in
+                DispatchQueue.main.async {
+                    self.exerciseDurationLabel.text = "\(round(Double(duration)))"
+                }
             }
         }
     }
 
     private func updateCaloriesBurnedLabel() {
-        HealthKitHandler.shared.readCaloriesBurned { calories in
-            DispatchQueue.main.async {
-                self.caloriesBurnedLabel.text = "\(Int(calories))"
+        Task {
+            await HealthKitHandler.shared.readCaloriesBurned { calories in
+                DispatchQueue.main.async {
+                    self.caloriesBurnedLabel.text = "\(Int(calories))"
+                }
             }
         }
     }

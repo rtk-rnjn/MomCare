@@ -6,10 +6,9 @@
 //
 
 import SwiftUI
-import EventKit
 
 struct EventDetailsView: View {
-    let event: EKEvent
+    let event: EventInfo
     let cellWidth: CGFloat
 
     var body: some View {
@@ -37,11 +36,11 @@ struct EventDetailsView: View {
                     .foregroundColor(.orange)
 
                 VStack(alignment: .leading, spacing: 2) {
-                    if Calendar.current.isDate(event.startDate, inSameDayAs: event.endDate) {
-                        Text(event.startDate.formatted(.dateTime.weekday(.wide).day().month(.wide).year()))
-                        Text("from \(event.startDate.formatted(.dateTime.hour(.defaultDigits(amPM: .abbreviated)).minute())) to \(event.endDate.formatted(.dateTime.hour(.defaultDigits(amPM: .abbreviated)).minute()))")
+                    if Calendar.current.isDate(event.startDate ?? Date(), inSameDayAs: event.endDate) {
+                        Text((event.startDate ?? Date()).formatted(.dateTime.weekday(.wide).day().month(.wide).year()))
+                        Text("from \((event.startDate ?? Date()).formatted(.dateTime.hour(.defaultDigits(amPM: .abbreviated)).minute())) to \(event.endDate.formatted(.dateTime.hour(.defaultDigits(amPM: .abbreviated)).minute()))")
                     } else {
-                        Text("from \(event.startDate.formatted(.dateTime.hour(.defaultDigits(amPM: .abbreviated)).minute().weekday(.abbreviated).day().month().year()))")
+                        Text("from \((event.startDate ?? Date()).formatted(.dateTime.hour(.defaultDigits(amPM: .abbreviated)).minute().weekday(.abbreviated).day().month().year()))")
                         Text("to \(event.endDate.formatted(.dateTime.hour(.defaultDigits(amPM: .abbreviated)).minute().weekday(.abbreviated).day().month().year()))")
                     }
                 }

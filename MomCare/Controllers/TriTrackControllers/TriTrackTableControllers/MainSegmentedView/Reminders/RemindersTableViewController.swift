@@ -14,7 +14,7 @@ class RemindersTableViewController: UITableViewController {
 
     var eventsViewController: EventsViewController?
 
-    var reminders: [EKReminder] = []
+    var reminders: [ReminderInfo] = []
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -64,9 +64,13 @@ class RemindersTableViewController: UITableViewController {
 
         return UIContextMenuConfiguration(identifier: nil, previewProvider: previewProvider(for: indexPath)) { _ in
             let deleteAction = UIAction(title: "Delete", image: UIImage(systemName: "trash"), attributes: .destructive) { _ in
-                EventKitHandler.shared.deleteReminder(reminder: reminder)
-                self.reminders.remove(at: indexPath.row)
-                self.tableView.reloadData()
+                Task {
+                    await EventKitHandler.shared.deleteReminder(reminder: reminder)
+                    DispatchQueue.main.async {
+                        self.reminders.remove(at: indexPath.row)
+                        self.tableView.reloadData()
+                    }
+                }
             }
 
             return UIMenu(title: "", children: [deleteAction])
@@ -75,7 +79,7 @@ class RemindersTableViewController: UITableViewController {
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "segueShowEKReminderViewController", let destinationNC = segue.destination as? UINavigationController, let destinationVC = destinationNC.topViewController as? EKReminderViewController {
-            destinationVC.reminder = sender as? EKReminder
+            destinationVC.reminder = sender as? ReminderInfo
             destinationVC.reloadHandler = {
                 self.refreshData()
             }
@@ -103,10 +107,12 @@ class RemindersTableViewController: UITableViewController {
         let selectedFSCalendarDate = eventsViewController?.triTrackViewController?.selectedFSCalendarDate ?? Date()
         let startDate = Calendar.current.startOfDay(for: selectedFSCalendarDate)
         let endDate = Calendar.current.date(byAdding: .day, value: 1, to: startDate)!
-        EventKitHandler.shared.fetchReminders(startDate: startDate, endDate: endDate) { reminders in
-            self.reminders = reminders
-            DispatchQueue.main.async {
-                self.tableView.reloadData()
+        Task {
+            await EventKitHandler.shared.fetchReminders(startDate: startDate, endDate: endDate) { reminders in
+                DispatchQueue.main.async {
+                    self.reminders = reminders
+                    self.tableView.reloadData()
+                }
             }
         }
     }

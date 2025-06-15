@@ -35,9 +35,9 @@ class EventCardCollectionViewCell: UICollectionViewCell {
 
     var tapHandler: (() -> Void)?
     var segueHandler: (() -> Void)?
-    var event: EKEvent?
+    var event: EventInfo?
 
-    func updateElements(with event: EKEvent?, tapHandler: (() -> Void)? = nil, segueHandler: @escaping (() -> Void)) {
+    func updateElements(with event: EventInfo?, tapHandler: (() -> Void)? = nil, segueHandler: @escaping (() -> Void)) {
         if let event {
             upcomingEventLabel.text = event.title
 
@@ -45,7 +45,7 @@ class EventCardCollectionViewCell: UICollectionViewCell {
             dateFormatter.dateFormat = "dd MMMM"
             eventDateLabel.isHidden = false
             addEventButton.isHidden = !eventDateLabel.isHidden
-            eventDateLabel.text = dateFormatter.string(from: event.startDate)
+            eventDateLabel.text = dateFormatter.string(from: event.startDate ?? .init())
         }
 
         self.tapHandler = tapHandler

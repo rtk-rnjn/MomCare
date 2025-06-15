@@ -202,18 +202,23 @@ class DashboardViewController: UIViewController, UICollectionViewDataSource, UIC
         let startDate = eventTVC.startDateTimePicker.date
         let endDate = eventTVC.allDaySwitch.isOn ? startDate : eventTVC.endDateTimePicker.date.addingTimeInterval(eventTVC.selectedTravelTimeOption ?? 0)
 
-        EventKitHandler.shared.createEvent(
-            title: title,
-            startDate: startDate,
-            endDate: endDate,
-            isAllDay: eventTVC.allDaySwitch.isOn,
-            notes: nil,
-            recurrenceRules: recurrenceRules,
-            location: eventTVC.locationField.text,
-            alarm: alarm
-        )
-        dismiss(animated: true) {
-            self.collectionView.reloadSections([1])
+        Task {
+            await EventKitHandler.shared.createEvent(
+                title: title,
+                startDate: startDate,
+                endDate: endDate,
+                isAllDay: eventTVC.allDaySwitch.isOn,
+                notes: nil,
+                recurrenceRules: recurrenceRules,
+                location: eventTVC.locationField.text,
+                alarm: alarm
+            )
+            DispatchQueue.main.async {
+
+                self.dismiss(animated: true) {
+                    self.collectionView.reloadSections([1])
+                }
+            }
         }
     }
 
@@ -253,8 +258,8 @@ extension DashboardViewController {
         return nil
     }
 
-    private func previewCalendarProvider(for indexPath: IndexPath) -> UIViewController? {
-        let event = EventKitHandler.shared.fetchUpcomingAppointment()
+    private func previewCalendarProvider(for indexPath: IndexPath) async -> UIViewController? {
+        let event = await EventKitHandler.shared.fetchUpcomingAppointment()
         let cell = collectionView.cellForItem(at: indexPath) as? EventCardCollectionViewCell
 
         guard let cell, let event else {
@@ -269,13 +274,17 @@ extension DashboardViewController {
             return UIContextMenuConfiguration(previewProvider: previewProvider) { _ in
                 return UIMenu(children: [
                     UIAction(title: "View event in calendar", image: UIImage(systemName: "calendar")) { _ in
-                        guard let event = EventKitHandler.shared.fetchUpcomingAppointment() else { return }
-                        let startDate = event.startDate
-                        let interval = startDate?.timeIntervalSinceReferenceDate
+                        Task {
+                            guard let event = await EventKitHandler.shared.fetchUpcomingAppointment() else { return }
+                            let startDate = event.startDate
+                            let interval = startDate?.timeIntervalSinceReferenceDate
 
-                        guard let interval else { return }
-                        if let url = URL(string: "calshow:\(interval)") {
-                            UIApplication.shared.open(url, options: [:], completionHandler: nil)
+                            guard let interval else { return }
+                            DispatchQueue.main.async {
+                                if let url = URL(string: "calshow:\(interval)") {
+                                    UIApplication.shared.open(url, options: [:], completionHandler: nil)
+                                }
+                            }
                         }
                     }
                 ])
@@ -296,10 +305,41 @@ extension DashboardViewController {
     private func previewProvider(for indexPath: IndexPath) -> (() -> UIViewController?)? {
         if indexPath.section == 0 && indexPath.row == 1 {
             return {
-                return self.previewCalendarProvider(for: indexPath)
+                let placeholder = LoadingViewController()
+                Task {
+                    let event = await EventKitHandler.shared.fetchUpcomingAppointment()
+                    guard let event else { return }
+
+                    DispatchQueue.main.async {
+                        let cell = self.collectionView.cellForItem(at: indexPath) as? EventCardCollectionViewCell
+                        if let cell {
+                            let vc = EventDetailsViewController(event: event, cell: cell)
+                            placeholder.replace(with: vc)
+                        }
+                    }
+                }
+
+                return placeholder
             }
         }
 
         return nil
+    }
+
+}
+
+class LoadingViewController: UIViewController {
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        view.backgroundColor = .systemBackground
+
+        let spinner = UIActivityIndicatorView(style: .large)
+        spinner.center = view.center
+        spinner.startAnimating()
+        view.addSubview(spinner)
+    }
+
+    func replace(with vc: UIViewController) {
+        self.present(vc, animated: false, completion: nil)
     }
 }

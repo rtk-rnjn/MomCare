@@ -5,7 +5,7 @@
 //  Created by RITIK RANJAN on 17/05/25.
 //
 
-import EventKit
+@preconcurrency import EventKit
 import EventKitUI
 import UIKit
 import OSLog
@@ -15,8 +15,35 @@ private let logger: Logger = .init(subsystem: "com.example.MomCare", category: "
 private let eventIdentifier: String = "TriTrackEvent"
 private let reminderIdentifier: String = "TriTrackReminder"
 
-@MainActor
-class EventKitHandler {
+struct EventInfo: Sendable {
+    var eventIdentifier: String
+    var calendarItemIdentifier: String
+    var calendarItemExternalIdentifier: String?
+    var title: String?
+    var location: String?
+    var notes: String?
+    var url: URL?
+    var startDate: Date?
+    var endDate: Date
+    var isAllDay: Bool
+    var calendarTitle: String
+    var timeZone: TimeZone?
+    var availability: EKEventAvailability
+}
+
+struct ReminderInfo: Sendable {
+    var reminderIdentifier: String
+    var calendarItemIdentifier: String
+    var calendarItemExternalIdentifier: String?
+    var title: String?
+    var notes: String?
+    var dueDateComponents: DateComponents?
+    var isCompleted: Bool
+    var calendarTitle: String
+    var timeZone: TimeZone?
+}
+
+actor EventKitHandler {
 
     // MARK: Lifecycle
 
@@ -26,11 +53,21 @@ class EventKitHandler {
 
     // MARK: Public
 
-    public static let shared: EventKitHandler = .init()
+    static let shared: EventKitHandler = .init()
 
     public private(set) var eventStore: EKEventStore = .init()
 
     // MARK: Internal
+
+    @MainActor func getEventStore() async -> EKEventStore {
+        do {
+            try await eventStore.commit()
+        } catch let error {
+            logger.error("Error committing changes to event store: \(String(describing: error))")
+        }
+
+        return await eventStore
+    }
 
     func requestAccessForEvent(completion: ((Bool) -> Void)? = nil) async {
         let status = EKEventStore.authorizationStatus(for: .event)
@@ -80,12 +117,12 @@ class EventKitHandler {
         }
     }
 
-    func fetchAppointments(startDate: Date? = nil, endDate: Date? = nil) -> [EKEvent] {
-        let events = fetchEvents(startDate: startDate, endDate: endDate)
-        return events.filter { $0.notes != "Symptom event" }
+    func fetchAppointments(startDate: Date? = nil, endDate: Date? = nil) -> [EventInfo] {
+        let events = fetchEvents(startDate: startDate, endDate: endDate).filter { $0.notes != "Symptom event" }
+        return events.map { getEventInfo(from: $0) }
     }
 
-    func fetchAllAppointments() -> [EKEvent] {
+    func fetchAllAppointments() -> [EventInfo] {
         let now = Date()
 
         let startDate = Calendar.current.date(byAdding: .month, value: -1, to: now)
@@ -94,20 +131,20 @@ class EventKitHandler {
         return fetchAppointments(startDate: startDate, endDate: endDate)
     }
 
-    func fetchUpcomingAppointment() -> EKEvent? {
+    func fetchUpcomingAppointment() -> EventInfo? {
         let calendar = createOrGetEvent()
         let predicate = eventStore.predicateForEvents(withStart: Date(), end: Date().addingTimeInterval(60 * 60 * 24), calendars: [calendar])
 
         let events = eventStore.events(matching: predicate)
-        return events.first
+        return events.first.map { getEventInfo(from: $0) }
     }
 
-    func fetchSymptoms(startDate: Date? = nil, endDate: Date? = nil) -> [EKEvent] {
+    func fetchSymptoms(startDate: Date? = nil, endDate: Date? = nil) -> [EventInfo] {
         let events = fetchEvents(startDate: startDate, endDate: endDate)
-        return events.filter { $0.notes == "Symptom event" }
+        return events.filter { $0.notes == "Symptom event" }.map { getEventInfo(from: $0) }
     }
 
-    func fetchAllSymptoms() -> [EKEvent] {
+    func fetchAllSymptoms() -> [EventInfo] {
         let now = Date()
 
         let startDate = Calendar.current.date(byAdding: .month, value: -3, to: now)
@@ -116,7 +153,10 @@ class EventKitHandler {
         return fetchSymptoms(startDate: startDate, endDate: endDate)
     }
 
-    func deleteEvent(event: EKEvent) {
+    func deleteEvent(event eventInfo: EventInfo) async {
+        guard let event = getEKEvent(from: eventInfo) else {
+            return
+        }
         do {
             try eventStore.remove(event, span: .thisEvent, commit: true)
         } catch let error {
@@ -124,8 +164,7 @@ class EventKitHandler {
         }
     }
 
-    @discardableResult
-    func createEvent(title: String, startDate: Date, endDate: Date, isAllDay: Bool = false, notes: String? = nil, recurrenceRules: [EKRecurrenceRule]? = nil, location: String? = nil, structuredLocaltion: EKStructuredLocation? = nil, alarm: EKAlarm? = nil) -> EKEvent {
+    func createEvent(title: String, startDate: Date, endDate: Date, isAllDay: Bool = false, notes: String? = nil, recurrenceRules: [EKRecurrenceRule]? = nil, location: String? = nil, structuredLocaltion: EKStructuredLocation? = nil, alarm: EKAlarm? = nil) {
         let event = EKEvent(eventStore: eventStore)
 
         event.title = title
@@ -146,8 +185,6 @@ class EventKitHandler {
         } catch let error {
             logger.error("Error saving event: \(String(describing: error))")
         }
-
-        return event
     }
 
     func getCalendar(with identifierKey: String) -> [EKCalendar]? {
@@ -166,8 +203,7 @@ class EventKitHandler {
         return createOrGetCalendar(identifierKey: reminderIdentifier, eventType: .reminder, title: "MomCare - TriTrack Reminders", defaultCalendar: eventStore.defaultCalendarForNewReminders())
     }
 
-    @discardableResult
-    func createReminder(title: String, notes: String?, dueDateComponents: DateComponents, recurrenceRules: [EKRecurrenceRule]?) -> EKReminder {
+    func createReminder(title: String, notes: String?, dueDateComponents: DateComponents, recurrenceRules: [EKRecurrenceRule]?) {
         let reminder = EKReminder(eventStore: eventStore)
         reminder.title = title
         reminder.notes = notes
@@ -182,22 +218,26 @@ class EventKitHandler {
         } catch let error {
             logger.error("Error saving reminder: \(String(describing: error))")
         }
-
-        return reminder
     }
 
-    @discardableResult
-    func updateReminder(reminder updatedReminder: EKReminder) -> EKReminder {
+    func updateReminder(reminder updatedReminder: ReminderInfo) {
+        guard let reminder = getEKReminder(from: updatedReminder) else {
+            logger.error("Reminder not found")
+            return
+        }
+
         do {
-            try eventStore.save(updatedReminder, commit: true)
+            try eventStore.save(reminder, commit: true)
         } catch let error {
             logger.error("Error updating reminder: \(String(describing: error))")
         }
-
-        return updatedReminder
     }
 
-    func deleteReminder(reminder: EKReminder) {
+    func deleteReminder(reminder: ReminderInfo?) {
+        guard let reminder = getEKReminder(from: reminder) else {
+            logger.error("Reminder not found")
+            return
+        }
         do {
             try eventStore.remove(reminder, commit: true)
         } catch let error {
@@ -205,7 +245,7 @@ class EventKitHandler {
         }
     }
 
-    func fetchReminders(startDate: Date? = nil, endDate: Date? = nil, completionHandler: @escaping ([EKReminder]) -> Void) {
+    func fetchReminders(startDate: Date? = nil, endDate: Date? = nil, completionHandler: @Sendable @escaping ([ReminderInfo]) -> Void) {
         let startDate = startDate ?? Date()
         let endDate = endDate ?? Date().addingTimeInterval(60 * 60 * 24)
 
@@ -214,13 +254,13 @@ class EventKitHandler {
 
         eventStore.fetchReminders(matching: predicate) { fetchedReminders in
             if let fetchedReminders {
-                let reminders = fetchedReminders.filter { $0.dueDateComponents?.date ?? Date() >= startDate && $0.dueDateComponents?.date ?? Date() <= endDate }
+                let reminders = fetchedReminders.filter { $0.dueDateComponents?.date ?? Date() >= startDate && $0.dueDateComponents?.date ?? Date() <= endDate }.map { self.getReminderInfo(from: $0) }
                 completionHandler(reminders)
             }
         }
     }
 
-    func fetchAllReminders(completionHandler: @escaping ([EKReminder]) -> Void) {
+    func fetchAllReminders(completionHandler: @Sendable @escaping ([ReminderInfo]) -> Void) {
         let now = Date()
 
         let startDate = Calendar.current.date(byAdding: .month, value: -1, to: now)
@@ -270,11 +310,70 @@ class EventKitHandler {
         return newCalendar
     }
 
+    private func getEventInfo(from event: EKEvent) -> EventInfo {
+        return EventInfo(
+            eventIdentifier: event.eventIdentifier,
+            calendarItemIdentifier: event.calendarItemIdentifier,
+            calendarItemExternalIdentifier: event.calendarItemExternalIdentifier,
+            title: event.title,
+            location: event.location,
+            notes: event.notes,
+            url: event.url,
+            startDate: event.startDate,
+            endDate: event.endDate,
+            isAllDay: event.isAllDay,
+            calendarTitle: event.calendar.title,
+            timeZone: event.timeZone,
+            availability: event.availability
+        )
+    }
+
+    private func getReminderInfo(from reminder: EKReminder) -> ReminderInfo {
+        return ReminderInfo(
+            reminderIdentifier: reminder.calendarItemIdentifier,
+            calendarItemIdentifier: reminder.calendarItemIdentifier,
+            calendarItemExternalIdentifier: reminder.calendarItemExternalIdentifier,
+            title: reminder.title,
+            notes: reminder.notes,
+            dueDateComponents: reminder.dueDateComponents,
+            isCompleted: reminder.isCompleted,
+            calendarTitle: reminder.calendar.title,
+            timeZone: reminder.timeZone
+        )
+    }
+
+    func getEKEvent(from eventInfo: EventInfo?) -> EKEvent? {
+        guard let eventInfo else {
+            return nil
+        }
+        let event = eventStore.event(withIdentifier: eventInfo.eventIdentifier)
+        if let event {
+            return event
+        } else {
+            logger.error("Event with identifier \(eventInfo.eventIdentifier) not found")
+            return nil
+        }
+    }
+
+    func getEKReminder(from reminderInfo: ReminderInfo?) -> EKReminder? {
+        guard let reminderInfo else {
+            return nil
+        }
+
+        let reminder = eventStore.calendarItem(withIdentifier: reminderInfo.reminderIdentifier) as? EKReminder
+
+        if let reminder {
+            return reminder
+        } else {
+            logger.error("Reminder with identifier \(reminderInfo.reminderIdentifier) not found")
+            return nil
+        }
+    }
+
 }
 
 @MainActor
 class EventKitHandlerDelegate: NSObject, EKEventEditViewDelegate, EKEventViewDelegate {
-    var eventStore: EKEventStore = EventKitHandler.shared.eventStore
     var viewController: UIViewController?
 
     nonisolated func eventEditViewController(_ controller: EKEventEditViewController, didCompleteWith action: EKEventEditViewAction) {
@@ -303,19 +402,20 @@ class EventKitHandlerDelegate: NSObject, EKEventEditViewDelegate, EKEventViewDel
         }
     }
 
-    func presentEKEventEditViewController(with event: EKEvent?) {
+    func presentEKEventEditViewController(with eventInfo: EventInfo?) async {
         let eventEditViewController = EKEventEditViewController()
-        eventEditViewController.eventStore = eventStore
-        eventEditViewController.event = event
-
+        eventEditViewController.eventStore = await EventKitHandler.shared.getEventStore()
+        eventEditViewController.event = await EventKitHandler.shared.getEKEvent(from: eventInfo)
         eventEditViewController.editViewDelegate = self
 
-        viewController?.present(eventEditViewController, animated: true, completion: nil)
+        DispatchQueue.main.async {
+            self.viewController?.present(eventEditViewController, animated: true, completion: nil)
+        }
     }
 
-    func presentEKEventViewController(with event: EKEvent) {
+    func presentEKEventViewController(with eventInfo: EventInfo?) async {
         let eventViewController = EKEventViewController()
-        eventViewController.event = event
+        eventViewController.event = await EventKitHandler.shared.getEKEvent(from: eventInfo)
         eventViewController.allowsEditing = true
         eventViewController.allowsCalendarPreview = true
 

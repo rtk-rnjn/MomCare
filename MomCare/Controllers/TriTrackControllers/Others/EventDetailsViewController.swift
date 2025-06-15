@@ -7,13 +7,12 @@
 
 import SwiftUI
 import UIKit
-import EventKit
 
 class EventDetailsViewController: UIHostingController<EventDetailsView> {
 
     // MARK: Lifecycle
 
-    init(event: EKEvent, cell: UIView) {
+    init(event: EventInfo, cell: UIView) {
         super.init(rootView: EventDetailsView(event: event, cellWidth: max(cell.frame.width, UIScreen.main.bounds.width / 1.5)))
     }
 

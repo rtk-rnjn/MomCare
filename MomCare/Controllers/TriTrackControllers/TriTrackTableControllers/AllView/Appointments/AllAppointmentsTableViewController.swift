@@ -11,17 +11,21 @@ import EventKit
 class AllAppointmentsTableViewController: UITableViewController {
 
     var searchController: UISearchController = .init(searchResultsController: nil)
-    var events: [EKEvent] = []
-    var groupedEvents: [Date: [EKEvent]] = [:]
+    var events: [EventInfo] = []
+    var groupedEvents: [Date: [EventInfo]] = [:]
 
     var delegate: EventKitHandlerDelegate = .init()
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
-        events = EventKitHandler.shared.fetchAllAppointments()
-        groupEventsByDate()
-        tableView.reloadData()
+        Task {
+            events = await EventKitHandler.shared.fetchAllAppointments()
+            DispatchQueue.main.async {
+                self.groupEventsByDate()
+                self.tableView.reloadData()
+            }
+        }
 
         delegate.viewController = self
 
@@ -71,12 +75,19 @@ class AllAppointmentsTableViewController: UITableViewController {
 
         return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in
             let editAction = UIAction(title: "Edit", image: UIImage(systemName: "pencil")) { _ in
-                self.delegate.presentEKEventEditViewController(with: event)
+                Task {
+                    await self.delegate.presentEKEventEditViewController(with: event)
+                }
             }
 
             let deleteAction = UIAction(title: "Delete", image: UIImage(systemName: "trash"), attributes: .destructive) { _ in
-                EventKitHandler.shared.deleteEvent(event: event)
-                self.tableView.reloadData()
+                Task {
+                    await EventKitHandler.shared.deleteEvent(event: event)
+
+                    DispatchQueue.main.async {
+                        self.tableView.reloadData()
+                    }
+                }
             }
 
             return UIMenu(title: "", children: [editAction, deleteAction])
@@ -88,15 +99,19 @@ class AllAppointmentsTableViewController: UITableViewController {
 
         guard let event else { return }
 
-        delegate.presentEKEventViewController(with: event)
-        tableView.deselectRow(at: indexPath, animated: true)
+        Task {
+            await delegate.presentEKEventViewController(with: event)
+            DispatchQueue.main.async {
+                self.tableView.deselectRow(at: indexPath, animated: true)
+            }
+        }
     }
 
     func groupEventsByDate() {
         groupedEvents = [:]
 
         for event in events {
-            let date = Calendar.current.startOfDay(for: event.startDate)
+            let date = Calendar.current.startOfDay(for: event.startDate ?? .init())
             if groupedEvents[date] == nil {
                 groupedEvents[date] = []
             }
