@@ -340,6 +340,6 @@ class LoadingViewController: UIViewController {
     }
 
     func replace(with vc: UIViewController) {
-        self.present(vc, animated: false, completion: nil)
+        present(vc, animated: false, completion: nil)
     }
 }

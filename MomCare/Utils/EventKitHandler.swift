@@ -53,11 +53,11 @@ actor EventKitHandler {
 
     // MARK: Public
 
-    static let shared: EventKitHandler = .init()
-
     public private(set) var eventStore: EKEventStore = .init()
 
     // MARK: Internal
+
+    static let shared: EventKitHandler = .init()
 
     @MainActor func getEventStore() async -> EKEventStore {
         do {
@@ -269,6 +269,34 @@ actor EventKitHandler {
         return fetchReminders(startDate: startDate, endDate: endDate, completionHandler: completionHandler)
     }
 
+    func getEKEvent(from eventInfo: EventInfo?) -> EKEvent? {
+        guard let eventInfo else {
+            return nil
+        }
+        let event = eventStore.event(withIdentifier: eventInfo.eventIdentifier)
+        if let event {
+            return event
+        } else {
+            logger.error("Event with identifier \(eventInfo.eventIdentifier) not found")
+            return nil
+        }
+    }
+
+    func getEKReminder(from reminderInfo: ReminderInfo?) -> EKReminder? {
+        guard let reminderInfo else {
+            return nil
+        }
+
+        let reminder = eventStore.calendarItem(withIdentifier: reminderInfo.reminderIdentifier) as? EKReminder
+
+        if let reminder {
+            return reminder
+        } else {
+            logger.error("Reminder with identifier \(reminderInfo.reminderIdentifier) not found")
+            return nil
+        }
+    }
+
     // MARK: Private
 
     private func fetchEvents(startDate: Date?, endDate: Date?) -> [EKEvent] {
@@ -340,34 +368,6 @@ actor EventKitHandler {
             calendarTitle: reminder.calendar.title,
             timeZone: reminder.timeZone
         )
-    }
-
-    func getEKEvent(from eventInfo: EventInfo?) -> EKEvent? {
-        guard let eventInfo else {
-            return nil
-        }
-        let event = eventStore.event(withIdentifier: eventInfo.eventIdentifier)
-        if let event {
-            return event
-        } else {
-            logger.error("Event with identifier \(eventInfo.eventIdentifier) not found")
-            return nil
-        }
-    }
-
-    func getEKReminder(from reminderInfo: ReminderInfo?) -> EKReminder? {
-        guard let reminderInfo else {
-            return nil
-        }
-
-        let reminder = eventStore.calendarItem(withIdentifier: reminderInfo.reminderIdentifier) as? EKReminder
-
-        if let reminder {
-            return reminder
-        } else {
-            logger.error("Reminder with identifier \(reminderInfo.reminderIdentifier) not found")
-            return nil
-        }
     }
 
 }

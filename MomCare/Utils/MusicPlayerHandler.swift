@@ -11,18 +11,21 @@ import MediaPlayer
 
 @MainActor
 class MusicPlayerHandler {
-    static let shared: MusicPlayerHandler = .init()
+
+    // MARK: Lifecycle
 
     private init() {
         configureRemoteTransportControls()
     }
 
+    // MARK: Public
+
     public private(set) var player: AVPlayer?
     public private(set) var currentSong: Song?
 
-    private var timeObserverToken: Any?
-    private var periodicUpdater: ((CMTime) -> Void)?
-    private var songFinishedCompletionHandler: (() -> Void)?
+    // MARK: Internal
+
+    static let shared: MusicPlayerHandler = .init()
 
     func preparePlayer(song: Song, periodicUpdater: @escaping (CMTime) -> Void, songFinishedCompletionHandler: @escaping () -> Void, completion: @Sendable @escaping () -> Void) {
         discardPlayer()
@@ -47,6 +50,45 @@ class MusicPlayerHandler {
         player?.pause()
         discardPlayer()
     }
+
+    func togglePlayPause(completion: (@Sendable (AVPlayer.TimeControlStatus?) -> Void)?) {
+
+        if player?.timeControlStatus == .playing {
+            player?.pause()
+        } else {
+            player?.play()
+        }
+
+        completion?(player?.timeControlStatus)
+
+        Task.detached(priority: .background) {
+            guard let song = await self.currentSong else {
+                return
+            }
+            await self.updateNowPlayingInfo(song)
+        }
+    }
+
+    func skip(to value: Float, completion: (@Sendable () -> Void)?) {
+        guard let currentItem = player?.currentItem else { return }
+
+        player?.seek(to: CMTime(seconds: Double(value) * CMTimeGetSeconds(currentItem.duration), preferredTimescale: 1))
+
+        completion?()
+
+        Task.detached(priority: .background) {
+            guard let song = await self.currentSong else {
+                return
+            }
+            await self.updateNowPlayingInfo(song)
+        }
+    }
+
+    // MARK: Private
+
+    private var timeObserverToken: Any?
+    private var periodicUpdater: ((CMTime) -> Void)?
+    private var songFinishedCompletionHandler: (() -> Void)?
 
     private func discardPlayer() {
         stopObserving()
@@ -86,39 +128,6 @@ class MusicPlayerHandler {
             discardPlayer()
         }
         songFinishedCompletionHandler?()
-    }
-
-    func togglePlayPause(completion: (@Sendable (AVPlayer.TimeControlStatus?) -> Void)?) {
-
-        if player?.timeControlStatus == .playing {
-            player?.pause()
-        } else {
-            player?.play()
-        }
-
-        completion?(player?.timeControlStatus)
-
-        Task.detached(priority: .background) {
-            guard let song = await self.currentSong else {
-                return
-            }
-            await self.updateNowPlayingInfo(song)
-        }
-    }
-    
-    func skip(to value: Float, completion: (@Sendable () -> Void)?) {
-        guard let currentItem = player?.currentItem else { return }
-
-        player?.seek(to: CMTime(seconds: Double(value) * CMTimeGetSeconds(currentItem.duration), preferredTimescale: 1))
-
-        completion?()
-
-        Task.detached(priority: .background) {
-            guard let song = await self.currentSong else {
-                return
-            }
-            await self.updateNowPlayingInfo(song)
-        }
     }
 
     private func updateNowPlayingInfo(_ song: Song) async {

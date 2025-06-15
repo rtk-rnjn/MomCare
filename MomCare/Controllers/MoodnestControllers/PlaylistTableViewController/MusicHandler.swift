@@ -17,10 +17,12 @@ extension PlaylistTableViewController {
                 DispatchQueue.main.async {
                     self.updatePlayPauseUI(setImage: "pause.fill")
                 }
+
             case .paused:
                 DispatchQueue.main.async {
                     self.updatePlayPauseUI(setImage: "play.fill")
                 }
+
             default:
                 break
             }
@@ -39,21 +41,12 @@ extension PlaylistTableViewController {
         }
     }
 
-    @objc func forwardButtonTapped(_ sender: Any?) {
+    @objc func forwardButtonTapped(_ sender: Any?) {}
 
-    }
+    func backwardButtonTapped(_ sender: Any?) {}
 
-    func backwardButtonTapped(_ sender: Any?) {
+    func durationSliderValueChanged(value: Float) {}
 
-    }
-
-    func durationSliderValueChanged(value: Float) {
-
-    }
-
-    func durationSliderTapped(_ gesture: UITapGestureRecognizer) {
-
-    }
-
+    func durationSliderTapped(_ gesture: UITapGestureRecognizer) {}
 
 }

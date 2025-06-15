@@ -161,20 +161,6 @@ class PlaylistTableViewController: UITableViewController {
         }
     }
 
-    private func periodicUpdater(time: CMTime) {
-        guard let currentItem = MusicPlayerHandler.shared.player?.currentItem else { return }
-
-        let duration = CMTimeGetSeconds(currentItem.duration)
-        let currentTime = CMTimeGetSeconds(time)
-        let progress = duration > 0 ? Float(currentTime / duration) : 0.0
-
-        self.initialTabBarController?.popupBar.popupItem?.progress = progress
-
-        self.musicPlayer.songSlider.value = progress
-        self.musicPlayer.startDurationLabel.text = self.getFormattedTime(from: time)
-        self.musicPlayer.endDurationLabel.text = self.getFormattedTime(from: currentItem.duration)
-    }
-
     @objc func crossButtonTapped(_ sender: UIButton) {
         initialTabBarController?.dismissPopupBar(animated: true)
         MusicPlayerHandler.shared.stop()
@@ -199,6 +185,20 @@ class PlaylistTableViewController: UITableViewController {
     }
 
     // MARK: Private
+
+    private func periodicUpdater(time: CMTime) {
+        guard let currentItem = MusicPlayerHandler.shared.player?.currentItem else { return }
+
+        let duration = CMTimeGetSeconds(currentItem.duration)
+        let currentTime = CMTimeGetSeconds(time)
+        let progress = duration > 0 ? Float(currentTime / duration) : 0.0
+
+        initialTabBarController?.popupBar.popupItem?.progress = progress
+
+        musicPlayer.songSlider.value = progress
+        musicPlayer.startDurationLabel.text = getFormattedTime(from: time)
+        musicPlayer.endDurationLabel.text = getFormattedTime(from: currentItem.duration)
+    }
 
     private func configureTableView() {
         tableView.showsVerticalScrollIndicator = false

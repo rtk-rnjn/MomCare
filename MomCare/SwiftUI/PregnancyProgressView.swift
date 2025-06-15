@@ -38,10 +38,6 @@ struct PregnancyProgressView: View {
 
     var trimesterData: TrimesterData?
 
-    // MARK: - Body
-
-    @State private var isScrollEnabled = true
-
     var body: some View {
         ZStack {
             GeometryReader { _ in
@@ -79,13 +75,17 @@ struct PregnancyProgressView: View {
                 fruitImage = await trimesterData?.image
                 babyImage = trimesterData?.babyImage
             }
-            
+
             // REMOVE the popup cards from this ZStack - they will be handled by the OverlayWindowManager
         }
         .edgesIgnoringSafeArea(.all)
     }
 
     // MARK: Private
+
+    // MARK: - Body
+
+    @State private var isScrollEnabled = true
 
     @State private var showingBabyInfo = false
     @State private var showingMomInfo = false
@@ -98,7 +98,7 @@ struct PregnancyProgressView: View {
             // Comparison view with images
             ComparisonView(fruitImage: fruitImage, babyImage: babyImage)
                 .frame(height: 120)
-            
+
             // Quote text - moved closer to the comparison view
             Text(quote)
                 .font(.headline)
@@ -113,7 +113,7 @@ struct PregnancyProgressView: View {
                 // Base card background
                 RoundedRectangle(cornerRadius: 16)
                     .fill(Color(.systemBackground))
-                
+
                 // Stitching effect overlay
                 StitchingBorder(cornerRadius: 16, color: Color(hex: "924350"))
             }
@@ -147,7 +147,7 @@ struct PregnancyProgressView: View {
                         RoundedRectangle(cornerRadius: 16)
                             .fill(Color(.systemBackground))
                             // Shadow removed
-                        
+
                         // Only keep the stitching effect overlay
                         StitchingBorder(cornerRadius: 16, color: Color(hex: "924350"))
                     }
@@ -177,7 +177,7 @@ struct PregnancyProgressView: View {
                         RoundedRectangle(cornerRadius: 16)
                             .fill(Color(.systemBackground))
                             // Shadow removed
-                        
+
                         // Only keep the stitching effect overlay
                         StitchingBorder(cornerRadius: 16, color: Color(hex: "924350"))
                     }
@@ -191,7 +191,7 @@ struct PregnancyProgressView: View {
         HStack(spacing: 12) {
             // Baby info card with content preview
             CompactInfoCard(
-                title: "Baby This Week", 
+                title: "Baby This Week",
                 iconName: "👶",
                 previewText: getTruncatedText(from: babyInfo, maxLength: 100),
                 isEmoji: true,
@@ -215,17 +215,17 @@ struct PregnancyProgressView: View {
                     cardPosition: selectedCardPosition,
                     accentColor: Color(hex: "924350")
                 )
-                
+
                 // First show overlay window
                 OverlayWindowManager.shared.showOverlay()
-                
+
                 // Set content in the overlay window - this will display the popup
                 OverlayWindowManager.shared.setContent(popupContent)
-                
+
                 // Update state
                 showingBabyInfo = true
             }
-            
+
             // Mom info card with content preview
             CompactInfoCard(
                 title: "Mom This Week",
@@ -248,7 +248,7 @@ struct PregnancyProgressView: View {
             .onTapGesture {
                 // Create and show popup using the overlay window manager directly
                 showingMomInfo = true
-                
+
                 // Create popup card directly in the overlay window
                 let popupContent = PopupInfoCard(
                     title: "Mom This Week",
@@ -257,10 +257,10 @@ struct PregnancyProgressView: View {
                     cardPosition: selectedCardPosition,
                     accentColor: Color(hex: "924350")
                 )
-                
+
                 // First show overlay window
                 OverlayWindowManager.shared.showOverlay()
-                
+
                 // Set content in the overlay window
                 DispatchQueue.main.async {
                     OverlayWindowManager.shared.setContent(popupContent)
@@ -324,13 +324,13 @@ struct PopupInfoCard: View {
     @Binding var isShowing: Bool
     let cardPosition: CGRect
     let accentColor: Color
-    
+
     @State private var cardOffset: CGSize = .init(width: 0, height: -50)
     @State private var opacity = 0.0
     @State private var scale = 0.8
     @State private var isContentVisible = false
     @State private var envelopeOpen = false
-    
+
     var body: some View {
         ZStack {
             // Clear background (the overlay is in a separate window)
@@ -340,7 +340,7 @@ struct PopupInfoCard: View {
                     closeCard()
                 }
                 .edgesIgnoringSafeArea(.all)
-            
+
             // Card content
             VStack(spacing: 0) {
                 // Card header with envelope flap
@@ -353,7 +353,7 @@ struct PopupInfoCard: View {
                     }
                     .fill(Color(hex: "FBE8E5"))
                     .shadow(color: Color.black.opacity(0.1), radius: 3, x: 0, y: -2)
-                    
+
                     Text(title)
                         .font(.title3)
                         .fontWeight(.bold)
@@ -362,7 +362,7 @@ struct PopupInfoCard: View {
                 }
                 .frame(height: 60)
                 .animation(.spring(response: 0.5, dampingFraction: 0.7), value: envelopeOpen)
-                
+
                 // Content section
                 VStack(spacing: 0) {
                     // Heart decoration at top
@@ -374,7 +374,7 @@ struct PopupInfoCard: View {
                         }
                     }
                     .padding(.top, 12)
-                    
+
                     // Content in ScrollView
                     ScrollView {
                         Text(content)
@@ -385,7 +385,7 @@ struct PopupInfoCard: View {
                             .opacity(isContentVisible ? 1 : 0)
                     }
                     .frame(maxHeight: UIScreen.main.bounds.height * 0.35)
-                    
+
                     // Heart decoration at bottom
                     HStack(spacing: 4) {
                         ForEach(0..<15) { _ in
@@ -396,7 +396,7 @@ struct PopupInfoCard: View {
                     }
                     .padding(.bottom, 12)
                     .padding(.top, 12)
-                    
+
                     // Close button
                     Button(action: closeCard) {
                         Text("Close")
@@ -429,20 +429,20 @@ struct PopupInfoCard: View {
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .onAppear {
             disableParentScroll()
-            
+
             // Start animations
             withAnimation(.spring(response: 0.4, dampingFraction: 0.7)) {
                 opacity = 1.0
                 scale = 1.0
                 cardOffset = .zero
             }
-            
+
             // Animation sequence
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
                 withAnimation(.spring(response: 0.6, dampingFraction: 0.6)) {
                     envelopeOpen = true
                 }
-                
+
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
                     withAnimation(.easeIn(duration: 0.4)) {
                         isContentVisible = true
@@ -454,38 +454,38 @@ struct PopupInfoCard: View {
             enableParentScroll()
         }
     }
-    
+
     // Helper methods remain the same
     private func disableParentScroll() {
         NotificationCenter.default.post(name: NSNotification.Name("DisableScrolling"), object: nil)
     }
-    
+
     private func enableParentScroll() {
         NotificationCenter.default.post(name: NSNotification.Name("EnableScrolling"), object: nil)
     }
-    
+
     private func closeCard() {
         // Animation sequence remains the same
         withAnimation(.easeOut(duration: 0.2)) {
             isContentVisible = false
         }
-        
+
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
             withAnimation(.spring(response: 0.4, dampingFraction: 0.7)) {
                 envelopeOpen = false
             }
-            
+
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
                 withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) {
                     opacity = 0.0
                     scale = 0.8
                     cardOffset = CGSize(width: 0, height: -50)
                 }
-                
+
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
                     // Hide the overlay window when closing
                     OverlayWindowManager.shared.hideOverlay()
-                    
+
                     enableParentScroll()
                     isShowing = false
                 }
@@ -497,68 +497,77 @@ struct PopupInfoCard: View {
 // Helper extension to remove .onAppear from a SwiftUI view
 extension View {
     func removeOnAppear() -> some View {
-        self.onAppear { }
+        onAppear {}
     }
 }
 
 // Helper struct to create a full screen overlay that integrates with UIKit
 class OverlayWindowManager {
-    static let shared = OverlayWindowManager()
-    private var overlayWindow: UIWindow?
-    private var contentWindow: UIWindow?
-    
+
+    // MARK: Internal
+
+    static let shared: OverlayWindowManager = .init()
+
     func showOverlay() {
         guard overlayWindow == nil else { return }
-        
+
         if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene {
             // Step 1: Create overlay window (darkens everything)
             let overlay = UIWindow(windowScene: windowScene)
             overlay.backgroundColor = UIColor.black.withAlphaComponent(0.4)
             overlay.windowLevel = UIWindow.Level.normal + 1
-            
+
             let overlayVC = UIViewController()
             overlayVC.view.backgroundColor = .clear
             overlay.rootViewController = overlayVC
-            
+
             overlay.isHidden = false
             overlay.makeKeyAndVisible()
-            
-            self.overlayWindow = overlay
-            
+
+            overlayWindow = overlay
+
             // Step 2: Create content window (will hold the popup)
             let content = UIWindow(windowScene: windowScene)
             content.backgroundColor = UIColor.clear
             content.windowLevel = UIWindow.Level.normal + 2 // Above overlay
-            
+
             let hostingVC = UIHostingController(rootView: EmptyView())
             hostingVC.view.backgroundColor = .clear
             content.rootViewController = hostingVC
-            
+
             content.isHidden = false
             content.makeKeyAndVisible()
-            
-            self.contentWindow = content
+
+            contentWindow = content
         }
     }
-    
+
     func setContent<Content: View>(_ content: Content) {
-        if let contentWindow = self.contentWindow {
+        if let contentWindow {
             let hostingVC = UIHostingController(rootView: AnyView(content))
             hostingVC.view.backgroundColor = .clear
             contentWindow.rootViewController = hostingVC
         }
     }
-    
+
     func hideOverlay() {
         contentWindow?.isHidden = true
         contentWindow = nil
         overlayWindow?.isHidden = true
         overlayWindow = nil
     }
+
+    // MARK: Private
+
+    private var overlayWindow: UIWindow?
+    private var contentWindow: UIWindow?
+
 }
 
 struct ComparisonView: View {
+
     // MARK: Internal
+
     let fruitImage: UIImage?
     let babyImage: UIImage?
 
@@ -586,7 +595,7 @@ struct ComparisonView: View {
                 }
             }
             .frame(maxWidth: .infinity)
-            
+
             // Center arrow - keep centered vertically
             Image(systemName: "arrow.right")
                 .font(.system(size: 24, weight: .bold))
@@ -598,14 +607,14 @@ struct ComparisonView: View {
                     value: isShowingAnimation
                 )
                 .frame(width: 40)
-            
+
             // Right section with baby - making the baby smaller and better centered
             VStack(alignment: .center) {
                 ZStack {
                     Circle()
                         .fill(Color(hex: "E88683"))
                         .frame(width: min(110, UIScreen.main.bounds.width * 0.28)) // Slightly smaller circle
-                    
+
                     if let babyImage {
                         Image(uiImage: babyImage)
                             .resizable()
@@ -635,6 +644,7 @@ struct ComparisonView: View {
     }
 
     // MARK: Private
+
     @State private var isShowingAnimation = false
     @State private var wiggleAmount = false
 }
@@ -646,7 +656,7 @@ struct InfoCardSquare: View {
     var isEmoji: Bool = false
     let backgroundColor: Color
     let accentColor: Color
-    
+
     var body: some View {
         VStack(spacing: 12) {
             // Icon at the top
@@ -658,13 +668,13 @@ struct InfoCardSquare: View {
                     .font(.system(size: 32))
                     .foregroundColor(accentColor)
             }
-            
+
             // Title below
             Text(title)
                 .font(.headline)
                 .foregroundColor(.primary)
                 .multilineTextAlignment(.center)
-            
+
             // Subtle indicator to tap
             Image(systemName: "chevron.right.circle")
                 .font(.system(size: 16))
@@ -689,7 +699,7 @@ struct RectangularInfoCard: View {
     var isEmoji: Bool = false
     let backgroundColor: Color
     let accentColor: Color
-    
+
     var body: some View {
         VStack(spacing: 8) {
             HStack {
@@ -702,14 +712,14 @@ struct RectangularInfoCard: View {
                         .font(.system(size: 26))
                         .foregroundColor(accentColor)
                 }
-                
+
                 // Title
                 Text(title)
                     .font(.headline)
                     .foregroundColor(.primary)
-                
+
                 Spacer()
-                
+
                 // Subtle indicator to tap
                 Image(systemName: "chevron.right")
                     .font(.system(size: 14))
@@ -734,7 +744,7 @@ struct CompactInfoCard: View {
     var isEmoji: Bool = false
     let backgroundColor: Color
     let accentColor: Color
-    
+
     var body: some View {
         VStack(alignment: .leading, spacing: 4) {
             // Header with icon and title in a more compact layout
@@ -750,7 +760,7 @@ struct CompactInfoCard: View {
                         .foregroundColor(accentColor)
                         .accessibilityHidden(true)
                 }
-                
+
                 // Title - slightly smaller font with minimized spacing
                 Text(title)
                     .font(.system(size: 14, weight: .semibold, design: .default))
@@ -758,7 +768,7 @@ struct CompactInfoCard: View {
                     .lineLimit(1)
                     .accessibilityAddTraits(.isHeader)
             }
-            
+
             // Preview text with more space
             Text(previewText)
                 .font(.system(size: 14))
@@ -784,59 +794,62 @@ struct CompactInfoCard: View {
 
 // Custom stitching border effect with improved corners and consistency
 struct StitchingBorder: View {
+
+    // MARK: Internal
+
     let cornerRadius: CGFloat
     let color: Color
     let stitchLength: CGFloat = 5 // Slightly shorter for more consistent appearance
     let stitchSpacing: CGFloat = 5 // Equal spacing for consistency
     let stitchInset: CGFloat = 6
-    
+
     var body: some View {
         GeometryReader { geometry in
             Path { path in
                 // Calculate dimensions
                 let width = geometry.size.width
                 let height = geometry.size.height
-                
+
                 // Define the effective radius with consistent inset
                 let effectiveRadius = max(cornerRadius - stitchInset, 0)
-                
+
                 // Calculate stitch counts to ensure consistency
                 let horizontalStitchCount = Int((width - 2 * (cornerRadius + stitchInset)) / (stitchLength + stitchSpacing))
                 let verticalStitchCount = Int((height - 2 * (cornerRadius + stitchInset)) / (stitchLength + stitchSpacing))
                 let cornerStitchCount = 5 // Fixed number of stitches for corners for consistency
-                
+
                 // Top edge with exact positioning
                 let horizontalSpacing = (width - 2 * (cornerRadius + stitchInset) - CGFloat(horizontalStitchCount) * stitchLength) / max(CGFloat(horizontalStitchCount - 1), 1)
-                
+
                 for i in 0..<horizontalStitchCount {
                     let startX = cornerRadius + stitchInset + CGFloat(i) * (stitchLength + horizontalSpacing)
                     path.move(to: CGPoint(x: startX, y: stitchInset))
                     path.addLine(to: CGPoint(x: startX + stitchLength, y: stitchInset))
                 }
-                
+
                 // Right edge with exact positioning
                 let verticalSpacing = (height - 2 * (cornerRadius + stitchInset) - CGFloat(verticalStitchCount) * stitchLength) / max(CGFloat(verticalStitchCount - 1), 1)
-                
+
                 for i in 0..<verticalStitchCount {
                     let startY = cornerRadius + stitchInset + CGFloat(i) * (stitchLength + verticalSpacing)
                     path.move(to: CGPoint(x: width - stitchInset, y: startY))
                     path.addLine(to: CGPoint(x: width - stitchInset, y: startY + stitchLength))
                 }
-                
+
                 // Bottom edge with exact positioning
                 for i in 0..<horizontalStitchCount {
                     let startX = width - cornerRadius - stitchInset - CGFloat(i) * (stitchLength + horizontalSpacing)
                     path.move(to: CGPoint(x: startX, y: height - stitchInset))
                     path.addLine(to: CGPoint(x: startX - stitchLength, y: height - stitchInset))
                 }
-                
+
                 // Left edge with exact positioning
                 for i in 0..<verticalStitchCount {
                     let startY = height - cornerRadius - stitchInset - CGFloat(i) * (stitchLength + verticalSpacing)
                     path.move(to: CGPoint(x: stitchInset, y: startY))
                     path.addLine(to: CGPoint(x: stitchInset, y: startY - stitchLength))
                 }
-                
+
                 // Improved corner stitches with perfect spacing
                 // Top-right corner
                 addPreciseCornerStitches(
@@ -847,7 +860,7 @@ struct StitchingBorder: View {
                     endAngle: 0,
                     stitchCount: cornerStitchCount
                 )
-                
+
                 // Bottom-right corner
                 addPreciseCornerStitches(
                     to: &path,
@@ -857,7 +870,7 @@ struct StitchingBorder: View {
                     endAngle: .pi/2,
                     stitchCount: cornerStitchCount
                 )
-                
+
                 // Bottom-left corner
                 addPreciseCornerStitches(
                     to: &path,
@@ -867,7 +880,7 @@ struct StitchingBorder: View {
                     endAngle: .pi,
                     stitchCount: cornerStitchCount
                 )
-                
+
                 // Top-left corner
                 addPreciseCornerStitches(
                     to: &path,
@@ -882,26 +895,28 @@ struct StitchingBorder: View {
             .foregroundColor(color.opacity(0.8))
         }
     }
-    
+
+    // MARK: Private
+
     // Improved helper function for precise corner stitch placement
     private func addPreciseCornerStitches(to path: inout Path, center: CGPoint, radius: CGFloat, startAngle: CGFloat, endAngle: CGFloat, stitchCount: Int) {
         let totalAngle = abs(endAngle - startAngle)
         let angleStep = totalAngle / CGFloat(stitchCount)
-        
+
         for i in 0..<stitchCount {
             let startAnglePoint = startAngle + CGFloat(i) * angleStep
             let endAnglePoint = startAnglePoint + angleStep * 0.6
-            
+
             let startPoint = CGPoint(
                 x: center.x + radius * cos(startAnglePoint),
                 y: center.y + radius * sin(startAnglePoint)
             )
-            
+
             let endPoint = CGPoint(
                 x: center.x + radius * cos(endAnglePoint),
                 y: center.y + radius * sin(endAnglePoint)
             )
-            
+
             path.move(to: startPoint)
             path.addLine(to: endPoint)
         }
@@ -918,16 +933,16 @@ struct PregnancyProgressView_Previews: PreviewProvider {
                     Text("Trimester 2")
                         .font(.title3)
                         .fontWeight(.semibold)
-                    
+
                     Text("Week 14 - Day 1")
                         .font(.title)
                         .fontWeight(.bold)
                         .foregroundColor(Color(hex: "924350"))
-                    
+
                     // Sample size comparison and stats
                     VStack(spacing: 16) {
                         // Rest of your preview content
-                        
+
                         // Test the new compact info cards
                         HStack(spacing: 12) {
                             CompactInfoCard(
@@ -938,9 +953,9 @@ struct PregnancyProgressView_Previews: PreviewProvider {
                                 backgroundColor: Color(hex: "FBE8E5"),
                                 accentColor: Color(hex: "924350")
                             )
-                            
+
                             CompactInfoCard(
-                                title: "Mom This Week", 
+                                title: "Mom This Week",
                                 iconName: "🤰",
                                 previewText: "Your pregnancy is starting to show! Morning sickness should be easing up as the second trimester begins...",
                                 isEmoji: true,
