@@ -65,7 +65,7 @@ struct PregnancyProgressView: View {
                 .overlay {
                     if showingBabyInfo {
                         PopupInfoCard(
-                            title: "Baby Development",
+                            title: "Baby This Week", // Changed from "Baby Development" to match the card
                             content: babyInfo,
                             isShowing: $showingBabyInfo,
                             cardPosition: selectedCardPosition,
@@ -126,60 +126,77 @@ struct PregnancyProgressView: View {
     }
 
     private var growthStatsView: some View {
-        HStack(spacing: 12) {
-            // Height card
-            VStack(spacing: 8) {
-                HStack {
-                    Image(systemName: "ruler")
-                        .font(.system(size: 22))
+        GeometryReader { geo in
+            HStack(spacing: 12) {
+                // Height card with stitching effect
+                VStack(spacing: 8) {
+                    HStack {
+                        Image(systemName: "ruler")
+                            .font(.system(size: 22))
 
-                    Text("Height")
-                        .font(.headline)
+                        Text("Height")
+                            .font(.headline)
+                    }
+
+                    Text(babyHeight)
+                        .font(.title2)
+                        .fontWeight(.bold)
+                        .foregroundColor(Color(hex: "924350"))
                 }
+                .padding()
+                .frame(width: (geo.size.width - 12) / 2) // Ensure exact half width minus spacing
+                .frame(height: 110) // Fixed height for both cards
+                .background(
+                    ZStack {
+                        // Base card background
+                        RoundedRectangle(cornerRadius: 16)
+                            .fill(Color(.systemBackground))
+                            .shadow(color: Color.black.opacity(0.05), radius: 8, x: 0, y: 2)
+                        
+                        // Stitching effect overlay
+                        StitchingBorder(cornerRadius: 16, color: Color(hex: "924350"))
+                    }
+                )
 
-                Text(babyHeight)
-                    .font(.title2)
-                    .fontWeight(.bold)
-                    .foregroundColor(Color(hex: "924350"))
-            }
-            .padding()
-            .frame(maxWidth: .infinity)
-            .background(
-                RoundedRectangle(cornerRadius: 16)
-                    .fill(Color(.systemBackground))
-                    .shadow(color: Color.black.opacity(0.05), radius: 8, x: 0, y: 2)
-            )
+                // Weight card with stitching effect
+                VStack(spacing: 8) {
+                    HStack {
+                        Image(systemName: "scalemass")
+                            .font(.system(size: 22))
 
-            // Weight card
-            VStack(spacing: 8) {
-                HStack {
-                    Image(systemName: "scalemass")
-                        .font(.system(size: 22))
+                        Text("Weight")
+                            .font(.headline)
+                    }
 
-                    Text("Weight")
-                        .font(.headline)
+                    Text(babyWeight)
+                        .font(.title2)
+                        .fontWeight(.bold)
+                        .foregroundColor(Color(hex: "924350"))
                 }
-
-                Text(babyWeight)
-                    .font(.title2)
-                    .fontWeight(.bold)
-                    .foregroundColor(Color(hex: "924350"))
+                .padding()
+                .frame(width: (geo.size.width - 12) / 2) // Ensure exact half width minus spacing
+                .frame(height: 110) // Fixed height for both cards
+                .background(
+                    ZStack {
+                        // Base card background
+                        RoundedRectangle(cornerRadius: 16)
+                            .fill(Color(.systemBackground))
+                            .shadow(color: Color.black.opacity(0.05), radius: 8, x: 0, y: 2)
+                        
+                        // Stitching effect overlay
+                        StitchingBorder(cornerRadius: 16, color: Color(hex: "924350"))
+                    }
+                )
             }
-            .padding()
-            .frame(maxWidth: .infinity)
-            .background(
-                RoundedRectangle(cornerRadius: 16)
-                    .fill(Color(.systemBackground))
-                    .shadow(color: Color.black.opacity(0.05), radius: 8, x: 0, y: 2)
-            )
         }
+        .frame(height: 110) // Set the overall height
     }
 
     private var infoCardsView: some View {
         HStack(spacing: 12) {
             // Baby info card with content preview
             CompactInfoCard(
-                title: "Baby Development",
+                title: "Baby This Week", // Changed from "Baby Development" to fit better
                 iconName: "👶",
                 previewText: getTruncatedText(from: babyInfo, maxLength: 100),
                 isEmoji: true,
@@ -601,52 +618,175 @@ struct CompactInfoCard: View {
     let accentColor: Color
     
     var body: some View {
-        VStack(alignment: .leading, spacing: 8) {
-            // Header with icon and title
-            HStack {
-                // Icon
+        VStack(alignment: .leading, spacing: 4) {
+            // Header with icon and title in a more compact layout
+            HStack(spacing: 2) {
+                // Icon - reduced size
                 if isEmoji {
                     Text(iconName)
-                        .font(.system(size: 30))
+                        .font(.system(size: 16))
+                        .accessibilityHidden(true)
                 } else {
                     Image(systemName: iconName)
-                        .font(.system(size: 26))
+                        .font(.system(size: 14))
                         .foregroundColor(accentColor)
+                        .accessibilityHidden(true)
                 }
                 
-                // Title
+                // Title - slightly smaller font with minimized spacing
                 Text(title)
-                    .font(.headline)
+                    .font(.system(size: 14, weight: .semibold, design: .default))
                     .foregroundColor(.primary)
-                
-                Spacer()
+                    .lineLimit(1)
+                    .accessibilityAddTraits(.isHeader)
             }
             
-            // Preview text with ellipsis
+            // Preview text with more space
             Text(previewText)
-                .font(.subheadline)
+                .font(.system(size: 14))
                 .foregroundColor(.secondary)
-                .lineLimit(2)
+                .lineLimit(5) // Increased line limit
+                .lineSpacing(1)
                 .multilineTextAlignment(.leading)
-            
-            // Tap indicator
-            HStack {
-                Spacer()
-                
-                Image(systemName: "chevron.right.circle")
-                    .font(.caption)
-                    .foregroundColor(.secondary.opacity(0.6))
-            }
-            .padding(.top, 2)
+                .padding(.top, 2)
         }
-        .padding(12) // Reduced padding to save space
+        .padding(12)
         .frame(maxWidth: .infinity)
-        .frame(height: 120) // Fixed height to ensure no scrolling
+        .frame(height: 120)
         .background(
             RoundedRectangle(cornerRadius: 16)
                 .fill(backgroundColor)
                 .shadow(color: Color.black.opacity(0.05), radius: 8, x: 0, y: 2)
         )
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel("\(title). \(previewText)")
+        .accessibilityHint("Double tap to read more information")
+    }
+}
+
+// Custom stitching border effect with improved corners and consistency
+struct StitchingBorder: View {
+    let cornerRadius: CGFloat
+    let color: Color
+    let stitchLength: CGFloat = 5 // Slightly shorter for more consistent appearance
+    let stitchSpacing: CGFloat = 5 // Equal spacing for consistency
+    let stitchInset: CGFloat = 6
+    
+    var body: some View {
+        GeometryReader { geometry in
+            Path { path in
+                // Calculate dimensions
+                let width = geometry.size.width
+                let height = geometry.size.height
+                
+                // Define the effective radius with consistent inset
+                let effectiveRadius = max(cornerRadius - stitchInset, 0)
+                
+                // Calculate stitch counts to ensure consistency
+                let horizontalStitchCount = Int((width - 2 * (cornerRadius + stitchInset)) / (stitchLength + stitchSpacing))
+                let verticalStitchCount = Int((height - 2 * (cornerRadius + stitchInset)) / (stitchLength + stitchSpacing))
+                let cornerStitchCount = 5 // Fixed number of stitches for corners for consistency
+                
+                // Top edge with exact positioning
+                let horizontalSpacing = (width - 2 * (cornerRadius + stitchInset) - CGFloat(horizontalStitchCount) * stitchLength) / max(CGFloat(horizontalStitchCount - 1), 1)
+                
+                for i in 0..<horizontalStitchCount {
+                    let startX = cornerRadius + stitchInset + CGFloat(i) * (stitchLength + horizontalSpacing)
+                    path.move(to: CGPoint(x: startX, y: stitchInset))
+                    path.addLine(to: CGPoint(x: startX + stitchLength, y: stitchInset))
+                }
+                
+                // Right edge with exact positioning
+                let verticalSpacing = (height - 2 * (cornerRadius + stitchInset) - CGFloat(verticalStitchCount) * stitchLength) / max(CGFloat(verticalStitchCount - 1), 1)
+                
+                for i in 0..<verticalStitchCount {
+                    let startY = cornerRadius + stitchInset + CGFloat(i) * (stitchLength + verticalSpacing)
+                    path.move(to: CGPoint(x: width - stitchInset, y: startY))
+                    path.addLine(to: CGPoint(x: width - stitchInset, y: startY + stitchLength))
+                }
+                
+                // Bottom edge with exact positioning
+                for i in 0..<horizontalStitchCount {
+                    let startX = width - cornerRadius - stitchInset - CGFloat(i) * (stitchLength + horizontalSpacing)
+                    path.move(to: CGPoint(x: startX, y: height - stitchInset))
+                    path.addLine(to: CGPoint(x: startX - stitchLength, y: height - stitchInset))
+                }
+                
+                // Left edge with exact positioning
+                for i in 0..<verticalStitchCount {
+                    let startY = height - cornerRadius - stitchInset - CGFloat(i) * (stitchLength + verticalSpacing)
+                    path.move(to: CGPoint(x: stitchInset, y: startY))
+                    path.addLine(to: CGPoint(x: stitchInset, y: startY - stitchLength))
+                }
+                
+                // Improved corner stitches with perfect spacing
+                // Top-right corner
+                addPreciseCornerStitches(
+                    to: &path,
+                    center: CGPoint(x: width - cornerRadius, y: cornerRadius),
+                    radius: effectiveRadius,
+                    startAngle: -.pi/2,
+                    endAngle: 0,
+                    stitchCount: cornerStitchCount
+                )
+                
+                // Bottom-right corner
+                addPreciseCornerStitches(
+                    to: &path,
+                    center: CGPoint(x: width - cornerRadius, y: height - cornerRadius),
+                    radius: effectiveRadius,
+                    startAngle: 0,
+                    endAngle: .pi/2,
+                    stitchCount: cornerStitchCount
+                )
+                
+                // Bottom-left corner
+                addPreciseCornerStitches(
+                    to: &path,
+                    center: CGPoint(x: cornerRadius, y: height - cornerRadius),
+                    radius: effectiveRadius,
+                    startAngle: .pi/2,
+                    endAngle: .pi,
+                    stitchCount: cornerStitchCount
+                )
+                
+                // Top-left corner
+                addPreciseCornerStitches(
+                    to: &path,
+                    center: CGPoint(x: cornerRadius, y: cornerRadius),
+                    radius: effectiveRadius,
+                    startAngle: .pi,
+                    endAngle: 3 * .pi/2,
+                    stitchCount: cornerStitchCount
+                )
+            }
+            .stroke(style: StrokeStyle(lineWidth: 1.5, lineCap: .round, lineJoin: .round))
+            .foregroundColor(color.opacity(0.8))
+        }
+    }
+    
+    // Improved helper function for precise corner stitch placement
+    private func addPreciseCornerStitches(to path: inout Path, center: CGPoint, radius: CGFloat, startAngle: CGFloat, endAngle: CGFloat, stitchCount: Int) {
+        let totalAngle = abs(endAngle - startAngle)
+        let angleStep = totalAngle / CGFloat(stitchCount)
+        
+        for i in 0..<stitchCount {
+            let startAnglePoint = startAngle + CGFloat(i) * angleStep
+            let endAnglePoint = startAnglePoint + angleStep * 0.6
+            
+            let startPoint = CGPoint(
+                x: center.x + radius * cos(startAnglePoint),
+                y: center.y + radius * sin(startAnglePoint)
+            )
+            
+            let endPoint = CGPoint(
+                x: center.x + radius * cos(endAnglePoint),
+                y: center.y + radius * sin(endAnglePoint)
+            )
+            
+            path.move(to: startPoint)
+            path.addLine(to: endPoint)
+        }
     }
 }
 
