@@ -43,7 +43,7 @@
                         </subviews>
                     </stackView>
                     <stackView opaque="NO" contentMode="scaleToFill" spacing="18" translatesAutoresizingMaskIntoConstraints="NO" id="tfV-Qa-QCx">
-                        <rect key="frame" x="24" y="20" width="186.66666666666666" height="20.333333333333329"/>
+                        <rect key="frame" x="20" y="20" width="186.66666666666666" height="20.333333333333329"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Walking" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CAS-Sl-wsx">
                                 <rect key="frame" x="0.0" y="0.0" width="63.333333333333336" height="20.333333333333332"/>
@@ -62,7 +62,7 @@
                 </subviews>
                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                 <constraints>
-                    <constraint firstItem="tfV-Qa-QCx" firstAttribute="leading" secondItem="1Ad-Nk-UGy" secondAttribute="leading" constant="24" id="b6i-Ag-BVh"/>
+                    <constraint firstItem="tfV-Qa-QCx" firstAttribute="leading" secondItem="1Ad-Nk-UGy" secondAttribute="leading" constant="20" id="b6i-Ag-BVh"/>
                     <constraint firstItem="ioK-Nm-HnM" firstAttribute="centerX" secondItem="1Ad-Nk-UGy" secondAttribute="centerX" id="ojO-9Y-DEy"/>
                     <constraint firstAttribute="bottom" secondItem="ioK-Nm-HnM" secondAttribute="bottom" constant="10" id="ssw-AO-6bF"/>
                     <constraint firstItem="tfV-Qa-QCx" firstAttribute="top" secondItem="1Ad-Nk-UGy" secondAttribute="top" constant="20" id="tSP-5F-kET"/>
