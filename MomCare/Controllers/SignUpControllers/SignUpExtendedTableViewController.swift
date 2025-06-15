@@ -54,10 +54,10 @@ class SignUpExtendedTableViewController: UITableViewController {
 
         guard var userMedical else { fatalError() }
 
-        userMedical.dueDate = dueDate
-        userMedical.foodIntolerances = intolerances
-        userMedical.preExistingConditions = preExistingConditions
-        userMedical.dietaryPreferences = dietaryPreferences
+//        userMedical.dueDate = dueDate
+//        userMedical.foodIntolerances = intolerances
+//        userMedical.preExistingConditions = preExistingConditions
+//        userMedical.dietaryPreferences = dietaryPreferences
 
         Task {
             await handleSignUpExtended(userMedical: userMedical)

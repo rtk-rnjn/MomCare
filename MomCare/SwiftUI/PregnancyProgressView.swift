@@ -176,11 +176,12 @@ struct PregnancyProgressView: View {
     }
 
     private var infoCardsView: some View {
-        VStack(spacing: 16) {
-            InfoCardButton(
+        HStack(spacing: 12) {
+            // Baby info card with content preview
+            CompactInfoCard(
                 title: "Baby Development",
-                subtitle: getTruncatedText(from: babyInfo, maxLength: 80),
-                iconName: "👶", // Baby emoji instead of SF Symbol
+                iconName: "👶",
+                previewText: getTruncatedText(from: babyInfo, maxLength: 100),
                 isEmoji: true,
                 backgroundColor: Color(hex: "FBE8E5"),
                 accentColor: Color(hex: "924350")
@@ -200,12 +201,12 @@ struct PregnancyProgressView: View {
                     showingBabyInfo = true
                 }
             }
-
-            // Mom info card with mom emoji
-            InfoCardButton(
+            
+            // Mom info card with content preview
+            CompactInfoCard(
                 title: "Mom This Week",
-                subtitle: getTruncatedText(from: momInfo, maxLength: 80),
-                iconName: "🤰", // Pregnant woman emoji instead of SF Symbol
+                iconName: "🤰",
+                previewText: getTruncatedText(from: momInfo, maxLength: 100),
                 isEmoji: true,
                 backgroundColor: Color(hex: "FBE8E5"),
                 accentColor: Color(hex: "924350")
@@ -501,6 +502,200 @@ struct ComparisonView: View {
     @State private var isShowingAnimation = false
     @State private var wiggleAmount = false
 
+}
+
+// Square info card component for side-by-side layout
+struct InfoCardSquare: View {
+    let title: String
+    let iconName: String
+    var isEmoji: Bool = false
+    let backgroundColor: Color
+    let accentColor: Color
+    
+    var body: some View {
+        VStack(spacing: 12) {
+            // Icon at the top
+            if isEmoji {
+                Text(iconName)
+                    .font(.system(size: 36))
+            } else {
+                Image(systemName: iconName)
+                    .font(.system(size: 32))
+                    .foregroundColor(accentColor)
+            }
+            
+            // Title below
+            Text(title)
+                .font(.headline)
+                .foregroundColor(.primary)
+                .multilineTextAlignment(.center)
+            
+            // Subtle indicator to tap
+            Image(systemName: "chevron.right.circle")
+                .font(.system(size: 16))
+                .foregroundColor(.secondary.opacity(0.6))
+                .padding(.top, 4)
+        }
+        .padding()
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .aspectRatio(1.0, contentMode: .fill) // Keep it square
+        .background(
+            RoundedRectangle(cornerRadius: 16)
+                .fill(backgroundColor)
+                .shadow(color: Color.black.opacity(0.05), radius: 8, x: 0, y: 2)
+        )
+    }
+}
+
+// Rectangular info card component that matches the height/weight cards
+struct RectangularInfoCard: View {
+    let title: String
+    let iconName: String
+    var isEmoji: Bool = false
+    let backgroundColor: Color
+    let accentColor: Color
+    
+    var body: some View {
+        VStack(spacing: 8) {
+            HStack {
+                // Icon
+                if isEmoji {
+                    Text(iconName)
+                        .font(.system(size: 32))
+                } else {
+                    Image(systemName: iconName)
+                        .font(.system(size: 26))
+                        .foregroundColor(accentColor)
+                }
+                
+                // Title
+                Text(title)
+                    .font(.headline)
+                    .foregroundColor(.primary)
+                
+                Spacer()
+                
+                // Subtle indicator to tap
+                Image(systemName: "chevron.right")
+                    .font(.system(size: 14))
+                    .foregroundColor(.secondary)
+            }
+        }
+        .padding()
+        .frame(maxWidth: .infinity)
+        .background(
+            RoundedRectangle(cornerRadius: 16)
+                .fill(backgroundColor)
+                .shadow(color: Color.black.opacity(0.05), radius: 8, x: 0, y: 2)
+        )
+    }
+}
+
+// More compact info card component that shows content preview
+struct CompactInfoCard: View {
+    let title: String
+    let iconName: String
+    let previewText: String
+    var isEmoji: Bool = false
+    let backgroundColor: Color
+    let accentColor: Color
+    
+    var body: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            // Header with icon and title
+            HStack {
+                // Icon
+                if isEmoji {
+                    Text(iconName)
+                        .font(.system(size: 30))
+                } else {
+                    Image(systemName: iconName)
+                        .font(.system(size: 26))
+                        .foregroundColor(accentColor)
+                }
+                
+                // Title
+                Text(title)
+                    .font(.headline)
+                    .foregroundColor(.primary)
+                
+                Spacer()
+            }
+            
+            // Preview text with ellipsis
+            Text(previewText)
+                .font(.subheadline)
+                .foregroundColor(.secondary)
+                .lineLimit(2)
+                .multilineTextAlignment(.leading)
+            
+            // Tap indicator
+            HStack {
+                Spacer()
+                
+                Image(systemName: "chevron.right.circle")
+                    .font(.caption)
+                    .foregroundColor(.secondary.opacity(0.6))
+            }
+            .padding(.top, 2)
+        }
+        .padding(12) // Reduced padding to save space
+        .frame(maxWidth: .infinity)
+        .frame(height: 120) // Fixed height to ensure no scrolling
+        .background(
+            RoundedRectangle(cornerRadius: 16)
+                .fill(backgroundColor)
+                .shadow(color: Color.black.opacity(0.05), radius: 8, x: 0, y: 2)
+        )
+    }
+}
+
+// Preview provider
+struct PregnancyProgressView_Previews: PreviewProvider {
+    static var previews: some View {
+        // Create a preview with sample data
+        GeometryReader { _ in
+            ScrollView {
+                VStack(spacing: 16) {
+                    Text("Trimester 2")
+                        .font(.title3)
+                        .fontWeight(.semibold)
+                    
+                    Text("Week 14 - Day 1")
+                        .font(.title)
+                        .fontWeight(.bold)
+                        .foregroundColor(Color(hex: "924350"))
+                    
+                    // Sample size comparison and stats
+                    VStack(spacing: 16) {
+                        // Rest of your preview content
+                        
+                        // Test the new compact info cards
+                        HStack(spacing: 12) {
+                            CompactInfoCard(
+                                title: "Baby Development",
+                                iconName: "👶",
+                                previewText: "At this point, your baby is the size of a peach. The baby is developing more defined facial features and unique fingerprints...",
+                                isEmoji: true,
+                                backgroundColor: Color(hex: "FBE8E5"),
+                                accentColor: Color(hex: "924350")
+                            )
+                            
+                            CompactInfoCard(
+                                title: "Mom This Week", 
+                                iconName: "🤰",
+                                previewText: "Your pregnancy is starting to show! Morning sickness should be easing up as the second trimester begins...",
+                                isEmoji: true,
+                                backgroundColor: Color(hex: "FBE8E5"),
+                                accentColor: Color(hex: "924350")
+                            )
+                        }
+                    }
+                    .padding(.horizontal)
+                }
+            }
+        }
+    }
 }
 
 // Helper method to truncate text with ellipsis
