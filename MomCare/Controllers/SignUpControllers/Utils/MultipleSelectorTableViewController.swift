@@ -14,7 +14,9 @@ class MultipleSelectorTableViewController: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        selectedMappedOptions = options.reduce(into: [:]) { $0[$1] = false }
+        if selectedMappedOptions.isEmpty {
+            selectedMappedOptions = options.reduce(into: [:]) { $0[$1] = false }
+        }
     }
 
     override func numberOfSections(in tableView: UITableView) -> Int {
