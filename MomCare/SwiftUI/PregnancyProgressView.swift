@@ -109,26 +109,36 @@ struct PregnancyProgressView: View {
     // MARK: - Component Views
 
     private var sizeComparisonView: some View {
-        VStack(spacing: 12) {
+        VStack(spacing: 0) { // Reduce spacing to avoid empty gaps
+            // Comparison view with images
             ComparisonView(fruitImage: fruitImage, babyImage: babyImage)
-
+                .frame(height: 120)
+            
+            // Quote text - moved closer to the comparison view
             Text(quote)
                 .font(.headline)
                 .multilineTextAlignment(.center)
-                .padding(.top, 4)
+                .padding(.horizontal, 16)
+                .padding(.vertical, 12) // More vertical padding to fill space evenly
         }
-        .padding()
+        .padding(.vertical, 12) // Consistent vertical padding
+        .padding(.horizontal, 12)
         .background(
-            RoundedRectangle(cornerRadius: 16)
-                .fill(Color(.systemBackground))
-                .shadow(color: Color.black.opacity(0.05), radius: 8, x: 0, y: 2)
+            ZStack {
+                // Base card background
+                RoundedRectangle(cornerRadius: 16)
+                    .fill(Color(.systemBackground))
+                
+                // Stitching effect overlay
+                StitchingBorder(cornerRadius: 16, color: Color(hex: "924350"))
+            }
         )
     }
 
     private var growthStatsView: some View {
         GeometryReader { geo in
             HStack(spacing: 12) {
-                // Height card with stitching effect
+                // Height card with stitching effect only
                 VStack(spacing: 8) {
                     HStack {
                         Image(systemName: "ruler")
@@ -144,21 +154,21 @@ struct PregnancyProgressView: View {
                         .foregroundColor(Color(hex: "924350"))
                 }
                 .padding()
-                .frame(width: (geo.size.width - 12) / 2) // Ensure exact half width minus spacing
-                .frame(height: 110) // Fixed height for both cards
+                .frame(width: (geo.size.width - 12) / 2)
+                .frame(height: 110)
                 .background(
                     ZStack {
-                        // Base card background
+                        // Base card background - using system background with no shadow
                         RoundedRectangle(cornerRadius: 16)
                             .fill(Color(.systemBackground))
-                            .shadow(color: Color.black.opacity(0.05), radius: 8, x: 0, y: 2)
+                            // Shadow removed
                         
-                        // Stitching effect overlay
+                        // Only keep the stitching effect overlay
                         StitchingBorder(cornerRadius: 16, color: Color(hex: "924350"))
                     }
                 )
 
-                // Weight card with stitching effect
+                // Weight card with stitching effect only
                 VStack(spacing: 8) {
                     HStack {
                         Image(systemName: "scalemass")
@@ -174,16 +184,16 @@ struct PregnancyProgressView: View {
                         .foregroundColor(Color(hex: "924350"))
                 }
                 .padding()
-                .frame(width: (geo.size.width - 12) / 2) // Ensure exact half width minus spacing
-                .frame(height: 110) // Fixed height for both cards
+                .frame(width: (geo.size.width - 12) / 2)
+                .frame(height: 110)
                 .background(
                     ZStack {
-                        // Base card background
+                        // Base card background - using system background with no shadow
                         RoundedRectangle(cornerRadius: 16)
                             .fill(Color(.systemBackground))
-                            .shadow(color: Color.black.opacity(0.05), radius: 8, x: 0, y: 2)
+                            // Shadow removed
                         
-                        // Stitching effect overlay
+                        // Only keep the stitching effect overlay
                         StitchingBorder(cornerRadius: 16, color: Color(hex: "924350"))
                     }
                 )
@@ -448,33 +458,36 @@ struct PopupInfoCard: View {
 }
 
 struct ComparisonView: View {
-
     // MARK: Internal
-
     let fruitImage: UIImage?
     let babyImage: UIImage?
 
     var body: some View {
-        HStack(spacing: 20) {
-            if let fruitImage {
-                Image(uiImage: fruitImage)
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .frame(width: 100, height: 100)
-                    .rotation3DEffect(
-                        .degrees(wiggleAmount ? 5 : -5),
-                        axis: (x: 0, y: 1, z: 0)
-                    )
-                    .animation(
-                        Animation.easeInOut(duration: 1.5)
-                            .repeatForever(autoreverses: true),
-                        value: wiggleAmount
-                    )
-                    .onAppear {
-                        wiggleAmount.toggle()
-                    }
+        HStack(spacing: 0) {
+            // Left section with fruit
+            VStack(alignment: .center) {
+                if let fruitImage {
+                    Image(uiImage: fruitImage)
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(width: min(90, UIScreen.main.bounds.width * 0.22)) // Slightly smaller
+                        .rotation3DEffect(
+                            .degrees(wiggleAmount ? 5 : -5),
+                            axis: (x: 0, y: 1, z: 0)
+                        )
+                        .animation(
+                            Animation.easeInOut(duration: 1.5)
+                                .repeatForever(autoreverses: true),
+                            value: wiggleAmount
+                        )
+                        .onAppear {
+                            wiggleAmount.toggle()
+                        }
+                }
             }
-
+            .frame(maxWidth: .infinity)
+            
+            // Center arrow - keep centered vertically
             Image(systemName: "arrow.right")
                 .font(.system(size: 24, weight: .bold))
                 .foregroundColor(isShowingAnimation ? Color(hex: "924350") : .secondary)
@@ -484,27 +497,34 @@ struct ComparisonView: View {
                         .repeatCount(3, autoreverses: true),
                     value: isShowingAnimation
                 )
-
-            ZStack {
-                Circle()
-                    .fill(Color(hex: "E88683"))
-                    .frame(width: 120, height: 120)
-
-                if let babyImage {
-                    Image(uiImage: babyImage)
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .frame(width: 90, height: 90)
-                        .scaleEffect(isShowingAnimation ? 1.1 : 1.0)
-                        .rotationEffect(isShowingAnimation ? Angle(degrees: 10) : Angle(degrees: 0))
-                        .animation(
-                            Animation.easeInOut(duration: 1)
-                                .repeatCount(2, autoreverses: true),
-                            value: isShowingAnimation
-                        )
+                .frame(width: 40)
+            
+            // Right section with baby - making the baby smaller and better centered
+            VStack(alignment: .center) {
+                ZStack {
+                    Circle()
+                        .fill(Color(hex: "E88683"))
+                        .frame(width: min(110, UIScreen.main.bounds.width * 0.28)) // Slightly smaller circle
+                    
+                    if let babyImage {
+                        Image(uiImage: babyImage)
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(width: min(75, UIScreen.main.bounds.width * 0.18)) // Smaller baby image
+                            .scaleEffect(isShowingAnimation ? 1.1 : 1.0)
+                            .rotationEffect(isShowingAnimation ? Angle(degrees: 10) : Angle(degrees: 0))
+                            .animation(
+                                Animation.easeInOut(duration: 1)
+                                    .repeatCount(2, autoreverses: true),
+                                value: isShowingAnimation
+                            )
+                    }
                 }
             }
+            .frame(maxWidth: .infinity)
         }
+        .frame(height: 110) // Slightly shorter height
+        .padding(.vertical, 10) // Added vertical padding to center everything better
         .contentShape(Rectangle())
         .onTapGesture {
             isShowingAnimation = true
@@ -515,10 +535,8 @@ struct ComparisonView: View {
     }
 
     // MARK: Private
-
     @State private var isShowingAnimation = false
     @State private var wiggleAmount = false
-
 }
 
 // Square info card component for side-by-side layout
@@ -645,7 +663,7 @@ struct CompactInfoCard: View {
             Text(previewText)
                 .font(.system(size: 14))
                 .foregroundColor(.secondary)
-                .lineLimit(5) // Increased line limit
+                .lineLimit(5)
                 .lineSpacing(1)
                 .multilineTextAlignment(.leading)
                 .padding(.top, 2)
