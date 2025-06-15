@@ -7,12 +7,6 @@
 
 import UIKit
 
-enum SelectionType {
-    case intolerance
-    case preExistingCondition
-    case dietaryPreference
-}
-
 class SignUpExtendedTableViewController: UITableViewController {
 
     // MARK: Internal
@@ -27,7 +21,7 @@ class SignUpExtendedTableViewController: UITableViewController {
     var intolerances: [String] = []
     var preExistingConditions: [String] = []
     var dietaryPreferences: [String] = []
-    var selectionType: SelectionType?
+    var selectionType: HealthProfileType?
     
     override func viewDidLoad() {
         super.viewDidLoad()
