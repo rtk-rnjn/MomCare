@@ -7,12 +7,6 @@
 
 import UIKit
 
-enum MedicalSelectionType {
-    case intolerance
-    case preExistingCondition
-    case dietaryPreference
-}
-
 class SignUpExtendedTableViewController: UITableViewController {
 
     // MARK: Internal
@@ -27,8 +21,6 @@ class SignUpExtendedTableViewController: UITableViewController {
     var intolerances: [String] = []
     var preExistingConditions: [String] = []
     var dietaryPreferences: [String] = []
-
-    var selectionType: MedicalSelectionType?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -52,26 +44,8 @@ class SignUpExtendedTableViewController: UITableViewController {
             if let medicalDetailSelectorTableViewController = destination.viewControllers.first as? MultipleSelectorTableViewController {
                 self.multipleSelectorTableViewController = medicalDetailSelectorTableViewController
                 guard let sender = sender as? (options: [String], dismissHandler: () -> Void) else { return }
-                let options = sender.options
                 medicalDetailSelectorTableViewController.dismissHandler = sender.dismissHandler
                 medicalDetailSelectorTableViewController.options = sender.options
-                
-                switch selectionType {
-                case .intolerance:
-                    medicalDetailSelectorTableViewController.selectedMappedOptions = options.reduce(into: [:]) {
-                        $0[$1] = intolerances.contains($1)
-                    }
-                case .preExistingCondition:
-                    medicalDetailSelectorTableViewController.selectedMappedOptions = options.reduce(into: [:]) {
-                        $0[$1] = preExistingConditions.contains($1)
-                    }
-                case .dietaryPreference:
-                    medicalDetailSelectorTableViewController.selectedMappedOptions = options.reduce(into: [:]) {
-                        $0[$1] = dietaryPreferences.contains($1)
-                    }
-                case .none:
-                    break
-                }
             }
         }
     }
@@ -92,7 +66,6 @@ class SignUpExtendedTableViewController: UITableViewController {
     }
 
     @IBAction func intoleranceButtonTapped(_ sender: UIButton) {
-        selectionType = .intolerance
         presentMedicalDetailSelector(
             sender: sender,
             options: Intolerance.allCases.map { $0.rawValue },
@@ -101,7 +74,6 @@ class SignUpExtendedTableViewController: UITableViewController {
     }
 
     @IBAction func preExistingConditionTapped(_ sender: UIButton) {
-        selectionType = .preExistingCondition
         presentMedicalDetailSelector(
             sender: sender,
             options: PreExistingCondition.allCases.map { $0.rawValue },
@@ -110,7 +82,6 @@ class SignUpExtendedTableViewController: UITableViewController {
     }
 
     @IBAction func dietaryPreferenceTapped(_ sender: UIButton) {
-        selectionType = .dietaryPreference
         presentMedicalDetailSelector(
             sender: sender,
             options: DietaryPreference.allCases.map { $0.rawValue },
@@ -120,19 +91,6 @@ class SignUpExtendedTableViewController: UITableViewController {
 
     @IBAction func unwinToMedicalDetail(_ segue: UIStoryboardSegue) {
         guard let sourceVC = segue.source as? MultipleSelectorTableViewController else { return }
-        let selectedValues = sourceVC.selectedMappedOptions.filter { $0.value }.map { $0.key }
-
-            switch selectionType {
-            case .intolerance:
-                intolerances = selectedValues
-            case .preExistingCondition:
-                preExistingConditions = selectedValues
-            case .dietaryPreference:
-                dietaryPreferences = selectedValues
-            case .none:
-                break
-            }
-
         sourceVC.dismissHandler?()
     }
 
@@ -166,5 +124,4 @@ class SignUpExtendedTableViewController: UITableViewController {
             }
         }
     }
-
 }
