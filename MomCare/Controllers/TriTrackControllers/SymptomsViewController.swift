@@ -20,7 +20,7 @@ class SymptomsViewController: UIViewController {
         let identifier = "embedShowSymptomsTabelViewController"
         if segue.identifier == identifier {
             symptomsTableViewController = segue.destination as? SymptomsTableViewController
-            symptomsTableViewController?.triTrackViewController = triTrackViewController 
+            symptomsTableViewController?.triTrackViewController = triTrackViewController
         }
     }
 }

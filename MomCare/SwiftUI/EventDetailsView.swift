@@ -8,18 +8,23 @@
 import SwiftUI
 
 struct EventDetailsView: View {
+
+    // MARK: Lifecycle
+
+    init(event: EventInfo?, cellWidth: CGFloat) {
+        self.event = event
+        self.cellWidth = cellWidth
+        startDate = event?.startDate ?? Date()
+        endDate = event?.endDate ?? Date()
+    }
+
+    // MARK: Internal
+
     var event: EventInfo?
     let cellWidth: CGFloat
 
     var startDate: Date = .init()
     var endDate: Date = .init()
-
-    init(event: EventInfo?, cellWidth: CGFloat) {
-        self.event = event
-        self.cellWidth = cellWidth
-        self.startDate = event?.startDate ?? Date()
-        self.endDate = event?.endDate ?? Date()
-    }
 
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
