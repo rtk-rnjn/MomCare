@@ -19,34 +19,29 @@ class HealthDetailsTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         updatePageElements()
-
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "showUserHealthProfile",
-           let destination = segue.destination as? HealthDetailsCellTableViewController,
-           let type = sender as? HealthProfileType {
+        if segue.identifier == "showUserHealthProfile", let destination = segue.destination as? HealthDetailsCellTableViewController, let type = sender as? HealthProfileType {
             destination.healthProfile = type
 
             switch type {
-                case .dietaryPreference:
-                    destination.selectedCells = MomCareUser.shared.user?.medicalData?.dietaryPreferences.map { $0.rawValue } ?? []
-                case .intolerance:
-                    destination.selectedCells = MomCareUser.shared.user?.medicalData?.foodIntolerances.map { $0.rawValue } ?? []
-                case .preExistingCondition:
-                    destination.selectedCells = MomCareUser.shared.user?.medicalData?.preExistingConditions.map { $0.rawValue } ?? []
-                @unknown default:
-                    break
+            case .dietaryPreference:
+                destination.selectedCells = MomCareUser.shared.user?.medicalData?.dietaryPreferences.map { $0.rawValue } ?? []
+            case .intolerance:
+                destination.selectedCells = MomCareUser.shared.user?.medicalData?.foodIntolerances.map { $0.rawValue } ?? []
+            case .preExistingCondition:
+                destination.selectedCells = MomCareUser.shared.user?.medicalData?.preExistingConditions.map { $0.rawValue } ?? []
             }
 
             destination.onSelection = { [weak self] profileType, selectedItems in
                 switch profileType {
-                    case .dietaryPreference:
-                        MomCareUser.shared.user?.medicalData?.dietaryPreferences = selectedItems.map({ DietaryPreference(rawValue: $0) ?? .none })
-                    case .intolerance:
-                        MomCareUser.shared.user?.medicalData?.foodIntolerances = selectedItems.map({ Intolerance(rawValue: $0) ?? .none })
-                    case .preExistingCondition:
-                        MomCareUser.shared.user?.medicalData?.preExistingConditions = selectedItems.map({ PreExistingCondition(rawValue: $0) ?? .none })
+                case .dietaryPreference:
+                    MomCareUser.shared.user?.medicalData?.dietaryPreferences = selectedItems.map({ DietaryPreference(rawValue: $0) ?? .none })
+                case .intolerance:
+                    MomCareUser.shared.user?.medicalData?.foodIntolerances = selectedItems.map({ Intolerance(rawValue: $0) ?? .none })
+                case .preExistingCondition:
+                    MomCareUser.shared.user?.medicalData?.preExistingConditions = selectedItems.map({ PreExistingCondition(rawValue: $0) ?? .none })
                 }
 
                 self?.updatePageElements()
@@ -64,14 +59,8 @@ class HealthDetailsTableViewController: UITableViewController {
         updateUIForEditingMode()
 
         if !isEditingMode {
-            Task {
-                saveUser()
-            }
+            MomCareUser.shared.user?.medicalData?.dueDate = userDueDate.date
         }
-    }
-
-    func saveUser() {
-        MomCareUser.shared.user?.medicalData?.dueDate = userDueDate.date
     }
 
     func updateUIForEditingMode() {

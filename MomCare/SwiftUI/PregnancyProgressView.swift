@@ -899,7 +899,7 @@ struct StitchingBorder: View {
     // MARK: Private
 
     // Improved helper function for precise corner stitch placement
-    private func addPreciseCornerStitches(to path: inout Path, center: CGPoint, radius: CGFloat, startAngle: CGFloat, endAngle: CGFloat, stitchCount: Int) {
+    private func addPreciseCornerStitches(to path: inout Path, center: CGPoint, radius: CGFloat, startAngle: CGFloat, endAngle: CGFloat, stitchCount: Int) { // swiftlint:disable:this function_parameter_count
         let totalAngle = abs(endAngle - startAngle)
         let angleStep = totalAngle / CGFloat(stitchCount)
 

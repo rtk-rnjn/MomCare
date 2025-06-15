@@ -41,7 +41,6 @@ class SettingsTableViewController: UITableViewController {
 
     func updatePageElements() {
         guard let user = MomCareUser.shared.user else { return }
-        print(MomCareUser.shared.user?.password)
         emailLabel.text = user.emailAddress
         phoneNumberLabel.text = user.phoneNumber
     }
