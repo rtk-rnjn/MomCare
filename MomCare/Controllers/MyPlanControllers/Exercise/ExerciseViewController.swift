@@ -68,17 +68,9 @@ class ExerciseViewController: UIViewController, UICollectionViewDelegate, UIColl
     }
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        switch indexPath.item {
-        case 0:
-            return CGSize(width: 365, height: 103)
-
-        case 1:
-            return CGSize(width: 365, height: 100)
-
-        default:
-            return CGSize(width: 365, height: 170)
-        }
-
+        let width = collectionView.bounds.width - 40
+        let height: CGFloat = 105
+        return CGSize(width: width, height: height)
     }
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
