@@ -47,14 +47,18 @@ class DashboardViewController: UIViewController, UICollectionViewDataSource, UIC
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "segueShowAddEventTableViewController" {
-            if let navigationController = segue.destination as? UINavigationController {
-                let addEventTableViewController = navigationController.viewControllers.first as? AddEventTableViewController
-                self.addEventTableViewController = addEventTableViewController
+        if segue.identifier == "segueShowAddEventTableViewController", let navigationController = segue.destination as? UINavigationController {
+            let addEventTableViewController = navigationController.viewControllers.first as? AddEventTableViewController
+            self.addEventTableViewController = addEventTableViewController
 
-                addEventTableViewController?.navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(cancelAddEvent))
-                addEventTableViewController?.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(doneAddEvent))
-            }
+            addEventTableViewController?.navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(cancelAddEvent))
+            addEventTableViewController?.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(doneAddEvent))
+
+        }
+        if segue.identifier == "segueShowProfilePageTableViewController", let navigationController = segue.destination as? UINavigationController {
+            let profilePageTableViewController = navigationController.viewControllers.first as? ProfilePageTableViewController
+            profilePageTableViewController?.logoutHandler = navigateToFrontPageViewController
+
         }
     }
 
@@ -133,6 +137,12 @@ class DashboardViewController: UIViewController, UICollectionViewDataSource, UIC
 
     @objc func profileIconTapped() {
         performSegue(withIdentifier: "segueShowProfilePageTableViewController", sender: nil)
+    }
+
+    func navigateToFrontPageViewController() {
+        if let initialTabBarViewController = tabBarController as? InitialTabBarController {
+            initialTabBarViewController.performSegue(withIdentifier: "segueShowFrontPageNavigationController", sender: nil)
+        }
     }
 
     // MARK: Private

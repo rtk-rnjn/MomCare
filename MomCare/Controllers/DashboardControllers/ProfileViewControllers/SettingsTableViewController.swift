@@ -69,14 +69,14 @@ class SettingsTableViewController: UITableViewController {
 
         MomCareUser.shared.user?.password = newPassword
         showAlert(title: "Success", message: "Password changed!") {
-                self.oldPasswordField.text = ""
-                self.newPasswordField.text = ""
-                self.confirmPasswordField.text = ""
+            self.oldPasswordField.text = ""
+            self.newPasswordField.text = ""
+            self.confirmPasswordField.text = ""
 
-                self.isPasswordFieldsVisible = false
-                self.tableView.beginUpdates()
-                self.tableView.endUpdates()
-            }
+            self.isPasswordFieldsVisible = false
+            self.tableView.beginUpdates()
+            self.tableView.endUpdates()
+        }
     }
 
     func showAlert(title: String, message: String, completion: (() -> Void)? = nil) {

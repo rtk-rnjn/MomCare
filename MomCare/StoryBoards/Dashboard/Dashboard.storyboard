@@ -272,21 +272,12 @@
                     <connections>
                         <outlet property="profileImageView" destination="t2U-Ce-jlT" id="Trm-jD-Hig"/>
                         <outlet property="usernameLabel" destination="uTv-qT-fIp" id="1Vd-EL-bvP"/>
-                        <segue destination="fJ8-w7-I3e" kind="presentation" identifier="segueShowFrontPageNavigationController" modalPresentationStyle="fullScreen" modalTransitionStyle="crossDissolve" id="yVr-dt-hHZ"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="JUh-xX-lZC" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
                 <exit id="yzs-dt-TCl" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
             <point key="canvasLocation" x="3091" y="-194"/>
-        </scene>
-        <!--Storyboard Reference-->
-        <scene sceneID="6bo-mz-i5H">
-            <objects>
-                <viewControllerPlaceholder id="fJ8-w7-I3e" sceneMemberID="viewController"/>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="auR-GX-oQr" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="3618" y="-194"/>
         </scene>
         <!--Account & Security-->
         <scene sceneID="0FX-O9-Fl2">
@@ -1107,7 +1098,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="gYL-Mc-ioF" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3816" y="-917"/>
+            <point key="canvasLocation" x="4120" y="-898"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="Bth-gx-cbb">

@@ -11,6 +11,8 @@ class ProfilePageTableViewController: UITableViewController {
     @IBOutlet var profileImageView: UIImageView?
     @IBOutlet var usernameLabel: UILabel!
 
+    var logoutHandler: (() -> Void)?
+
     override func viewDidLoad() {
         super.viewDidLoad()
         updateElements()
@@ -26,16 +28,10 @@ class ProfilePageTableViewController: UITableViewController {
             AlertActionHandler(title: "Cancel", style: .cancel, handler: nil),
             AlertActionHandler(title: "Logout", style: .destructive) { _ in
                 Utils.remove("isUserSignedUp")
-                if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
-                let sceneDelegate = windowScene.delegate as? SceneDelegate {
-                 let storyboard = UIStoryboard(name: "Main", bundle: nil)
-                 let frontVC = storyboard.instantiateViewController(withIdentifier: "FrontViewController")
-
-                 let navController = UINavigationController(rootViewController: frontVC)
-                 sceneDelegate.window?.rootViewController = navController
-                 sceneDelegate.window?.makeKeyAndVisible()
-             }
-        }
+                self.dismiss(animated: true) {
+                    self.logoutHandler?()
+                }
+            }
         ]
         let message = "Are you sure you want to logout?"
         let alert = Utils.getAlert(title: "Logout?", message: message, actions: actions)

@@ -48,11 +48,11 @@ class PersonalDetailsTableViewController: UITableViewController {
     func toggleEditMode() {
         updateUIForEditingMode()
 
-            if !isEditingMode {
-                Task {
-                    await saveUser()
-                }
+        if !isEditingMode {
+            Task {
+                await saveUser()
             }
+        }
     }
 
     func updateUIForEditingMode() {
@@ -64,28 +64,28 @@ class PersonalDetailsTableViewController: UITableViewController {
     }
 
     @IBAction func fieldValuesButtonTapped(_ sender: UIButton) {
-            activeButton = sender
-            switch sender {
-            case userHeightButton:
-                currentPickerData = heightValues
-            case userCurrentWeightButton, userPrePregnancyWeightButton:
-                currentPickerData = weightValues
-            case userPregnancyDayButton:
-                currentPickerData = dayValues
-            case userPregnancyWeekButton:
-                currentPickerData = weekValues
-            case userTrimesterButton:
-                currentPickerData = trimesterValues
-            default:
-                return
-            }
-
-            pickerView.reloadAllComponents()
-            pickerView.isHidden = false
-            UIView.animate(withDuration: 0.3) {
-                    self.pickerView.alpha = 1.0
-            }
+        activeButton = sender
+        switch sender {
+        case userHeightButton:
+            currentPickerData = heightValues
+        case userCurrentWeightButton, userPrePregnancyWeightButton:
+            currentPickerData = weightValues
+        case userPregnancyDayButton:
+            currentPickerData = dayValues
+        case userPregnancyWeekButton:
+            currentPickerData = weekValues
+        case userTrimesterButton:
+            currentPickerData = trimesterValues
+        default:
+            return
         }
+
+        pickerView.reloadAllComponents()
+        pickerView.isHidden = false
+        UIView.animate(withDuration: 0.3) {
+            self.pickerView.alpha = 1.0
+        }
+    }
 
     @objc func donePicker() {
         if let button = activeButton {
@@ -133,12 +133,12 @@ class PersonalDetailsTableViewController: UITableViewController {
         }
 
         if let heightText = userHeightButton.title(for: .normal)?.replacingOccurrences(of: " cm", with: ""),
-               let height = Double(heightText) {
+           let height = Double(heightText) {
             MomCareUser.shared.user?.medicalData?.height = height
         }
 
         if let weightText = userCurrentWeightButton.title(for: .normal)?.replacingOccurrences(of: " kgs", with: ""),
-               let weight = Double(weightText) {
+           let weight = Double(weightText) {
             MomCareUser.shared.user?.medicalData?.currentWeight = weight
         }
 
