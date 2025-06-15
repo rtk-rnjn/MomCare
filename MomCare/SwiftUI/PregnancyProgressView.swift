@@ -40,64 +40,49 @@ struct PregnancyProgressView: View {
 
     // MARK: - Body
 
+    @State private var isScrollEnabled = true
+
     var body: some View {
-        GeometryReader { _ in
-            ScrollView {
-                VStack(spacing: 16) {
-                    VStack(spacing: 2) {
-                        Text(trimester)
-                            .font(.title3)
-                            .fontWeight(.semibold)
-
-                        Text(weekDay)
-                            .font(.title)
-                            .fontWeight(.bold)
-                            .foregroundColor(Color(hex: "924350"))
-                    }
-
+        ZStack {
+            GeometryReader { _ in
+                ScrollView {
                     VStack(spacing: 16) {
-                        sizeComparisonView
-                        growthStatsView
-                        infoCardsView
-                    }
-                    .padding(.horizontal)
-                }
-                .overlay {
-                    if showingBabyInfo {
-                        PopupInfoCard(
-                            title: "Baby This Week", // Changed from "Baby Development" to match the card
-                            content: babyInfo,
-                            isShowing: $showingBabyInfo,
-                            cardPosition: selectedCardPosition,
-                            accentColor: Color(hex: "924350")
-                        )
-                        .transition(.asymmetric(
-                            insertion: .scale(scale: 0.8).combined(with: .opacity),
-                            removal: .scale(scale: 0.8).combined(with: .opacity)
-                        ))
-                    }
+                        VStack(spacing: 2) {
+                            Text(trimester)
+                                .font(.title3)
+                                .fontWeight(.semibold)
 
-                    if showingMomInfo {
-                        PopupInfoCard(
-                            title: "Mom This Week",
-                            content: momInfo,
-                            isShowing: $showingMomInfo,
-                            cardPosition: selectedCardPosition,
-                            accentColor: Color(hex: "924350")
-                        )
-                        .transition(.asymmetric(
-                            insertion: .scale(scale: 0.8).combined(with: .opacity),
-                            removal: .scale(scale: 0.8).combined(with: .opacity)
-                        ))
+                            Text(weekDay)
+                                .font(.title)
+                                .fontWeight(.bold)
+                                .foregroundColor(Color(hex: "924350"))
+                        }
+
+                        VStack(spacing: 16) {
+                            sizeComparisonView
+                            growthStatsView
+                            infoCardsView
+                        }
+                        .padding(.horizontal)
                     }
+                }
+                .scrollIndicators(.hidden)
+                .scrollDisabled(!isScrollEnabled)
+                .onReceive(NotificationCenter.default.publisher(for: NSNotification.Name("DisableScrolling"))) { _ in
+                    isScrollEnabled = false
+                }
+                .onReceive(NotificationCenter.default.publisher(for: NSNotification.Name("EnableScrolling"))) { _ in
+                    isScrollEnabled = true
                 }
             }
-            .scrollIndicators(.hidden)
+            .task {
+                fruitImage = await trimesterData?.image
+                babyImage = trimesterData?.babyImage
+            }
+            
+            // REMOVE the popup cards from this ZStack - they will be handled by the OverlayWindowManager
         }
-        .task {
-            fruitImage = await trimesterData?.image
-            babyImage = trimesterData?.babyImage
-        }
+        .edgesIgnoringSafeArea(.all)
     }
 
     // MARK: Private
@@ -206,7 +191,7 @@ struct PregnancyProgressView: View {
         HStack(spacing: 12) {
             // Baby info card with content preview
             CompactInfoCard(
-                title: "Baby This Week", // Changed from "Baby Development" to fit better
+                title: "Baby This Week", 
                 iconName: "👶",
                 previewText: getTruncatedText(from: babyInfo, maxLength: 100),
                 isEmoji: true,
@@ -216,17 +201,29 @@ struct PregnancyProgressView: View {
             .background(
                 GeometryReader { geo -> Color in
                     DispatchQueue.main.async {
-                        if showingBabyInfo {
-                            selectedCardPosition = geo.frame(in: .global)
-                        }
+                        selectedCardPosition = geo.frame(in: .global)
                     }
                     return Color.clear
                 }
             )
             .onTapGesture {
-                withAnimation(.spring(response: 0.4, dampingFraction: 0.7)) {
-                    showingBabyInfo = true
-                }
+                // Create popup card directly
+                let popupContent = PopupInfoCard(
+                    title: "Baby This Week",
+                    content: babyInfo,
+                    isShowing: $showingBabyInfo,
+                    cardPosition: selectedCardPosition,
+                    accentColor: Color(hex: "924350")
+                )
+                
+                // First show overlay window
+                OverlayWindowManager.shared.showOverlay()
+                
+                // Set content in the overlay window - this will display the popup
+                OverlayWindowManager.shared.setContent(popupContent)
+                
+                // Update state
+                showingBabyInfo = true
             }
             
             // Mom info card with content preview
@@ -249,8 +246,24 @@ struct PregnancyProgressView: View {
                 }
             )
             .onTapGesture {
-                withAnimation(.spring(response: 0.4, dampingFraction: 0.7)) {
-                    showingMomInfo = true
+                // Create and show popup using the overlay window manager directly
+                showingMomInfo = true
+                
+                // Create popup card directly in the overlay window
+                let popupContent = PopupInfoCard(
+                    title: "Mom This Week",
+                    content: momInfo, // Pass the full content
+                    isShowing: $showingMomInfo,
+                    cardPosition: selectedCardPosition,
+                    accentColor: Color(hex: "924350")
+                )
+                
+                // First show overlay window
+                OverlayWindowManager.shared.showOverlay()
+                
+                // Set content in the overlay window
+                DispatchQueue.main.async {
+                    OverlayWindowManager.shared.setContent(popupContent)
                 }
             }
         }
@@ -311,23 +324,26 @@ struct PopupInfoCard: View {
     @Binding var isShowing: Bool
     let cardPosition: CGRect
     let accentColor: Color
-
+    
     @State private var cardOffset: CGSize = .init(width: 0, height: -50)
     @State private var opacity = 0.0
     @State private var scale = 0.8
     @State private var isContentVisible = false
     @State private var envelopeOpen = false
-
+    
     var body: some View {
         ZStack {
-            Color.black.opacity(0.4)
-                .edgesIgnoringSafeArea(.all)
-                .opacity(opacity)
+            // Clear background (the overlay is in a separate window)
+            Color.clear
+                .contentShape(Rectangle())
                 .onTapGesture {
                     closeCard()
                 }
-
+                .edgesIgnoringSafeArea(.all)
+            
+            // Card content
             VStack(spacing: 0) {
+                // Card header with envelope flap
                 ZStack {
                     Path { path in
                         path.move(to: CGPoint(x: 0, y: 0))
@@ -337,7 +353,7 @@ struct PopupInfoCard: View {
                     }
                     .fill(Color(hex: "FBE8E5"))
                     .shadow(color: Color.black.opacity(0.1), radius: 3, x: 0, y: -2)
-
+                    
                     Text(title)
                         .font(.title3)
                         .fontWeight(.bold)
@@ -346,8 +362,10 @@ struct PopupInfoCard: View {
                 }
                 .frame(height: 60)
                 .animation(.spring(response: 0.5, dampingFraction: 0.7), value: envelopeOpen)
-
+                
+                // Content section
                 VStack(spacing: 0) {
+                    // Heart decoration at top
                     HStack(spacing: 4) {
                         ForEach(0..<15) { _ in
                             Image(systemName: "heart.fill")
@@ -356,8 +374,8 @@ struct PopupInfoCard: View {
                         }
                     }
                     .padding(.top, 12)
-
-                    // Content
+                    
+                    // Content in ScrollView
                     ScrollView {
                         Text(content)
                             .font(.body)
@@ -366,9 +384,9 @@ struct PopupInfoCard: View {
                             .frame(maxWidth: .infinity, alignment: .leading)
                             .opacity(isContentVisible ? 1 : 0)
                     }
-                    .frame(maxHeight: 350)
-
-                    // Decorative bottom border
+                    .frame(maxHeight: UIScreen.main.bounds.height * 0.35)
+                    
+                    // Heart decoration at bottom
                     HStack(spacing: 4) {
                         ForEach(0..<15) { _ in
                             Image(systemName: "heart.fill")
@@ -377,13 +395,14 @@ struct PopupInfoCard: View {
                         }
                     }
                     .padding(.bottom, 12)
-
+                    .padding(.top, 12)
+                    
                     // Close button
                     Button(action: closeCard) {
                         Text("Close")
                             .fontWeight(.medium)
                             .foregroundColor(.white)
-                            .padding(.vertical, 12)
+                            .padding(.vertical, 14)
                             .frame(maxWidth: .infinity)
                             .background(
                                 RoundedRectangle(cornerRadius: 8)
@@ -405,24 +424,25 @@ struct PopupInfoCard: View {
             .offset(cardOffset)
             .opacity(opacity)
             .frame(width: UIScreen.main.bounds.width * 0.9)
+            .frame(maxHeight: UIScreen.main.bounds.height * 0.65)
         }
-        // Use a full-screen ZStack to position the card in the center of the device
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .edgesIgnoringSafeArea(.all) // Ensure it covers the entire screen
         .onAppear {
+            disableParentScroll()
+            
+            // Start animations
             withAnimation(.spring(response: 0.4, dampingFraction: 0.7)) {
                 opacity = 1.0
                 scale = 1.0
                 cardOffset = .zero
             }
-
-            // Animate the envelope opening
+            
+            // Animation sequence
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
                 withAnimation(.spring(response: 0.6, dampingFraction: 0.6)) {
                     envelopeOpen = true
                 }
-
-                // Then show the content
+                
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
                     withAnimation(.easeIn(duration: 0.4)) {
                         isContentVisible = true
@@ -430,30 +450,110 @@ struct PopupInfoCard: View {
                 }
             }
         }
+        .onDisappear {
+            enableParentScroll()
+        }
     }
-
+    
+    // Helper methods remain the same
+    private func disableParentScroll() {
+        NotificationCenter.default.post(name: NSNotification.Name("DisableScrolling"), object: nil)
+    }
+    
+    private func enableParentScroll() {
+        NotificationCenter.default.post(name: NSNotification.Name("EnableScrolling"), object: nil)
+    }
+    
     private func closeCard() {
+        // Animation sequence remains the same
         withAnimation(.easeOut(duration: 0.2)) {
             isContentVisible = false
         }
-
+        
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
             withAnimation(.spring(response: 0.4, dampingFraction: 0.7)) {
                 envelopeOpen = false
             }
-
+            
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
                 withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) {
                     opacity = 0.0
                     scale = 0.8
                     cardOffset = CGSize(width: 0, height: -50)
                 }
-
+                
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                    // Hide the overlay window when closing
+                    OverlayWindowManager.shared.hideOverlay()
+                    
+                    enableParentScroll()
                     isShowing = false
                 }
             }
         }
+    }
+}
+
+// Helper extension to remove .onAppear from a SwiftUI view
+extension View {
+    func removeOnAppear() -> some View {
+        self.onAppear { }
+    }
+}
+
+// Helper struct to create a full screen overlay that integrates with UIKit
+class OverlayWindowManager {
+    static let shared = OverlayWindowManager()
+    private var overlayWindow: UIWindow?
+    private var contentWindow: UIWindow?
+    
+    func showOverlay() {
+        guard overlayWindow == nil else { return }
+        
+        if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene {
+            // Step 1: Create overlay window (darkens everything)
+            let overlay = UIWindow(windowScene: windowScene)
+            overlay.backgroundColor = UIColor.black.withAlphaComponent(0.4)
+            overlay.windowLevel = UIWindow.Level.normal + 1
+            
+            let overlayVC = UIViewController()
+            overlayVC.view.backgroundColor = .clear
+            overlay.rootViewController = overlayVC
+            
+            overlay.isHidden = false
+            overlay.makeKeyAndVisible()
+            
+            self.overlayWindow = overlay
+            
+            // Step 2: Create content window (will hold the popup)
+            let content = UIWindow(windowScene: windowScene)
+            content.backgroundColor = UIColor.clear
+            content.windowLevel = UIWindow.Level.normal + 2 // Above overlay
+            
+            let hostingVC = UIHostingController(rootView: EmptyView())
+            hostingVC.view.backgroundColor = .clear
+            content.rootViewController = hostingVC
+            
+            content.isHidden = false
+            content.makeKeyAndVisible()
+            
+            self.contentWindow = content
+        }
+    }
+    
+    func setContent<Content: View>(_ content: Content) {
+        if let contentWindow = self.contentWindow {
+            let hostingVC = UIHostingController(rootView: AnyView(content))
+            hostingVC.view.backgroundColor = .clear
+            contentWindow.rootViewController = hostingVC
+        }
+    }
+    
+    func hideOverlay() {
+        contentWindow?.isHidden = true
+        contentWindow = nil
+        overlayWindow?.isHidden = true
+        overlayWindow = nil
     }
 }
 
