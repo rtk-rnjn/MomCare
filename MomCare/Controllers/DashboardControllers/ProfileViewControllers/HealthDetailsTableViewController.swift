@@ -19,23 +19,17 @@ class HealthDetailsTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         updatePageElements()
-        
+
     }
-    
-    @IBAction func editButtonTapped(_ sender: UIBarButtonItem) {
-        isEditingMode.toggle()
-        sender.title = isEditingMode ? "Save" : "Edit"
-        toggleEditMode()
-    }
-    
+
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "showUserHealthProfile",
            let destination = segue.destination as? HealthDetailsCellTableViewController,
            let type = sender as? HealthProfileType {
             destination.healthProfile = type
-            
-            switch type{
-                    case .dietaryPreference:
+
+            switch type {
+                case .dietaryPreference:
                     destination.selectedCells = MomCareUser.shared.user?.medicalData?.dietaryPreferences.map { $0.rawValue } ?? []
                 case .intolerance:
                     destination.selectedCells = MomCareUser.shared.user?.medicalData?.foodIntolerances.map { $0.rawValue } ?? []
@@ -44,33 +38,39 @@ class HealthDetailsTableViewController: UITableViewController {
                 @unknown default:
                     break
             }
-            
+
             destination.onSelection = { [weak self] profileType, selectedItems in
                 switch profileType {
                     case .dietaryPreference:
-                        MomCareUser.shared.user?.medicalData?.dietaryPreferences = selectedItems.map({ DietaryPreference(rawValue: $0) ?? .none})
+                        MomCareUser.shared.user?.medicalData?.dietaryPreferences = selectedItems.map({ DietaryPreference(rawValue: $0) ?? .none })
                     case .intolerance:
-                        MomCareUser.shared.user?.medicalData?.foodIntolerances = selectedItems.map({ Intolerance(rawValue: $0) ?? .none})
+                        MomCareUser.shared.user?.medicalData?.foodIntolerances = selectedItems.map({ Intolerance(rawValue: $0) ?? .none })
                     case .preExistingCondition:
-                        MomCareUser.shared.user?.medicalData?.preExistingConditions = selectedItems.map({ PreExistingCondition(rawValue: $0) ?? .none})
+                        MomCareUser.shared.user?.medicalData?.preExistingConditions = selectedItems.map({ PreExistingCondition(rawValue: $0) ?? .none })
                 }
-                
+
                 self?.updatePageElements()
             }
         }
     }
 
+    @IBAction func editButtonTapped(_ sender: UIBarButtonItem) {
+        isEditingMode.toggle()
+        sender.title = isEditingMode ? "Save" : "Edit"
+        toggleEditMode()
+    }
+
     func toggleEditMode() {
         updateUIForEditingMode()
-        
+
         if !isEditingMode {
-            Task{
+            Task {
                 saveUser()
             }
         }
     }
-    
-    func saveUser(){
+
+    func saveUser() {
         MomCareUser.shared.user?.medicalData?.dueDate = userDueDate.date
     }
 

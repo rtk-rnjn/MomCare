@@ -11,9 +11,9 @@ class HealthDetailsCellTableViewController: UITableViewController {
 
     var healthProfile: HealthProfileType?
     var selectedCells: [String] = []
-    
+
     var onSelection: ((HealthProfileType, [String]) -> Void)?
-    
+
      var healthList: [String] {
          switch healthProfile {
          case .preExistingCondition:
@@ -31,10 +31,10 @@ class HealthDetailsCellTableViewController: UITableViewController {
          super.viewDidLoad()
          title = healthListtitle()
      }
-    
+
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
-        
+
         guard let profile = healthProfile else { return }
         onSelection?(profile, selectedCells)
     }
@@ -45,13 +45,13 @@ class HealthDetailsCellTableViewController: UITableViewController {
 
      override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
          let cell = tableView.dequeueReusableCell(withIdentifier: "HealthDetailCell", for: indexPath)
-         
-         let item  = healthList[indexPath.row]
+
+         let item = healthList[indexPath.row]
          var contentConfig = cell.defaultContentConfiguration()
          contentConfig.text = item
          cell.accessoryType = selectedCells.contains(item) ? .checkmark : .none
          cell.contentConfiguration = contentConfig
-         
+
          return cell
      }
 
@@ -68,8 +68,6 @@ class HealthDetailsCellTableViewController: UITableViewController {
 
         tableView.reloadRows(at: [indexPath], with: .automatic)
     }
-    
-    
 
      func healthListtitle() -> String {
          switch healthProfile {
