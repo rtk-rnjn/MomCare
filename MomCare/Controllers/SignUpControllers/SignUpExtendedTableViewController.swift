@@ -46,7 +46,7 @@ class SignUpExtendedTableViewController: UITableViewController {
                 medicalDetailSelectorTableViewController.dismissHandler = sender.dismissHandler
                 medicalDetailSelectorTableViewController.options = sender.options
 
-                self.multipleSelectorTableViewController = medicalDetailSelectorTableViewController
+                multipleSelectorTableViewController = medicalDetailSelectorTableViewController
             }
         }
     }
