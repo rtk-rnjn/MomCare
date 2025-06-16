@@ -43,12 +43,12 @@ extension PlaylistTableViewController {
 
     @objc func forwardButtonTapped(_ sender: Any?) {
         MusicPlayerHandler.shared.forward(by: 15)
-        self.updatePlayPauseUI()
+        updatePlayPauseUI()
     }
 
     func backwardButtonTapped(_ sender: Any?) {
         MusicPlayerHandler.shared.backward(by: 15)
-        self.updatePlayPauseUI()
+        updatePlayPauseUI()
     }
 
     func durationSliderValueChanged(value: Float) {
