@@ -191,9 +191,7 @@ class DietTableViewController: UITableViewController {
     }
 
     private func contextMenu(for indexPath: IndexPath) -> UIContextMenuConfiguration? {
-        guard indexPath.row != 0,
-              let foods = getFoods(with: indexPath),
-              !foods[indexPath.row - 1].consumed else {
+        guard indexPath.row != 0, let foods = getFoods(with: indexPath), indexPath.row - 1 < foods.count, !foods.isEmpty, !foods[indexPath.row - 1].consumed else {
             return nil
         }
 
