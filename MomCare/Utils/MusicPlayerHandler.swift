@@ -23,11 +23,11 @@ class MusicPlayerHandler {
     public private(set) var player: AVPlayer?
     public private(set) var currentSong: Song?
 
-    var interfaceUpdater: ((AVPlayer.TimeControlStatus?) -> Void)?
-
     // MARK: Internal
 
     static let shared: MusicPlayerHandler = .init()
+
+    var interfaceUpdater: ((AVPlayer.TimeControlStatus?) -> Void)?
 
     func preparePlayer(song: Song, periodicUpdater: @escaping (CMTime) -> Void, songFinishedCompletionHandler: @escaping () -> Void, completion: @Sendable @escaping () -> Void) {
         discardPlayer()
