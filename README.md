@@ -6,14 +6,13 @@ A personalized prenatal care app designed for expecting mothers. Offers health p
 
 The Backend for this app is available at [**MomCare Backend**](https://github.com/rtk-rnjn/MomCare-Backend). The backend is under development. API endpoints and Models are available [**here**](http://13.233.139.216:8000/redoc).
 
-## Recent activity ![Time period](https://images.repography.com/25054784/rtk-rnjn/MomCare/recent-activity/d_D3o-VDDJnHI9-hjjvEbS2um2kp12DRivDQyBd2JqQ/KtnIJK2CGfUOVVO-vymBCZZTUtpe331ZbOo77VIhu2Y_badge.svg)
-[![Timeline graph](https://images.repography.com/25054784/rtk-rnjn/MomCare/recent-activity/d_D3o-VDDJnHI9-hjjvEbS2um2kp12DRivDQyBd2JqQ/KtnIJK2CGfUOVVO-vymBCZZTUtpe331ZbOo77VIhu2Y_timeline.svg)](https://github.com/rtk-rnjn/MomCare/commits)
-[![Top contributors](https://images.repography.com/25054784/rtk-rnjn/MomCare/recent-activity/d_D3o-VDDJnHI9-hjjvEbS2um2kp12DRivDQyBd2JqQ/KtnIJK2CGfUOVVO-vymBCZZTUtpe331ZbOo77VIhu2Y_users.svg)](https://github.com/rtk-rnjn/MomCare/graphs/contributors)
+## Recent activity [![Time period](https://images.repography.com/25054784/rtk-rnjn/MomCare/recent-activity/-DUsO2nKtYhOJ6rgHa36Wj_TgThRlXmDhY3PQPLEUWg/MQB_9DRqO1xmlH6N0JHhP0q2T0TWnArr4o4_c2kgRdA_badge.svg)](https://repography.com)
+[![Timeline graph](https://images.repography.com/25054784/rtk-rnjn/MomCare/recent-activity/-DUsO2nKtYhOJ6rgHa36Wj_TgThRlXmDhY3PQPLEUWg/MQB_9DRqO1xmlH6N0JHhP0q2T0TWnArr4o4_c2kgRdA_timeline.svg)](https://github.com/rtk-rnjn/MomCare/commits)
+[![Top contributors](https://images.repography.com/25054784/rtk-rnjn/MomCare/recent-activity/-DUsO2nKtYhOJ6rgHa36Wj_TgThRlXmDhY3PQPLEUWg/MQB_9DRqO1xmlH6N0JHhP0q2T0TWnArr4o4_c2kgRdA_users.svg)](https://github.com/rtk-rnjn/MomCare/graphs/contributors)
 
 
 ## Top contributors
-[![Top contributors](https://images.repography.com/25054784/rtk-rnjn/MomCare/top-contributors/d_D3o-VDDJnHI9-hjjvEbS2um2kp12DRivDQyBd2JqQ/KtnIJK2CGfUOVVO-vymBCZZTUtpe331ZbOo77VIhu2Y_table.svg)](https://github.com/rtk-rnjn/MomCare/graphs/contributors)
-
+[![Top contributors](https://images.repography.com/25054784/rtk-rnjn/MomCare/top-contributors/-DUsO2nKtYhOJ6rgHa36Wj_TgThRlXmDhY3PQPLEUWg/MQB_9DRqO1xmlH6N0JHhP0q2T0TWnArr4o4_c2kgRdA_table.svg)](https://github.com/rtk-rnjn/MomCare/graphs/contributors)
 
 ## More stats?
 
