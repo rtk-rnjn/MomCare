@@ -41,12 +41,27 @@ extension PlaylistTableViewController {
         }
     }
 
-    @objc func forwardButtonTapped(_ sender: Any?) {}
+    @objc func forwardButtonTapped(_ sender: Any?) {
+        MusicPlayerHandler.shared.forward(by: 15)
+        self.updatePlayPauseUI()
+    }
 
-    func backwardButtonTapped(_ sender: Any?) {}
+    func backwardButtonTapped(_ sender: Any?) {
+        MusicPlayerHandler.shared.backward(by: 15)
+        self.updatePlayPauseUI()
+    }
 
-    func durationSliderValueChanged(value: Float) {}
+    func durationSliderValueChanged(value: Float) {
+        musicPlayer.songSlider.value = value
+        MusicPlayerHandler.shared.jumpToTime(CMTime(seconds: Double(value), preferredTimescale: 1), completion: nil)
+    }
 
-    func durationSliderTapped(_ gesture: UITapGestureRecognizer) {}
+    func durationSliderTapped(_ gesture: UITapGestureRecognizer) {
+        let point = gesture.location(in: musicPlayer.songSlider)
+        let percentage = point.x / musicPlayer.songSlider.bounds.width
+        let newValue = Float(percentage) * Float(musicPlayer.songSlider.maximumValue)
+        musicPlayer.songSlider.value = newValue
+        MusicPlayerHandler.shared.jumpToTime(CMTime(seconds: Double(newValue), preferredTimescale: 1), completion: nil)
+    }
 
 }

@@ -23,6 +23,8 @@ class MusicPlayerHandler {
     public private(set) var player: AVPlayer?
     public private(set) var currentSong: Song?
 
+    var interfaceUpdater: ((AVPlayer.TimeControlStatus?) -> Void)?
+
     // MARK: Internal
 
     static let shared: MusicPlayerHandler = .init()
@@ -69,10 +71,24 @@ class MusicPlayerHandler {
         }
     }
 
-    func skip(to value: Float, completion: (@Sendable () -> Void)?) {
-        guard let currentItem = player?.currentItem else { return }
+    func forward(by seconds: Double) {
+        guard let currentTime = player?.currentTime() else { return }
+        let newTime = CMTime(seconds: currentTime.seconds + seconds, preferredTimescale: 1)
+        player?.seek(to: newTime)
+    }
 
-        player?.seek(to: CMTime(seconds: Double(value) * CMTimeGetSeconds(currentItem.duration), preferredTimescale: 1))
+    func backward(by seconds: Double) {
+        guard let currentTime = player?.currentTime() else { return }
+        let newTime = CMTime(seconds: currentTime.seconds - seconds, preferredTimescale: 1)
+        player?.seek(to: newTime)
+    }
+
+    func jumpToTime(_ timePercent: CMTime, completion: (@Sendable () -> Void)?) {
+        guard let player else { return }
+        let duration = player.currentItem?.duration ?? .zero
+        let newTime = CMTime(seconds: timePercent.seconds * duration.seconds, preferredTimescale: 1)
+        player.seek(to: newTime, toleranceBefore: .zero, toleranceAfter: .zero)
+        player.play()
 
         completion?()
 
@@ -95,7 +111,6 @@ class MusicPlayerHandler {
         player = nil
         currentSong = nil
         periodicUpdater = nil
-        songFinishedCompletionHandler = nil
 
         try? stopAudioSession()
     }
@@ -106,6 +121,12 @@ class MusicPlayerHandler {
         timeObserverToken = player.addPeriodicTimeObserver(forInterval: interval, queue: DispatchQueue.main) { time in
             DispatchQueue.main.async {
                 self.periodicUpdater?(time)
+            }
+            Task.detached(priority: .background) {
+                guard let song = await self.currentSong else {
+                    return
+                }
+                await self.updateNowPlayingInfo(song)
             }
         }
 
@@ -175,16 +196,27 @@ class MusicPlayerHandler {
 
         commandCenter.playCommand.addTarget { _ in
             self.player?.play()
+
+            DispatchQueue.main.async {
+                self.interfaceUpdater?(self.player?.timeControlStatus)
+            }
             return .success
         }
 
         commandCenter.pauseCommand.addTarget { _ in
             self.player?.pause()
+
+            DispatchQueue.main.async {
+                self.interfaceUpdater?(self.player?.timeControlStatus)
+            }
             return .success
         }
 
         commandCenter.togglePlayPauseCommand.addTarget { _ in
             self.togglePlayPause(completion: nil)
+            DispatchQueue.main.async {
+                self.interfaceUpdater?(self.player?.timeControlStatus)
+            }
             return .success
         }
 
@@ -192,6 +224,9 @@ class MusicPlayerHandler {
         commandCenter.skipForwardCommand.preferredIntervals = [15]
         commandCenter.skipForwardCommand.addTarget { _ in
             self.player?.seek(to: CMTime(seconds: (self.player?.currentTime().seconds ?? 0) + 15, preferredTimescale: 1))
+            DispatchQueue.main.async {
+                self.interfaceUpdater?(self.player?.timeControlStatus)
+            }
             return .success
         }
 
@@ -199,6 +234,17 @@ class MusicPlayerHandler {
         commandCenter.skipBackwardCommand.preferredIntervals = [15]
         commandCenter.skipBackwardCommand.addTarget { _ in
             self.player?.seek(to: CMTime(seconds: (self.player?.currentTime().seconds ?? 0) - 15, preferredTimescale: 1))
+            DispatchQueue.main.async {
+                self.interfaceUpdater?(self.player?.timeControlStatus)
+            }
+            return .success
+        }
+
+        commandCenter.stopCommand.addTarget { _ in
+            self.stop()
+            DispatchQueue.main.async {
+                self.interfaceUpdater?(self.player?.timeControlStatus)
+            }
             return .success
         }
     }

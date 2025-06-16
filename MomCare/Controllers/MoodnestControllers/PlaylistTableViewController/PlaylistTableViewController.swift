@@ -150,6 +150,23 @@ class PlaylistTableViewController: UITableViewController {
         musicPlayer.song = song
         musicPlayer.delegate = self
 
+        MusicPlayerHandler.shared.interfaceUpdater = { status in
+            switch status {
+            case .playing:
+                DispatchQueue.main.async {
+                    self.updatePlayPauseUI(setImage: "pause.fill")
+                }
+
+            case .paused:
+                DispatchQueue.main.async {
+                    self.updatePlayPauseUI(setImage: "play.fill")
+                }
+
+            default:
+                break
+            }
+        }
+
         configurePopupItem(for: musicPlayer, song: song, buttons: barButtons)
 
         MusicPlayerHandler.shared.preparePlayer(song: song, periodicUpdater: periodicUpdater, songFinishedCompletionHandler: prepareNextIfPossible) {
@@ -218,6 +235,8 @@ class PlaylistTableViewController: UITableViewController {
         playerViewController.popupItem.barButtonItems = buttons
 
         initialTabBarController?.popupBar.progressViewStyle = .bottom
+        initialTabBarController?.popupContentView.popupCloseButtonStyle = .chevron
+        initialTabBarController?.popupInteractionStyle = .snap
         initialTabBarController?.popupBar.popupItem?.progress = 0.0
     }
 
