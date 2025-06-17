@@ -8,7 +8,6 @@
 import Foundation
 import AVFoundation
 
-
 @MainActor
 class ContentHandler {
 
