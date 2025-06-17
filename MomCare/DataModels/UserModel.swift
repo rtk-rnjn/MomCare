@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-public enum PreExistingCondition: String, Codable, CaseIterable, Sendable {
+enum PreExistingCondition: String, Codable, CaseIterable, Sendable {
     case diabetes = "Diabetes"
     case hypertension = "Hypertension"
     case pcos = "PCOS"
@@ -49,7 +49,7 @@ enum HealthProfileType: String {
     case dietaryPreference
 }
 
-public enum MoodType: String, Codable, Sendable {
+enum MoodType: String, Codable, Sendable {
    case happy = "Happy"
    case sad = "Sad"
    case stressed = "Stressed"

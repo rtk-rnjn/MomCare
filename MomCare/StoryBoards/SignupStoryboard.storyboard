@@ -168,37 +168,8 @@
                             </tableViewSection>
                             <tableViewSection id="Unt-Vs-JFQ">
                                 <cells>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="DWP-Sd-NrG">
-                                        <rect key="frame" x="20" y="359.66666793823242" width="353" height="50"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="DWP-Sd-NrG" id="Lfb-S5-v5q">
-                                            <rect key="frame" x="0.0" y="0.0" width="353" height="50"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" restorationIdentifier="countryCodeField" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Country Code" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="h6V-8D-q5K">
-                                                    <rect key="frame" x="20" y="0.0" width="313" height="50"/>
-                                                    <color key="backgroundColor" systemColor="systemGray6Color"/>
-                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
-                                                    <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" keyboardType="numberPad" returnKeyType="next" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no"/>
-                                                    <connections>
-                                                        <action selector="countryCodeFieldTapped:" destination="9Xi-l9-W8d" eventType="editingDidBegin" id="b9e-Bl-B6S"/>
-                                                        <action selector="countryCodeFieldTapped:" destination="9Xi-l9-W8d" eventType="touchUpInside" id="ihw-DQ-xj5"/>
-                                                        <action selector="editingChanged:" destination="9Xi-l9-W8d" eventType="editingChanged" id="Aaq-Ma-GBE"/>
-                                                        <action selector="editingChanged:" destination="9Xi-l9-W8d" eventType="editingDidEnd" id="RMj-dJ-hFo"/>
-                                                    </connections>
-                                                </textField>
-                                            </subviews>
-                                            <color key="backgroundColor" systemColor="systemGray6Color"/>
-                                            <constraints>
-                                                <constraint firstItem="h6V-8D-q5K" firstAttribute="top" secondItem="Lfb-S5-v5q" secondAttribute="top" id="DAF-aU-UGM"/>
-                                                <constraint firstItem="h6V-8D-q5K" firstAttribute="leading" secondItem="Lfb-S5-v5q" secondAttribute="leading" constant="20" symbolic="YES" id="Kfc-J7-Fan"/>
-                                                <constraint firstAttribute="bottom" secondItem="h6V-8D-q5K" secondAttribute="bottom" id="eeG-uQ-sdL"/>
-                                                <constraint firstAttribute="trailing" secondItem="h6V-8D-q5K" secondAttribute="trailing" constant="20" symbolic="YES" id="vhD-XP-7Gf"/>
-                                            </constraints>
-                                        </tableViewCellContentView>
-                                    </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="7rn-Da-pUZ">
-                                        <rect key="frame" x="20" y="409.66666793823242" width="353" height="50"/>
+                                        <rect key="frame" x="20" y="359.66666793823242" width="353" height="50"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="7rn-Da-pUZ" id="A1v-mu-PzU">
                                             <rect key="frame" x="0.0" y="0.0" width="353" height="50"/>
@@ -229,7 +200,7 @@
                             <tableViewSection id="UIU-LC-gP6">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" rowHeight="45" id="pH8-Yf-OFz">
-                                        <rect key="frame" x="20" y="494.66666793823242" width="353" height="45"/>
+                                        <rect key="frame" x="20" y="444.66666793823242" width="353" height="45"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="pH8-Yf-OFz" id="iuA-eJ-xQ9">
                                             <rect key="frame" x="0.0" y="0.0" width="353" height="45"/>
@@ -269,14 +240,12 @@
                     <navigationItem key="navigationItem" title="Sign Up" id="Di2-bL-4g0"/>
                     <connections>
                         <outlet property="confirmPasswordField" destination="Kek-BE-ZD0" id="ztb-tI-ke5"/>
-                        <outlet property="countryCodeField" destination="h6V-8D-q5K" id="tbM-LM-uGm"/>
                         <outlet property="createButton" destination="PUM-qW-61f" id="zmH-2y-6GW"/>
                         <outlet property="emailField" destination="zFs-5c-kbt" id="Xfu-xh-Vjb"/>
                         <outlet property="firstNameField" destination="Ds9-IE-Erh" id="Hef-v9-Ogo"/>
                         <outlet property="lastNameField" destination="Wtv-Fl-XGg" id="aYl-ec-UFt"/>
                         <outlet property="mobileNumberField" destination="UNi-7g-NYP" id="6f9-5M-msE"/>
                         <outlet property="passwordField" destination="Klb-XY-Bus" id="dl3-35-yDd"/>
-                        <segue destination="51c-gM-3lN" kind="presentation" identifier="segueShowPickerViewController" id="zf3-jg-5xd"/>
                         <segue destination="EGE-Km-H2T" kind="show" identifier="segueShowOTPScreenViewController" id="f52-Kv-NKH"/>
                     </connections>
                 </tableViewController>
@@ -1013,9 +982,6 @@
             <point key="canvasLocation" x="5974.8091603053435" y="734.50704225352115"/>
         </scene>
     </scenes>
-    <inferredMetricsTieBreakers>
-        <segue reference="hqu-E6-uUo"/>
-    </inferredMetricsTieBreakers>
     <resources>
         <image name="chevron.up.chevron.down" catalog="system" width="109" height="128"/>
         <systemColor name="systemBackgroundColor">

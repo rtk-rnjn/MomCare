@@ -8,58 +8,6 @@
 import Foundation
 import OSLog
 
-struct CreateResponse: Codable {
-    enum CodingKeys: String, CodingKey {
-        case success
-        case insertedId = "inserted_id"
-        case accessToken = "access_token"
-    }
-
-    let success: Bool
-    let insertedId: String
-    let accessToken: String
-}
-
-struct UpdateResponse: Codable {
-    enum CodingKeys: String, CodingKey {
-        case success
-        case modifiedCount = "modified_count"
-        case matchedCount = "matched_count"
-    }
-
-    let success: Bool
-    let modifiedCount: Int
-    let matchedCount: Int
-}
-
-struct Credentials: Codable {
-    enum CodingKeys: String, CodingKey {
-        case emailAddress = "email_address"
-        case password
-    }
-
-    let emailAddress: String
-    let password: String
-}
-
-struct EmailAddress: Codable {
-    enum CodingKeys: String, CodingKey {
-        case emailAddress = "email_address"
-    }
-
-    let emailAddress: String
-}
-
-struct VerifyOTP: Codable {
-    enum CodingKeys: String, CodingKey {
-        case emailAddress = "email_address"
-        case otp
-    }
-
-    let emailAddress: String
-    let otp: String
-}
-
 private let accessTokenValidDuration: TimeInterval = 5 * 60 - 10 // 5 minutes
 private let logger: Logger = .init(subsystem: "com.MomCare.MomCareUser", category: "Network")
 

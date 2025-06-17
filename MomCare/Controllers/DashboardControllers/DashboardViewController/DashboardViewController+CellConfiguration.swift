@@ -1,5 +1,5 @@
 //
-//  CellConfiguration.swift
+//  DashboardViewController+CellConfiguration.swift
 //  MomCare
 //
 //  Created by Ritik Ranjan on 24/01/25.

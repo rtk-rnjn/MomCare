@@ -1,5 +1,5 @@
 //
-//  LayoutConfiguration.swift
+//  DashboardViewController+LayoutConfiguration.swift
 //  MomCare
 //
 //  Created by Ritik Ranjan on 24/01/25.

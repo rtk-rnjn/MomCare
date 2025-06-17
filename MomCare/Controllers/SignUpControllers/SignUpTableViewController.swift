@@ -20,7 +20,6 @@ class SignUpTableViewController: UITableViewController, UITextFieldDelegate {
     @IBOutlet var passwordField: UITextField!
     @IBOutlet var confirmPasswordField: UITextField!
 
-    @IBOutlet var countryCodeField: UITextField!
     @IBOutlet var mobileNumberField: UITextField!
 
     override func viewDidLoad() {
@@ -32,16 +31,6 @@ class SignUpTableViewController: UITableViewController, UITextFieldDelegate {
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "segueShowPickerViewController", let destination = segue.destination as? PickerViewController, let presentationController = destination.presentationController as? UISheetPresentationController {
-            presentationController.detents = [.medium()]
-
-            if let sender = sender as? [String: String] {
-                destination.options = sender
-                destination.completionHandler = { key, _ in
-                    self.countryCodeField.text = key
-                }
-            }
-        }
 
         if segue.identifier == "segueShowOTPScreenViewController" {
             if let destination = segue.destination as? OTPScreenViewController {
@@ -59,7 +48,6 @@ class SignUpTableViewController: UITableViewController, UITextFieldDelegate {
             (emailField, "Email Required", "Please enter your email."),
             (passwordField, "Password Required", "Please enter your password."),
             (confirmPasswordField, "Confirm Password Required", "Please confirm your password."),
-            (countryCodeField, "Country Code Required", "Please enter your country code."),
             (mobileNumberField, "Mobile Number Required", "Please enter your mobile number.")
         ]
         // swiftlint:enable large_tuple
@@ -84,7 +72,7 @@ class SignUpTableViewController: UITableViewController, UITextFieldDelegate {
             lastName: lastNameField.text,
             emailAddress: emailField.text!,
             password: passwordField.text!,
-            countryCode: countryCodeField.text ?? "91",
+            countryCode: "91",
             phoneNumber: mobileNumberField.text!
         )
 
@@ -109,7 +97,7 @@ class SignUpTableViewController: UITableViewController, UITextFieldDelegate {
     @IBAction func editingChanged(_ sender: UITextField) {}
 
     @IBAction func countryCodeFieldTapped(_ sender: UITextField) {
-        view.endEditing(true)
+        sender.endEditing(true)
         if sender.isFirstResponder {
             sender.resignFirstResponder()
         }
