@@ -38,7 +38,6 @@ extension UIImage {
         )
     }
 
-    @MainActor
     func fetchImage(from imageUri: String?, default defaultImage: UIImage? = nil) async -> UIImage? {
         guard let imageUri, let url = URL(string: imageUri) else {
             return defaultImage

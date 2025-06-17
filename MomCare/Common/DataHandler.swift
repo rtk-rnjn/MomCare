@@ -36,6 +36,7 @@ class Entity<T> {
 
 }
 
+@MainActor
 class CacheHandler {
 
     // MARK: Public
@@ -44,7 +45,7 @@ class CacheHandler {
 
     // MARK: Internal
 
-    @MainActor static let shared: CacheHandler = .init()
+    static let shared: CacheHandler = .init()
 
     func set<T>(_ value: T, forKey key: String, expiration: Date? = nil) {
         let entity = Entity<T>(value: value, expiration: expiration)
