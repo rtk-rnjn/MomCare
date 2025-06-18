@@ -8,7 +8,7 @@
 import UIKit
 import HealthKit
 
-class FrontViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource {
+class FrontViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UIScrollViewDelegate {
 
     @IBOutlet var collectionView: UICollectionView!
     @IBOutlet var pageControl: UIPageControl!
@@ -62,5 +62,13 @@ class FrontViewController: UIViewController, UICollectionViewDelegate, UICollect
         cell.heading.text = FrontPageData.getHeading(at: indexPath)
 
         return cell
+    }
+
+    func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        if pageControl.currentPage == indexPath.row {
+            guard let visible = collectionView.visibleCells.first else { return }
+            guard let index = collectionView.indexPath(for: visible)?.row else { return }
+            pageControl.currentPage = index
+        }
     }
 }

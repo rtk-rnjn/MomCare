@@ -181,9 +181,7 @@ class DietViewController: UIViewController {
         Task {
             await HealthKitHandler.shared.readCaloriesIntake { currentCaloriesIntake in
                 DispatchQueue.main.async {
-                    guard let dueDate = MomCareUser.shared.user?.medicalData?.dueDate,
-                          let pregnancyData = Utils.pregnancyWeekAndDay(dueDate: dueDate) else { return }
-                    let goal = Utils.getCaloriesGoal(trimester: pregnancyData.trimester)
+                    let goal = MomCareUser.shared.user?.plan.totalCalories ?? 1
                     self.animateKalcProgress(to: CGFloat(Float(currentCaloriesIntake) / Float(goal)))
                     self.caloricValueLabel.text = "\(Int(currentCaloriesIntake))/\(Int(goal))"
                 }

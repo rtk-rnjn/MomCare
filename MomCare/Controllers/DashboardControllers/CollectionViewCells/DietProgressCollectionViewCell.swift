@@ -37,10 +37,7 @@ class DietProgressCollectionViewCell: UICollectionViewCell {
     func updateElements(withTapHandler tapHandler: (() -> Void)? = nil) {
         self.tapHandler = tapHandler
 
-        guard let dueDate = MomCareUser.shared.user?.medicalData?.dueDate else { return }
-
-        let pregnancyData = Utils.pregnancyWeekAndDay(dueDate: dueDate)
-        let caloriesGoal = Utils.getCaloriesGoal(trimester: pregnancyData?.trimester ?? "")
+        let caloriesGoal = MomCareUser.shared.user?.plan.totalCalories ?? 1
         caloriesGoalLabel.text = "/ \(Int(caloriesGoal)) kcal"
 
         Task {
@@ -48,7 +45,9 @@ class DietProgressCollectionViewCell: UICollectionViewCell {
                 DispatchQueue.main.async {
                     self.currentKcalLabel.text = "\(Int(caloriesIntake))"
                     self.currentCaloriesIntake = Int(caloriesIntake)
-                    let progress = Float(self.currentCaloriesIntake) / Float(caloriesGoal)
+                    var progress = Float(self.currentCaloriesIntake) / Float(caloriesGoal)
+                    progress = max(0, min(progress, 1))
+
                     self.progressBar.progress = progress
 
                     var displayProgress = Int(progress * 100)
