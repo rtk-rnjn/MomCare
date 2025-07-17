@@ -10,7 +10,7 @@ import UIKit
 class ProfilePageTableViewController: UITableViewController {
     @IBOutlet var profileImageView: UIImageView?
     @IBOutlet var usernameLabel: UILabel!
-    @IBOutlet weak var appLogoImageView: UIImageView!
+    @IBOutlet var appLogoImageView: UIImageView!
     var logoutHandler: (() -> Void)?
 
     override func viewDidLoad() {
