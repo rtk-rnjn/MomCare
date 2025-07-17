@@ -10,12 +10,14 @@ import UIKit
 class ProfilePageTableViewController: UITableViewController {
     @IBOutlet var profileImageView: UIImageView?
     @IBOutlet var usernameLabel: UILabel!
-
+    @IBOutlet var appLogoImageView: UIImageView!
     var logoutHandler: (() -> Void)?
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        updateElements()
+//        updateElements()
+        appLogoImageView.layer.cornerRadius = appLogoImageView.frame.size.width / 2
+        appLogoImageView.clipsToBounds = true
 
     }
 
