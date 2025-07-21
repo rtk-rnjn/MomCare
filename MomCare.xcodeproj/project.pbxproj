@@ -139,7 +139,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1610;
-				LastUpgradeCheck = 1610;
+				LastUpgradeCheck = 1640;
 				TargetAttributes = {
 					059C467C2D30D12400B4A15A = {
 						CreatedOnToolsVersion = 16.1;
@@ -201,7 +201,6 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 6C5J9S87D2;
 				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = MomCare/Info.plist;
@@ -222,7 +221,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 0.11;
-				PRODUCT_BUNDLE_IDENTIFIER = com.Team05.MomCare.new;
+				PRODUCT_BUNDLE_IDENTIFIER = com.Team05.MomCare;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -256,7 +255,6 @@
 				CODE_SIGN_ENTITLEMENTS = MomCare/MomCare.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 6C5J9S87D2;
 				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = MomCare/Info.plist;
@@ -277,7 +275,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 0.11;
-				PRODUCT_BUNDLE_IDENTIFIER = com.Team05.MomCare.new;
+				PRODUCT_BUNDLE_IDENTIFIER = com.Team05.MomCare;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
@@ -337,6 +335,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = 73B8W4ZN6V;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
@@ -416,6 +415,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = 73B8W4ZN6V;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;

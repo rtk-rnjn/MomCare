@@ -8,22 +8,7 @@
 import UIKit
 
 class ProfilePageTableViewController: UITableViewController {
-    @IBOutlet var profileImageView: UIImageView?
-    @IBOutlet var usernameLabel: UILabel!
-    @IBOutlet var appLogoImageView: UIImageView!
     var logoutHandler: (() -> Void)?
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-//        updateElements()
-        appLogoImageView.layer.cornerRadius = appLogoImageView.frame.size.width / 2
-        appLogoImageView.clipsToBounds = true
-
-    }
-
-    func updateElements() {
-        usernameLabel.text = MomCareUser.shared.user?.fullName
-    }
 
     @IBAction func logoutTapped() {
         let actions = [
