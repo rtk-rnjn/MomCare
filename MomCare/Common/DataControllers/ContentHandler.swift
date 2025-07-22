@@ -238,7 +238,10 @@ extension ContentHandler {
         guard let exercises else {
             return nil
         }
-
+//        let exercises = [
+//            Exercise(name: "breath", type: .breathing, duration: 10, description: "breath", tags: ["h"], level: .beginner, week: "3", assignedAt: Date())
+//        ]fetch
+        
         return exercises
     }
 }

@@ -14,14 +14,22 @@ class BreathingPlayerViewController: UIViewController {
     @IBOutlet var overallTimerLabel: UILabel!
 
     var duration: Int = 10
+    let petalColors: [UIColor] = [
+        UIColor(hex: "#C27086", alpha: 0.5),
+        UIColor(hex: "#C98195", alpha: 0.5),
+        UIColor(hex: "#D092A3", alpha: 0.5),
+        UIColor(hex: "#D9A6B4", alpha: 0.5),
+        UIColor(hex: "#DDB7C2", alpha: 0.5),
+    ]
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
         overallTimerLabel.text = formatTimerLabel(duration)
         instructionLabel.text = "Ready"
+        view.backgroundColor = UIColor(hex: "#B04E6F")
 
-        createInitialFlower()
+        createInitialFlower(colors: petalColors)
     }
 
     @IBAction func startPauseButtonTapped(_ sender: UIButton) {
@@ -159,16 +167,17 @@ extension BreathingPlayerViewController {
         return shapeLayer
     }
 
-    func createInitialFlower() {
-        let numberOfCircles = 6
+    func createInitialFlower(colors: [UIColor]) {
+        let numberOfCircles = colors.count
         let radius: CGFloat = view.bounds.width / 6
 
-        for _ in 0..<numberOfCircles {
-            let layer = drawCenteredFilledCircle(in: animationView, radius: radius, fillColor: UIColor.systemRed.withAlphaComponent(0.5))
-
+        for i in 0..<numberOfCircles {
+            let fillColor = colors[i]
+            let layer = drawCenteredFilledCircle(in: animationView, radius: radius, fillColor: fillColor)
             circles.append(layer)
         }
     }
+
 
     func animateOpenFlowerPetal(shapeLayer: CAShapeLayer, angle: CGFloat) {
         let animation = CABasicAnimation(keyPath: "position")
