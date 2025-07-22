@@ -71,7 +71,7 @@ extension MomCareUser {
     }
 
     @objc func refreshToken() async -> Bool {
-        logger.info("Refreshing access token")
+        logger.debug("Refreshing access token")
 
         guard let email = KeychainHelper.get("emailAddress"),
               let password = KeychainHelper.get("password") else {
@@ -88,7 +88,7 @@ extension MomCareUser {
         }
 
         KeychainHelper.set(response.accessToken, forKey: "accessToken")
-        logger.info("Access token refreshed successfully for email: \(email, privacy: .private). Token: \(response.accessToken, privacy: .private(mask: .hash))")
+        logger.info("Access token refreshed successfully for email: \(email, privacy: .private).")
         accessTokenExpiresAt = Date().addingTimeInterval(accessTokenValidDuration)
         return true
     }

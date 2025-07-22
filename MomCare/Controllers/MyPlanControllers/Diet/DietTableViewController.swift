@@ -176,7 +176,8 @@ class DietTableViewController: UITableViewController {
         }
         cell.dietViewController = dietViewController
         cell.refreshHandler = {
-            self.refreshHandler(with: [indexPath])
+            let indexPaths = [indexPath, IndexPath(row: 0, section: indexPath.section)]
+            self.refreshHandler(with: indexPaths)
         }
         return cell
     }

@@ -54,13 +54,19 @@ class EventCardCollectionViewCell: UICollectionViewCell {
     }
 
     @IBAction func addEventButtonTapped(_ sender: UIButton) {
-        let status = EKEventStore.authorizationStatus(for: .event)
-
-        switch status {
-        case .authorized:
-            segueHandler?()
-        default:
-            break
+        Task {
+            let status = EKEventStore.authorizationStatus(for: .event)
+            
+            switch status {
+            case .authorized:
+                DispatchQueue.main.async {
+                    self.segueHandler?()
+                }
+            case .denied, .notDetermined, .restricted:
+                await EventKitHandler.shared.requestAccessForEvent()
+            default:
+                break
+            }
         }
     }
 

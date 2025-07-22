@@ -27,6 +27,8 @@ enum Endpoint: String {
     // Content
     case plan = "/content/plan"
     case search = "/content/search"
+    case searchFoodName = "/content/search/food-name"
+    case searchFoodImage = "/content/search/food-name/%@/image"
     case tips = "/content/tips"
     case exercises = "/content/exercises"
 
