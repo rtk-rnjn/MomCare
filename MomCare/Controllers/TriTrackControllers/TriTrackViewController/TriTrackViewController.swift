@@ -120,8 +120,10 @@ class TriTrackViewController: UIViewController, FSCalendarDelegate, FSCalendarDa
 
         fsCalendarView.dataSource = self
         fsCalendarView.delegate = self
-        // TODO: @aryansingh
-
+        fsCalendarView.appearance.selectionColor = UIColor(hex: "#924350")
+        fsCalendarView.appearance.weekdayTextColor = .darkGray
+        fsCalendarView.appearance.headerTitleColor = .darkGray
+        fsCalendarView.appearance.titleDefaultColor = .darkGray
         calendarUIView.addSubview(fsCalendarView)
     }
 }

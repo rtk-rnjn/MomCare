@@ -57,7 +57,7 @@ class AddEventTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         endDateTimePicker.minimumDate = Date()
-
+        navigationController?.navigationBar.tintColor = UIColor(hex: "924350")
         preparePopupButtons()
     }
 
