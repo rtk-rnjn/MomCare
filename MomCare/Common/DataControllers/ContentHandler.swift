@@ -234,13 +234,13 @@ extension ContentHandler {
 
 extension ContentHandler {
     func fetchExercises() async -> [Exercise]? {
-        let exercises: [Exercise]? = await NetworkManager.shared.get(url: Endpoint.exercises.urlString)
-        guard let exercises else {
-            return nil
-        }
-//        let exercises = [
-//            Exercise(name: "breath", type: .breathing, duration: 10, description: "breath", tags: ["h"], level: .beginner, week: "3", assignedAt: Date())
-//        ]fetch
+//        let exercises: [Exercise]? = await NetworkManager.shared.get(url: Endpoint.exercises.urlString)
+//        guard let exercises else {
+//            return nil
+//        }
+        let exercises = [
+            Exercise(name: "breath", type: .breathing, duration: 10, description: "breath", tags: ["h"], level: .beginner, week: "3", assignedAt: Date())
+        ]
         
         return exercises
     }
