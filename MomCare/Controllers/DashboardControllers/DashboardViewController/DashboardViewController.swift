@@ -201,7 +201,7 @@ class DashboardViewController: UIViewController, UICollectionViewDataSource, UIC
     @objc private func cancelAddEvent() {
         dismiss(animated: true)
     }
-    
+
     @objc private func doneAddEvent() {
         guard let eventTVC = addEventTableViewController,
               let title = eventTVC.titleField.text else { return }
