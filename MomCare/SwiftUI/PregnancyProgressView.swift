@@ -104,14 +104,10 @@ struct PregnancyProgressView: View {
                                 .rotationEffect(.degrees(-90))
                                 .animation(.spring(response: 1.0, dampingFraction: 0.8, blendDuration: 0), value: dayProgress.completionPercentage)
                             
-                            // Show percentage or checkmark for completed
+                            // Only show checkmark for 100% completed - NO percentages
                             if dayProgress.completionPercentage >= 1.0 {
                                 Image(systemName: "checkmark")
                                     .font(.system(size: 10, weight: .bold))
-                                    .foregroundColor(Color(hex: "924350"))
-                            } else if dayProgress.completionPercentage > 0 {
-                                Text("\(Int(min(dayProgress.completionPercentage * 100, 100)))%")
-                                    .font(.system(size: 7, weight: .medium))
                                     .foregroundColor(Color(hex: "924350"))
                             }
                         }
@@ -160,7 +156,6 @@ struct PregnancyProgressView: View {
         .background(
             RoundedRectangle(cornerRadius: 20)
                 .fill(Color.white)
-                .shadow(color: Color.black.opacity(0.1), radius: 8, x: 0, y: 4)
         )
     }
     
@@ -231,7 +226,6 @@ struct PregnancyProgressView: View {
         .background(
             RoundedRectangle(cornerRadius: 20)
                 .fill(Color.white)
-                .shadow(color: Color.black.opacity(0.1), radius: 8, x: 0, y: 4)
         )
     }
     
@@ -289,18 +283,17 @@ struct PregnancyProgressView: View {
                         }
                         .foregroundColor(.white)
                         .padding(.horizontal, 24)
-                        .padding(.vertical, 10) // Reduced from 12 to 10
+                        .padding(.vertical, 10)
                         .background(
                             RoundedRectangle(cornerRadius: 12)
                                 .fill(Color(hex: "924350"))
-                                .shadow(color: Color(hex: "924350").opacity(0.3), radius: 4, x: 0, y: 2)
                         )
                     }
                 }
                 
                 Spacer()
                 
-                // Exercise Image/Icon - REVERTED TO ORIGINAL
+                // Exercise Image/Icon - REMOVED SHADOW
                 ZStack {
                     RoundedRectangle(cornerRadius: 16)
                         .fill(
@@ -311,15 +304,14 @@ struct PregnancyProgressView: View {
                             )
                         )
                         .frame(width: 90, height: 90)
-                        .shadow(color: Color.black.opacity(0.1), radius: 4, x: 0, y: 2)
-                    
-                    Image(systemName: exercise.systemIcon)
-                        .font(.system(size: 36, weight: .medium))
-                        .foregroundColor(Color(hex: "924350"))
+                
+                Image(systemName: exercise.systemIcon)
+                    .font(.system(size: 36, weight: .medium))
+                    .foregroundColor(Color(hex: "924350"))
                 }
             }
             
-            // Enhanced info button - REVERTED TO ORIGINAL
+            // Enhanced info button - REMOVED SHADOW
             VStack {
                 HStack {
                     Spacer()
@@ -336,18 +328,16 @@ struct PregnancyProgressView: View {
                                 Circle()
                                     .fill(Color.white)
                                     .frame(width: 30, height: 30)
-                                    .shadow(color: Color.black.opacity(0.1), radius: 2, x: 0, y: 1)
                             )
                     }
                 }
                 Spacer()
             }
         }
-        .padding(20) // REVERTED TO ORIGINAL
+        .padding(20)
         .background(
-            RoundedRectangle(cornerRadius: 20) // REVERTED TO ORIGINAL
+            RoundedRectangle(cornerRadius: 20)
                 .fill(Color.white)
-                .shadow(color: Color.black.opacity(0.1), radius: 8, x: 0, y: 4) // REVERTED TO ORIGINAL
         )
     }
     
