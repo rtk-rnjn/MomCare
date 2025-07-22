@@ -1,990 +1,621 @@
 import SwiftUI
+import HealthKit
 
 struct PregnancyProgressView: View {
-
-    // MARK: Lifecycle
-
-    init?() {
-        guard let pregnancyData = MomCareUser.shared.user?.pregancyData else {
-            fatalError("Pregnancy data is not available")
-        }
-        trimester = pregnancyData.trimester
-        weekDay = "Week \(pregnancyData.week) - Day \(pregnancyData.day)"
-
-        let trimesterData = TriTrackData.getTrimesterData(for: pregnancyData.week)
-
-        babyWeight = "\(trimesterData?.babyWeightInGrams ?? 0) g"
-        babyHeight = "\(trimesterData?.babyHeightInCentimeters ?? 0) cm"
-        quote = trimesterData?.quote ?? "Keep growing strong!"
-
-        babyInfo = trimesterData?.babyTipText ?? "Your baby is developing rapidly this week. Keep up with your prenatal care!"
-        momInfo = trimesterData?.momTipText ?? "Remember to stay hydrated and get plenty of rest. Your body is doing amazing things!"
-
-        self.trimesterData = trimesterData
-    }
-
-    // MARK: Internal
-
-    @State var fruitImage: UIImage?
-    @State var babyImage: UIImage?
-
-    var trimester: String
-    var weekDay: String
-    var babyHeight: String
-    var babyWeight: String
-    var babyInfo: String
-    var momInfo: String
-    var quote: String
-
-    var trimesterData: TrimesterData?
-
+    @StateObject private var viewModel = ExerciseGoalsViewModel()
+    @State private var showingExerciseInfo: ExerciseGoalInfo?
+    @State private var isShowingInfo = false
+    
     var body: some View {
         ZStack {
-            GeometryReader { _ in
-                ScrollView {
-                    VStack(spacing: 16) {
-                        VStack(spacing: 2) {
-                            Text(trimester)
-                                .font(.title3)
-                                .fontWeight(.semibold)
-
-                            Text(weekDay)
-                                .font(.title)
-                                .fontWeight(.bold)
-                                .foregroundColor(Color(hex: "924350"))
+            ScrollView {
+                VStack(spacing: 20) {
+                    // Week Header with enhanced styling
+                    weekHeaderView
+                    
+                    // Weekly Progress Rings
+                    weeklyProgressRingsView
+                    
+                    // Walking Card
+                    walkingCardView
+                    
+                    // Exercise Cards
+                    exerciseCardsView
+                }
+                .padding(.horizontal, 16)
+                .padding(.bottom, 30)
+            }
+            .background(
+                LinearGradient(
+                    colors: [Color(hex: "F5E6E8"), Color(hex: "F9F0F1")],
+                    startPoint: .top,
+                    endPoint: .bottom
+                )
+            )
+            .onAppear {
+                viewModel.loadData()
+            }
+            .blur(radius: isShowingInfo ? 3 : 0)
+            .animation(.easeInOut(duration: 0.3), value: isShowingInfo)
+            
+            // Exercise Info Card Overlay
+            if isShowingInfo, let exercise = showingExerciseInfo {
+                exerciseInfoCard(for: exercise)
+                    .transition(.asymmetric(
+                        insertion: .scale.combined(with: .opacity),
+                        removal: .scale.combined(with: .opacity)
+                    ))
+                    .animation(.spring(response: 0.6, dampingFraction: 0.8), value: isShowingInfo)
+            }
+        }
+    }
+    
+    private var weekHeaderView: some View {
+        VStack(spacing: 6) {
+            Text("Week 19")
+                .font(.system(size: 28, weight: .bold, design: .rounded))
+                .foregroundColor(Color(hex: "924350"))
+            
+            Text("Second Trimester")
+                .font(.system(size: 16, weight: .medium))
+                .foregroundColor(.secondary)
+                .opacity(0.8)
+        }
+        .padding(.top, 15)
+        .padding(.bottom, 5)
+    }
+    
+    private var weeklyProgressRingsView: some View {
+        VStack(spacing: 16) {
+            // Header for weekly progress
+            HStack {
+                Text("Weekly Progress")
+                    .font(.system(size: 18, weight: .semibold))
+                    .foregroundColor(.primary)
+                
+                Spacer()
+                
+                Text("3/7 days")
+                    .font(.system(size: 14, weight: .medium))
+                    .foregroundColor(.secondary)
+            }
+            
+            // Day letters row with enhanced styling
+            HStack(spacing: 8) {
+                ForEach(viewModel.weeklyProgress, id: \.day) { dayProgress in
+                    VStack(spacing: 8) {
+                        Text(dayProgress.dayName)
+                            .font(.system(size: 12, weight: .semibold))
+                            .foregroundColor(Color(hex: "924350"))
+                        
+                        // Progress Ring
+                        ZStack {
+                            Circle()
+                                .stroke(Color.gray.opacity(0.2), lineWidth: 4)
+                                .frame(width: 32, height: 32)
+                            
+                            Circle()
+                                .trim(from: 0, to: min(dayProgress.completionPercentage, 1.0))
+                                .stroke(
+                                    Color(hex: "924350"),
+                                    style: StrokeStyle(lineWidth: 4, lineCap: .round)
+                                )
+                                .frame(width: 32, height: 32)
+                                .rotationEffect(.degrees(-90))
+                                .animation(.spring(response: 1.0, dampingFraction: 0.8, blendDuration: 0), value: dayProgress.completionPercentage)
+                            
+                            // Show percentage or checkmark for completed
+                            if dayProgress.completionPercentage >= 1.0 {
+                                Image(systemName: "checkmark")
+                                    .font(.system(size: 10, weight: .bold))
+                                    .foregroundColor(Color(hex: "924350"))
+                            } else if dayProgress.completionPercentage > 0 {
+                                Text("\(Int(min(dayProgress.completionPercentage * 100, 100)))%")
+                                    .font(.system(size: 7, weight: .medium))
+                                    .foregroundColor(Color(hex: "924350"))
+                            }
                         }
-
-                        VStack(spacing: 16) {
-                            sizeComparisonView
-                            growthStatsView
-                            infoCardsView
-                        }
-                        .padding(.horizontal)
+                    }
+                    .frame(maxWidth: .infinity)
+                }
+            }
+            
+            // Total Goal Section
+            VStack(spacing: 12) {
+                HStack {
+                    HStack(spacing: 6) {
+                        Image(systemName: "target")
+                            .font(.system(size: 16, weight: .medium))
+                            .foregroundColor(Color(hex: "924350"))
+                        
+                        Text("Total Goal: 10/30")
+                            .font(.system(size: 16, weight: .semibold))
+                            .foregroundColor(.primary)
+                    }
+                    
+                    Spacer()
+                    
+                    Text("33%")
+                        .font(.system(size: 16, weight: .bold))
+                        .foregroundColor(Color(hex: "924350"))
+                }
+                
+                // Progress Bar
+                GeometryReader { geometry in
+                    ZStack(alignment: .leading) {
+                        RoundedRectangle(cornerRadius: 4)
+                            .fill(Color.gray.opacity(0.2))
+                            .frame(height: 6)
+                        
+                        RoundedRectangle(cornerRadius: 4)
+                            .fill(Color(hex: "924350"))
+                            .frame(width: geometry.size.width * 0.33, height: 6)
+                            .animation(.easeInOut(duration: 1.0), value: 0.33)
                     }
                 }
-                .scrollIndicators(.hidden)
-                .scrollDisabled(!isScrollEnabled)
-                .onReceive(NotificationCenter.default.publisher(for: NSNotification.Name("DisableScrolling"))) { _ in
-                    isScrollEnabled = false
-                }
-                .onReceive(NotificationCenter.default.publisher(for: NSNotification.Name("EnableScrolling"))) { _ in
-                    isScrollEnabled = true
-                }
+                .frame(height: 6)
             }
-            .task {
-                fruitImage = await trimesterData?.image
-                babyImage = trimesterData?.babyImage
-            }
-
-            // REMOVE the popup cards from this ZStack - they will be handled by the OverlayWindowManager
         }
-        .edgesIgnoringSafeArea(.all)
-    }
-
-    // MARK: Private
-
-    // MARK: - Body
-
-    @State private var isScrollEnabled = true
-
-    @State private var showingBabyInfo = false
-    @State private var showingMomInfo = false
-    @State private var selectedCardPosition: CGRect = .zero
-
-    // MARK: - Component Views
-
-    private var sizeComparisonView: some View {
-        VStack(spacing: 0) { // Reduce spacing to avoid empty gaps
-            // Comparison view with images
-            ComparisonView(fruitImage: fruitImage, babyImage: babyImage)
-                .frame(height: 120)
-
-            // Quote text - moved closer to the comparison view
-            Text(quote)
-                .font(.headline)
-                .multilineTextAlignment(.center)
-                .padding(.horizontal, 16)
-                .padding(.vertical, 12) // More vertical padding to fill space evenly
-        }
-        .padding(.vertical, 12) // Consistent vertical padding
-        .padding(.horizontal, 12)
+        .padding(20)
         .background(
-            ZStack {
-                // Base card background
-                RoundedRectangle(cornerRadius: 16)
-                    .fill(Color(.systemBackground))
-
-                // Stitching effect overlay
-                StitchingBorder(cornerRadius: 16, color: Color(hex: "924350"))
-            }
+            RoundedRectangle(cornerRadius: 20)
+                .fill(Color.white)
+                .shadow(color: Color.black.opacity(0.1), radius: 8, x: 0, y: 4)
         )
     }
-
-    private var growthStatsView: some View {
-        GeometryReader { geo in
-            HStack(spacing: 12) {
-                // Height card with stitching effect only
-                VStack(spacing: 8) {
-                    HStack {
-                        Image(systemName: "ruler")
-                            .font(.system(size: 22))
-
-                        Text("Height")
-                            .font(.headline)
-                    }
-
-                    Text(babyHeight)
-                        .font(.title2)
-                        .fontWeight(.bold)
+    
+    private var walkingCardView: some View {
+        VStack(spacing: 16) {
+            HStack {
+                HStack(spacing: 8) {
+                    Image(systemName: "figure.walk")
+                        .font(.system(size: 20, weight: .medium))
+                        .foregroundColor(Color(hex: "924350"))
+                    
+                    Text("Walking")
+                        .font(.system(size: 20, weight: .bold))
+                        .foregroundColor(.primary)
+                }
+                
+                Spacer()
+                
+                VStack(alignment: .trailing, spacing: 2) {
+                    Text("100% Completed")
+                        .font(.system(size: 14, weight: .semibold))
+                        .foregroundColor(Color(hex: "924350"))
+                    
+                    Image(systemName: "checkmark.circle.fill")
+                        .font(.system(size: 16))
                         .foregroundColor(Color(hex: "924350"))
                 }
-                .padding()
-                .frame(width: (geo.size.width - 12) / 2)
-                .frame(height: 110)
-                .background(
-                    ZStack {
-                        // Base card background - using system background with no shadow
-                        RoundedRectangle(cornerRadius: 16)
-                            .fill(Color(.systemBackground))
-                            // Shadow removed
-
-                        // Only keep the stitching effect overlay
-                        StitchingBorder(cornerRadius: 16, color: Color(hex: "924350"))
-                    }
-                )
-
-                // Weight card with stitching effect only
-                VStack(spacing: 8) {
-                    HStack {
-                        Image(systemName: "scalemass")
-                            .font(.system(size: 22))
-
-                        Text("Weight")
-                            .font(.headline)
-                    }
-
-                    Text(babyWeight)
-                        .font(.title2)
-                        .fontWeight(.bold)
-                        .foregroundColor(Color(hex: "924350"))
-                }
-                .padding()
-                .frame(width: (geo.size.width - 12) / 2)
-                .frame(height: 110)
-                .background(
-                    ZStack {
-                        // Base card background - using system background with no shadow
-                        RoundedRectangle(cornerRadius: 16)
-                            .fill(Color(.systemBackground))
-                            // Shadow removed
-
-                        // Only keep the stitching effect overlay
-                        StitchingBorder(cornerRadius: 16, color: Color(hex: "924350"))
-                    }
-                )
             }
+            
+            HStack {
+                VStack(alignment: .leading, spacing: 4) {
+                    Text("1,974")
+                        .font(.system(size: 24, weight: .bold))
+                        .foregroundColor(.primary)
+                    Text("Steps")
+                        .font(.system(size: 14, weight: .medium))
+                        .foregroundColor(.secondary)
+                }
+                
+                Spacer()
+                
+                VStack(alignment: .trailing, spacing: 4) {
+                    Text("1,200")
+                        .font(.system(size: 18, weight: .semibold))
+                        .foregroundColor(.secondary)
+                    Text("Goal")
+                        .font(.system(size: 14, weight: .medium))
+                        .foregroundColor(.secondary)
+                }
+            }
+            
+            // Walking Progress Bar
+            GeometryReader { geometry in
+                ZStack(alignment: .leading) {
+                    RoundedRectangle(cornerRadius: 4)
+                        .fill(Color.gray.opacity(0.2))
+                        .frame(height: 6)
+                    
+                    RoundedRectangle(cornerRadius: 4)
+                        .fill(Color(hex: "924350"))
+                        .frame(width: geometry.size.width, height: 6)
+                        .animation(.easeInOut(duration: 1.2), value: 1.0)
+                }
+            }
+            .frame(height: 6)
         }
-        .frame(height: 110) // Set the overall height
+        .padding(20)
+        .background(
+            RoundedRectangle(cornerRadius: 20)
+                .fill(Color.white)
+                .shadow(color: Color.black.opacity(0.1), radius: 8, x: 0, y: 4)
+        )
     }
-
-    private var infoCardsView: some View {
-        HStack(spacing: 12) {
-            // Baby info card with content preview
-            CompactInfoCard(
-                title: "Baby This Week",
-                iconName: "👶",
-                previewText: getTruncatedText(from: babyInfo, maxLength: 100),
-                isEmoji: true,
-                backgroundColor: Color(hex: "FBE8E5"),
-                accentColor: Color(hex: "924350")
-            )
-            .background(
-                GeometryReader { geo -> Color in
-                    DispatchQueue.main.async {
-                        selectedCardPosition = geo.frame(in: .global)
-                    }
-                    return Color.clear
-                }
-            )
-            .onTapGesture {
-                // Create popup card directly
-                let popupContent = PopupInfoCard(
-                    title: "Baby This Week",
-                    content: babyInfo,
-                    isShowing: $showingBabyInfo,
-                    cardPosition: selectedCardPosition,
-                    accentColor: Color(hex: "924350")
-                )
-
-                // First show overlay window
-                OverlayWindowManager.shared.showOverlay()
-
-                // Set content in the overlay window - this will display the popup
-                OverlayWindowManager.shared.setContent(popupContent)
-
-                // Update state
-                showingBabyInfo = true
+    
+    private var exerciseCardsView: some View {
+        VStack(spacing: 16) {
+            // Section header
+            HStack {
+                Text("Today's Exercises")
+                    .font(.system(size: 18, weight: .semibold))
+                    .foregroundColor(.primary)
+                
+                Spacer()
+                
+                Text("0/\(viewModel.exerciseGoals.count)")
+                    .font(.system(size: 14, weight: .medium))
+                    .foregroundColor(.secondary)
             }
-
-            // Mom info card with content preview
-            CompactInfoCard(
-                title: "Mom This Week",
-                iconName: "🤰",
-                previewText: getTruncatedText(from: momInfo, maxLength: 100),
-                isEmoji: true,
-                backgroundColor: Color(hex: "FBE8E5"),
-                accentColor: Color(hex: "924350")
-            )
-            .background(
-                GeometryReader { geo -> Color in
-                    DispatchQueue.main.async {
-                        if showingMomInfo {
-                            selectedCardPosition = geo.frame(in: .global)
+            .padding(.horizontal, 4)
+            
+            ForEach(viewModel.exerciseGoals, id: \.id) { exercise in
+                exerciseCard(for: exercise)
+            }
+        }
+    }
+    
+    private func exerciseCard(for exercise: ExerciseGoalInfo) -> some View {
+        ZStack {
+            // Main card content - REVERTED TO ORIGINAL
+            HStack(spacing: 16) {
+                VStack(alignment: .leading, spacing: 6) {
+                    Text("Beginner")
+                        .font(.system(size: 12, weight: .medium))
+                        .foregroundColor(.secondary)
+                        .padding(.top, 8)
+                    
+                    Text(exercise.title)
+                        .font(.system(size: 22, weight: .bold))
+                        .foregroundColor(.primary)
+                        .padding(.bottom, 4)
+                    
+                    Text("\(Int(exercise.progress * 100)).0% completed")
+                        .font(.system(size: 14, weight: .medium))
+                        .foregroundColor(.secondary)
+                        .padding(.bottom, 16)
+                    
+                    Button(action: {
+                        // Start button action
+                    }) {
+                        HStack(spacing: 8) {
+                            Image(systemName: "play.fill")
+                                .font(.system(size: 12))
+                            
+                            Text("Start")
+                                .font(.system(size: 16, weight: .semibold))
                         }
+                        .foregroundColor(.white)
+                        .padding(.horizontal, 24)
+                        .padding(.vertical, 10) // Reduced from 12 to 10
+                        .background(
+                            RoundedRectangle(cornerRadius: 12)
+                                .fill(Color(hex: "924350"))
+                                .shadow(color: Color(hex: "924350").opacity(0.3), radius: 4, x: 0, y: 2)
+                        )
                     }
-                    return Color.clear
                 }
+                
+                Spacer()
+                
+                // Exercise Image/Icon - REVERTED TO ORIGINAL
+                ZStack {
+                    RoundedRectangle(cornerRadius: 16)
+                        .fill(
+                            LinearGradient(
+                                colors: [Color(hex: "FBE8E5"), Color(hex: "F5E6E8")],
+                                startPoint: .topLeading,
+                                endPoint: .bottomTrailing
+                            )
+                        )
+                        .frame(width: 90, height: 90)
+                        .shadow(color: Color.black.opacity(0.1), radius: 4, x: 0, y: 2)
+                    
+                    Image(systemName: exercise.systemIcon)
+                        .font(.system(size: 36, weight: .medium))
+                        .foregroundColor(Color(hex: "924350"))
+                }
+            }
+            
+            // Enhanced info button - REVERTED TO ORIGINAL
+            VStack {
+                HStack {
+                    Spacer()
+                    Button(action: {
+                        showingExerciseInfo = exercise
+                        withAnimation(.spring(response: 0.6, dampingFraction: 0.8)) {
+                            isShowingInfo = true
+                        }
+                    }) {
+                        Image(systemName: "info.circle.fill")
+                            .foregroundColor(.secondary)
+                            .font(.system(size: 22))
+                            .background(
+                                Circle()
+                                    .fill(Color.white)
+                                    .frame(width: 30, height: 30)
+                                    .shadow(color: Color.black.opacity(0.1), radius: 2, x: 0, y: 1)
+                            )
+                    }
+                }
+                Spacer()
+            }
+        }
+        .padding(20) // REVERTED TO ORIGINAL
+        .background(
+            RoundedRectangle(cornerRadius: 20) // REVERTED TO ORIGINAL
+                .fill(Color.white)
+                .shadow(color: Color.black.opacity(0.1), radius: 8, x: 0, y: 4) // REVERTED TO ORIGINAL
+        )
+    }
+    
+    // MARK: - UPDATED Exercise Info Card (Simplified with LazyVGrid)
+    private func exerciseInfoCard(for exercise: ExerciseGoalInfo) -> some View {
+        ZStack {
+            // Background overlay
+            Color.black.opacity(0.4)
+                .ignoresSafeArea()
+                .onTapGesture {
+                    withAnimation(.spring(response: 0.6, dampingFraction: 0.8)) {
+                        isShowingInfo = false
+                    }
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                        showingExerciseInfo = nil
+                    }
+                }
+            
+            // Dynamic Info Card
+            VStack(spacing: 0) {
+                // Main header with image, title AND close button
+                HStack(spacing: 16) {
+                    // Exercise Image/Icon on LEFT
+                    ZStack {
+                        RoundedRectangle(cornerRadius: 12)
+                            .fill(Color(hex: "F5E6E8"))
+                            .frame(width: 70, height: 70)
+                        
+                        Image(systemName: exercise.systemIcon)
+                            .font(.system(size: 28, weight: .medium))
+                            .foregroundColor(Color(hex: "924350"))
+                    }
+                    
+                    // Content in MIDDLE
+                    VStack(alignment: .leading, spacing: 6) {
+                        Text(exercise.title)
+                            .font(.system(size: 20, weight: .bold))
+                            .foregroundColor(.primary)
+                        
+                        Text(exercise.level)
+                            .font(.system(size: 13, weight: .medium))
+                            .foregroundColor(Color(hex: "924350"))
+                            .padding(.horizontal, 10)
+                            .padding(.vertical, 4)
+                            .background(
+                                RoundedRectangle(cornerRadius: 10)
+                                    .fill(Color(hex: "F5E6E8"))
+                            )
+                    }
+                    
+                    Spacer()
+                    
+                    // Close button on RIGHT
+                    Button(action: {
+                        withAnimation(.spring(response: 0.6, dampingFraction: 0.8)) {
+                            isShowingInfo = false
+                        }
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                            showingExerciseInfo = nil
+                        }
+                    }) {
+                        Image(systemName: "xmark")
+                            .font(.system(size: 16, weight: .semibold))
+                            .foregroundColor(.secondary)
+                            .padding(8)
+                            .background(
+                                Circle()
+                                    .fill(Color.gray.opacity(0.15))
+                            )
+                    }
+                }
+                .padding(18)
+                .padding(.top, 6)
+                
+                // Description Section
+                VStack(alignment: .leading, spacing: 16) {
+                    Text("About This Exercise")
+                        .font(.system(size: 16, weight: .semibold))
+                        .foregroundColor(.primary)
+                    
+                    Text(exercise.description)
+                        .font(.system(size: 14, weight: .regular))
+                        .foregroundColor(.secondary)
+                        .lineLimit(nil)
+                        .multilineTextAlignment(.leading)
+                    
+                    // Compact Details in a row
+                    HStack(spacing: 20) {
+                        detailItem(icon: "clock", value: exercise.duration)
+                        detailItem(icon: "flame", value: exercise.intensity)
+                        detailItem(icon: "target", value: exercise.focus)
+                        Spacer()
+                    }
+                    .padding(.vertical, 4)
+                    
+                    // Benefits Section - Using LazyVGrid instead of FlowLayout
+                    benefitsSection(tags: exercise.tags)
+                }
+                .padding(18)
+                .padding(.top, 0)
+            }
+            .frame(maxWidth: 350)
+            .background(
+                RoundedRectangle(cornerRadius: 18)
+                    .fill(Color.white)
+                    .shadow(color: Color.black.opacity(0.15), radius: 12, x: 0, y: 6)
             )
-            .onTapGesture {
-                // Create and show popup using the overlay window manager directly
-                showingMomInfo = true
-
-                // Create popup card directly in the overlay window
-                let popupContent = PopupInfoCard(
-                    title: "Mom This Week",
-                    content: momInfo, // Pass the full content
-                    isShowing: $showingMomInfo,
-                    cardPosition: selectedCardPosition,
-                    accentColor: Color(hex: "924350")
-                )
-
-                // First show overlay window
-                OverlayWindowManager.shared.showOverlay()
-
-                // Set content in the overlay window
-                DispatchQueue.main.async {
-                    OverlayWindowManager.shared.setContent(popupContent)
+            .padding(.horizontal, 24)
+            .padding(.vertical, 40)
+        }
+    }
+    
+    // MARK: - Benefits Section Helper
+    private func benefitsSection(tags: [String]) -> some View {
+        VStack(alignment: .leading, spacing: 10) {
+            Text("Benefits")
+                .font(.system(size: 15, weight: .semibold))
+                .foregroundColor(.primary)
+            
+            // Using LazyVGrid for reliable layout
+            LazyVGrid(
+                columns: [
+                    GridItem(.flexible(), spacing: 6),
+                    GridItem(.flexible(), spacing: 6)
+                ],
+                spacing: 6
+            ) {
+                ForEach(tags, id: \.self) { tag in
+                    benefitTag(text: tag)
                 }
             }
         }
+    }
+    
+    // MARK: - Benefit Tag Helper
+    private func benefitTag(text: String) -> some View {
+        Text(text)
+            .font(.system(size: 13, weight: .medium)) // Same font size as level
+            .foregroundColor(Color(hex: "924350"))
+            .padding(.horizontal, 10) // Same padding as level
+            .padding(.vertical, 4) // Same padding as level
+            .frame(maxWidth: .infinity)
+            .background(
+                RoundedRectangle(cornerRadius: 10) // Same corner radius as level
+                    .fill(Color(hex: "F5E6E8")) // Same background as level
+            )
+    }
+    
+    // Updated helper for compact detail items with better sizing
+    private func detailItem(icon: String, value: String) -> some View {
+        VStack(spacing: 4) {
+            Image(systemName: icon)
+                .font(.system(size: 14))
+                .foregroundColor(Color(hex: "924350"))
+            
+            Text(value)
+                .font(.system(size: 11, weight: .medium))
+                .foregroundColor(.secondary)
+                .multilineTextAlignment(.center)
+        }
+        .frame(maxWidth: .infinity)
     }
 }
 
-// Info card button component
-struct InfoCardButton: View {
+// MARK: - Local Data Models (renamed to avoid conflicts)
+struct ExerciseGoalInfo {
+    let id: Int
     let title: String
     let subtitle: String
-    let iconName: String
-    var isEmoji: Bool = false // Flag to determine if we're using emoji or SF Symbol
-    let backgroundColor: Color
-    let accentColor: Color
-
-    var body: some View {
-        HStack {
-            // Use either emoji or SF Symbol based on isEmoji flag
-            if isEmoji {
-                Text(iconName)
-                    .font(.system(size: 30))
-                    .padding(.trailing, 4)
-            } else {
-                Image(systemName: iconName)
-                    .font(.system(size: 24))
-                    .foregroundColor(accentColor)
-                    .padding(.trailing, 4)
-            }
-
-            VStack(alignment: .leading, spacing: 6) {
-                Text(title)
-                    .font(.headline)
-                    .foregroundColor(.primary)
-
-                Text(subtitle)
-                    .font(.subheadline)
-                    .foregroundColor(.secondary)
-                    .lineLimit(2)
-            }
-
-            Spacer()
-
-            Image(systemName: "chevron.right")
-                .foregroundColor(.secondary)
-        }
-        .padding()
-        .background(
-            RoundedRectangle(cornerRadius: 16)
-                .fill(backgroundColor)
-                .shadow(color: Color.black.opacity(0.05), radius: 8, x: 0, y: 2)
-        )
-    }
+    let systemIcon: String
+    let progress: Double
+    let level: String
+    let description: String
+    let duration: String
+    let intensity: String
+    let focus: String
+    let tags: [String]
 }
 
-struct PopupInfoCard: View {
-    let title: String
-    let content: String
-    @Binding var isShowing: Bool
-    let cardPosition: CGRect
-    let accentColor: Color
+struct DayProgress {
+    let day: Date
+    let dayName: String
+    let completionPercentage: Double
+}
 
-    @State private var cardOffset: CGSize = .init(width: 0, height: -50)
-    @State private var opacity = 0.0
-    @State private var scale = 0.8
-    @State private var isContentVisible = false
-    @State private var envelopeOpen = false
-
-    var body: some View {
-        ZStack {
-            // Clear background (the overlay is in a separate window)
-            Color.clear
-                .contentShape(Rectangle())
-                .onTapGesture {
-                    closeCard()
-                }
-                .edgesIgnoringSafeArea(.all)
-
-            // Card content
-            VStack(spacing: 0) {
-                // Card header with envelope flap
-                ZStack {
-                    Path { path in
-                        path.move(to: CGPoint(x: 0, y: 0))
-                        path.addLine(to: CGPoint(x: UIScreen.main.bounds.width * 0.9, y: 0))
-                        path.addLine(to: CGPoint(x: UIScreen.main.bounds.width * 0.45, y: envelopeOpen ? -20 : 40))
-                        path.addLine(to: CGPoint(x: 0, y: 0))
-                    }
-                    .fill(Color(hex: "FBE8E5"))
-                    .shadow(color: Color.black.opacity(0.1), radius: 3, x: 0, y: -2)
-
-                    Text(title)
-                        .font(.title3)
-                        .fontWeight(.bold)
-                        .foregroundColor(Color(hex: "924350"))
-                        .offset(y: envelopeOpen ? 5 : 15)
-                }
-                .frame(height: 60)
-                .animation(.spring(response: 0.5, dampingFraction: 0.7), value: envelopeOpen)
-
-                // Content section
-                VStack(spacing: 0) {
-                    // Heart decoration at top
-                    HStack(spacing: 4) {
-                        ForEach(0..<15) { _ in
-                            Image(systemName: "heart.fill")
-                                .font(.system(size: 8))
-                                .foregroundColor(accentColor.opacity(0.2))
-                        }
-                    }
-                    .padding(.top, 12)
-
-                    // Content in ScrollView
-                    ScrollView {
-                        Text(content)
-                            .font(.body)
-                            .padding(.horizontal, 20)
-                            .padding(.vertical, 16)
-                            .frame(maxWidth: .infinity, alignment: .leading)
-                            .opacity(isContentVisible ? 1 : 0)
-                    }
-                    .frame(maxHeight: UIScreen.main.bounds.height * 0.35)
-
-                    // Heart decoration at bottom
-                    HStack(spacing: 4) {
-                        ForEach(0..<15) { _ in
-                            Image(systemName: "heart.fill")
-                                .font(.system(size: 8))
-                                .foregroundColor(accentColor.opacity(0.2))
-                        }
-                    }
-                    .padding(.bottom, 12)
-                    .padding(.top, 12)
-
-                    // Close button
-                    Button(action: closeCard) {
-                        Text("Close")
-                            .fontWeight(.medium)
-                            .foregroundColor(.white)
-                            .padding(.vertical, 14)
-                            .frame(maxWidth: .infinity)
-                            .background(
-                                RoundedRectangle(cornerRadius: 8)
-                                    .fill(Color(hex: "924350"))
-                            )
-                            .padding(.horizontal, 20)
-                            .padding(.bottom, 16)
-                    }
-                }
-                .background(Color.white)
-            }
-            .background(
-                RoundedRectangle(cornerRadius: 20)
-                    .fill(Color(hex: "FBE8E5"))
-                    .shadow(color: Color.black.opacity(0.15), radius: 10, x: 0, y: 5)
+// MARK: - View Model
+class ExerciseGoalsViewModel: ObservableObject {
+    @Published var weeklyProgress: [DayProgress] = []
+    @Published var exerciseGoals: [ExerciseGoalInfo] = []
+    @Published var currentSteps: Int = 1974
+    @Published var stepsGoal: Int = 1200
+    @Published var totalGoalsCompleted: Int = 10
+    @Published var totalGoals: Int = 30
+    
+    func loadData() {
+        loadMockWeeklyProgress()
+        loadMockExerciseGoals()
+    }
+    
+    private func loadMockWeeklyProgress() {
+        let dayNames = ["S", "M", "T", "W", "T", "F", "S"]
+        let mockProgressValues = [1.0, 0.8, 1.0, 0.6, 0.0, 0.0, 0.0]
+        
+        var progress: [DayProgress] = []
+        
+        for i in 0..<7 {
+            let today = Date()
+            let day = Calendar.current.date(byAdding: .day, value: i, to: today) ?? today
+            let dayName = dayNames[i]
+            
+            progress.append(DayProgress(
+                day: day,
+                dayName: dayName,
+                completionPercentage: mockProgressValues[i]
+            ))
+        }
+        
+        weeklyProgress = progress
+    }
+    
+    private func loadMockExerciseGoals() {
+        exerciseGoals = [
+            ExerciseGoalInfo(
+                id: 0,
+                title: "Breathing",
+                subtitle: "Deep breathing exercise",
+                systemIcon: "lungs.fill",
+                progress: 0.0,
+                level: "Beginner",
+                description: "Deep breathing exercises help reduce stress and anxiety during pregnancy. This gentle practice improves oxygen flow to both you and your baby while promoting relaxation and better sleep quality.",
+                duration: "5 minutes",
+                intensity: "Low",
+                focus: "Relaxation",
+                tags: ["Stress Relief", "Better Sleep", "Oxygen Flow", "Relaxation"]
+            ),
+            ExerciseGoalInfo(
+                id: 1,
+                title: "Prenatal Yoga",
+                subtitle: "Gentle stretching routine",
+                systemIcon: "figure.yoga",
+                progress: 0.0,
+                level: "Beginner",
+                description: "Gentle yoga poses specifically designed for pregnant women. These poses help maintain flexibility, strengthen muscles, and prepare your body for childbirth while reducing common pregnancy discomforts.",
+                duration: "15 minutes",
+                intensity: "Low to Moderate",
+                focus: "Flexibility & Strength",
+                tags: ["Flexibility", "Muscle Strength", "Pain Relief", "Birth Prep"]
+            ),
+            ExerciseGoalInfo(
+                id: 2,
+                title: "Pelvic Floor",
+                subtitle: "Strengthening exercises",
+                systemIcon: "figure.strengthtraining.traditional",
+                progress: 0.0,
+                level: "Beginner",
+                description: "Essential exercises to strengthen your pelvic floor muscles. These exercises help prevent incontinence, support your growing baby, and aid in postpartum recovery.",
+                duration: "10 minutes",
+                intensity: "Low",
+                focus: "Pelvic Health",
+                tags: ["Pelvic Strength", "Incontinence Prevention", "Birth Recovery", "Core Support"]
             )
-            .cornerRadius(20)
-            .scaleEffect(scale)
-            .offset(cardOffset)
-            .opacity(opacity)
-            .frame(width: UIScreen.main.bounds.width * 0.9)
-            .frame(maxHeight: UIScreen.main.bounds.height * 0.65)
-        }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .onAppear {
-            disableParentScroll()
-
-            // Start animations
-            withAnimation(.spring(response: 0.4, dampingFraction: 0.7)) {
-                opacity = 1.0
-                scale = 1.0
-                cardOffset = .zero
-            }
-
-            // Animation sequence
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-                withAnimation(.spring(response: 0.6, dampingFraction: 0.6)) {
-                    envelopeOpen = true
-                }
-
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-                    withAnimation(.easeIn(duration: 0.4)) {
-                        isContentVisible = true
-                    }
-                }
-            }
-        }
-        .onDisappear {
-            enableParentScroll()
-        }
-    }
-
-    // Helper methods remain the same
-    private func disableParentScroll() {
-        NotificationCenter.default.post(name: NSNotification.Name("DisableScrolling"), object: nil)
-    }
-
-    private func enableParentScroll() {
-        NotificationCenter.default.post(name: NSNotification.Name("EnableScrolling"), object: nil)
-    }
-
-    private func closeCard() {
-        // Animation sequence remains the same
-        withAnimation(.easeOut(duration: 0.2)) {
-            isContentVisible = false
-        }
-
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-            withAnimation(.spring(response: 0.4, dampingFraction: 0.7)) {
-                envelopeOpen = false
-            }
-
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-                withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) {
-                    opacity = 0.0
-                    scale = 0.8
-                    cardOffset = CGSize(width: 0, height: -50)
-                }
-
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-                    // Hide the overlay window when closing
-                    OverlayWindowManager.shared.hideOverlay()
-
-                    enableParentScroll()
-                    isShowing = false
-                }
-            }
-        }
+        ]
     }
 }
 
-// Helper extension to remove .onAppear from a SwiftUI view
-extension View {
-    func removeOnAppear() -> some View {
-        onAppear {}
-    }
-}
-
-// Helper struct to create a full screen overlay that integrates with UIKit
-@MainActor class OverlayWindowManager {
-
-    // MARK: Internal
-
-    static let shared: OverlayWindowManager = .init()
-
-    func showOverlay() {
-        guard overlayWindow == nil else { return }
-
-        if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene {
-            // Step 1: Create overlay window (darkens everything)
-            let overlay = UIWindow(windowScene: windowScene)
-            overlay.backgroundColor = UIColor.black.withAlphaComponent(0.4)
-            overlay.windowLevel = UIWindow.Level.normal + 1
-
-            let overlayVC = UIViewController()
-            overlayVC.view.backgroundColor = .clear
-            overlay.rootViewController = overlayVC
-
-            overlay.isHidden = false
-            overlay.makeKeyAndVisible()
-
-            overlayWindow = overlay
-
-            // Step 2: Create content window (will hold the popup)
-            let content = UIWindow(windowScene: windowScene)
-            content.backgroundColor = UIColor.clear
-            content.windowLevel = UIWindow.Level.normal + 2 // Above overlay
-
-            let hostingVC = UIHostingController(rootView: EmptyView())
-            hostingVC.view.backgroundColor = .clear
-            content.rootViewController = hostingVC
-
-            content.isHidden = false
-            content.makeKeyAndVisible()
-
-            contentWindow = content
-        }
-    }
-
-    func setContent<Content: View>(_ content: Content) {
-        if let contentWindow {
-            let hostingVC = UIHostingController(rootView: AnyView(content))
-            hostingVC.view.backgroundColor = .clear
-            contentWindow.rootViewController = hostingVC
-        }
-    }
-
-    func hideOverlay() {
-        contentWindow?.isHidden = true
-        contentWindow = nil
-        overlayWindow?.isHidden = true
-        overlayWindow = nil
-    }
-
-    // MARK: Private
-
-    private var overlayWindow: UIWindow?
-    private var contentWindow: UIWindow?
-
-}
-
-struct ComparisonView: View {
-
-    // MARK: Internal
-
-    let fruitImage: UIImage?
-    let babyImage: UIImage?
-
-    var body: some View {
-        HStack(spacing: 0) {
-            // Left section with fruit
-            VStack(alignment: .center) {
-                if let fruitImage {
-                    Image(uiImage: fruitImage)
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .frame(width: min(90, UIScreen.main.bounds.width * 0.22)) // Slightly smaller
-                        .rotation3DEffect(
-                            .degrees(wiggleAmount ? 5 : -5),
-                            axis: (x: 0, y: 1, z: 0)
-                        )
-                        .animation(
-                            Animation.easeInOut(duration: 1.5)
-                                .repeatForever(autoreverses: true),
-                            value: wiggleAmount
-                        )
-                        .onAppear {
-                            wiggleAmount.toggle()
-                        }
-                }
-            }
-            .frame(maxWidth: .infinity)
-
-            // Center arrow - keep centered vertically
-            Image(systemName: "arrow.right")
-                .font(.system(size: 24, weight: .bold))
-                .foregroundColor(isShowingAnimation ? Color(hex: "924350") : .secondary)
-                .scaleEffect(isShowingAnimation ? 1.2 : 1.0)
-                .animation(
-                    Animation.easeInOut(duration: 0.6)
-                        .repeatCount(3, autoreverses: true),
-                    value: isShowingAnimation
-                )
-                .frame(width: 40)
-
-            // Right section with baby - making the baby smaller and better centered
-            VStack(alignment: .center) {
-                ZStack {
-                    Circle()
-                        .fill(Color(hex: "E88683"))
-                        .frame(width: min(110, UIScreen.main.bounds.width * 0.28)) // Slightly smaller circle
-
-                    if let babyImage {
-                        Image(uiImage: babyImage)
-                            .resizable()
-                            .aspectRatio(contentMode: .fit)
-                            .frame(width: min(75, UIScreen.main.bounds.width * 0.18)) // Smaller baby image
-                            .scaleEffect(isShowingAnimation ? 1.1 : 1.0)
-                            .rotationEffect(isShowingAnimation ? Angle(degrees: 10) : Angle(degrees: 0))
-                            .animation(
-                                Animation.easeInOut(duration: 1)
-                                    .repeatCount(2, autoreverses: true),
-                                value: isShowingAnimation
-                            )
-                    }
-                }
-            }
-            .frame(maxWidth: .infinity)
-        }
-        .frame(height: 110) // Slightly shorter height
-        .padding(.vertical, 10) // Added vertical padding to center everything better
-        .contentShape(Rectangle())
-        .onTapGesture {
-            isShowingAnimation = true
-            DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
-                isShowingAnimation = false
-            }
-        }
-    }
-
-    // MARK: Private
-
-    @State private var isShowingAnimation = false
-    @State private var wiggleAmount = false
-}
-
-// Square info card component for side-by-side layout
-struct InfoCardSquare: View {
-    let title: String
-    let iconName: String
-    var isEmoji: Bool = false
-    let backgroundColor: Color
-    let accentColor: Color
-
-    var body: some View {
-        VStack(spacing: 12) {
-            // Icon at the top
-            if isEmoji {
-                Text(iconName)
-                    .font(.system(size: 36))
-            } else {
-                Image(systemName: iconName)
-                    .font(.system(size: 32))
-                    .foregroundColor(accentColor)
-            }
-
-            // Title below
-            Text(title)
-                .font(.headline)
-                .foregroundColor(.primary)
-                .multilineTextAlignment(.center)
-
-            // Subtle indicator to tap
-            Image(systemName: "chevron.right.circle")
-                .font(.system(size: 16))
-                .foregroundColor(.secondary.opacity(0.6))
-                .padding(.top, 4)
-        }
-        .padding()
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .aspectRatio(1.0, contentMode: .fill) // Keep it square
-        .background(
-            RoundedRectangle(cornerRadius: 16)
-                .fill(backgroundColor)
-                .shadow(color: Color.black.opacity(0.05), radius: 8, x: 0, y: 2)
-        )
-    }
-}
-
-// Rectangular info card component that matches the height/weight cards
-struct RectangularInfoCard: View {
-    let title: String
-    let iconName: String
-    var isEmoji: Bool = false
-    let backgroundColor: Color
-    let accentColor: Color
-
-    var body: some View {
-        VStack(spacing: 8) {
-            HStack {
-                // Icon
-                if isEmoji {
-                    Text(iconName)
-                        .font(.system(size: 32))
-                } else {
-                    Image(systemName: iconName)
-                        .font(.system(size: 26))
-                        .foregroundColor(accentColor)
-                }
-
-                // Title
-                Text(title)
-                    .font(.headline)
-                    .foregroundColor(.primary)
-
-                Spacer()
-
-                // Subtle indicator to tap
-                Image(systemName: "chevron.right")
-                    .font(.system(size: 14))
-                    .foregroundColor(.secondary)
-            }
-        }
-        .padding()
-        .frame(maxWidth: .infinity)
-        .background(
-            RoundedRectangle(cornerRadius: 16)
-                .fill(backgroundColor)
-                .shadow(color: Color.black.opacity(0.05), radius: 8, x: 0, y: 2)
-        )
-    }
-}
-
-// More compact info card component that shows content preview
-struct CompactInfoCard: View {
-    let title: String
-    let iconName: String
-    let previewText: String
-    var isEmoji: Bool = false
-    let backgroundColor: Color
-    let accentColor: Color
-
-    var body: some View {
-        VStack(alignment: .leading, spacing: 4) {
-            // Header with icon and title in a more compact layout
-            HStack(spacing: 2) {
-                // Icon - reduced size
-                if isEmoji {
-                    Text(iconName)
-                        .font(.system(size: 16))
-                        .accessibilityHidden(true)
-                } else {
-                    Image(systemName: iconName)
-                        .font(.system(size: 14))
-                        .foregroundColor(accentColor)
-                        .accessibilityHidden(true)
-                }
-
-                // Title - slightly smaller font with minimized spacing
-                Text(title)
-                    .font(.system(size: 14, weight: .semibold, design: .default))
-                    .foregroundColor(.primary)
-                    .lineLimit(1)
-                    .accessibilityAddTraits(.isHeader)
-            }
-
-            // Preview text with more space
-            Text(previewText)
-                .font(.system(size: 14))
-                .foregroundColor(.secondary)
-                .lineLimit(5)
-                .lineSpacing(1)
-                .multilineTextAlignment(.leading)
-                .padding(.top, 2)
-        }
-        .padding(12)
-        .frame(maxWidth: .infinity)
-        .frame(height: 120)
-        .background(
-            RoundedRectangle(cornerRadius: 16)
-                .fill(backgroundColor)
-                .shadow(color: Color.black.opacity(0.05), radius: 8, x: 0, y: 2)
-        )
-        .accessibilityElement(children: .combine)
-        .accessibilityLabel("\(title). \(previewText)")
-        .accessibilityHint("Double tap to read more information")
-    }
-}
-
-// Custom stitching border effect with improved corners and consistency
-struct StitchingBorder: View {
-
-    // MARK: Internal
-
-    let cornerRadius: CGFloat
-    let color: Color
-    let stitchLength: CGFloat = 5 // Slightly shorter for more consistent appearance
-    let stitchSpacing: CGFloat = 5 // Equal spacing for consistency
-    let stitchInset: CGFloat = 6
-
-    var body: some View {
-        GeometryReader { geometry in
-            Path { path in
-                // Calculate dimensions
-                let width = geometry.size.width
-                let height = geometry.size.height
-
-                // Define the effective radius with consistent inset
-                let effectiveRadius = max(cornerRadius - stitchInset, 0)
-
-                // Calculate stitch counts to ensure consistency
-                let horizontalStitchCount = Int((width - 2 * (cornerRadius + stitchInset)) / (stitchLength + stitchSpacing))
-                let verticalStitchCount = Int((height - 2 * (cornerRadius + stitchInset)) / (stitchLength + stitchSpacing))
-                let cornerStitchCount = 5 // Fixed number of stitches for corners for consistency
-
-                // Top edge with exact positioning
-                let horizontalSpacing = (width - 2 * (cornerRadius + stitchInset) - CGFloat(horizontalStitchCount) * stitchLength) / max(CGFloat(horizontalStitchCount - 1), 1)
-
-                for i in 0..<horizontalStitchCount {
-                    let startX = cornerRadius + stitchInset + CGFloat(i) * (stitchLength + horizontalSpacing)
-                    path.move(to: CGPoint(x: startX, y: stitchInset))
-                    path.addLine(to: CGPoint(x: startX + stitchLength, y: stitchInset))
-                }
-
-                // Right edge with exact positioning
-                let verticalSpacing = (height - 2 * (cornerRadius + stitchInset) - CGFloat(verticalStitchCount) * stitchLength) / max(CGFloat(verticalStitchCount - 1), 1)
-
-                for i in 0..<verticalStitchCount {
-                    let startY = cornerRadius + stitchInset + CGFloat(i) * (stitchLength + verticalSpacing)
-                    path.move(to: CGPoint(x: width - stitchInset, y: startY))
-                    path.addLine(to: CGPoint(x: width - stitchInset, y: startY + stitchLength))
-                }
-
-                // Bottom edge with exact positioning
-                for i in 0..<horizontalStitchCount {
-                    let startX = width - cornerRadius - stitchInset - CGFloat(i) * (stitchLength + horizontalSpacing)
-                    path.move(to: CGPoint(x: startX, y: height - stitchInset))
-                    path.addLine(to: CGPoint(x: startX - stitchLength, y: height - stitchInset))
-                }
-
-                // Left edge with exact positioning
-                for i in 0..<verticalStitchCount {
-                    let startY = height - cornerRadius - stitchInset - CGFloat(i) * (stitchLength + verticalSpacing)
-                    path.move(to: CGPoint(x: stitchInset, y: startY))
-                    path.addLine(to: CGPoint(x: stitchInset, y: startY - stitchLength))
-                }
-
-                // Improved corner stitches with perfect spacing
-                // Top-right corner
-                addPreciseCornerStitches(
-                    to: &path,
-                    center: CGPoint(x: width - cornerRadius, y: cornerRadius),
-                    radius: effectiveRadius,
-                    startAngle: -.pi/2,
-                    endAngle: 0,
-                    stitchCount: cornerStitchCount
-                )
-
-                // Bottom-right corner
-                addPreciseCornerStitches(
-                    to: &path,
-                    center: CGPoint(x: width - cornerRadius, y: height - cornerRadius),
-                    radius: effectiveRadius,
-                    startAngle: 0,
-                    endAngle: .pi/2,
-                    stitchCount: cornerStitchCount
-                )
-
-                // Bottom-left corner
-                addPreciseCornerStitches(
-                    to: &path,
-                    center: CGPoint(x: cornerRadius, y: height - cornerRadius),
-                    radius: effectiveRadius,
-                    startAngle: .pi/2,
-                    endAngle: .pi,
-                    stitchCount: cornerStitchCount
-                )
-
-                // Top-left corner
-                addPreciseCornerStitches(
-                    to: &path,
-                    center: CGPoint(x: cornerRadius, y: cornerRadius),
-                    radius: effectiveRadius,
-                    startAngle: .pi,
-                    endAngle: 3 * .pi/2,
-                    stitchCount: cornerStitchCount
-                )
-            }
-            .stroke(style: StrokeStyle(lineWidth: 1.5, lineCap: .round, lineJoin: .round))
-            .foregroundColor(color.opacity(0.8))
-        }
-    }
-
-    // MARK: Private
-
-    // Improved helper function for precise corner stitch placement
-    private func addPreciseCornerStitches(to path: inout Path, center: CGPoint, radius: CGFloat, startAngle: CGFloat, endAngle: CGFloat, stitchCount: Int) { // swiftlint:disable:this function_parameter_count
-        let totalAngle = abs(endAngle - startAngle)
-        let angleStep = totalAngle / CGFloat(stitchCount)
-
-        for i in 0..<stitchCount {
-            let startAnglePoint = startAngle + CGFloat(i) * angleStep
-            let endAnglePoint = startAnglePoint + angleStep * 0.6
-
-            let startPoint = CGPoint(
-                x: center.x + radius * cos(startAnglePoint),
-                y: center.y + radius * sin(startAnglePoint)
-            )
-
-            let endPoint = CGPoint(
-                x: center.x + radius * cos(endAnglePoint),
-                y: center.y + radius * sin(endAnglePoint)
-            )
-
-            path.move(to: startPoint)
-            path.addLine(to: endPoint)
-        }
-    }
-}
-
-// Preview provider
+// MARK: - Preview
 struct PregnancyProgressView_Previews: PreviewProvider {
     static var previews: some View {
-        // Create a preview with sample data
-        GeometryReader { _ in
-            ScrollView {
-                VStack(spacing: 16) {
-                    Text("Trimester 2")
-                        .font(.title3)
-                        .fontWeight(.semibold)
-
-                    Text("Week 14 - Day 1")
-                        .font(.title)
-                        .fontWeight(.bold)
-                        .foregroundColor(Color(hex: "924350"))
-
-                    // Sample size comparison and stats
-                    VStack(spacing: 16) {
-                        // Rest of your preview content
-
-                        // Test the new compact info cards
-                        HStack(spacing: 12) {
-                            CompactInfoCard(
-                                title: "Baby Development",
-                                iconName: "👶",
-                                previewText: "At this point, your baby is the size of a peach. The baby is developing more defined facial features and unique fingerprints...",
-                                isEmoji: true,
-                                backgroundColor: Color(hex: "FBE8E5"),
-                                accentColor: Color(hex: "924350")
-                            )
-
-                            CompactInfoCard(
-                                title: "Mom This Week",
-                                iconName: "🤰",
-                                previewText: "Your pregnancy is starting to show! Morning sickness should be easing up as the second trimester begins...",
-                                isEmoji: true,
-                                backgroundColor: Color(hex: "FBE8E5"),
-                                accentColor: Color(hex: "924350")
-                            )
-                        }
-                    }
-                    .padding(.horizontal)
-                }
-            }
-        }
+        PregnancyProgressView()
     }
-}
-
-// Helper method to truncate text with ellipsis
-private func getTruncatedText(from text: String, maxLength: Int) -> String {
-    if text.count <= maxLength {
-        return text
-    }
-
-    // Find a good breaking point (space) near the maxLength
-    let index = text.index(text.startIndex, offsetBy: min(maxLength - 3, text.count))
-    let truncatedText = text[..<index]
-
-    // Try to find the last space to make a clean break
-    if let lastSpace = truncatedText.lastIndex(of: " ") {
-        return text[..<lastSpace] + "..."
-    }
-
-    return String(truncatedText) + "..."
 }
