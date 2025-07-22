@@ -51,7 +51,7 @@ class HealthDetailsTableViewController: UITableViewController {
         userAllergies.setTitle("\(userMedical.foodIntolerances.count)", for: .normal)
     }
 
-    func saveHealtghDetails() {}
+    func saveHealthDetails() {}
 
     @IBAction func preExistingTapped(_ sender: UIButton) {
         let options = PreExistingCondition.allCases.map { $0.rawValue }
@@ -96,8 +96,10 @@ class HealthDetailsTableViewController: UITableViewController {
                     destination.preViewDidLoad = preViewDidLoad
                     destination.selectedMappedOptions = selectedOptions
                     destination.dismissHandler = {
-                        
+                        MomCareUser.shared.user?.medicalData?.dietaryPreferences = destination.selectedMappedOptions.filter { $1 }.keys.compactMap(DietaryPreference.init(rawValue:))
+                        self.updatePageElements()
                     }
+
                 case .intolerance:
                     let selectedOptions: [String: Bool] = (MomCareUser.shared.user?.medicalData?.foodIntolerances ?? []).reduce(into: [String: Bool]()) { dict, preference in
                         dict[preference.rawValue] = true
@@ -106,7 +108,8 @@ class HealthDetailsTableViewController: UITableViewController {
                     destination.preViewDidLoad = preViewDidLoad
                     destination.selectedMappedOptions = selectedOptions
                     destination.dismissHandler = {
-                        
+                        MomCareUser.shared.user?.medicalData?.foodIntolerances = destination.selectedMappedOptions.filter { $1 }.keys.compactMap(Intolerance.init(rawValue:))
+                        self.updatePageElements()
                     }
                 case .preExistingCondition:
                     let selectedOptions: [String: Bool] = (MomCareUser.shared.user?.medicalData?.preExistingConditions ?? []).reduce(into: [String: Bool]()) { dict, preference in
@@ -117,8 +120,10 @@ class HealthDetailsTableViewController: UITableViewController {
                     destination.selectedMappedOptions = selectedOptions
                     destination.dismissHandler = {
                         MomCareUser.shared.user?.medicalData?.preExistingConditions = destination.selectedMappedOptions.filter { $1 }.keys.compactMap(PreExistingCondition.init(rawValue:))
+                        self.updatePageElements()
                     }
                 }
+                
             }
         }
     }
@@ -136,6 +141,9 @@ class HealthDetailsTableViewController: UITableViewController {
     }
     
     @objc func backButtonTapped() {
+        if let topViewController = navigationController?.topViewController as? MultipleSelectorTableViewController {
+            topViewController.dismissHandler?()
+        }
         navigationController?.popViewController(animated: true)
     }
 }
