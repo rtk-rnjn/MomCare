@@ -926,7 +926,7 @@
         <!--Multiple Selector Table View Controller-->
         <scene sceneID="yhb-MF-jrk">
             <objects>
-                <tableViewController storyboardIdentifier="MedicalDetailSelectorTableViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="l0e-Lr-h2J" customClass="MultipleSelectorTableViewController" customModule="MomCare" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="MultipleSelectorTableViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="l0e-Lr-h2J" customClass="MultipleSelectorTableViewController" customModule="MomCare" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="insetGrouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" estimatedSectionHeaderHeight="-1" sectionFooterHeight="18" estimatedSectionFooterHeight="-1" id="9UN-8j-rnT">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="842"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -946,11 +946,6 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" id="Ybs-Lk-iiq">
-                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="Cl4-VD-P2s">
-                            <connections>
-                                <segue destination="AF6-rs-0jX" kind="unwind" unwindAction="unwinToMedicalDetail:" id="DoJ-Xl-XGQ"/>
-                            </connections>
-                        </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" style="done" systemItem="done" id="Ndg-xd-VaL">
                             <connections>
                                 <segue destination="AF6-rs-0jX" kind="unwind" identifier="unwinToMedicalDetailViaDone" unwindAction="unwinToMedicalDetail:" id="F0z-87-vLK"/>
@@ -961,7 +956,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="W0f-Y7-bHq" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
                 <exit id="AF6-rs-0jX" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="6901.5267175572517" y="734.50704225352115"/>
+            <point key="canvasLocation" x="6773" y="735"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="ufU-m1-52V">
