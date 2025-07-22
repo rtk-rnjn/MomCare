@@ -21,34 +21,6 @@ class HealthDetailsTableViewController: UITableViewController {
         updatePageElements()
     }
 
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "showUserHealthProfile", let destination = segue.destination as? HealthDetailsCellTableViewController, let type = sender as? HealthProfileType {
-            destination.healthProfile = type
-
-            switch type {
-            case .dietaryPreference:
-                destination.selectedCells = MomCareUser.shared.user?.medicalData?.dietaryPreferences.map { $0.rawValue } ?? []
-            case .intolerance:
-                destination.selectedCells = MomCareUser.shared.user?.medicalData?.foodIntolerances.map { $0.rawValue } ?? []
-            case .preExistingCondition:
-                destination.selectedCells = MomCareUser.shared.user?.medicalData?.preExistingConditions.map { $0.rawValue } ?? []
-            }
-
-            destination.onSelection = { [weak self] profileType, selectedItems in
-                switch profileType {
-                case .dietaryPreference:
-                    MomCareUser.shared.user?.medicalData?.dietaryPreferences = selectedItems.map({ DietaryPreference(rawValue: $0) ?? .none })
-                case .intolerance:
-                    MomCareUser.shared.user?.medicalData?.foodIntolerances = selectedItems.map({ Intolerance(rawValue: $0) ?? .none })
-                case .preExistingCondition:
-                    MomCareUser.shared.user?.medicalData?.preExistingConditions = selectedItems.map({ PreExistingCondition(rawValue: $0) ?? .none })
-                }
-
-                self?.updatePageElements()
-            }
-        }
-    }
-
     @IBAction func editButtonTapped(_ sender: UIBarButtonItem) {
         isEditingMode.toggle()
         sender.title = isEditingMode ? "Save" : "Edit"
@@ -82,15 +54,88 @@ class HealthDetailsTableViewController: UITableViewController {
     func saveHealtghDetails() {}
 
     @IBAction func preExistingTapped(_ sender: UIButton) {
-        performSegue(withIdentifier: "showUserHealthProfile", sender: HealthProfileType.preExistingCondition)
+        let options = PreExistingCondition.allCases.map { $0.rawValue }
+        let button = sender
+        let category: HealthProfileType = .preExistingCondition
+        let sendable = (options: options, button: button, category: category)
+
+        performSegue(withIdentifier: "segueShowMultipleSelectorTableViewController", sender: sendable)
     }
 
     @IBAction func intoleranceTapped(_ sender: UIButton) {
-        performSegue(withIdentifier: "showUserHealthProfile", sender: HealthProfileType.intolerance)
+        let options = Intolerance.allCases.map { $0.rawValue }
+        let button = sender
+        let category: HealthProfileType = .intolerance
+
+        let sendable = (options: options, button: button, category: category)
+
+        performSegue(withIdentifier: "segueShowMultipleSelectorTableViewController", sender: sendable)
     }
 
     @IBAction func dietaryTapped(_ sender: UIButton) {
-        performSegue(withIdentifier: "showUserHealthProfile", sender: HealthProfileType.dietaryPreference)
+        let options = DietaryPreference.allCases.map { $0.rawValue }
+        let button = sender
+        let category: HealthProfileType = .dietaryPreference
+
+        let sendable = (options: options, button: button, category: category)
+
+        performSegue(withIdentifier: "segueShowMultipleSelectorTableViewController", sender: sendable)
     }
 
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "segueShowMultipleSelectorTableViewController", let destination = segue.destination as? MultipleSelectorTableViewController {
+            if let sender = sender as? (options: [String], button: UIButton, category: HealthProfileType) {
+                destination.options = sender.options
+                
+                switch sender.category {
+                case .dietaryPreference:
+                    let selectedOptions: [String: Bool] = (MomCareUser.shared.user?.medicalData?.dietaryPreferences ?? []).reduce(into: [String: Bool]()) { dict, preference in
+                        dict[preference.rawValue] = true
+                    }
+                    
+                    destination.preViewDidLoad = preViewDidLoad
+                    destination.selectedMappedOptions = selectedOptions
+                    destination.dismissHandler = {
+                        
+                    }
+                case .intolerance:
+                    let selectedOptions: [String: Bool] = (MomCareUser.shared.user?.medicalData?.foodIntolerances ?? []).reduce(into: [String: Bool]()) { dict, preference in
+                        dict[preference.rawValue] = true
+                    }
+
+                    destination.preViewDidLoad = preViewDidLoad
+                    destination.selectedMappedOptions = selectedOptions
+                    destination.dismissHandler = {
+                        
+                    }
+                case .preExistingCondition:
+                    let selectedOptions: [String: Bool] = (MomCareUser.shared.user?.medicalData?.preExistingConditions ?? []).reduce(into: [String: Bool]()) { dict, preference in
+                        dict[preference.rawValue] = true
+                    }
+
+                    destination.preViewDidLoad = preViewDidLoad
+                    destination.selectedMappedOptions = selectedOptions
+                    destination.dismissHandler = {
+                        MomCareUser.shared.user?.medicalData?.preExistingConditions = destination.selectedMappedOptions.filter { $1 }.keys.compactMap(PreExistingCondition.init(rawValue:))
+                    }
+                }
+            }
+        }
+    }
+    
+    func preViewDidLoad(viewController: UIViewController) {
+        let backButton = UIBarButtonItem(
+            image: UIImage(systemName: "chevron.left"),
+            style: .plain,
+            target: self,
+            action: #selector(backButtonTapped)
+        )
+
+        viewController.navigationItem.leftBarButtonItem = backButton
+        viewController.navigationItem.rightBarButtonItem = nil
+    }
+    
+    @objc func backButtonTapped() {
+        navigationController?.popViewController(animated: true)
+    }
 }

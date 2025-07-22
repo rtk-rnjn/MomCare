@@ -11,13 +11,27 @@ class MultipleSelectorTableViewController: UITableViewController {
     var options: [String] = []
     var selectedMappedOptions: [String: Bool] = [:]
     var dismissHandler: (() -> Void)?
+    
+    var preViewDidLoad: ((UIViewController) -> Void)?
 
     override func viewDidLoad() {
         super.viewDidLoad()
         if selectedMappedOptions.isEmpty {
             selectedMappedOptions = options.reduce(into: [:]) { $0[$1] = false }
         }
+        if preViewDidLoad != nil {
+            preViewDidLoad?(self)
+        } else {
+            navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(cancelTapped))
+        }
+
         tableView.reloadData()
+    }
+    
+    @objc func cancelTapped() {
+        dismiss(animated: true) {
+            self.dismissHandler?()
+        }
     }
 
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -42,7 +56,13 @@ class MultipleSelectorTableViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        selectedMappedOptions[options[indexPath.row]] = !selectedMappedOptions[options[indexPath.row]]!
+        if let option = selectedMappedOptions[options[indexPath.row]] {
+            selectedMappedOptions[options[indexPath.row]] = !option
+        } else {
+            let option = options[indexPath.row]
+            selectedMappedOptions[option] = true
+        }
+
         tableView.reloadRows(at: [indexPath], with: .fade)
     }
 }

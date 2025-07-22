@@ -429,6 +429,9 @@
                                                     <buttonConfiguration key="configuration" style="filled" title="Sign Out">
                                                         <color key="baseForegroundColor" systemColor="systemRedColor"/>
                                                     </buttonConfiguration>
+                                                    <connections>
+                                                        <action selector="logoutTapped" destination="sbk-e6-TqC" eventType="touchUpInside" id="QRQ-np-8ke"/>
+                                                    </connections>
                                                 </button>
                                             </subviews>
                                             <color key="tintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -1144,22 +1147,22 @@
                         <outlet property="userDietaryPreferences" destination="yFy-ha-quh" id="ASd-SR-4oA"/>
                         <outlet property="userDueDate" destination="kTv-3b-yXS" id="9h4-8I-HJ9"/>
                         <outlet property="userMedicalConditions" destination="1ju-Dr-mx1" id="k2s-HH-TMY"/>
-                        <segue destination="MeX-Vk-bHc" kind="show" identifier="showUserHealthProfile" id="dDz-h1-ViC"/>
+                        <segue destination="MeX-Vk-bHc" kind="show" identifier="segueShowMultipleSelectorTableViewController" id="dDz-h1-ViC"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="IuO-CW-qz4" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="4969" y="-1542"/>
         </scene>
-        <!--HealthDetailsCellTableViewController-->
+        <!--MultipleSelectorTableViewController-->
         <scene sceneID="m0k-Td-WwQ">
             <objects>
-                <viewControllerPlaceholder storyboardIdentifier="HealthDetailsCell" storyboardName="HealthDetailsCellsStoryboard" referencedIdentifier="HealthDetailsCellTableViewController" id="MeX-Vk-bHc" sceneMemberID="viewController">
+                <viewControllerPlaceholder storyboardName="SignupStoryboard" referencedIdentifier="MultipleSelectorTableViewController" id="MeX-Vk-bHc" sceneMemberID="viewController">
                     <navigationItem key="navigationItem" id="9LL-vd-8RY"/>
                 </viewControllerPlaceholder>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="wtj-qF-QJD" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5679" y="-1570"/>
+            <point key="canvasLocation" x="5658" y="-1542"/>
         </scene>
         <!--Table View Controller-->
         <scene sceneID="0Sa-fe-mKZ">
@@ -1253,23 +1256,23 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="O4s-lG-x0y">
-                                        <rect key="frame" x="20" y="248.99999618530273" width="353" height="245"/>
+                                        <rect key="frame" x="20" y="248.99999618530273" width="353" height="245.66667175292969"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="O4s-lG-x0y" id="m92-zF-KOv">
-                                            <rect key="frame" x="0.0" y="0.0" width="353" height="245"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="353" height="245.66667175292969"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <stackView opaque="NO" contentMode="scaleToFill" distribution="equalCentering" translatesAutoresizingMaskIntoConstraints="NO" id="OKL-af-Bzu">
-                                                    <rect key="frame" x="10" y="10" width="333" height="225"/>
+                                                    <rect key="frame" x="10" y="10" width="333" height="225.66666666666666"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Date of Birth" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="elo-8r-y9Z">
-                                                            <rect key="frame" x="0.0" y="0.0" width="96" height="225"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="96" height="225.66666666666666"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <datePicker contentMode="scaleToFill" contentHorizontalAlignment="trailing" contentVerticalAlignment="center" datePickerMode="date" translatesAutoresizingMaskIntoConstraints="NO" id="CS1-wP-4de">
-                                                            <rect key="frame" x="96" y="0.0" width="237" height="225"/>
+                                                            <rect key="frame" x="96" y="0.0" width="237" height="225.66666666666666"/>
                                                         </datePicker>
                                                     </subviews>
                                                     <constraints>
@@ -1291,7 +1294,7 @@
                             <tableViewSection id="FLs-JQ-PhU">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="gD8-DB-uZ3">
-                                        <rect key="frame" x="20" y="529.99999618530273" width="353" height="54.666667938232422"/>
+                                        <rect key="frame" x="20" y="530.66666793823242" width="353" height="54.666667938232422"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="gD8-DB-uZ3" id="0F5-v8-G9l">
                                             <rect key="frame" x="0.0" y="0.0" width="353" height="54.666667938232422"/>
