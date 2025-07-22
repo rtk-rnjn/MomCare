@@ -31,10 +31,11 @@
                                                     <rect key="frame" x="20" y="5.0000000000000036" width="353" height="60.333333333333343"/>
                                                     <subviews>
                                                         <stackView opaque="NO" contentMode="scaleToFill" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="ERz-q1-yuV">
-                                                            <rect key="frame" x="0.0" y="5.3333333333333357" width="306" height="50"/>
+                                                            <rect key="frame" x="0.0" y="10" width="306" height="40.666666666666664"/>
                                                             <subviews>
-                                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="0oF-1q-IJB">
-                                                                    <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="carrot.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="0oF-1q-IJB">
+                                                                    <rect key="frame" x="0.0" y="-0.66666666666666785" width="40.666666666666664" height="42.333333333333329"/>
+                                                                    <color key="tintColor" systemColor="underPageBackgroundColor"/>
                                                                     <constraints>
                                                                         <constraint firstAttribute="width" secondItem="0oF-1q-IJB" secondAttribute="height" id="rtc-iu-htC"/>
                                                                     </constraints>
@@ -46,16 +47,16 @@
                                                                     </userDefinedRuntimeAttributes>
                                                                 </imageView>
                                                                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="J74-vG-Odv">
-                                                                    <rect key="frame" x="60" y="0.0" width="246" height="50"/>
+                                                                    <rect key="frame" x="50.666666666666671" y="0.0" width="255.33333333333331" height="40.666666666666664"/>
                                                                     <subviews>
                                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Cf8-7x-63D">
-                                                                            <rect key="frame" x="0.0" y="0.0" width="246" height="25"/>
+                                                                            <rect key="frame" x="0.0" y="0.0" width="255.33333333333334" height="20.333333333333332"/>
                                                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                                             <nil key="textColor"/>
                                                                             <nil key="highlightedColor"/>
                                                                         </label>
                                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZMJ-hX-d5F">
-                                                                            <rect key="frame" x="0.0" y="25" width="246" height="25"/>
+                                                                            <rect key="frame" x="0.0" y="20.333333333333336" width="255.33333333333334" height="20.333333333333336"/>
                                                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                                             <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                             <nil key="highlightedColor"/>
@@ -143,9 +144,13 @@
         </scene>
     </scenes>
     <resources>
+        <image name="carrot.fill" catalog="system" width="128" height="122"/>
         <image name="plus" catalog="system" width="128" height="113"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+        <systemColor name="underPageBackgroundColor">
+            <color red="0.70980392156862748" green="0.71764705882352942" blue="0.74117647058823533" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>

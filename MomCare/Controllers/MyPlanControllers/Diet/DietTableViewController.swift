@@ -89,7 +89,7 @@ class DietTableViewController: UITableViewController {
                 self.dataFetched = true
                 self.dietViewController?.myPlanViewController?.dietsLoaded = true
                 self.dietViewController?.stopShimmering()
-                self.tableView.reloadData()
+                self.refreshHandler()
             }
         }
     }
@@ -176,7 +176,8 @@ class DietTableViewController: UITableViewController {
         }
         cell.dietViewController = dietViewController
         cell.refreshHandler = {
-            self.refreshHandler(with: [indexPath])
+            let indexPaths = [indexPath, IndexPath(row: 0, section: indexPath.section)]
+            self.refreshHandler(with: indexPaths)
         }
         return cell
     }
@@ -205,7 +206,7 @@ class DietTableViewController: UITableViewController {
                     AlertActionHandler(title: "Cancel", style: .cancel, handler: nil),
                     AlertActionHandler(title: "Delete", style: .destructive) { _ in
                         self.deleteFood(at: indexPath)
-                        self.tableView.reloadData()
+                        self.refreshHandler()
                     }
                 ]
 

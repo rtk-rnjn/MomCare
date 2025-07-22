@@ -21,6 +21,45 @@ class HealthDetailsTableViewController: UITableViewController {
         updatePageElements()
     }
 
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "segueShowMultipleSelectorTableViewController", let destination = segue.destination as? MultipleSelectorTableViewController {
+            if let sender = sender as? (options: [String], button: UIButton, category: HealthProfileType) {
+                destination.options = sender.options
+
+                switch sender.category {
+                case .dietaryPreference:
+                    let selectedOptions: [String: Bool] = (MomCareUser.shared.user?.medicalData?.dietaryPreferences ?? []).reduce(into: [String: Bool]()) { dict, preference in
+                        dict[preference.rawValue] = true
+                    }
+
+                    destination.preViewDidLoad = preViewDidLoad
+                    destination.selectedMappedOptions = selectedOptions
+                    destination.dismissHandler = {}
+
+                case .intolerance:
+                    let selectedOptions: [String: Bool] = (MomCareUser.shared.user?.medicalData?.foodIntolerances ?? []).reduce(into: [String: Bool]()) { dict, preference in
+                        dict[preference.rawValue] = true
+                    }
+
+                    destination.preViewDidLoad = preViewDidLoad
+                    destination.selectedMappedOptions = selectedOptions
+                    destination.dismissHandler = {}
+
+                case .preExistingCondition:
+                    let selectedOptions: [String: Bool] = (MomCareUser.shared.user?.medicalData?.preExistingConditions ?? []).reduce(into: [String: Bool]()) { dict, preference in
+                        dict[preference.rawValue] = true
+                    }
+
+                    destination.preViewDidLoad = preViewDidLoad
+                    destination.selectedMappedOptions = selectedOptions
+                    destination.dismissHandler = {
+                        MomCareUser.shared.user?.medicalData?.preExistingConditions = destination.selectedMappedOptions.filter { $1 }.keys.compactMap(PreExistingCondition.init(rawValue:))
+                    }
+                }
+            }
+        }
+    }
+
     @IBAction func editButtonTapped(_ sender: UIBarButtonItem) {
         isEditingMode.toggle()
         sender.title = isEditingMode ? "Save" : "Edit"
@@ -56,7 +95,7 @@ class HealthDetailsTableViewController: UITableViewController {
     @IBAction func preExistingTapped(_ sender: UIButton) {
         let options = PreExistingCondition.allCases.map { $0.rawValue }
         let button = sender
-        let category: HealthProfileType = .preExistingCondition
+        let category = HealthProfileType.preExistingCondition
         let sendable = (options: options, button: button, category: category)
 
         performSegue(withIdentifier: "segueShowMultipleSelectorTableViewController", sender: sendable)
@@ -65,7 +104,7 @@ class HealthDetailsTableViewController: UITableViewController {
     @IBAction func intoleranceTapped(_ sender: UIButton) {
         let options = Intolerance.allCases.map { $0.rawValue }
         let button = sender
-        let category: HealthProfileType = .intolerance
+        let category = HealthProfileType.intolerance
 
         let sendable = (options: options, button: button, category: category)
 
@@ -75,7 +114,7 @@ class HealthDetailsTableViewController: UITableViewController {
     @IBAction func dietaryTapped(_ sender: UIButton) {
         let options = DietaryPreference.allCases.map { $0.rawValue }
         let button = sender
-        let category: HealthProfileType = .dietaryPreference
+        let category = HealthProfileType.dietaryPreference
 
         let sendable = (options: options, button: button, category: category)
 
@@ -127,7 +166,7 @@ class HealthDetailsTableViewController: UITableViewController {
             }
         }
     }
-    
+ 
     func preViewDidLoad(viewController: UIViewController) {
         let backButton = UIBarButtonItem(
             image: UIImage(systemName: "chevron.left"),
@@ -139,7 +178,7 @@ class HealthDetailsTableViewController: UITableViewController {
         viewController.navigationItem.leftBarButtonItem = backButton
         viewController.navigationItem.rightBarButtonItem = nil
     }
-    
+
     @objc func backButtonTapped() {
         if let topViewController = navigationController?.topViewController as? MultipleSelectorTableViewController {
             topViewController.dismissHandler?()

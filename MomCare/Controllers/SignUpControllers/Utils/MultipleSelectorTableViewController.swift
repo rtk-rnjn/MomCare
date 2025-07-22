@@ -11,7 +11,7 @@ class MultipleSelectorTableViewController: UITableViewController {
     var options: [String] = []
     var selectedMappedOptions: [String: Bool] = [:]
     var dismissHandler: (() -> Void)?
-    
+
     var preViewDidLoad: ((UIViewController) -> Void)?
 
     override func viewDidLoad() {
@@ -26,12 +26,6 @@ class MultipleSelectorTableViewController: UITableViewController {
         }
 
         tableView.reloadData()
-    }
-    
-    @objc func cancelTapped() {
-        dismiss(animated: true) {
-            self.dismissHandler?()
-        }
     }
 
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -65,4 +59,11 @@ class MultipleSelectorTableViewController: UITableViewController {
 
         tableView.reloadRows(at: [indexPath], with: .fade)
     }
+
+    @objc func cancelTapped() {
+        dismiss(animated: true) {
+            self.dismissHandler?()
+        }
+    }
+
 }

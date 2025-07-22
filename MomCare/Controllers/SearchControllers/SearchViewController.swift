@@ -106,7 +106,7 @@ class SearchViewController: UIViewController, UISearchResultsUpdating, UISearchC
     private func searchFood(query: String) async {
         searchedFood = []
 
-        await ContentHandler.shared.searchStreamedFood(with: query) { foodItem in
+        await ContentHandler.shared.searchStreamedFoodName(with: query) { foodItem in
             DispatchQueue.main.async {
                 self.searchedFood.append(foodItem)
                 self.tableView.reloadData()

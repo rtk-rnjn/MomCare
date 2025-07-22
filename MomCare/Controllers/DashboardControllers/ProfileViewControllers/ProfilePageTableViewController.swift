@@ -8,19 +8,8 @@
 import UIKit
 
 class ProfilePageTableViewController: UITableViewController {
-    @IBOutlet var profileImageView: UIImageView?
-    @IBOutlet var usernameLabel: UILabel!
+
     var logoutHandler: (() -> Void)?
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        updateElements()
-
-    }
-
-    func updateElements() {
-
-    }
 
     @IBAction func logoutTapped() {
         let actions = [
