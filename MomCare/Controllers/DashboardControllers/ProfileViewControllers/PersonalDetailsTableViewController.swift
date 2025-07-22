@@ -31,6 +31,8 @@ class PersonalDetailsTableViewController: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        navigationController?.navigationBar.tintColor = UIColor(hex: "924350")
+
         updateElements()
         setupPickers()
 

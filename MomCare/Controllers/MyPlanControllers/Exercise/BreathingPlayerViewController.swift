@@ -45,11 +45,11 @@ class BreathingPlayerViewController: UIViewController {
     func exrciseDurationSetup() async {
         var i = 0
         
-        while 5 * 60 - i > 0 {
+        while 10 * 60 - i > 0 {
             try? await Task.sleep(nanoseconds: 1_000_000_000)
             DispatchQueue.main.async {
                 i += 1
-                let remainingSeconds = 5 * 60 - i
+                let remainingSeconds = 10 * 60 - i
                 
                 let remainingMinutes = remainingSeconds / 60
                 let remainingSecondsPart = remainingSeconds % 60
@@ -150,6 +150,15 @@ class BreathingPlayerViewController: UIViewController {
     private var currentCount = 0
     private var breathingCycles = 0
     
+    // Add these properties for animation state tracking
+    private var petalAnimationPhase: PetalAnimationPhase = .none
+    private var petalAnimationStartTime: TimeInterval = 0
+    private var petalAnimationDuration: TimeInterval = 0
+    private var petalAnimationRemaining: TimeInterval = 0
+    private var petalTargetPositions: [CGPoint] = []
+    private var petalPausedPositions: [CGPoint] = []
+    private enum PetalAnimationPhase { case none, expanding, collapsing }
+    
     // MARK: - State & Controls
     private enum PlayerState { case ready, playing, paused, finished }
     private var playerState: PlayerState = .ready
@@ -158,7 +167,7 @@ class BreathingPlayerViewController: UIViewController {
     private var exerciseTimer: Timer?
     private var secondsElapsed = 0
     
-    // pause
+    // For smooth pausing
     private var nextStateWorkItem: DispatchWorkItem?
     private var animationPhaseStartTime: TimeInterval = 0
     private var timeRemainingForPhase: TimeInterval = 0
@@ -168,15 +177,15 @@ class BreathingPlayerViewController: UIViewController {
     private let numberOfPetals = 6
     private let circleSize: CGFloat = 100
     private let animationDuration: TimeInterval = 4.0
-    private let spreadDistance: CGFloat = 60
-    private let textAnimationDuration: TimeInterval = 0.5
-    private let totalBreathingTime: Double = 10
+    private let spreadDistance: CGFloat = 60 // More spread for flower
+    private let textAnimationDuration: TimeInterval = 0.5 //
+    private let totalBreathingTime: Double = 600
     private let petalColors: [UIColor] = [
         UIColor(hex: "#bfaee0"), // soft purple
         UIColor(hex: "#f7d6e0"), // soft pink
-        UIColor(hex: "#a3d8f4"), // soft blue
-        UIColor(hex: "#c2e9e0"), // soft mint
-        UIColor(hex: "#f9e7b4"), // soft yellow
+        UIColor(hex: "#e6d6f7"), // pastel lilac (replaces blue)
+        UIColor(hex: "#f7d6ec"), // pastel rose (replaces mint/green)
+        UIColor(hex: "#ffd6d6"), // pastel peach/blush
         UIColor(hex: "#e3c6f7")  // lavender
     ]
     private let centerColor = UIColor(hex: "#fff6f0") // warm cream
@@ -254,7 +263,6 @@ class BreathingPlayerViewController: UIViewController {
         if currentCount >= 1 {
             timerLabel.text = "\(currentCount)"
         }
-        // Always decrement, but only update label if >= 1
         currentCount -= 1
     }
     
@@ -354,9 +362,14 @@ class BreathingPlayerViewController: UIViewController {
     }
     
     private func animateFlowerFormation(completion: @escaping () -> Void) {
+        petalAnimationPhase = .expanding
+        petalAnimationStartTime = CACurrentMediaTime()
+        petalAnimationDuration = animationDuration
+        petalAnimationRemaining = animationDuration
+        petalTargetPositions = []
+        petalPausedPositions = []
         CATransaction.begin()
         CATransaction.setCompletionBlock {
-            // Add a gentle pulse to petals
             self.pulsePetals()
             completion()
         }
@@ -365,9 +378,11 @@ class BreathingPlayerViewController: UIViewController {
             let angle = (2.0 * .pi * CGFloat(index - 1)) / CGFloat(numberOfPetals)
             let destinationX = circlesContainer.bounds.midX + cos(angle) * spreadDistance
             let destinationY = circlesContainer.bounds.midY + sin(angle) * spreadDistance
+            let destination = CGPoint(x: destinationX, y: destinationY)
+            petalTargetPositions.append(destination)
             let animation = CABasicAnimation(keyPath: "position")
-            animation.fromValue = CGPoint(x: circlesContainer.bounds.midX, y: circlesContainer.bounds.midY)
-            animation.toValue = CGPoint(x: destinationX, y: destinationY)
+            animation.fromValue = circle.presentation()?.position ?? circle.position
+            animation.toValue = destination
             animation.duration = animationDuration
             animation.timingFunction = CAMediaTimingFunction(name: .easeInEaseOut)
             animation.fillMode = .forwards
@@ -409,14 +424,16 @@ class BreathingPlayerViewController: UIViewController {
     }
     
     private func animateFlowerCollapse(completion: @escaping () -> Void) {
+        petalAnimationPhase = .collapsing
+        petalAnimationStartTime = CACurrentMediaTime()
+        petalAnimationDuration = animationDuration
+        petalAnimationRemaining = animationDuration
+        petalTargetPositions = Array(repeating: CGPoint(x: circlesContainer.bounds.midX, y: circlesContainer.bounds.midY), count: numberOfPetals)
+        petalPausedPositions = []
         CATransaction.begin()
         CATransaction.setCompletionBlock(completion)
-        
         for (index, circle) in circleLayers.enumerated() {
-            if index == 0 {
-                continue
-            }
-            
+            if index == 0 { continue }
             let animation = CABasicAnimation(keyPath: "position")
             animation.fromValue = circle.presentation()?.position ?? circle.position
             animation.toValue = CGPoint(x: circlesContainer.bounds.midX, y: circlesContainer.bounds.midY)
@@ -424,10 +441,8 @@ class BreathingPlayerViewController: UIViewController {
             animation.timingFunction = CAMediaTimingFunction(name: .easeInEaseOut)
             animation.fillMode = .forwards
             animation.isRemovedOnCompletion = false
-            
             circle.add(animation, forKey: "position")
         }
-        
         CATransaction.commit()
     }
     
@@ -497,19 +512,16 @@ class BreathingPlayerViewController: UIViewController {
     }
     
     @objc private func stopButtonTapped() {
-        pauseExercise() // Pause everything first
-        
+        pauseExercise()
         let alert = UIAlertController(title: "Stop Exercise", message: "Are you sure you want to stop the breathing exercise?", preferredStyle: .alert)
         
         alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { _ in
-            // If they cancel, resume the exercise
             self.resumeExercise()
         }))
         
         alert.addAction(UIAlertAction(title: "Stop", style: .destructive, handler: { _ in
             self.playerState = .finished
             self.resetExercise()
-            // Dismiss or pop to previous screen
             if let nav = self.navigationController {
                 nav.popViewController(animated: true)
             } else {
@@ -523,23 +535,31 @@ class BreathingPlayerViewController: UIViewController {
     private func startExercise() {
         // Reset counters and start timers/animations
         secondsElapsed = 0
-        updateMainTimer() // Show 05:00 immediately
+        updateMainTimer()
         startMainTimer()
         startBreathingAnimation()
     }
     
     private func pauseExercise() {
         if playerState != .paused { return }
-        
         // 1. Pause timers
         exerciseTimer?.invalidate()
         timer?.invalidate()
-        
-        // 2. Pause CoreAnimation smoothly
-        let pausedTime = circlesContainer.convertTime(CACurrentMediaTime(), from: nil)
-        circlesContainer.speed = 0
-        circlesContainer.timeOffset = pausedTime
-        
+        // 2. Pause petal animation: record current positions and remaining time
+        if petalAnimationPhase != .none {
+            let now = CACurrentMediaTime()
+            let elapsed = now - petalAnimationStartTime
+            petalAnimationRemaining = max(0, petalAnimationDuration - elapsed)
+            petalPausedPositions = []
+            for (index, circle) in circleLayers.enumerated() {
+                if index == 0 { continue }
+                let pos = circle.presentation()?.position ?? circle.position
+                petalPausedPositions.append(pos)
+                // Remove all animations so we can resume cleanly
+                circle.removeAllAnimations()
+                circle.position = pos
+            }
+        }
         // 3. Cancel next state change and calculate remaining time
         nextStateWorkItem?.cancel()
         let timeElapsed = CACurrentMediaTime() - animationPhaseStartTime
@@ -549,25 +569,45 @@ class BreathingPlayerViewController: UIViewController {
     
     private func resumeExercise() {
         if playerState != .playing { return }
-        
         // 1. Resume main timer
         startMainTimer()
-        
-        // 2. Resume CoreAnimation smoothly
-        let pausedTime = circlesContainer.timeOffset
-        circlesContainer.speed = 1
-        circlesContainer.timeOffset = 0
-        circlesContainer.beginTime = 0
-        let timeSincePause = circlesContainer.convertTime(CACurrentMediaTime(), from: nil) - pausedTime
-        circlesContainer.beginTime = timeSincePause
-        
+        // 2. Resume petal animation if needed
+        if petalAnimationPhase != .none && petalAnimationRemaining > 0 && !petalPausedPositions.isEmpty {
+            for (i, circle) in circleLayers.enumerated() {
+                if i == 0 { continue }
+                let from = petalPausedPositions[i-1]
+                let to: CGPoint
+                if petalAnimationPhase == .expanding {
+                    to = petalTargetPositions[i-1]
+                } else {
+                    to = CGPoint(x: circlesContainer.bounds.midX, y: circlesContainer.bounds.midY)
+                }
+                let animation = CABasicAnimation(keyPath: "position")
+                animation.fromValue = from
+                animation.toValue = to
+                animation.duration = petalAnimationRemaining
+                animation.timingFunction = CAMediaTimingFunction(name: .easeInEaseOut)
+                animation.fillMode = .forwards
+                animation.isRemovedOnCompletion = false
+                circle.position = from
+                circle.add(animation, forKey: "position")
+            }
+            // Reset phase tracking
+            petalAnimationStartTime = CACurrentMediaTime()
+            petalAnimationDuration = petalAnimationRemaining
+            // Schedule the next state change after the remaining time
+            if isInhaling {
+                scheduleNextState(after: timeRemainingForPhase)
+            }
+            petalAnimationRemaining = 0
+            petalPausedPositions = []
+        }
         // 3. Resume countdown timer (if it was running)
         if !timerLabel.isHidden {
             startTimer(from: currentCount)
         }
-        
         // 4. Reschedule the next state change
-        if isInhaling { // Only reschedule if we were in a waiting phase (Hold)
+        if isInhaling && petalAnimationPhase == .none { // Only reschedule if we were in a waiting phase (Hold)
             scheduleNextState(after: timeRemainingForPhase)
         }
     }
@@ -617,7 +657,6 @@ class BreathingPlayerViewController: UIViewController {
     private func updateMainTimer() {
         secondsElapsed += 1
         let remainingSeconds = Int(totalBreathingTime) - secondsElapsed
-        
         if remainingSeconds <= 0 {
             totalBreatingDuration.text = "00:00"
             exerciseTimer?.invalidate()
@@ -642,7 +681,6 @@ class BreathingPlayerViewController: UIViewController {
         let remainingMinutes = remainingSeconds / 60
         let remainingSecondsPart = remainingSeconds % 60
         remainingMinSec = Double(remainingMinutes) * 60 + Double(remainingSecondsPart)
-        
         totalBreatingDuration.text = String(format: "%02d:%02d", remainingMinutes, remainingSecondsPart)
     }
     
