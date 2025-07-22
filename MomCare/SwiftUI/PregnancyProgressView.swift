@@ -5,6 +5,11 @@ struct PregnancyProgressView: View {
     @StateObject private var viewModel = ExerciseGoalsViewModel()
     @State private var showingExerciseInfo: ExerciseGoalInfo?
     @State private var isShowingInfo = false
+    @State private var showingCalendar = false
+    
+    // Calendar navigation states
+    @State private var currentDate = Date()
+    @State private var dragOffset: CGFloat = 0
     
     var body: some View {
         ZStack {
@@ -13,8 +18,13 @@ struct PregnancyProgressView: View {
                     // Week Header with enhanced styling
                     weekHeaderView
                     
-                    // Weekly Progress Rings
+                    // Weekly Progress Rings - Make it tappable
                     weeklyProgressRingsView
+                        .onTapGesture {
+                            withAnimation(.spring(response: 0.6, dampingFraction: 0.8)) {
+                                showingCalendar = true
+                            }
+                        }
                     
                     // Walking Card
                     walkingCardView
@@ -35,8 +45,8 @@ struct PregnancyProgressView: View {
             .onAppear {
                 viewModel.loadData()
             }
-            .blur(radius: isShowingInfo ? 3 : 0)
-            .animation(.easeInOut(duration: 0.3), value: isShowingInfo)
+            .blur(radius: (isShowingInfo || showingCalendar) ? 3 : 0)
+            .animation(.easeInOut(duration: 0.3), value: isShowingInfo || showingCalendar)
             
             // Exercise Info Card Overlay
             if isShowingInfo, let exercise = showingExerciseInfo {
@@ -46,6 +56,15 @@ struct PregnancyProgressView: View {
                         removal: .scale.combined(with: .opacity)
                     ))
                     .animation(.spring(response: 0.6, dampingFraction: 0.8), value: isShowingInfo)
+            }
+            
+            // Calendar Overlay
+            if showingCalendar {
+                progressCalendarView
+                    .transition(.asymmetric(
+                        insertion: AnyTransition.scale.combined(with: AnyTransition.opacity),
+                        removal: AnyTransition.scale.combined(with: AnyTransition.opacity)
+                    ))
             }
         }
     }
@@ -67,7 +86,7 @@ struct PregnancyProgressView: View {
     
     private var weeklyProgressRingsView: some View {
         VStack(spacing: 16) {
-            // Header for weekly progress
+            // Header for weekly progress with tap indicator
             HStack {
                 Text("Weekly Progress")
                     .font(.system(size: 18, weight: .semibold))
@@ -75,9 +94,16 @@ struct PregnancyProgressView: View {
                 
                 Spacer()
                 
-                Text("3/7 days")
-                    .font(.system(size: 14, weight: .medium))
-                    .foregroundColor(.secondary)
+                HStack(spacing: 4) {
+                    Text("3/7 days")
+                        .font(.system(size: 14, weight: .medium))
+                        .foregroundColor(.secondary)
+                    
+                    Image(systemName: "chevron.right")
+                        .font(.system(size: 12, weight: .semibold))
+                        .foregroundColor(.secondary)
+                        .opacity(0.6)
+                }
             }
             
             // Day letters row with enhanced styling
@@ -500,6 +526,315 @@ struct PregnancyProgressView: View {
         }
         .frame(maxWidth: .infinity)
     }
+    
+    // MARK: - Progress Calendar View (Updated with Month/Year Navigation)
+    private var progressCalendarView: some View {
+        ZStack {
+            // Background overlay
+            Color.black.opacity(0.4)
+                .ignoresSafeArea()
+                .onTapGesture {
+                    withAnimation(.spring(response: 0.6, dampingFraction: 0.8)) {
+                        showingCalendar = false
+                    }
+                }
+            
+            // Calendar Card
+            VStack(spacing: 0) {
+                // Header with Month/Year Navigation
+                HStack {
+                    VStack(alignment: .leading, spacing: 4) {
+                        Text("Exercise Progress")
+                            .font(.system(size: 20, weight: .bold))
+                            .foregroundColor(.primary)
+                        
+                        HStack(spacing: 16) {
+                            // Previous Month Button
+                            Button(action: {
+                                withAnimation(.easeInOut(duration: 0.3)) {
+                                    currentDate = Calendar.current.date(byAdding: .month, value: -1, to: currentDate) ?? currentDate
+                                }
+                            }) {
+                                Image(systemName: "chevron.left")
+                                    .font(.system(size: 16, weight: .semibold))
+                                    .foregroundColor(Color(hex: "924350"))
+                            }
+                            
+                            // Current Month/Year
+                            Text(currentMonthYearString)
+                                .font(.system(size: 18, weight: .semibold))
+                                .foregroundColor(.primary)
+                                .frame(minWidth: 140)
+                            
+                            // Next Month Button
+                            Button(action: {
+                                withAnimation(.easeInOut(duration: 0.3)) {
+                                    currentDate = Calendar.current.date(byAdding: .month, value: 1, to: currentDate) ?? currentDate
+                                }
+                            }) {
+                                Image(systemName: "chevron.right")
+                                    .font(.system(size: 16, weight: .semibold))
+                                    .foregroundColor(Color(hex: "924350"))
+                            }
+                        }
+                    }
+                    
+                    Spacer()
+                    
+                    // Close Button
+                    Button(action: {
+                        withAnimation(.spring(response: 0.6, dampingFraction: 0.8)) {
+                            showingCalendar = false
+                        }
+                    }) {
+                        Image(systemName: "xmark")
+                            .font(.system(size: 16, weight: .semibold))
+                            .foregroundColor(.secondary)
+                            .padding(8)
+                            .background(
+                                Circle()
+                                    .fill(Color.gray.opacity(0.15))
+                            )
+                    }
+                }
+                .padding(20)
+                
+                // Calendar Grid with Swipe Gesture
+                VStack(spacing: 0) {
+                    // Week day headers
+                    HStack(spacing: 0) {
+                        ForEach(["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"], id: \.self) { day in
+                            Text(String(day.prefix(1)))
+                                .font(.system(size: 14, weight: .semibold))
+                                .foregroundColor(.secondary)
+                                .frame(maxWidth: .infinity)
+                                .padding(.vertical, 8)
+                        }
+                    }
+                    
+                    // Calendar days with animation
+                    LazyVGrid(columns: Array(repeating: GridItem(.flexible()), count: 7), spacing: 8) {
+                        ForEach(getDaysInMonth(), id: \.self) { day in
+                            if day > 0 {
+                                calendarDayView(
+                                    day: day,
+                                    progress: viewModel.getProgressForDate(year: currentYear, month: currentMonth, day: day),
+                                    isToday: isToday(day: day),
+                                    isCurrentMonth: true
+                                )
+                            } else {
+                                // Empty space for days from previous month
+                                Color.clear
+                                    .frame(width: 36, height: 36)
+                            }
+                        }
+                    }
+                    .padding(.horizontal, 20)
+                    .padding(.bottom, 20)
+                    .offset(x: dragOffset)
+                    .gesture(
+                        DragGesture()
+                            .onChanged { value in
+                                dragOffset = value.translation.width  // Changed from .x to .width
+                            }
+                            .onEnded { value in
+                                let threshold: CGFloat = 50
+                                
+                                if value.translation.width > threshold {  // Changed from .x to .width
+                                    // Swipe right - previous month
+                                    withAnimation(.easeInOut(duration: 0.3)) {
+                                        currentDate = Calendar.current.date(byAdding: .month, value: -1, to: currentDate) ?? currentDate
+                                    }
+                                } else if value.translation.width < -threshold {  // Changed from .x to .width
+                                    // Swipe left - next month
+                                    withAnimation(.easeInOut(duration: 0.3)) {
+                                        currentDate = Calendar.current.date(byAdding: .month, value: 1, to: currentDate) ?? currentDate
+                                    }
+                                }
+                                
+                                withAnimation(.easeInOut(duration: 0.2)) {
+                                    dragOffset = 0
+                                }
+                            }
+                    )
+                }
+                
+                // Legend
+                HStack(spacing: 16) {
+                    legendItem(color: Color(hex: "924350"), text: "Completed")
+                    legendItem(color: Color(hex: "924350").opacity(0.5), text: "Partial")
+                    legendItem(color: Color.gray.opacity(0.3), text: "Not Started")
+                    Spacer()
+                }
+                .padding(.horizontal, 20)
+                .padding(.bottom, 20)
+                
+                // Month Summary Stats
+                monthSummaryView
+            }
+            .frame(maxWidth: 400)
+            .background(
+                RoundedRectangle(cornerRadius: 24)
+                    .fill(Color.white)
+            )
+            .padding(.horizontal, 20)
+        }
+    }
+    
+    // Calendar day view with enhanced features
+    private func calendarDayView(day: Int, progress: Double, isToday: Bool, isCurrentMonth: Bool) -> some View {
+        ZStack {
+            // Today indicator
+            if isToday {
+                Circle()
+                    .stroke(Color(hex: "924350"), lineWidth: 3)
+                    .frame(width: 38, height: 38)
+            }
+            
+            // Background ring
+            Circle()
+                .stroke(Color.gray.opacity(0.2), lineWidth: 2)
+                .frame(width: 36, height: 36)
+            
+            // Progress ring
+            Circle()
+                .trim(from: 0, to: progress)
+                .stroke(
+                    progress >= 1.0 ? Color(hex: "924350") : Color(hex: "924350").opacity(0.6),
+                    style: StrokeStyle(lineWidth: 2, lineCap: .round)
+                )
+                .frame(width: 36, height: 36)
+                .rotationEffect(.degrees(-90))
+            
+            // Day number
+            Text("\(day)")
+                .font(.system(size: 12, weight: isToday ? .bold : .medium))
+                .foregroundColor(isToday ? Color(hex: "924350") : .primary)
+            
+            // Checkmark for completed days
+            if progress >= 1.0 {
+                Image(systemName: "checkmark")
+                    .font(.system(size: 8, weight: .bold))
+                    .foregroundColor(Color(hex: "924350"))
+                    .offset(x: 12, y: -12)
+            }
+        }
+    }
+    
+    // Legend item
+    private func legendItem(color: Color, text: String) -> some View {
+        HStack(spacing: 6) {
+            Circle()
+                .fill(color)
+                .frame(width: 12, height: 12)
+            
+            Text(text)
+                .font(.system(size: 12, weight: .medium))
+                .foregroundColor(.secondary)
+        }
+    }
+    
+    // Month Summary View
+    private var monthSummaryView: some View {
+        HStack(spacing: 24) {
+            VStack(spacing: 4) {
+                Text("\(completedDaysInMonth)")
+                    .font(.system(size: 20, weight: .bold))
+                    .foregroundColor(Color(hex: "924350"))
+                
+                Text("Completed")
+                    .font(.system(size: 12, weight: .medium))
+                    .foregroundColor(.secondary)
+            }
+            
+            VStack(spacing: 4) {
+                Text("\(partialDaysInMonth)")
+                    .font(.system(size: 20, weight: .bold))
+                    .foregroundColor(Color(hex: "924350").opacity(0.7))
+                
+                Text("Partial")
+                    .font(.system(size: 12, weight: .medium))
+                    .foregroundColor(.secondary)
+            }
+            
+            VStack(spacing: 4) {
+                Text("\(totalDaysInMonth)")
+                    .font(.system(size: 20, weight: .bold))
+                    .foregroundColor(.primary)
+                
+                Text("Total Days")
+                    .font(.system(size: 12, weight: .medium))
+                    .foregroundColor(.secondary)
+            }
+            
+            Spacer()
+        }
+        .padding(.horizontal, 20)
+        .padding(.bottom, 8)
+    }
+    
+    // MARK: - Calendar Helper Properties and Functions
+    private var currentMonthYearString: String {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "MMMM yyyy"
+        return formatter.string(from: currentDate)
+    }
+    
+    private var currentMonth: Int {
+        Calendar.current.component(.month, from: currentDate)
+    }
+    
+    private var currentYear: Int {
+        Calendar.current.component(.year, from: currentDate)
+    }
+    
+    private func getDaysInMonth() -> [Int] {
+        let calendar = Calendar.current
+        let startOfMonth = calendar.dateInterval(of: .month, for: currentDate)?.start ?? currentDate
+        let numberOfDays = calendar.range(of: .day, in: .month, for: currentDate)?.count ?? 30
+        let firstDayWeekday = calendar.component(.weekday, from: startOfMonth) - 1
+        
+        var days: [Int] = []
+        
+        // Add empty spaces for days before the first day of the month
+        for _ in 0..<firstDayWeekday {
+            days.append(0)
+        }
+        
+        // Add all days of the month
+        for day in 1...numberOfDays {
+            days.append(day)
+        }
+        
+        return days
+    }
+    
+    private func isToday(day: Int) -> Bool {
+        let today = Date()
+        let todayComponents = Calendar.current.dateComponents([.year, .month, .day], from: today)
+        let currentComponents = Calendar.current.dateComponents([.year, .month], from: currentDate)
+        
+        return todayComponents.year == currentComponents.year &&
+               todayComponents.month == currentComponents.month &&
+               todayComponents.day == day
+    }
+    
+    private var completedDaysInMonth: Int {
+        let numberOfDays = Calendar.current.range(of: .day, in: .month, for: currentDate)?.count ?? 30
+        return (1...numberOfDays).filter { viewModel.getProgressForDate(year: currentYear, month: currentMonth, day: $0) >= 1.0 }.count
+    }
+    
+    private var partialDaysInMonth: Int {
+        let numberOfDays = Calendar.current.range(of: .day, in: .month, for: currentDate)?.count ?? 30
+        return (1...numberOfDays).filter { 
+            let progress = viewModel.getProgressForDate(year: currentYear, month: currentMonth, day: $0)
+            return progress > 0.0 && progress < 1.0 
+        }.count
+    }
+    
+    private var totalDaysInMonth: Int {
+        Calendar.current.range(of: .day, in: .month, for: currentDate)?.count ?? 30
+    }
 }
 
 // MARK: - Local Data Models (renamed to avoid conflicts)
@@ -532,9 +867,62 @@ class ExerciseGoalsViewModel: ObservableObject {
     @Published var totalGoalsCompleted: Int = 10
     @Published var totalGoals: Int = 30
     
+    // Monthly progress data organized by year/month/day
+    private var yearlyProgress: [Int: [Int: [Int: Double]]] = [:]
+    
     func loadData() {
         loadMockWeeklyProgress()
         loadMockExerciseGoals()
+        loadMockYearlyProgress()
+    }
+    
+    private func loadMockYearlyProgress() {
+        // Generate mock data for 2024 and 2025
+        for year in [2024, 2025] {
+            yearlyProgress[year] = [:]
+            for month in 1...12 {
+                yearlyProgress[year]?[month] = [:]
+                let daysInMonth = Calendar.current.range(of: .day, in: .month, for: createDate(year: year, month: month, day: 1))?.count ?? 30
+                
+                for day in 1...daysInMonth {
+                    // Generate realistic progress patterns
+                    let progress = generateRealisticProgress(year: year, month: month, day: day)
+                    yearlyProgress[year]?[month]?[day] = progress
+                }
+            }
+        }
+    }
+    
+    private func createDate(year: Int, month: Int, day: Int) -> Date {
+        var components = DateComponents()
+        components.year = year
+        components.month = month
+        components.day = day
+        return Calendar.current.date(from: components) ?? Date()
+    }
+    
+    private func generateRealisticProgress(year: Int, month: Int, day: Int) -> Double {
+        // Create more realistic patterns
+        let date = createDate(year: year, month: month, day: day)
+        let weekday = Calendar.current.component(.weekday, from: date)
+        
+        // Higher completion rates on weekdays, lower on weekends
+        let baseRate: Double = weekday == 1 || weekday == 7 ? 0.4 : 0.7
+        
+        // Add some randomness but weighted towards the base rate
+        let randomFactor = Double.random(in: 0...1)
+        let weightedProgress = (baseRate + randomFactor) / 2
+        
+        // Quantize to meaningful values
+        if weightedProgress < 0.2 { return 0.0 }
+        else if weightedProgress < 0.4 { return 0.3 }
+        else if weightedProgress < 0.6 { return 0.6 }
+        else if weightedProgress < 0.8 { return 0.8 }
+        else { return 1.0 }
+    }
+    
+    func getProgressForDate(year: Int, month: Int, day: Int) -> Double {
+        return yearlyProgress[year]?[month]?[day] ?? 0.0
     }
     
     private func loadMockWeeklyProgress() {
