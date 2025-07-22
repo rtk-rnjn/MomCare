@@ -249,7 +249,7 @@ class BreathingPlayerViewController: UIViewController {
             }
         }
     }
-
+    
     private func updateCurrentCount() {
         if currentCount >= 1 {
             timerLabel.text = "\(currentCount)"
@@ -586,6 +586,12 @@ class BreathingPlayerViewController: UIViewController {
         }
         
         startPauseButton.setTitle("Start", for: .normal)
+        
+        // Reset the stop button to its original state and action
+        stopButton.setTitle("Stop", for: .normal)
+        stopButton.removeTarget(self, action: #selector(doneButtonTapped), for: .touchUpInside)
+        stopButton.addTarget(self, action: #selector(stopButtonTapped), for: .touchUpInside)
+        
         UIView.animate(withDuration: 0.3) {
             self.stopButton.isHidden = true
             self.assuringMessageLabel.alpha = 0
@@ -617,10 +623,18 @@ class BreathingPlayerViewController: UIViewController {
             exerciseTimer?.invalidate()
             playerState = .finished
             animateFlowerBloomAndShowMessage()
+            
+            // Configure buttons for the finished state
+            startPauseButton.setTitle("Restart", for: .normal)
+            
+            // Repurpose the stop button to act as a "Done" button
+            stopButton.setTitle("Done", for: .normal)
+            stopButton.removeTarget(self, action: #selector(stopButtonTapped), for: .touchUpInside)
+            stopButton.addTarget(self, action: #selector(doneButtonTapped), for: .touchUpInside)
+            
             UIView.animate(withDuration: 0.5) {
                 self.startPauseButton.alpha = 1 // Show it again
-                self.startPauseButton.setTitle("Restart", for: .normal)
-                self.stopButton.isHidden = true
+                self.stopButton.isHidden = false // Ensure it's visible
             }
             return
         }
@@ -630,6 +644,15 @@ class BreathingPlayerViewController: UIViewController {
         remainingMinSec = Double(remainingMinutes) * 60 + Double(remainingSecondsPart)
         
         totalBreatingDuration.text = String(format: "%02d:%02d", remainingMinutes, remainingSecondsPart)
+    }
+    
+    @objc private func doneButtonTapped() {
+        // Dismiss or pop to previous screen
+        if let nav = self.navigationController {
+            nav.popViewController(animated: true)
+        } else {
+            self.dismiss(animated: true)
+        }
     }
     
 }
