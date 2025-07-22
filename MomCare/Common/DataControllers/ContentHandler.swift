@@ -69,7 +69,7 @@ class ContentHandler {
 
         await NetworkManager.shared.fetchStreamedData(.GET, url: Endpoint.search.urlString, queryParameters: sendableQeury, onItem: onItem)
     }
-    
+
     func searchStreamedFoodName(with query: String, onItem: (@Sendable (FoodItem) -> Void)?) async {
         let searchQeury = FoodSearchQuery(foodName: query)
         let sendableQeury: [String: Any]? = searchQeury.toDictionary(snakeCase: true)
