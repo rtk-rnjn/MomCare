@@ -44,6 +44,10 @@ class TriTrackAddEventViewController: UIViewController {
         super.viewWillAppear(animated)
         prepareContainerView()
     }
+    
+    override func viewDidLoad() {
+        navigationController?.navigationBar.tintColor = UIColor(hex: "#924350")
+    }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         switch segue.identifier {

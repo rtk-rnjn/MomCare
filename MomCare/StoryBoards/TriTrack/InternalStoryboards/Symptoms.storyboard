@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="23504" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="n3o-1m-7wH">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="23727" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="n3o-1m-7wH">
     <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23506"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23721"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -10,40 +11,41 @@
         <scene sceneID="s3O-1e-cIA">
             <objects>
                 <tableViewController id="n3o-1m-7wH" customClass="AllSymptomsTableViewController" customModule="MomCare" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="insetGrouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" estimatedSectionHeaderHeight="-1" sectionFooterHeight="18" estimatedSectionFooterHeight="-1" id="s0a-4P-tlZ">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="insetGrouped" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" estimatedSectionHeaderHeight="-1" sectionFooterHeight="18" estimatedSectionFooterHeight="-1" id="s0a-4P-tlZ">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" red="0.91372549020000005" green="0.82745098039999998" blue="0.82745098039999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="AllSymptomsTableViewCell" id="qad-tw-Rof" customClass="AllSymptomsTableViewCell" customModule="MomCare" customModuleProvider="target">
-                                <rect key="frame" x="20" y="55.333332061767578" width="353" height="66"/>
+                                <rect key="frame" x="20" y="55.333332061767578" width="353" height="75.666664123535156"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="qad-tw-Rof" id="NSc-1q-ljQ">
-                                    <rect key="frame" x="0.0" y="0.0" width="353" height="66"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="353" height="75.666664123535156"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kw8-Pr-crA">
-                                            <rect key="frame" x="20" y="5" width="313" height="56"/>
+                                            <rect key="frame" x="15" y="7.9999999999999964" width="323" height="59.666666666666657"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4OI-vs-aVy">
-                                                    <rect key="frame" x="0.0" y="0.0" width="41.333333333333336" height="56"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="31.333333333333332" height="59.666666666666664"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <datePicker contentMode="scaleToFill" contentHorizontalAlignment="trailing" contentVerticalAlignment="center" datePickerMode="dateAndTime" minuteInterval="1" translatesAutoresizingMaskIntoConstraints="NO" id="IGz-Ci-HJi">
-                                                    <rect key="frame" x="41.333333333333343" y="0.0" width="271.66666666666663" height="56"/>
+                                                    <rect key="frame" x="31.333333333333343" y="0.0" width="291.66666666666663" height="59.666666666666664"/>
                                                 </datePicker>
                                             </subviews>
                                         </stackView>
                                     </subviews>
                                     <constraints>
-                                        <constraint firstItem="kw8-Pr-crA" firstAttribute="top" secondItem="NSc-1q-ljQ" secondAttribute="top" constant="5" id="3jp-ee-xsk"/>
-                                        <constraint firstAttribute="bottom" secondItem="kw8-Pr-crA" secondAttribute="bottom" constant="5" id="SUL-tw-rMb"/>
-                                        <constraint firstItem="kw8-Pr-crA" firstAttribute="leading" secondItem="NSc-1q-ljQ" secondAttribute="leading" constant="20" id="XiT-5X-yUS"/>
-                                        <constraint firstAttribute="trailing" secondItem="kw8-Pr-crA" secondAttribute="trailing" constant="20" id="Zlx-09-Hjo"/>
+                                        <constraint firstItem="kw8-Pr-crA" firstAttribute="top" secondItem="NSc-1q-ljQ" secondAttribute="top" constant="8" id="3jp-ee-xsk"/>
+                                        <constraint firstAttribute="bottom" secondItem="kw8-Pr-crA" secondAttribute="bottom" constant="8" id="SUL-tw-rMb"/>
+                                        <constraint firstItem="kw8-Pr-crA" firstAttribute="leading" secondItem="NSc-1q-ljQ" secondAttribute="leading" constant="15" id="XiT-5X-yUS"/>
+                                        <constraint firstAttribute="trailing" secondItem="kw8-Pr-crA" secondAttribute="trailing" constant="15" id="Zlx-09-Hjo"/>
                                     </constraints>
                                 </tableViewCellContentView>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <connections>
                                     <outlet property="dateTimePicker" destination="IGz-Ci-HJi" id="WsL-Gg-fPY"/>
                                     <outlet property="titleLabel" destination="4OI-vs-aVy" id="6UR-wf-bTS"/>
@@ -61,4 +63,9 @@
             <point key="canvasLocation" x="-54" y="-14"/>
         </scene>
     </scenes>
+    <resources>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
 </document>

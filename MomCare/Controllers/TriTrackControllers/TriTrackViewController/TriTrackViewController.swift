@@ -47,14 +47,13 @@ class TriTrackViewController: UIViewController, FSCalendarDelegate, FSCalendarDa
             await EventKitHandler.shared.requestAccessForEvent()
             await EventKitHandler.shared.requestAccessForReminder()
         }
-
+        navigationController?.navigationBar.tintColor = UIColor(hex: "#924350")
         navigationController?.navigationBar.isTranslucent = false
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         triTrackInternalView.layer.cornerRadius = 15
-
         prepareSegmentedControl()
         updateView(with: currentSegmentValue)
     }

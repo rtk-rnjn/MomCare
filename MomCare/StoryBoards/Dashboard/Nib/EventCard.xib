@@ -3,7 +3,6 @@
     <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23721"/>
-        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="collection view cell content view" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -45,20 +44,20 @@
                                 </userDefinedRuntimeAttributes>
                             </view>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="iqi-IQ-Xu6">
-                                <rect key="frame" x="3" y="8" width="151.66666666666666" height="34.333333333333336"/>
+                                <rect key="frame" x="15" y="8" width="157" height="34.333333333333336"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="leading" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6rn-Tc-0Bn">
-                                        <rect key="frame" x="0.0" y="0.0" width="151.66666666666666" height="34.333333333333336"/>
-                                        <color key="tintColor" systemColor="linkColor"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="157" height="34.333333333333336"/>
+                                        <color key="tintColor" red="0.57254901960000004" green="0.26274509800000001" blue="0.31372549020000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <state key="normal" title="Button"/>
-                                        <buttonConfiguration key="configuration" style="plain" title="Add Event" titleAlignment="leading"/>
+                                        <buttonConfiguration key="configuration" style="plain" image="plus" catalog="system" title="Add Event" titleAlignment="leading"/>
                                         <connections>
                                             <action selector="addEventButtonTapped:" destination="t1y-Ib-jg4" eventType="touchUpInside" id="UJE-8S-e4Z"/>
                                         </connections>
                                     </button>
                                     <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No Upcoming Event" lineBreakMode="wordWrap" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qRi-OX-TIw">
-                                        <rect key="frame" x="0.0" y="0.0" width="151.66666666666666" height="0.0"/>
-                                        <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="157" height="0.0"/>
+                                        <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
@@ -71,7 +70,7 @@
                             <constraint firstItem="iqi-IQ-Xu6" firstAttribute="centerY" secondItem="iyF-9F-32h" secondAttribute="centerY" id="E09-bP-5x3"/>
                             <constraint firstAttribute="trailing" secondItem="qBD-uw-ovo" secondAttribute="trailing" constant="10" id="Sq9-Ef-KuI"/>
                             <constraint firstAttribute="bottom" secondItem="qBD-uw-ovo" secondAttribute="bottom" constant="30" id="aOY-tJ-kCg"/>
-                            <constraint firstItem="iqi-IQ-Xu6" firstAttribute="leading" secondItem="iyF-9F-32h" secondAttribute="leading" constant="3" id="hle-vq-bML"/>
+                            <constraint firstItem="iqi-IQ-Xu6" firstAttribute="leading" secondItem="iyF-9F-32h" secondAttribute="leading" constant="15" id="hle-vq-bML"/>
                         </constraints>
                     </view>
                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="B7y-Xb-hxj">
@@ -116,9 +115,7 @@
     </objects>
     <resources>
         <image name="calendar.badge.clock" catalog="system" width="128" height="109"/>
-        <systemColor name="linkColor">
-            <color red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </systemColor>
+        <image name="plus" catalog="system" width="128" height="113"/>
         <systemColor name="tableCellGroupedBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
