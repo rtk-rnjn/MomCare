@@ -537,7 +537,7 @@
         <!--Account & Security-->
         <scene sceneID="0FX-O9-Fl2">
             <objects>
-                <tableViewController id="oO8-UD-jq3" customClass="SettingsTableViewController" customModule="MomCare" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController id="oO8-UD-jq3" customClass="ProfileSecurityTableViewController" customModule="MomCare" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="insetGrouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" estimatedSectionHeaderHeight="-1" sectionFooterHeight="18" estimatedSectionFooterHeight="-1" id="nkm-2N-2YP">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="783"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -842,10 +842,43 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Health &amp; Support" id="dSS-qZ-fSl"/>
+                    <connections>
+                        <segue destination="LW8-m1-C9D" kind="show" id="BVw-oA-69X"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ygm-ai-Qu6" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="3473" y="154"/>
+        </scene>
+        <!--PrivacyPolicyTableViewController-->
+        <scene sceneID="vgK-JP-toM">
+            <objects>
+                <viewControllerPlaceholder storyboardIdentifier="PrivacyPolicyTableViewController" storyboardName="LegalComplianceStoryboard" referencedIdentifier="PrivacyPolicyTableViewController" id="Je2-8K-XBj" sceneMemberID="viewController">
+                    <navigationItem key="navigationItem" id="VSG-u8-NUi"/>
+                </viewControllerPlaceholder>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="qMc-WM-2Xu" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2254" y="568"/>
+        </scene>
+        <!--TermsOfServiceTableViewController-->
+        <scene sceneID="pjR-Vq-3xj">
+            <objects>
+                <viewControllerPlaceholder storyboardIdentifier="TermsOfServiceTableViewController" storyboardName="LegalComplianceStoryboard" referencedIdentifier="TermsOfServiceTableViewController" id="AJD-dC-qF7" sceneMemberID="viewController">
+                    <navigationItem key="navigationItem" id="uVc-HF-O9C"/>
+                </viewControllerPlaceholder>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="XrK-wL-tNr" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2476" y="606"/>
+        </scene>
+        <!--Storyboard Reference-->
+        <scene sceneID="FoV-f7-utM">
+            <objects>
+                <viewControllerPlaceholder id="LW8-m1-C9D" sceneMemberID="viewController">
+                    <navigationItem key="navigationItem" id="nu3-Bd-zNv"/>
+                </viewControllerPlaceholder>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="6IY-Bu-In9" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3473" y="559"/>
         </scene>
         <!--About MomCare+-->
         <scene sceneID="dWw-gU-awI">
@@ -970,10 +1003,23 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="About MomCare+" id="3uf-0d-UWj"/>
+                    <connections>
+                        <segue destination="Aah-q2-hTU" kind="show" id="45g-hM-0Tt"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="uyl-cx-0rC" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="4269" y="132"/>
+        </scene>
+        <!--Storyboard Reference-->
+        <scene sceneID="PEi-Ps-b3x">
+            <objects>
+                <viewControllerPlaceholder id="Aah-q2-hTU" sceneMemberID="viewController">
+                    <navigationItem key="navigationItem" id="0SR-JB-9wJ"/>
+                </viewControllerPlaceholder>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Nqj-Od-Rja" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="4268" y="569"/>
         </scene>
         <!--Account Management-->
         <scene sceneID="QvT-ER-eg1">
@@ -1035,7 +1081,7 @@
         <!--Legal & Compliance-->
         <scene sceneID="YNF-Yn-YEs">
             <objects>
-                <tableViewController id="Oih-TT-hif" sceneMemberID="viewController">
+                <tableViewController id="Oih-TT-hif" customClass="LegalComplianceTableViewController" customModule="MomCare" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="insetGrouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="25" estimatedSectionHeaderHeight="-1" sectionFooterHeight="18" estimatedSectionFooterHeight="-1" id="kc9-v5-C7z">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="783"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -1066,6 +1112,9 @@
                                             </subviews>
                                         </tableViewCellContentView>
                                         <color key="tintColor" red="0.57254901960000004" green="0.26274509800000001" blue="0.31372549020000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <connections>
+                                            <segue destination="Je2-8K-XBj" kind="show" identifier="PrivacyPolicySegue" trigger="accessoryAction" id="BMH-rR-Hch"/>
+                                        </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" accessoryType="detailDisclosureButton" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" textLabel="d8b-2R-gy9" detailTextLabel="B1P-Mh-A2y" style="IBUITableViewCellStyleValue1" id="PbD-qz-fel">
                                         <rect key="frame" x="20" y="68.666667938232422" width="353" height="43.666667938232422"/>
@@ -1091,6 +1140,9 @@
                                             </subviews>
                                         </tableViewCellContentView>
                                         <color key="tintColor" red="0.57254901960000004" green="0.26274509800000001" blue="0.31372549020000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <connections>
+                                            <segue destination="AJD-dC-qF7" kind="show" identifier="TermsOfServiceSegue" trigger="accessoryAction" id="j62-yP-pFF"/>
+                                        </connections>
                                     </tableViewCell>
                                 </cells>
                             </tableViewSection>
@@ -1482,7 +1534,7 @@
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
-                                                        <textField opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="right" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="JeD-uj-YeP">
+                                                        <textField opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Sample" textAlignment="right" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="JeD-uj-YeP">
                                                             <rect key="frame" x="156.66666666666663" y="11.666666666666664" width="156.33333333333337" height="22"/>
                                                             <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                             <textInputTraits key="textInputTraits"/>

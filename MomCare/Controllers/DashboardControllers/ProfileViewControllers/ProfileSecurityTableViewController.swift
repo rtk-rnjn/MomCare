@@ -7,7 +7,7 @@
 
 import UIKit
 
-class SettingsTableViewController: UITableViewController {
+class ProfileSecurityTableViewController: UITableViewController {
 
     @IBOutlet var emailLabel: UILabel!
     @IBOutlet var phoneNumberLabel: UILabel!
