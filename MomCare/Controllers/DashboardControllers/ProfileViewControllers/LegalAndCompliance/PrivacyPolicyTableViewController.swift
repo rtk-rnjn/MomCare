@@ -35,10 +35,10 @@ class PrivacyPolicyTableViewController: UITableViewController {
 
         let bulletText = NSMutableAttributedString()
 
-        for item in items {
-            let line = "\(bullet) \(item)\n"
-            let attributedLine = NSAttributedString(string: line, attributes: attributes)
-            bulletText.append(attributedLine)
+        for (index, item) in items.enumerated() {
+            let suffix = index == items.count - 1 ? "" : "\n"
+            let line = "\(bullet) \(item)\(suffix)"
+            bulletText.append(NSAttributedString(string: line, attributes: attributes))
         }
 
         privacyPoliceDescription.numberOfLines = 0
