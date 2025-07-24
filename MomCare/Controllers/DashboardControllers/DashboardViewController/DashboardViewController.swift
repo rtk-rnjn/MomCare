@@ -90,41 +90,49 @@ class DashboardViewController: UIViewController, UICollectionViewDataSource, UIC
     @IBAction func unwinToDashboard(_ segue: UIStoryboardSegue) {}
 
     func setupProfileButton() {
-        if let navigationBar = navigationController?.navigationBar {
-            let customView = UIView()
-            customView.backgroundColor = .clear
+        guard let navigationBar = navigationController?.navigationBar else { return }
 
-            let profileBtn = UIButton()
-            if let profileImage = UIImage(named: "person.crop.circle.fill") {
-                profileBtn.setImage(profileImage, for: .normal)
-            }
+        let customView = UIView()
+        customView.backgroundColor = .clear
 
-            profileBtn.addTarget(self, action: #selector(profileIconTapped), for: .touchUpInside)
+        let profileBtn = UIButton(type: .system)
 
-            profileBtn.tintColor = .gray
-
-            customView.addSubview(profileBtn)
-            navigationBar.addSubview(customView)
-
-            profileBtn.translatesAutoresizingMaskIntoConstraints = false
-            customView.translatesAutoresizingMaskIntoConstraints = false
-
-            NSLayoutConstraint.activate([
-                // Place custom view at the bottom right
-                customView.trailingAnchor.constraint(equalTo: navigationBar.trailingAnchor, constant: -16),
-                customView.bottomAnchor.constraint(equalTo: navigationBar.bottomAnchor, constant: -10),
-                customView.widthAnchor.constraint(equalToConstant: 40),
-                customView.heightAnchor.constraint(equalToConstant: 40),
-
-                profileBtn.centerXAnchor.constraint(equalTo: customView.centerXAnchor),
-                profileBtn.centerYAnchor.constraint(equalTo: customView.centerYAnchor),
-                profileBtn.widthAnchor.constraint(equalToConstant: 36),
-                profileBtn.heightAnchor.constraint(equalToConstant: 36)
-            ])
-
-            profileButton = profileBtn
+        // Set symbol config for larger icon
+        let config = UIImage.SymbolConfiguration(pointSize: 22, weight: .regular)
+        if let profileImage = UIImage(systemName: "person.crop.circle.fill", withConfiguration: config)?.withRenderingMode(.alwaysTemplate) {
+            profileBtn.setImage(profileImage, for: .normal)
         }
+
+        profileBtn.tintColor = UIColor(hex: "#924350")
+        profileBtn.addTarget(self, action: #selector(profileIconTapped), for: .touchUpInside)
+
+        profileBtn.imageView?.contentMode = .scaleAspectFit
+        profileBtn.contentHorizontalAlignment = .fill
+        profileBtn.contentVerticalAlignment = .fill
+
+        customView.addSubview(profileBtn)
+        navigationBar.addSubview(customView)
+
+        profileBtn.translatesAutoresizingMaskIntoConstraints = false
+        customView.translatesAutoresizingMaskIntoConstraints = false
+
+        NSLayoutConstraint.activate([
+            customView.trailingAnchor.constraint(equalTo: navigationBar.trailingAnchor, constant: -16),
+            customView.bottomAnchor.constraint(equalTo: navigationBar.bottomAnchor, constant: -10),
+            customView.widthAnchor.constraint(equalToConstant: 40),
+            customView.heightAnchor.constraint(equalToConstant: 40),
+
+            profileBtn.centerXAnchor.constraint(equalTo: customView.centerXAnchor),
+            profileBtn.centerYAnchor.constraint(equalTo: customView.centerYAnchor),
+            profileBtn.widthAnchor.constraint(equalToConstant: 36),
+            profileBtn.heightAnchor.constraint(equalToConstant: 36)
+        ])
+
+        profileButton = profileBtn
     }
+
+
+
 
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         let offsetY = scrollView.contentOffset.y

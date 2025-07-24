@@ -15,6 +15,7 @@ class LoginTableViewController: UITableViewController, UITextFieldDelegate {
         passwordField.delegate = self
 
         emailAddressField.becomeFirstResponder()
+        navigationController?.navigationBar.tintColor = UIColor(hex: "#924350")
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {

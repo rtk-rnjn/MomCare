@@ -8,6 +8,7 @@
 import UIKit
 
 class ProfilePageTableViewController: UITableViewController {
+
     var logoutHandler: (() -> Void)?
 
     @IBAction func logoutTapped() {

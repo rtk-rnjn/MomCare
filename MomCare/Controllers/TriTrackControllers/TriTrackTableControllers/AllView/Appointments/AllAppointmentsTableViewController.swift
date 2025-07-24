@@ -30,8 +30,31 @@ class AllAppointmentsTableViewController: UITableViewController {
         delegate.viewController = self
 
         tableView.sectionHeaderTopPadding = 10
-    }
+        
+        let appearance = UINavigationBarAppearance()
+        appearance.configureWithOpaqueBackground()
+        appearance.backgroundColor = UIColor.systemBackground
+        appearance.titleTextAttributes = [.foregroundColor: UIColor.white]
+        appearance.shadowColor = .clear
 
+        navigationController?.navigationBar.standardAppearance = appearance
+        navigationController?.navigationBar.scrollEdgeAppearance = appearance
+    }
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+
+        let defaultAppearance = UINavigationBarAppearance()
+        defaultAppearance.configureWithOpaqueBackground()
+        defaultAppearance.backgroundColor = .systemBackground  // or whatever your default color is
+        defaultAppearance.titleTextAttributes = [.foregroundColor: UIColor.label]
+        defaultAppearance.shadowColor = .clear
+
+        navigationController?.navigationBar.standardAppearance = defaultAppearance
+        navigationController?.navigationBar.scrollEdgeAppearance = defaultAppearance
+    }
+    override func viewDidLoad() {
+        setupAppointmentHeader()
+    }
     override func numberOfSections(in tableView: UITableView) -> Int {
         return groupedEvents.keys.count
     }
@@ -117,6 +140,32 @@ class AllAppointmentsTableViewController: UITableViewController {
             }
             groupedEvents[date]?.append(event)
         }
+    }
+    
+    private func setupAppointmentHeader() {
+        let headerLabel = UILabel()
+        headerLabel.text = "Appointments"
+        headerLabel.font = UIFont.systemFont(ofSize: 34, weight: .bold)
+        headerLabel.textColor = UIColor(hex: "924350")
+        headerLabel.textAlignment = .left
+        headerLabel.numberOfLines = 1
+        headerLabel.backgroundColor = .clear
+        headerLabel.translatesAutoresizingMaskIntoConstraints = false
+        
+        // Calculate height for the label
+        let headerHeight: CGFloat = 60
+        let headerView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.bounds.width, height: headerHeight))
+        headerView.backgroundColor = .clear
+        headerView.addSubview(headerLabel)
+        
+        NSLayoutConstraint.activate([
+            headerLabel.leadingAnchor.constraint(equalTo: headerView.leadingAnchor, constant: 16),
+            headerLabel.trailingAnchor.constraint(equalTo: headerView.trailingAnchor, constant: -16),
+            headerLabel.bottomAnchor.constraint(equalTo: headerView.bottomAnchor, constant: -15),
+            headerLabel.topAnchor.constraint(equalTo: headerView.topAnchor, constant: 8)
+        ])
+        
+        tableView.tableHeaderView = headerView
     }
 
 }

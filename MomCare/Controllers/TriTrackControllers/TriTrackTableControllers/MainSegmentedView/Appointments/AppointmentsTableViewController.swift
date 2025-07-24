@@ -101,7 +101,7 @@ class AppointmentsTableViewController: UITableViewController {
     func fetchEvents() async -> [EventInfo] {
         let selectedDate = eventsViewController?.triTrackViewController?.selectedFSCalendarDate ?? Date()
         let startDate = Calendar.current.startOfDay(for: selectedDate)
-        let endDate = Calendar.current.date(byAdding: .day, value: 1, to: startDate)!
+        let endDate = Calendar.current.date(byAdding: .month, value: 1, to: startDate)!
 
         return await EventKitHandler.shared.fetchAppointments(startDate: startDate, endDate: endDate)
     }

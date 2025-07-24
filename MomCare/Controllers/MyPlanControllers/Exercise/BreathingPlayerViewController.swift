@@ -1,216 +1,696 @@
 import UIKit
 
 class BreathingPlayerViewController: UIViewController {
-
+    
     // MARK: Internal
-
-    @IBOutlet var instructionLabel: UILabel!
-    @IBOutlet var instructionTimerLabel: UILabel!
-
-    @IBOutlet var animationView: UIView!
-    @IBOutlet var startPauseButton: UIButton!
-    @IBOutlet var stopButton: UIButton!
-
-    @IBOutlet var overallTimerLabel: UILabel!
-
-    var duration: Int = 10
-
+    
+    @IBOutlet var totalBreatingDuration: UILabel!
+    
+    var remainingMinSec: Double = 0.0
+    var completedPercentage: Double = 0.0
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        overallTimerLabel.text = formatTimerLabel(duration)
-        instructionLabel.text = "Ready"
-
-        createInitialFlower()
+        setupAnimatedGradientBackground()
+        setupCircleLayers()
+        setupInstructionLabel()
+        setupTimerLabel()
+        setupAssuringMessageLabel()
+        setupControlButtons()
     }
-
-    @IBAction func startPauseButtonTapped(_ sender: UIButton) {
-        if isPaused {
-            startBreathing()
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+    }
+    
+    func updateGradientBackground() {
+        let gradientLayer = CAGradientLayer()
+        gradientLayer.frame = view.bounds
+        
+        let upperColor = UIColor(hex: "#1e0d31")
+        let middleColor = UIColor(hex: "#13102f")
+        let bottomColor = UIColor(hex: "#0f102e")
+        
+        gradientLayer.colors = [
+            upperColor.withAlphaComponent(1.0).cgColor,
+            middleColor.withAlphaComponent(1.0).cgColor,
+            bottomColor.withAlphaComponent(1.0).cgColor
+        ]
+        gradientLayer.startPoint = CGPoint(x: 0.5, y: 0.0)
+        gradientLayer.endPoint = CGPoint(x: 0.5, y: 1.0)
+        
+        view.layer.insertSublayer(gradientLayer, at: 0)
+    }
+    
+    func exrciseDurationSetup() async {
+        var i = 0
+        
+        while 10 * 60 - i > 0 {
+            try? await Task.sleep(nanoseconds: 1_000_000_000)
+            DispatchQueue.main.async {
+                i += 1
+                let remainingSeconds = 10 * 60 - i
+                
+                let remainingMinutes = remainingSeconds / 60
+                let remainingSecondsPart = remainingSeconds % 60
+                self.remainingMinSec = Double(remainingMinutes) * 60 + Double(remainingSecondsPart)
+                
+                self.totalBreatingDuration.text = String(format: "%02d:%02d", remainingMinutes, remainingSecondsPart)
+            }
+        }
+    }
+    
+    @IBAction func breathingStopButtonTapped(_ sender: UIButton) {
+        let remainingTime: Double = remainingMinSec
+        let completedTime: Double = totalBreathingTime - remainingTime
+        completedPercentage = (completedTime / totalBreathingTime * 100)
+    }
+    
+    // MARK: - Animated Gradient Background
+    private var animatedGradientLayer: CAGradientLayer?
+    private var gradientAnimation: CABasicAnimation?
+    
+    private func setupAnimatedGradientBackground() {
+        let gradientLayer = CAGradientLayer()
+        gradientLayer.frame = view.bounds
+        // Soft, calming theme colors (purple, blue, pink)
+        let color1 = UIColor(hex: "#1e0d31")
+        let color2 = UIColor(hex: "#3a2766")
+        let color3 = UIColor(hex: "#6e4fa3")
+        let color4 = UIColor(hex: "#bfaee0")
+        let color5 = UIColor(hex: "#f7d6e0")
+        gradientLayer.colors = [
+            color1.cgColor,
+            color2.cgColor,
+            color3.cgColor,
+            color4.cgColor,
+            color5.cgColor
+        ]
+        gradientLayer.startPoint = CGPoint(x: 0.5, y: 0.0)
+        gradientLayer.endPoint = CGPoint(x: 0.5, y: 1.0)
+        view.layer.insertSublayer(gradientLayer, at: 0)
+        animatedGradientLayer = gradientLayer
+        animateGradientColors()
+    }
+    
+    private func animateGradientColors() {
+        guard let gradientLayer = animatedGradientLayer else { return }
+        let fromColors = gradientLayer.colors
+        let toColors: [CGColor] = [
+            UIColor(hex: "#2a1a4d").cgColor,
+            UIColor(hex: "#4b3577").cgColor,
+            UIColor(hex: "#8c6fc9").cgColor,
+            UIColor(hex: "#e3c6f7").cgColor,
+            UIColor(hex: "#f7d6e0").cgColor
+        ]
+        let animation = CABasicAnimation(keyPath: "colors")
+        animation.fromValue = fromColors
+        animation.toValue = toColors
+        animation.duration = 6.0
+        animation.autoreverses = true
+        animation.repeatCount = .infinity
+        animation.isRemovedOnCompletion = false
+        gradientLayer.add(animation, forKey: "colorChange")
+    }
+    
+    // MARK: - Assuring Message
+    private let assuringMessageLabel: UILabel = .init()
+    private func setupAssuringMessageLabel() {
+        assuringMessageLabel.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(assuringMessageLabel)
+        NSLayoutConstraint.activate([
+            assuringMessageLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            assuringMessageLabel.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: 120)
+        ])
+        assuringMessageLabel.textColor = UIColor(hex: "#f7d6e0")
+        assuringMessageLabel.font = .systemFont(ofSize: 30, weight: .bold)
+        assuringMessageLabel.textAlignment = .center
+        assuringMessageLabel.numberOfLines = 0
+        assuringMessageLabel.alpha = 0
+        assuringMessageLabel.layer.shadowColor = UIColor.black.cgColor
+        assuringMessageLabel.layer.shadowOpacity = 0.2
+        assuringMessageLabel.layer.shadowRadius = 8
+        assuringMessageLabel.layer.shadowOffset = CGSize(width: 0, height: 2)
+        assuringMessageLabel.text = "You did amazing!\nTake this calm with you."
+    }
+    private func showAssuringMessage() {
+        UIView.animate(withDuration: 1.2, delay: 0.2, options: [.curveEaseInOut]) {
+            self.assuringMessageLabel.alpha = 1
+        }
+    }
+    
+    // MARK: Private
+    
+    private var circlesContainer: CALayer = .init()
+    private var circleLayers: [CAShapeLayer] = []
+    private var isInhaling = true
+    private let instructionLabel: UILabel = .init()
+    private let timerLabel: UILabel = .init() // New timer label
+    private var timer: Timer? // Timer for updating countdown
+    private var currentCount = 0
+    private var breathingCycles = 0
+    
+    // Add these properties for animation state tracking
+    private var petalAnimationPhase: PetalAnimationPhase = .none
+    private var petalAnimationStartTime: TimeInterval = 0
+    private var petalAnimationDuration: TimeInterval = 0
+    private var petalAnimationRemaining: TimeInterval = 0
+    private var petalTargetPositions: [CGPoint] = []
+    private var petalPausedPositions: [CGPoint] = []
+    private enum PetalAnimationPhase { case none, expanding, collapsing }
+    
+    // MARK: - State & Controls
+    private enum PlayerState { case ready, playing, paused, finished }
+    private var playerState: PlayerState = .ready
+    private var startPauseButton: UIButton!
+    private var stopButton: UIButton!
+    private var exerciseTimer: Timer?
+    private var secondsElapsed = 0
+    
+    // For smooth pausing
+    private var nextStateWorkItem: DispatchWorkItem?
+    private var animationPhaseStartTime: TimeInterval = 0
+    private var timeRemainingForPhase: TimeInterval = 0
+    
+    
+    // Configuration
+    private let numberOfPetals = 6
+    private let circleSize: CGFloat = 100
+    private let animationDuration: TimeInterval = 4.0
+    private let spreadDistance: CGFloat = 60 // More spread for flower
+    private let textAnimationDuration: TimeInterval = 0.5 //
+    private let totalBreathingTime: Double = 600
+    private let petalColors: [UIColor] = [
+        UIColor(hex: "#bfaee0"), // soft purple
+        UIColor(hex: "#f7d6e0"), // soft pink
+        UIColor(hex: "#e6d6f7"), // pastel lilac (replaces blue)
+        UIColor(hex: "#f7d6ec"), // pastel rose (replaces mint/green)
+        UIColor(hex: "#ffd6d6"), // pastel peach/blush
+        UIColor(hex: "#e3c6f7")  // lavender
+    ]
+    private let centerColor = UIColor(hex: "#fff6f0") // warm cream
+    
+    private func setupInstructionLabel() {
+        instructionLabel.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(instructionLabel)
+        NSLayoutConstraint.activate([
+            instructionLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            instructionLabel.topAnchor.constraint(equalTo: view.topAnchor, constant: 120)
+        ])
+        instructionLabel.textColor = UIColor(hex: "#fff6f0")
+        instructionLabel.font = .systemFont(ofSize: 36, weight: .semibold)
+        instructionLabel.text = "Inhale"
+        instructionLabel.alpha = 1
+        instructionLabel.layer.shadowColor = UIColor.black.cgColor
+        instructionLabel.layer.shadowOpacity = 0.18
+        instructionLabel.layer.shadowRadius = 6
+        instructionLabel.layer.shadowOffset = CGSize(width: 0, height: 2)
+    }
+    
+    
+    
+    private func animateInstructionChange(to newText: String) {
+        UIView.animate(withDuration: textAnimationDuration, delay: 0, options: .curveLinear) {
+            self.instructionLabel.transform = CGAffineTransform(translationX: 0, y: 0)
+            self.instructionLabel.alpha = 0
+        }
+        
+        // Animate new text up and fade in
+        UIView.animate(withDuration: textAnimationDuration, delay: 0, options: .curveLinear) {
+        } completion: { _ in
+            // Reset for next transition
+            self.instructionLabel.text = newText
+            self.instructionLabel.transform = .identity
+            self.instructionLabel.alpha = 1
+        }
+    }
+    
+    private func setupTimerLabel() {
+        timerLabel.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(timerLabel)
+        NSLayoutConstraint.activate([
+            timerLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            timerLabel.topAnchor.constraint(equalTo: instructionLabel.bottomAnchor, constant: 20)
+        ])
+        timerLabel.textColor = UIColor(hex: "#bfaee0")
+        timerLabel.font = .systemFont(ofSize: 34, weight: .medium)
+        timerLabel.text = ""
+        timerLabel.isHidden = true
+        timerLabel.layer.shadowColor = UIColor.black.cgColor
+        timerLabel.layer.shadowOpacity = 0.15
+        timerLabel.layer.shadowRadius = 5
+        timerLabel.layer.shadowOffset = CGSize(width: 0, height: 2)
+    }
+    
+    private func startTimer(from initialCount: Int = 4) {
+        // Reset and invalidate existing timer if any
+        timer?.invalidate()
+        currentCount = initialCount
+        
+        timerLabel.isHidden = false
+        updateCurrentCount() // Show the first number immediately
+        
+        // Start new timer
+        timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] _ in
+            guard let self = self else { return }
+            Task { @MainActor in
+                self.updateCurrentCount()
+            }
+        }
+    }
+    
+    private func updateCurrentCount() {
+        if currentCount >= 1 {
+            timerLabel.text = "\(currentCount)"
+        }
+        currentCount -= 1
+    }
+    
+    private func setupCircleLayers() {
+        // Remove old layers if any
+        circlesContainer.removeFromSuperlayer()
+        circleLayers.removeAll()
+        // Setup container
+        let containerSize = circleSize + (spreadDistance * 2)
+        circlesContainer = CALayer()
+        circlesContainer.frame = CGRect(x: 0, y: 0, width: containerSize, height: containerSize)
+        circlesContainer.position = view.center
+        view.layer.addSublayer(circlesContainer)
+        // Create all circles (center + petals)
+        for i in 0...numberOfPetals {
+            let circle = createCircleLayer(index: i)
+            // All circles start at center
+            circle.position = CGPoint(x: circlesContainer.bounds.midX, y: circlesContainer.bounds.midY)
+            circlesContainer.addSublayer(circle)
+            circleLayers.append(circle)
+        }
+    }
+    
+    private func hideTimer() {
+        timer?.invalidate()
+        timer = nil
+        timerLabel.isHidden = true
+        timerLabel.text = ""
+    }
+    
+    private func createCircleLayer(index: Int) -> CAShapeLayer {
+        let layer = CAShapeLayer()
+        layer.frame = CGRect(x: -circleSize/2, y: -circleSize/2, width: circleSize, height: circleSize)
+        let circlePath = UIBezierPath(
+            arcCenter: CGPoint(x: circleSize/2, y: circleSize/2),
+            radius: circleSize/2,
+            startAngle: 0,
+            endAngle: 2 * .pi,
+            clockwise: true
+        )
+        layer.path = circlePath.cgPath
+        layer.shadowPath = circlePath.cgPath // Fix for square shadow
+        
+        if index == 0 {
+            layer.fillColor = centerColor.withAlphaComponent(0.85).cgColor
         } else {
-            pauseBreathing()
+            let color = petalColors[(index-1) % petalColors.count]
+            layer.fillColor = color.withAlphaComponent(0.7).cgColor
+            layer.shadowColor = color.withAlphaComponent(0.7).cgColor
+            layer.shadowOpacity = 0.5
+            layer.shadowRadius = 16
+            layer.shadowOffset = CGSize(width: 0, height: 0)
         }
-        isPaused.toggle()
+        return layer
     }
-
-    @IBAction func stopButtonTapped(_ sender: UIButton) {
-        pauseBreathing()
-        isPaused = true
-
-        let cancelAction = AlertActionHandler(title: "Cancel", style: .cancel, handler: nil)
-        var confirmAction = AlertActionHandler(title: "Confirm", style: .destructive) { _ in
-            self.dismiss(animated: true)
+    
+    private func startBreathingAnimation() {
+        animateBreathCycle()
+    }
+    
+    private func animateBreathCycle() {
+        if playerState != .playing { return }
+        
+        if isInhaling {
+            animateInstructionChange(to: "Inhale")
+            hideTimer()
+            animateFlowerFormation {
+                if self.playerState != .playing { return }
+                self.animateInstructionChange(to: "Hold")
+                self.startTimer()
+                self.scheduleNextState(after: self.animationDuration)
+            }
+        } else {
+            currentCount = 4
+            animateInstructionChange(to: "Exhale")
+            hideTimer()
+            animateFlowerCollapse {
+                if self.playerState != .playing { return }
+                self.breathingCycles += 1
+                self.isInhaling = true
+                
+                // No delay here, just loop back
+                self.animateBreathCycle()
+            }
         }
-        let alert = Utils.getAlert(title: "Stop Session", message: "Do you want to stop the breathing session?", actions: [cancelAction, confirmAction])
-
-        if duration <= 0 {
-            alert.message = "The session is already completed. Do you want to dismiss?"
-            confirmAction.handler = { _ in
+    }
+    
+    private func scheduleNextState(after delay: TimeInterval) {
+        animationPhaseStartTime = CACurrentMediaTime()
+        nextStateWorkItem = DispatchWorkItem { [weak self] in
+            guard let self = self, self.playerState == .playing else { return }
+            
+            self.isInhaling = false
+            self.animateBreathCycle()
+        }
+        DispatchQueue.main.asyncAfter(deadline: .now() + delay, execute: nextStateWorkItem!)
+    }
+    
+    private func animateFlowerFormation(completion: @escaping () -> Void) {
+        petalAnimationPhase = .expanding
+        petalAnimationStartTime = CACurrentMediaTime()
+        petalAnimationDuration = animationDuration
+        petalAnimationRemaining = animationDuration
+        petalTargetPositions = []
+        petalPausedPositions = []
+        CATransaction.begin()
+        CATransaction.setCompletionBlock {
+            self.pulsePetals()
+            completion()
+        }
+        for (index, circle) in circleLayers.enumerated() {
+            if index == 0 { continue }
+            let angle = (2.0 * .pi * CGFloat(index - 1)) / CGFloat(numberOfPetals)
+            let destinationX = circlesContainer.bounds.midX + cos(angle) * spreadDistance
+            let destinationY = circlesContainer.bounds.midY + sin(angle) * spreadDistance
+            let destination = CGPoint(x: destinationX, y: destinationY)
+            petalTargetPositions.append(destination)
+            let animation = CABasicAnimation(keyPath: "position")
+            animation.fromValue = circle.presentation()?.position ?? circle.position
+            animation.toValue = destination
+            animation.duration = animationDuration
+            animation.timingFunction = CAMediaTimingFunction(name: .easeInEaseOut)
+            animation.fillMode = .forwards
+            animation.isRemovedOnCompletion = false
+            circle.add(animation, forKey: "position")
+        }
+        CATransaction.commit()
+    }
+    private func pulsePetals() {
+        for (index, circle) in circleLayers.enumerated() {
+            if index == 0 { continue }
+            let pulse = CABasicAnimation(keyPath: "transform.scale")
+            pulse.fromValue = 1.0
+            pulse.toValue = 1.08
+            pulse.duration = 0.7
+            pulse.autoreverses = true
+            pulse.repeatCount = 2
+            pulse.timingFunction = CAMediaTimingFunction(name: .easeInEaseOut)
+            circle.add(pulse, forKey: "pulse")
+        }
+    }
+    private func animateFlowerBloomAndShowMessage() {
+        // Animate petals to bloom (scale up and fade in)
+        for (index, circle) in circleLayers.enumerated() {
+            if index == 0 { continue }
+            let bloom = CABasicAnimation(keyPath: "transform.scale")
+            bloom.fromValue = 1.0
+            bloom.toValue = 1.25
+            bloom.duration = 1.2
+            bloom.timingFunction = CAMediaTimingFunction(name: .easeInEaseOut)
+            bloom.fillMode = .forwards
+            bloom.isRemovedOnCompletion = false
+            circle.add(bloom, forKey: "bloom")
+        }
+        // Fade in the assuring message after bloom
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.1) {
+            self.showAssuringMessage()
+        }
+    }
+    
+    private func animateFlowerCollapse(completion: @escaping () -> Void) {
+        petalAnimationPhase = .collapsing
+        petalAnimationStartTime = CACurrentMediaTime()
+        petalAnimationDuration = animationDuration
+        petalAnimationRemaining = animationDuration
+        petalTargetPositions = Array(repeating: CGPoint(x: circlesContainer.bounds.midX, y: circlesContainer.bounds.midY), count: numberOfPetals)
+        petalPausedPositions = []
+        CATransaction.begin()
+        CATransaction.setCompletionBlock(completion)
+        for (index, circle) in circleLayers.enumerated() {
+            if index == 0 { continue }
+            let animation = CABasicAnimation(keyPath: "position")
+            animation.fromValue = circle.presentation()?.position ?? circle.position
+            animation.toValue = CGPoint(x: circlesContainer.bounds.midX, y: circlesContainer.bounds.midY)
+            animation.duration = animationDuration
+            animation.timingFunction = CAMediaTimingFunction(name: .easeInEaseOut)
+            animation.fillMode = .forwards
+            animation.isRemovedOnCompletion = false
+            circle.add(animation, forKey: "position")
+        }
+        CATransaction.commit()
+    }
+    
+    private func setupControlButtons() {
+        startPauseButton = UIButton(type: .system)
+        startPauseButton.setTitle("Start", for: .normal)
+        startPauseButton.titleLabel?.font = .systemFont(ofSize: 22, weight: .bold)
+        startPauseButton.setTitleColor(UIColor(hex: "#1e0d31"), for: .normal)
+        startPauseButton.backgroundColor = UIColor.white.withAlphaComponent(0.8)
+        startPauseButton.layer.cornerRadius = 30
+        startPauseButton.addTarget(self, action: #selector(startPauseButtonTapped), for: .touchUpInside)
+        startPauseButton.translatesAutoresizingMaskIntoConstraints = false
+        
+        stopButton = UIButton(type: .system)
+        stopButton.setTitle("Stop", for: .normal)
+        stopButton.titleLabel?.font = .systemFont(ofSize: 22, weight: .bold)
+        stopButton.setTitleColor(UIColor.white, for: .normal)
+        stopButton.backgroundColor = UIColor.black.withAlphaComponent(0.25)
+        stopButton.layer.cornerRadius = 30
+        stopButton.addTarget(self, action: #selector(stopButtonTapped), for: .touchUpInside)
+        stopButton.translatesAutoresizingMaskIntoConstraints = false
+        stopButton.isHidden = true // Use isHidden for stack view
+        
+        let stackView = UIStackView(arrangedSubviews: [stopButton, startPauseButton])
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.axis = .horizontal
+        stackView.spacing = 20
+        stackView.distribution = .fillEqually
+        
+        view.addSubview(stackView)
+        
+        NSLayoutConstraint.activate([
+            stackView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            stackView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -50),
+            stackView.widthAnchor.constraint(equalToConstant: 300),
+            stackView.heightAnchor.constraint(equalToConstant: 60)
+        ])
+    }
+    
+    @objc private func startPauseButtonTapped() {
+        switch playerState {
+        case .ready:
+            // Start
+            playerState = .playing
+            startExercise()
+            startPauseButton.setTitle("Pause", for: .normal)
+            UIView.animate(withDuration: 0.3) {
+                self.stopButton.isHidden = false
+            }
+            
+        case .playing:
+            // Pause
+            playerState = .paused
+            pauseExercise()
+            startPauseButton.setTitle("Resume", for: .normal)
+            
+        case .paused:
+            // Resume
+            playerState = .playing
+            resumeExercise()
+            startPauseButton.setTitle("Pause", for: .normal)
+            
+        case .finished:
+            // Reset to beginning
+            resetExercise()
+        }
+    }
+    
+    @objc private func stopButtonTapped() {
+        pauseExercise()
+        let alert = UIAlertController(title: "Stop Exercise", message: "Are you sure you want to stop the breathing exercise?", preferredStyle: .alert)
+        
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { _ in
+            self.resumeExercise()
+        }))
+        
+        alert.addAction(UIAlertAction(title: "Stop", style: .destructive, handler: { _ in
+            self.playerState = .finished
+            self.resetExercise()
+            if let nav = self.navigationController {
+                nav.popViewController(animated: true)
+            } else {
                 self.dismiss(animated: true)
             }
-        } else {
-            alert.message = "Do you want to stop the breathing session?"
-        }
+        }))
+        
         present(alert, animated: true)
     }
-
-    // MARK: Private
-
-    private var isPaused = true
-    private var instructions: [String] = ["Inhale", "Hold", "Exhale"]
-    private var holdDuration: Int = 4
-
-    private var circles: [CAShapeLayer] = []
-
-    private var runnerTask: Task<Void, Never>?
-
-    private var phaseIndex: Int = 0
-    private var phaseRemaining: Int = 4
-
-    private func formatTimerLabel(_ time: Int) -> String {
-        let minutes = Int(time) / 60
-        let seconds = Int(time) % 60
-        return String(format: "%02d:%02d", minutes, seconds)
+    
+    private func startExercise() {
+        // Reset counters and start timers/animations
+        secondsElapsed = 0
+        updateMainTimer()
+        startMainTimer()
+        startBreathingAnimation()
     }
-
-    private func startBreathing() {
-        startPauseButton.setTitle("Pause", for: .normal)
-        runnerTask = Task { await runner() }
+    
+    private func pauseExercise() {
+        if playerState != .paused { return }
+        // 1. Pause timers
+        exerciseTimer?.invalidate()
+        timer?.invalidate()
+        // 2. Pause petal animation: record current positions and remaining time
+        if petalAnimationPhase != .none {
+            let now = CACurrentMediaTime()
+            let elapsed = now - petalAnimationStartTime
+            petalAnimationRemaining = max(0, petalAnimationDuration - elapsed)
+            petalPausedPositions = []
+            for (index, circle) in circleLayers.enumerated() {
+                if index == 0 { continue }
+                let pos = circle.presentation()?.position ?? circle.position
+                petalPausedPositions.append(pos)
+                // Remove all animations so we can resume cleanly
+                circle.removeAllAnimations()
+                circle.position = pos
+            }
+        }
+        // 3. Cancel next state change and calculate remaining time
+        nextStateWorkItem?.cancel()
+        let timeElapsed = CACurrentMediaTime() - animationPhaseStartTime
+        timeRemainingForPhase = animationDuration - timeElapsed
+        if timeRemainingForPhase < 0 { timeRemainingForPhase = 0 }
     }
-
-    private func pauseBreathing() {
+    
+    private func resumeExercise() {
+        if playerState != .playing { return }
+        // 1. Resume main timer
+        startMainTimer()
+        // 2. Resume petal animation if needed
+        if petalAnimationPhase != .none && petalAnimationRemaining > 0 && !petalPausedPositions.isEmpty {
+            for (i, circle) in circleLayers.enumerated() {
+                if i == 0 { continue }
+                let from = petalPausedPositions[i-1]
+                let to: CGPoint
+                if petalAnimationPhase == .expanding {
+                    to = petalTargetPositions[i-1]
+                } else {
+                    to = CGPoint(x: circlesContainer.bounds.midX, y: circlesContainer.bounds.midY)
+                }
+                let animation = CABasicAnimation(keyPath: "position")
+                animation.fromValue = from
+                animation.toValue = to
+                animation.duration = petalAnimationRemaining
+                animation.timingFunction = CAMediaTimingFunction(name: .easeInEaseOut)
+                animation.fillMode = .forwards
+                animation.isRemovedOnCompletion = false
+                circle.position = from
+                circle.add(animation, forKey: "position")
+            }
+            // Reset phase tracking
+            petalAnimationStartTime = CACurrentMediaTime()
+            petalAnimationDuration = petalAnimationRemaining
+            // Schedule the next state change after the remaining time
+            if isInhaling {
+                scheduleNextState(after: timeRemainingForPhase)
+            }
+            petalAnimationRemaining = 0
+            petalPausedPositions = []
+        }
+        // 3. Resume countdown timer (if it was running)
+        if !timerLabel.isHidden {
+            startTimer(from: currentCount)
+        }
+        // 4. Reschedule the next state change
+        if isInhaling && petalAnimationPhase == .none { // Only reschedule if we were in a waiting phase (Hold)
+            scheduleNextState(after: timeRemainingForPhase)
+        }
+    }
+    
+    private func resetExercise() {
+        exerciseTimer?.invalidate()
+        secondsElapsed = 0
+        breathingCycles = 0
+        isInhaling = true
+        
+        // Reset UI
+        circlesContainer.removeAllAnimations()
+        for circle in circleLayers {
+            circle.removeAllAnimations()
+            circle.position = CGPoint(x: circlesContainer.bounds.midX, y: circlesContainer.bounds.midY)
+        }
+        
         startPauseButton.setTitle("Start", for: .normal)
-        runnerTask?.cancel()
-    }
-
-    private func runner() async {
-        while duration >= 0 && !Task.isCancelled && !isPaused {
-            let currentInstruction = instructions[phaseIndex % instructions.count]
-
-            await MainActor.run {
-                updateUI(for: currentInstruction)
-                triggerAnimationIfNeeded(for: currentInstruction)
-            }
-
-            try? await Task.sleep(nanoseconds: UInt64(1_000_000_000))
-            duration -= 1
-            phaseRemaining -= 1
-
-            if phaseRemaining == 0 {
-                phaseIndex += 1
-                phaseRemaining = holdDuration
-            }
+        
+        // Reset the stop button to its original state and action
+        stopButton.setTitle("Stop", for: .normal)
+        stopButton.removeTarget(self, action: #selector(doneButtonTapped), for: .touchUpInside)
+        stopButton.addTarget(self, action: #selector(stopButtonTapped), for: .touchUpInside)
+        
+        UIView.animate(withDuration: 0.3) {
+            self.stopButton.isHidden = true
+            self.assuringMessageLabel.alpha = 0
+            self.startPauseButton.alpha = 1
         }
-
-        await MainActor.run {
-            if duration <= 0 {
-                showCompletion()
-            } else {
-                updateUI(for: instructions[phaseIndex % instructions.count])
+        
+        instructionLabel.text = "Inhale"
+        totalBreatingDuration.text = String(format: "%02d:%02d", 5, 0)
+        
+        playerState = .ready
+    }
+    
+    private func startMainTimer() {
+        exerciseTimer?.invalidate()
+        exerciseTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] _ in
+            guard let self = self else { return }
+            Task { @MainActor in
+                self.updateMainTimer()
             }
         }
     }
-
-    @MainActor
-    private func updateUI(for instruction: String) {
-        instructionLabel.text = instruction
-        overallTimerLabel.text = formatTimerLabel(duration)
-
-        if instruction == "Hold" {
-            instructionTimerLabel.text = "\(phaseRemaining)"
+    
+    private func updateMainTimer() {
+        secondsElapsed += 1
+        let remainingSeconds = Int(totalBreathingTime) - secondsElapsed
+        if remainingSeconds <= 0 {
+            totalBreatingDuration.text = "00:00"
+            exerciseTimer?.invalidate()
+            playerState = .finished
+            animateFlowerBloomAndShowMessage()
+            
+            // Configure buttons for the finished state
+            startPauseButton.setTitle("Restart", for: .normal)
+            
+            // Repurpose the stop button to act as a "Done" button
+            stopButton.setTitle("Done", for: .normal)
+            stopButton.removeTarget(self, action: #selector(stopButtonTapped), for: .touchUpInside)
+            stopButton.addTarget(self, action: #selector(doneButtonTapped), for: .touchUpInside)
+            
+            UIView.animate(withDuration: 0.5) {
+                self.startPauseButton.alpha = 1 // Show it again
+                self.stopButton.isHidden = false // Ensure it's visible
+            }
+            return
+        }
+        
+        let remainingMinutes = remainingSeconds / 60
+        let remainingSecondsPart = remainingSeconds % 60
+        remainingMinSec = Double(remainingMinutes) * 60 + Double(remainingSecondsPart)
+        totalBreatingDuration.text = String(format: "%02d:%02d", remainingMinutes, remainingSecondsPart)
+    }
+    
+    @objc private func doneButtonTapped() {
+        // Dismiss or pop to previous screen
+        if let nav = self.navigationController {
+            nav.popViewController(animated: true)
         } else {
-            instructionTimerLabel.text = "--"
+            self.dismiss(animated: true)
         }
     }
-
-    @MainActor
-    private func triggerAnimationIfNeeded(for instruction: String) {
-        if phaseRemaining == holdDuration {
-            if instruction == "Inhale" {
-                openAllFlowerPetals()
-            } else if instruction == "Exhale" {
-                closeAllFlowerPetals()
-            }
-        }
-    }
-
-    @MainActor
-    private func showCompletion() {
-        instructionLabel.text = "Completed 🎉"
-        instructionTimerLabel.text = "--"
-        overallTimerLabel.text = "00:00"
-        startPauseButton.setTitle("Start", for: .normal)
-    }
-
-}
-
-extension BreathingPlayerViewController {
-    func drawCenteredFilledCircle(in view: UIView, radius: CGFloat, fillColor: UIColor) -> CAShapeLayer {
-        let center = CGPoint(x: view.bounds.midX, y: view.bounds.midY)
-        let circlePath = UIBezierPath(arcCenter: center, radius: radius, startAngle: 0, endAngle: CGFloat.pi * 2, clockwise: true)
-
-        let shapeLayer = CAShapeLayer()
-        shapeLayer.path = circlePath.cgPath
-        shapeLayer.fillColor = fillColor.cgColor
-        shapeLayer.strokeColor = nil
-
-        view.layer.addSublayer(shapeLayer)
-
-        return shapeLayer
-    }
-
-    func createInitialFlower() {
-        let numberOfCircles = 6
-        let radius: CGFloat = view.bounds.width / 6
-
-        for _ in 0..<numberOfCircles {
-            let layer = drawCenteredFilledCircle(in: animationView, radius: radius, fillColor: UIColor.systemRed.withAlphaComponent(0.5))
-
-            circles.append(layer)
-        }
-    }
-
-    func animateOpenFlowerPetal(shapeLayer: CAShapeLayer, angle: CGFloat) {
-        let animation = CABasicAnimation(keyPath: "position")
-        animation.fromValue = shapeLayer.position
-        let distance = view.bounds.width / 6
-        animation.toValue = CGPoint(x: shapeLayer.position.x + distance * cos(angle), y: shapeLayer.position.y + distance * sin(angle))
-        animation.duration = Double(holdDuration) / 2
-        animation.timingFunction = CAMediaTimingFunction(name: .easeInEaseOut)
-        animation.fillMode = .forwards
-
-        animation.isRemovedOnCompletion = false
-        shapeLayer.add(animation, forKey: "flowerPetalOpenAnimation")
-    }
-
-    func animateCloseFlowerPetal(shapeLayer: CAShapeLayer, angle: CGFloat) {
-        let animation = CABasicAnimation(keyPath: "position")
-        let distance = view.bounds.width / 6
-        animation.fromValue = CGPoint(
-            x: shapeLayer.position.x + distance * cos(angle),
-            y: shapeLayer.position.y + distance * sin(angle)
-        )
-        animation.toValue = shapeLayer.position
-        animation.duration = Double(holdDuration) / 2
-        animation.timingFunction = CAMediaTimingFunction(name: .easeInEaseOut)
-        animation.fillMode = .forwards
-        animation.isRemovedOnCompletion = false
-
-        shapeLayer.add(animation, forKey: "flowerPetalCloseAnimation")
-    }
-
-    func openAllFlowerPetals() {
-        for (index, circle) in circles.enumerated() {
-            let angle = CGFloat(index) * (CGFloat.pi * 2 / CGFloat(circles.count))
-            animateOpenFlowerPetal(shapeLayer: circle, angle: angle)
-        }
-    }
-
-    func closeAllFlowerPetals() {
-        for (index, circle) in circles.enumerated() {
-            let angle = CGFloat(index) * (CGFloat.pi * 2 / CGFloat(circles.count))
-            animateCloseFlowerPetal(shapeLayer: circle, angle: angle)
-        }
-    }
-
+    
 }

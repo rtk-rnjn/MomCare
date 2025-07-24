@@ -18,12 +18,13 @@ class HealthDetailsTableViewController: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        navigationController?.navigationBar.tintColor = UIColor(hex: "#924350")
         updatePageElements()
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "segueShowMultipleSelectorTableViewController", let destination = segue.destination as? MultipleSelectorTableViewController {
-            if let sender = sender as? (options: [String], button: UIButton, category: HealthProfileType) {
+            if let sender = sender as? (options: [String], button: UIButton, category: HealthProfileType) { // swiftlint:disable:this large_tuple
                 destination.options = sender.options
 
                 switch sender.category {
@@ -34,7 +35,10 @@ class HealthDetailsTableViewController: UITableViewController {
 
                     destination.preViewDidLoad = preViewDidLoad
                     destination.selectedMappedOptions = selectedOptions
-                    destination.dismissHandler = {}
+                    destination.dismissHandler = {
+                        MomCareUser.shared.user?.medicalData?.dietaryPreferences = destination.selectedMappedOptions.filter { $1 }.keys.compactMap(DietaryPreference.init(rawValue:))
+                        self.updatePageElements()
+                    }
 
                 case .intolerance:
                     let selectedOptions: [String: Bool] = (MomCareUser.shared.user?.medicalData?.foodIntolerances ?? []).reduce(into: [String: Bool]()) { dict, preference in
@@ -43,7 +47,10 @@ class HealthDetailsTableViewController: UITableViewController {
 
                     destination.preViewDidLoad = preViewDidLoad
                     destination.selectedMappedOptions = selectedOptions
-                    destination.dismissHandler = {}
+                    destination.dismissHandler = {
+                        MomCareUser.shared.user?.medicalData?.foodIntolerances = destination.selectedMappedOptions.filter { $1 }.keys.compactMap(Intolerance.init(rawValue:))
+                        self.updatePageElements()
+                    }
 
                 case .preExistingCondition:
                     let selectedOptions: [String: Bool] = (MomCareUser.shared.user?.medicalData?.preExistingConditions ?? []).reduce(into: [String: Bool]()) { dict, preference in
@@ -54,8 +61,10 @@ class HealthDetailsTableViewController: UITableViewController {
                     destination.selectedMappedOptions = selectedOptions
                     destination.dismissHandler = {
                         MomCareUser.shared.user?.medicalData?.preExistingConditions = destination.selectedMappedOptions.filter { $1 }.keys.compactMap(PreExistingCondition.init(rawValue:))
+                        self.updatePageElements()
                     }
                 }
+
             }
         }
     }
@@ -90,7 +99,7 @@ class HealthDetailsTableViewController: UITableViewController {
         userAllergies.setTitle("\(userMedical.foodIntolerances.count)", for: .normal)
     }
 
-    func saveHealtghDetails() {}
+    func saveHealthDetails() {}
 
     @IBAction func preExistingTapped(_ sender: UIButton) {
         let options = PreExistingCondition.allCases.map { $0.rawValue }
@@ -134,6 +143,9 @@ class HealthDetailsTableViewController: UITableViewController {
     }
 
     @objc func backButtonTapped() {
+        if let topViewController = navigationController?.topViewController as? MultipleSelectorTableViewController {
+            topViewController.dismissHandler?()
+        }
         navigationController?.popViewController(animated: true)
     }
 }
