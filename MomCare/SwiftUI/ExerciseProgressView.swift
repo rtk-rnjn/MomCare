@@ -19,23 +19,17 @@ struct ExerciseProgressView: View {
         ZStack {
             ScrollView {
                 VStack(spacing: 20) {
-                    // Week Header with enhanced styling
                     weekHeaderView
-                    
-                    // Weekly Progress Rings - Make it tappable
                     weeklyProgressRingsView
                         .onTapGesture {
                             withAnimation(.spring(response: 0.6, dampingFraction: 0.8)) {
                                 showingCalendar = true
                             }
                         }
-                    
-                    // Walking Card
                     walkingCardView
                     
                     exerciseCard(for: Exercise(name: "Breathing", type: .breathing, duration: 600, description: "Deep breathing exercises help reduce stress and anxiety during pregnancy. This gentle practice improves oxygen flow to both you and your baby while promoting relaxation and better sleep quality.", tags: ["Stress Relief", "Better Sleep", "Oxygen Flow", "Relaxation"], week: "", targetedBodyParts: ["Lungs"], assignedAt: Date()), isBreathing: true)
-                    
-                    // Exercise Cards
+
                     exerciseCardsView
                 }
                 .padding(.horizontal, 16)
@@ -59,8 +53,7 @@ struct ExerciseProgressView: View {
                     ))
                     .animation(.spring(response: 0.6, dampingFraction: 0.8), value: isShowingInfo)
             }
-            
-            // Calendar Overlay
+
             if showingCalendar {
                 progressCalendarView
                     .transition(.asymmetric(
@@ -78,12 +71,24 @@ struct ExerciseProgressView: View {
             
             let exercises: [Exercise]? = await delegate?.fetchExercises()
             if let exercises {
-                viewModel.exerciseGoals = exercises
+                viewModel.exercises = exercises
             }
+            
+            var count = 0
+            for exercise in viewModel.exercises {
+                if exercise.isCompleted {
+                    count += 1
+                }
+            }
+            
+            if currentSteps >= targetSteps {
+                count += 1
+            }
+
+            viewModel.totalCompletedExercises = count
         }
     }
-    
-    // MARK: - View Components
+
     private var weekHeaderView: some View {
         VStack(spacing: 6) {
             Text("Week \(MomCareUser.shared.user?.pregancyData?.week ?? -1)")
@@ -96,7 +101,6 @@ struct ExerciseProgressView: View {
     
     private var weeklyProgressRingsView: some View {
         VStack(spacing: 16) {
-            // Header for weekly progress with tap indicator
             HStack {
                 Text("Weekly Progress")
                     .font(.system(size: 18, weight: .semibold))
@@ -158,14 +162,14 @@ struct ExerciseProgressView: View {
                             .font(.system(size: 16, weight: .medium))
                             .foregroundColor(Color(hex: "924350"))
                         
-                        Text("Total Goal: 10/30")
+                        Text("Total Goal: \(viewModel.totalCompletedExercises)/\(2 + viewModel.exercises.count)")
                             .font(.system(size: 16, weight: .semibold))
                             .foregroundColor(.primary)
                     }
                     
                     Spacer()
                     
-                    Text("33%")
+                    Text("")
                         .font(.system(size: 16, weight: .bold))
                         .foregroundColor(Color(hex: "924350"))
                 }
@@ -179,7 +183,10 @@ struct ExerciseProgressView: View {
                         
                         RoundedRectangle(cornerRadius: 4)
                             .fill(Color(hex: "924350"))
-                            .frame(width: geometry.size.width * 0.33, height: 6)
+                            .frame(
+                                width:
+                                    min(geometry.size.width * CGFloat(viewModel.totalCompletedExercises) / CGFloat(2 + viewModel.exercises.count), geometry.size.width),
+                                height: 6)
                             .animation(.easeInOut(duration: 1.0), value: 0.33)
                     }
                 }
@@ -249,11 +256,15 @@ struct ExerciseProgressView: View {
                     RoundedRectangle(cornerRadius: 4)
                         .fill(Color.gray.opacity(0.2))
                         .frame(height: 6)
-                    
+
                     RoundedRectangle(cornerRadius: 4)
                         .fill(Color(hex: "924350"))
-                        .frame(width: geometry.size.width * CGFloat((currentSteps + 100) / targetSteps), height: 6)
-                        .animation(.easeInOut(duration: 1.2), value: 1.0)
+                        .frame(
+                            width: targetSteps > 0 ?
+                                min(geometry.size.width * CGFloat(currentSteps) / CGFloat(targetSteps), geometry.size.width) : 0,
+                            height: 6
+                        )
+                        .animation(.easeInOut(duration: 1.2), value: currentSteps)
                 }
             }
             .frame(height: 6)
@@ -275,13 +286,11 @@ struct ExerciseProgressView: View {
                 
                 Spacer()
                 
-                Text("0/\(viewModel.exerciseGoals.count)")
-                    .font(.system(size: 14, weight: .medium))
-                    .foregroundColor(.secondary)
+                Text("")
             }
             .padding(.horizontal, 4)
             
-            ForEach(viewModel.exerciseGoals, id: \.id) { exercise in
+            ForEach(viewModel.exercises, id: \.id) { exercise in
                 exerciseCard(for: exercise)
             }
         }
@@ -314,7 +323,6 @@ struct ExerciseProgressView: View {
     // MARK: - Helper Functions
     private func exerciseCard(for exercise: Exercise, isBreathing: Bool = false) -> some View {
         ZStack {
-            // Main card content
             HStack(spacing: 16) {
                 VStack(alignment: .leading, spacing: 6) {
                     Text("Beginner")
@@ -489,7 +497,6 @@ struct ExerciseProgressView: View {
                     
                     Spacer()
                     
-                    // Close button on RIGHT - Bounce in
                     Button(action: {
                         withAnimation(.spring(response: 0.6, dampingFraction: 0.8)) {
                             isShowingInfo = false
@@ -515,8 +522,7 @@ struct ExerciseProgressView: View {
                 }
                 .padding(18)
                 .padding(.top, 6)
-                
-                // Description Section with wave-like reveal
+    
                 VStack(alignment: .leading, spacing: 16) {
                     Text("About This Exercise")
                         .font(.system(size: 16, weight: .semibold))
@@ -658,17 +664,9 @@ struct DayProgress {
 // MARK: - View Model
 class ExerciseGoalsViewModel: ObservableObject {
     @Published var weeklyProgress: [DayProgress] = []
-    @Published var exerciseGoals: [Exercise] = []
-    @Published var currentSteps: Int = 1974
-    @Published var stepsGoal: Int = 1200
-    @Published var totalGoalsCompleted: Int = 10
-    @Published var totalGoals: Int = 30
-    
-    //    func loadData() {
-    //        loadMockWeeklyProgress()
-    //        loadMockExerciseGoals()
-    //    }
-    
+    @Published var exercises: [Exercise] = []
+    @Published var totalCompletedExercises: Int = 0
+
     private func loadWeeklyProgress() {
         let dayNames = ["S", "M", "T", "W", "T", "F", "S"]
         let mockProgressValues = [1.0, 0.8, 1.0, 0.6, 0.0, 0.0, 0.0]

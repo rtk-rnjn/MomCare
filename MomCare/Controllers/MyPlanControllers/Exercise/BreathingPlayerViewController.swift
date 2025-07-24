@@ -6,6 +6,7 @@ class BreathingPlayerViewController: UIViewController {
     
     @IBOutlet var totalBreatingDuration: UILabel!
     
+    var exerciseProgressViewController: ExerciseProgressViewController?
     var remainingMinSec: Double = 0.0
     var completedPercentage: Double = 0.0
     
@@ -17,6 +18,10 @@ class BreathingPlayerViewController: UIViewController {
         setupTimerLabel()
         setupAssuringMessageLabel()
         setupControlButtons()
+        
+        if let completionDuration: Double? = Utils.get(fromKey: "BreathingCompletionDuration", withDefaultValue: 0.0) {
+            totalBreathingTime -= completionDuration ?? 0
+        }
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -61,8 +66,7 @@ class BreathingPlayerViewController: UIViewController {
     }
     
     @IBAction func breathingStopButtonTapped(_ sender: UIButton) {
-        let remainingTime: Double = remainingMinSec
-        let completedTime: Double = totalBreathingTime - remainingTime
+        let completedTime: Double = totalBreathingTime - remainingMinSec
         completedPercentage = (completedTime / totalBreathingTime * 100)
     }
     
@@ -179,7 +183,7 @@ class BreathingPlayerViewController: UIViewController {
     private let animationDuration: TimeInterval = 4.0
     private let spreadDistance: CGFloat = 60 // More spread for flower
     private let textAnimationDuration: TimeInterval = 0.5 //
-    private let totalBreathingTime: Double = 600
+    private var totalBreathingTime: TimeInterval = 600
     private let petalColors: [UIColor] = [
         UIColor(hex: "#bfaee0"), // soft purple
         UIColor(hex: "#f7d6e0"), // soft pink
@@ -525,7 +529,12 @@ class BreathingPlayerViewController: UIViewController {
             if let nav = self.navigationController {
                 nav.popViewController(animated: true)
             } else {
-                self.dismiss(animated: true)
+                self.dismiss(animated: true) {
+                    Utils.save(forKey: "BreathingCompletionDuration", withValue: self.totalBreathingTime - self.remainingMinSec)
+                
+
+                    self.exerciseProgressViewController?.triggerRefresh()
+                }
             }
         }))
         

@@ -74,7 +74,7 @@
             <objects>
                 <hostingController id="Fc1-1s-a7Z" customClass="ExerciseProgressViewController" customModule="MomCare" customModuleProvider="target" sceneMemberID="viewController">
                     <connections>
-                        <segue destination="IHz-Co-2s6" kind="show" identifier="segueShowBreathingPlayerViewController" id="bJB-iM-4Iy"/>
+                        <segue destination="IHz-Co-2s6" kind="presentation" identifier="segueShowBreathingPlayerViewController" modalPresentationStyle="fullScreen" modalTransitionStyle="crossDissolve" id="bJB-iM-4Iy"/>
                     </connections>
                 </hostingController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="H9y-2J-U4I" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

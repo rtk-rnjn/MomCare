@@ -108,5 +108,17 @@ extension ExerciseProgressViewController: AVPlayerViewControllerDelegate {
             MomCareUser.shared.user?.exercises[index].durationCompleted = durationCompleted
         }
     }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "segueShowBreathingPlayerViewController", let destinationViewController = segue.destination as? BreathingPlayerViewController {
+            destinationViewController.exerciseProgressViewController = self
+        }
+    }
+    
+    func triggerRefresh() {
+        var newView = ExerciseProgressView()
+        newView.delegate = self
 
+        rootView = newView
+    }
 }
