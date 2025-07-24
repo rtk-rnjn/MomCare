@@ -164,6 +164,7 @@ struct Exercise: Codable, Sendable, Equatable {
         case durationCompleted = "duration_completed"
         case assignedAt = "assigned_at"
     }
+
     var id: String = UUID().uuidString
 
     var name: String
@@ -177,6 +178,8 @@ struct Exercise: Codable, Sendable, Equatable {
     var durationCompleted: TimeInterval = 0
 
     var assignedAt: Date
+
+    var exerciseHardCodedImage: String = "Yoga1" // TODO: remove this
 
     var isCompleted: Bool {
         if let duration, duration > 0 {
@@ -203,8 +206,6 @@ struct Exercise: Codable, Sendable, Equatable {
             return nil
         }
     }
-    
-    var exerciseHardCodedImage: String = "Yoga1"  // TODO: remove this
 
     var uri: String? {
         get async {

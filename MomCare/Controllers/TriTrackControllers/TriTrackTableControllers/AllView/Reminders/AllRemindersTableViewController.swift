@@ -27,12 +27,13 @@ class AllRemindersTableViewController: UITableViewController {
         setupRemindersHeader()
         fetchAllReminders()
     }
+
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
 
         let defaultAppearance = UINavigationBarAppearance()
         defaultAppearance.configureWithOpaqueBackground()
-        defaultAppearance.backgroundColor = .systemBackground  // or whatever your default color is
+        defaultAppearance.backgroundColor = .systemBackground // or whatever your default color is
         defaultAppearance.titleTextAttributes = [.foregroundColor: UIColor.label]
         defaultAppearance.shadowColor = .clear
 
@@ -59,6 +60,7 @@ class AllRemindersTableViewController: UITableViewController {
     }
 
     // MARK: Private
+
     private func setupRemindersHeader() {
         let headerLabel = UILabel()
         headerLabel.text = "Reminders"
@@ -68,23 +70,23 @@ class AllRemindersTableViewController: UITableViewController {
         headerLabel.numberOfLines = 1
         headerLabel.backgroundColor = .clear
         headerLabel.translatesAutoresizingMaskIntoConstraints = false
-        
+
         // Calculate height for the label
         let headerHeight: CGFloat = 60
         let headerView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.bounds.width, height: headerHeight))
         headerView.backgroundColor = .clear
         headerView.addSubview(headerLabel)
-        
+
         NSLayoutConstraint.activate([
             headerLabel.leadingAnchor.constraint(equalTo: headerView.leadingAnchor, constant: 16),
             headerLabel.trailingAnchor.constraint(equalTo: headerView.trailingAnchor, constant: -16),
             headerLabel.bottomAnchor.constraint(equalTo: headerView.bottomAnchor, constant: -15),
             headerLabel.topAnchor.constraint(equalTo: headerView.topAnchor, constant: 8)
         ])
-        
+
         tableView.tableHeaderView = headerView
     }
-    
+
     private func fetchAllReminders() {
         Task {
             await EventKitHandler.shared.fetchAllReminders { reminders in

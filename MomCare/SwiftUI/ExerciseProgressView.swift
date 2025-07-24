@@ -2,19 +2,11 @@ import SwiftUI
 import HealthKit
 
 struct ExerciseProgressView: View {
+
+    // MARK: Internal
+
     weak var delegate: ExerciseProgressViewController?
-    @StateObject private var viewModel = ExerciseGoalsViewModel()
-    @State private var showingExerciseInfo: Exercise?
-    @State private var isShowingInfo = false
-    @State private var showingCalendar = false
-    
-    // Calendar navigation states
-    @State private var currentDate = Date()
-    @State private var dragOffset: CGFloat = 0
-    
-    @State private var currentSteps: Int = 0
-    @State private var targetSteps: Int = 1
-    
+
     var body: some View {
         ZStack {
             ScrollView {
@@ -27,7 +19,7 @@ struct ExerciseProgressView: View {
                             }
                         }
                     walkingCardView
-                    
+
                     exerciseCard(for: Exercise(name: "Breathing", type: .breathing, duration: 600, description: "Deep breathing exercises help reduce stress and anxiety during pregnancy. This gentle practice improves oxygen flow to both you and your baby while promoting relaxation and better sleep quality.", tags: ["Stress Relief", "Better Sleep", "Oxygen Flow", "Relaxation"], week: "", targetedBodyParts: ["Lungs"], assignedAt: Date()), isBreathing: true)
 
                     exerciseCardsView
@@ -44,7 +36,7 @@ struct ExerciseProgressView: View {
             )
             .blur(radius: (isShowingInfo || showingCalendar) ? 3 : 0)
             .animation(.easeInOut(duration: 0.3), value: isShowingInfo || showingCalendar)
-            
+
             if isShowingInfo, let exercise = showingExerciseInfo {
                 exerciseInfoCard(for: exercise)
                     .transition(.asymmetric(
@@ -65,22 +57,22 @@ struct ExerciseProgressView: View {
         .task {
             let stepsData = await delegate?.readStepCount()
             if let stepsData {
-                self.currentSteps = Int(stepsData.current)
-                self.targetSteps = Int(stepsData.target)
+                currentSteps = Int(stepsData.current)
+                targetSteps = Int(stepsData.target)
             }
-            
+
             let exercises: [Exercise]? = await delegate?.fetchExercises()
             if let exercises {
                 viewModel.exercises = exercises
             }
-            
+
             var count = 0
             for exercise in viewModel.exercises {
                 if exercise.isCompleted {
                     count += 1
                 }
             }
-            
+
             if currentSteps >= targetSteps {
                 count += 1
             }
@@ -88,6 +80,20 @@ struct ExerciseProgressView: View {
             viewModel.totalCompletedExercises = count
         }
     }
+
+    // MARK: Private
+
+    @StateObject private var viewModel: ExerciseGoalsViewModel = .init()
+    @State private var showingExerciseInfo: Exercise?
+    @State private var isShowingInfo = false
+    @State private var showingCalendar = false
+
+    // Calendar navigation states
+    @State private var currentDate: Date = .init()
+    @State private var dragOffset: CGFloat = 0
+
+    @State private var currentSteps: Int = 0
+    @State private var targetSteps: Int = 1
 
     private var weekHeaderView: some View {
         VStack(spacing: 6) {
@@ -98,28 +104,28 @@ struct ExerciseProgressView: View {
         .padding(.top, 15)
         .padding(.bottom, 5)
     }
-    
+
     private var weeklyProgressRingsView: some View {
         VStack(spacing: 16) {
             HStack {
                 Text("Weekly Progress")
                     .font(.system(size: 18, weight: .semibold))
                     .foregroundColor(.primary)
-                
+
                 Spacer()
-                
+
                 HStack(spacing: 4) {
                     Text("\(Calendar.current.component(.weekday, from: Date()))/7 days")
                         .font(.system(size: 14, weight: .medium))
                         .foregroundColor(.secondary)
-                    
+
                     Image(systemName: "chevron.right")
                         .font(.system(size: 12, weight: .semibold))
                         .foregroundColor(.secondary)
                         .opacity(0.6)
                 }
             }
-            
+
             // Day letters row with enhanced styling
             HStack(spacing: 8) {
                 ForEach(viewModel.weeklyProgress, id: \.day) { dayProgress in
@@ -127,12 +133,12 @@ struct ExerciseProgressView: View {
                         Text(dayProgress.dayName)
                             .font(.system(size: 12, weight: .semibold))
                             .foregroundColor(Color(hex: "924350"))
-                        
+
                         ZStack {
                             Circle()
                                 .stroke(Color.gray.opacity(0.2), lineWidth: 4)
                                 .frame(width: 32, height: 32)
-                            
+
                             Circle()
                                 .trim(from: 0, to: min(dayProgress.completionPercentage, 1.0))
                                 .stroke(
@@ -142,7 +148,7 @@ struct ExerciseProgressView: View {
                                 .frame(width: 32, height: 32)
                                 .rotationEffect(.degrees(-90))
                                 .animation(.spring(response: 1.0, dampingFraction: 0.8, blendDuration: 0), value: dayProgress.completionPercentage)
-                            
+
                             if dayProgress.completionPercentage >= 1.0 {
                                 Image(systemName: "checkmark")
                                     .font(.system(size: 10, weight: .bold))
@@ -153,7 +159,7 @@ struct ExerciseProgressView: View {
                     .frame(maxWidth: .infinity)
                 }
             }
-            
+
             // Total Goal Section
             VStack(spacing: 12) {
                 HStack {
@@ -161,26 +167,26 @@ struct ExerciseProgressView: View {
                         Image(systemName: "target")
                             .font(.system(size: 16, weight: .medium))
                             .foregroundColor(Color(hex: "924350"))
-                        
+
                         Text("Total Goal: \(viewModel.totalCompletedExercises)/\(2 + viewModel.exercises.count)")
                             .font(.system(size: 16, weight: .semibold))
                             .foregroundColor(.primary)
                     }
-                    
+
                     Spacer()
-                    
+
                     Text("")
                         .font(.system(size: 16, weight: .bold))
                         .foregroundColor(Color(hex: "924350"))
                 }
-                
+
                 // Progress Bar
                 GeometryReader { geometry in
                     ZStack(alignment: .leading) {
                         RoundedRectangle(cornerRadius: 4)
                             .fill(Color.gray.opacity(0.2))
                             .frame(height: 6)
-                        
+
                         RoundedRectangle(cornerRadius: 4)
                             .fill(Color(hex: "924350"))
                             .frame(
@@ -199,7 +205,7 @@ struct ExerciseProgressView: View {
                 .fill(Color.white)
         )
     }
-    
+
     private var walkingCardView: some View {
         VStack(spacing: 16) {
             HStack {
@@ -207,19 +213,19 @@ struct ExerciseProgressView: View {
                     Image(systemName: "figure.walk")
                         .font(.system(size: 20, weight: .medium))
                         .foregroundColor(Color(hex: "924350"))
-                    
+
                     Text("Walking")
                         .font(.system(size: 20, weight: .bold))
                         .foregroundColor(.primary)
                 }
-                
+
                 Spacer()
-                
+
                 VStack(alignment: .trailing, spacing: 2) {
                     Text("\(Int(currentSteps / targetSteps * 100))% Completed")
                         .font(.system(size: 14, weight: .semibold))
                         .foregroundColor(Color(hex: "924350"))
-                    
+
                     if currentSteps / targetSteps >= 1 {
                         Image(systemName: "checkmark.circle.fill")
                             .font(.system(size: 16))
@@ -227,7 +233,7 @@ struct ExerciseProgressView: View {
                     }
                 }
             }
-            
+
             HStack {
                 VStack(alignment: .leading, spacing: 4) {
                     Text("\(currentSteps)")
@@ -237,9 +243,9 @@ struct ExerciseProgressView: View {
                         .font(.system(size: 14, weight: .medium))
                         .foregroundColor(.secondary)
                 }
-                
+
                 Spacer()
-                
+
                 VStack(alignment: .trailing, spacing: 4) {
                     Text("\(targetSteps)")
                         .font(.system(size: 18, weight: .semibold))
@@ -249,7 +255,7 @@ struct ExerciseProgressView: View {
                         .foregroundColor(.secondary)
                 }
             }
-            
+
             // Walking Progress Bar
             GeometryReader { geometry in
                 ZStack(alignment: .leading) {
@@ -275,7 +281,7 @@ struct ExerciseProgressView: View {
                 .fill(Color.white)
         )
     }
-    
+
     private var exerciseCardsView: some View {
         VStack(spacing: 16) {
             // Section header
@@ -283,19 +289,19 @@ struct ExerciseProgressView: View {
                 Text("Today's Exercises")
                     .font(.system(size: 18, weight: .semibold))
                     .foregroundColor(.primary)
-                
+
                 Spacer()
-                
+
                 Text("")
             }
             .padding(.horizontal, 4)
-            
+
             ForEach(viewModel.exercises, id: \.id) { exercise in
                 exerciseCard(for: exercise)
             }
         }
     }
-    
+
     private var progressCalendarView: some View {
         ZStack {
             // Background overlay
@@ -306,7 +312,7 @@ struct ExerciseProgressView: View {
                         showingCalendar = false
                     }
                 }
-            
+
             VStack {
                 Text("Calendar Coming Soon")
                     .font(.system(size: 18, weight: .semibold))
@@ -319,7 +325,7 @@ struct ExerciseProgressView: View {
             }
         }
     }
-    
+
     // MARK: - Helper Functions
     private func exerciseCard(for exercise: Exercise, isBreathing: Bool = false) -> some View {
         ZStack {
@@ -329,17 +335,17 @@ struct ExerciseProgressView: View {
                         .font(.system(size: 12, weight: .medium))
                         .foregroundColor(.secondary)
                         .padding(.top, 8)
-                    
+
                     Text(exercise.name)
                         .font(.system(size: 22, weight: .bold))
                         .foregroundColor(.primary)
                         .padding(.bottom, 4)
-                    
+
                     Text("\(Int(exercise.completionPercentage))% completed")
                         .font(.system(size: 14, weight: .medium))
                         .foregroundColor(.secondary)
                         .padding(.bottom, 16)
-                    
+
                     Button(action: {
                         if isBreathing {
                             delegate?.segueToBreathingPlayer()
@@ -353,7 +359,7 @@ struct ExerciseProgressView: View {
                         HStack(spacing: 8) {
                             Image(systemName: "play.fill")
                                 .font(.system(size: 12))
-                            
+
                             Text("Start")
                                 .font(.system(size: 16, weight: .semibold))
                         }
@@ -366,9 +372,9 @@ struct ExerciseProgressView: View {
                         )
                     }
                 }
-                
+
                 Spacer()
-                
+
                 // Exercise Image/Icon
                 ZStack {
                     RoundedRectangle(cornerRadius: 16)
@@ -392,7 +398,7 @@ struct ExerciseProgressView: View {
                     }
                 }
             }
-            
+
             // Enhanced info button
             enhancedInfoButton(exercise: exercise)
         }
@@ -402,7 +408,7 @@ struct ExerciseProgressView: View {
                 .fill(Color.white)
         )
     }
-    
+
     private func enhancedInfoButton(exercise: Exercise) -> some View {
         VStack {
             HStack {
@@ -441,7 +447,7 @@ struct ExerciseProgressView: View {
                         showingExerciseInfo = nil
                     }
                 }
-            
+
             // Dynamic Info Card with enhanced opening effect
             VStack(spacing: 0) {
                 // Main header with image, title AND close button
@@ -471,7 +477,7 @@ struct ExerciseProgressView: View {
                         }
                     }
                     .animation(.spring(response: 0.8, dampingFraction: 0.6).delay(0.2), value: isShowingInfo)
-                    
+
                     // Content in MIDDLE - Slide from left
                     VStack(alignment: .leading, spacing: 6) {
                         Text(exercise.name)
@@ -479,7 +485,7 @@ struct ExerciseProgressView: View {
                             .foregroundColor(.primary)
                             .opacity(isShowingInfo ? 1 : 0)
                             .offset(x: isShowingInfo ? 0 : -30)
-                        
+
                         Text(exercise.level.rawValue.capitalized)
                             .font(.system(size: 13, weight: .medium))
                             .foregroundColor(Color(hex: "924350"))
@@ -494,9 +500,9 @@ struct ExerciseProgressView: View {
                             .offset(x: isShowingInfo ? 0 : -20)
                     }
                     .animation(.spring(response: 0.9, dampingFraction: 0.7).delay(0.35), value: isShowingInfo)
-                    
+
                     Spacer()
-                    
+
                     Button(action: {
                         withAnimation(.spring(response: 0.6, dampingFraction: 0.8)) {
                             isShowingInfo = false
@@ -522,7 +528,7 @@ struct ExerciseProgressView: View {
                 }
                 .padding(18)
                 .padding(.top, 6)
-    
+
                 VStack(alignment: .leading, spacing: 16) {
                     Text("About This Exercise")
                         .font(.system(size: 16, weight: .semibold))
@@ -531,7 +537,7 @@ struct ExerciseProgressView: View {
                         .offset(x: isShowingInfo ? 0 : -40)
                         .scaleEffect(isShowingInfo ? 1 : 0.9, anchor: .leading)
                         .animation(.spring(response: 1.0, dampingFraction: 0.8).delay(0.5), value: isShowingInfo)
-                    
+
                     Text(exercise.description)
                         .font(.system(size: 14, weight: .regular))
                         .foregroundColor(.secondary)
@@ -541,7 +547,7 @@ struct ExerciseProgressView: View {
                         .offset(y: isShowingInfo ? 0 : 20)
                         .scaleEffect(isShowingInfo ? 1 : 0.95)
                         .animation(.spring(response: 1.1, dampingFraction: 0.8).delay(0.6), value: isShowingInfo)
-                    
+
                     // Compact Details with staggered bounce
                     HStack(spacing: 20) {
                         detailItem(icon: "clock", value: exercise.humanReadableDuration)
@@ -549,7 +555,7 @@ struct ExerciseProgressView: View {
                             .scaleEffect(isShowingInfo ? 1 : 0.3)
                             .offset(y: isShowingInfo ? 0 : 15)
                             .animation(.spring(response: 0.8, dampingFraction: 0.6).delay(0.7), value: isShowingInfo)
-                        
+
                         detailItem(icon: "flame", value: "Low")
                             .opacity(isShowingInfo ? 1 : 0)
                             .scaleEffect(isShowingInfo ? 1 : 0.3)
@@ -561,11 +567,11 @@ struct ExerciseProgressView: View {
                             .scaleEffect(isShowingInfo ? 1 : 0.3)
                             .offset(y: isShowingInfo ? 0 : 15)
                             .animation(.spring(response: 0.8, dampingFraction: 0.6).delay(0.8), value: isShowingInfo)
-                        
+
                         Spacer()
                     }
                     .padding(.vertical, 4)
-                    
+
                     // Benefits Section with cascading reveal
                     VStack(alignment: .leading, spacing: 10) {
                         Text("Benefits")
@@ -575,7 +581,7 @@ struct ExerciseProgressView: View {
                             .offset(x: isShowingInfo ? 0 : -30)
                             .scaleEffect(isShowingInfo ? 1 : 0.9, anchor: .leading)
                             .animation(.spring(response: 1.0, dampingFraction: 0.8).delay(0.85), value: isShowingInfo)
-                        
+
                         // Benefits tags with wave animation
                         LazyVGrid(
                             columns: [
@@ -613,9 +619,9 @@ struct ExerciseProgressView: View {
                 RoundedRectangle(cornerRadius: 18)
                     .fill(Color.white)
                     .shadow(
-                        color: Color.black.opacity(isShowingInfo ? 0.15 : 0), 
-                        radius: isShowingInfo ? 12 : 0, 
-                        x: 0, 
+                        color: Color.black.opacity(isShowingInfo ? 0.15 : 0),
+                        radius: isShowingInfo ? 12 : 0,
+                        x: 0,
                         y: isShowingInfo ? 6 : 0
                     )
                     .scaleEffect(isShowingInfo ? 1 : 0.8)
@@ -626,13 +632,13 @@ struct ExerciseProgressView: View {
             .animation(.spring(response: 1.0, dampingFraction: 0.75).delay(0.1), value: isShowingInfo)
         }
     }
-    
+
     private func detailItem(icon: String, value: String) -> some View {
         VStack(spacing: 4) {
             Image(systemName: icon)
                 .font(.system(size: 14))
                 .foregroundColor(Color(hex: "924350"))
-            
+
             Text(value)
                 .font(.system(size: 11, weight: .medium))
                 .foregroundColor(.secondary)
@@ -640,7 +646,7 @@ struct ExerciseProgressView: View {
         }
         .frame(maxWidth: .infinity)
     }
-    
+
     private func benefitTag(text: String) -> some View {
         Text(text)
             .font(.system(size: 13, weight: .medium))
@@ -663,32 +669,37 @@ struct DayProgress {
 
 // MARK: - View Model
 class ExerciseGoalsViewModel: ObservableObject {
+
+    // MARK: Internal
+
     @Published var weeklyProgress: [DayProgress] = []
     @Published var exercises: [Exercise] = []
     @Published var totalCompletedExercises: Int = 0
 
+    // MARK: Private
+
     private func loadWeeklyProgress() {
         let dayNames = ["S", "M", "T", "W", "T", "F", "S"]
         let mockProgressValues = [1.0, 0.8, 1.0, 0.6, 0.0, 0.0, 0.0]
-        
+
         var progress: [DayProgress] = []
-        
+
         for i in 0..<7 {
             let today = Date()
             let day = Calendar.current.date(byAdding: .day, value: i, to: today) ?? today
             let dayName = dayNames[i]
-            
+
             progress.append(DayProgress(
                 day: day,
                 dayName: dayName,
                 completionPercentage: mockProgressValues[i]
             ))
         }
-        
+
         weeklyProgress = progress
     }
 }
-    
+
 //    private func loadMockExerciseGoals() {
 //        exerciseGoals = [
 //            ExerciseGoalInfo(
@@ -732,11 +743,11 @@ class ExerciseGoalsViewModel: ObservableObject {
 //            )
 //        ]
 //    }
-//}
+// }
 //
 //// MARK: - Preview
-//struct ExerciseProgressView_Previews: PreviewProvider {
+// struct ExerciseProgressView_Previews: PreviewProvider {
 //    static var previews: some View {
 //        ExerciseProgressView()
 //    }
-//}
+// }

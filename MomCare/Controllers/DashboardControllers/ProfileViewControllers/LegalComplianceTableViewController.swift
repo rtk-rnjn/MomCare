@@ -7,11 +7,4 @@
 
 import UIKit
 
-class LegalComplianceTableViewController: UITableViewController {
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-    }
-
-
-}
+class LegalComplianceTableViewController: UITableViewController {}

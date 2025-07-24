@@ -10,7 +10,7 @@ import SwiftUI
 struct DietPlanLoadingScreen: View {
     @State private var currentText = 0
     var stopAnimation = false
-    let pinkColor: Color = Color(hex: "924350")
+    let pinkColor: Color = .init(hex: "924350")
 
     let messages = [
         "Analyzing your nutritional needs...",
@@ -74,7 +74,7 @@ struct FoodToAnimate: View {
     let delay: Double
     @State private var isPulsing = false
 
-    let pinkColor: Color = Color(hex: "924350")
+    let pinkColor: Color = .init(hex: "924350")
 
     var body: some View {
         Image(systemName: symbolName)

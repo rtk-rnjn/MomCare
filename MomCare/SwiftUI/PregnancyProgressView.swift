@@ -5,7 +5,6 @@
 //  Created by Aryan Singh on 24/07/25.
 //
 
-
 import SwiftUI
 
 struct PregnancyProgressView: View {

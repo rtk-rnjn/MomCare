@@ -1,5 +1,5 @@
 //
-//  LegalComplianceTableViewController.swift
+//  PrivacyPolicyTableViewController.swift
 //  MomCare
 //
 //  Created by Nupur on 23/07/25.
@@ -9,9 +9,8 @@ import UIKit
 
 class PrivacyPolicyTableViewController: UITableViewController {
 
-    
-    @IBOutlet weak var privacyPoliceDescription: UILabel!
-    
+    @IBOutlet var privacyPoliceDescription: UILabel!
+
     override func viewDidLoad() {
         super.viewDidLoad()
         let bullet = "\u{2022}"
@@ -22,9 +21,9 @@ class PrivacyPolicyTableViewController: UITableViewController {
                 "Your rights over your data"
             ]
         let paragraphStyle = NSMutableParagraphStyle()
-        paragraphStyle.headIndent = 15           // space after bullet
-        paragraphStyle.paragraphSpacing = 6      // space between bullet lines
-        paragraphStyle.lineSpacing = 4           // line spacing
+        paragraphStyle.headIndent = 15 // space after bullet
+        paragraphStyle.paragraphSpacing = 6 // space between bullet lines
+        paragraphStyle.lineSpacing = 4 // line spacing
         paragraphStyle.alignment = .left
 
         let attributes: [NSAttributedString.Key: Any] = [

@@ -1,5 +1,5 @@
 //
-//  PregnancyProgressController.swift
+//  ExerciseProgressViewController.swift
 //  MomCare
 //
 //  Created by Aryan Singh on 23/07/25.
@@ -10,43 +10,48 @@ import AVKit
 import AVFoundation
 
 class ExerciseProgressViewController: UIHostingController<ExerciseProgressView> {
-    var player: AVPlayer?
-    var timeControlStatusObservation: Any?
-    var selectedExercise: Exercise?
+
+    // MARK: Lifecycle
 
     required init?(coder: NSCoder) {
         super.init(coder: coder, rootView: ExerciseProgressView())
     }
-    
+
+    // MARK: Internal
+
+    var player: AVPlayer?
+    var timeControlStatusObservation: Any?
+    var selectedExercise: Exercise?
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         rootView.delegate = self
     }
-    
+
     func readStepCount() async -> (current: Double, target: Double) {
         let count = await HealthKitHandler.shared.readStepCount()
         let goal = Utils.getStepGoal(week: MomCareUser.shared.user?.pregancyData?.week ?? 1)
 
         return (Double(count), Double(goal))
     }
-    
+
     func segueToBreathingPlayer() {
         performSegue(withIdentifier: "segueShowBreathingPlayerViewController", sender: nil)
     }
-    
+
     func fetchExercises() async -> [Exercise] {
         let exists = MomCareUser.shared.user?.exercises != nil && !(MomCareUser.shared.user?.exercises.isEmpty ?? true)
         if !exists {
             let exercises = await ContentHandler.shared.fetchExercises() ?? []
             MomCareUser.shared.user?.exercises = exercises
         }
-        
+
         return MomCareUser.shared.user?.exercises ?? []
     }
-    
+
     func play(exercise: Exercise) async {
-        await self.prepareAVPlayer(for: exercise)
+        await prepareAVPlayer(for: exercise)
     }
 }
 
@@ -108,13 +113,13 @@ extension ExerciseProgressViewController: AVPlayerViewControllerDelegate {
             MomCareUser.shared.user?.exercises[index].durationCompleted = durationCompleted
         }
     }
-    
+
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "segueShowBreathingPlayerViewController", let destinationViewController = segue.destination as? BreathingPlayerViewController {
             destinationViewController.exerciseProgressViewController = self
         }
     }
-    
+
     func triggerRefresh() {
         var newView = ExerciseProgressView()
         newView.delegate = self

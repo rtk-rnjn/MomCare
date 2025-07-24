@@ -1,15 +1,15 @@
 import UIKit
 
 class BreathingPlayerViewController: UIViewController {
-    
+
     // MARK: Internal
-    
+
     @IBOutlet var totalBreatingDuration: UILabel!
-    
+
     var exerciseProgressViewController: ExerciseProgressViewController?
     var remainingMinSec: Double = 0.0
     var completedPercentage: Double = 0.0
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         setupAnimatedGradientBackground()
@@ -18,24 +18,20 @@ class BreathingPlayerViewController: UIViewController {
         setupTimerLabel()
         setupAssuringMessageLabel()
         setupControlButtons()
-        
+
         if let completionDuration: Double? = Utils.get(fromKey: "BreathingCompletionDuration", withDefaultValue: 0.0) {
             totalBreathingTime -= completionDuration ?? 0
         }
     }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-    }
-    
+
     func updateGradientBackground() {
         let gradientLayer = CAGradientLayer()
         gradientLayer.frame = view.bounds
-        
+
         let upperColor = UIColor(hex: "#1e0d31")
         let middleColor = UIColor(hex: "#13102f")
         let bottomColor = UIColor(hex: "#0f102e")
-        
+
         gradientLayer.colors = [
             upperColor.withAlphaComponent(1.0).cgColor,
             middleColor.withAlphaComponent(1.0).cgColor,
@@ -43,37 +39,90 @@ class BreathingPlayerViewController: UIViewController {
         ]
         gradientLayer.startPoint = CGPoint(x: 0.5, y: 0.0)
         gradientLayer.endPoint = CGPoint(x: 0.5, y: 1.0)
-        
+
         view.layer.insertSublayer(gradientLayer, at: 0)
     }
-    
+
     func exrciseDurationSetup() async {
         var i = 0
-        
+
         while 10 * 60 - i > 0 {
             try? await Task.sleep(nanoseconds: 1_000_000_000)
             DispatchQueue.main.async {
                 i += 1
                 let remainingSeconds = 10 * 60 - i
-                
+
                 let remainingMinutes = remainingSeconds / 60
                 let remainingSecondsPart = remainingSeconds % 60
                 self.remainingMinSec = Double(remainingMinutes) * 60 + Double(remainingSecondsPart)
-                
+
                 self.totalBreatingDuration.text = String(format: "%02d:%02d", remainingMinutes, remainingSecondsPart)
             }
         }
     }
-    
+
     @IBAction func breathingStopButtonTapped(_ sender: UIButton) {
         let completedTime: Double = totalBreathingTime - remainingMinSec
         completedPercentage = (completedTime / totalBreathingTime * 100)
     }
-    
+
+    // MARK: Private
+
+    private enum PetalAnimationPhase { case none, expanding, collapsing }
+
+    // MARK: - State & Controls
+    private enum PlayerState { case ready, playing, paused, finished }
+
     // MARK: - Animated Gradient Background
     private var animatedGradientLayer: CAGradientLayer?
     private var gradientAnimation: CABasicAnimation?
-    
+
+    // MARK: - Assuring Message
+    private let assuringMessageLabel: UILabel = .init()
+    private var circlesContainer: CALayer = .init()
+    private var circleLayers: [CAShapeLayer] = []
+    private var isInhaling = true
+    private let instructionLabel: UILabel = .init()
+    private let timerLabel: UILabel = .init() // New timer label
+    private var timer: Timer? // Timer for updating countdown
+    private var currentCount = 0
+    private var breathingCycles = 0
+
+    // Add these properties for animation state tracking
+    private var petalAnimationPhase: PetalAnimationPhase = .none
+    private var petalAnimationStartTime: TimeInterval = 0
+    private var petalAnimationDuration: TimeInterval = 0
+    private var petalAnimationRemaining: TimeInterval = 0
+    private var petalTargetPositions: [CGPoint] = []
+    private var petalPausedPositions: [CGPoint] = []
+    private var playerState: PlayerState = .ready
+    private var startPauseButton: UIButton!
+    private var stopButton: UIButton!
+    private var exerciseTimer: Timer?
+    private var secondsElapsed = 0
+
+    // For smooth pausing
+    private var nextStateWorkItem: DispatchWorkItem?
+    private var animationPhaseStartTime: TimeInterval = 0
+    private var timeRemainingForPhase: TimeInterval = 0
+
+    // Configuration
+    private let numberOfPetals = 6
+    private let circleSize: CGFloat = 100
+    private let animationDuration: TimeInterval = 4.0
+    private let spreadDistance: CGFloat = 60 // More spread for flower
+    private let textAnimationDuration: TimeInterval = 0.5 //
+    private var totalBreathingTime: TimeInterval = 600
+    private let petalColors: [UIColor] = [
+        UIColor(hex: "#bfaee0"), // soft purple
+        UIColor(hex: "#f7d6e0"), // soft pink
+        UIColor(hex: "#e6d6f7"), // pastel lilac (replaces blue)
+        UIColor(hex: "#f7d6ec"), // pastel rose (replaces mint/green)
+        UIColor(hex: "#ffd6d6"), // pastel peach/blush
+        UIColor(hex: "#e3c6f7") // lavender
+    ]
+    private let centerColor: UIColor = .init(hex: "#fff6f0") // warm cream
+
     private func setupAnimatedGradientBackground() {
         let gradientLayer = CAGradientLayer()
         gradientLayer.frame = view.bounds
@@ -96,7 +145,7 @@ class BreathingPlayerViewController: UIViewController {
         animatedGradientLayer = gradientLayer
         animateGradientColors()
     }
-    
+
     private func animateGradientColors() {
         guard let gradientLayer = animatedGradientLayer else { return }
         let fromColors = gradientLayer.colors
@@ -116,9 +165,7 @@ class BreathingPlayerViewController: UIViewController {
         animation.isRemovedOnCompletion = false
         gradientLayer.add(animation, forKey: "colorChange")
     }
-    
-    // MARK: - Assuring Message
-    private let assuringMessageLabel: UILabel = .init()
+
     private func setupAssuringMessageLabel() {
         assuringMessageLabel.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(assuringMessageLabel)
@@ -137,63 +184,13 @@ class BreathingPlayerViewController: UIViewController {
         assuringMessageLabel.layer.shadowOffset = CGSize(width: 0, height: 2)
         assuringMessageLabel.text = "You did amazing!\nTake this calm with you."
     }
+
     private func showAssuringMessage() {
         UIView.animate(withDuration: 1.2, delay: 0.2, options: [.curveEaseInOut]) {
             self.assuringMessageLabel.alpha = 1
         }
     }
-    
-    // MARK: Private
-    
-    private var circlesContainer: CALayer = .init()
-    private var circleLayers: [CAShapeLayer] = []
-    private var isInhaling = true
-    private let instructionLabel: UILabel = .init()
-    private let timerLabel: UILabel = .init() // New timer label
-    private var timer: Timer? // Timer for updating countdown
-    private var currentCount = 0
-    private var breathingCycles = 0
-    
-    // Add these properties for animation state tracking
-    private var petalAnimationPhase: PetalAnimationPhase = .none
-    private var petalAnimationStartTime: TimeInterval = 0
-    private var petalAnimationDuration: TimeInterval = 0
-    private var petalAnimationRemaining: TimeInterval = 0
-    private var petalTargetPositions: [CGPoint] = []
-    private var petalPausedPositions: [CGPoint] = []
-    private enum PetalAnimationPhase { case none, expanding, collapsing }
-    
-    // MARK: - State & Controls
-    private enum PlayerState { case ready, playing, paused, finished }
-    private var playerState: PlayerState = .ready
-    private var startPauseButton: UIButton!
-    private var stopButton: UIButton!
-    private var exerciseTimer: Timer?
-    private var secondsElapsed = 0
-    
-    // For smooth pausing
-    private var nextStateWorkItem: DispatchWorkItem?
-    private var animationPhaseStartTime: TimeInterval = 0
-    private var timeRemainingForPhase: TimeInterval = 0
-    
-    
-    // Configuration
-    private let numberOfPetals = 6
-    private let circleSize: CGFloat = 100
-    private let animationDuration: TimeInterval = 4.0
-    private let spreadDistance: CGFloat = 60 // More spread for flower
-    private let textAnimationDuration: TimeInterval = 0.5 //
-    private var totalBreathingTime: TimeInterval = 600
-    private let petalColors: [UIColor] = [
-        UIColor(hex: "#bfaee0"), // soft purple
-        UIColor(hex: "#f7d6e0"), // soft pink
-        UIColor(hex: "#e6d6f7"), // pastel lilac (replaces blue)
-        UIColor(hex: "#f7d6ec"), // pastel rose (replaces mint/green)
-        UIColor(hex: "#ffd6d6"), // pastel peach/blush
-        UIColor(hex: "#e3c6f7")  // lavender
-    ]
-    private let centerColor = UIColor(hex: "#fff6f0") // warm cream
-    
+
     private func setupInstructionLabel() {
         instructionLabel.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(instructionLabel)
@@ -210,25 +207,22 @@ class BreathingPlayerViewController: UIViewController {
         instructionLabel.layer.shadowRadius = 6
         instructionLabel.layer.shadowOffset = CGSize(width: 0, height: 2)
     }
-    
-    
-    
+
     private func animateInstructionChange(to newText: String) {
         UIView.animate(withDuration: textAnimationDuration, delay: 0, options: .curveLinear) {
             self.instructionLabel.transform = CGAffineTransform(translationX: 0, y: 0)
             self.instructionLabel.alpha = 0
         }
-        
+
         // Animate new text up and fade in
-        UIView.animate(withDuration: textAnimationDuration, delay: 0, options: .curveLinear) {
-        } completion: { _ in
+        UIView.animate(withDuration: textAnimationDuration, delay: 0, options: .curveLinear) {} completion: { _ in
             // Reset for next transition
             self.instructionLabel.text = newText
             self.instructionLabel.transform = .identity
             self.instructionLabel.alpha = 1
         }
     }
-    
+
     private func setupTimerLabel() {
         timerLabel.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(timerLabel)
@@ -245,31 +239,31 @@ class BreathingPlayerViewController: UIViewController {
         timerLabel.layer.shadowRadius = 5
         timerLabel.layer.shadowOffset = CGSize(width: 0, height: 2)
     }
-    
+
     private func startTimer(from initialCount: Int = 4) {
         // Reset and invalidate existing timer if any
         timer?.invalidate()
         currentCount = initialCount
-        
+
         timerLabel.isHidden = false
         updateCurrentCount() // Show the first number immediately
-        
+
         // Start new timer
         timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] _ in
-            guard let self = self else { return }
+            guard let self else { return }
             Task { @MainActor in
                 self.updateCurrentCount()
             }
         }
     }
-    
+
     private func updateCurrentCount() {
         if currentCount >= 1 {
             timerLabel.text = "\(currentCount)"
         }
         currentCount -= 1
     }
-    
+
     private func setupCircleLayers() {
         // Remove old layers if any
         circlesContainer.removeFromSuperlayer()
@@ -289,14 +283,14 @@ class BreathingPlayerViewController: UIViewController {
             circleLayers.append(circle)
         }
     }
-    
+
     private func hideTimer() {
         timer?.invalidate()
         timer = nil
         timerLabel.isHidden = true
         timerLabel.text = ""
     }
-    
+
     private func createCircleLayer(index: Int) -> CAShapeLayer {
         let layer = CAShapeLayer()
         layer.frame = CGRect(x: -circleSize/2, y: -circleSize/2, width: circleSize, height: circleSize)
@@ -309,7 +303,7 @@ class BreathingPlayerViewController: UIViewController {
         )
         layer.path = circlePath.cgPath
         layer.shadowPath = circlePath.cgPath // Fix for square shadow
-        
+
         if index == 0 {
             layer.fillColor = centerColor.withAlphaComponent(0.85).cgColor
         } else {
@@ -322,14 +316,14 @@ class BreathingPlayerViewController: UIViewController {
         }
         return layer
     }
-    
+
     private func startBreathingAnimation() {
         animateBreathCycle()
     }
-    
+
     private func animateBreathCycle() {
         if playerState != .playing { return }
-        
+
         if isInhaling {
             animateInstructionChange(to: "Inhale")
             hideTimer()
@@ -347,24 +341,24 @@ class BreathingPlayerViewController: UIViewController {
                 if self.playerState != .playing { return }
                 self.breathingCycles += 1
                 self.isInhaling = true
-                
+
                 // No delay here, just loop back
                 self.animateBreathCycle()
             }
         }
     }
-    
+
     private func scheduleNextState(after delay: TimeInterval) {
         animationPhaseStartTime = CACurrentMediaTime()
         nextStateWorkItem = DispatchWorkItem { [weak self] in
-            guard let self = self, self.playerState == .playing else { return }
-            
-            self.isInhaling = false
-            self.animateBreathCycle()
+            guard let self, playerState == .playing else { return }
+
+            isInhaling = false
+            animateBreathCycle()
         }
         DispatchQueue.main.asyncAfter(deadline: .now() + delay, execute: nextStateWorkItem!)
     }
-    
+
     private func animateFlowerFormation(completion: @escaping () -> Void) {
         petalAnimationPhase = .expanding
         petalAnimationStartTime = CACurrentMediaTime()
@@ -395,6 +389,7 @@ class BreathingPlayerViewController: UIViewController {
         }
         CATransaction.commit()
     }
+
     private func pulsePetals() {
         for (index, circle) in circleLayers.enumerated() {
             if index == 0 { continue }
@@ -408,6 +403,7 @@ class BreathingPlayerViewController: UIViewController {
             circle.add(pulse, forKey: "pulse")
         }
     }
+
     private func animateFlowerBloomAndShowMessage() {
         // Animate petals to bloom (scale up and fade in)
         for (index, circle) in circleLayers.enumerated() {
@@ -426,7 +422,7 @@ class BreathingPlayerViewController: UIViewController {
             self.showAssuringMessage()
         }
     }
-    
+
     private func animateFlowerCollapse(completion: @escaping () -> Void) {
         petalAnimationPhase = .collapsing
         petalAnimationStartTime = CACurrentMediaTime()
@@ -449,7 +445,7 @@ class BreathingPlayerViewController: UIViewController {
         }
         CATransaction.commit()
     }
-    
+
     private func setupControlButtons() {
         startPauseButton = UIButton(type: .system)
         startPauseButton.setTitle("Start", for: .normal)
@@ -459,7 +455,7 @@ class BreathingPlayerViewController: UIViewController {
         startPauseButton.layer.cornerRadius = 30
         startPauseButton.addTarget(self, action: #selector(startPauseButtonTapped), for: .touchUpInside)
         startPauseButton.translatesAutoresizingMaskIntoConstraints = false
-        
+
         stopButton = UIButton(type: .system)
         stopButton.setTitle("Stop", for: .normal)
         stopButton.titleLabel?.font = .systemFont(ofSize: 22, weight: .bold)
@@ -469,15 +465,15 @@ class BreathingPlayerViewController: UIViewController {
         stopButton.addTarget(self, action: #selector(stopButtonTapped), for: .touchUpInside)
         stopButton.translatesAutoresizingMaskIntoConstraints = false
         stopButton.isHidden = true // Use isHidden for stack view
-        
+
         let stackView = UIStackView(arrangedSubviews: [stopButton, startPauseButton])
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.axis = .horizontal
         stackView.spacing = 20
         stackView.distribution = .fillEqually
-        
+
         view.addSubview(stackView)
-        
+
         NSLayoutConstraint.activate([
             stackView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             stackView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -50),
@@ -485,7 +481,7 @@ class BreathingPlayerViewController: UIViewController {
             stackView.heightAnchor.constraint(equalToConstant: 60)
         ])
     }
-    
+
     @objc private func startPauseButtonTapped() {
         switch playerState {
         case .ready:
@@ -496,33 +492,33 @@ class BreathingPlayerViewController: UIViewController {
             UIView.animate(withDuration: 0.3) {
                 self.stopButton.isHidden = false
             }
-            
+
         case .playing:
             // Pause
             playerState = .paused
             pauseExercise()
             startPauseButton.setTitle("Resume", for: .normal)
-            
+
         case .paused:
             // Resume
             playerState = .playing
             resumeExercise()
             startPauseButton.setTitle("Pause", for: .normal)
-            
+
         case .finished:
             // Reset to beginning
             resetExercise()
         }
     }
-    
+
     @objc private func stopButtonTapped() {
         pauseExercise()
         let alert = UIAlertController(title: "Stop Exercise", message: "Are you sure you want to stop the breathing exercise?", preferredStyle: .alert)
-        
+
         alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { _ in
             self.resumeExercise()
         }))
-        
+
         alert.addAction(UIAlertAction(title: "Stop", style: .destructive, handler: { _ in
             self.playerState = .finished
             self.resetExercise()
@@ -531,16 +527,15 @@ class BreathingPlayerViewController: UIViewController {
             } else {
                 self.dismiss(animated: true) {
                     Utils.save(forKey: "BreathingCompletionDuration", withValue: self.totalBreathingTime - self.remainingMinSec)
-                
 
                     self.exerciseProgressViewController?.triggerRefresh()
                 }
             }
         }))
-        
+
         present(alert, animated: true)
     }
-    
+
     private func startExercise() {
         // Reset counters and start timers/animations
         secondsElapsed = 0
@@ -548,7 +543,7 @@ class BreathingPlayerViewController: UIViewController {
         startMainTimer()
         startBreathingAnimation()
     }
-    
+
     private func pauseExercise() {
         if playerState != .paused { return }
         // 1. Pause timers
@@ -575,7 +570,7 @@ class BreathingPlayerViewController: UIViewController {
         timeRemainingForPhase = animationDuration - timeElapsed
         if timeRemainingForPhase < 0 { timeRemainingForPhase = 0 }
     }
-    
+
     private func resumeExercise() {
         if playerState != .playing { return }
         // 1. Resume main timer
@@ -620,49 +615,49 @@ class BreathingPlayerViewController: UIViewController {
             scheduleNextState(after: timeRemainingForPhase)
         }
     }
-    
+
     private func resetExercise() {
         exerciseTimer?.invalidate()
         secondsElapsed = 0
         breathingCycles = 0
         isInhaling = true
-        
+
         // Reset UI
         circlesContainer.removeAllAnimations()
         for circle in circleLayers {
             circle.removeAllAnimations()
             circle.position = CGPoint(x: circlesContainer.bounds.midX, y: circlesContainer.bounds.midY)
         }
-        
+
         startPauseButton.setTitle("Start", for: .normal)
-        
+
         // Reset the stop button to its original state and action
         stopButton.setTitle("Stop", for: .normal)
         stopButton.removeTarget(self, action: #selector(doneButtonTapped), for: .touchUpInside)
         stopButton.addTarget(self, action: #selector(stopButtonTapped), for: .touchUpInside)
-        
+
         UIView.animate(withDuration: 0.3) {
             self.stopButton.isHidden = true
             self.assuringMessageLabel.alpha = 0
             self.startPauseButton.alpha = 1
         }
-        
+
         instructionLabel.text = "Inhale"
         totalBreatingDuration.text = String(format: "%02d:%02d", 5, 0)
-        
+
         playerState = .ready
     }
-    
+
     private func startMainTimer() {
         exerciseTimer?.invalidate()
         exerciseTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] _ in
-            guard let self = self else { return }
+            guard let self else { return }
             Task { @MainActor in
                 self.updateMainTimer()
             }
         }
     }
-    
+
     private func updateMainTimer() {
         secondsElapsed += 1
         let remainingSeconds = Int(totalBreathingTime) - secondsElapsed
@@ -671,35 +666,35 @@ class BreathingPlayerViewController: UIViewController {
             exerciseTimer?.invalidate()
             playerState = .finished
             animateFlowerBloomAndShowMessage()
-            
+
             // Configure buttons for the finished state
             startPauseButton.setTitle("Restart", for: .normal)
-            
+
             // Repurpose the stop button to act as a "Done" button
             stopButton.setTitle("Done", for: .normal)
             stopButton.removeTarget(self, action: #selector(stopButtonTapped), for: .touchUpInside)
             stopButton.addTarget(self, action: #selector(doneButtonTapped), for: .touchUpInside)
-            
+
             UIView.animate(withDuration: 0.5) {
                 self.startPauseButton.alpha = 1 // Show it again
                 self.stopButton.isHidden = false // Ensure it's visible
             }
             return
         }
-        
+
         let remainingMinutes = remainingSeconds / 60
         let remainingSecondsPart = remainingSeconds % 60
         remainingMinSec = Double(remainingMinutes) * 60 + Double(remainingSecondsPart)
         totalBreatingDuration.text = String(format: "%02d:%02d", remainingMinutes, remainingSecondsPart)
     }
-    
+
     @objc private func doneButtonTapped() {
         // Dismiss or pop to previous screen
-        if let nav = self.navigationController {
+        if let nav = navigationController {
             nav.popViewController(animated: true)
         } else {
-            self.dismiss(animated: true)
+            dismiss(animated: true)
         }
     }
-    
+
 }

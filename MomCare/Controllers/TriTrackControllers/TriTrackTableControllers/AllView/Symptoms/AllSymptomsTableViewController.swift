@@ -9,11 +9,14 @@ import UIKit
 import EventKit
 
 class AllSymptomsTableViewController: UITableViewController {
+
+    // MARK: Internal
+
     var symptoms: [EventInfo]? = []
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupSymptomsHeader() 
+        setupSymptomsHeader()
         Task {
             symptoms = await EventKitHandler.shared.fetchAllSymptoms()
             DispatchQueue.main.async {
@@ -21,6 +24,7 @@ class AllSymptomsTableViewController: UITableViewController {
             }
         }
     }
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
@@ -33,6 +37,7 @@ class AllSymptomsTableViewController: UITableViewController {
         navigationController?.navigationBar.standardAppearance = appearance
         navigationController?.navigationBar.scrollEdgeAppearance = appearance
     }
+
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
 
@@ -64,7 +69,9 @@ class AllSymptomsTableViewController: UITableViewController {
 
         return cell
     }
-    
+
+    // MARK: Private
+
     private func setupSymptomsHeader() {
         let headerLabel = UILabel()
         headerLabel.text = "Symptoms"
@@ -74,20 +81,20 @@ class AllSymptomsTableViewController: UITableViewController {
         headerLabel.numberOfLines = 1
         headerLabel.backgroundColor = .clear
         headerLabel.translatesAutoresizingMaskIntoConstraints = false
-        
+
         // Calculate height for the label
         let headerHeight: CGFloat = 60
         let headerView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.bounds.width, height: headerHeight))
         headerView.backgroundColor = .clear
         headerView.addSubview(headerLabel)
-        
+
         NSLayoutConstraint.activate([
             headerLabel.leadingAnchor.constraint(equalTo: headerView.leadingAnchor, constant: 16),
             headerLabel.trailingAnchor.constraint(equalTo: headerView.trailingAnchor, constant: -16),
             headerLabel.bottomAnchor.constraint(equalTo: headerView.bottomAnchor, constant: -15),
             headerLabel.topAnchor.constraint(equalTo: headerView.topAnchor, constant: 8)
         ])
-        
+
         tableView.tableHeaderView = headerView
     }
 }
