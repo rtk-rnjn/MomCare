@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="23504" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="O4E-30-vrW">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="23727" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="O4E-30-vrW">
     <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23506"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23721"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -10,26 +11,27 @@
         <scene sceneID="ijA-1Y-xCH">
             <objects>
                 <tableViewController storyboardIdentifier="AllRemindersTableViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="O4E-30-vrW" customClass="AllRemindersTableViewController" customModule="MomCare" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="insetGrouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" estimatedSectionHeaderHeight="-1" sectionFooterHeight="18" estimatedSectionFooterHeight="-1" id="Rdq-Lr-Sys">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="insetGrouped" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" estimatedSectionHeaderHeight="-1" sectionFooterHeight="18" estimatedSectionFooterHeight="-1" id="Rdq-Lr-Sys">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" red="0.9137254901960784" green="0.82745098039215681" blue="0.82745098039215681" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="AllRemindersTableViewCell" id="Zx3-Yf-LfQ" customClass="AllRemindersTableViewCell" customModule="MomCare" customModuleProvider="target">
-                                <rect key="frame" x="20" y="55.333332061767578" width="353" height="44.666667938232422"/>
+                                <rect key="frame" x="20" y="55.333332061767578" width="353" height="50.333332061767578"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Zx3-Yf-LfQ" id="Fym-Cv-bcE">
-                                    <rect key="frame" x="0.0" y="0.0" width="353" height="44.666667938232422"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="353" height="50.333332061767578"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Cgd-hl-l1v">
-                                            <rect key="frame" x="20" y="5" width="313" height="34.666666666666664"/>
+                                            <rect key="frame" x="3" y="8" width="330" height="34.333333333333336"/>
                                             <subviews>
                                                 <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="m3n-53-Jg1">
-                                                    <rect key="frame" x="0.0" y="0.0" width="271.66666666666669" height="34.666666666666657"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="288.66666666666669" height="34.333333333333336"/>
                                                     <subviews>
                                                         <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Xci-WO-IS9">
-                                                            <rect key="frame" x="0.0" y="0.0" width="49.666666666666664" height="34.666666666666664"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="49.666666666666664" height="34.333333333333336"/>
+                                                            <color key="tintColor" red="0.57254901960000004" green="0.26274509800000001" blue="0.31372549020000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                             <state key="normal" title="Button"/>
                                                             <buttonConfiguration key="configuration" style="plain" image="circle" catalog="system"/>
                                                             <connections>
@@ -37,7 +39,7 @@
                                                             </connections>
                                                         </button>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RnB-ud-DGN">
-                                                            <rect key="frame" x="49.666666666666686" y="0.0" width="222" height="34.666666666666664"/>
+                                                            <rect key="frame" x="49.666666666666657" y="0.0" width="238.99999999999997" height="34.333333333333336"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
@@ -45,7 +47,7 @@
                                                     </subviews>
                                                 </stackView>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YfC-5b-lkn">
-                                                    <rect key="frame" x="271.66666666666669" y="0.0" width="41.333333333333314" height="34.666666666666664"/>
+                                                    <rect key="frame" x="288.66666666666669" y="0.0" width="41.333333333333314" height="34.333333333333336"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
@@ -54,12 +56,13 @@
                                         </stackView>
                                     </subviews>
                                     <constraints>
-                                        <constraint firstAttribute="bottom" secondItem="Cgd-hl-l1v" secondAttribute="bottom" constant="5" id="1Bb-5K-I4e"/>
-                                        <constraint firstItem="Cgd-hl-l1v" firstAttribute="leading" secondItem="Fym-Cv-bcE" secondAttribute="leading" constant="20" id="3LJ-wi-Tj7"/>
-                                        <constraint firstItem="Cgd-hl-l1v" firstAttribute="top" secondItem="Fym-Cv-bcE" secondAttribute="top" constant="5" id="73e-R1-rWF"/>
+                                        <constraint firstAttribute="bottom" secondItem="Cgd-hl-l1v" secondAttribute="bottom" constant="8" id="1Bb-5K-I4e"/>
+                                        <constraint firstItem="Cgd-hl-l1v" firstAttribute="leading" secondItem="Fym-Cv-bcE" secondAttribute="leading" constant="3" id="3LJ-wi-Tj7"/>
+                                        <constraint firstItem="Cgd-hl-l1v" firstAttribute="top" secondItem="Fym-Cv-bcE" secondAttribute="top" constant="8" id="73e-R1-rWF"/>
                                         <constraint firstAttribute="trailing" secondItem="Cgd-hl-l1v" secondAttribute="trailing" constant="20" id="ywa-LR-G0f"/>
                                     </constraints>
                                 </tableViewCellContentView>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <connections>
                                     <outlet property="button" destination="Xci-WO-IS9" id="j4w-hL-8rL"/>
                                     <outlet property="relativeTimeLabel" destination="YfC-5b-lkn" id="cqa-Zg-wwC"/>
@@ -80,5 +83,8 @@
     </scenes>
     <resources>
         <image name="circle" catalog="system" width="128" height="123"/>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
     </resources>
 </document>

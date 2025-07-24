@@ -47,14 +47,13 @@ class TriTrackViewController: UIViewController, FSCalendarDelegate, FSCalendarDa
             await EventKitHandler.shared.requestAccessForEvent()
             await EventKitHandler.shared.requestAccessForReminder()
         }
-
+        navigationController?.navigationBar.tintColor = UIColor(hex: "#924350")
         navigationController?.navigationBar.isTranslucent = false
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         triTrackInternalView.layer.cornerRadius = 15
-
         prepareSegmentedControl()
         updateView(with: currentSegmentValue)
     }
@@ -120,8 +119,10 @@ class TriTrackViewController: UIViewController, FSCalendarDelegate, FSCalendarDa
 
         fsCalendarView.dataSource = self
         fsCalendarView.delegate = self
-        // TODO: @aryansingh
-
+        fsCalendarView.appearance.selectionColor = UIColor(hex: "#924350")
+        fsCalendarView.appearance.weekdayTextColor = .darkGray
+        fsCalendarView.appearance.headerTitleColor = .darkGray
+        fsCalendarView.appearance.titleDefaultColor = .darkGray
         calendarUIView.addSubview(fsCalendarView)
     }
 }

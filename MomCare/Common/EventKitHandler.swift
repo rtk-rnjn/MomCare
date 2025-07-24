@@ -126,7 +126,7 @@ actor EventKitHandler {
         let now = Date()
 
         let startDate = Calendar.current.date(byAdding: .month, value: -1, to: now)
-        let endDate = Calendar.current.date(byAdding: .month, value: 1, to: now)
+        let endDate = Calendar.current.date(byAdding: .month, value: 2, to: now)
 
         return fetchAppointments(startDate: startDate, endDate: endDate)
     }
@@ -264,7 +264,7 @@ actor EventKitHandler {
         let now = Date()
 
         let startDate = Calendar.current.date(byAdding: .month, value: -1, to: now)
-        let endDate = Calendar.current.date(byAdding: .month, value: 1, to: now)
+        let endDate = Calendar.current.date(byAdding: .year, value: 5, to: Date())
 
         return fetchReminders(startDate: startDate, endDate: endDate, completionHandler: completionHandler)
     }

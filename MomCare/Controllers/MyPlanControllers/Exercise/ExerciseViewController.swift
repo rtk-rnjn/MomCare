@@ -60,6 +60,8 @@ class ExerciseViewController: UIViewController, UICollectionViewDelegate, UIColl
             let exercises = await ContentHandler.shared.fetchExercises() ?? []
             MomCareUser.shared.user?.exercises = exercises
         }
+        let exercises = await ContentHandler.shared.fetchExercises() ?? []
+        MomCareUser.shared.user?.exercises = exercises
         DispatchQueue.main.async {
             self.myPlanViewController?.exercisesLoaded = true
             self.dataFetched = true

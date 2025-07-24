@@ -1,5 +1,5 @@
 //
-//  SettingsTableViewController.swift
+//  ProfileSecurityTableViewController.swift
 //  MomCare
 //
 //  Created by Aryan Singh on 13/06/25.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-class SettingsTableViewController: UITableViewController {
+class ProfileSecurityTableViewController: UITableViewController {
 
     @IBOutlet var emailLabel: UILabel!
     @IBOutlet var phoneNumberLabel: UILabel!
@@ -21,6 +21,7 @@ class SettingsTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         updatePageElements()
+        navigationController?.navigationBar.tintColor = UIColor(hex: "#924350")
     }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {

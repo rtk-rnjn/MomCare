@@ -165,6 +165,8 @@ struct Exercise: Codable, Sendable, Equatable {
         case assignedAt = "assigned_at"
     }
 
+    var id: String = UUID().uuidString
+
     var name: String
     var type: ExerciseType
     var duration: TimeInterval?
@@ -177,11 +179,20 @@ struct Exercise: Codable, Sendable, Equatable {
 
     var assignedAt: Date
 
+    var exerciseHardCodedImage: String = "Yoga1" // TODO: remove this
+
     var isCompleted: Bool {
-        return durationCompleted >= (duration ?? 0)
+        if let duration, duration > 0 {
+            return durationCompleted >= duration
+        }
+        return false
     }
 
     var completionPercentage: Double {
+        if type == .breathing {
+            let value: Double? = Utils.get(fromKey: "BreathingCompletionDuration")
+            return value ?? 0.0
+        }
         guard let duration, duration > 0 else { return 0 }
         guard !duration.isNaN || !duration.isInfinite else { return 0 }
 
