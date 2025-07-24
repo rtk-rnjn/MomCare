@@ -59,7 +59,7 @@ class ExerciseViewController: UIViewController, UICollectionViewDelegate, UIColl
 //        if !exists {
 //            let exercises = await ContentHandler.shared.fetchExercises() ?? []
 //            MomCareUser.shared.user?.exercises = exercises
-//        }
+//        }rasxc
         let exercises = await ContentHandler.shared.fetchExercises() ?? []
         MomCareUser.shared.user?.exercises = exercises
         DispatchQueue.main.async {
