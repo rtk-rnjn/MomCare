@@ -48,9 +48,6 @@ struct ExerciseProgressView: View {
                     endPoint: .bottom
                 )
             )
-            .onAppear {
-//                viewModel.loadData()
-            }
             .blur(radius: (isShowingInfo || showingCalendar) ? 3 : 0)
             .animation(.easeInOut(duration: 0.3), value: isShowingInfo || showingCalendar)
             
@@ -77,6 +74,11 @@ struct ExerciseProgressView: View {
             if let stepsData {
                 self.currentSteps = Int(stepsData.current)
                 self.targetSteps = Int(stepsData.target)
+            }
+            
+            let exercises: [Exercise]? = await delegate?.fetchExercises()
+            if let exercises {
+                viewModel.exerciseGoals = exercises
             }
         }
     }
@@ -122,7 +124,6 @@ struct ExerciseProgressView: View {
                             .font(.system(size: 12, weight: .semibold))
                             .foregroundColor(Color(hex: "924350"))
                         
-                        // Progress Ring
                         ZStack {
                             Circle()
                                 .stroke(Color.gray.opacity(0.2), lineWidth: 4)
@@ -138,7 +139,6 @@ struct ExerciseProgressView: View {
                                 .rotationEffect(.degrees(-90))
                                 .animation(.spring(response: 1.0, dampingFraction: 0.8, blendDuration: 0), value: dayProgress.completionPercentage)
                             
-                            // Only show checkmark for 100% completed - NO percentages
                             if dayProgress.completionPercentage >= 1.0 {
                                 Image(systemName: "checkmark")
                                     .font(.system(size: 10, weight: .bold))
@@ -252,7 +252,7 @@ struct ExerciseProgressView: View {
                     
                     RoundedRectangle(cornerRadius: 4)
                         .fill(Color(hex: "924350"))
-                        .frame(width: geometry.size.width, height: 6)
+                        .frame(width: geometry.size.width * CGFloat((currentSteps + 100) / targetSteps), height: 6)
                         .animation(.easeInOut(duration: 1.2), value: 1.0)
                 }
             }
@@ -335,6 +335,11 @@ struct ExerciseProgressView: View {
                     Button(action: {
                         if isBreathing {
                             delegate?.segueToBreathingPlayer()
+                        } else {
+                            Task {
+                                delegate?.selectedExercise = exercise
+                                await delegate?.play(exercise: exercise)
+                            }
                         }
                     }) {
                         HStack(spacing: 8) {
@@ -361,15 +366,19 @@ struct ExerciseProgressView: View {
                     RoundedRectangle(cornerRadius: 16)
                         .fill(
                             LinearGradient(
-                                colors: [Color(hex: "FBE8E5"), Color(hex: "F5E6E8")],
+                                colors: [Color(hex: "FBE8E5")],
                                 startPoint: .topLeading,
                                 endPoint: .bottomTrailing
                             )
                         )
                         .frame(width: 90, height: 90)
-                    
+
                     if isBreathing {
                         Image(systemName: "lungs.fill")
+                            .font(.system(size: 36, weight: .medium))
+                            .foregroundColor(Color(hex: "924350"))
+                    } else {
+                        Image(systemName: "figure.yoga")
                             .font(.system(size: 36, weight: .medium))
                             .foregroundColor(Color(hex: "924350"))
                     }
@@ -445,12 +454,12 @@ struct ExerciseProgressView: View {
                                 .opacity(isShowingInfo ? 1 : 0)
                                 .rotationEffect(.degrees(isShowingInfo ? 0 : 180))
                         } else {
-//                            Image(systemName: exercise.systemIcon)
-//                                .font(.system(size: 28, weight: .medium))
-//                                .foregroundColor(Color(hex: "924350"))
-//                                .scaleEffect(isShowingInfo ? 1 : 0.1)
-//                                .opacity(isShowingInfo ? 1 : 0)
-//                                .rotationEffect(.degrees(isShowingInfo ? 0 : 180))
+                            Image(systemName: "figure.yoga")
+                                .font(.system(size: 28, weight: .medium))
+                                .foregroundColor(Color(hex: "924350"))
+                                .scaleEffect(isShowingInfo ? 1 : 0.1)
+                                .opacity(isShowingInfo ? 1 : 0)
+                                .rotationEffect(.degrees(isShowingInfo ? 0 : 180))
                         }
                     }
                     .animation(.spring(response: 0.8, dampingFraction: 0.6).delay(0.2), value: isShowingInfo)

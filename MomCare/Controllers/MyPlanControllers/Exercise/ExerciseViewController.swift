@@ -55,11 +55,11 @@ class ExerciseViewController: UIViewController, UICollectionViewDelegate, UIColl
     }
 
     func fetchExercises() async {
-//        let exists = MomCareUser.shared.user?.exercises != nil && !(MomCareUser.shared.user?.exercises.isEmpty ?? true)
-//        if !exists {
-//            let exercises = await ContentHandler.shared.fetchExercises() ?? []
-//            MomCareUser.shared.user?.exercises = exercises
-//        }rasxc
+        let exists = MomCareUser.shared.user?.exercises != nil && !(MomCareUser.shared.user?.exercises.isEmpty ?? true)
+        if !exists {
+            let exercises = await ContentHandler.shared.fetchExercises() ?? []
+            MomCareUser.shared.user?.exercises = exercises
+        }
         let exercises = await ContentHandler.shared.fetchExercises() ?? []
         MomCareUser.shared.user?.exercises = exercises
         DispatchQueue.main.async {

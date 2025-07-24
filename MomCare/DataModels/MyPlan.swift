@@ -196,6 +196,8 @@ struct Exercise: Codable, Sendable, Equatable {
             return nil
         }
     }
+    
+    var exerciseHardCodedImage: String = "Yoga1"  // TODO: remove this
 
     var uri: String? {
         get async {
