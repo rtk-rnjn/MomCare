@@ -38,7 +38,7 @@
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vt0-6x-Baf" userLabel="ExerciseContainerView">
                                 <rect key="frame" x="0.0" y="206" width="393" height="646"/>
                                 <connections>
-                                    <segue destination="hUU-Mi-xvp" kind="embed" identifier="embedShowExerciseViewController" id="gh2-qE-A38"/>
+                                    <segue destination="Fc1-1s-a7Z" kind="embed" id="eGZ-ap-AI0"/>
                                 </connections>
                             </containerView>
                         </subviews>
@@ -68,6 +68,28 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7py-Lx-oJY" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="4048.0916030534349" y="106.33802816901409"/>
+        </scene>
+        <!--Exercise Progress View Controller-->
+        <scene sceneID="Yd0-DB-eqS">
+            <objects>
+                <hostingController id="Fc1-1s-a7Z" customClass="ExerciseProgressViewController" customModule="MomCare" customModuleProvider="target" sceneMemberID="viewController">
+                    <connections>
+                        <segue destination="IHz-Co-2s6" kind="show" identifier="segueShowBreathingPlayerViewController" id="bJB-iM-4Iy"/>
+                    </connections>
+                </hostingController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="H9y-2J-U4I" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="4985" y="432"/>
+        </scene>
+        <!--BreathingPlayer-->
+        <scene sceneID="Zlf-nT-CSe">
+            <objects>
+                <viewControllerPlaceholder storyboardName="BreathingPlayer" id="IHz-Co-2s6" sceneMemberID="viewController">
+                    <navigationItem key="navigationItem" id="lfN-ng-pOW"/>
+                </viewControllerPlaceholder>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="ZYx-TS-vpr" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="5726" y="432"/>
         </scene>
         <!--Diet View Controller-->
         <scene sceneID="tQz-7Q-zBh">
@@ -265,7 +287,7 @@
                             </view>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="x2O-bV-N79"/>
-                        <color key="backgroundColor" red="0.89777654409999996" green="0.83144223689999996" blue="0.82744789119999995" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                        <color key="backgroundColor" red="0.89803921568627454" green="0.83137254901960778" blue="0.82745098039215681" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                         <constraints>
                             <constraint firstItem="x2O-bV-N79" firstAttribute="trailing" secondItem="Q1t-dE-Hiu" secondAttribute="trailing" constant="20" id="6R1-ux-ee4"/>
                             <constraint firstItem="N2D-NN-8M1" firstAttribute="leading" secondItem="x2O-bV-N79" secondAttribute="leading" constant="20" id="JYH-Kb-lYn"/>
@@ -301,7 +323,7 @@
             <objects>
                 <tableViewController id="yfR-4p-uCo" customClass="DietTableViewController" customModule="MomCare" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" id="eaD-eZ-Zte">
-                        <rect key="frame" x="0.0" y="0.0" width="353" height="495"/>
+                        <rect key="frame" x="0.0" y="0.0" width="353" height="436"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <connections>
@@ -324,64 +346,6 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="tog-G5-Eq0" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="6442" y="-144"/>
-        </scene>
-        <!--Exercise View Controller-->
-        <scene sceneID="0jC-xG-fUb">
-            <objects>
-                <viewController storyboardIdentifier="ExerciseViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="hUU-Mi-xvp" customClass="ExerciseViewController" customModule="MomCare" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="nDF-vx-plM">
-                        <rect key="frame" x="0.0" y="0.0" width="393" height="646"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Week NaN" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZcW-2a-cQK">
-                                <rect key="frame" x="0.0" y="15" width="393" height="23"/>
-                                <fontDescription key="fontDescription" type="boldSystem" pointSize="19"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="Yt9-o6-ItS">
-                                <rect key="frame" x="0.0" y="53" width="393" height="593"/>
-                                <color key="backgroundColor" red="0.89777654409999996" green="0.83144223689999996" blue="0.82744789119999995" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                                <collectionViewFlowLayout key="collectionViewLayout" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="10" id="4FT-Kr-kbq">
-                                    <size key="itemSize" width="128" height="128"/>
-                                    <size key="headerReferenceSize" width="0.0" height="0.0"/>
-                                    <size key="footerReferenceSize" width="0.0" height="0.0"/>
-                                    <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
-                                </collectionViewFlowLayout>
-                                <cells/>
-                            </collectionView>
-                        </subviews>
-                        <viewLayoutGuide key="safeArea" id="dkz-R6-jak"/>
-                        <color key="backgroundColor" red="0.89777654409999996" green="0.83144223689999996" blue="0.82744789119999995" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                        <constraints>
-                            <constraint firstItem="ZcW-2a-cQK" firstAttribute="leading" secondItem="nDF-vx-plM" secondAttribute="leading" id="6Bq-qK-DW7"/>
-                            <constraint firstItem="Yt9-o6-ItS" firstAttribute="leading" secondItem="dkz-R6-jak" secondAttribute="leading" id="BBx-Be-FbF"/>
-                            <constraint firstItem="ZcW-2a-cQK" firstAttribute="top" secondItem="nDF-vx-plM" secondAttribute="top" constant="15" id="JMf-aZ-w9z"/>
-                            <constraint firstAttribute="trailing" secondItem="ZcW-2a-cQK" secondAttribute="trailing" id="dMr-xM-Wrs"/>
-                            <constraint firstItem="dkz-R6-jak" firstAttribute="trailing" secondItem="Yt9-o6-ItS" secondAttribute="trailing" id="ghT-iU-Pkf"/>
-                            <constraint firstItem="Yt9-o6-ItS" firstAttribute="top" secondItem="ZcW-2a-cQK" secondAttribute="bottom" constant="15" id="n8f-Gv-Qem"/>
-                            <constraint firstAttribute="bottom" secondItem="Yt9-o6-ItS" secondAttribute="bottom" id="vSH-Tm-lj4"/>
-                        </constraints>
-                    </view>
-                    <connections>
-                        <outlet property="collectionView" destination="Yt9-o6-ItS" id="XIY-gV-QNv"/>
-                        <outlet property="weekLabel" destination="ZcW-2a-cQK" id="I46-Jr-NuW"/>
-                        <segue destination="pSF-KE-uVj" kind="presentation" identifier="segueShowBreathingPlayer" modalPresentationStyle="fullScreen" id="qUh-Ct-XyP"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="Rnh-hu-bAn" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="4985" y="418"/>
-        </scene>
-        <!--BreathingPlayer-->
-        <scene sceneID="bNb-s2-oPK">
-            <objects>
-                <viewControllerPlaceholder storyboardName="BreathingPlayer" id="pSF-KE-uVj" sceneMemberID="viewController">
-                    <navigationItem key="navigationItem" id="cb6-Fh-J3v"/>
-                </viewControllerPlaceholder>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="KJy-bn-Be1" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="5923" y="418"/>
         </scene>
         <!--MyPlan-->
         <scene sceneID="FH3-ZF-28y">

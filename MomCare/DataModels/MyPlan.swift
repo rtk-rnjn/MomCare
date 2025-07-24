@@ -164,6 +164,7 @@ struct Exercise: Codable, Sendable, Equatable {
         case durationCompleted = "duration_completed"
         case assignedAt = "assigned_at"
     }
+    var id: String = UUID().uuidString
 
     var name: String
     var type: ExerciseType
