@@ -821,9 +821,6 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Health &amp; Support" id="dSS-qZ-fSl"/>
-                    <connections>
-                        <segue destination="LW8-m1-C9D" kind="show" id="BVw-oA-69X"/>
-                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ygm-ai-Qu6" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
@@ -837,7 +834,7 @@
                 </viewControllerPlaceholder>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="qMc-WM-2Xu" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2254" y="568"/>
+            <point key="canvasLocation" x="2480" y="577"/>
         </scene>
         <!--TermsOfServiceTableViewController-->
         <scene sceneID="pjR-Vq-3xj">
@@ -847,17 +844,7 @@
                 </viewControllerPlaceholder>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="XrK-wL-tNr" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2476" y="606"/>
-        </scene>
-        <!--Storyboard Reference-->
-        <scene sceneID="FoV-f7-utM">
-            <objects>
-                <viewControllerPlaceholder id="LW8-m1-C9D" sceneMemberID="viewController">
-                    <navigationItem key="navigationItem" id="nu3-Bd-zNv"/>
-                </viewControllerPlaceholder>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="6IY-Bu-In9" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="3473" y="559"/>
+            <point key="canvasLocation" x="2937" y="577"/>
         </scene>
         <!--About MomCare+-->
         <scene sceneID="dWw-gU-awI">
@@ -961,23 +948,10 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="About MomCare+" id="3uf-0d-UWj"/>
-                    <connections>
-                        <segue destination="Aah-q2-hTU" kind="show" id="45g-hM-0Tt"/>
-                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="uyl-cx-0rC" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="4269" y="132"/>
-        </scene>
-        <!--Storyboard Reference-->
-        <scene sceneID="PEi-Ps-b3x">
-            <objects>
-                <viewControllerPlaceholder id="Aah-q2-hTU" sceneMemberID="viewController">
-                    <navigationItem key="navigationItem" id="0SR-JB-9wJ"/>
-                </viewControllerPlaceholder>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="Nqj-Od-Rja" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="4268" y="569"/>
         </scene>
         <!--Account Management-->
         <scene sceneID="QvT-ER-eg1">

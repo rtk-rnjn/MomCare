@@ -30,7 +30,29 @@ class MomCareUser {
                 return
             }
             updateToDatabase()
+            updateToUserDefaults()
         }
+    }
+
+    func updateToUserDefaults() {
+        let userDefaults = UserDefaults(suiteName: "group.MomCare")
+        if let user, let userDefaults {
+            userDefaults.set(try! PropertyListEncoder().encode(user), forKey: "user")
+        }
+    }
+
+    @MainActor func fetchFromUserDefaults(updateToDatabase: Bool = false) -> User? {
+        if let data = UserDefaults(suiteName: "group.MomCare")?.value(forKey: "user") as? Data {
+            let user: User? = try? PropertyListDecoder().decode(User.self, from: data)
+
+            if updateToDatabase {
+                self.user = user
+            }
+
+            return user
+        }
+
+        return user
     }
 
     // https://medium.com/@harshaag99/understanding-dispatchqueue-in-swift-c73058df6b37
