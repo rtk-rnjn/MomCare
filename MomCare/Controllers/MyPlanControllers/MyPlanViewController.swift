@@ -36,11 +36,6 @@ class MyPlanViewController: UIViewController {
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         switch segue.identifier {
-        case "embedShowExerciseViewController":
-            if let exerciseViewController = segue.destination as? ExerciseViewController {
-                exerciseViewController.myPlanViewController = self
-            }
-
         case "embedShowDietViewController":
             if let dietViewController = segue.destination as? DietViewController {
                 dietViewController.myPlanViewController = self
