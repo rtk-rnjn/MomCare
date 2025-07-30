@@ -10,7 +10,7 @@
 		053290F42D40AEC000295E58 /* FSCalendar in Frameworks */ = {isa = PBXBuildFile; productRef = 053290F32D40AEC000295E58 /* FSCalendar */; };
 		059FE8BE2E336E05001BCB05 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 059FE8BD2E336E05001BCB05 /* WidgetKit.framework */; };
 		059FE8C02E336E05001BCB05 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 059FE8BF2E336E05001BCB05 /* SwiftUI.framework */; };
-		059FE8CB2E336E07001BCB05 /* PregnancyTrackerExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 059FE8BC2E336E05001BCB05 /* PregnancyTrackerExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		059FE8CB2E336E07001BCB05 /* MomCare+PregnancyTracker.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 059FE8BC2E336E05001BCB05 /* MomCare+PregnancyTracker.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		059FE8F42E33838C001BCB05 /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 059FE8F32E33838C001BCB05 /* RealmSwift */; };
 		059FE8F52E33838C001BCB05 /* RealmSwift in Embed Frameworks */ = {isa = PBXBuildFile; productRef = 059FE8F32E33838C001BCB05 /* RealmSwift */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		05BAA2152D771882008C89DB /* LNPopupController in Embed Frameworks */ = {isa = PBXBuildFile; productRef = F5F1D6112D739C6A00F65BA7 /* LNPopupController */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
@@ -37,7 +37,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 13;
 			files = (
-				059FE8CB2E336E07001BCB05 /* PregnancyTrackerExtension.appex in Embed Foundation Extensions */,
+				059FE8CB2E336E07001BCB05 /* MomCare+PregnancyTracker.appex in Embed Foundation Extensions */,
 			);
 			name = "Embed Foundation Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -69,7 +69,7 @@
 
 /* Begin PBXFileReference section */
 		059C467D2D30D12400B4A15A /* MomCare.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MomCare.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		059FE8BC2E336E05001BCB05 /* PregnancyTrackerExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = PregnancyTrackerExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		059FE8BC2E336E05001BCB05 /* MomCare+PregnancyTracker.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "MomCare+PregnancyTracker.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
 		059FE8BD2E336E05001BCB05 /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
 		059FE8BF2E336E05001BCB05 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
 		05E7F9662D37748300F4D81E /* .swiftlint.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = .swiftlint.yml; sourceTree = "<group>"; };
@@ -83,14 +83,14 @@
 			);
 			target = 059C467C2D30D12400B4A15A /* MomCare */;
 		};
-		059FE8CF2E336E07001BCB05 /* Exceptions for "MomCare+PregnancyTracker" folder in "PregnancyTrackerExtension" target */ = {
+		059FE8CF2E336E07001BCB05 /* Exceptions for "MomCare+PregnancyTracker" folder in "MomCare+PregnancyTracker" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Info.plist,
 			);
-			target = 059FE8BB2E336E05001BCB05 /* PregnancyTrackerExtension */;
+			target = 059FE8BB2E336E05001BCB05 /* MomCare+PregnancyTracker */;
 		};
-		059FE8DC2E3381FB001BCB05 /* Exceptions for "MomCare" folder in "PregnancyTrackerExtension" target */ = {
+		059FE8DC2E3381FB001BCB05 /* Exceptions for "MomCare" folder in "MomCare+PregnancyTracker" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Common/CacheHandler.swift,
@@ -124,7 +124,7 @@
 				DataModels/TriTrackModel.swift,
 				DataModels/UserModel.swift,
 			);
-			target = 059FE8BB2E336E05001BCB05 /* PregnancyTrackerExtension */;
+			target = 059FE8BB2E336E05001BCB05 /* MomCare+PregnancyTracker */;
 		};
 		059FE9022E339B8E001BCB05 /* Exceptions for "MomCare+PregnancyTracker" folder in "MomCare" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
@@ -140,7 +140,7 @@
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
 				059C468F2D30D12500B4A15A /* Exceptions for "MomCare" folder in "MomCare" target */,
-				059FE8DC2E3381FB001BCB05 /* Exceptions for "MomCare" folder in "PregnancyTrackerExtension" target */,
+				059FE8DC2E3381FB001BCB05 /* Exceptions for "MomCare" folder in "MomCare+PregnancyTracker" target */,
 			);
 			path = MomCare;
 			sourceTree = "<group>";
@@ -149,7 +149,7 @@
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
 				059FE9022E339B8E001BCB05 /* Exceptions for "MomCare+PregnancyTracker" folder in "MomCare" target */,
-				059FE8CF2E336E07001BCB05 /* Exceptions for "MomCare+PregnancyTracker" folder in "PregnancyTrackerExtension" target */,
+				059FE8CF2E336E07001BCB05 /* Exceptions for "MomCare+PregnancyTracker" folder in "MomCare+PregnancyTracker" target */,
 			);
 			path = "MomCare+PregnancyTracker";
 			sourceTree = "<group>";
@@ -201,7 +201,7 @@
 			isa = PBXGroup;
 			children = (
 				059C467D2D30D12400B4A15A /* MomCare.app */,
-				059FE8BC2E336E05001BCB05 /* PregnancyTrackerExtension.appex */,
+				059FE8BC2E336E05001BCB05 /* MomCare+PregnancyTracker.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -247,9 +247,9 @@
 			productReference = 059C467D2D30D12400B4A15A /* MomCare.app */;
 			productType = "com.apple.product-type.application";
 		};
-		059FE8BB2E336E05001BCB05 /* PregnancyTrackerExtension */ = {
+		059FE8BB2E336E05001BCB05 /* MomCare+PregnancyTracker */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 059FE8CC2E336E07001BCB05 /* Build configuration list for PBXNativeTarget "PregnancyTrackerExtension" */;
+			buildConfigurationList = 059FE8CC2E336E07001BCB05 /* Build configuration list for PBXNativeTarget "MomCare+PregnancyTracker" */;
 			buildPhases = (
 				059FE8B82E336E05001BCB05 /* Sources */,
 				059FE8B92E336E05001BCB05 /* Frameworks */,
@@ -263,12 +263,12 @@
 			fileSystemSynchronizedGroups = (
 				059FE8C12E336E05001BCB05 /* MomCare+PregnancyTracker */,
 			);
-			name = PregnancyTrackerExtension;
+			name = "MomCare+PregnancyTracker";
 			packageProductDependencies = (
 				059FE8F32E33838C001BCB05 /* RealmSwift */,
 			);
 			productName = PregnancyTrackerExtension;
-			productReference = 059FE8BC2E336E05001BCB05 /* PregnancyTrackerExtension.appex */;
+			productReference = 059FE8BC2E336E05001BCB05 /* MomCare+PregnancyTracker.appex */;
 			productType = "com.apple.product-type.app-extension";
 		};
 /* End PBXNativeTarget section */
@@ -309,7 +309,7 @@
 			projectRoot = "";
 			targets = (
 				059C467C2D30D12400B4A15A /* MomCare */,
-				059FE8BB2E336E05001BCB05 /* PregnancyTrackerExtension */,
+				059FE8BB2E336E05001BCB05 /* MomCare+PregnancyTracker */,
 			);
 		};
 /* End PBXProject section */
@@ -352,7 +352,7 @@
 /* Begin PBXTargetDependency section */
 		059FE8CA2E336E07001BCB05 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 059FE8BB2E336E05001BCB05 /* PregnancyTrackerExtension */;
+			target = 059FE8BB2E336E05001BCB05 /* MomCare+PregnancyTracker */;
 			targetProxy = 059FE8C92E336E07001BCB05 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -704,7 +704,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		059FE8CC2E336E07001BCB05 /* Build configuration list for PBXNativeTarget "PregnancyTrackerExtension" */ = {
+		059FE8CC2E336E07001BCB05 /* Build configuration list for PBXNativeTarget "MomCare+PregnancyTracker" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				059FE8CD2E336E07001BCB05 /* Debug */,
