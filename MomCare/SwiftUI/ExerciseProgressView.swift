@@ -1,11 +1,10 @@
 import SwiftUI
 import HealthKit
 
+// swiftlint:disable:next type_body_length
 struct ExerciseProgressView: View {
 
- // MARK: Internal
-
- // swiftlint:disable:this type_body_length
+    // MARK: Internal
 
     weak var delegate: ExerciseProgressViewController?
 
@@ -432,7 +431,6 @@ struct ExerciseProgressView: View {
         }
     }
 
-    // swiftlint:disable multiple_closures_with_trailing_closure
     private func startButton(for exercise: Exercise, isBreathing: Bool) -> some View {
         Button(action: {
             if isBreathing {
@@ -461,8 +459,6 @@ struct ExerciseProgressView: View {
         }
     }
 
-    // swiftlint:enable multiple_closures_with_trailing_closure
-
     private func exerciseIconSection(isBreathing: Bool) -> some View {
         ZStack {
             RoundedRectangle(cornerRadius: 16)
@@ -481,7 +477,6 @@ struct ExerciseProgressView: View {
         }
     }
 
-    // swiftlint:disable multiple_closures_with_trailing_closure
     private func enhancedInfoButton(exercise: Exercise) -> some View {
         VStack {
             HStack {
@@ -596,8 +591,6 @@ struct ExerciseProgressView: View {
         }
         .animation(.spring(response: 0.8, dampingFraction: 0.6).delay(0.2), value: isShowingInfo)
     }
-
-    // swiftlint:enable multiple_closures_with_trailing_closure
 
     private func infoCardBody(for exercise: Exercise) -> some View {
         VStack(alignment: .leading, spacing: 16) {

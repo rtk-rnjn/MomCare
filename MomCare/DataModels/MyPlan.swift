@@ -189,10 +189,6 @@ struct Exercise: Codable, Sendable, Equatable {
     }
 
     var completionPercentage: Double {
-        if type == .breathing {
-            let value: Double? = Utils.get(fromKey: "BreathingCompletionDuration")
-            return value ?? 0.0
-        }
         guard let duration, duration > 0 else { return 0 }
         guard !duration.isNaN || !duration.isInfinite else { return 0 }
 
