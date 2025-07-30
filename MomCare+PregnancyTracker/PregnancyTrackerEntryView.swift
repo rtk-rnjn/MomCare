@@ -11,10 +11,15 @@ struct PregnancyTrackerEntryView: View {
     var entry: PregnancyTrackerTimelineProvider.Entry
 
     var body: some View {
-        VStack {
-            Text("Week: \(entry.week), Day: \(entry.day)")
-                .font(.headline)
-                .padding()
+        VStack(spacing: 8) {
+
+            Text("Week \(entry.week)")
+                .font(.title2)
+                .fontWeight(.semibold)
+
+            Text("Day \(entry.day)")
+                .font(.title3)
         }
+        .padding()
     }
 }
