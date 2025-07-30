@@ -16,7 +16,7 @@ enum SharedResourceSync {
         return nil
     }
 
-    static func getPregnancyData() -> (week: Int, day: Int, trimester: String)? {
+    static func getPregnancyData() -> (week: Int, day: Int, trimester: String)? { // swiftlint:disable:this large_tuple
         let user = fetchFromUserDefaults()
         return user?.pregancyData
     }

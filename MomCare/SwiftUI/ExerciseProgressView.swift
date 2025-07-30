@@ -3,7 +3,9 @@ import HealthKit
 
 struct ExerciseProgressView: View {
 
-    // MARK: Internal
+ // MARK: Internal
+
+ // swiftlint:disable:this type_body_length
 
     weak var delegate: ExerciseProgressViewController?
 
@@ -66,12 +68,7 @@ struct ExerciseProgressView: View {
                 viewModel.exercises = exercises
             }
 
-            var count = 0
-            for exercise in viewModel.exercises {
-                if exercise.isCompleted {
-                    count += 1
-                }
-            }
+            var count = viewModel.exercises.filter { $0.isCompleted }.count
 
             if currentSteps >= targetSteps {
                 count += 1
@@ -107,97 +104,9 @@ struct ExerciseProgressView: View {
 
     private var weeklyProgressRingsView: some View {
         VStack(spacing: 16) {
-            HStack {
-                Text("Weekly Progress")
-                    .font(.system(size: 18, weight: .semibold))
-                    .foregroundColor(.primary)
-
-                Spacer()
-
-                HStack(spacing: 4) {
-                    Text("\(Calendar.current.component(.weekday, from: Date()))/7 days")
-                        .font(.system(size: 14, weight: .medium))
-                        .foregroundColor(.secondary)
-
-                    Image(systemName: "chevron.right")
-                        .font(.system(size: 12, weight: .semibold))
-                        .foregroundColor(.secondary)
-                        .opacity(0.6)
-                }
-            }
-
-            // Day letters row with enhanced styling
-            HStack(spacing: 8) {
-                ForEach(viewModel.weeklyProgress, id: \.day) { dayProgress in
-                    VStack(spacing: 8) {
-                        Text(dayProgress.dayName)
-                            .font(.system(size: 12, weight: .semibold))
-                            .foregroundColor(Color(hex: "924350"))
-
-                        ZStack {
-                            Circle()
-                                .stroke(Color.gray.opacity(0.2), lineWidth: 4)
-                                .frame(width: 32, height: 32)
-
-                            Circle()
-                                .trim(from: 0, to: min(dayProgress.completionPercentage, 1.0))
-                                .stroke(
-                                    Color(hex: "924350"),
-                                    style: StrokeStyle(lineWidth: 4, lineCap: .round)
-                                )
-                                .frame(width: 32, height: 32)
-                                .rotationEffect(.degrees(-90))
-                                .animation(.spring(response: 1.0, dampingFraction: 0.8, blendDuration: 0), value: dayProgress.completionPercentage)
-
-                            if dayProgress.completionPercentage >= 1.0 {
-                                Image(systemName: "checkmark")
-                                    .font(.system(size: 10, weight: .bold))
-                                    .foregroundColor(Color(hex: "924350"))
-                            }
-                        }
-                    }
-                    .frame(maxWidth: .infinity)
-                }
-            }
-
-            // Total Goal Section
-            VStack(spacing: 12) {
-                HStack {
-                    HStack(spacing: 6) {
-                        Image(systemName: "target")
-                            .font(.system(size: 16, weight: .medium))
-                            .foregroundColor(Color(hex: "924350"))
-
-                        Text("Total Goal: \(viewModel.totalCompletedExercises)/\(2 + viewModel.exercises.count)")
-                            .font(.system(size: 16, weight: .semibold))
-                            .foregroundColor(.primary)
-                    }
-
-                    Spacer()
-
-                    Text("")
-                        .font(.system(size: 16, weight: .bold))
-                        .foregroundColor(Color(hex: "924350"))
-                }
-
-                // Progress Bar
-                GeometryReader { geometry in
-                    ZStack(alignment: .leading) {
-                        RoundedRectangle(cornerRadius: 4)
-                            .fill(Color.gray.opacity(0.2))
-                            .frame(height: 6)
-
-                        RoundedRectangle(cornerRadius: 4)
-                            .fill(Color(hex: "924350"))
-                            .frame(
-                                width:
-                                    min(geometry.size.width * CGFloat(viewModel.totalCompletedExercises) / CGFloat(2 + viewModel.exercises.count), geometry.size.width),
-                                height: 6)
-                            .animation(.easeInOut(duration: 1.0), value: 0.33)
-                    }
-                }
-                .frame(height: 6)
-            }
+            headerSection
+            dayProgressRingSection
+            totalGoalSection
         }
         .padding(20)
         .background(
@@ -206,80 +115,168 @@ struct ExerciseProgressView: View {
         )
     }
 
+    private var headerSection: some View {
+        HStack {
+            Text("Weekly Progress")
+                .font(.system(size: 18, weight: .semibold))
+                .foregroundColor(.primary)
+
+            Spacer()
+
+            HStack(spacing: 4) {
+                Text("\(Calendar.current.component(.weekday, from: Date()))/7 days")
+                    .font(.system(size: 14, weight: .medium))
+                    .foregroundColor(.secondary)
+
+                Image(systemName: "chevron.right")
+                    .font(.system(size: 12, weight: .semibold))
+                    .foregroundColor(.secondary)
+                    .opacity(0.6)
+            }
+        }
+    }
+
+    private var dayProgressRingSection: some View {
+        HStack(spacing: 8) {
+            ForEach(viewModel.weeklyProgress, id: \.day) { dayProgress in
+                dayProgressView(for: dayProgress)
+                    .frame(maxWidth: .infinity)
+            }
+        }
+    }
+
+    private var totalGoalSection: some View {
+        VStack(spacing: 12) {
+            goalTextRow
+            progressBar
+        }
+    }
+
+    private var goalTextRow: some View {
+        HStack {
+            HStack(spacing: 6) {
+                Image(systemName: "target")
+                    .font(.system(size: 16, weight: .medium))
+                    .foregroundColor(Color(hex: "924350"))
+
+                Text("Total Goal: \(viewModel.totalCompletedExercises)/\(2 + viewModel.exercises.count)")
+                    .font(.system(size: 16, weight: .semibold))
+                    .foregroundColor(.primary)
+            }
+
+            Spacer()
+
+            Text("")
+                .font(.system(size: 16, weight: .bold))
+                .foregroundColor(Color(hex: "924350"))
+        }
+    }
+
+    private var progressBar: some View {
+        GeometryReader { geometry in
+            ZStack(alignment: .leading) {
+                RoundedRectangle(cornerRadius: 4)
+                    .fill(Color.gray.opacity(0.2))
+                    .frame(height: 6)
+
+                RoundedRectangle(cornerRadius: 4)
+                    .fill(Color(hex: "924350"))
+                    .frame(
+                        width: min(
+                            geometry.size.width * CGFloat(viewModel.totalCompletedExercises) / CGFloat(2 + viewModel.exercises.count),
+                            geometry.size.width
+                        ),
+                        height: 6
+                    )
+                    .animation(.easeInOut(duration: 1.0), value: 0.33)
+            }
+        }
+        .frame(height: 6)
+    }
+
     private var walkingCardView: some View {
         VStack(spacing: 16) {
-            HStack {
-                HStack(spacing: 8) {
-                    Image(systemName: "figure.walk")
-                        .font(.system(size: 20, weight: .medium))
-                        .foregroundColor(Color(hex: "924350"))
-
-                    Text("Walking")
-                        .font(.system(size: 20, weight: .bold))
-                        .foregroundColor(.primary)
-                }
-
-                Spacer()
-
-                VStack(alignment: .trailing, spacing: 2) {
-                    Text("\(Int(currentSteps / targetSteps * 100))% Completed")
-                        .font(.system(size: 14, weight: .semibold))
-                        .foregroundColor(Color(hex: "924350"))
-
-                    if currentSteps / targetSteps >= 1 {
-                        Image(systemName: "checkmark.circle.fill")
-                            .font(.system(size: 16))
-                            .foregroundColor(Color(hex: "924350"))
-                    }
-                }
-            }
-
-            HStack {
-                VStack(alignment: .leading, spacing: 4) {
-                    Text("\(currentSteps)")
-                        .font(.system(size: 24, weight: .bold))
-                        .foregroundColor(.primary)
-                    Text("Steps")
-                        .font(.system(size: 14, weight: .medium))
-                        .foregroundColor(.secondary)
-                }
-
-                Spacer()
-
-                VStack(alignment: .trailing, spacing: 4) {
-                    Text("\(targetSteps)")
-                        .font(.system(size: 18, weight: .semibold))
-                        .foregroundColor(.secondary)
-                    Text("Goal")
-                        .font(.system(size: 14, weight: .medium))
-                        .foregroundColor(.secondary)
-                }
-            }
-
-            // Walking Progress Bar
-            GeometryReader { geometry in
-                ZStack(alignment: .leading) {
-                    RoundedRectangle(cornerRadius: 4)
-                        .fill(Color.gray.opacity(0.2))
-                        .frame(height: 6)
-
-                    RoundedRectangle(cornerRadius: 4)
-                        .fill(Color(hex: "924350"))
-                        .frame(
-                            width: targetSteps > 0 ?
-                                min(geometry.size.width * CGFloat(currentSteps) / CGFloat(targetSteps), geometry.size.width) : 0,
-                            height: 6
-                        )
-                        .animation(.easeInOut(duration: 1.2), value: currentSteps)
-                }
-            }
-            .frame(height: 6)
+            walkingHeader
+            walkingStatsRow
+            walkingProgressBar
         }
         .padding(20)
         .background(
             RoundedRectangle(cornerRadius: 20)
                 .fill(Color.white)
         )
+    }
+
+    private var walkingHeader: some View {
+        HStack {
+            HStack(spacing: 8) {
+                Image(systemName: "figure.walk")
+                    .font(.system(size: 20, weight: .medium))
+                    .foregroundColor(Color(hex: "924350"))
+
+                Text("Walking")
+                    .font(.system(size: 20, weight: .bold))
+                    .foregroundColor(.primary)
+            }
+
+            Spacer()
+
+            VStack(alignment: .trailing, spacing: 2) {
+                Text("\(Int(currentSteps / targetSteps * 100))% Completed")
+                    .font(.system(size: 14, weight: .semibold))
+                    .foregroundColor(Color(hex: "924350"))
+
+                if currentSteps / targetSteps >= 1 {
+                    Image(systemName: "checkmark.circle.fill")
+                        .font(.system(size: 16))
+                        .foregroundColor(Color(hex: "924350"))
+                }
+            }
+        }
+    }
+
+    private var walkingStatsRow: some View {
+        HStack {
+            VStack(alignment: .leading, spacing: 4) {
+                Text("\(currentSteps)")
+                    .font(.system(size: 24, weight: .bold))
+                    .foregroundColor(.primary)
+                Text("Steps")
+                    .font(.system(size: 14, weight: .medium))
+                    .foregroundColor(.secondary)
+            }
+
+            Spacer()
+
+            VStack(alignment: .trailing, spacing: 4) {
+                Text("\(targetSteps)")
+                    .font(.system(size: 18, weight: .semibold))
+                    .foregroundColor(.secondary)
+                Text("Goal")
+                    .font(.system(size: 14, weight: .medium))
+                    .foregroundColor(.secondary)
+            }
+        }
+    }
+
+    private var walkingProgressBar: some View {
+        GeometryReader { geometry in
+            ZStack(alignment: .leading) {
+                RoundedRectangle(cornerRadius: 4)
+                    .fill(Color.gray.opacity(0.2))
+                    .frame(height: 6)
+
+                RoundedRectangle(cornerRadius: 4)
+                    .fill(Color(hex: "924350"))
+                    .frame(
+                        width: targetSteps > 0 ?
+                            min(geometry.size.width * CGFloat(currentSteps) / CGFloat(targetSteps), geometry.size.width) : 0,
+                        height: 6
+                    )
+                    .animation(.easeInOut(duration: 1.2), value: currentSteps)
+            }
+        }
+        .frame(height: 6)
     }
 
     private var exerciseCardsView: some View {
@@ -326,80 +323,85 @@ struct ExerciseProgressView: View {
         }
     }
 
+    private var infoCardBackground: some View {
+        Color.black.opacity(isShowingInfo ? 0.4 : 0)
+            .ignoresSafeArea()
+            .animation(.easeInOut(duration: 0.6).delay(0.1), value: isShowingInfo)
+            .onTapGesture {
+                withAnimation(.spring(response: 0.6, dampingFraction: 0.8)) {
+                    isShowingInfo = false
+                }
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                    showingExerciseInfo = nil
+                }
+            }
+    }
+
+    // swiftlint:disable multiple_closures_with_trailing_closure
+    private var closeButton: some View {
+        Button(action: {
+            withAnimation(.spring(response: 0.6, dampingFraction: 0.8)) {
+                isShowingInfo = false
+            }
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                showingExerciseInfo = nil
+            }
+        }) {
+            Image(systemName: "xmark")
+                .font(.system(size: 16, weight: .semibold))
+                .foregroundColor(.secondary)
+                .padding(8)
+                .background(
+                    Circle()
+                        .fill(Color.gray.opacity(0.15))
+                        .scaleEffect(isShowingInfo ? 1 : 0.1)
+                )
+                .scaleEffect(isShowingInfo ? 1 : 0.1)
+                .opacity(isShowingInfo ? 1 : 0)
+                .rotationEffect(.degrees(isShowingInfo ? 0 : 90))
+        }
+        .animation(.spring(response: 0.7, dampingFraction: 0.5).delay(0.45), value: isShowingInfo)
+    }
+
+    private func dayProgressView(for dayProgress: DayProgress) -> some View {
+        VStack(spacing: 8) {
+            Text(dayProgress.dayName)
+                .font(.system(size: 12, weight: .semibold))
+                .foregroundColor(Color(hex: "924350"))
+
+            ZStack {
+                Circle()
+                    .stroke(Color.gray.opacity(0.2), lineWidth: 4)
+                    .frame(width: 32, height: 32)
+
+                Circle()
+                    .trim(from: 0, to: min(dayProgress.completionPercentage, 1.0))
+                    .stroke(
+                        Color(hex: "924350"),
+                        style: StrokeStyle(lineWidth: 4, lineCap: .round)
+                    )
+                    .frame(width: 32, height: 32)
+                    .rotationEffect(.degrees(-90))
+                    .animation(.spring(response: 1.0, dampingFraction: 0.8, blendDuration: 0), value: dayProgress.completionPercentage)
+
+                if dayProgress.completionPercentage >= 1.0 {
+                    Image(systemName: "checkmark")
+                        .font(.system(size: 10, weight: .bold))
+                        .foregroundColor(Color(hex: "924350"))
+                }
+            }
+        }
+    }
+
     // MARK: - Helper Functions
     private func exerciseCard(for exercise: Exercise, isBreathing: Bool = false) -> some View {
         ZStack {
             HStack(spacing: 16) {
-                VStack(alignment: .leading, spacing: 6) {
-                    Text("Beginner")
-                        .font(.system(size: 12, weight: .medium))
-                        .foregroundColor(.secondary)
-                        .padding(.top, 8)
-
-                    Text(exercise.name)
-                        .font(.system(size: 22, weight: .bold))
-                        .foregroundColor(.primary)
-                        .padding(.bottom, 4)
-
-                    Text("\(Int(exercise.completionPercentage))% completed")
-                        .font(.system(size: 14, weight: .medium))
-                        .foregroundColor(.secondary)
-                        .padding(.bottom, 16)
-
-                    Button(action: {
-                        if isBreathing {
-                            delegate?.segueToBreathingPlayer()
-                        } else {
-                            Task {
-                                delegate?.selectedExercise = exercise
-                                await delegate?.play(exercise: exercise)
-                            }
-                        }
-                    }) {
-                        HStack(spacing: 8) {
-                            Image(systemName: "play.fill")
-                                .font(.system(size: 12))
-
-                            Text("Start")
-                                .font(.system(size: 16, weight: .semibold))
-                        }
-                        .foregroundColor(.white)
-                        .padding(.horizontal, 24)
-                        .padding(.vertical, 10)
-                        .background(
-                            RoundedRectangle(cornerRadius: 12)
-                                .fill(Color(hex: "924350"))
-                        )
-                    }
-                }
-
+                exerciseDetailsSection(for: exercise, isBreathing: isBreathing)
                 Spacer()
-
-                // Exercise Image/Icon
-                ZStack {
-                    RoundedRectangle(cornerRadius: 16)
-                        .fill(
-                            LinearGradient(
-                                colors: [Color(hex: "FBE8E5")],
-                                startPoint: .topLeading,
-                                endPoint: .bottomTrailing
-                            )
-                        )
-                        .frame(width: 90, height: 90)
-
-                    if isBreathing {
-                        Image(systemName: "lungs.fill")
-                            .font(.system(size: 36, weight: .medium))
-                            .foregroundColor(Color(hex: "924350"))
-                    } else {
-                        Image(systemName: "figure.yoga")
-                            .font(.system(size: 36, weight: .medium))
-                            .foregroundColor(Color(hex: "924350"))
-                    }
-                }
+                exerciseIconSection(isBreathing: isBreathing)
             }
 
-            // Enhanced info button
             enhancedInfoButton(exercise: exercise)
         }
         .padding(20)
@@ -409,6 +411,77 @@ struct ExerciseProgressView: View {
         )
     }
 
+    private func exerciseDetailsSection(for exercise: Exercise, isBreathing: Bool) -> some View {
+        VStack(alignment: .leading, spacing: 6) {
+            Text("Beginner")
+                .font(.system(size: 12, weight: .medium))
+                .foregroundColor(.secondary)
+                .padding(.top, 8)
+
+            Text(exercise.name)
+                .font(.system(size: 22, weight: .bold))
+                .foregroundColor(.primary)
+                .padding(.bottom, 4)
+
+            Text("\(Int(exercise.completionPercentage))% completed")
+                .font(.system(size: 14, weight: .medium))
+                .foregroundColor(.secondary)
+                .padding(.bottom, 16)
+
+            startButton(for: exercise, isBreathing: isBreathing)
+        }
+    }
+
+    // swiftlint:disable multiple_closures_with_trailing_closure
+    private func startButton(for exercise: Exercise, isBreathing: Bool) -> some View {
+        Button(action: {
+            if isBreathing {
+                delegate?.segueToBreathingPlayer()
+            } else {
+                Task {
+                    delegate?.selectedExercise = exercise
+                    await delegate?.play(exercise: exercise)
+                }
+            }
+        }) {
+            HStack(spacing: 8) {
+                Image(systemName: "play.fill")
+                    .font(.system(size: 12))
+
+                Text("Start")
+                    .font(.system(size: 16, weight: .semibold))
+            }
+            .foregroundColor(.white)
+            .padding(.horizontal, 24)
+            .padding(.vertical, 10)
+            .background(
+                RoundedRectangle(cornerRadius: 12)
+                    .fill(Color(hex: "924350"))
+            )
+        }
+    }
+
+    // swiftlint:enable multiple_closures_with_trailing_closure
+
+    private func exerciseIconSection(isBreathing: Bool) -> some View {
+        ZStack {
+            RoundedRectangle(cornerRadius: 16)
+                .fill(
+                    LinearGradient(
+                        colors: [Color(hex: "FBE8E5")],
+                        startPoint: .topLeading,
+                        endPoint: .bottomTrailing
+                    )
+                )
+                .frame(width: 90, height: 90)
+
+            Image(systemName: isBreathing ? "lungs.fill" : "figure.yoga")
+                .font(.system(size: 36, weight: .medium))
+                .foregroundColor(Color(hex: "924350"))
+        }
+    }
+
+    // swiftlint:disable multiple_closures_with_trailing_closure
     private func enhancedInfoButton(exercise: Exercise) -> some View {
         VStack {
             HStack {
@@ -433,204 +506,162 @@ struct ExerciseProgressView: View {
         }
     }
 
+    // swiftlint:enable multiple_closures_with_trailing_closure
+
     private func exerciseInfoCard(for exercise: Exercise) -> some View {
         ZStack {
-            // Background overlay with smooth fade in
-            Color.black.opacity(isShowingInfo ? 0.4 : 0)
-                .ignoresSafeArea()
-                .animation(.easeInOut(duration: 0.6).delay(0.1), value: isShowingInfo)
-                .onTapGesture {
-                    withAnimation(.spring(response: 0.6, dampingFraction: 0.8)) {
-                        isShowingInfo = false
-                    }
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-                        showingExerciseInfo = nil
-                    }
-                }
+            infoCardBackground
 
-            // Dynamic Info Card with enhanced opening effect
-            VStack(spacing: 0) {
-                // Main header with image, title AND close button
-                HStack(spacing: 16) {
-                    // Exercise Image/Icon on LEFT - Pop in effect
-                    ZStack {
-                        RoundedRectangle(cornerRadius: 12)
-                            .fill(Color(hex: "F5E6E8"))
-                            .frame(width: 70, height: 70)
-                            .scaleEffect(isShowingInfo ? 1 : 0.1)
-                            .opacity(isShowingInfo ? 1 : 0)
-
-                        if exercise.type == .breathing {
-                            Image(systemName: "lungs.fill")
-                                .font(.system(size: 28, weight: .medium))
-                                .foregroundColor(Color(hex: "924350"))
-                                .scaleEffect(isShowingInfo ? 1 : 0.1)
-                                .opacity(isShowingInfo ? 1 : 0)
-                                .rotationEffect(.degrees(isShowingInfo ? 0 : 180))
-                        } else {
-                            Image(systemName: "figure.yoga")
-                                .font(.system(size: 28, weight: .medium))
-                                .foregroundColor(Color(hex: "924350"))
-                                .scaleEffect(isShowingInfo ? 1 : 0.1)
-                                .opacity(isShowingInfo ? 1 : 0)
-                                .rotationEffect(.degrees(isShowingInfo ? 0 : 180))
-                        }
-                    }
-                    .animation(.spring(response: 0.8, dampingFraction: 0.6).delay(0.2), value: isShowingInfo)
-
-                    // Content in MIDDLE - Slide from left
-                    VStack(alignment: .leading, spacing: 6) {
-                        Text(exercise.name)
-                            .font(.system(size: 20, weight: .bold))
-                            .foregroundColor(.primary)
-                            .opacity(isShowingInfo ? 1 : 0)
-                            .offset(x: isShowingInfo ? 0 : -30)
-
-                        Text(exercise.level.rawValue.capitalized)
-                            .font(.system(size: 13, weight: .medium))
-                            .foregroundColor(Color(hex: "924350"))
-                            .padding(.horizontal, 10)
-                            .padding(.vertical, 4)
-                            .background(
-                                RoundedRectangle(cornerRadius: 10)
-                                    .fill(Color(hex: "F5E6E8"))
-                                    .scaleEffect(isShowingInfo ? 1 : 0.8)
-                            )
-                            .opacity(isShowingInfo ? 1 : 0)
-                            .offset(x: isShowingInfo ? 0 : -20)
-                    }
-                    .animation(.spring(response: 0.9, dampingFraction: 0.7).delay(0.35), value: isShowingInfo)
-
-                    Spacer()
-
-                    Button(action: {
-                        withAnimation(.spring(response: 0.6, dampingFraction: 0.8)) {
-                            isShowingInfo = false
-                        }
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-                            showingExerciseInfo = nil
-                        }
-                    }) {
-                        Image(systemName: "xmark")
-                            .font(.system(size: 16, weight: .semibold))
-                            .foregroundColor(.secondary)
-                            .padding(8)
-                            .background(
-                                Circle()
-                                    .fill(Color.gray.opacity(0.15))
-                                    .scaleEffect(isShowingInfo ? 1 : 0.1)
-                            )
-                            .scaleEffect(isShowingInfo ? 1 : 0.1)
-                            .opacity(isShowingInfo ? 1 : 0)
-                            .rotationEffect(.degrees(isShowingInfo ? 0 : 90))
-                    }
-                    .animation(.spring(response: 0.7, dampingFraction: 0.5).delay(0.45), value: isShowingInfo)
-                }
-                .padding(18)
-                .padding(.top, 6)
-
-                VStack(alignment: .leading, spacing: 16) {
-                    Text("About This Exercise")
-                        .font(.system(size: 16, weight: .semibold))
-                        .foregroundColor(.primary)
-                        .opacity(isShowingInfo ? 1 : 0)
-                        .offset(x: isShowingInfo ? 0 : -40)
-                        .scaleEffect(isShowingInfo ? 1 : 0.9, anchor: .leading)
-                        .animation(.spring(response: 1.0, dampingFraction: 0.8).delay(0.5), value: isShowingInfo)
-
-                    Text(exercise.description)
-                        .font(.system(size: 14, weight: .regular))
-                        .foregroundColor(.secondary)
-                        .lineLimit(nil)
-                        .multilineTextAlignment(.leading)
-                        .opacity(isShowingInfo ? 1 : 0)
-                        .offset(y: isShowingInfo ? 0 : 20)
-                        .scaleEffect(isShowingInfo ? 1 : 0.95)
-                        .animation(.spring(response: 1.1, dampingFraction: 0.8).delay(0.6), value: isShowingInfo)
-
-                    // Compact Details with staggered bounce
-                    HStack(spacing: 20) {
-                        detailItem(icon: "clock", value: exercise.humanReadableDuration)
-                            .opacity(isShowingInfo ? 1 : 0)
-                            .scaleEffect(isShowingInfo ? 1 : 0.3)
-                            .offset(y: isShowingInfo ? 0 : 15)
-                            .animation(.spring(response: 0.8, dampingFraction: 0.6).delay(0.7), value: isShowingInfo)
-
-                        detailItem(icon: "flame", value: "Low")
-                            .opacity(isShowingInfo ? 1 : 0)
-                            .scaleEffect(isShowingInfo ? 1 : 0.3)
-                            .offset(y: isShowingInfo ? 0 : 15)
-                            .animation(.spring(response: 0.8, dampingFraction: 0.6).delay(0.75), value: isShowingInfo)
-
-                        detailItem(icon: "target", value: exercise.targetedBodyParts.joined(separator: ", "))
-                            .opacity(isShowingInfo ? 1 : 0)
-                            .scaleEffect(isShowingInfo ? 1 : 0.3)
-                            .offset(y: isShowingInfo ? 0 : 15)
-                            .animation(.spring(response: 0.8, dampingFraction: 0.6).delay(0.8), value: isShowingInfo)
-
-                        Spacer()
-                    }
-                    .padding(.vertical, 4)
-
-                    // Benefits Section with cascading reveal
-                    VStack(alignment: .leading, spacing: 10) {
-                        Text("Benefits")
-                            .font(.system(size: 15, weight: .semibold))
-                            .foregroundColor(.primary)
-                            .opacity(isShowingInfo ? 1 : 0)
-                            .offset(x: isShowingInfo ? 0 : -30)
-                            .scaleEffect(isShowingInfo ? 1 : 0.9, anchor: .leading)
-                            .animation(.spring(response: 1.0, dampingFraction: 0.8).delay(0.85), value: isShowingInfo)
-
-                        // Benefits tags with wave animation
-                        LazyVGrid(
-                            columns: [
-                                GridItem(.flexible(), spacing: 6),
-                                GridItem(.flexible(), spacing: 6)
-                            ],
-                            spacing: 6
-                        ) {
-                            ForEach(Array(exercise.tags.enumerated()), id: \.offset) { index, tag in
-                                benefitTag(text: tag)
-                                    .opacity(isShowingInfo ? 1 : 0)
-                                    .scaleEffect(isShowingInfo ? 1 : 0.1)
-                                    .offset(
-                                        x: isShowingInfo ? 0 : (index % 2 == 0 ? -20 : 20),
-                                        y: isShowingInfo ? 0 : 20
-                                    )
-                                    .rotationEffect(.degrees(isShowingInfo ? 0 : (index % 2 == 0 ? -15 : 15)))
-                                    .animation(
-                                        .spring(response: 0.9, dampingFraction: 0.7)
-                                            .delay(0.9 + Double(index) * 0.1),
-                                        value: isShowingInfo
-                                    )
-                            }
-                        }
-                    }
-                }
-                .padding(18)
-                .padding(.top, 0)
+            if isShowingInfo {
+                infoCardContent(for: exercise)
+                    .transition(.opacity.combined(with: .scale))
             }
-            .frame(maxWidth: 350)
-            .scaleEffect(isShowingInfo ? 1 : 0.4, anchor: .center)
-            .opacity(isShowingInfo ? 1 : 0)
-            .offset(y: isShowingInfo ? 0 : 50)
-            .background(
-                RoundedRectangle(cornerRadius: 18)
-                    .fill(Color.white)
-                    .shadow(
-                        color: Color.black.opacity(isShowingInfo ? 0.15 : 0),
-                        radius: isShowingInfo ? 12 : 0,
-                        x: 0,
-                        y: isShowingInfo ? 6 : 0
-                    )
-                    .scaleEffect(isShowingInfo ? 1 : 0.8)
-                    .animation(.easeInOut(duration: 0.8).delay(0.05), value: isShowingInfo)
-            )
-            .padding(.horizontal, 24)
-            .padding(.vertical, 40)
-            .animation(.spring(response: 1.0, dampingFraction: 0.75).delay(0.1), value: isShowingInfo)
         }
+    }
+
+    private func infoCardContent(for exercise: Exercise) -> some View {
+        VStack(spacing: 0) {
+            infoCardHeader(for: exercise)
+            infoCardBody(for: exercise)
+        }
+        .frame(maxWidth: 350)
+        .scaleEffect(isShowingInfo ? 1 : 0.4)
+        .opacity(isShowingInfo ? 1 : 0)
+        .offset(y: isShowingInfo ? 0 : 50)
+        .background(
+            RoundedRectangle(cornerRadius: 18)
+                .fill(Color.white)
+                .shadow(
+                    color: Color.black.opacity(isShowingInfo ? 0.15 : 0),
+                    radius: isShowingInfo ? 12 : 0,
+                    x: 0,
+                    y: isShowingInfo ? 6 : 0
+                )
+                .scaleEffect(isShowingInfo ? 1 : 0.8)
+                .animation(.easeInOut(duration: 0.8).delay(0.05), value: isShowingInfo)
+        )
+        .padding(.horizontal, 24)
+        .padding(.vertical, 40)
+        .animation(.spring(response: 1.0, dampingFraction: 0.75).delay(0.1), value: isShowingInfo)
+    }
+
+    private func infoCardHeader(for exercise: Exercise) -> some View {
+        HStack(spacing: 16) {
+            iconBox(for: exercise)
+
+            VStack(alignment: .leading, spacing: 6) {
+                Text(exercise.name)
+                    .font(.system(size: 20, weight: .bold))
+                    .foregroundColor(.primary)
+                    .opacity(isShowingInfo ? 1 : 0)
+                    .offset(x: isShowingInfo ? 0 : -30)
+
+                Text(exercise.level.rawValue.capitalized)
+                    .font(.system(size: 13, weight: .medium))
+                    .foregroundColor(Color(hex: "924350"))
+                    .padding(.horizontal, 10)
+                    .padding(.vertical, 4)
+                    .background(
+                        RoundedRectangle(cornerRadius: 10)
+                            .fill(Color(hex: "F5E6E8"))
+                            .scaleEffect(isShowingInfo ? 1 : 0.8)
+                    )
+                    .opacity(isShowingInfo ? 1 : 0)
+                    .offset(x: isShowingInfo ? 0 : -20)
+            }
+            .animation(.spring(response: 0.9, dampingFraction: 0.7).delay(0.35), value: isShowingInfo)
+
+            Spacer()
+
+            closeButton
+        }
+        .padding(18)
+        .padding(.top, 6)
+    }
+
+    private func iconBox(for exercise: Exercise) -> some View {
+        ZStack {
+            RoundedRectangle(cornerRadius: 12)
+                .fill(Color(hex: "F5E6E8"))
+                .frame(width: 70, height: 70)
+                .scaleEffect(isShowingInfo ? 1 : 0.1)
+                .opacity(isShowingInfo ? 1 : 0)
+
+            Image(systemName: exercise.type == .breathing ? "lungs.fill" : "figure.yoga")
+                .font(.system(size: 28, weight: .medium))
+                .foregroundColor(Color(hex: "924350"))
+                .scaleEffect(isShowingInfo ? 1 : 0.1)
+                .opacity(isShowingInfo ? 1 : 0)
+                .rotationEffect(.degrees(isShowingInfo ? 0 : 180))
+        }
+        .animation(.spring(response: 0.8, dampingFraction: 0.6).delay(0.2), value: isShowingInfo)
+    }
+
+    // swiftlint:enable multiple_closures_with_trailing_closure
+
+    private func infoCardBody(for exercise: Exercise) -> some View {
+        VStack(alignment: .leading, spacing: 16) {
+            animatedHeading("About This Exercise", delay: 0.5)
+
+            Text(exercise.description)
+                .font(.system(size: 14, weight: .regular))
+                .foregroundColor(.secondary)
+                .lineLimit(nil)
+                .multilineTextAlignment(.leading)
+                .opacity(isShowingInfo ? 1 : 0)
+                .offset(y: isShowingInfo ? 0 : 20)
+                .scaleEffect(isShowingInfo ? 1 : 0.95)
+                .animation(.spring(response: 1.1, dampingFraction: 0.8).delay(0.6), value: isShowingInfo)
+
+            exerciseDetailRow(for: exercise)
+
+            exerciseBenefits(for: exercise)
+        }
+        .padding(18)
+    }
+
+    private func exerciseDetailRow(for exercise: Exercise) -> some View {
+        HStack(spacing: 20) {
+            detailItem(icon: "clock", value: exercise.humanReadableDuration)
+            detailItem(icon: "flame", value: "Low")
+            detailItem(icon: "target", value: exercise.targetedBodyParts.joined(separator: ", "))
+            Spacer()
+        }
+        .padding(.vertical, 4)
+    }
+
+    private func exerciseBenefits(for exercise: Exercise) -> some View {
+        VStack(alignment: .leading, spacing: 10) {
+            animatedHeading("Benefits", delay: 0.85)
+
+            LazyVGrid(
+                columns: [GridItem(.flexible(), spacing: 6), GridItem(.flexible(), spacing: 6)],
+                spacing: 6
+            ) {
+                ForEach(Array(exercise.tags.enumerated()), id: \.offset) { index, tag in
+                    benefitTag(text: tag)
+                        .opacity(isShowingInfo ? 1 : 0)
+                        .scaleEffect(isShowingInfo ? 1 : 0.1)
+                        .offset(x: isShowingInfo ? 0 : (index % 2 == 0 ? -20 : 20), y: isShowingInfo ? 0 : 20)
+                        .rotationEffect(.degrees(isShowingInfo ? 0 : (index % 2 == 0 ? -15 : 15)))
+                        .animation(
+                            .spring(response: 0.9, dampingFraction: 0.7)
+                                .delay(0.9 + Double(index) * 0.1),
+                            value: isShowingInfo
+                        )
+                }
+            }
+        }
+    }
+
+    private func animatedHeading(_ text: String, delay: Double) -> some View {
+        Text(text)
+            .font(.system(size: 16, weight: .semibold))
+            .foregroundColor(.primary)
+            .opacity(isShowingInfo ? 1 : 0)
+            .offset(x: isShowingInfo ? 0 : -40)
+            .scaleEffect(isShowingInfo ? 1 : 0.9, anchor: .leading)
+            .animation(.spring(response: 1.0, dampingFraction: 0.8).delay(delay), value: isShowingInfo)
     }
 
     private func detailItem(icon: String, value: String) -> some View {

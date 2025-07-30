@@ -36,8 +36,8 @@ class MomCareUser {
 
     func updateToUserDefaults() {
         let userDefaults = UserDefaults(suiteName: "group.MomCare")
-        if let user, let userDefaults {
-            userDefaults.set(try! PropertyListEncoder().encode(user), forKey: "user")
+        if let user, let userDefaults, let data = try? PropertyListEncoder().encode(user) {
+            userDefaults.set(data, forKey: "user")
         }
     }
 
