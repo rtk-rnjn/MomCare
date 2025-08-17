@@ -16,12 +16,15 @@ struct DisclaimersView: View {
                                                         .font(.system(size: 60, weight: .bold))
                                                         .foregroundColor(accentColor)
                     }
-                    Text("Important Information")
-                                                .font(.title.bold())
-                                                .multilineTextAlignment(.center)
+                    Text("MomCare supports you, but your doctor knows you best!")
+                        .font(.system(size: 28, weight: .semibold, design: .default))
+                            .tracking(-0.5)
+                            .multilineTextAlignment(.center)
+                            .lineSpacing(0) 
+
                     
                     Text("Your safety and understanding are important to us. Please review the information below before using MomCare+.")
-                                                .font(.body)
+                        .font(.subheadline)
                                                 .foregroundColor(.primary)
                                                 .multilineTextAlignment(.center)
                                         }
@@ -50,7 +53,7 @@ struct DisclaimersView: View {
                     icon: "lightbulb",
                     title: "2. Daily Tips",
                     content: """
-                    DISCLAIMER: The daily tips provided on the dashboard are intended as general guidance and for informational purposes. While we strive to provide accurate and useful information, we make no representation or warranty of any kind regarding the accuracy, validity, or completeness of these tips. Following any tip is done at your own risk.
+                    DISCLAIMER: The daily tips provided on the dashboard are intended as general guidance and for informational purposes. While we strive to provide accurate and useful information, we make no representation or warranty of any kind regarding the accuracy, validity, or completeness of these tips.
                     """,
                     source: nil,
                     accentColor: accentColor
@@ -64,9 +67,9 @@ struct DisclaimersView: View {
                     title: "3. Personalized Meal Plans",
                     content: """
                     DISCLAIMER: The meal plans provided in this app are personalized based on the health conditions, allergies, and dietary preferences that you provide. We use this information to generate meal suggestions that are tailored to your stated needs.
-                    However, this automated plan is not a substitute for a direct, one-on-one consultation with a registered dietitian or your healthcare provider. A medical professional can perform a comprehensive assessment that an app cannot. It is your responsibility to ensure that all information you enter into the app is accurate and complete. Before following the meal plan, we strongly recommend you review it with your doctor to confirm it is appropriate for your specific health situation. MomCare+ is not liable for any adverse outcomes resulting from the meal plans, including those that may arise from inaccurate or incomplete self-reported data.
+                    However, this automated plan is not a substitute for a direct, one-on-one consultation with a registered dietitian or your healthcare provider. A medical professional can perform a comprehensive assessment that an app cannot. It is your responsibility to ensure that all information you enter into the app is accurate and complete. MomCare+ is not liable for any adverse outcomes resulting from the meal plans, including those that may arise from inaccurate or incomplete self-reported data.
                     """,
-                    source: "CITATION: The nutritional data and meal plan structures are based on the dataset provided by [Name of the Dataset Source, e.g., The USDA FoodData Central, or Name of the specific research paper/organization] which can be accessed here: [Link to the dataset or source website].",
+                    source: "CITATION: The nutritional data and meal plan structures are based on the dataset provided by Kaggle.",
                     accentColor: accentColor
                 )
                 
@@ -134,7 +137,7 @@ struct DisclaimersView: View {
                 }
                 .padding(.top, 16)
             }
-                            .padding(.horizontal, 20)
+                            .padding(.horizontal, 30)
                             .padding(.bottom, 16)
                         }
                         .background(Color(.systemBackground))
@@ -161,7 +164,7 @@ struct DisclaimerSection: View {
             }
             
             Text(.init(content))
-                .font(.body)
+                .font(.subheadline)
                 .fixedSize(horizontal: false, vertical: true)
                 .lineSpacing(4)
             
