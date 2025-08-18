@@ -3,7 +3,8 @@ import SwiftUI
 struct GlobalRightsView: View {
 
     private let accentColor = Color(hex: "924350")
-
+    private let rights = GDPRData.allRights
+    
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 24) {
@@ -31,61 +32,23 @@ struct GlobalRightsView: View {
                     }
                     .padding(.top, 32)
                     .padding(.bottom, 8)
+                
+                Divider()
 
                 VStack(alignment: .leading, spacing: 24) {
-                    GDPRRightView(
-                        iconName: "person.text.rectangle.fill",
-                        title: "The Right to Access",
-                        description: "You have the right to request a copy of the personal data we hold about you.",
-                        accentColor: accentColor
-                    )
-
-                    Divider()
-
-                    GDPRRightView(
-                        iconName: "pencil.circle.fill",
-                        title: "The Right to Rectification",
-                        description: "If you believe any of the data we hold about you is inaccurate or incomplete, you have the right to have it corrected.",
-                        accentColor: accentColor
-                    )
-
-                    Divider()
-
-                    GDPRRightView(
-                        iconName: "trash.fill",
-                        title: "The Right to Erasure",
-                        description: "You can request that we delete your personal data from our systems. This is also known as the 'Right to be Forgotten'.",
-                        accentColor: accentColor
-                    )
-
-                    Divider()
-
-                    GDPRRightView(
-                        iconName: "pause.circle.fill",
-                        title: "The Right to Restrict Processing",
-                        description: "You have the right to request that we temporarily or permanently stop processing all or some of your personal data.",
-                        accentColor: accentColor
-                    )
-
-                    Divider()
-
-                    GDPRRightView(
-                        iconName: "arrow.down.doc.fill",
-                        title: "The Right to Data Portability",
-                        description: "You can request a copy of your personal data in a common, machine-readable format to transfer to another service.",
-                        accentColor: accentColor
-                    )
-
-                    Divider()
-
-                    GDPRRightView(
-                        iconName: "speaker.slash.fill",
-                        title: "The Right to Object",
-                        description: "You have the right to object to us processing your personal data for specific purposes, such as direct marketing.",
-                        accentColor: accentColor
-                    )
+                    ForEach(rights) { right in
+                            GDPRRightView(
+                                iconName: right.iconName,
+                                title: right.title,
+                                description: right.description,
+                                accentColor: accentColor
+                            )
+                            
+                            if right.id != rights.last?.id {
+                                Divider()
+                            }
+                        }
                 }
-
                 VStack(alignment: .center, spacing: 16) {
                     Text("How to Exercise Your Rights")
                         .font(.title3)
@@ -141,7 +104,6 @@ struct GDPRRightView: View {
     }
 }
 
-// --- Xcode Preview ---
 struct GlobalRightsView_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {

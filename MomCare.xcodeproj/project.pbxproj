@@ -114,6 +114,7 @@
 				"Common/HealthKitHandler/HealthKitHandler+Reader.swift",
 				Common/MusicPlayerHandler.swift,
 				Common/Utils.swift,
+				DataModels/Global/ProfileDisclaimerData.swift,
 				DataModels/Global/StaticData.swift,
 				DataModels/Global/TriTrackData.swift,
 				DataModels/Internal/Entity.swift,

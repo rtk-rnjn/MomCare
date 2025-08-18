@@ -3,11 +3,12 @@ import SwiftUI
 struct TermsOfServiceView: View {
 
     private let accentColor = Color(hex: "924350")
+    private let legalSections = TermsData.allSections
 
     var body: some View {
         GeometryReader { _ in
             ScrollView {
-                VStack(alignment: .leading, spacing: 24) {
+                VStack(spacing: 24) {
                     VStack(spacing: 16) {
                         ZStack {
                             RoundedRectangle(cornerRadius: 12, style: .continuous)
@@ -34,112 +35,31 @@ struct TermsOfServiceView: View {
                     }
                     .frame(maxWidth: .infinity)
                     .padding(.vertical, 24)
-
-                    VStack(alignment: .leading, spacing: 24) {
-
-                        Divider()
-                        LegalSectionView(
-                            iconName: "checkmark.seal.fill",
-                            title: "Acceptance of Terms",
-                            content: "By downloading, installing, accessing, or using the MomCare mobile application and related services, you acknowledge that you have read, understood, and agreed to be bound by these Terms of Service and our Privacy Policy.\n\nIf you do not agree with these Terms, or any future updates to them, you must not access or use the App. Your continued use of the App after any changes or updates to these Terms constitutes your acceptance of those changes.",
-                            accentColor: accentColor
-                        )
-
-                        Divider()
-
-                        EligibilitySectionView(accentColor: accentColor)
-
-                        Divider()
-
-                        OverviewOfServicesView(accentColor: accentColor)
-
-                        Divider()
-
-                        LegalSectionView(
-                            iconName: "exclamationmark.triangle.fill",
-                            title: "Disclaimers and Emergency Guidance",
-                            content: "All content and features are for informational purposes only and are not a substitute for professional medical advice. In case of any medical emergency, immediately call your doctor or go to the nearest hospital. Use of the MomCare app is at your own discretion and risk.",
-                            accentColor: accentColor
-                        )
-
-                        Divider()
-
-                        LegalSectionView(
-                            iconName: "person.fill.checkmark",
-                            title: "User Responsibilities",
-                            content: "You agree not to use the app in any unlawful manner, tamper with its functionalities, or submit misleading health data.",
-                            accentColor: accentColor
-                        )
-
-                        Divider()
-
-                        LegalSectionView(
-                            iconName: "c.circle.fill",
-                            title: "License and Intellectual Property",
-                            content: "MomCare and all associated content, features, and branding are the exclusive intellectual property of MomCare and are protected by law. You are granted a limited, non-exclusive license for personal, non-commercial use only. You may not copy, modify, distribute, or reverse engineer any part of the app.",
-                            accentColor: accentColor
-                        )
-
-                        Divider()
-
-                        LegalSectionView(
-                            iconName: "lock.shield.fill",
-                            title: "Data Consent & Privacy",
-                            content: "By using our Services, you grant MomCare the right to collect, store, and process your data in accordance with our Privacy Policy. We use anonymized and aggregated data to improve our services and will never sell your personal data.",
-                            accentColor: accentColor
-                        )
-
-                        Divider()
-
-//                        LegalSectionView(
-//                            iconName: "puzzlepiece.extension.fill",
-//                            title: "Third-Party Services",
-//                            content: "To deliver a rich experience, MomCare integrates with third-party services like Apple's HealthKit and Generative AI for smart recommendations. Use of these features is subject to their respective policies. We do not share your data with third parties for marketing purposes.",
-//                            accentColor: accentColor
-//                        )
-                        ThirdPartyServicesView(accentColor: accentColor)
-
-                        Divider()
-
-                        LegalSectionView(
-                            iconName: "creditcard.fill",
-                            title: "Subscriptions",
-                            content: "Some advanced features may require a subscription. Payments are processed via the App Store, and you can manage or cancel your subscription in your account settings.",
-                            accentColor: accentColor
-                        )
-
-                        Divider()
-
-                        LegalSectionView(
-                            iconName: "hand.raised.slash.fill",
-                            title: "Limitation of Liability",
-                            content: "MomCare provides the app “as-is” without warranties. We are not liable for any indirect damages from your use of the app and do not guarantee it will be error-free.",
-                            accentColor: accentColor
-                        )
-
-                        Divider()
-
-                        LegalSectionView(
-                            iconName: "building.columns.fill",
-                            title: "Governing Law",
-                            content: "These terms are governed by the laws of India. Any disputes shall be resolved in the courts of Gautam Budh Nagar.",
-                            accentColor: accentColor
-                        )
-
-                        Divider()
-
-                        LegalSectionView(
-                            iconName: "envelope.fill",
-                            title: "Contact Us",
-                            content: "For questions or feedback, please contact us at:\n**Email:** support@momcare.com\n**Website:** www.momcare.com",
-                            accentColor: accentColor
-                        )
+                
+                    Divider()
+                
+                    ForEach(legalSections) { section in
+                        switch section.type {
+                        case .standard(let icon, let title, let content):
+                            LegalSectionView(iconName: icon, title: title, content: content, accentColor: accentColor)
+                        case .eligibility:
+                            EligibilitySectionView(accentColor: accentColor)
+                        case .overview:
+                            OverviewOfServicesView(accentColor: accentColor)
+                        case .thirdParty:
+                            ThirdPartyServicesView(accentColor: accentColor)
+                        }
+                        
+                        if section.id != legalSections.last?.id {
+                            Divider().padding(.vertical, 8)
+                        }
                     }
                 }
                 .padding(.horizontal, 24)
                 .padding(.bottom, 40)
             }
             .background(Color(.systemGroupedBackground))
+
         }
     }
 
@@ -161,7 +81,7 @@ struct LegalSectionView: View {
                     .font(.title3.weight(.semibold))
             }
 
-            Text(.init(content))
+            Text(.init(content.trimmingCharacters(in: .whitespacesAndNewlines)))
                 .font(.subheadline)
                 .foregroundColor(.primary)
                 .lineSpacing(4)
@@ -225,7 +145,6 @@ struct OverviewOfServicesView: View {
     }
 }
 
-// --- Helper View: ServiceDetail ---
 struct ServiceDetail: View {
     let title: String
     let description: String
@@ -246,7 +165,6 @@ struct ThirdPartyServicesView: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
-            // Main Header
             HStack(spacing: 12) {
                 Image(systemName: "puzzlepiece.extension.fill")
                     .font(.title2)
@@ -256,12 +174,10 @@ struct ThirdPartyServicesView: View {
                     .font(.title3.weight(.semibold))
             }
 
-            // Introductory Paragraph
             Text("To deliver a personalized and feature-rich experience, MomCare integrates with a number of third-party services, frameworks, and APIs. These services may handle or process certain types of data to enable app functionality.")
                 .font(.subheadline)
                 .foregroundColor(.primary)
 
-            // Apple Frameworks Subsection
             VStack(alignment: .leading, spacing: 12) {
                 Text("Apple Frameworks & Services")
                     .font(.subheadline)
@@ -275,7 +191,6 @@ struct ThirdPartyServicesView: View {
                 ServiceBulletPoint(title: "AVFoundation & MediaPlayer", description: "To power audio playback features in MoodNest, including mood-specific calming soundtracks.")
             }
 
-            // AI Services Subsection
             VStack(alignment: .leading, spacing: 12) {
                 Text("AI Services")
                     .font(.subheadline)
@@ -286,7 +201,6 @@ struct ThirdPartyServicesView: View {
                 ServiceBulletPoint(title: "Generative AI (GenAI)", description: "Utilized for powering certain smart recommendations, personalized wellness suggestions, or adaptive daily tips. All outputs are generated in response to user-provided context and inputs.")
             }
 
-            // Concluding Paragraphs
             VStack(alignment: .leading, spacing: 10) {
                  Text("Use of these services is subject to their respective privacy policies and terms of use. By using MomCare, you acknowledge and consent to the processing of relevant data by these services, solely for the purposes of enhancing your experience and delivering the app’s features.")
                  Text("We do not share or sell your data to third parties for advertising or marketing purposes.")
@@ -316,7 +230,6 @@ struct ServiceBulletPoint: View {
     }
 }
 
-// --- Helper View: BulletPoint ---
 struct BulletPoint: View {
     let text: String
 
@@ -330,7 +243,6 @@ struct BulletPoint: View {
     }
 }
 
-// --- Xcode Preview ---
 struct TermsOfServiceView_Previews: PreviewProvider {
     static var previews: some View {
         TermsOfServiceView()
