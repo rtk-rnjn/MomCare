@@ -2,13 +2,13 @@ import SwiftUI
 
 struct DisclaimersView: View {
     let accentColor = Color(hex: "924350")
-    
+
     var body: some View {
         ScrollView {
             VStack(spacing: 24) {
                 // Main Header
                 VStack(spacing: 16) {
-                    ZStack{
+                    ZStack {
                         RoundedRectangle(cornerRadius: 12, style: .continuous)
                             .fill(Color(hex: "FFFFFF").opacity(0.12))
                                                         .frame(width: 60, height: 60)
@@ -20,9 +20,8 @@ struct DisclaimersView: View {
                         .font(.system(size: 28, weight: .semibold, design: .default))
                             .tracking(-0.5)
                             .multilineTextAlignment(.center)
-                            .lineSpacing(0) 
+                            .lineSpacing(0)
 
-                    
                     Text("Your safety and understanding are important to us. Please review the information below before using MomCare+.")
                         .font(.subheadline)
                                                 .foregroundColor(.primary)
@@ -30,9 +29,9 @@ struct DisclaimersView: View {
                                         }
                                         .padding(.top, 32)
                                         .padding(.bottom, 8)
-                
+
                 Divider()
-                
+
                 // Section 1: General Medical Disclaimer
                 DisclaimerSection(
                     icon: "stethoscope",
@@ -45,9 +44,9 @@ struct DisclaimersView: View {
                     source: nil,
                     accentColor: accentColor
                 )
-                
+
                 Divider()
-                
+
                 // Section 2: Daily Tips
                 DisclaimerSection(
                     icon: "lightbulb",
@@ -58,9 +57,9 @@ struct DisclaimersView: View {
                     source: nil,
                     accentColor: accentColor
                 )
-                
+
                 Divider()
-                
+
                 // Section 3: Meal Plans
                 DisclaimerSection(
                     icon: "fork.knife",
@@ -72,9 +71,9 @@ struct DisclaimersView: View {
                     source: "CITATION: The nutritional data and meal plan structures are based on the dataset provided by Kaggle.",
                     accentColor: accentColor
                 )
-                
+
                 Divider()
-                
+
                 // Section 4: Exercise & Yoga
                 DisclaimerSection(
                     icon: "figure.walk",
@@ -86,9 +85,9 @@ struct DisclaimersView: View {
                     source: "CITATION: The yoga and exercise video content is provided courtesy of Pexels.com. You can find more of their work at: https://www.pexels.com/search/videos/pregnancy%20yogas/.",
                     accentColor: accentColor
                 )
-                
+
                 Divider()
-                
+
                 // Section 5: Baby Growth Tracker
                 DisclaimerSection(
                     icon: "chart.line.uptrend.xyaxis",
@@ -99,9 +98,9 @@ struct DisclaimersView: View {
                     source: "CITATION: ",
                     accentColor: accentColor
                 )
-                
+
                 Divider()
-                
+
                 // Section 6: Articles
                 DisclaimerSection(
                     icon: "book",
@@ -113,9 +112,9 @@ struct DisclaimersView: View {
                     source: "CITATION: The articles featured in this section are sourced from [Name of the Source, e.g., The March of Dimes, What to Expect, etc.]. We are grateful for their contribution to maternal education. You can read more at: [Link to the source website].",
                     accentColor: accentColor
                 )
-                
+
                 Divider()
-                
+
                 // Section 7: Mood Tracking
                 DisclaimerSection(
                     icon: "face.smiling",
@@ -127,10 +126,10 @@ struct DisclaimersView: View {
                     source: nil,
                     accentColor: accentColor
                 )
-                
+
                 // Footer
                 VStack(spacing: 16) {
-                    
+
                     Text("By using MomCare+, you acknowledge that you have read and understood these disclaimers.")
                         .font(.footnote)
                         .foregroundColor(accentColor)
@@ -150,7 +149,7 @@ struct DisclaimerSection: View {
     let content: String
     var source: String?
     let accentColor: Color
-    
+
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
             HStack(alignment: .top, spacing: 12) {
@@ -158,16 +157,16 @@ struct DisclaimerSection: View {
                     .font(.title2)
                     .foregroundColor(accentColor)
                     .frame(width: 24, alignment: .leading)
-                
+
                 Text(title)
                     .font(.title3.weight(.semibold))
             }
-            
+
             Text(.init(content))
                 .font(.subheadline)
                 .fixedSize(horizontal: false, vertical: true)
                 .lineSpacing(4)
-            
+
             if let source = source, !source.isEmpty {
                 Text(.init(source))
                     .font(.footnote)
