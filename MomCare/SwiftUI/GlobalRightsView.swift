@@ -4,7 +4,7 @@ struct GlobalRightsView: View {
 
     private let accentColor = Color(hex: "924350")
     private let rights = GDPRData.allRights
-    
+
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 24) {
@@ -32,7 +32,7 @@ struct GlobalRightsView: View {
                     }
                     .padding(.top, 32)
                     .padding(.bottom, 8)
-                
+
                 Divider()
 
                 VStack(alignment: .leading, spacing: 24) {
@@ -43,7 +43,7 @@ struct GlobalRightsView: View {
                                 description: right.description,
                                 accentColor: accentColor
                             )
-                            
+
                             if right.id != rights.last?.id {
                                 Divider()
                             }

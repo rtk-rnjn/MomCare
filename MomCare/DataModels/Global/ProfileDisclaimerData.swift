@@ -60,13 +60,13 @@ enum DisclaimerData {
             However, while we select sources known for their high standards of accuracy, MomCare+ does not independently verify every single fact within these articles and cannot guarantee its absolute accuracy or timeliness. This content is presented for educational purposes and does not necessarily reflect the views of MomCare+. As with all content in this app, this information is not a substitute for direct, professional medical advice from your healthcare provider.
             """,
             source: """
-            "CITATION: 
-               https://www.acog.org/womens-health/patient-education, 
+            "CITATION:
+               https://www.acog.org/womens-health/patient-education,
                https://www.babycenter.com/pregnancy-week-by-week,
                https://www.whattoexpect.com/pregnancy/week-by-week/,
                https://www.womenshealth.gov/pregnancy/,
         """),
-            
+
         DisclaimerItem(
             icon: "face.smiling",
             title: "7. Mood Tracking and Music Suggestions",
@@ -78,7 +78,6 @@ enum DisclaimerData {
         )
     ]
 }
-
 
 enum LegalSectionType {
     case standard(icon: String, title: String, content: String)
@@ -146,7 +145,6 @@ struct TermsData {
         ))
     ]
 }
-
 
 struct GDPRRightItem: Identifiable {
     let id = UUID()

@@ -30,9 +30,9 @@ struct DisclaimersView: View {
                                         .padding(.bottom, 8)
 
                 Divider()
-                
+
                 let disclaimers = DisclaimerData.allDisclaimers
-                
+
                 ForEach(disclaimers) { disclaimer in
                     DisclaimerSection(
                         icon: disclaimer.icon,

@@ -35,9 +35,9 @@ struct TermsOfServiceView: View {
                     }
                     .frame(maxWidth: .infinity)
                     .padding(.vertical, 24)
-                
+
                     Divider()
-                
+
                     ForEach(legalSections) { section in
                         switch section.type {
                         case .standard(let icon, let title, let content):
@@ -49,7 +49,7 @@ struct TermsOfServiceView: View {
                         case .thirdParty:
                             ThirdPartyServicesView(accentColor: accentColor)
                         }
-                        
+
                         if section.id != legalSections.last?.id {
                             Divider().padding(.vertical, 8)
                         }
