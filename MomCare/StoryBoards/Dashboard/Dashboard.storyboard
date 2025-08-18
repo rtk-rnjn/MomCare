@@ -233,7 +233,7 @@
                             <tableViewSection id="LSc-be-kMW">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" accessoryType="disclosureIndicator" indentationWidth="10" id="HIk-wa-o1d">
-                                        <rect key="frame" x="20" y="376.66666030883789" width="353" height="57.333332061767578"/>
+                                        <rect key="frame" x="20" y="376.66666030883795" width="353" height="57.333332061767578"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="HIk-wa-o1d" id="iOj-J4-UjE">
                                             <rect key="frame" x="0.0" y="0.0" width="322.66666666666669" height="57.333332061767578"/>
@@ -272,7 +272,7 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" accessoryType="disclosureIndicator" indentationWidth="10" id="MXh-s4-48o">
-                                        <rect key="frame" x="20" y="433.99999237060547" width="353" height="57.333332061767578"/>
+                                        <rect key="frame" x="20" y="433.99999237060553" width="353" height="57.333332061767578"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="MXh-s4-48o" id="nbJ-tx-wLg">
                                             <rect key="frame" x="0.0" y="0.0" width="322.66666666666669" height="57.333332061767578"/>
@@ -315,7 +315,7 @@
                             <tableViewSection id="Hlm-cl-LyU">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" accessoryType="disclosureIndicator" indentationWidth="10" id="51Z-j8-Wlh">
-                                        <rect key="frame" x="20" y="527.33332443237305" width="353" height="57.333332061767578"/>
+                                        <rect key="frame" x="20" y="527.33332443237316" width="353" height="57.333332061767578"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="51Z-j8-Wlh" id="ME8-7L-yNk">
                                             <rect key="frame" x="0.0" y="0.0" width="322.66666666666669" height="57.333332061767578"/>
@@ -358,7 +358,7 @@
                             <tableViewSection id="JSU-QX-zbT">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" id="KwR-KM-bmH">
-                                        <rect key="frame" x="20" y="620.66665649414062" width="353" height="54.666667938232422"/>
+                                        <rect key="frame" x="20" y="620.66665649414074" width="353" height="54.666667938232422"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="KwR-KM-bmH" id="t7d-GM-0qA">
                                             <rect key="frame" x="0.0" y="0.0" width="353" height="54.666667938232422"/>
@@ -390,7 +390,7 @@
                             <tableViewSection id="R55-xU-5Fl">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" id="hMn-1w-31l">
-                                        <rect key="frame" x="20" y="711.33332443237305" width="353" height="143"/>
+                                        <rect key="frame" x="20" y="711.33332443237316" width="353" height="143"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="hMn-1w-31l" id="zM2-eC-HEz">
                                             <rect key="frame" x="0.0" y="0.0" width="353" height="143"/>
@@ -755,7 +755,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Pva-OI-lUm" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3234" y="105"/>
+            <point key="canvasLocation" x="3204" y="-186"/>
         </scene>
         <!--Health & Support-->
         <scene sceneID="bbJ-JP-jjR">
@@ -852,15 +852,21 @@
             </objects>
             <point key="canvasLocation" x="2480" y="577"/>
         </scene>
-        <!--TermsOfServiceTableViewController-->
-        <scene sceneID="pjR-Vq-3xj">
+        <!--Terms Of Service View Controller-->
+        <scene sceneID="Obk-at-6qC">
             <objects>
-                <viewControllerPlaceholder storyboardIdentifier="TermsOfServiceTableViewController" storyboardName="LegalComplianceStoryboard" referencedIdentifier="TermsOfServiceTableViewController" id="AJD-dC-qF7" sceneMemberID="viewController">
-                    <navigationItem key="navigationItem" id="uVc-HF-O9C"/>
-                </viewControllerPlaceholder>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="XrK-wL-tNr" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+                <viewController id="B73-4O-gSc" customClass="TermsOfServiceViewController" customModule="MomCare" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="yRE-Kz-6ef">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="842"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <viewLayoutGuide key="safeArea" id="L11-0u-bIu"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="t2c-9w-q7Z"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="gQA-bf-XwI" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2937" y="577"/>
+            <point key="canvasLocation" x="3248" y="474"/>
         </scene>
         <!--About MomCare+-->
         <scene sceneID="dWw-gU-awI">
@@ -1075,7 +1081,7 @@
                                         </tableViewCellContentView>
                                         <color key="tintColor" red="0.57254901960000004" green="0.26274509800000001" blue="0.31372549020000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <connections>
-                                            <segue destination="AJD-dC-qF7" kind="show" id="ni0-23-etg"/>
+                                            <segue destination="B73-4O-gSc" kind="show" id="gco-at-dAo"/>
                                         </connections>
                                     </tableViewCell>
                                 </cells>
