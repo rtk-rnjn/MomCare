@@ -129,9 +129,7 @@ struct TermsData {
         LegalSectionItem(type: .standard(
             icon: "hand.raised.fill",
             title: "Limitation of Liability",
-            content: """
-            MomCare provides the app “as-is” without warranties. We are not liable for any indirect damages from your use of the app and do not guarantee it will be error-free.
-"""
+            content: "MomCare provides the app “as-is” without warranties. We are not liable for indirect damages from your use of the app and do not guarantee it will be error-free."
         )),
         LegalSectionItem(type: .standard(
             icon: "building.columns.fill",
