@@ -114,6 +114,7 @@
 				"Common/HealthKitHandler/HealthKitHandler+Reader.swift",
 				Common/MusicPlayerHandler.swift,
 				Common/Utils.swift,
+				DataModels/Global/ProfileDisclaimerData.swift,
 				DataModels/Global/StaticData.swift,
 				DataModels/Global/TriTrackData.swift,
 				DataModels/Internal/Entity.swift,
@@ -365,6 +366,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 4MLB4J69LF;
 				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = MomCare/Info.plist;
@@ -419,6 +421,7 @@
 				CODE_SIGN_ENTITLEMENTS = MomCare/MomCare.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 4MLB4J69LF;
 				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = MomCare/Info.plist;
