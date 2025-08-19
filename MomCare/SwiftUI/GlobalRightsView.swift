@@ -1,11 +1,8 @@
 import SwiftUI
 
 struct GlobalRightsView: View {
-    
-    // MARK: Private
 
-    private let accentColor: Color = .init(hex: "924350")
-    private let rights: [GDPRRightItem] = GDPRData.allRights
+    // MARK: Internal
 
     var body: some View {
         ScrollView {
@@ -78,6 +75,12 @@ struct GlobalRightsView: View {
         }
         .background(Color(.systemGroupedBackground))
     }
+
+    // MARK: Private
+
+    private let accentColor: Color = .init(hex: "924350")
+    private let rights: [GDPRRightItem] = GDPRData.allRights
+
 }
 
 struct GDPRRightView: View {
