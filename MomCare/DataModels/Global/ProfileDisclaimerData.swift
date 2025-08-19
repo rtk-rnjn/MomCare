@@ -33,7 +33,7 @@ enum DisclaimerData {
             DISCLAIMER: The meal plans provided in this app are personalized based on the health conditions, allergies, and dietary preferences that you provide. We use this information to generate meal suggestions that are tailored to your stated needs.
             However, this automated plan is not a substitute for a direct, one-on-one consultation with a registered dietitian or your healthcare provider. A medical professional can perform a comprehensive assessment that an app cannot. It is your responsibility to ensure that all information you enter into the app is accurate and complete. MomCare+ is not liable for any adverse outcomes resulting from the meal plans, including those that may arise from inaccurate or incomplete self-reported data.
             """,
-            source: "CITATION: The nutritional data and meal plan structures are based on the dataset provided by Kaggle."
+            source: "CITATION: The nutritional data and meal plan structures are based on the dataset provided by [Kaggle](https://www.kaggle.com/datasets/sayyamsancheti/indian-state-wise-meals-with-nutritional-values)."
         ),
         DisclaimerItem(
             icon: "figure.walk",
@@ -42,16 +42,16 @@ enum DisclaimerData {
             DISCLAIMER: The exercise and yoga videos in this app have been carefully curated to be generally safe and appropriate for the specific week of pregnancy you are in. We have taken care to select gentle, low-impact routines that are beneficial for most expectant mothers.
             However, every pregnancy is unique. Your individual health status, fitness level, or specific medical conditions (like placenta previa or high-risk status) may require modifications or mean that certain exercises should be avoided. It remains essential to consult with your doctor or a qualified prenatal fitness instructor before beginning this or any exercise regimen. They can provide guidance tailored to your body. Listen to your body and stop immediately if you feel pain, dizziness, or discomfort. By participating in these exercises, you agree that you are doing so at your own risk and release MomCare+ from any and all claims or liabilities for any injury or harm you might sustain.
             """,
-            source: "CITATION: The yoga and exercise video content is provided courtesy of Pexels.com. You can find more of their work at: https://www.pexels.com/search/videos/pregnancy%20yogas/."
-        ),
+            source: "CITATION: The yoga and exercise video content is provided courtesy of [Pexels.com](https://www.pexels.com/search/videos/pregnancy%20yogas/)."
+                    ),
         DisclaimerItem(
             icon: "chart.line.uptrend.xyaxis",
             title: "5. Baby Growth and Development Tracker",
             content: """
             DISCLAIMER: The week-by-week baby size comparisons (e.g., "the size of an apple") are illustrative approximations meant to provide a fun and relatable way to visualize your baby's growth. Fetal development is unique to each pregnancy and can be influenced by various factors, including genetics, ethnicity, and maternal health. The data used in this app is based on general averages and may not perfectly reflect your baby's individual development. These comparisons are not a medical tool and should not be used for diagnostic purposes. For accurate information about your baby's growth, please rely on the ultrasound measurements and assessments provided by your healthcare professional.
             """,
-            source: "CITATION: Icons are used from https://icons8.com/"
-        ),
+            source: "CITATION: Icons are used from [Icons8](https://icons8.com/)."
+                    ),
         DisclaimerItem(
             icon: "book",
             title: "6. Pregnancy Articles",
@@ -60,12 +60,13 @@ enum DisclaimerData {
             However, while we select sources known for their high standards of accuracy, MomCare+ does not independently verify every single fact within these articles and cannot guarantee its absolute accuracy or timeliness. This content is presented for educational purposes and does not necessarily reflect the views of MomCare+. As with all content in this app, this information is not a substitute for direct, professional medical advice from your healthcare provider.
             """,
             source: """
-            "CITATION:
-               https://www.acog.org/womens-health/patient-education,
-               https://www.babycenter.com/pregnancy-week-by-week,
-               https://www.whattoexpect.com/pregnancy/week-by-week/,
-               https://www.womenshealth.gov/pregnancy/,
-        """),
+                        CITATION:
+                        • [American College of Obstetricians and Gynecologists](https://www.acog.org/womens-health/patient-education)
+                        • [BabyCenter](https://www.babycenter.com/pregnancy-week-by-week)
+                        • [What to Expect](https://www.whattoexpect.com/pregnancy/week-by-week/)
+                        • [WomensHealth.gov](https://www.womenshealth.gov/pregnancy/)
+                        """
+                    ),
 
         DisclaimerItem(
             icon: "face.smiling",
@@ -74,8 +75,8 @@ enum DisclaimerData {
             DISCLAIMER: We understand that pregnancy is an emotional journey. The mood tracking feature is designed to help you maintain your emotional well-being. Based on the mood you log, our system suggests music that has been thoughtfully categorized and selected in an effort to provide comfort, calm, or upliftment.
             It is crucial to understand that this is an automated wellness feature intended for comfort and entertainment only. It is not a diagnostic tool and does not provide medical or psychological therapy. This feature cannot detect or treat conditions such as prenatal or postpartum depression or anxiety. If you are experiencing persistent low moods, anxiety, or have concerns about your mental health, it is essential that you speak with your healthcare provider or a mental health professional. Your well-being is the top priority, and professional care is the correct and necessary step.
             """,
-            source: "CITATION: Images and Tunes are taken from https://freetouse.com."
-        )
+            source: "CITATION: Images and Tunes are taken from [Free To Use](https://freetouse.com)."
+                    )
     ]
 }
 
@@ -139,7 +140,7 @@ enum TermsData {
         LegalSectionItem(type: .standard(
             icon: "envelope.fill",
             title: "Contact Us",
-            content: "For questions or feedback, please contact us at:\n**Email:** support@momcare.com\n**Website:** www.momcare.com"
+            content: "For questions or feedback, please contact us at:\n**Email:** support@ourdomain\n**Website:** "
         ))
     ]
 }
