@@ -532,7 +532,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Iqw-R9-Osc" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="6338" y="-1161"/>
+            <point key="canvasLocation" x="6323" y="-1251"/>
         </scene>
         <!--Account & Security-->
         <scene sceneID="0FX-O9-Fl2">
@@ -739,7 +739,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="DNa-Qh-vz9" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5659" y="-605"/>
+            <point key="canvasLocation" x="5615" y="-835"/>
         </scene>
         <!--Disclaimers View Controller-->
         <scene sceneID="hmF-kA-tRe">
@@ -912,6 +912,9 @@
                                             </subviews>
                                         </tableViewCellContentView>
                                         <color key="tintColor" red="0.57254901960000004" green="0.26274509800000001" blue="0.31372549020000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <connections>
+                                            <segue destination="g6H-sL-Vso" kind="show" id="U7T-p9-MVv"/>
+                                        </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" textLabel="Mn8-5G-S0Y" detailTextLabel="uvz-NN-eAF" style="IBUITableViewCellStyleValue1" id="M6Z-xg-Iqf">
                                         <rect key="frame" x="20" y="61.666667938232422" width="353" height="43.666667938232422"/>
@@ -989,7 +992,23 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="uyl-cx-0rC" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4599" y="105"/>
+            <point key="canvasLocation" x="5266" y="373"/>
+        </scene>
+        <!--Aboutus View Controller-->
+        <scene sceneID="fzh-nA-bf5">
+            <objects>
+                <viewController id="g6H-sL-Vso" customClass="AboutusViewController" customModule="MomCare" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="qEj-cj-BfC">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="842"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <viewLayoutGuide key="safeArea" id="h04-zI-ftS"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="f02-34-YuU"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="cYY-Vv-WOx" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="6059" y="373"/>
         </scene>
         <!--Account Management-->
         <scene sceneID="QvT-ER-eg1">
@@ -1046,7 +1065,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="omm-LX-MuV" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5404" y="120"/>
+            <point key="canvasLocation" x="6245" y="-477"/>
         </scene>
         <!--Legal & Compliance-->
         <scene sceneID="YNF-Yn-YEs">
