@@ -1,7 +1,7 @@
 import Foundation
 
 struct DisclaimerItem: Identifiable {
-    let id = UUID()
+    let id: UUID = .init()
     let icon: String
     let title: String
     let content: String
@@ -87,11 +87,11 @@ enum LegalSectionType {
 }
 
 struct LegalSectionItem: Identifiable {
-    let id = UUID()
+    let id: UUID = .init()
     let type: LegalSectionType
 }
 
-struct TermsData {
+enum TermsData {
     static let allSections: [LegalSectionItem] = [
         LegalSectionItem(type: .standard(
             icon: "checkmark.seal.fill",
@@ -145,13 +145,13 @@ struct TermsData {
 }
 
 struct GDPRRightItem: Identifiable {
-    let id = UUID()
+    let id: UUID = .init()
     let iconName: String
     let title: String
     let description: String
 }
 
-struct GDPRData {
+enum GDPRData {
     static let allRights: [GDPRRightItem] = [
         GDPRRightItem(
             iconName: "person.text.rectangle.fill",

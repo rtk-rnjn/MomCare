@@ -9,8 +9,6 @@ import UIKit
 import SwiftUI
 
 class TermsOfServiceViewController: UIHostingController<TermsOfServiceView> {
-    // MARK: Lifecycle
-
     init() {
         super.init(rootView: TermsOfServiceView())
     }

@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct DisclaimersView: View {
-    let accentColor = Color(hex: "924350")
+    let accentColor: Color = .init(hex: "924350")
 
     var body: some View {
         ScrollView {
@@ -83,7 +83,7 @@ struct DisclaimerSection: View {
                 .fixedSize(horizontal: false, vertical: true)
                 .lineSpacing(4)
 
-            if let source = source, !source.isEmpty {
+            if let source, !source.isEmpty {
                 Text(.init(source))
                     .font(.footnote)
                     .italic()

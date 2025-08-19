@@ -3,8 +3,6 @@ import UIKit
 
 class DisclaimersViewController: UIHostingController<DisclaimersView> {
 
-    // MARK: Lifecycle
-
     init() {
         super.init(rootView: DisclaimersView())
     }

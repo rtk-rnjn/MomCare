@@ -2,8 +2,7 @@ import SwiftUI
 
 struct TermsOfServiceView: View {
 
-    private let accentColor = Color(hex: "924350")
-    private let legalSections = TermsData.allSections
+    // MARK: Internal
 
     var body: some View {
         GeometryReader { _ in
@@ -40,7 +39,7 @@ struct TermsOfServiceView: View {
 
                     ForEach(legalSections) { section in
                         switch section.type {
-                        case .standard(let icon, let title, let content):
+                        case let .standard(icon, title, content):
                             LegalSectionView(iconName: icon, title: title, content: content, accentColor: accentColor)
                         case .eligibility:
                             EligibilitySectionView(accentColor: accentColor)
@@ -61,6 +60,12 @@ struct TermsOfServiceView: View {
             .background(Color(.systemGroupedBackground))
 
         }
+
+    // MARK: Private
+
+    private let accentColor: Color = .init(hex: "924350")
+    private let legalSections: TermsData = .allSections
+
     }
 
 struct LegalSectionView: View {

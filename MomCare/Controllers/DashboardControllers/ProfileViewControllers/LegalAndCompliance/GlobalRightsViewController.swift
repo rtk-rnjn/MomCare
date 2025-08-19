@@ -10,8 +10,6 @@ import SwiftUI
 
 class GlobalRightsViewController: UIHostingController<GlobalRightsView> {
 
-    // MARK: Lifecycle
-
     init() {
         super.init(rootView: GlobalRightsView())
     }
