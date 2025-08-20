@@ -186,3 +186,79 @@ enum GDPRData {
         )
     ]
 }
+
+struct TeamMember: Identifiable {
+    let id: UUID = .init()
+    let imageName: String?
+    let name: String
+    let role: String
+}
+
+struct Credit: Identifiable {
+    let id = UUID()
+    let name: String
+    let description: String
+}
+
+enum CreditsData {
+    static let teamMembers: [TeamMember] = [
+        .init(imageName: nil, name: "Aryan Singh", role: "Team Lead, UI/UX & Ideation"),
+        .init(imageName: nil, name: "Khushi Rana", role: "Frontend & Research"),
+        .init(imageName: nil, name: "Nupur Sharma", role: "Frontend & Research"),
+        .init(imageName: nil, name: "Ritik Ranjan", role: "Frontend/Backend Developer")
+    ]
+    
+    static let mentors: [Credit] = [
+        .init(name: "Vinod Kumar", description: "For his dedicated guidance."),
+        .init(name: "Valuable Feedback From", description: "Kiran Singh, Probeer Shaw, Runumi Devi and Shruti Sachdeva.")
+    ]
+    
+    static let specialThanks: [Credit] = [
+        .init(name: "Anand Pillai · Apple", description: "For expert insights."),
+        .init(name: "Prasad BS · Infosys", description: "For feedback on UI and business aspects.")
+    ]
+}
+        
+
+struct LicenseInfo: Identifiable {
+    let id = UUID()
+    let name: String
+    let license: String
+    let urlString: String
+}
+
+enum LicenseData {
+    static let appLicense: [LicenseInfo] = [
+        .init(
+            name: "MomCare+",
+            license: "GNU General Public License v2.0",
+            urlString: "https://www.gnu.org/licenses/old-licenses/gpl-2.0.en.html"
+        )
+    ]
+    
+    static let projectReport: [LicenseInfo] = [
+        .init(
+            name: "MomCare+ Project Report",
+            license: "View project documentation",
+            urlString: "https://github.com/rtk-rnjn/MomCare"
+        )
+    ]
+    
+    static let thirdPartyLicenses: [LicenseInfo] = [
+        .init(
+            name: "LNPopupController",
+            license: "MIT License",
+            urlString: "https://github.com/LeoNatan/LNPopupController"
+        ),
+        .init(
+            name: "FSCalendar",
+            license: "MIT License",
+            urlString: "https://github.com/WenchaoD/FSCalendar"
+        ),
+        .init(
+            name: "Realm Swift",
+            license: "Apache License 2.0",
+            urlString: "https://github.com/realm/realm-swift"
+        )
+    ]
+}

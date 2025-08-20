@@ -60,7 +60,7 @@ struct AboutUsView: View {
                             title: "Born from Experience"
                         )
                     }
-                    .padding(.horizontal)
+                    .padding(.horizontal, 30)
 
                     Text("Crafted with care. Informed by evidence. Focused on you.")
                         .font(.footnote)
@@ -70,6 +70,7 @@ struct AboutUsView: View {
                         .padding(.top, 16)
 
                 }
+                .padding(.horizontal, 20)
             }
         }
         .navigationBarTitleDisplayMode(.inline)

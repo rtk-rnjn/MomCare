@@ -22,12 +22,11 @@ struct CreditsView: View {
                         .foregroundColor(brandPink)
 
                     LazyVGrid(columns: teamGridColumns, spacing: 20) {
-                        TeamMemberCard(imageName: nil, name: "Aryan", role: "Team Lead, UI/UX & Ideation")
-                        TeamMemberCard(imageName: nil, name: "Khushi", role: "Frontend & Research")
-                        TeamMemberCard(imageName: nil, name: "Nupur", role: "Frontend & Research")
-                        TeamMemberCard(imageName: nil, name: "Ritik", role: "Frontend/Backend Developer")
+                        ForEach(CreditsData.teamMembers) { member in
+                            TeamMemberCard(imageName: member.imageName, name: member.name, role: member.role)
+                        }
                     }
-
+                    
                     Text("Guidance & Mentorship")
                         .font(.title2)
                         .fontWeight(.bold)
@@ -35,8 +34,9 @@ struct CreditsView: View {
                         .padding(.top, 24)
 
                     VStack(spacing: 16) {
-                        CreditListCard(name: "Vinod Kumar", description: "For his dedicated guidance.")
-                        CreditListCard(name: "Valuable Feedback From", description: "Kiran Bedi, Probeer Shaw, Runumi Devi and Shruti Sachdeva.")
+                        ForEach(CreditsData.mentors) { credit in
+                            CreditListCard(name: credit.name, description: credit.description)
+                        }
                     }
 
                     Text("Special Thanks")
@@ -46,8 +46,9 @@ struct CreditsView: View {
                         .padding(.top, 24)
 
                     VStack(spacing: 16) {
-                        CreditListCard(name: "Anand Pillai · Apple", description: "For expert insights.")
-                        CreditListCard(name: "Prasad BS · Infosys", description: "For feedback on UI and business aspects.")
+                        ForEach(CreditsData.specialThanks) { credit in
+                            CreditListCard(name: credit.name, description: credit.description)
+                        }
                     }
 
                     Text("We're grateful to everyone who helped make MomCare+ possible.")
@@ -57,7 +58,7 @@ struct CreditsView: View {
                         .padding(.top, 32)
                         .padding(.bottom, 20)
                 }
-                .padding()
+                .padding(.horizontal, 30)
             }
         }
         .navigationBarTitleDisplayMode(.inline)
