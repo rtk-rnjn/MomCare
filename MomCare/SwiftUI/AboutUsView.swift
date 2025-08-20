@@ -1,14 +1,14 @@
 import SwiftUI
 
-private let brandPink = Color(red: 146/255, green: 67/255, blue: 80/255)
-private let borderColor = Color(UIColor.systemGray4)
+private let brandPink: Color = .init(red: 146/255, green: 67/255, blue: 80/255)
+private let borderColor: Color = .init(UIColor.systemGray4)
 
 struct AboutUsView: View {
     var body: some View {
         ZStack {
-            
+
             ScrollView {
-                
+
                 LazyVStack(alignment: .leading, spacing: 32) {
                     SectionView(
                         iconName: "book.closed",
@@ -34,9 +34,9 @@ struct AboutUsView: View {
                             """
                     )
                     .padding(.top, 30)
-                    
+
                     QuoteView()
-                    
+
                     SectionView(
                         iconName: "heart",
                         iconColor: .red,
@@ -45,7 +45,7 @@ struct AboutUsView: View {
                         bodyText: "To empower expecting mothers with a single, calm, and comprehensive tool for their prenatal journey, focusing on their well-being every step of the way."
                     )
                     .padding(.top, 30)
-                    
+
                     HStack(spacing: 16) {
                         ValueCardView(
                             iconName: "person.fill",
@@ -61,7 +61,7 @@ struct AboutUsView: View {
                         )
                     }
                     .padding(.horizontal)
-                    
+
                     Text("Crafted with care. Informed by evidence. Focused on you.")
                         .font(.footnote)
                         .foregroundColor(.secondary)
@@ -82,7 +82,7 @@ struct SectionView: View {
     let eyebrowText: String
     let title: String
     let bodyText: String
-    
+
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
             HStack(spacing: 8) {
@@ -99,13 +99,13 @@ struct SectionView: View {
             .background(Color.white)
             .clipShape(Capsule())
             .overlay(Capsule().stroke(borderColor, lineWidth: 1))
-            
+
             Text(title)
                 .font(.title2)
                 .fontWeight(.bold)
                 .foregroundColor(.primary)
                 .textCase(.uppercase)
-            
+
             Text(bodyText)
                 .font(.body)
                 .foregroundColor(.primary)
@@ -118,19 +118,19 @@ struct SectionView: View {
 struct ValueCardView: View {
     let iconName: String
     let title: String
-    
+
     var body: some View {
         VStack(spacing: 16) {
             ZStack {
                 Circle()
                     .fill(brandPink.opacity(0.1))
                     .frame(width: 40, height: 40)
-                
+
                 Image(systemName: iconName)
                     .font(.title3)
                     .foregroundColor(brandPink)
             }
-            
+
             Text(title)
                 .font(.footnote)
                 .fontWeight(.semibold)
@@ -151,16 +151,16 @@ struct QuoteView: View {
                 .font(.title)
                 .fontWeight(.bold)
                 .foregroundColor(brandPink.opacity(0.5))
-            
+
             (
                 Text("Every pregnancy has its own story, its own rhythm, its own needs. Our mission is to provide the personal, unwavering support that honors yours.")
                     .font(.title3)
                     .fontWeight(.medium)
                     .foregroundColor(brandPink)
-                
+
             )
             .multilineTextAlignment(.center)
-            
+
         }
         .padding(.horizontal)
         .padding(.vertical, 24)
