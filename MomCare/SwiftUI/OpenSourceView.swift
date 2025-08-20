@@ -69,29 +69,31 @@ struct LicenseCardView: View {
     let urlString: String
 
     var body: some View {
-        Link(destination: URL(string: urlString)!) {
-            HStack {
-                VStack(alignment: .leading, spacing: 4) {
-                    Text(name)
-                        .font(.headline)
-                        .fontWeight(.semibold)
-                        .foregroundColor(textPrimary)
-
-                    Text(license)
-                        .font(.subheadline)
-                        .foregroundColor(textSecondary)
+        if let url = URL(string: urlString) {
+            Link(destination: url) {
+                HStack {
+                    VStack(alignment: .leading, spacing: 4) {
+                        Text(name)
+                            .font(.headline)
+                            .fontWeight(.semibold)
+                            .foregroundColor(textPrimary)
+                        
+                        Text(license)
+                            .font(.subheadline)
+                            .foregroundColor(textSecondary)
+                    }
+                    
+                    Spacer()
+                    
+                    Image(systemName: "arrow.up.right.square")
+                        .font(.title3)
+                        .foregroundColor(textSecondary.opacity(0.7))
                 }
-
-                Spacer()
-
-                Image(systemName: "arrow.up.right.square")
-                    .font(.title3)
-                    .foregroundColor(textSecondary.opacity(0.7))
+                .padding()
+                .background(.white)
+                .cornerRadius(16)
+                .shadow(color: Color.black.opacity(0.04), radius: 8, x: 0, y: 4)
             }
-            .padding()
-            .background(.white)
-            .cornerRadius(16)
-            .shadow(color: Color.black.opacity(0.04), radius: 8, x: 0, y: 4)
         }
     }
 }
