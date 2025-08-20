@@ -57,8 +57,6 @@ struct TermsOfServiceView: View {
                 .padding(.horizontal, 24)
                 .padding(.bottom, 40)
             }
-            .background(Color(.systemGroupedBackground))
-
         }
 
     // MARK: Private
