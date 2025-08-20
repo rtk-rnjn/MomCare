@@ -757,22 +757,6 @@
             </objects>
             <point key="canvasLocation" x="3204" y="-186"/>
         </scene>
-        <!--Disclaimers View Controller-->
-        <scene sceneID="hmF-kA-tRe">
-            <objects>
-                <viewController id="xoY-hO-3dt" customClass="DisclaimersViewController" customModule="MomCare" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="3w1-UF-p7M">
-                        <rect key="frame" x="0.0" y="0.0" width="393" height="842"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <viewLayoutGuide key="safeArea" id="PTm-zS-WEf"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                    </view>
-                    <navigationItem key="navigationItem" id="qE6-Nx-TQi"/>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="Pva-OI-lUm" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="3204" y="-186"/>
-        </scene>
         <!--Health & Support-->
         <scene sceneID="bbJ-JP-jjR">
             <objects>
