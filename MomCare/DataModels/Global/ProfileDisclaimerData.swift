@@ -195,7 +195,7 @@ struct TeamMember: Identifiable {
 }
 
 struct Credit: Identifiable {
-    let id = UUID()
+    let id: UUID = .init()
     let name: String
     let description: String
 }
@@ -207,21 +207,20 @@ enum CreditsData {
         .init(imageName: nil, name: "Nupur Sharma", role: "Frontend & Research"),
         .init(imageName: nil, name: "Ritik Ranjan", role: "Frontend/Backend Developer")
     ]
-    
+
     static let mentors: [Credit] = [
         .init(name: "Vinod Kumar", description: "For his dedicated guidance."),
         .init(name: "Valuable Feedback From", description: "Kiran Singh, Probeer Shaw, Runumi Devi and Shruti Sachdeva.")
     ]
-    
+
     static let specialThanks: [Credit] = [
         .init(name: "Anand Pillai · Apple", description: "For expert insights."),
         .init(name: "Prasad BS · Infosys", description: "For feedback on UI and business aspects.")
     ]
 }
-        
 
 struct LicenseInfo: Identifiable {
-    let id = UUID()
+    let id: UUID = .init()
     let name: String
     let license: String
     let urlString: String
@@ -235,7 +234,7 @@ enum LicenseData {
             urlString: "https://www.gnu.org/licenses/old-licenses/gpl-2.0.en.html"
         )
     ]
-    
+
     static let projectReport: [LicenseInfo] = [
         .init(
             name: "MomCare+ Project Report",
@@ -243,7 +242,7 @@ enum LicenseData {
             urlString: "https://github.com/rtk-rnjn/MomCare"
         )
     ]
-    
+
     static let thirdPartyLicenses: [LicenseInfo] = [
         .init(
             name: "LNPopupController",

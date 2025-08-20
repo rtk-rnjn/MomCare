@@ -26,7 +26,7 @@ struct CreditsView: View {
                             TeamMemberCard(imageName: member.imageName, name: member.name, role: member.role)
                         }
                     }
-                    
+
                     Text("Guidance & Mentorship")
                         .font(.title2)
                         .fontWeight(.bold)

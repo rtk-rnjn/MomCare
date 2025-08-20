@@ -10,17 +10,17 @@ struct OpenSourceView: View {
 
             ScrollView {
                 VStack(alignment: .leading, spacing: 24) {
-                    
+
                     Text("MomCare+ is proudly built using open-source software. We are grateful to the developers and communities who create and maintain these essential tools.")
                         .font(.subheadline)
                         .foregroundColor(textSecondary)
-                    
+
                     VStack(alignment: .leading, spacing: 12) {
                         Text("Our License")
                             .font(.title2)
                             .fontWeight(.bold)
                             .foregroundColor(brandPink)
-                        
+
                         ForEach(LicenseData.appLicense) { license in
                             LicenseCardView(
                                 name: license.name,
@@ -29,13 +29,13 @@ struct OpenSourceView: View {
                             )
                         }
                     }
-                
+
                 VStack(alignment: .leading, spacing: 12) {
                     Text("Project Report")
                         .font(.title2)
                         .fontWeight(.bold)
                         .foregroundColor(brandPink)
-                    
+
                     ForEach(LicenseData.projectReport) { report in
                         LicenseCardView(
                             name: report.name,
@@ -44,14 +44,13 @@ struct OpenSourceView: View {
                         )
                     }
                 }
-                
-                
+
                 VStack(alignment: .leading, spacing: 12) {
                     Text("Third-Party Libraries")
                         .font(.title2)
                         .fontWeight(.bold)
                         .foregroundColor(brandPink)
-                    
+
                     ForEach(LicenseData.thirdPartyLicenses) { license in
                         LicenseCardView(
                             name: license.name,
