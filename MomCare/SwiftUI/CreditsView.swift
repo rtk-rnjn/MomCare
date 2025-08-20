@@ -1,7 +1,5 @@
 import SwiftUI
 
-private let appBackground = Color(UIColor(red: 0.98, green: 0.98, blue: 0.98, alpha: 1.00))
-private let cardBackground = Color.white
 private let textPrimary = Color(red: 0.1, green: 0.1, blue: 0.1)
 private let textSecondary = Color(red: 0.4, green: 0.4, blue: 0.4)
 private let imagePlaceholderBackground = Color(UIColor.systemGray5)
@@ -17,9 +15,6 @@ struct CreditsView: View {
     
     var body: some View {
         ZStack {
-            appBackground
-                .edgesIgnoringSafeArea(.all)
-            
             ScrollView {
                 VStack(alignment: .leading, spacing: 16) {
                     
@@ -112,7 +107,7 @@ struct TeamMemberCard: View {
         .frame(maxWidth: .infinity)
         .padding(.vertical, 20)
         .padding(.horizontal, 8)
-        .background(cardBackground)
+        .background(.white)
         .cornerRadius(20)
         .overlay(
             RoundedRectangle(cornerRadius: 20)
@@ -138,7 +133,7 @@ struct CreditListCard: View {
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding()
-        .background(cardBackground)
+        .background(.white)
         .cornerRadius(16)
         .overlay(
             RoundedRectangle(cornerRadius: 16)

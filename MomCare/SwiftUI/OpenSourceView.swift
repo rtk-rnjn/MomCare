@@ -1,7 +1,5 @@
 import SwiftUI
 
-private let appBackground = Color(UIColor(red: 0.98, green: 0.98, blue: 0.98, alpha: 1.00))
-private let cardBackground = Color.white
 private let textPrimary = Color(red: 0.1, green: 0.1, blue: 0.1)
 private let textSecondary = Color(red: 0.4, green: 0.4, blue: 0.4)
 private let brandPink = Color(red: 146/255, green: 67/255, blue: 80/255)
@@ -10,8 +8,6 @@ private let brandPink = Color(red: 146/255, green: 67/255, blue: 80/255)
 struct OpenSourceView: View {
     var body: some View {
         ZStack {
-            appBackground.edgesIgnoringSafeArea(.all)
-                .padding(.top, 50)
             
             ScrollView {
                 VStack(alignment: .leading, spacing: 24) {
@@ -60,7 +56,7 @@ struct OpenSourceView: View {
                     
                 }
                 .padding()
-                .padding(.top, 10)
+                .padding(.top, 30)
             }
         }
         
@@ -94,7 +90,7 @@ struct LicenseCardView: View {
                     .foregroundColor(textSecondary.opacity(0.7))
             }
             .padding()
-            .background(cardBackground)
+            .background(.white)
             .cornerRadius(16)
             .shadow(color: Color.black.opacity(0.04), radius: 8, x: 0, y: 4)
         }
