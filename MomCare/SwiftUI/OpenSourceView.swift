@@ -77,14 +77,14 @@ struct LicenseCardView: View {
                             .font(.headline)
                             .fontWeight(.semibold)
                             .foregroundColor(textPrimary)
-                        
+
                         Text(license)
                             .font(.subheadline)
                             .foregroundColor(textSecondary)
                     }
-                    
+
                     Spacer()
-                    
+
                     Image(systemName: "arrow.up.right.square")
                         .font(.title3)
                         .foregroundColor(textSecondary.opacity(0.7))
