@@ -916,7 +916,7 @@
                                             <segue destination="g6H-sL-Vso" kind="show" id="U7T-p9-MVv"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" textLabel="Mn8-5G-S0Y" detailTextLabel="uvz-NN-eAF" style="IBUITableViewCellStyleValue1" id="M6Z-xg-Iqf">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" textLabel="Mn8-5G-S0Y" detailTextLabel="uvz-NN-eAF" style="IBUITableViewCellStyleValue1" id="M6Z-xg-Iqf">
                                         <rect key="frame" x="20" y="61.666667938232422" width="353" height="43.666667938232422"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="M6Z-xg-Iqf" id="w4z-g1-SdE">
@@ -944,7 +944,7 @@
                             </tableViewSection>
                             <tableViewSection id="GvB-04-mH6">
                                 <cells>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" textLabel="Kad-hr-dev" style="IBUITableViewCellStyleDefault" id="JRe-yW-4tq">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" accessoryType="disclosureIndicator" indentationWidth="10" textLabel="Kad-hr-dev" style="IBUITableViewCellStyleDefault" id="JRe-yW-4tq">
                                         <rect key="frame" x="20" y="141.33333587646484" width="353" height="43.666667938232422"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="JRe-yW-4tq" id="s78-xC-OZR">
@@ -961,6 +961,9 @@
                                             </subviews>
                                         </tableViewCellContentView>
                                         <color key="tintColor" red="0.57254901960000004" green="0.26274509800000001" blue="0.31372549020000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <connections>
+                                            <segue destination="KaY-4J-usa" kind="show" id="nGL-G4-Of5"/>
+                                        </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" accessoryType="disclosureIndicator" indentationWidth="10" textLabel="y0T-au-34h" style="IBUITableViewCellStyleDefault" id="Xwe-jl-ok6">
                                         <rect key="frame" x="20" y="185.00000381469727" width="353" height="43.666667938232422"/>
@@ -979,6 +982,9 @@
                                             </subviews>
                                         </tableViewCellContentView>
                                         <color key="tintColor" red="0.57254901960000004" green="0.26274509800000001" blue="0.31372549020000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <connections>
+                                            <segue destination="5uh-0P-0rg" kind="show" id="1gF-Mc-NxW"/>
+                                        </connections>
                                     </tableViewCell>
                                 </cells>
                             </tableViewSection>
@@ -993,6 +999,22 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="uyl-cx-0rC" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="5266" y="373"/>
+        </scene>
+        <!--Credits View Controller-->
+        <scene sceneID="5n0-LQ-sZQ">
+            <objects>
+                <viewController id="KaY-4J-usa" customClass="CreditsViewController" customModule="MomCare" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="tzi-Xp-KNZ">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="842"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <viewLayoutGuide key="safeArea" id="Cah-hj-RA1"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="4bI-1a-2Hd"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Mdw-5r-RTc" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="4844" y="1118"/>
         </scene>
         <!--Aboutus View Controller-->
         <scene sceneID="fzh-nA-bf5">
@@ -1817,6 +1839,22 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="JM6-a3-y7g" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-361.06870229007632" y="-463.38028169014086"/>
+        </scene>
+        <!--Open Source View Controller-->
+        <scene sceneID="p29-f7-xNa">
+            <objects>
+                <viewController id="5uh-0P-0rg" customClass="OpenSourceViewController" customModule="MomCare" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="CuQ-d0-NgX">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="842"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <viewLayoutGuide key="safeArea" id="qS2-II-39U"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="iC5-tH-DtK"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="8ub-W0-QIt" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="5587" y="1118"/>
         </scene>
     </scenes>
     <resources>

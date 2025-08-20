@@ -16,6 +16,7 @@ struct AboutUsView: View {
                 LazyVStack(alignment: .leading, spacing: 32) {
                     SectionView(
                         iconName: "book.closed",
+                        iconColor: .blue,
                         eyebrowText: "Our Story",
                         title: "Our Story",
                         bodyText: """
@@ -36,8 +37,11 @@ struct AboutUsView: View {
                     )
                     .padding(.top, 30)
                     
+                    QuoteView()
+                    
                     SectionView(
                         iconName: "heart",
+                        iconColor: .red,
                         eyebrowText: "Our Mission",
                         title: "Our Mission",
                         bodyText: "To empower expecting mothers with a single, calm, and comprehensive tool for their prenatal journey, focusing on their well-being every step of the way."
@@ -76,6 +80,7 @@ struct AboutUsView: View {
 
 struct SectionView: View {
     let iconName: String
+    let iconColor: Color
     let eyebrowText: String
     let title: String
     let bodyText: String
@@ -83,15 +88,15 @@ struct SectionView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
             HStack(spacing: 8) {
-                Image(systemName: iconName)
-                Text(eyebrowText)
+                Image(systemName: iconName).foregroundColor(iconColor)
+                Text(eyebrowText).foregroundColor(.primary)
                 Spacer()
             }
             .font(.caption)
             .fontWeight(.medium)
             .foregroundColor(.primary)
             .padding(.horizontal, 12)
-            .padding(.vertical, 8)
+            .padding(.vertical, 10)
             .frame(maxWidth: .infinity)
             .background(Color.white)
             .clipShape(Capsule())
@@ -101,6 +106,7 @@ struct SectionView: View {
                 .font(.title2)
                 .fontWeight(.bold)
                 .foregroundColor(textPrimary)
+                .textCase(.uppercase)
             
             Text(bodyText)
                 .font(.body)
@@ -135,9 +141,34 @@ struct ValueCardView: View {
         }
         .frame(minWidth: 0, maxWidth: .infinity, minHeight: 100)
         .padding(8)
-        .background(Color.white)
+        .background(Color.gray.opacity(0.05))
         .cornerRadius(20)
-        .shadow(color: Color.black.opacity(0.05), radius: 10, x: 0, y: 5)
+    }
+}
+
+struct QuoteView: View {
+    var body: some View {
+        VStack(spacing: 16) {
+            Image(systemName: "quote.opening")
+                .font(.title)
+                .fontWeight(.bold)
+                .foregroundColor(brandPink.opacity(0.5))
+            
+            (
+                Text("Every pregnancy has its own story, its own rhythm, its own needs. Our mission is to provide the personal, unwavering support that honors yours.")
+                    .font(.title3)
+                    .fontWeight(.medium)
+                    .foregroundColor(brandPink)
+                
+            )
+            .multilineTextAlignment(.center)
+            
+        }
+        .padding(.horizontal)
+        .padding(.vertical, 24)
+        .background(Color.gray.opacity(0.08))
+        .cornerRadius(20)
+        .padding(.horizontal)
     }
 }
 
