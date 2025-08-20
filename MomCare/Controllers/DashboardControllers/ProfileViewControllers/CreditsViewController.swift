@@ -3,7 +3,7 @@ import SwiftUI
 
 class CreditsViewController: UIHostingController<CreditsView> {
 
-   init() {
+    init() {
         super.init(rootView: CreditsView())
     }
 
