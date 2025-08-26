@@ -26,7 +26,7 @@
                                         <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Cgd-hl-l1v">
                                             <rect key="frame" x="3" y="8" width="330" height="34.333333333333336"/>
                                             <subviews>
-                                                <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="m3n-53-Jg1">
+                                                <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="m3n-53-Jg1">
                                                     <rect key="frame" x="0.0" y="0.0" width="288.66666666666669" height="34.333333333333336"/>
                                                     <subviews>
                                                         <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Xci-WO-IS9">
@@ -38,8 +38,8 @@
                                                                 <action selector="buttonTapped:" destination="Zx3-Yf-LfQ" eventType="touchUpInside" id="S9k-5Q-zvo"/>
                                                             </connections>
                                                         </button>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RnB-ud-DGN">
-                                                            <rect key="frame" x="49.666666666666657" y="0.0" width="238.99999999999997" height="34.333333333333336"/>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="249" horizontalCompressionResistancePriority="749" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RnB-ud-DGN">
+                                                            <rect key="frame" x="57.666666666666657" y="0.0" width="230.99999999999997" height="34.333333333333336"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
