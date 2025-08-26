@@ -34,15 +34,17 @@ class RemindersTableViewCell: UITableViewCell {
     }
 
     @IBAction func buttonTapped(_ sender: UIButton) {
-        reminder?.isCompleted = !(reminder?.isCompleted ?? false)
-        guard let reminder else { return }
+            guard var reminder = self.reminder else { return }
 
-        Task {
-            await EventKitHandler.shared.updateReminder(reminder: reminder)
-            DispatchQueue.main.async {
-                self.updateElements(with: reminder)
+            let newStatus = !reminder.isCompleted
+
+            reminder.isCompleted = newStatus
+            Task {
+                await EventKitHandler.shared.updateReminder(reminder: reminder)
+                DispatchQueue.main.async {
+                    self.updateElements(with: reminder)
+                }
             }
-        }
     }
 
     // MARK: Private
