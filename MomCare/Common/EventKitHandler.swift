@@ -225,7 +225,7 @@ actor EventKitHandler {
             logger.error("Reminder not found")
             return
         }
-        
+
         reminder.title = updatedReminder.title
         reminder.isCompleted = updatedReminder.isCompleted
 

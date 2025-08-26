@@ -34,7 +34,7 @@ class RemindersTableViewCell: UITableViewCell {
     }
 
     @IBAction func buttonTapped(_ sender: UIButton) {
-            guard var reminder = self.reminder else { return }
+            guard var reminder else { return }
 
             let newStatus = !reminder.isCompleted
 
