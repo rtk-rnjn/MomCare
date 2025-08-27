@@ -59,6 +59,25 @@ class AllRemindersTableViewController: UITableViewController {
         return cell
     }
 
+    override func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
+
+        let reminder = reminders[indexPath.row]
+
+        return UIContextMenuConfiguration(identifier: nil, previewProvider: previewProvider(for: indexPath)) { _ in
+            let deleteAction = UIAction(title: "Delete", image: UIImage(systemName: "trash"), attributes: .destructive) { _ in
+                Task {
+                    await EventKitHandler.shared.deleteReminder(reminder: reminder)
+                    DispatchQueue.main.async {
+                        self.reminders.remove(at: indexPath.row)
+                        self.tableView.reloadData()
+                    }
+                }
+            }
+
+            return UIMenu(title: "", children: [deleteAction])
+        }
+    }
+
     // MARK: Private
 
     private func setupRemindersHeader() {
@@ -95,6 +114,15 @@ class AllRemindersTableViewController: UITableViewController {
                     self.tableView.reloadData()
                 }
             }
+        }
+    }
+
+    private func previewProvider(for indexPath: IndexPath) -> () -> UIViewController? {
+        return {
+            let cell = self.tableView.dequeueReusableCell(withIdentifier: "AllRemindersTableViewCell", for: indexPath) as? AllRemindersTableViewCell
+            guard let cell else { fatalError("Failed to dequeue AllRemindersTableViewCell") }
+            let reminder = self.reminders[indexPath.row]
+            return ReminderDetailsViewController(reminder: reminder, cell: cell)
         }
     }
 
