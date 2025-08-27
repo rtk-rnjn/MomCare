@@ -7,8 +7,8 @@
 
 import Foundation
 
-struct AppContent {
-    struct AboutUs {
+enum AppContent {
+    enum AboutUs {
             static let story = """
             The world of pregnancy apps can be a loud, cluttered, and overwhelming place. We know, because we've been there.
 
@@ -26,9 +26,9 @@ struct AppContent {
 
             Every feature in MomCare+ comes from a single observation, a team discussion, and a shared mission to create the app we wished existed for every expecting mother. Welcome to the calm.
             """
-            
+
             static let mission = "To empower expecting mothers with a single, calm, and comprehensive tool for their prenatal journey, focusing on their well-being every step of the way."
-        
+
         static let quote = """
 Every pregnancy has its own story, its own rhythm, its own needs. Our mission is to provide the personal, unwavering support that honors yours.
 """
