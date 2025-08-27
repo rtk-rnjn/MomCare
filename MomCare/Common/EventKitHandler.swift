@@ -219,6 +219,13 @@ actor EventKitHandler {
             logger.error("Error saving reminder: \(String(describing: error))")
         }
     }
+    
+    private func applyUpdates(to reminder: EKReminder, from reminderInfo: ReminderInfo) {
+        reminder.title = reminderInfo.title
+        reminder.notes = reminderInfo.notes
+        reminder.dueDateComponents = reminderInfo.dueDateComponents
+        reminder.isCompleted = reminderInfo.isCompleted
+    }
 
     func updateReminder(reminder updatedReminder: ReminderInfo) {
         guard let reminder = getEKReminder(from: updatedReminder) else {
@@ -226,8 +233,7 @@ actor EventKitHandler {
             return
         }
 
-        reminder.title = updatedReminder.title
-        reminder.isCompleted = updatedReminder.isCompleted
+        applyUpdates(to: reminder, from: updatedReminder)
 
         do {
             try eventStore.save(reminder, commit: true)
