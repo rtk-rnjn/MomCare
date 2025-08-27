@@ -219,13 +219,6 @@ actor EventKitHandler {
             logger.error("Error saving reminder: \(String(describing: error))")
         }
     }
-    
-    private func applyUpdates(to reminder: EKReminder, from reminderInfo: ReminderInfo) {
-        reminder.title = reminderInfo.title
-        reminder.notes = reminderInfo.notes
-        reminder.dueDateComponents = reminderInfo.dueDateComponents
-        reminder.isCompleted = reminderInfo.isCompleted
-    }
 
     func updateReminder(reminder updatedReminder: ReminderInfo) {
         guard let reminder = getEKReminder(from: updatedReminder) else {
@@ -307,6 +300,13 @@ actor EventKitHandler {
     }
 
     // MARK: Private
+
+    private func applyUpdates(to reminder: EKReminder, from reminderInfo: ReminderInfo) {
+        reminder.title = reminderInfo.title
+        reminder.notes = reminderInfo.notes
+        reminder.dueDateComponents = reminderInfo.dueDateComponents
+        reminder.isCompleted = reminderInfo.isCompleted
+    }
 
     private func fetchEvents(startDate: Date?, endDate: Date?) -> [EKEvent] {
         let currentCalendar = Calendar.current

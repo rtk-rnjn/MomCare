@@ -58,7 +58,7 @@ class AllRemindersTableViewController: UITableViewController {
 
         return cell
     }
-    
+
     override func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
 
         let reminder = reminders[indexPath.row]
@@ -116,7 +116,7 @@ class AllRemindersTableViewController: UITableViewController {
             }
         }
     }
-    
+
     private func previewProvider(for indexPath: IndexPath) -> () -> UIViewController? {
         return {
             let cell = self.tableView.dequeueReusableCell(withIdentifier: "AllRemindersTableViewCell", for: indexPath) as? AllRemindersTableViewCell
