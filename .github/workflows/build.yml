@@ -31,6 +31,9 @@ jobs:
       - name: Debug Available Simulators
         run: xcrun simctl list devices
 
+      - name: Select XCode Version
+        run: sudo xcode-select -s "/Applications/Xcode_16.app"
+
       - name: Set Default Scheme
         run: |
           scheme_list=$(xcodebuild -list -json | tr -d "\n")
