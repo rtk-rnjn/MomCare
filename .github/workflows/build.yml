@@ -30,6 +30,15 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Cache DerivedData
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/Library/Developer/Xcode/DerivedData
+          key: deriveddata-${{ runner.os }}-${{ hashFiles('**/*.swift', '**/*.xcodeproj', '**/*.xcworkspace', '**/Package.resolved') }}
+          restore-keys: |
+            deriveddata-${{ runner.os }}-
+
       - name: Debug Xcode Version
         run: xcodebuild -version
 
