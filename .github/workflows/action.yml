@@ -1,4 +1,6 @@
 name: Block PR with "do-not-merge" Label
+permissions:
+  contents: read
 
 on:
   pull_request:
