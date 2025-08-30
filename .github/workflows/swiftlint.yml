@@ -1,23 +1,25 @@
 name: SwiftLint
 
-permissions:
-  contents: read
-
 on:
   push:
     branches:
       - main
     paths:
       - "**/*.swift"
+      - "**/*.yml"
   pull_request:
     branches:
       - main
     paths:
       - "**/*.swift"
+      - "**/*.yml"
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
+
+permissions:
+  contents: read
 
 jobs:
   SwiftLint:
