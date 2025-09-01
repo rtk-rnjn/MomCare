@@ -7,7 +7,7 @@
 
 import Foundation
 
-private let baseURLString = "http://13.233.139.216:8000"
+private let baseURLString = "http://ec2-3-110-142-208.ap-south-1.compute.amazonaws.com:8000"
 
 enum Endpoint: String {
     // Authentication
