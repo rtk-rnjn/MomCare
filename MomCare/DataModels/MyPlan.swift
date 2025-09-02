@@ -236,4 +236,11 @@ struct Exercise: Codable, Sendable, Equatable {
             return "\(seconds)sec"
         }
     }
+
+    func isOld() -> Bool {
+        let calendar = Calendar.current
+        let assignedDay = calendar.startOfDay(for: assignedAt)
+        let today = calendar.startOfDay(for: Date())
+        return assignedDay < today
+    }
 }
