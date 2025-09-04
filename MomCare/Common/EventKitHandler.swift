@@ -226,6 +226,8 @@ actor EventKitHandler {
             return
         }
 
+        applyUpdates(to: reminder, from: updatedReminder)
+
         do {
             try eventStore.save(reminder, commit: true)
         } catch let error {
@@ -298,6 +300,13 @@ actor EventKitHandler {
     }
 
     // MARK: Private
+
+    private func applyUpdates(to reminder: EKReminder, from reminderInfo: ReminderInfo) {
+        reminder.title = reminderInfo.title
+        reminder.notes = reminderInfo.notes
+        reminder.dueDateComponents = reminderInfo.dueDateComponents
+        reminder.isCompleted = reminderInfo.isCompleted
+    }
 
     private func fetchEvents(startDate: Date?, endDate: Date?) -> [EKEvent] {
         let currentCalendar = Calendar.current

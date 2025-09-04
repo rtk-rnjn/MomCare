@@ -214,7 +214,7 @@ enum CreditsData {
     ]
 
     static let specialThanks: [Credit] = [
-        .init(name: "Anand Pillai · Apple", description: "For expert insights."),
+        .init(name: "Amit Gulati · Apple", description: "For expert insights."),
         .init(name: "Prasad BS · Infosys", description: "For feedback on UI and business aspects.")
     ]
 }

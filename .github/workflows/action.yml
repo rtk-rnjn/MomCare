@@ -1,5 +1,8 @@
 name: Block PR with "do-not-merge" Label
 
+permissions:
+  contents: read
+
 on:
   pull_request:
     types: [labeled, unlabeled, synchronize, opened, reopened]
