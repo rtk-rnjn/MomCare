@@ -248,7 +248,6 @@ struct PrivacyPolicyData {
     PrivacyPolicyView()
 }
 
-
 extension Color {
     init(hexValue: String) { // Renamed to hexValue
         let scanner = Scanner(string: hexValue)
