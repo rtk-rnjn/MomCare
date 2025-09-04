@@ -5,6 +5,7 @@ import HealthKit
 struct ExerciseProgressView: View {
 
     // MARK: Internal
+
     weak var delegate: ExerciseProgressViewController?
 
     var body: some View {
@@ -475,8 +476,7 @@ struct ExerciseProgressView: View {
 //                EmptyView()
 //            }
 //        }
-        AsyncImage(url: (URL(string: exercise.imageUri ?? "")))
-        { image in
+        AsyncImage(url: URL(string: exercise.imageUri ?? "")) { image in
             image
                 .resizable()
                 .aspectRatio(contentMode: .fill)
