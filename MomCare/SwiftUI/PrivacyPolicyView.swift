@@ -95,6 +95,7 @@ struct PrivacyPolicyView: View {
                             .font(.subheadline)
                             .foregroundColor(Color(hex: "924350"))
                             .padding(.top, 8)
+                            .frame(maxWidth: .infinity, alignment: .center)
                     }
                     .padding(.top, 16)
                 }
