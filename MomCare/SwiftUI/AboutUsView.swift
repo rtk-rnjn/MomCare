@@ -221,7 +221,6 @@ struct QuoteView: View {
 
                 .foregroundColor(brandPink.opacity(0.5))
 
-
                 Text(AppContent.AboutUs.quote)
 
                     .font(.title3)
