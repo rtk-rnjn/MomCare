@@ -74,7 +74,7 @@ struct PrivacyPolicyView: View {
 
                         VStack(alignment: .leading, spacing: 8) {
                             HStack(spacing: 8) {
-                                Image(systemName: "envelope.fill") // SF Symbol for Email
+                                Image(systemName: "envelope.fill")
                                     .foregroundColor(accentColor)
                                 Text("Email: privacy@momcare.app")
                                     .font(.subheadline)
@@ -82,7 +82,7 @@ struct PrivacyPolicyView: View {
                             }
 
                             HStack(spacing: 8) {
-                                Image(systemName: "globe") // SF Symbol for Website
+                                Image(systemName: "globe")
                                     .foregroundColor(accentColor)
                                 Text("Website: www.momcare.app")
                                     .font(.subheadline)
@@ -119,7 +119,7 @@ struct PolicySectionView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
             HStack(spacing: 12) {
-                Image(systemName: iconName(for: title)) // Dynamically choose the icon
+                Image(systemName: iconName(for: title))
                     .font(.title2)
                     .foregroundColor(accentColor)
                     .frame(width: 24, alignment: .center)
@@ -146,21 +146,20 @@ struct PolicySectionView: View {
         }
     }
 
-    // Dynamically choose an SF Symbol based on the section title
     private func iconName(for title: String) -> String {
         switch title {
         case "How Momcare+ Works":
-            return "heart.text.square" // Represents care and guidance
+            return "heart.text.square"
         case "What Information We Collect":
-            return "tray.full" // Represents data collection
+            return "tray.full"
         case "Why We Collect Your Data":
-            return "chart.bar.doc.horizontal" // Represents data usage and insights
+            return "chart.bar.doc.horizontal"
         case "How We Protect Your Data":
-            return "shield.checkerboard" // Represents security and protection
+            return "shield.checkerboard"
         case "Your Privacy Rights":
-            return "person.crop.circle.badge.checkmark" // Represents user rights
+            return "person.crop.circle.badge.checkmark"
         default:
-            return "doc.text" // Default icon
+            return "doc.text"
         }
     }
 }
