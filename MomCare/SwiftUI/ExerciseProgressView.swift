@@ -2,6 +2,8 @@ import SwiftUI
 
 import HealthKit
 
+// swiftlint:disable:next type_body_length
+
 struct ExerciseProgressView: View {
 
     // MARK: Internal
