@@ -460,22 +460,6 @@ struct ExerciseProgressView: View {
     }
 
     private func exerciseIconSection(for exercise: Exercise, isBreathing: Bool) -> some View {
-//        AsyncImage(url: URL(string: exercise.imageUri ?? "")) { phase in
-//            switch phase {
-//            case .success(let image):
-//                image
-//                    .resizable()
-//                    .aspectRatio(contentMode: .fill)
-//            case .failure:
-//                Image(systemName: "figure.yoga")
-//                    .font(.system(size: 36, weight: .medium))
-//                    .foregroundColor(Color(hex: "924350"))
-//            case .empty:
-//                ProgressView()
-//            @unknown default:
-//                EmptyView()
-//            }
-//        }
         AsyncImage(url: URL(string: exercise.imageUri ?? "")) { image in
             image
                 .resizable()
