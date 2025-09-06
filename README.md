@@ -10,10 +10,6 @@ The Backend for this app is available at [**MomCare Backend**](https://github.co
 [![Timeline graph](https://images.repography.com/25054784/rtk-rnjn/MomCare/recent-activity/-DUsO2nKtYhOJ6rgHa36Wj_TgThRlXmDhY3PQPLEUWg/MQB_9DRqO1xmlH6N0JHhP0q2T0TWnArr4o4_c2kgRdA_timeline.svg)](https://github.com/rtk-rnjn/MomCare/commits)
 [![Top contributors](https://images.repography.com/25054784/rtk-rnjn/MomCare/recent-activity/-DUsO2nKtYhOJ6rgHa36Wj_TgThRlXmDhY3PQPLEUWg/MQB_9DRqO1xmlH6N0JHhP0q2T0TWnArr4o4_c2kgRdA_users.svg)](https://github.com/rtk-rnjn/MomCare/graphs/contributors)
 
-
-## Top contributors
-[![Top contributors](https://images.repography.com/25054784/rtk-rnjn/MomCare/top-contributors/-DUsO2nKtYhOJ6rgHa36Wj_TgThRlXmDhY3PQPLEUWg/MQB_9DRqO1xmlH6N0JHhP0q2T0TWnArr4o4_c2kgRdA_table.svg)](https://github.com/rtk-rnjn/MomCare/graphs/contributors)
-
 ## More stats?
 
 ![Alt](https://repobeats.axiom.co/api/embed/b1bae23496c5d73f5f4a63e03c6cca7de9836f31.svg "Repobeats analytics image")
