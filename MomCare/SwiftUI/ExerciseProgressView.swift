@@ -729,34 +729,47 @@ class ExerciseGoalsViewModel: ObservableObject {
 }
 
 private struct ExerciseImageView: View {
-
-    // MARK: Internal
-
+    
+    // MARK: - Properties
+    
     let exercise: Exercise
     let isBreathing: Bool
-
+    
+    // MARK: - State
+    
+    @State private var uiImage: UIImage?
+    
+    // MARK: - Body
+    
     var body: some View {
         Group {
             if let uiImage {
                 Image(uiImage: uiImage)
                     .resizable()
-                    .scaledToFit()
-                    .frame(width: 36, height: 36)
+                    .aspectRatio(contentMode: .fill)
             } else {
                 Image(systemName: isBreathing ? "lungs.fill" : "figure.yoga")
                     .font(.system(size: 36, weight: .medium))
                     .foregroundColor(Color(hex: "924350"))
             }
         }
+        .frame(width: 90, height: 90)
+        .background(backgroundGradient)
+        .clipShape(RoundedRectangle(cornerRadius: 16))
         .task {
             if let img = await exercise.image {
                 uiImage = img
             }
         }
     }
-
-    // MARK: Private
-
-    @State private var uiImage: UIImage?
-
+    
+    // MARK: - Private
+    
+    private var backgroundGradient: some View {
+        LinearGradient(
+            colors: [Color(hex: "FBE8E5")],
+            startPoint: .topLeading,
+            endPoint: .bottomTrailing
+        )
+    }
 }
