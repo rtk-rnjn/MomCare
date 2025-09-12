@@ -44,6 +44,11 @@ struct PrivacyPolicyView: View {
         }
     }
 
+    // MARK: Private
+
+    private let accentColor: AppColors = .accentColor
+    private let policySections: PrivacyPolicyText = .policySections
+
     // MARK: Private Views
 
     private var headerView: some View {
@@ -114,15 +119,14 @@ struct PrivacyPolicyView: View {
         }
     }
 
-    // MARK: Private
-
-    private let accentColor = AppColors.accentColor
-    private let policySections = PrivacyPolicyText.policySections
 }
 
 // MARK: - Policy Section Views
 
 struct PolicySectionView: View {
+
+    // MARK: Internal
+
     let title: String
     let content: String
     let accentColor: Color
@@ -153,6 +157,8 @@ struct PolicySectionView: View {
             }
         }
     }
+
+    // MARK: Private
 
     private func iconName(for title: String) -> String {
         switch title {

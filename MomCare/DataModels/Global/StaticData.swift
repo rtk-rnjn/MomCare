@@ -274,21 +274,21 @@ enum CountryData {
 import SwiftUI
 
 // MARK: - Colors
-struct AppColors {
-    static let accentColor = Color(hex: "924350")
+enum AppColors {
+    static let accentColor: Color = .init(hex: "924350")
 }
 
 // MARK: - Privacy Policy Text
-struct PrivacyPolicyText {
+enum PrivacyPolicyText {
     static let headerTitle = "Because Every Mom Deserves Care — Including for Her Data"
     static let headerSubtitle = "Learn how we respect and protect your privacy at Momcare+"
-    
+
     static let contactTitle = "Contact Us"
     static let contactSubtitle = "If you have any questions, concerns, or requests, feel free to reach out to us:"
     static let contactEmail = "Email: privacy@momcare.app"
     static let contactWebsite = "Website: www.momcare.app"
     static let contactFooter = "We’re here to protect your wellness — both physical and digital."
-    
+
     static let policySections: [PolicySectionItem] = [
         PolicySectionItem(title: "How Momcare+ Works", content: """
         • Momcare+ helps you navigate pregnancy with peace of mind. Our features include:
@@ -341,7 +341,7 @@ struct PrivacyPolicyText {
 
 // MARK: - Data Models
 struct PolicySectionItem: Identifiable {
-    let id = UUID()
+    let id: UUID = .init()
     let title: String
     let content: String
 }
