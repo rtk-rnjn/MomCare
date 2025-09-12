@@ -154,6 +154,7 @@ struct MyPlan: Codable, Sendable, Equatable {
 struct Exercise: Codable, Sendable, Equatable {
     enum CodingKeys: String, CodingKey {
         case name
+        case imageUri = "image_uri"
         case type = "exercise_type"
         case duration
         case description
@@ -168,6 +169,7 @@ struct Exercise: Codable, Sendable, Equatable {
     var id: String = UUID().uuidString
 
     var name: String
+    var imageUri: String?
     var type: ExerciseType
     var duration: TimeInterval?
     var description: String
@@ -178,8 +180,6 @@ struct Exercise: Codable, Sendable, Equatable {
     var durationCompleted: TimeInterval = 0
 
     var assignedAt: Date
-
-    var exerciseHardCodedImage: String = "Yoga1" // TODO: remove this
 
     var isCompleted: Bool {
         if let duration, duration > 0 {
@@ -197,8 +197,11 @@ struct Exercise: Codable, Sendable, Equatable {
         return round(boundedPercentage * 100) / 100.0
     }
 
-    var exerciseImage: UIImage? {
+    var image: UIImage? {
         get async {
+            if let imageUri {
+                return await UIImage().fetchImage(from: imageUri)
+            }
             return nil
         }
     }
@@ -232,5 +235,12 @@ struct Exercise: Codable, Sendable, Equatable {
         } else {
             return "\(seconds)sec"
         }
+    }
+
+    func isOld() -> Bool {
+        let calendar = Calendar.current
+        let assignedDay = calendar.startOfDay(for: assignedAt)
+        let today = calendar.startOfDay(for: Date())
+        return assignedDay < today
     }
 }

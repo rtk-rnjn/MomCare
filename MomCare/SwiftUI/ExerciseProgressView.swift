@@ -398,7 +398,7 @@ struct ExerciseProgressView: View {
             HStack(spacing: 16) {
                 exerciseDetailsSection(for: exercise, isBreathing: isBreathing)
                 Spacer()
-                exerciseIconSection(isBreathing: isBreathing)
+                exerciseIconSection(for: exercise, isBreathing: isBreathing)
             }
 
             enhancedInfoButton(exercise: exercise)
@@ -459,22 +459,26 @@ struct ExerciseProgressView: View {
         }
     }
 
-    private func exerciseIconSection(isBreathing: Bool) -> some View {
-        ZStack {
-            RoundedRectangle(cornerRadius: 16)
-                .fill(
-                    LinearGradient(
-                        colors: [Color(hex: "FBE8E5")],
-                        startPoint: .topLeading,
-                        endPoint: .bottomTrailing
-                    )
-                )
-                .frame(width: 90, height: 90)
-
-            Image(systemName: isBreathing ? "lungs.fill" : "figure.yoga")
-                .font(.system(size: 36, weight: .medium))
-                .foregroundColor(Color(hex: "924350"))
-        }
+    private func exerciseIconSection(for exercise: Exercise, isBreathing: Bool) -> some View {
+//        AsyncImage(url: URL(string: exercise.imageUri ?? "")) { image in
+//            image
+//                .resizable()
+//                .aspectRatio(contentMode: .fill)
+//        } placeholder: {
+//            Image(systemName: isBreathing ? "lungs.fill" : "figure.yoga")
+//                .font(.system(size: 36, weight: .medium))
+//                .foregroundColor(Color(hex: "924350"))
+//        }
+//        .frame(width: 90, height: 90)
+//        .background(
+//            LinearGradient(
+//                colors: [Color(hex: "FBE8E5")],
+//                startPoint: .topLeading,
+//                endPoint: .bottomTrailing
+//            )
+//        )
+//        .clipShape(RoundedRectangle(cornerRadius: 16))
+        ExerciseImageView(exercise: exercise, isBreathing: isBreathing)
     }
 
     private func enhancedInfoButton(exercise: Exercise) -> some View {
@@ -724,54 +728,35 @@ class ExerciseGoalsViewModel: ObservableObject {
     }
 }
 
-//    private func loadMockExerciseGoals() {
-//        exerciseGoals = [
-//            ExerciseGoalInfo(
-//                id: 0,
-//                title: "Breathing",
-//                subtitle: "Deep breathing exercise",
-//                systemIcon: "lungs.fill",
-//                progress: 0.0,
-//                level: "Beginner",
-//                description: "Deep breathing exercises help reduce stress and anxiety during pregnancy. This gentle practice improves oxygen flow to both you and your baby while promoting relaxation and better sleep quality.",
-//                duration: "5 minutes",
-//                intensity: "Low",
-//                focus: "Relaxation",
-//                tags: ["Stress Relief", "Better Sleep", "Oxygen Flow", "Relaxation"]
-//            ),
-//            ExerciseGoalInfo(
-//                id: 1,
-//                title: "Prenatal Yoga",
-//                subtitle: "Gentle stretching routine",
-//                systemIcon: "figure.yoga",
-//                progress: 0.0,
-//                level: "Beginner",
-//                description: "Gentle yoga poses specifically designed for pregnant women. These poses help maintain flexibility, strengthen muscles, and prepare your body for childbirth while reducing common pregnancy discomforts.",
-//                duration: "15 minutes",
-//                intensity: "Low to Moderate",
-//                focus: "Flexibility & Strength",
-//                tags: ["Flexibility", "Muscle Strength", "Pain Relief", "Birth Prep"]
-//            ),
-//            ExerciseGoalInfo(
-//                id: 2,
-//                title: "Pelvic Floor",
-//                subtitle: "Strengthening exercises",
-//                systemIcon: "figure.strengthtraining.traditional",
-//                progress: 0.0,
-//                level: "Beginner",
-//                description: "Essential exercises to strengthen your pelvic floor muscles. These exercises help prevent incontinence, support your growing baby, and aid in postpartum recovery.",
-//                duration: "10 minutes",
-//                intensity: "Low",
-//                focus: "Pelvic Health",
-//                tags: ["Pelvic Strength", "Incontinence Prevention", "Birth Recovery", "Core Support"]
-//            )
-//        ]
-//    }
-// }
-//
-//// MARK: - Preview
-// struct ExerciseProgressView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        ExerciseProgressView()
-//    }
-// }
+private struct ExerciseImageView: View {
+
+    // MARK: Internal
+
+    let exercise: Exercise
+    let isBreathing: Bool
+
+    var body: some View {
+        Group {
+            if let uiImage {
+                Image(uiImage: uiImage)
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 36, height: 36)
+            } else {
+                Image(systemName: isBreathing ? "lungs.fill" : "figure.yoga")
+                    .font(.system(size: 36, weight: .medium))
+                    .foregroundColor(Color(hex: "924350"))
+            }
+        }
+        .task {
+            if let img = await exercise.image {
+                uiImage = img
+            }
+        }
+    }
+
+    // MARK: Private
+
+    @State private var uiImage: UIImage?
+
+}

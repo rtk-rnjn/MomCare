@@ -167,13 +167,18 @@ class DietTableViewController: UITableViewController {
         cell.foodImageView.stopShimmer()
         cell.literalDotImageView.stopShimmer()
 
-        guard let foodItems = getFoods(with: indexPath) else { return cell }
-        let food = foodItems[indexPath.row - 1]
+        guard let foodItems = getFoods(with: indexPath) else {
+            return cell
+        }
+        guard let food = foodItems[safe: indexPath.row - 1] else {
+            return cell
+        }
 
         cell.updateElements(with: food) {
             guard let meal = MealType(rawValue: indexPath.section) else { return false }
             return MomCareUser.shared.toggleConsumed(for: food, in: meal) ?? false
         }
+
         cell.dietViewController = dietViewController
         cell.refreshHandler = {
             let indexPaths = [indexPath, IndexPath(row: 0, section: indexPath.section)]
