@@ -46,8 +46,8 @@ struct PrivacyPolicyView: View {
 
     // MARK: Private
 
-    private let accentColor: AppColors = .accentColor
-    private let policySections: PrivacyPolicyText = .policySections
+    private let accentColor: Color = AppColors.accentColor
+    private let policySections: [PolicySectionItem] = PrivacyPolicyText.policySections
 
     // MARK: Private Views
 
@@ -121,8 +121,6 @@ struct PrivacyPolicyView: View {
 
 }
 
-// MARK: - Policy Section Views
-
 struct PolicySectionView: View {
 
     // MARK: Internal
@@ -183,11 +181,5 @@ struct PrivacyBulletPoint: View {
                 .font(.subheadline)
                 .foregroundColor(.primary)
         }
-    }
-}
-
-struct PrivacyPolicyView_Previews: PreviewProvider {
-    static var previews: some View {
-        PrivacyPolicyView()
     }
 }

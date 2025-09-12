@@ -8,6 +8,7 @@
 import Foundation
 
 import UIKit
+import SwiftUI
 
 struct FrontPageImage {
 
@@ -271,14 +272,10 @@ enum CountryData {
     ]
 }
 
-import SwiftUI
-
-// MARK: - Colors
 enum AppColors {
     static let accentColor: Color = .init(hex: "924350")
 }
 
-// MARK: - Privacy Policy Text
 enum PrivacyPolicyText {
     static let headerTitle = "Because Every Mom Deserves Care — Including for Her Data"
     static let headerSubtitle = "Learn how we respect and protect your privacy at Momcare+"
@@ -339,7 +336,6 @@ enum PrivacyPolicyText {
     ]
 }
 
-// MARK: - Data Models
 struct PolicySectionItem: Identifiable {
     let id: UUID = .init()
     let title: String
