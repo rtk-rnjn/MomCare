@@ -460,24 +460,25 @@ struct ExerciseProgressView: View {
     }
 
     private func exerciseIconSection(for exercise: Exercise, isBreathing: Bool) -> some View {
-        AsyncImage(url: URL(string: exercise.imageUri ?? "")) { image in
-            image
-                .resizable()
-                .aspectRatio(contentMode: .fill)
-        } placeholder: {
-            Image(systemName: isBreathing ? "lungs.fill" : "figure.yoga")
-                .font(.system(size: 36, weight: .medium))
-                .foregroundColor(Color(hex: "924350"))
-        }
-        .frame(width: 90, height: 90)
-        .background(
-            LinearGradient(
-                colors: [Color(hex: "FBE8E5")],
-                startPoint: .topLeading,
-                endPoint: .bottomTrailing
-            )
-        )
-        .clipShape(RoundedRectangle(cornerRadius: 16))
+//        AsyncImage(url: URL(string: exercise.imageUri ?? "")) { image in
+//            image
+//                .resizable()
+//                .aspectRatio(contentMode: .fill)
+//        } placeholder: {
+//            Image(systemName: isBreathing ? "lungs.fill" : "figure.yoga")
+//                .font(.system(size: 36, weight: .medium))
+//                .foregroundColor(Color(hex: "924350"))
+//        }
+//        .frame(width: 90, height: 90)
+//        .background(
+//            LinearGradient(
+//                colors: [Color(hex: "FBE8E5")],
+//                startPoint: .topLeading,
+//                endPoint: .bottomTrailing
+//            )
+//        )
+//        .clipShape(RoundedRectangle(cornerRadius: 16))
+        ExerciseImageView(exercise: exercise, isBreathing: isBreathing)
     }
 
     private func enhancedInfoButton(exercise: Exercise) -> some View {
@@ -725,4 +726,37 @@ class ExerciseGoalsViewModel: ObservableObject {
 
         weeklyProgress = progress
     }
+}
+
+private struct ExerciseImageView: View {
+
+    // MARK: Internal
+
+    let exercise: Exercise
+    let isBreathing: Bool
+
+    var body: some View {
+        Group {
+            if let uiImage {
+                Image(uiImage: uiImage)
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 36, height: 36)
+            } else {
+                Image(systemName: isBreathing ? "lungs.fill" : "figure.yoga")
+                    .font(.system(size: 36, weight: .medium))
+                    .foregroundColor(Color(hex: "924350"))
+            }
+        }
+        .task {
+            if let img = await exercise.image {
+                uiImage = img
+            }
+        }
+    }
+
+    // MARK: Private
+
+    @State private var uiImage: UIImage?
+
 }
