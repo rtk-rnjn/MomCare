@@ -8,18 +8,19 @@
 import SwiftUI
 
 struct PregnancyTrackerEntryView: View {
-    var entry: PregnancyTrackerTimelineProvider.Entry
+    @Environment(\.widgetFamily) var widgetFamily
+    let entry: TriTrackEntry
 
     var body: some View {
-        VStack(spacing: 8) {
-
-            Text("Week \(entry.week)")
-                .font(.title2)
-                .fontWeight(.semibold)
-
-            Text("Day \(entry.day)")
-                .font(.title3)
+        switch widgetFamily {
+        case .systemSmall:
+            SmallPregnancyWidgetView(entry: entry)
+        case .systemMedium:
+            MediumPregnancyWidgetView(entry: entry)
+        case .systemLarge:
+            LargePregnancyWidgetView(entry: entry)
+        default:
+            SmallPregnancyWidgetView(entry: entry)
         }
-        .padding()
     }
 }

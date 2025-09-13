@@ -15,9 +15,10 @@ struct PregnancyTracker: Widget {
         StaticConfiguration(kind: kind, provider: PregnancyTrackerTimelineProvider()) { entry in
             PregnancyTrackerEntryView(entry: entry)
                 .containerBackground(.fill.tertiary, for: .widget)
-
+            
         }
         .configurationDisplayName("Pregnancy Tracker Widget")
-        .description("Track your pregnancy progress with this widget!")
+        .description("Track your pregnancy progress and upcoming reminders.")
+        .supportedFamilies([.systemSmall, .systemMedium, .systemLarge])
     }
 }
