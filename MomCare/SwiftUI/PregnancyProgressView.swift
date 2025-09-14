@@ -105,6 +105,9 @@ struct PregnancyProgressView: View {
             // Comparison view with images
             ComparisonView(fruitImage: fruitImage, babyImage: babyImage)
                 .frame(height: 120)
+                .accessibilityElement(children: .ignore)
+                .accessibilityLabel("Baby size comparison")
+                .accessibilityHint("Your baby is currently the size shown in the comparison")
 
             // Quote text - moved closer to the comparison view
             Text(quote)
@@ -112,6 +115,7 @@ struct PregnancyProgressView: View {
                 .multilineTextAlignment(.center)
                 .padding(.horizontal, 16)
                 .padding(.vertical, 12) // More vertical padding to fill space evenly
+                .accessibilityAddTraits(.isStaticText)
         }
         .padding(.vertical, 12) // Consistent vertical padding
         .padding(.horizontal, 12)
@@ -125,6 +129,8 @@ struct PregnancyProgressView: View {
                 StitchingBorder(cornerRadius: 16, color: Color(hex: "924350"))
             }
         )
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel("Baby size comparison: \(quote)")
     }
 
     private var growthStatsView: some View {
@@ -135,9 +141,11 @@ struct PregnancyProgressView: View {
                     HStack {
                         Image(systemName: "ruler")
                             .font(.system(size: 22))
+                            .accessibilityHidden(true)
 
                         Text("Height")
                             .font(.headline)
+                            .accessibilityAddTraits(.isHeader)
                     }
 
                     Text(babyHeight)
@@ -159,15 +167,20 @@ struct PregnancyProgressView: View {
                         StitchingBorder(cornerRadius: 16, color: Color(hex: "924350"))
                     }
                 )
+                .accessibilityElement(children: .combine)
+                .accessibilityLabel("Baby height: \(babyHeight)")
+                .accessibilityAddTraits(.isStaticText)
 
                 // Weight card with stitching effect only
                 VStack(spacing: 8) {
                     HStack {
                         Image(systemName: "scalemass")
                             .font(.system(size: 22))
+                            .accessibilityHidden(true)
 
                         Text("Weight")
                             .font(.headline)
+                            .accessibilityAddTraits(.isHeader)
                     }
 
                     Text(babyWeight)
@@ -189,6 +202,9 @@ struct PregnancyProgressView: View {
                         StitchingBorder(cornerRadius: 16, color: Color(hex: "924350"))
                     }
                 )
+                .accessibilityElement(children: .combine)
+                .accessibilityLabel("Baby weight: \(babyWeight)")
+                .accessibilityAddTraits(.isStaticText)
             }
         }
         .frame(height: 110) // Set the overall height
@@ -232,6 +248,7 @@ struct PregnancyProgressView: View {
                 // Update state
                 showingBabyInfo = true
             }
+            .accessibilityAddTraits(.isButton)
 
             // Mom info card with content preview
             CompactInfoCard(
@@ -273,7 +290,9 @@ struct PregnancyProgressView: View {
                     OverlayWindowManager.shared.setContent(popupContent)
                 }
             }
+            .accessibilityAddTraits(.isButton)
         }
+        .accessibilityElement(children: .contain)
     }
 }
 
@@ -347,6 +366,9 @@ struct PopupInfoCard: View {
                     closeCard()
                 }
                 .edgesIgnoringSafeArea(.all)
+                .accessibilityLabel("Close popup")
+                .accessibilityHint("Tap to close the information popup")
+                .accessibilityAddTraits(.isButton)
 
             // Card content
             VStack(spacing: 0) {
@@ -366,6 +388,7 @@ struct PopupInfoCard: View {
                         .fontWeight(.bold)
                         .foregroundColor(Color(hex: "924350"))
                         .offset(y: envelopeOpen ? 5 : 15)
+                        .accessibilityAddTraits(.isHeader)
                 }
                 .frame(height: 60)
                 .animation(.spring(response: 0.5, dampingFraction: 0.7), value: envelopeOpen)
@@ -418,6 +441,8 @@ struct PopupInfoCard: View {
                             .padding(.horizontal, 20)
                             .padding(.bottom, 16)
                     }
+                    .accessibilityLabel("Close")
+                    .accessibilityHint("Close this information popup")
                 }
                 .background(Color.white)
             }

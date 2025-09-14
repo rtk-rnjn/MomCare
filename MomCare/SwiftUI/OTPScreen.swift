@@ -21,6 +21,7 @@ struct OTPScreen: View {
                     .font(.largeTitle)
                     .fontWeight(.bold)
                     .padding(.top)
+                    .accessibilityAddTraits(.isHeader)
 
                 Text("Enter the code we sent to your email address")
                     .font(.subheadline)
@@ -28,6 +29,8 @@ struct OTPScreen: View {
                     .multilineTextAlignment(.center)
                     .padding(.horizontal)
             }
+            .accessibilityElement(children: .combine)
+            .accessibilityLabel("Verification Code. Enter the code we sent to your email address")
 
             ZStack(alignment: .center) {
                 HStack(spacing: 12) {
@@ -57,12 +60,18 @@ struct OTPScreen: View {
                             isFieldFocused = true
                         }
                     }
+                    .accessibilityLabel("OTP input field")
+                    .accessibilityHint("Enter the \(otpLength) digit verification code")
+                    .accessibilityValue(otpString.isEmpty ? "Empty" : "\(otpString.count) of \(otpLength) digits entered")
             }
             .padding(.horizontal)
             .contentShape(Rectangle())
             .onTapGesture {
                 isFieldFocused = true
             }
+            .accessibilityElement(children: .contain)
+            .accessibilityLabel("OTP input area")
+            .accessibilityHint("Tap to focus and enter verification code")
 
             Button(action: verifyOTP) {
                 Text("Verify")
@@ -75,6 +84,9 @@ struct OTPScreen: View {
             }
             .padding(.horizontal, 24)
             .disabled(!isOTPComplete())
+            .accessibilityLabel("Verify OTP")
+            .accessibilityHint(isOTPComplete() ? "Verify the entered code" : "Complete entering all digits to verify")
+            .accessibilityAddTraits(isOTPComplete() ? .none : .notEnabled)
 
             Button(action: resendCode) {
                 Text(resendTimer > 0 ? "Resend in \(resendTimer)s" : "Didn't receive a code?")
@@ -170,6 +182,10 @@ struct OTPBox: View {
             }
         }
         .frame(width: 45, height: 55)
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel("OTP digit \(index + 1)")
+        .accessibilityValue(index < otpString.count ? "Entered" : (isActive ? "Current position" : "Empty"))
+        .accessibilityHidden(true) // Hide individual boxes since the text field handles accessibility
     }
 
     // MARK: Private

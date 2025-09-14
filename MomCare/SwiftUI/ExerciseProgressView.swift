@@ -212,10 +212,12 @@ struct ExerciseProgressView: View {
                 Image(systemName: "figure.walk")
                     .font(.system(size: 20, weight: .medium))
                     .foregroundColor(Color(hex: "924350"))
+                    .accessibilityHidden(true)
 
                 Text("Walking")
                     .font(.system(size: 20, weight: .bold))
                     .foregroundColor(.primary)
+                    .accessibilityAddTraits(.isHeader)
             }
 
             Spacer()
@@ -229,9 +231,12 @@ struct ExerciseProgressView: View {
                     Image(systemName: "checkmark.circle.fill")
                         .font(.system(size: 16))
                         .foregroundColor(Color(hex: "924350"))
+                        .accessibilityLabel("Goal completed")
                 }
             }
         }
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel("Walking progress: \(Int(currentSteps / targetSteps * 100))% completed")
     }
 
     private var walkingStatsRow: some View {
@@ -244,6 +249,8 @@ struct ExerciseProgressView: View {
                     .font(.system(size: 14, weight: .medium))
                     .foregroundColor(.secondary)
             }
+            .accessibilityElement(children: .combine)
+            .accessibilityLabel("\(currentSteps) steps")
 
             Spacer()
 
@@ -255,6 +262,8 @@ struct ExerciseProgressView: View {
                     .font(.system(size: 14, weight: .medium))
                     .foregroundColor(.secondary)
             }
+            .accessibilityElement(children: .combine)
+            .accessibilityLabel("Goal: \(targetSteps) steps")
         }
     }
 
@@ -276,6 +285,10 @@ struct ExerciseProgressView: View {
             }
         }
         .frame(height: 6)
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel("Walking progress")
+        .accessibilityValue("\(Int(currentSteps / targetSteps * 100))% complete")
+        .accessibilityAddTraits(.updatesFrequently)
     }
 
     private var exerciseCardsView: some View {
@@ -285,6 +298,7 @@ struct ExerciseProgressView: View {
                 Text("Today's Exercises")
                     .font(.system(size: 18, weight: .semibold))
                     .foregroundColor(.primary)
+                    .accessibilityAddTraits(.isHeader)
 
                 Spacer()
 
@@ -296,6 +310,7 @@ struct ExerciseProgressView: View {
                 exerciseCard(for: exercise)
             }
         }
+        .accessibilityElement(children: .contain)
     }
 
     private var progressCalendarView: some View {
@@ -408,6 +423,9 @@ struct ExerciseProgressView: View {
             RoundedRectangle(cornerRadius: 20)
                 .fill(Color.white)
         )
+        .accessibilityElement(children: .contain)
+        .accessibilityLabel("Exercise: \(exercise.name)")
+        .accessibilityHint("Double tap to view exercise details or start the exercise")
     }
 
     private func exerciseDetailsSection(for exercise: Exercise, isBreathing: Bool) -> some View {
@@ -416,11 +434,13 @@ struct ExerciseProgressView: View {
                 .font(.system(size: 12, weight: .medium))
                 .foregroundColor(.secondary)
                 .padding(.top, 8)
+                .accessibilityLabel("Difficulty level: Beginner")
 
             Text(exercise.name)
                 .font(.system(size: 22, weight: .bold))
                 .foregroundColor(.primary)
                 .padding(.bottom, 4)
+                .accessibilityAddTraits(.isHeader)
 
             Text("\(Int(exercise.completionPercentage))% completed")
                 .font(.system(size: 14, weight: .medium))
@@ -445,6 +465,7 @@ struct ExerciseProgressView: View {
             HStack(spacing: 8) {
                 Image(systemName: "play.fill")
                     .font(.system(size: 12))
+                    .accessibilityHidden(true)
 
                 Text("Start")
                     .font(.system(size: 16, weight: .semibold))
@@ -457,6 +478,8 @@ struct ExerciseProgressView: View {
                     .fill(Color(hex: "924350"))
             )
         }
+        .accessibilityLabel("Start exercise")
+        .accessibilityHint("Start the \(exercise.name) exercise")
     }
 
     private func exerciseIconSection(for exercise: Exercise, isBreathing: Bool) -> some View {

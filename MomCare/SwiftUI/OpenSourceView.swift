@@ -14,12 +14,14 @@ struct OpenSourceView: View {
                     Text("MomCare+ is proudly built using open-source software. We are grateful to the developers and communities who create and maintain these essential tools.")
                         .font(.subheadline)
                         .foregroundColor(textSecondary)
+                        .accessibilityAddTraits(.isStaticText)
 
                     VStack(alignment: .leading, spacing: 12) {
                         Text("Our License")
                             .font(.title2)
                             .fontWeight(.bold)
                             .foregroundColor(brandPink)
+                            .accessibilityAddTraits(.isHeader)
 
                         ForEach(LicenseData.appLicense) { license in
                             LicenseCardView(
@@ -35,6 +37,7 @@ struct OpenSourceView: View {
                         .font(.title2)
                         .fontWeight(.bold)
                         .foregroundColor(brandPink)
+                        .accessibilityAddTraits(.isHeader)
 
                     ForEach(LicenseData.projectReport) { report in
                         LicenseCardView(
@@ -50,6 +53,7 @@ struct OpenSourceView: View {
                         .font(.title2)
                         .fontWeight(.bold)
                         .foregroundColor(brandPink)
+                        .accessibilityAddTraits(.isHeader)
 
                     ForEach(LicenseData.thirdPartyLicenses) { license in
                         LicenseCardView(
@@ -93,12 +97,16 @@ struct LicenseCardView: View {
                     Image(systemName: "arrow.up.right.square")
                         .font(.title3)
                         .foregroundColor(textSecondary.opacity(0.7))
+                        .accessibilityHidden(true)
                 }
                 .padding()
                 .background(.white)
                 .cornerRadius(16)
                 .shadow(color: Color.black.opacity(0.04), radius: 8, x: 0, y: 4)
             }
+            .accessibilityLabel("\(name), \(license)")
+            .accessibilityHint("Opens external link in browser")
+            .accessibilityAddTraits(.isLink)
         }
     }
 }
