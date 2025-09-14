@@ -42,7 +42,7 @@ jobs:
 
   label-swiftformat-status:
     needs: Swiftformat
-    if: always() && ${{ github.event_name == 'pull_request' }}
+    if: always() && github.event_name == 'pull_request'
     runs-on: ubuntu-latest
     steps:
       - name: Add swiftformat-pass label if lint succeeded
