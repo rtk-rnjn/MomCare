@@ -5,7 +5,8 @@
 
 ## Related Issues
 <!-- Link related issues here [eg. Fixes #123 (where #123 is the issue number)] -->
-Fixes #123
+<!-- Remove '## Related Issues' completely if not relevent -->
+Fixes #<issue-number-here>
 
 ## Type of Change
 <!-- Check relevant options (put an "x" in the box) -->
