@@ -41,7 +41,7 @@ jobs:
 
   label-swiftlint-status:
     needs: SwiftLint
-    if: ${{ github.event_name == 'pull_request' }}
+    if: always() && github.event_name == 'pull_request'
     runs-on: ubuntu-latest
     steps:
       - name: Add swiftlint-pass label if lint succeeded
