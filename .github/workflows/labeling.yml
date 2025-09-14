@@ -1,0 +1,46 @@
+name: Add "mergeable" Label if All Checks Passed
+
+on:
+  pull_request:
+    types: [labeled, unlabeled, synchronize, opened, reopened]
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  add-mergeable-label:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check for required labels and add "mergeable" if needed
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const pr = await github.rest.pulls.get({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: context.issue.number,
+            });
+            const labels = pr.data.labels.map(label => label.name);
+            const required = ['swiftlint-pass', 'swiftformat-pass', 'build-pass'];
+            const allPresent = required.every(l => labels.includes(l));
+            if (allPresent && !labels.includes('mergeable')) {
+              await github.rest.issues.addLabels({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.issue.number,
+                labels: ['mergeable'],
+              });
+              console.log('Added "mergeable" label.');
+            } else if (!allPresent && labels.includes('mergeable')) {
+              // Optionally, remove the label if not all present
+              await github.rest.issues.removeLabel({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.issue.number,
+                name: 'mergeable'
+              });
+              console.log('Removed "mergeable" label because not all required labels are present.');
+            } else {
+              console.log('No action needed.');
+            }
