@@ -42,6 +42,7 @@ class TriTrackViewController: UIViewController, FSCalendarDelegate, FSCalendarDa
         prepareFSCalendar()
         fsCalendarView.appearance.todayColor = .clear
         fsCalendarView.appearance.titleTodayColor = .red
+        setupAccessibility()
 
         Task {
             await EventKitHandler.shared.requestAccessForEvent()
@@ -49,6 +50,42 @@ class TriTrackViewController: UIViewController, FSCalendarDelegate, FSCalendarDa
         }
         navigationController?.navigationBar.tintColor = UIColor(hex: "#924350")
         navigationController?.navigationBar.isTranslucent = false
+    }
+    
+    private func setupAccessibility() {
+        setupBasicAccessibility(title: "Tri Track")
+        
+        // Configure segmented control
+        setupSegmentedControlAccessibility(control: triTrackSegmentedControl, label: "Tri Track sections")
+        
+        // Set individual segment labels
+        triTrackSegmentedControl.setTitle("Me & Baby", forSegmentAt: 0)
+        triTrackSegmentedControl.setTitle("Events", forSegmentAt: 1)  
+        triTrackSegmentedControl.setTitle("Symptoms", forSegmentAt: 2)
+        
+        // Configure navigation bar buttons
+        setupButtonAccessibility(buttons: [
+            (button: UIButton(), label: "Add", hint: "Add a new event or symptom entry"),
+            (button: UIButton(), label: "Refresh", hint: "Refresh the current data")
+        ])
+        
+        addButton.accessibilityLabel = "Add entry"
+        addButton.accessibilityHint = "Add a new event, symptom, or tracking information"
+        
+        refreshButton.accessibilityLabel = "Refresh"
+        refreshButton.accessibilityHint = "Refresh the tracking data"
+        
+        // Configure container views
+        meAndBabyContainerView.accessibilityLabel = "Pregnancy progress tracking"
+        eventsContainerView.accessibilityLabel = "Events and appointments"
+        symptomsContainerView.accessibilityLabel = "Symptoms tracking"
+        
+        // Configure calendar view
+        calendarUIView.accessibilityLabel = "Calendar"
+        calendarUIView.accessibilityHint = "Navigate through dates to view pregnancy tracking information"
+        
+        // Announce screen load
+        announceAccessibilityUpdate("Tri Track screen loaded. Use calendar to navigate dates and track your pregnancy progress.")
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -96,6 +133,10 @@ class TriTrackViewController: UIViewController, FSCalendarDelegate, FSCalendarDa
 
     @IBAction func segmentTapped(_ sender: UISegmentedControl) {
         updateView()
+        
+        // Announce segment change to VoiceOver users
+        let selectedTitle = sender.titleForSegment(at: sender.selectedSegmentIndex) ?? "section"
+        announceAccessibilityUpdate("Switched to \(selectedTitle)")
     }
 
     @IBAction func refreshButtonTapped(_ sender: UIBarButtonItem) {

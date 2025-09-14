@@ -53,6 +53,26 @@ class SearchViewController: UIViewController, UISearchResultsUpdating, UISearchC
         definesPresentationContext = true
 
         prepareTable()
+        setupAccessibility()
+    }
+    
+    private func setupAccessibility() {
+        setupBasicAccessibility(title: "Food Search")
+        
+        // Configure search bar accessibility
+        searchBarController.searchBar.accessibilityLabel = "Food search"
+        searchBarController.searchBar.accessibilityHint = "Search for food items to add to your meal plan"
+        searchBarController.searchBar.placeholder = "Search for food items..."
+        
+        // Configure table view accessibility
+        tableView.accessibilityLabel = "Search results"
+        tableView.accessibilityHint = "List of food items matching your search"
+        
+        // Enable Dynamic Type for search
+        searchBarController.searchBar.searchTextField.adjustsFontForContentSizeCategory = true
+        
+        // Announce search screen
+        announceAccessibilityUpdate("Food search screen loaded. Enter a food item name to search.")
     }
 
     override func viewWillAppear(_ animated: Bool) {

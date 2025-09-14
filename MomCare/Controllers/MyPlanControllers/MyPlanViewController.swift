@@ -23,6 +23,31 @@ class MyPlanViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         updateView(with: currentSegmentValue)
+        setupAccessibility()
+    }
+    
+    private func setupAccessibility() {
+        setupBasicAccessibility(title: "My Plan")
+        
+        // Configure segmented control
+        setupSegmentedControlAccessibility(control: myPlanSegmentedControl, label: "Plan type selector")
+        
+        // Set individual segment labels
+        myPlanSegmentedControl.setTitle("Diet Plan", forSegmentAt: 0)
+        myPlanSegmentedControl.setTitle("Exercise Plan", forSegmentAt: 1)
+        
+        // Configure container views
+        dietContainerView.accessibilityLabel = "Diet plan content"
+        dietContainerView.accessibilityTraits = [.none]
+        
+        exerciseContainerView.accessibilityLabel = "Exercise plan content"
+        exerciseContainerView.accessibilityTraits = [.none]
+        
+        // Add accessibility hints
+        myPlanSegmentedControl.accessibilityHint = "Switch between diet and exercise plans"
+        
+        // Announce initial state
+        announceAccessibilityUpdate("My Plan screen loaded. Currently showing \(currentSegmentValue == 0 ? "diet" : "exercise") plan.")
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -48,6 +73,10 @@ class MyPlanViewController: UIViewController {
 
     @IBAction func segmentChanged(_ sender: UISegmentedControl) {
         updateView()
+        
+        // Announce segment change to VoiceOver users
+        let selectedTitle = sender.titleForSegment(at: sender.selectedSegmentIndex) ?? "plan"
+        announceAccessibilityUpdate("Switched to \(selectedTitle)")
     }
 
     func prepareSegmentedControl() {

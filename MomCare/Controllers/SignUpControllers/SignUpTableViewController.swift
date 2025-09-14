@@ -21,13 +21,67 @@ class SignUpTableViewController: UITableViewController, UITextFieldDelegate {
     @IBOutlet var confirmPasswordField: UITextField!
 
     @IBOutlet var mobileNumberField: UITextField!
+    
+    private var tapGesture: UITapGestureRecognizer!
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+        tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
         view.addGestureRecognizer(tapGesture)
         navigationController?.navigationBar.tintColor = UIColor(hex: "#924350")
         firstNameField.becomeFirstResponder()
+        setupAccessibility()
+    }
+    
+    private func setupAccessibility() {
+        setupBasicAccessibility(title: "Create Account")
+        
+        // Configure form fields
+        setupFormAccessibility(fields: [
+            (textField: firstNameField, label: "First name", hint: "Enter your first name"),
+            (textField: lastNameField, label: "Last name", hint: "Enter your last name"),
+            (textField: emailField, label: "Email address", hint: "Enter your email address for account creation"),
+            (textField: passwordField, label: "Password", hint: "Create a secure password for your account"),
+            (textField: confirmPasswordField, label: "Confirm password", hint: "Re-enter your password to confirm"),
+            (textField: mobileNumberField, label: "Mobile number", hint: "Enter your mobile number")
+        ])
+        
+        // Configure create account button
+        setupButtonAccessibility(buttons: [
+            (button: createButton, label: "Create Account", hint: "Tap to create your MomCare account")
+        ])
+        
+        // Set up specific text field properties
+        firstNameField.textContentType = .givenName
+        firstNameField.autocapitalizationType = .words
+        
+        lastNameField.textContentType = .familyName
+        lastNameField.autocapitalizationType = .words
+        
+        emailField.textContentType = .emailAddress
+        emailField.keyboardType = .emailAddress
+        emailField.autocapitalizationType = .none
+        
+        passwordField.textContentType = .newPassword
+        passwordField.isSecureTextEntry = true
+        
+        confirmPasswordField.textContentType = .newPassword
+        confirmPasswordField.isSecureTextEntry = true
+        
+        mobileNumberField.textContentType = .telephoneNumber
+        mobileNumberField.keyboardType = .phonePad
+        
+        // Enable Dynamic Type for all fields
+        [firstNameField, lastNameField, emailField, passwordField, confirmPasswordField, mobileNumberField].forEach { field in
+            field?.adjustsFontForContentSizeCategory = true
+        }
+        
+        // Add tap gesture accessibility
+        tapGesture.accessibilityLabel = "Dismiss keyboard"
+        tapGesture.accessibilityHint = "Tap anywhere to close the keyboard"
+        
+        // Validate color contrast
+        validateColorContrast()
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {

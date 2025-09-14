@@ -25,6 +25,25 @@ class FrontViewController: UIViewController, UICollectionViewDelegate, UICollect
         collectionView.alwaysBounceVertical = false
 
         collectionView.reloadData()
+        setupAccessibility()
+    }
+    
+    private func setupAccessibility() {
+        setupBasicAccessibility(title: "Welcome to MomCare")
+        
+        // Configure collection view accessibility
+        collectionView.accessibilityLabel = "Welcome screens"
+        collectionView.accessibilityHint = "Swipe left or right to navigate through introduction slides"
+        
+        // Configure page control
+        UIKitAccessibilityHelper.configurePageControl(pageControl, description: "Introduction page indicator")
+        
+        // Set up collection view for accessibility
+        collectionView.isAccessibilityElement = false
+        collectionView.shouldGroupAccessibilityChildren = true
+        
+        // Announce screen for VoiceOver users
+        announceAccessibilityUpdate("Welcome to MomCare. Swipe through to learn about our features.")
     }
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -60,6 +79,18 @@ class FrontViewController: UIViewController, UICollectionViewDelegate, UICollect
 
         cell.imageView.image = FrontPageData.getImage(at: indexPath)
         cell.heading.text = FrontPageData.getHeading(at: indexPath)
+        
+        // Configure accessibility for each slide
+        let heading = FrontPageData.getHeading(at: indexPath) ?? "Introduction slide"
+        let slideNumber = indexPath.row + 1
+        let totalSlides = FrontPageData.images.count
+        
+        UIKitAccessibilityHelper.configureCollectionViewCell(
+            cell,
+            title: heading,
+            description: nil,
+            position: "Slide \(slideNumber) of \(totalSlides)"
+        )
 
         return cell
     }
@@ -69,6 +100,13 @@ class FrontViewController: UIViewController, UICollectionViewDelegate, UICollect
             guard let visible = collectionView.visibleCells.first else { return }
             guard let index = collectionView.indexPath(for: visible)?.row else { return }
             pageControl.currentPage = index
+            
+            // Announce page change to VoiceOver users
+            if UIAccessibility.isVoiceOverRunning {
+                let pageNumber = index + 1
+                let totalPages = FrontPageData.images.count
+                announceAccessibilityUpdate("Page \(pageNumber) of \(totalPages)")
+            }
         }
     }
 }

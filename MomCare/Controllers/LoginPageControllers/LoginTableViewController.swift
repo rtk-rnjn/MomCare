@@ -16,6 +16,37 @@ class LoginTableViewController: UITableViewController, UITextFieldDelegate {
 
         emailAddressField.becomeFirstResponder()
         navigationController?.navigationBar.tintColor = UIColor(hex: "#924350")
+        setupAccessibility()
+    }
+    
+    private func setupAccessibility() {
+        setupBasicAccessibility(title: "Sign In")
+        
+        // Configure form fields
+        setupFormAccessibility(fields: [
+            (textField: emailAddressField, label: "Email address", hint: "Enter your email address to sign in"),
+            (textField: passwordField, label: "Password", hint: "Enter your password")
+        ])
+        
+        // Configure sign in button
+        setupButtonAccessibility(buttons: [
+            (button: signInButton, label: "Sign In", hint: "Tap to sign in to your MomCare account")
+        ])
+        
+        // Set up specific text field properties
+        emailAddressField.textContentType = .emailAddress
+        emailAddressField.keyboardType = .emailAddress
+        emailAddressField.autocapitalizationType = .none
+        
+        passwordField.textContentType = .password
+        passwordField.isSecureTextEntry = true
+        
+        // Enable Dynamic Type
+        emailAddressField.adjustsFontForContentSizeCategory = true
+        passwordField.adjustsFontForContentSizeCategory = true
+        
+        // Validate color contrast for accessibility
+        validateColorContrast()
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {

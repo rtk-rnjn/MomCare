@@ -24,6 +24,7 @@ class MoodNestViewController: UIViewController, UICollectionViewDataSource, UICo
         navigationController?.navigationBar.tintColor = UIColor(hex: "#924350")
         outerView.layer.cornerRadius = 30
         registerAllNibs()
+        setupAccessibility()
 
         Task {
             guard let mood else {
@@ -33,7 +34,33 @@ class MoodNestViewController: UIViewController, UICollectionViewDataSource, UICo
             DispatchQueue.main.async {
                 self.playlistsFetched = true
                 self.collectionView.reloadData()
+                self.updateAccessibilityForContentChanges()
             }
+        }
+    }
+    
+    private func setupAccessibility() {
+        let moodName = mood?.rawValue ?? "mood"
+        setupBasicAccessibility(title: "Music for \(moodName)")
+        
+        // Configure collection view
+        collectionView.accessibilityLabel = "Music playlists"
+        collectionView.accessibilityHint = "Browse calming music playlists for your current mood"
+        collectionView.isAccessibilityElement = false
+        collectionView.shouldGroupAccessibilityChildren = true
+        
+        // Configure outer view
+        outerView.accessibilityLabel = "Music content area"
+        outerView.isAccessibilityElement = false
+        
+        // Announce screen load
+        announceAccessibilityUpdate("Music playlists loading for \(moodName) mood")
+    }
+    
+    private func updateAccessibilityForContentChanges() {
+        if playlistsFetched {
+            let playlistCount = playlists.count
+            announceAccessibilityUpdate("Loaded \(playlistCount) music playlists")
         }
     }
 

@@ -22,9 +22,47 @@ class InitialTabBarController: UITabBarController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        setupAccessibility()
 
         Task {
             await self.refreshToken()
+        }
+    }
+    
+    private func setupAccessibility() {
+        // Configure tab bar accessibility
+        UIKitAccessibilityHelper.configureTabBarController(self)
+        
+        // Set up accessibility labels for each tab
+        if let tabBarItems = tabBar.items {
+            for (index, item) in tabBarItems.enumerated() {
+                switch index {
+                case 0:
+                    item.accessibilityLabel = "Dashboard"
+                    item.accessibilityHint = "View your pregnancy dashboard and daily insights"
+                case 1:
+                    item.accessibilityLabel = "My Plan"
+                    item.accessibilityHint = "Access your personalized diet and exercise plans"
+                case 2:
+                    item.accessibilityLabel = "Tri Track"
+                    item.accessibilityHint = "Track your pregnancy progress by trimester"
+                case 3:
+                    item.accessibilityLabel = "Mood Nest"
+                    item.accessibilityHint = "Listen to calming music and manage your mood"
+                case 4:
+                    item.accessibilityLabel = "Search"
+                    item.accessibilityHint = "Search for pregnancy-related information and tips"
+                default:
+                    break
+                }
+            }
+        }
+        
+        // Announce screen change for VoiceOver users
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            if UIAccessibility.isVoiceOverRunning {
+                UIAccessibility.post(notification: .screenChanged, argument: "MomCare main dashboard loaded")
+            }
         }
     }
 
