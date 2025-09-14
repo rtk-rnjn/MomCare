@@ -82,6 +82,7 @@ struct OTPScreen: View {
                     .foregroundColor(.white)
                     .cornerRadius(14)
             }
+            .minimumTouchTarget()
             .padding(.horizontal, 24)
             .disabled(!isOTPComplete())
             .accessibilityLabel("Verify OTP")

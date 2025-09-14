@@ -478,6 +478,7 @@ struct ExerciseProgressView: View {
                     .fill(Color(hex: "924350"))
             )
         }
+        .minimumTouchTarget()
         .accessibilityLabel("Start exercise")
         .accessibilityHint("Start the \(exercise.name) exercise")
     }
