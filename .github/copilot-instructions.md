@@ -43,8 +43,8 @@ enum Source {
 }
 
 func fetchSong(from source: Source) -> Song? {
-    // Fetch song from the source
-    print("Fetching song from \(source)")
+    logger.info("Fetching song from \(source)")
+
     switch source {
     case .local:
         return fetchSongFromLocal()
@@ -75,7 +75,8 @@ enum Source {
 }
 
 func fetchSong(from source: Source) -> Song? {
-    logger.info("Fetching song from \(source)")
+    // Fetch song from the source
+    print("Fetching song from \(source)")
 
     switch source {
     case .local:
