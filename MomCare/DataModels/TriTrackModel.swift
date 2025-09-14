@@ -48,3 +48,11 @@ struct TrimesterData: Codable {
         return UIImage(named: babyImageUri)
     }
 }
+
+struct Symptom: Identifiable, Hashable{
+    let id = UUID()
+    let name: String
+    let description: String
+    let remedies: [String]
+    let whenToCallDoctor: String
+}

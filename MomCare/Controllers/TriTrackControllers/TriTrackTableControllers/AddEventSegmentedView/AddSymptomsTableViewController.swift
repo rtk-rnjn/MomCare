@@ -6,11 +6,47 @@
 //
 
 import UIKit
+import SwiftUI
 
-class AddSymptomsTableViewController: UITableViewController {
+class AddSymptomsTableViewController: UITableViewController, UITextFieldDelegate {
 
     @IBOutlet var titleField: UITextField!
     @IBOutlet var notesField: UITextField!
     @IBOutlet var dateTime: UIDatePicker!
-
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        titleField.delegate = self
+        titleField.placeholder = "Select or add a symptom"
+    }
+    
+    @IBAction func symptomButtonTapped(_ sender: UIButton) {
+        showSymptomsSelector()
+    }
+    
+    private func showSymptomsSelector() {
+        let symptomsListView = SymptomListView { selectedSymptom in
+            if let symptom = selectedSymptom {
+                self.titleField.text = symptom.name
+                self.titleField.isUserInteractionEnabled = false
+                self.notesField.becomeFirstResponder()
+            } else {
+                DispatchQueue.main.async {
+                    self.titleField.text = ""
+                    self.titleField.isUserInteractionEnabled = true
+                    self.titleField.becomeFirstResponder()
+               }
+            }
+        }
+        
+        let hostingController = UIHostingController(rootView: symptomsListView)
+        self.present(hostingController, animated: true, completion: nil)
+    }
+    
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        if textField == titleField {
+            titleField.isUserInteractionEnabled = false
+        }
+    }
 }
+

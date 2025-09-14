@@ -116,6 +116,7 @@
 				Common/MusicPlayerHandler.swift,
 				Common/Utils.swift,
 				DataModels/Global/AppContent.swift,
+				DataModels/Global/PregnancySymptoms.swift,
 				DataModels/Global/ProfileDisclaimerData.swift,
 				DataModels/Global/StaticData.swift,
 				DataModels/Global/TriTrackData.swift,
