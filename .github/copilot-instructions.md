@@ -29,6 +29,10 @@ applyTo: '**/*.swift'
 ## Example (Good Code):
 
 ```swift
+import OSLog
+
+let logger: Logger = .init(subsystem: "com.example.SongFetcher", category: "network")
+
 struct Song: Codable, Sendable {
     let id: String = UUID().uuidString
 
@@ -57,10 +61,6 @@ func fetchSong(from source: Source) -> Song? {
 ## Example (Bad Code)
 
 ```swift
-import OSLog
-
-let logger: Logger = .init(subsystem: "com.example.SongFetcher", category: "network")
-
 struct Song: Codable, Sendable {
     let id: String = UUID().uuidString
 
