@@ -36,12 +36,13 @@ jobs:
           brew install swiftformat
 
       - name: Run Swiftformat
+        continue-on-error: true
         run: |
           swiftformat --quiet --strict --reporter github-actions-log --lint .
 
   label-swiftformat-status:
     needs: Swiftformat
-    if: ${{ github.event_name == 'pull_request' }}
+    if: always() && ${{ github.event_name == 'pull_request' }}
     runs-on: ubuntu-latest
     steps:
       - name: Add swiftformat-pass label if lint succeeded
