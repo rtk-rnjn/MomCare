@@ -69,7 +69,7 @@ jobs:
 
   label-build-status:
     needs: build
-    if: ${{ github.event_name == 'pull_request' }}
+    if: always() && github.event_name == 'pull_request'
     runs-on: ubuntu-latest
     steps:
       - name: Add build-pass label if build succeeded
