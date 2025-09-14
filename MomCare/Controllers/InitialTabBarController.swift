@@ -30,10 +30,8 @@ class InitialTabBarController: UITabBarController {
     }
     
     private func setupAccessibility() {
-        // Configure tab bar accessibility
-        UIKitAccessibilityHelper.configureTabBarController(self)
+        UIKitAccessibilityHelper.configureTabBarControllerWithPositionalHints(self)
         
-        // Set up accessibility labels for each tab
         if let tabBarItems = tabBar.items {
             for (index, item) in tabBarItems.enumerated() {
                 switch index {
@@ -58,7 +56,6 @@ class InitialTabBarController: UITabBarController {
             }
         }
         
-        // Announce screen change for VoiceOver users
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
             if UIAccessibility.isVoiceOverRunning {
                 UIAccessibility.post(notification: .screenChanged, argument: "MomCare main dashboard loaded")

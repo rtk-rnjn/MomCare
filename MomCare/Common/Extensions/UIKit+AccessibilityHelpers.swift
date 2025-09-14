@@ -13,11 +13,9 @@ protocol AccessibilityConfigurable {
     func updateAccessibilityForContentChanges()
 }
 
-/// Helper class for common UIKit accessibility configurations
 class UIKitAccessibilityHelper {
     
-    /// Sets up accessibility for table view cells
-    static func configureTableViewCell(
+    static func configureTableViewCellWithSelectableTraits(
         _ cell: UITableViewCell,
         title: String,
         subtitle: String? = nil,
@@ -37,13 +35,11 @@ class UIKitAccessibilityHelper {
         cell.accessibilityLabel = accessibilityText
         cell.accessibilityTraits = isSelectable ? [.button] : [.staticText]
         
-        // Enable Dynamic Type for cell labels
         cell.textLabel?.adjustsFontForContentSizeCategory = true
         cell.detailTextLabel?.adjustsFontForContentSizeCategory = true
     }
     
-    /// Sets up accessibility for collection view cells
-    static func configureCollectionViewCell(
+    static func configureCollectionViewCellWithPositionInfo(
         _ cell: UICollectionViewCell,
         title: String,
         description: String? = nil,
@@ -64,11 +60,9 @@ class UIKitAccessibilityHelper {
         cell.accessibilityTraits = [.button]
     }
     
-    /// Sets up accessibility for navigation controllers
-    static func configureNavigationController(_ navigationController: UINavigationController) {
+    static func configureNavigationControllerWithButtonTraits(_ navigationController: UINavigationController) {
         navigationController.navigationBar.accessibilityElementsHidden = false
         
-        // Configure navigation bar buttons
         navigationController.navigationBar.subviews.forEach { view in
             if let button = view as? UIButton {
                 button.accessibilityTraits = [.button]
@@ -76,11 +70,9 @@ class UIKitAccessibilityHelper {
         }
     }
     
-    /// Sets up accessibility for tab bar controllers
-    static func configureTabBarController(_ tabBarController: UITabBarController) {
+    static func configureTabBarControllerWithPositionalHints(_ tabBarController: UITabBarController) {
         tabBarController.tabBar.accessibilityElementsHidden = false
         
-        // Configure tab bar items
         tabBarController.tabBar.items?.enumerated().forEach { index, item in
             item.accessibilityLabel = item.title
             item.accessibilityTraits = [.button]
@@ -88,9 +80,7 @@ class UIKitAccessibilityHelper {
         }
     }
     
-    /// Sets up accessibility for alert controllers
-    static func configureAlertController(_ alertController: UIAlertController) {
-        // Configure alert title and message
+    static func configureAlertControllerWithActionHints(_ alertController: UIAlertController) {
         if let title = alertController.title {
             alertController.setValue(title, forKey: "accessibilityLabel")
         }
@@ -99,7 +89,6 @@ class UIKitAccessibilityHelper {
             alertController.setValue(message, forKey: "accessibilityValue")
         }
         
-        // Configure alert actions
         alertController.actions.forEach { action in
             action.accessibilityTraits = [.button]
             if action.style == .cancel {
@@ -111,8 +100,7 @@ class UIKitAccessibilityHelper {
         }
     }
     
-    /// Sets up accessibility for text views
-    static func configureTextView(_ textView: UITextView, placeholder: String? = nil) {
+    static func configureTextViewWithDynamicType(_ textView: UITextView, placeholder: String? = nil) {
         textView.accessibilityTraits = [.keyboardKey]
         textView.adjustsFontForContentSizeCategory = true
         
@@ -121,28 +109,24 @@ class UIKitAccessibilityHelper {
         }
     }
     
-    /// Sets up accessibility for scroll views
-    static func configureScrollView(_ scrollView: UIScrollView, contentDescription: String? = nil) {
+    static func configureScrollViewWithContentDescription(_ scrollView: UIScrollView, contentDescription: String? = nil) {
         scrollView.accessibilityTraits = [.none]
         
         if let description = contentDescription {
             scrollView.accessibilityLabel = description
         }
         
-        // Enable accessibility for scroll indicators
         scrollView.showsVerticalScrollIndicator = true
         scrollView.showsHorizontalScrollIndicator = true
     }
     
-    /// Sets up accessibility for page controls
-    static func configurePageControl(_ pageControl: UIPageControl, description: String = "Page indicator") {
+    static func configurePageControlWithSwipeHints(_ pageControl: UIPageControl, description: String = "Page indicator") {
         pageControl.accessibilityLabel = description
         pageControl.accessibilityTraits = [.adjustable]
         pageControl.accessibilityHint = "Swipe left or right to change pages"
     }
     
-    /// Sets up accessibility for image views
-    static func configureImageView(_ imageView: UIImageView, description: String?, isDecorative: Bool = false) {
+    static func configureImageViewWithDecorativeOption(_ imageView: UIImageView, description: String?, isDecorative: Bool = false) {
         if isDecorative {
             imageView.isAccessibilityElement = false
             imageView.accessibilityElementsHidden = true
@@ -153,14 +137,12 @@ class UIKitAccessibilityHelper {
         }
     }
     
-    /// Sets up accessibility for activity indicators
-    static func configureActivityIndicator(_ activityIndicator: UIActivityIndicatorView, loadingMessage: String = "Loading") {
+    static func configureActivityIndicatorWithLoadingMessage(_ activityIndicator: UIActivityIndicatorView, loadingMessage: String = "Loading") {
         activityIndicator.accessibilityLabel = loadingMessage
         activityIndicator.accessibilityTraits = [.notEnabled]
     }
     
-    /// Sets up accessibility for progress views
-    static func configureProgressView(_ progressView: UIProgressView, description: String, currentValue: Float? = nil) {
+    static func configureProgressViewWithPercentageValue(_ progressView: UIProgressView, description: String, currentValue: Float? = nil) {
         progressView.accessibilityLabel = description
         progressView.accessibilityTraits = [.updatesFrequently]
         
@@ -170,8 +152,7 @@ class UIKitAccessibilityHelper {
         }
     }
     
-    /// Sets up accessibility for steppers
-    static func configureStepper(_ stepper: UIStepper, label: String, unit: String = "") {
+    static func configureStepperWithValueAndUnit(_ stepper: UIStepper, label: String, unit: String = "") {
         stepper.accessibilityLabel = label
         stepper.accessibilityTraits = [.adjustable]
         
@@ -180,8 +161,7 @@ class UIKitAccessibilityHelper {
         stepper.accessibilityHint = "Swipe up to increase, swipe down to decrease"
     }
     
-    /// Sets up accessibility for sliders
-    static func configureSlider(_ slider: UISlider, label: String, unit: String = "", range: String? = nil) {
+    static func configureSliderWithRangeInfo(_ slider: UISlider, label: String, unit: String = "", range: String? = nil) {
         slider.accessibilityLabel = label
         slider.accessibilityTraits = [.adjustable]
         
@@ -196,11 +176,9 @@ class UIKitAccessibilityHelper {
     }
 }
 
-/// Extension for UIFont to provide accessibility-aware font scaling
 extension UIFont {
     
-    /// Creates a font that scales with Dynamic Type settings
-    static func accessibleFont(size: CGFloat, weight: UIFont.Weight = .regular, maxSize: CGFloat? = nil) -> UIFont {
+    static func accessibleFontWithOptionalMaxSize(size: CGFloat, weight: UIFont.Weight = .regular, maxSize: CGFloat? = nil) -> UIFont {
         let font = UIFont.systemFont(ofSize: size, weight: weight)
         
         if let maxSize = maxSize {
@@ -210,11 +188,9 @@ extension UIFont {
         }
     }
     
-    /// Creates a custom font with Dynamic Type support
-    static func accessibleCustomFont(name: String, size: CGFloat, maxSize: CGFloat? = nil) -> UIFont? {
+    static func accessibleCustomFontWithFallback(name: String, size: CGFloat, maxSize: CGFloat? = nil) -> UIFont? {
         guard let customFont = UIFont(name: name, size: size) else {
-            // Fallback to system font
-            return accessibleFont(size: size, maxSize: maxSize)
+            return accessibleFontWithOptionalMaxSize(size: size, maxSize: maxSize)
         }
         
         if let maxSize = maxSize {
@@ -225,21 +201,19 @@ extension UIFont {
     }
 }
 
-/// Extension for UIColor to provide accessibility utilities
 extension UIColor {
     
-    /// Creates a color from hex string (for brand colors)
     convenience init(hex: String) {
         let hex = hex.trimmingCharacters(in: CharacterSet.alphanumerics.inverted)
         var int: UInt64 = 0
         Scanner(string: hex).scanHexInt64(&int)
         let a, r, g, b: UInt64
         switch hex.count {
-        case 3: // RGB (12-bit)
+        case 3:
             (a, r, g, b) = (255, (int >> 8) * 17, (int >> 4 & 0xF) * 17, (int & 0xF) * 17)
-        case 6: // RGB (24-bit)
+        case 6:
             (a, r, g, b) = (255, int >> 16, int >> 8 & 0xFF, int & 0xFF)
-        case 8: // ARGB (32-bit)
+        case 8:
             (a, r, g, b) = (int >> 24, int >> 16 & 0xFF, int >> 8 & 0xFF, int & 0xFF)
         default:
             (a, r, g, b) = (1, 1, 1, 0)
@@ -253,8 +227,7 @@ extension UIColor {
         )
     }
     
-    /// Checks if this color has sufficient contrast with another color
-    func hasAccessibleContrast(with otherColor: UIColor, isLargeText: Bool = false) -> Bool {
+    func hasAccessibleContrastWithWCAGValidation(with otherColor: UIColor, isLargeText: Bool = false) -> Bool {
         return AccessibilityUtils.meetsWCAGAA(foreground: self, background: otherColor, isLargeText: isLargeText)
     }
 }

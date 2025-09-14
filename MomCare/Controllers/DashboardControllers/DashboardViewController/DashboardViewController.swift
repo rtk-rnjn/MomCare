@@ -35,7 +35,6 @@ class DashboardViewController: UIViewController, UICollectionViewDataSource, UIC
                 DispatchQueue.main.async {
                     self.dataFetched = true
                     self.collectionView.reloadData()
-                    // Update accessibility when data is loaded
                     self.updateAccessibilityForContentChanges()
                 }
             }
@@ -45,18 +44,15 @@ class DashboardViewController: UIViewController, UICollectionViewDataSource, UIC
     private func setupAccessibility() {
         setupBasicAccessibility(title: "Dashboard")
         
-        // Configure collection view accessibility
         collectionView.accessibilityLabel = "Dashboard content"
         collectionView.accessibilityHint = "Scroll to see your pregnancy dashboard with progress tracking, tips, and health information"
         collectionView.isAccessibilityElement = false
         collectionView.shouldGroupAccessibilityChildren = true
         
-        // Announce dashboard loaded for VoiceOver users
         announceAccessibilityUpdate("Dashboard loaded")
     }
     
     private func updateAccessibilityForContentChanges() {
-        // Update accessibility when content changes (e.g., after data loads)
         if dataFetched {
             announceAccessibilityUpdate("Dashboard content updated with latest information")
         }

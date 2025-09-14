@@ -42,38 +42,35 @@ class DietViewController: UIViewController {
     private func setupAccessibility() {
         setupBasicAccessibility(title: "Diet Plan")
         
-        // Configure progress bars with accessibility
-        UIKitAccessibilityHelper.configureProgressView(proteinProgressBar, description: "Protein intake progress")
-        UIKitAccessibilityHelper.configureProgressView(carbsProgressBar, description: "Carbohydrates intake progress")
-        UIKitAccessibilityHelper.configureProgressView(fatsProgressBar, description: "Fats intake progress")
+        UIKitAccessibilityHelper.configureProgressViewWithPercentageValue(proteinProgressBar, description: "Protein intake progress")
+        UIKitAccessibilityHelper.configureProgressViewWithPercentageValue(carbsProgressBar, description: "Carbohydrates intake progress")
+        UIKitAccessibilityHelper.configureProgressViewWithPercentageValue(fatsProgressBar, description: "Fats intake progress")
         
-        // Configure labels with accessibility
-        caloricValueLabel.enableDynamicType()
-        caloricValueLabel.setupInformationalAccessibility(importance: .high)
+        caloricValueLabel.enableDynamicTypeWithMultilineSupport()
+        caloricValueLabel.setupInformationalAccessibilityByImportance(importance: .high)
         caloricValueLabel.accessibilityLabel = "Daily caloric intake"
         
-        literalKcalLabel.enableDynamicType()
-        literalKcalLabel.setupInformationalAccessibility(importance: .medium)
+        literalKcalLabel.enableDynamicTypeWithMultilineSupport()
+        literalKcalLabel.setupInformationalAccessibilityByImportance(importance: .medium)
         
-        proteinProgressLabel.enableDynamicType()
-        proteinProgressLabel.setupInformationalAccessibility(importance: .medium)
+        proteinProgressLabel.enableDynamicTypeWithMultilineSupport()
+        proteinProgressLabel.setupInformationalAccessibilityByImportance(importance: .medium)
         
-        carbsProgressLabel.enableDynamicType()
-        carbsProgressLabel.setupInformationalAccessibility(importance: .medium)
+        carbsProgressLabel.enableDynamicTypeWithMultilineSupport()
+        carbsProgressLabel.setupInformationalAccessibilityByImportance(importance: .medium)
         
-        fatsProgressLabel.enableDynamicType()
-        fatsProgressLabel.setupInformationalAccessibility(importance: .medium)
+        fatsProgressLabel.enableDynamicTypeWithMultilineSupport()
+        fatsProgressLabel.setupInformationalAccessibilityByImportance(importance: .medium)
         
-        literalProtienLabel.enableDynamicType()
-        literalProtienLabel.setupInformationalAccessibility(importance: .medium)
+        literalProtienLabel.enableDynamicTypeWithMultilineSupport()
+        literalProtienLabel.setupInformationalAccessibilityByImportance(importance: .medium)
         
-        literalCarbsLabel.enableDynamicType()
-        literalCarbsLabel.setupInformationalAccessibility(importance: .medium)
+        literalCarbsLabel.enableDynamicTypeWithMultilineSupport()
+        literalCarbsLabel.setupInformationalAccessibilityByImportance(importance: .medium)
         
-        literalFatsLabel.enableDynamicType()
-        literalFatsLabel.setupInformationalAccessibility(importance: .medium)
+        literalFatsLabel.enableDynamicTypeWithMultilineSupport()
+        literalFatsLabel.setupInformationalAccessibilityByImportance(importance: .medium)
         
-        // Configure container view
         progressContainerView.accessibilityLabel = "Nutrition progress overview"
         progressContainerView.isAccessibilityElement = false
         progressContainerView.shouldGroupAccessibilityChildren = true

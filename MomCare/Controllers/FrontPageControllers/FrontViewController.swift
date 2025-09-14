@@ -80,12 +80,11 @@ class FrontViewController: UIViewController, UICollectionViewDelegate, UICollect
         cell.imageView.image = FrontPageData.getImage(at: indexPath)
         cell.heading.text = FrontPageData.getHeading(at: indexPath)
         
-        // Configure accessibility for each slide
         let heading = FrontPageData.getHeading(at: indexPath) ?? "Introduction slide"
         let slideNumber = indexPath.row + 1
         let totalSlides = FrontPageData.images.count
         
-        UIKitAccessibilityHelper.configureCollectionViewCell(
+        UIKitAccessibilityHelper.configureCollectionViewCellWithPositionInfo(
             cell,
             title: heading,
             description: nil,

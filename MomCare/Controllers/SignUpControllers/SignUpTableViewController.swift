@@ -36,8 +36,7 @@ class SignUpTableViewController: UITableViewController, UITextFieldDelegate {
     private func setupAccessibility() {
         setupBasicAccessibility(title: "Create Account")
         
-        // Configure form fields
-        setupFormAccessibility(fields: [
+        setupFormAccessibilityForTextFields(fields: [
             (textField: firstNameField, label: "First name", hint: "Enter your first name"),
             (textField: lastNameField, label: "Last name", hint: "Enter your last name"),
             (textField: emailField, label: "Email address", hint: "Enter your email address for account creation"),
@@ -46,12 +45,10 @@ class SignUpTableViewController: UITableViewController, UITextFieldDelegate {
             (textField: mobileNumberField, label: "Mobile number", hint: "Enter your mobile number")
         ])
         
-        // Configure create account button
-        setupButtonAccessibility(buttons: [
+        setupButtonAccessibilityWithMinimumTouchTargets(buttons: [
             (button: createButton, label: "Create Account", hint: "Tap to create your MomCare account")
         ])
         
-        // Set up specific text field properties
         firstNameField.textContentType = .givenName
         firstNameField.autocapitalizationType = .words
         
@@ -71,16 +68,13 @@ class SignUpTableViewController: UITableViewController, UITextFieldDelegate {
         mobileNumberField.textContentType = .telephoneNumber
         mobileNumberField.keyboardType = .phonePad
         
-        // Enable Dynamic Type for all fields
         [firstNameField, lastNameField, emailField, passwordField, confirmPasswordField, mobileNumberField].forEach { field in
             field?.adjustsFontForContentSizeCategory = true
         }
         
-        // Add tap gesture accessibility
         tapGesture.accessibilityLabel = "Dismiss keyboard"
         tapGesture.accessibilityHint = "Tap anywhere to close the keyboard"
         
-        // Validate color contrast
         validateColorContrast()
     }
 

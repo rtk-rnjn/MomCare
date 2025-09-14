@@ -55,16 +55,13 @@ class TriTrackViewController: UIViewController, FSCalendarDelegate, FSCalendarDa
     private func setupAccessibility() {
         setupBasicAccessibility(title: "Tri Track")
         
-        // Configure segmented control
-        setupSegmentedControlAccessibility(control: triTrackSegmentedControl, label: "Tri Track sections")
+        setupSegmentedControlAccessibilityWithIndividualLabels(control: triTrackSegmentedControl, label: "Tri Track sections")
         
-        // Set individual segment labels
         triTrackSegmentedControl.setTitle("Me & Baby", forSegmentAt: 0)
         triTrackSegmentedControl.setTitle("Events", forSegmentAt: 1)  
         triTrackSegmentedControl.setTitle("Symptoms", forSegmentAt: 2)
         
-        // Configure navigation bar buttons
-        setupButtonAccessibility(buttons: [
+        setupButtonAccessibilityWithMinimumTouchTargets(buttons: [
             (button: UIButton(), label: "Add", hint: "Add a new event or symptom entry"),
             (button: UIButton(), label: "Refresh", hint: "Refresh the current data")
         ])
@@ -75,16 +72,13 @@ class TriTrackViewController: UIViewController, FSCalendarDelegate, FSCalendarDa
         refreshButton.accessibilityLabel = "Refresh"
         refreshButton.accessibilityHint = "Refresh the tracking data"
         
-        // Configure container views
         meAndBabyContainerView.accessibilityLabel = "Pregnancy progress tracking"
         eventsContainerView.accessibilityLabel = "Events and appointments"
         symptomsContainerView.accessibilityLabel = "Symptoms tracking"
         
-        // Configure calendar view
         calendarUIView.accessibilityLabel = "Calendar"
         calendarUIView.accessibilityHint = "Navigate through dates to view pregnancy tracking information"
         
-        // Announce screen load
         announceAccessibilityUpdate("Tri Track screen loaded. Use calendar to navigate dates and track your pregnancy progress.")
     }
 

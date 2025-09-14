@@ -29,24 +29,19 @@ class MyPlanViewController: UIViewController {
     private func setupAccessibility() {
         setupBasicAccessibility(title: "My Plan")
         
-        // Configure segmented control
-        setupSegmentedControlAccessibility(control: myPlanSegmentedControl, label: "Plan type selector")
+        setupSegmentedControlAccessibilityWithIndividualLabels(control: myPlanSegmentedControl, label: "Plan type selector")
         
-        // Set individual segment labels
         myPlanSegmentedControl.setTitle("Diet Plan", forSegmentAt: 0)
         myPlanSegmentedControl.setTitle("Exercise Plan", forSegmentAt: 1)
         
-        // Configure container views
         dietContainerView.accessibilityLabel = "Diet plan content"
         dietContainerView.accessibilityTraits = [.none]
         
         exerciseContainerView.accessibilityLabel = "Exercise plan content"
         exerciseContainerView.accessibilityTraits = [.none]
         
-        // Add accessibility hints
         myPlanSegmentedControl.accessibilityHint = "Switch between diet and exercise plans"
         
-        // Announce initial state
         announceAccessibilityUpdate("My Plan screen loaded. Currently showing \(currentSegmentValue == 0 ? "diet" : "exercise") plan.")
     }
 

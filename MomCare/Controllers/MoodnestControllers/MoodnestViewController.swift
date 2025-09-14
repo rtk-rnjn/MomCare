@@ -43,17 +43,14 @@ class MoodNestViewController: UIViewController, UICollectionViewDataSource, UICo
         let moodName = mood?.rawValue ?? "mood"
         setupBasicAccessibility(title: "Music for \(moodName)")
         
-        // Configure collection view
         collectionView.accessibilityLabel = "Music playlists"
         collectionView.accessibilityHint = "Browse calming music playlists for your current mood"
         collectionView.isAccessibilityElement = false
         collectionView.shouldGroupAccessibilityChildren = true
         
-        // Configure outer view
         outerView.accessibilityLabel = "Music content area"
         outerView.isAccessibilityElement = false
         
-        // Announce screen load
         announceAccessibilityUpdate("Music playlists loading for \(moodName) mood")
     }
     

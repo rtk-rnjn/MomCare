@@ -22,18 +22,15 @@ class LoginTableViewController: UITableViewController, UITextFieldDelegate {
     private func setupAccessibility() {
         setupBasicAccessibility(title: "Sign In")
         
-        // Configure form fields
-        setupFormAccessibility(fields: [
+        setupFormAccessibilityForTextFields(fields: [
             (textField: emailAddressField, label: "Email address", hint: "Enter your email address to sign in"),
             (textField: passwordField, label: "Password", hint: "Enter your password")
         ])
         
-        // Configure sign in button
-        setupButtonAccessibility(buttons: [
+        setupButtonAccessibilityWithMinimumTouchTargets(buttons: [
             (button: signInButton, label: "Sign In", hint: "Tap to sign in to your MomCare account")
         ])
         
-        // Set up specific text field properties
         emailAddressField.textContentType = .emailAddress
         emailAddressField.keyboardType = .emailAddress
         emailAddressField.autocapitalizationType = .none
@@ -41,11 +38,9 @@ class LoginTableViewController: UITableViewController, UITextFieldDelegate {
         passwordField.textContentType = .password
         passwordField.isSecureTextEntry = true
         
-        // Enable Dynamic Type
         emailAddressField.adjustsFontForContentSizeCategory = true
         passwordField.adjustsFontForContentSizeCategory = true
         
-        // Validate color contrast for accessibility
         validateColorContrast()
     }
 
