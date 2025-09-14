@@ -795,7 +795,7 @@ struct CompactInfoCard: View {
 
                 // Title - slightly smaller font with minimized spacing
                 Text(title)
-                    .font(.system(size: 14, weight: .semibold, design: .default))
+                    .scaledFont(size: 14, weight: .semibold)
                     .foregroundColor(.primary)
                     .lineLimit(1)
                     .accessibilityAddTraits(.isHeader)
@@ -803,7 +803,7 @@ struct CompactInfoCard: View {
 
             // Preview text with more space
             Text(previewText)
-                .font(.system(size: 14))
+                .scaledFont(size: 14)
                 .foregroundColor(.secondary)
                 .lineLimit(5)
                 .lineSpacing(1)

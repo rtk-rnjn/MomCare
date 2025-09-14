@@ -17,17 +17,20 @@ struct TermsOfServiceView: View {
                                                             .font(.system(size: 60, weight: .bold))
                                                             .foregroundColor(accentColor)
                         }
+                        .accessibilityHidden(true)
 
                         Text("Good rules create a space where everyone can feel safe and respected.")
                             .font(.system(size: 28, weight: .semibold, design: .default))
                                 .tracking(-0.5)
                                 .multilineTextAlignment(.center)
                                 .lineSpacing(0)
+                                .accessibilityAddTraits(.isHeader)
 
                         Text("Clarity is the foundation of trust. Our terms are designed to be clear, so our relationship can be strong.")
                             .font(.subheadline)
                                                     .foregroundColor(.primary)
                                                     .multilineTextAlignment(.center)
+                                                    .accessibilityAddTraits(.isStaticText)
                                             }
                                             .padding(.top, 32)
                                             .padding(.bottom, 8)
@@ -79,15 +82,18 @@ struct LegalSectionView: View {
                     .font(.title2)
                     .foregroundColor(accentColor)
                     .frame(width: 24, alignment: .center)
+                    .accessibilityHidden(true)
 
                 Text(title)
                     .font(.title3.weight(.semibold))
+                    .accessibilityAddTraits(.isHeader)
             }
 
             Text(.init(content.trimmingCharacters(in: .whitespacesAndNewlines)))
                 .font(.subheadline)
                 .foregroundColor(.primary)
                 .lineSpacing(4)
+                .accessibilityAddTraits(.isStaticText)
         }
     }
 }
@@ -102,8 +108,10 @@ struct EligibilitySectionView: View {
                     .font(.title2)
                     .foregroundColor(accentColor)
                     .frame(width: 24, alignment: .center)
+                    .accessibilityHidden(true)
                 Text("Eligibility – Who Can Use MomCare")
                     .font(.title3.weight(.semibold))
+                    .accessibilityAddTraits(.isHeader)
             }
 
             VStack(alignment: .leading, spacing: 10) {
@@ -116,6 +124,7 @@ struct EligibilitySectionView: View {
                 .font(.subheadline)
                 .foregroundColor(.primary)
                 .padding(.top, 8)
+                .accessibilityAddTraits(.isStaticText)
         }
     }
 }

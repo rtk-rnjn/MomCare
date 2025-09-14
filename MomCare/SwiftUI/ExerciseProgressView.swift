@@ -215,7 +215,7 @@ struct ExerciseProgressView: View {
                     .accessibilityHidden(true)
 
                 Text("Walking")
-                    .font(.system(size: 20, weight: .bold))
+                    .scaledFont(size: 20, weight: .bold)
                     .foregroundColor(.primary)
                     .accessibilityAddTraits(.isHeader)
             }
@@ -224,7 +224,7 @@ struct ExerciseProgressView: View {
 
             VStack(alignment: .trailing, spacing: 2) {
                 Text("\(Int(currentSteps / targetSteps * 100))% Completed")
-                    .font(.system(size: 14, weight: .semibold))
+                    .scaledFont(size: 14, weight: .semibold)
                     .foregroundColor(Color(hex: "924350"))
 
                 if currentSteps / targetSteps >= 1 {
@@ -296,7 +296,7 @@ struct ExerciseProgressView: View {
             // Section header
             HStack {
                 Text("Today's Exercises")
-                    .font(.system(size: 18, weight: .semibold))
+                    .scaledFont(size: 18, weight: .semibold)
                     .foregroundColor(.primary)
                     .accessibilityAddTraits(.isHeader)
 

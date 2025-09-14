@@ -39,6 +39,9 @@ class DietProgressCollectionViewCell: UICollectionViewCell {
 
         let caloriesGoal = MomCareUser.shared.user?.plan.totalCalories ?? 1
         caloriesGoalLabel.text = "/ \(Int(caloriesGoal)) kcal"
+        
+        // Set up accessibility
+        setupAccessibility()
 
         Task {
             await HealthKitHandler.shared.readCaloriesIntake { caloriesIntake in
@@ -53,9 +56,38 @@ class DietProgressCollectionViewCell: UICollectionViewCell {
                     var displayProgress = Int(progress * 100)
                     displayProgress = displayProgress > 100 ? 100 : displayProgress
                     self.percentageLabel.text = "\(displayProgress)%"
+                    
+                    // Update accessibility after data loads
+                    self.updateAccessibilityWithCurrentData()
                 }
             }
         }
+    }
+    
+    private func setupAccessibility() {
+        // Enable Dynamic Type support
+        currentKcalLabel.adjustsFontForContentSizeCategory = true
+        caloriesGoalLabel.adjustsFontForContentSizeCategory = true
+        percentageLabel.adjustsFontForContentSizeCategory = true
+        
+        // Set up accessibility traits
+        contentView.accessibilityTraits = .button
+        contentView.accessibilityLabel = "Diet progress"
+        contentView.accessibilityHint = "Tap to view detailed diet information"
+        
+        // Hide individual labels from accessibility since we'll combine them
+        currentKcalLabel.isAccessibilityElement = false
+        caloriesGoalLabel.isAccessibilityElement = false
+        percentageLabel.isAccessibilityElement = false
+        progressBar.isAccessibilityElement = false
+    }
+    
+    private func updateAccessibilityWithCurrentData() {
+        let caloriesGoal = MomCareUser.shared.user?.plan.totalCalories ?? 1
+        let progress = Float(currentCaloriesIntake) / Float(caloriesGoal)
+        let displayProgress = Int(min(progress * 100, 100))
+        
+        contentView.accessibilityValue = "Current intake: \(currentCaloriesIntake) calories out of \(Int(caloriesGoal)) goal. \(displayProgress)% complete"
     }
 
     // MARK: Private

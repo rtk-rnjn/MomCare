@@ -20,6 +20,23 @@ class HealthDetailsTableViewController: UITableViewController {
         super.viewDidLoad()
         navigationController?.navigationBar.tintColor = UIColor(hex: "#924350")
         updatePageElements()
+        setupAccessibility()
+    }
+    
+    private func setupAccessibility() {
+        // Set up accessibility for the date picker
+        userDueDate.accessibilityLabel = "Due date"
+        userDueDate.accessibilityHint = "Select your pregnancy due date"
+        
+        // Set up accessibility for the buttons
+        userMedicalConditions.accessibilityLabel = "Medical conditions"
+        userMedicalConditions.accessibilityHint = "Tap to select your pre-existing medical conditions"
+        
+        userDietaryPreferences.accessibilityLabel = "Dietary preferences"
+        userDietaryPreferences.accessibilityHint = "Tap to select your dietary preferences"
+        
+        userAllergies.accessibilityLabel = "Food allergies and intolerances"
+        userAllergies.accessibilityHint = "Tap to select your food allergies and intolerances"
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -88,15 +105,38 @@ class HealthDetailsTableViewController: UITableViewController {
         userMedicalConditions.isUserInteractionEnabled = isEditingMode
         userDietaryPreferences.isUserInteractionEnabled = isEditingMode
         userAllergies.isUserInteractionEnabled = isEditingMode
+        
+        // Update accessibility hints based on editing mode
+        if isEditingMode {
+            userDueDate.accessibilityHint = "Swipe up or down to change the due date"
+            userMedicalConditions.accessibilityHint = "Tap to select your pre-existing medical conditions"
+            userDietaryPreferences.accessibilityHint = "Tap to select your dietary preferences"
+            userAllergies.accessibilityHint = "Tap to select your food allergies and intolerances"
+        } else {
+            userDueDate.accessibilityHint = "Your pregnancy due date. Tap edit to change."
+            userMedicalConditions.accessibilityHint = "Your medical conditions. Tap edit to change."
+            userDietaryPreferences.accessibilityHint = "Your dietary preferences. Tap edit to change."
+            userAllergies.accessibilityHint = "Your food allergies. Tap edit to change."
+        }
     }
 
     func updatePageElements() {
         guard let userMedical = MomCareUser.shared.user?.medicalData else { return }
 
         userDueDate.date = userMedical.dueDate!
-        userMedicalConditions.setTitle("\(userMedical.preExistingConditions.count)", for: .normal)
-        userDietaryPreferences.setTitle("\(userMedical.dietaryPreferences.count)", for: .normal)
-        userAllergies.setTitle("\(userMedical.foodIntolerances.count)", for: .normal)
+        
+        // Update button titles and accessibility values
+        let conditionsCount = userMedical.preExistingConditions.count
+        userMedicalConditions.setTitle("\(conditionsCount)", for: .normal)
+        userMedicalConditions.accessibilityValue = conditionsCount == 0 ? "No conditions selected" : "\(conditionsCount) conditions selected"
+        
+        let preferencesCount = userMedical.dietaryPreferences.count
+        userDietaryPreferences.setTitle("\(preferencesCount)", for: .normal)
+        userDietaryPreferences.accessibilityValue = preferencesCount == 0 ? "No preferences selected" : "\(preferencesCount) preferences selected"
+        
+        let intolerancesCount = userMedical.foodIntolerances.count
+        userAllergies.setTitle("\(intolerancesCount)", for: .normal)
+        userAllergies.accessibilityValue = intolerancesCount == 0 ? "No allergies selected" : "\(intolerancesCount) allergies selected"
     }
 
     func saveHealthDetails() {}

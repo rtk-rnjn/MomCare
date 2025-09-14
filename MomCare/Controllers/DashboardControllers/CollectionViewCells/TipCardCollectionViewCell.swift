@@ -13,6 +13,15 @@ class TipCardCollectionViewCell: UICollectionViewCell {
 
     func updateElements(with tip: Tip) {
         currentTipLabel.text = tip.dailyTip
+        
+        // Set up accessibility
+        currentTipLabel.accessibilityLabel = "Daily tip"
+        currentTipLabel.accessibilityValue = tip.dailyTip
+        currentTipLabel.accessibilityTraits = .staticText
+        
+        // Enable automatic font sizing for Dynamic Type
+        currentTipLabel.adjustsFontForContentSizeCategory = true
+        currentTipLabel.font = UIFont.preferredFont(forTextStyle: .body)
     }
 
 }
