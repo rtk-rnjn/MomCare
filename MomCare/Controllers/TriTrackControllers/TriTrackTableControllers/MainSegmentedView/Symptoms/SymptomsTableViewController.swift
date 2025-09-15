@@ -79,6 +79,7 @@ class SymptomsTableViewController: UITableViewController {
         let detailView = SymptomDetailView(symptom: symptomToShow)
         let hostingController = UIHostingController(rootView: detailView)
         navigationController?.pushViewController(hostingController, animated: true)
+        tableView.deselectRow(at: indexPath, animated: true)
     }
 
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {

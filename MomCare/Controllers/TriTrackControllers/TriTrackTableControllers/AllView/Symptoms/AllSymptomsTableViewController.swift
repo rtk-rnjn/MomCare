@@ -72,7 +72,8 @@ class AllSymptomsTableViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let selectedEvent = symptoms![indexPath.row]
+        guard let symptoms = symptoms else { return }
+        let selectedEvent = symptoms[indexPath.row]
         guard let symptomNameToFind = selectedEvent.title else { return }
 
         guard let symptomToShow = PregnancySymptoms.allSymptoms.first(where: { $0.name == symptomNameToFind }) else {
@@ -83,6 +84,7 @@ class AllSymptomsTableViewController: UITableViewController {
         let detailView = SymptomDetailView(symptom: symptomToShow)
         let hostingController = UIHostingController(rootView: detailView)
         navigationController?.pushViewController(hostingController, animated: true)
+        tableView.deselectRow(at: indexPath, animated: true)
     }
 
     override func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
@@ -91,11 +93,12 @@ class AllSymptomsTableViewController: UITableViewController {
         return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in
 
             let deleteAction = UIAction(title: "Delete", image: UIImage(systemName: "trash"), attributes: .destructive) { _ in
-                Task {
-                    await EventKitHandler.shared.deleteEvent(event: event!)
+                    guard let event = event else { return }
+                    await EventKitHandler.shared.deleteEvent(event: event)
                     DispatchQueue.main.async {
                         self.symptoms?.remove(at: indexPath.row)
                         self.tableView.deleteRows(at: [indexPath], with: .automatic)
+                    }
                    }
                 }
             }
