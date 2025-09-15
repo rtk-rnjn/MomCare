@@ -72,7 +72,8 @@ class AllSymptomsTableViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let selectedEvent = symptoms![indexPath.row]
+        guard let symptoms = symptoms else { return }
+        let selectedEvent = symptoms[indexPath.row]
         guard let symptomNameToFind = selectedEvent.title else { return }
 
         guard let symptomToShow = PregnancySymptoms.allSymptoms.first(where: { $0.name == symptomNameToFind }) else {
