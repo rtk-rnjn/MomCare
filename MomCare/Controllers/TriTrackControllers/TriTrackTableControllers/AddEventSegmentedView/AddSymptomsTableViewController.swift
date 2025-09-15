@@ -26,12 +26,6 @@ class AddSymptomsTableViewController: UITableViewController, UITextFieldDelegate
         showSymptomsSelector()
     }
 
-    func textFieldDidEndEditing(_ textField: UITextField) {
-        if textField == titleField {
-            titleField.isUserInteractionEnabled = false
-        }
-    }
-
     // MARK: Private
 
     private func showSymptomsSelector() {
