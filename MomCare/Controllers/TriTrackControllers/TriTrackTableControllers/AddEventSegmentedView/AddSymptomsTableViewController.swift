@@ -26,10 +26,6 @@ class AddSymptomsTableViewController: UITableViewController, UITextFieldDelegate
         showSymptomsSelector()
     }
 
-    func textFieldDidEndEditing(_ textField: UITextField) {
-        // No need to disable user interaction here; handled elsewhere if needed.
-    }
-
     // MARK: Private
 
     private func showSymptomsSelector() {
