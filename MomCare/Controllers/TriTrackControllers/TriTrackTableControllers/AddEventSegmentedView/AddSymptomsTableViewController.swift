@@ -27,9 +27,7 @@ class AddSymptomsTableViewController: UITableViewController, UITextFieldDelegate
     }
 
     func textFieldDidEndEditing(_ textField: UITextField) {
-        if textField == titleField {
-            titleField.isUserInteractionEnabled = false
-        }
+        // No need to disable user interaction here; handled elsewhere if needed.
     }
 
     // MARK: Private
