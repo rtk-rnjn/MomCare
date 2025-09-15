@@ -13,7 +13,7 @@ class AllSymptomsTableViewController: UITableViewController {
 
     // MARK: Internal
 
-    var symptoms: [EventInfo]? = []
+    var symptoms: [EventInfo] = []
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -57,14 +57,13 @@ class AllSymptomsTableViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return symptoms?.count ?? 0
+        return symptoms.count
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "AllSymptomsTableViewCell", for: indexPath) as? AllSymptomsTableViewCell
 
         guard let cell else { fatalError() }
-        guard let symptoms else { return cell }
 
         cell.updateElements(with: symptoms[indexPath.row])
 
@@ -72,7 +71,6 @@ class AllSymptomsTableViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        guard let symptoms = symptoms else { return }
         let selectedEvent = symptoms[indexPath.row]
         guard let symptomNameToFind = selectedEvent.title else { return }
 
@@ -88,21 +86,20 @@ class AllSymptomsTableViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
-        let event = symptoms?[indexPath.row]
+        guard indexPath.row < symptoms.count else {
+            return nil
+        }
+        let event = symptoms[indexPath.row]
 
         return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in
 
             let deleteAction = UIAction(title: "Delete", image: UIImage(systemName: "trash"), attributes: .destructive) { _ in
-                guard let event = event else { return }
                 Task {
                     await EventKitHandler.shared.deleteEvent(event: event)
                     DispatchQueue.main.async {
-                        self.tableView.performBatchUpdates({
-                            self.symptoms?.remove(at: indexPath.row)
-                            self.tableView.deleteRows(at: [indexPath], with: .automatic)
-                        }, completion: nil)
+                        self.symptoms.remove(at: indexPath.row)
+                        self.tableView.deleteRows(at: [indexPath], with: .automatic)
                     }
-                }
                 }
             }
 

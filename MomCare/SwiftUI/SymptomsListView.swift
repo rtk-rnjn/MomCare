@@ -11,7 +11,7 @@ struct SymptomsListView: View {
     let onSelect: (Symptom?) -> Void
     @Environment(\.dismiss) var dismiss
     @State private var searchText = ""
-    
+
     var filteredSymptoms: [Symptom] {
         if searchText.isEmpty {
             return PregnancySymptoms.allSymptoms
@@ -19,7 +19,7 @@ struct SymptomsListView: View {
             return PregnancySymptoms.allSymptoms.filter { $0.name.localizedCaseInsensitiveContains(searchText) }
         }
     }
-    
+
     var body: some View {
         NavigationStack {
             List {
@@ -32,7 +32,7 @@ struct SymptomsListView: View {
                             .foregroundColor(.primary)
                     }
                 }
-                
+
                 Section {
                     ForEach(filteredSymptoms) { symptom in
                         Button(action: {
