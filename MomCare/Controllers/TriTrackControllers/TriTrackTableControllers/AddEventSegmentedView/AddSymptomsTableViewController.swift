@@ -41,11 +41,9 @@ class AddSymptomsTableViewController: UITableViewController, UITextFieldDelegate
                 self.titleField.isUserInteractionEnabled = false
                 self.notesField.becomeFirstResponder()
             } else {
-                DispatchQueue.main.async {
-                    self.titleField.text = ""
-                    self.titleField.isUserInteractionEnabled = true
-                    self.titleField.becomeFirstResponder()
-               }
+                self.titleField.text = ""
+                self.titleField.isUserInteractionEnabled = true
+                self.titleField.becomeFirstResponder()
             }
         }
 
