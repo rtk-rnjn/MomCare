@@ -204,7 +204,7 @@ enum PregnancySymptoms {
             description: "Bleeding during pregnancy requires medical attention to rule out serious conditions. While light spotting can be normal in early pregnancy, it should always be checked.",
             remedies: ["There are no home remedies. Your only action should be to contact your doctor or midwife immediately."],
             whenToCallDoctor: "Call your doctor or go to the hospital immediately for any amount of vaginal bleeding, with or without pain or cramping.",
-            sources: "[NHS](https://www.nhs.uk/pregnancy/related-conditions/common-symptoms/vaginal-bleeding/), https://www.mayoclinic.org/symptoms/bleeding-during-pregnancy/basics/when-to-see-doctor/sym-20050636"
+            sources: "[NHS](https://www.nhs.uk/pregnancy/related-conditions/common-symptoms/vaginal-bleeding/), [Mayo Clinic](https://www.mayoclinic.org/symptoms/bleeding-during-pregnancy/basics/when-to-see-doctor/sym-20050636)"
         ),
         Symptom(
             name: "Vaginal Discharge",
