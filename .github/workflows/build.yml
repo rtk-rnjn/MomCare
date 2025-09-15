@@ -2,6 +2,7 @@ name: iOS starter workflow
 
 permissions:
   contents: read
+  pull-requests: write
 
 on:
   push:
@@ -56,6 +57,7 @@ jobs:
           echo Using default scheme: $default
 
       - name: Build
+        id: buildstep
         env:
           scheme: ${{ 'default' }}
           platform: ${{ 'iOS Simulator' }}
@@ -64,3 +66,47 @@ jobs:
           if [ -n "$(ls -A | grep -i \\.xcworkspace\$)" ]; then filetype_parameter="workspace" && file_to_build=$(ls -A | grep -i \\.xcworkspace\$); else filetype_parameter="project" && file_to_build=$(ls -A | grep -i \\.xcodeproj\$); fi
           file_to_build=$(echo $file_to_build | awk '{$1=$1;print}')
           xcodebuild clean build -scheme "$scheme" -"$filetype_parameter" "$file_to_build" -destination "platform=$platform,name=iPhone 16 Pro,OS=18.4"
+
+  label-build-status:
+    needs: build
+    if: always() && github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Add build-pass label if build succeeded
+        if: ${{ needs.build.result == 'success' }}
+        uses: actions/github-script@v7
+        with:
+          script: |
+            github.rest.issues.addLabels({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              labels: ['build-pass']
+            })
+            await github.rest.issues.removeLabel({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.issue.number,
+                name: 'build-fail'
+            }).catch(e => {
+                if (e.status !== 404) throw e
+            })
+      - name: Add build-fail label if build failed
+        if: ${{ needs.build.result == 'failure' }}
+        uses: actions/github-script@v7
+        with:
+          script: |
+            github.rest.issues.addLabels({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              labels: ['build-fail']
+            })
+            await github.rest.issues.removeLabel({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.issue.number,
+                name: 'build-pass'
+            }).catch(e => {
+                if (e.status !== 404) throw e
+            })

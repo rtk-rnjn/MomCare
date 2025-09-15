@@ -1,11 +1,8 @@
-name: SwiftLint & SwiftFormat
+name: SwiftLint & SwiftFormat Autofix
 
 on:
-  push:
-    branches:
-      - main
-    paths:
-      - "**/*.swift"
+  pull_request:
+    types: [labeled, unlabeled, synchronize, opened, reopened]
 
 permissions:
   contents: write
@@ -19,8 +16,16 @@ jobs:
   lint:
     name: Autofix - SwiftLint & SwiftFormat
     runs-on: macos-latest
-
+    if: contains(github.event.pull_request.labels.*.name, 'autofix-run')
     steps:
+      - name: Check if already autofixed
+        id: already-autofixed
+        run: |
+          if echo "${{ toJson(github.event.pull_request.labels) }}" | grep -q '"name":"autofix-run"'; then
+            echo "Autofix already run, skipping."
+            exit 78
+          fi
+
       - name: Checkout code
         uses: actions/checkout@v4
 
@@ -35,38 +40,10 @@ jobs:
       - name: Run SwiftFormat Fix
         run: swiftformat .
 
-      - name: Commit changes and push to new branch
+      - name: Commit changes and push to the same branch
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          BRANCH_NAME="autofix/swiftlint-swiftformat-$(date +%s)"
-          git checkout -b "$BRANCH_NAME"
-          git add .
-          git diff --cached > diff.log
-          if git commit -m "Auto-fix SwiftLint & SwiftFormat issues"; then
-            git push origin "$BRANCH_NAME"
-            echo "branch_name=$BRANCH_NAME" >> $GITHUB_ENV
-            echo "changes_made=true" >> $GITHUB_ENV
-          else
-            echo "No changes to commit"
-            echo "changes_made=false" >> $GITHUB_ENV
-          fi
-
-      - name: Create Pull Request
-        if: env.changes_made == 'true'
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          gh pr create \
-            --title "Auto-fix: SwiftLint & SwiftFormat" \
-            --body "$(echo -e '### Description\n\nThis pull request applies automatic fixes using **SwiftLint** and **SwiftFormat** to ensure consistent style and coding standards across the Swift codebase.\n\n#### What'\''s included:\n- Applied `swiftlint --fix`\n- Applied `swiftformat .`\n- See the full diff below for exact code modifications\n\n<details>\n<summary>Click to view diff</summary>\n\n```\ndiff\n$(cat diff.log)\n```\n\n</details>\n\n> This PR was created automatically by a GitHub Action. Please review and approve.')" \
-            --base main \
-            --head "${{ env.branch_name }}" \
-            --reviewer rtk-rnjn,write2nupu,khushi-rana-25,Arayauchiha \
-            --label "autofix"
-
-      - name: Run SwiftLint in Lint Mode
-        run: swiftlint lint --strict --quiet --reporter github-actions-logging
-
-      - name: Run SwiftFormat in Lint Mode
-        run: swiftformat --quiet --strict --reporter github-actions-log --lint .
+          git add -A
+          git diff-index --quiet HEAD || git commit -m "chore: auto-fix"
+          git push
