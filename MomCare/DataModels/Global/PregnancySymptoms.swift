@@ -34,7 +34,7 @@ enum PregnancySymptoms {
             description: "The pregnancy hormone progesterone slows down your digestive system. The pressure of your growing uterus on your rectum can also contribute.",
             remedies: ["Eat a high-fiber diet (fruits, vegetables, whole grains).", "Drink plenty of water throughout the day.", "Engage in regular physical activity.", "Talk to your doctor before taking any laxatives."],
             whenToCallDoctor: "If you have severe abdominal pain, constipation lasts for more than a week, or it's accompanied by nausea and vomiting.",
-            sources: "Mayo Clinic](https://www.mayoclinic.org/healthy-lifestyle/pregnancy-week-by-week/expert-answers/pregnancy-constipation/faq-20058550)"
+            sources: "[Mayo Clinic](https://www.mayoclinic.org/healthy-lifestyle/pregnancy-week-by-week/expert-answers/pregnancy-constipation/faq-20058550)"
         ),
         Symptom(
             name: "Cramps",
@@ -97,7 +97,7 @@ enum PregnancySymptoms {
             description: "Pregnancy hormones relax the muscular valve at the top of the stomach, allowing stomach acid to flow back up into the esophagus.",
             remedies: ["Eat smaller, more frequent meals.", "Avoid spicy, fatty, and acidic foods.", "Stay upright for at least an hour after eating.", "Prop your head up with extra pillows when sleeping."],
             whenToCallDoctor: "If heartburn is severe, prevents you from eating or sleeping, or if you have difficulty swallowing.",
-            sources: "NHS(https://www.nhs.uk/pregnancy/related-conditions/common-symptoms/indigestion-and-heartburn/)"
+            sources: "[NHS](https://www.nhs.uk/pregnancy/related-conditions/common-symptoms/indigestion-and-heartburn/)"
         ),
         Symptom(
             name: "Leaking from Nipples",
@@ -204,7 +204,7 @@ enum PregnancySymptoms {
             description: "Bleeding during pregnancy requires medical attention to rule out serious conditions. While light spotting can be normal in early pregnancy, it should always be checked.",
             remedies: ["There are no home remedies. Your only action should be to contact your doctor or midwife immediately."],
             whenToCallDoctor: "Call your doctor or go to the hospital immediately for any amount of vaginal bleeding, with or without pain or cramping.",
-            sources: "[NHS](https://www.nhs.uk/pregnancy/related-conditions/common-symptoms/vaginal-bleeding/), https://www.mayoclinic.org/symptoms/bleeding-during-pregnancy/basics/when-to-see-doctor/sym-20050636"
+            sources: "[NHS](https://www.nhs.uk/pregnancy/related-conditions/common-symptoms/vaginal-bleeding/), [Mayo Clinic](https://www.mayoclinic.org/symptoms/bleeding-during-pregnancy/basics/when-to-see-doctor/sym-20050636)"
         ),
         Symptom(
             name: "Vaginal Discharge",

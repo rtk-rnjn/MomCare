@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct SymptomListView: View {
+struct SymptomsListView: View {
     let onSelect: (Symptom?) -> Void
     @Environment(\.dismiss) var dismiss
     @State private var searchText = ""

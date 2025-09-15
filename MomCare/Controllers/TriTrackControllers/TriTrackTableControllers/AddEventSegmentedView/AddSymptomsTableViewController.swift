@@ -35,7 +35,7 @@ class AddSymptomsTableViewController: UITableViewController, UITextFieldDelegate
     // MARK: Private
 
     private func showSymptomsSelector() {
-        let symptomsListView = SymptomListView { selectedSymptom in
+        let symptomsListView = SymptomsListView { selectedSymptom in
             if let symptom = selectedSymptom {
                 self.titleField.text = symptom.name
                 self.titleField.isUserInteractionEnabled = false
