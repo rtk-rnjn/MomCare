@@ -6,6 +6,7 @@
 
 import UIKit
 import EventKit
+import SwiftUI
 
 class SymptomsTableViewController: UITableViewController {
     var triTrackViewController: TriTrackViewController?
@@ -67,15 +68,18 @@ class SymptomsTableViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let event = events[indexPath.section]
+        let selectedEvent = events[indexPath.section]
+        guard let symptomNameToFind = selectedEvent.title else { return }
 
-        Task {
-            await delegate.presentEKEventViewController(with: event)
-
-            DispatchQueue.main.async {
-                self.tableView.deselectRow(at: indexPath, animated: true)
-            }
+        guard let symptomToShow = PregnancySymptoms.allSymptoms.first(where: { $0.name == symptomNameToFind }) else {
+            tableView.deselectRow(at: indexPath, animated: true)
+            return
         }
+
+        let detailView = SymptomDetailView(symptom: symptomToShow)
+        let hostingController = UIHostingController(rootView: detailView)
+        navigationController?.pushViewController(hostingController, animated: true)
+        tableView.deselectRow(at: indexPath, animated: true)
     }
 
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
