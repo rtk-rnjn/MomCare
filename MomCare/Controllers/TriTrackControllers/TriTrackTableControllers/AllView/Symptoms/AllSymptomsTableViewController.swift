@@ -93,11 +93,12 @@ class AllSymptomsTableViewController: UITableViewController {
         return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in
 
             let deleteAction = UIAction(title: "Delete", image: UIImage(systemName: "trash"), attributes: .destructive) { _ in
-                Task {
-                    await EventKitHandler.shared.deleteEvent(event: event!)
+                    guard let event = event else { return }
+                    await EventKitHandler.shared.deleteEvent(event: event)
                     DispatchQueue.main.async {
                         self.symptoms?.remove(at: indexPath.row)
                         self.tableView.deleteRows(at: [indexPath], with: .automatic)
+                    }
                    }
                 }
             }
