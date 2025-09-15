@@ -84,6 +84,25 @@ class AllSymptomsTableViewController: UITableViewController {
         self.navigationController?.pushViewController(hostingController, animated: true)
     }
     
+    override func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
+        let event = symptoms?[indexPath.row]
+        
+        return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in
+            
+            let deleteAction = UIAction(title: "Delete", image: UIImage(systemName: "trash"), attributes: .destructive) { _ in
+                Task {
+                    await EventKitHandler.shared.deleteEvent(event: event!)
+                    DispatchQueue.main.async {
+                        self.symptoms?.remove(at: indexPath.row)
+                        self.tableView.deleteRows(at: [indexPath], with: .automatic)
+                   }
+                }
+            }
+            
+            return UIMenu(title: "", children: [deleteAction])
+        }
+    }
+    
     // MARK: Private
 
     private func setupSymptomsHeader() {
@@ -111,4 +130,5 @@ class AllSymptomsTableViewController: UITableViewController {
 
         tableView.tableHeaderView = headerView
     }
+
 }

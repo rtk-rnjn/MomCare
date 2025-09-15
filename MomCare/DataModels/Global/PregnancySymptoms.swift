@@ -115,7 +115,7 @@ enum PregnancySymptoms {
             description: "Increased blood volume and hormonal changes can cause the delicate blood vessels in your nose to swell and rupture more easily.",
             remedies: ["Use a humidifier to keep the air moist.", "Blow your nose gently.", "If you get a nosebleed, sit down, lean forward, and pinch your nostrils firmly for 10-15 minutes."],
             whenToCallDoctor: "If you have frequent nosebleeds or if the bleeding is heavy and doesn't stop after 20 minutes of pressure.",
-            sources: "[NHS](https://www.nhs.uk/pregnancy/related-conditions/common-symptoms/nosebleeds/"
+            sources: "[NHS](https://www.nhs.uk/pregnancy/related-conditions/common-symptoms/nosebleeds/)"
         ),
         Symptom(
             name: "Peeing a Lot",
