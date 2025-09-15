@@ -83,6 +83,14 @@ jobs:
               issue_number: context.issue.number,
               labels: ['build-pass']
             })
+            await github.rest.issues.removeLabel({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.issue.number,
+                name: 'build-fail'
+            }).catch(e => {
+                if (e.status !== 404) throw e
+            })
       - name: Add build-fail label if build failed
         if: ${{ needs.build.result == 'failure' }}
         uses: actions/github-script@v7
@@ -93,4 +101,12 @@ jobs:
               repo: context.repo.repo,
               issue_number: context.issue.number,
               labels: ['build-fail']
+            })
+            await github.rest.issues.removeLabel({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.issue.number,
+                name: 'build-pass'
+            }).catch(e => {
+                if (e.status !== 404) throw e
             })
