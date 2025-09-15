@@ -83,6 +83,7 @@ class AllSymptomsTableViewController: UITableViewController {
         let detailView = SymptomDetailView(symptom: symptomToShow)
         let hostingController = UIHostingController(rootView: detailView)
         navigationController?.pushViewController(hostingController, animated: true)
+        tableView.deselectRow(at: indexPath, animated: true)
     }
 
     override func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
