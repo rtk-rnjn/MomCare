@@ -97,8 +97,10 @@ class AllSymptomsTableViewController: UITableViewController {
                 Task {
                     await EventKitHandler.shared.deleteEvent(event: event)
                     DispatchQueue.main.async {
-                        self.symptoms?.remove(at: indexPath.row)
-                        self.tableView.deleteRows(at: [indexPath], with: .automatic)
+                        self.tableView.performBatchUpdates({
+                            self.symptoms?.remove(at: indexPath.row)
+                            self.tableView.deleteRows(at: [indexPath], with: .automatic)
+                        }, completion: nil)
                     }
                 }
                 }
