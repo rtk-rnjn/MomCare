@@ -7,11 +7,11 @@
 
 import UIKit
 import EventKit
+import SwiftUI
 
 class AllSymptomsTableViewController: UITableViewController {
 
     // MARK: Internal
-
     var symptoms: [EventInfo]? = []
 
     override func viewDidLoad() {
@@ -69,7 +69,21 @@ class AllSymptomsTableViewController: UITableViewController {
 
         return cell
     }
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let selectedEvent = symptoms![indexPath.row]
+        guard let symptomNameToFind = selectedEvent.title else { return }
+        
+        guard let symptomToShow = PregnancySymptoms.allSymptoms.first(where: { $0.name == symptomNameToFind }) else {
+            tableView.deselectRow(at: indexPath, animated: true)
+            return
+        }
 
+        let detailView = SymptomDetailView(symptom: symptomToShow)
+        let hostingController = UIHostingController(rootView: detailView)
+        self.navigationController?.pushViewController(hostingController, animated: true)
+    }
+    
     // MARK: Private
 
     private func setupSymptomsHeader() {
