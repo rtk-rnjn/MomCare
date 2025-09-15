@@ -31,9 +31,9 @@ struct PregnancyTrackerTimelineProvider: TimelineProvider {
 
     func getSnapshot(in context: Context, completion: @escaping (TriTrackEntry) -> Void) {
         let entry = TriTrackEntry(
-            week: 24,
-            day: 3,
-            trimester: "II",
+            week: SharedResourceSync.getWeek(),
+            day: SharedResourceSync.getDay(),
+            trimester: SharedResourceSync.getTrimester(),
             nextReminder: "Doctor Appointment 🩺",
             babyFruitName: "Papaya",
             babyFruitImageURL: "https://example.com/papaya.png"
