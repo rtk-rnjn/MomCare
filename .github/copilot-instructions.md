@@ -17,7 +17,7 @@ applyTo: '**/*.swift'
 
 - Always prioritize readability and clarity.
 - For algorithm-related code, include explanations of the approach used; otherwise avoid commenting the code at all.
-- Codes should be self-explanatory and easy to follow, and should not requires comments unless absolutely necessary.
+- Codes should be self-explanatory and easy to follow, and should not requires comments unless absolutely necessary, with the exception of `MARK` comments for organizing code.
 - Handle edge cases and write clear exception handling.
 - Use consistent naming conventions and follow language-specific best practices.
 
