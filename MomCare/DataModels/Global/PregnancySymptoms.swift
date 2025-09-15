@@ -235,3 +235,10 @@ enum PregnancySymptoms {
         )
     ]
 }
+
+private struct SymptomInfoSection: Identifiable {
+    let id: UUID = .init()
+    let title: String
+    let iconName: String
+    let content: String
+}

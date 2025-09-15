@@ -1,18 +1,4 @@
-//
-//  SymptomDetailView.swift
-//  MomCare
-//
-//  Created by Khushi on 15/09/25.
-//
-
 import SwiftUI
-
-private struct SymptomInfoSection: Identifiable {
-    let id: UUID = .init()
-    let title: String
-    let iconName: String
-    let content: String
-}
 
 struct SymptomDetailView: View {
 
@@ -124,11 +110,5 @@ struct SymptomSectionView: View {
                 .font(.body)
                 .foregroundColor(Color(.darkGray))
         }
-    }
-}
-
-#Preview {
-    NavigationStack {
-        SymptomDetailView(symptom: PregnancySymptoms.allSymptoms[0])
     }
 }

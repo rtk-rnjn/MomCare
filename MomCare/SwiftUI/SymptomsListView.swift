@@ -27,10 +27,10 @@ struct SymptomsListView: View {
                     Button(action: {
                         onSelect(nil)
                         dismiss()
-                    }) {
+                    }, label: {
                         Text("Other")
                             .foregroundColor(.primary)
-                    }
+                    })
                 }
 
                 Section {
@@ -38,10 +38,10 @@ struct SymptomsListView: View {
                         Button(action: {
                             onSelect(symptom)
                             dismiss()
-                        }) {
+                        }, label: {
                             Text(symptom.name)
                                 .foregroundColor(.primary)
-                        }
+                        })
                     }
                 }
             }
