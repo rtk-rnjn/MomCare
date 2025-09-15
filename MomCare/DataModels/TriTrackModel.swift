@@ -49,8 +49,8 @@ struct TrimesterData: Codable {
     }
 }
 
-struct Symptom: Identifiable, Hashable{
-    let id = UUID()
+struct Symptom: Identifiable, Hashable {
+    let id: UUID = .init()
     let name: String
     let whatIsIt: String
     let trimesters: [String]

@@ -397,6 +397,5 @@ enum TriTrackData { // swiftlint:disable:this type_body_length
     public static func getTrimesterData(for week: Int) -> TrimesterData? {
         return trimesterData.first { $0.weekNumber == week }
     }
-    
-    
+
 }

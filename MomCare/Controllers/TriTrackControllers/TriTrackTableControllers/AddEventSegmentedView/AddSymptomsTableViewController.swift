@@ -10,20 +10,30 @@ import SwiftUI
 
 class AddSymptomsTableViewController: UITableViewController, UITextFieldDelegate {
 
+    // MARK: Internal
+
     @IBOutlet var titleField: UITextField!
     @IBOutlet var notesField: UITextField!
     @IBOutlet var dateTime: UIDatePicker!
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         titleField.delegate = self
         titleField.placeholder = "Select or add a symptom"
     }
-    
+
     @IBAction func symptomButtonTapped(_ sender: UIButton) {
         showSymptomsSelector()
     }
-    
+
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        if textField == titleField {
+            titleField.isUserInteractionEnabled = false
+        }
+    }
+
+    // MARK: Private
+
     private func showSymptomsSelector() {
         let symptomsListView = SymptomListView { selectedSymptom in
             if let symptom = selectedSymptom {
@@ -38,15 +48,9 @@ class AddSymptomsTableViewController: UITableViewController, UITextFieldDelegate
                }
             }
         }
-        
-        let hostingController = UIHostingController(rootView: symptomsListView)
-        self.present(hostingController, animated: true, completion: nil)
-    }
-    
-    func textFieldDidEndEditing(_ textField: UITextField) {
-        if textField == titleField {
-            titleField.isUserInteractionEnabled = false
-        }
-    }
-}
 
+        let hostingController = UIHostingController(rootView: symptomsListView)
+        present(hostingController, animated: true, completion: nil)
+    }
+
+}

@@ -729,18 +729,14 @@ class ExerciseGoalsViewModel: ObservableObject {
 }
 
 private struct ExerciseImageView: View {
-    
-    // MARK: - Properties
-    
+
+    // MARK: Internal
+
     let exercise: Exercise
     let isBreathing: Bool
-    
-    // MARK: - State
-    
-    @State private var uiImage: UIImage?
-    
+
     // MARK: - Body
-    
+
     var body: some View {
         Group {
             if let uiImage {
@@ -762,9 +758,13 @@ private struct ExerciseImageView: View {
             }
         }
     }
-    
-    // MARK: - Private
-    
+
+    // MARK: Private
+
+    // MARK: - State
+
+    @State private var uiImage: UIImage?
+
     private var backgroundGradient: some View {
         LinearGradient(
             colors: [Color(hex: "FBE8E5")],

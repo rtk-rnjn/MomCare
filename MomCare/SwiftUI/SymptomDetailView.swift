@@ -8,31 +8,20 @@
 import SwiftUI
 
 private struct SymptomInfoSection: Identifiable {
-    let id = UUID()
+    let id: UUID = .init()
     let title: String
     let iconName: String
     let content: String
 }
 
 struct SymptomDetailView: View {
-    let themeColor = Color(hex: "924350")
-    let accentColor = Color(hex: "E9D3D3")
-    let symptom: Symptom
-    
-    private var topInfoSections: [SymptomInfoSection] {
-        [
-            .init(title: "What is it?", iconName: "questionmark.bubble.fill", content: symptom.whatIsIt),
-            .init(title: "Why is this happening?", iconName: "arrow.2.squarepath", content: symptom.description)
-        ]
-    }
 
-    private var bottomInfoSections: [SymptomInfoSection] {
-        [
-            .init(title: "When to call your doctor", iconName: "phone.fill", content: symptom.whenToCallDoctor),
-            .init(title: "Sources", iconName: "book.fill", content: symptom.sources)
-        ]
-    }
-    
+    // MARK: Internal
+
+    let themeColor: Color = .init(hex: "924350")
+    let accentColor: Color = .init(hex: "E9D3D3")
+    let symptom: Symptom
+
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 40) {
@@ -41,7 +30,7 @@ struct SymptomDetailView: View {
                         .font(.largeTitle)
                         .fontWeight(.bold)
                         .foregroundColor(.black)
-                    
+
                     HStack {
                         ForEach(symptom.trimesters, id: \.self) { trimester in
                             Text(trimester)
@@ -53,7 +42,7 @@ struct SymptomDetailView: View {
                         }
                     }
                 }
-                
+
                 ForEach(topInfoSections) { section in
                     SymptomSectionView(
                         title: section.title,
@@ -62,7 +51,7 @@ struct SymptomDetailView: View {
                         content: section.content
                     )
                 }
-                
+
                 VStack(alignment: .leading, spacing: 12) {
                     HStack(spacing: 10) {
                         Image(systemName: "list.bullet.clipboard.fill")
@@ -71,7 +60,7 @@ struct SymptomDetailView: View {
                             .foregroundColor(.black)
                     }
                     .font(.headline)
-                    
+
                     VStack(alignment: .leading, spacing: 10) {
                         ForEach(symptom.remedies, id: \.self) { remedy in
                             HStack(alignment: .firstTextBaseline, spacing: 8) {
@@ -102,10 +91,28 @@ struct SymptomDetailView: View {
             ToolbarItem(placement: .principal) { Text("") }
         }
     }
+
+    // MARK: Private
+
+    private var topInfoSections: [SymptomInfoSection] {
+        [
+            .init(title: "What is it?", iconName: "questionmark.bubble.fill", content: symptom.whatIsIt),
+            .init(title: "Why is this happening?", iconName: "arrow.2.squarepath", content: symptom.description)
+        ]
+    }
+
+    private var bottomInfoSections: [SymptomInfoSection] {
+        [
+            .init(title: "When to call your doctor", iconName: "phone.fill", content: symptom.whenToCallDoctor),
+            .init(title: "Sources", iconName: "book.fill", content: symptom.sources)
+        ]
+    }
+
 }
 
 struct SymptomSectionView: View {
     let title: String, iconName: String, color: Color, content: String
+
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
             HStack(spacing: 10) {
@@ -125,4 +132,3 @@ struct SymptomSectionView: View {
         SymptomDetailView(symptom: PregnancySymptoms.allSymptoms[0])
     }
 }
-

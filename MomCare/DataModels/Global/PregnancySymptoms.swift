@@ -187,7 +187,7 @@ enum PregnancySymptoms {
             description: "Your body is working hard to grow the placenta and the baby, and hormonal changes can disrupt your sleep patterns.",
             remedies: ["Listen to your body and rest or nap when you need to.", "Engage in light exercise during the day.", "Create a relaxing bedtime routine.", "Use pillows to find a comfortable sleeping position."],
             whenToCallDoctor: "If fatigue is so severe it impacts your daily life, or if you suspect you may have anemia or depression.",
-            sources: "[NHS](https://www.nhs.uk/pregnancy/related-conditions/common-symptoms/tiredness/)"        ),
+            sources: "[NHS](https://www.nhs.uk/pregnancy/related-conditions/common-symptoms/tiredness/)" ),
         Symptom(
             name: "Thrush (Yeast Infection)",
             whatIsIt: "A common vaginal yeast infection that can cause itching, irritation, and a white discharge.",

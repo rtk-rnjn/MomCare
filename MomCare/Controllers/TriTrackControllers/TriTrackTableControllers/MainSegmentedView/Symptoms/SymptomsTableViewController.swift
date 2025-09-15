@@ -70,7 +70,7 @@ class SymptomsTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let selectedEvent = events[indexPath.section]
         guard let symptomNameToFind = selectedEvent.title else { return }
-        
+
         guard let symptomToShow = PregnancySymptoms.allSymptoms.first(where: { $0.name == symptomNameToFind }) else {
             tableView.deselectRow(at: indexPath, animated: true)
             return
@@ -78,13 +78,13 @@ class SymptomsTableViewController: UITableViewController {
 
         let detailView = SymptomDetailView(symptom: symptomToShow)
         let hostingController = UIHostingController(rootView: detailView)
-        self.navigationController?.pushViewController(hostingController, animated: true)
+        navigationController?.pushViewController(hostingController, animated: true)
     }
 
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return 1
     }
-    
+
     override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
         return 3
     }
