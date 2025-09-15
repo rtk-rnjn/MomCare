@@ -34,7 +34,7 @@ enum PregnancySymptoms {
             description: "The pregnancy hormone progesterone slows down your digestive system. The pressure of your growing uterus on your rectum can also contribute.",
             remedies: ["Eat a high-fiber diet (fruits, vegetables, whole grains).", "Drink plenty of water throughout the day.", "Engage in regular physical activity.", "Talk to your doctor before taking any laxatives."],
             whenToCallDoctor: "If you have severe abdominal pain, constipation lasts for more than a week, or it's accompanied by nausea and vomiting.",
-            sources: "Mayo Clinic](https://www.mayoclinic.org/healthy-lifestyle/pregnancy-week-by-week/expert-answers/pregnancy-constipation/faq-20058550)"
+            sources: "[Mayo Clinic](https://www.mayoclinic.org/healthy-lifestyle/pregnancy-week-by-week/expert-answers/pregnancy-constipation/faq-20058550)"
         ),
         Symptom(
             name: "Cramps",
