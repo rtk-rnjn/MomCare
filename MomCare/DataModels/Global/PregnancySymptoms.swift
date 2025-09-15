@@ -97,7 +97,7 @@ enum PregnancySymptoms {
             description: "Pregnancy hormones relax the muscular valve at the top of the stomach, allowing stomach acid to flow back up into the esophagus.",
             remedies: ["Eat smaller, more frequent meals.", "Avoid spicy, fatty, and acidic foods.", "Stay upright for at least an hour after eating.", "Prop your head up with extra pillows when sleeping."],
             whenToCallDoctor: "If heartburn is severe, prevents you from eating or sleeping, or if you have difficulty swallowing.",
-            sources: "NHS(https://www.nhs.uk/pregnancy/related-conditions/common-symptoms/indigestion-and-heartburn/)"
+            sources: "[NHS](https://www.nhs.uk/pregnancy/related-conditions/common-symptoms/indigestion-and-heartburn/)"
         ),
         Symptom(
             name: "Leaking from Nipples",
