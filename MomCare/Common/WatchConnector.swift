@@ -63,9 +63,7 @@ class WatchConnector: NSObject, ObservableObject {
 
 // MARK: - WCSessionDelegate
 extension WatchConnector: @preconcurrency WCSessionDelegate {
-    func session(_ session: WCSession,
-                             activationDidCompleteWith activationState: WCSessionActivationState,
-                             error: (any Error)?) {
+    func session(_ session: WCSession, activationDidCompleteWith activationState: WCSessionActivationState, error: (any Error)?) {
         DispatchQueue.main.async {
             self.activationState = activationState
         }
