@@ -120,12 +120,10 @@ actor EventKitHandler {
     func fetchAppointments(startDate: Date? = nil, endDate: Date? = nil) -> [EventInfo] {
         let events = fetchEvents(startDate: startDate, endDate: endDate).map { getEventInfo(from: $0) }
         let symptoms = fetchAllSymptoms()
-        
+
         let symptomIds = Set(symptoms.map { $0.eventIdentifier })
-        
-        let results = events.filter { !symptomIds.contains($0.eventIdentifier) }
-        
-        return results
+
+        return events.filter { !symptomIds.contains($0.eventIdentifier) }
     }
 
     func fetchAllAppointments() -> [EventInfo] {
