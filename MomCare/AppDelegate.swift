@@ -16,7 +16,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
 
         UNUserNotificationCenter.current().delegate = self
-        try? WatchConnector.shared.session.updateApplicationContext([:])
+        _ = WatchConnector.shared
 
         return true
     }

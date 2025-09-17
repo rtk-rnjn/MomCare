@@ -8,14 +8,23 @@
 import SwiftUI
 
 struct ContentView: View {
-    @ObservedObject var watchConnector: WatchConnector = .init()
+    @ObservedObject var watcher: Watcher = .shared
 
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
+        VStack(spacing: 20) {
+            Image(systemName: "applewatch")
+                .resizable()
+                .scaledToFit()
+                .frame(width: 60, height: 60)
                 .foregroundStyle(.tint)
-            Text("Hello, world!")
+
+            if watcher.pongReceived {
+                Text("⌚️ MomCare+ is running")
+                    .foregroundColor(.green)
+            } else {
+                Text("⌚️ Waiting for MomCare+")
+                    .foregroundColor(.secondary)
+            }
         }
         .padding()
     }

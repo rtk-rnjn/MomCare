@@ -1,7 +1,7 @@
 import UIKit
 import SwiftUI
 
-class AboutusViewController: UIHostingController<AboutUsView> {
+class AboutUsViewController: UIHostingController<AboutUsView> {
 
     init() {
         super.init(rootView: AboutUsView())
