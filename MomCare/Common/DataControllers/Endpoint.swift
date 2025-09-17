@@ -29,8 +29,10 @@ enum Endpoint: String {
     case search = "/content/search"
     case searchFoodName = "/content/search/food-name"
     case searchFoodImage = "/content/search/food-name/%@/image"
+    case searchSymptoms = "/content/search/symptoms"
     case tips = "/content/tips"
     case exercises = "/content/exercises"
+    case trimesterData = "/content/trimester-data"
 
     // Content S3
     case contentS3File = "/content/s3/file/%@"
