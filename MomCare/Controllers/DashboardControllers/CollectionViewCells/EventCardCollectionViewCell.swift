@@ -45,7 +45,7 @@ class EventCardCollectionViewCell: UICollectionViewCell {
             dateFormatter.dateFormat = "dd MMMM"
             eventDateLabel.isHidden = false
             addEventButton.isHidden = !eventDateLabel.isHidden
-            eventDateLabel.text = dateFormatter.string(from: event.startDate ?? .init())
+            eventDateLabel.text = dateFormatter.string(from: event.startDate)
         }
 
         self.tapHandler = tapHandler

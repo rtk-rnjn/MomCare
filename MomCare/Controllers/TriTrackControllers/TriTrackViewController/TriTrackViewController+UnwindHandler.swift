@@ -50,9 +50,10 @@ extension TriTrackViewController {
     private func handleSymptomsView(with viewController: TriTrackAddEventViewController) {
         guard let title = viewController.addSymptomsTableViewController?.titleField.text,
               let dateTime = viewController.addSymptomsTableViewController?.dateTime.date else { return }
+        guard let notes = viewController.addSymptomsTableViewController?.notesField.text else { return }
 
         Task {
-            await EventKitHandler.shared.createEvent(title: title, startDate: dateTime, endDate: dateTime, notes: "Symptom event")
+            await EventKitHandler.shared.createSymptom(title: title, startDate: dateTime, endDate: dateTime, notes: notes)
 
             DispatchQueue.main.async {
                 self.symptomsViewController?.symptomsTableViewController?.refreshData()

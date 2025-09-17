@@ -12,7 +12,7 @@ class AppointmentsTableViewController: UITableViewController {
 
     // MARK: Internal
 
-    var delegate: EventKitHandlerDelegate = .init()
+    var delegate: EventKitHandlerUIDelegate = .init()
     var eventsViewController: EventsViewController?
     var events: [EventInfo] = []
 

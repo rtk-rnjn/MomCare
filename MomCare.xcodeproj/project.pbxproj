@@ -120,6 +120,8 @@
 				"Common/DataControllers/MomCareUser/MomCareUser+UserHandler.swift",
 				Common/DataControllers/NetworkManager.swift,
 				Common/EventKitHandler.swift,
+				"Common/EventKitHandler+Symptom.swift",
+				"Common/EventKitHandler+UI.swift",
 				"Common/Extensions/Array+Subscript.swift",
 				"Common/Extensions/Color+Hex.swift",
 				"Common/Extensions/Data+Decoding.swift",

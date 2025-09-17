@@ -53,3 +53,15 @@ class Songs: Object {
     @Persisted var name: String
     @Persisted var uri: Data
 }
+
+class EKEventSymptoms: Object {
+    @Persisted var eventIdentifier: String
+    @Persisted var calendarItemIdentifier: String?
+    @Persisted var title: String
+    @Persisted var startDate: Date
+    @Persisted var endDate: Date
+
+    override static func primaryKey() -> String? {
+        return "eventIdentifier"
+    }
+}

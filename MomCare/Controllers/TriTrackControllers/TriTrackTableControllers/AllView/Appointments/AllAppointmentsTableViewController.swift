@@ -16,7 +16,7 @@ class AllAppointmentsTableViewController: UITableViewController {
     var events: [EventInfo] = []
     var groupedEvents: [Date: [EventInfo]] = [:]
 
-    var delegate: EventKitHandlerDelegate = .init()
+    var delegate: EventKitHandlerUIDelegate = .init()
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -139,7 +139,7 @@ class AllAppointmentsTableViewController: UITableViewController {
         groupedEvents = [:]
 
         for event in events {
-            let date = Calendar.current.startOfDay(for: event.startDate ?? .init())
+            let date = Calendar.current.startOfDay(for: event.startDate)
             if groupedEvents[date] == nil {
                 groupedEvents[date] = []
             }

@@ -15,6 +15,6 @@ class AllSymptomsTableViewCell: UITableViewCell {
 
     func updateElements(with symptom: EventInfo) {
         titleLabel.text = symptom.title
-        dateTimePicker.date = symptom.startDate ?? .init()
+        dateTimePicker.date = symptom.startDate
     }
 }
