@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct ContentView: View {
+    @ObservedObject var watchConnector: WatchConnector = .init()
+
     var body: some View {
         VStack {
             Image(systemName: "globe")
@@ -17,8 +19,4 @@ struct ContentView: View {
         }
         .padding()
     }
-}
-
-#Preview {
-    ContentView()
 }

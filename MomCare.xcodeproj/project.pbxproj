@@ -119,9 +119,9 @@
 				"Common/DataControllers/MomCareUser/MomCareUser+DataTransferObjects.swift",
 				"Common/DataControllers/MomCareUser/MomCareUser+UserHandler.swift",
 				Common/DataControllers/NetworkManager.swift,
-				Common/EventKitHandler.swift,
-				"Common/EventKitHandler+Symptom.swift",
-				"Common/EventKitHandler+UI.swift",
+				Common/EventKitHandler/EventKitHandler.swift,
+				"Common/EventKitHandler/EventKitHandler+Symptom.swift",
+				"Common/EventKitHandler/EventKitHandler+UI.swift",
 				"Common/Extensions/Array+Subscript.swift",
 				"Common/Extensions/Color+Hex.swift",
 				"Common/Extensions/Data+Decoding.swift",
@@ -137,6 +137,7 @@
 				"Common/HealthKitHandler/HealthKitHandler+Reader.swift",
 				Common/MusicPlayerHandler.swift,
 				Common/Utils.swift,
+				Common/WatchConnector.swift,
 				DataModels/Global/AppContent.swift,
 				DataModels/Global/PregnancySymptoms.swift,
 				DataModels/Global/ProfileDisclaimerData.swift,
@@ -157,6 +158,13 @@
 			);
 			target = 059C467C2D30D12400B4A15A /* MomCare */;
 		};
+		3A3E58B42E7ADD2F005BD5BC /* Exceptions for "MomCare" folder in "Watch" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Common/WatchConnector.swift,
+			);
+			target = 3A3E58932E7A9DD3005BD5BC /* Watch */;
+		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -165,6 +173,7 @@
 			exceptions = (
 				059C468F2D30D12500B4A15A /* Exceptions for "MomCare" folder in "MomCare" target */,
 				059FE8DC2E3381FB001BCB05 /* Exceptions for "MomCare" folder in "PregnancyTracker" target */,
+				3A3E58B42E7ADD2F005BD5BC /* Exceptions for "MomCare" folder in "Watch" target */,
 			);
 			path = MomCare;
 			sourceTree = "<group>";
@@ -448,7 +457,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = MomCare/MomCareDebug.entitlements;
+				CODE_SIGN_ENTITLEMENTS = MomCare/MomCare.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
@@ -711,7 +720,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
-				CODE_SIGN_ENTITLEMENTS = "MomCare+PregnancyTracker/PregnancyTrackerDebug.entitlements";
+				CODE_SIGN_ENTITLEMENTS = "MomCare+PregnancyTracker/PregnancyTracker.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
@@ -744,6 +753,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_ENTITLEMENTS = "MomCare+PregnancyTracker/PregnancyTracker.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -775,6 +785,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = "MomCare+Watch/Watch.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
@@ -805,6 +816,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = "MomCare+Watch/Watch.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 73B8W4ZN6V;
