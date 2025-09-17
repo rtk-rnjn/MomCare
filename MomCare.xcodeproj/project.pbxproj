@@ -15,6 +15,9 @@
 		05BAA2152D771882008C89DB /* LNPopupController in Embed Frameworks */ = {isa = PBXBuildFile; productRef = F5F1D6112D739C6A00F65BA7 /* LNPopupController */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		05E7F9672D37748E00F4D81E /* .swiftlint.yml in Resources */ = {isa = PBXBuildFile; fileRef = 05E7F9662D37748300F4D81E /* .swiftlint.yml */; };
 		3A3E589E2E7A9DD5005BD5BC /* Watch.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 3A3E58942E7A9DD3005BD5BC /* Watch.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		3A3E58CD2E7B2AF9005BD5BC /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 3A3E58CC2E7B2AF9005BD5BC /* RealmSwift */; };
+		3A3E58CE2E7B2AF9005BD5BC /* RealmSwift in Embed Frameworks */ = {isa = PBXBuildFile; productRef = 3A3E58CC2E7B2AF9005BD5BC /* RealmSwift */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		3A3E58D12E7B2B15005BD5BC /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3A3E58D02E7B2B15005BD5BC /* SwiftUI.framework */; };
 		F59454F42DEDACAA00002917 /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = F59454F32DEDACAA00002917 /* RealmSwift */; };
 		F59454F52DEDACAA00002917 /* RealmSwift in Embed Frameworks */ = {isa = PBXBuildFile; productRef = F59454F32DEDACAA00002917 /* RealmSwift */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		F5F1D6122D739C6A00F65BA7 /* LNPopupController in Frameworks */ = {isa = PBXBuildFile; productRef = F5F1D6112D739C6A00F65BA7 /* LNPopupController */; };
@@ -82,6 +85,17 @@
 			name = "Embed Watch Content";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		3A3E58CF2E7B2AFA005BD5BC /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				3A3E58CE2E7B2AF9005BD5BC /* RealmSwift in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
@@ -91,6 +105,7 @@
 		059FE8BF2E336E05001BCB05 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
 		05E7F9662D37748300F4D81E /* .swiftlint.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = .swiftlint.yml; sourceTree = "<group>"; };
 		3A3E58942E7A9DD3005BD5BC /* Watch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Watch.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		3A3E58D02E7B2B15005BD5BC /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = Platforms/WatchOS.platform/Developer/SDKs/WatchOS11.5.sdk/System/Library/Frameworks/SwiftUI.framework; sourceTree = DEVELOPER_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -224,6 +239,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3A3E58D12E7B2B15005BD5BC /* SwiftUI.framework in Frameworks */,
+				3A3E58CD2E7B2AF9005BD5BC /* RealmSwift in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -256,6 +273,7 @@
 		F59454F22DEDACAA00002917 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				3A3E58D02E7B2B15005BD5BC /* SwiftUI.framework */,
 				059FE8BD2E336E05001BCB05 /* WidgetKit.framework */,
 				059FE8BF2E336E05001BCB05 /* SwiftUI.framework */,
 			);
@@ -327,6 +345,7 @@
 				3A3E58902E7A9DD3005BD5BC /* Sources */,
 				3A3E58912E7A9DD3005BD5BC /* Frameworks */,
 				3A3E58922E7A9DD3005BD5BC /* Resources */,
+				3A3E58CF2E7B2AFA005BD5BC /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -337,6 +356,7 @@
 			);
 			name = Watch;
 			packageProductDependencies = (
+				3A3E58CC2E7B2AF9005BD5BC /* RealmSwift */,
 			);
 			productName = "MomCare+ Watch Watch App";
 			productReference = 3A3E58942E7A9DD3005BD5BC /* Watch.app */;
@@ -916,6 +936,11 @@
 			productName = FSCalendar;
 		};
 		059FE8F32E33838C001BCB05 /* RealmSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = F5AF1ECD2DE91021008B14F1 /* XCRemoteSwiftPackageReference "realm-swift" */;
+			productName = RealmSwift;
+		};
+		3A3E58CC2E7B2AF9005BD5BC /* RealmSwift */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = F5AF1ECD2DE91021008B14F1 /* XCRemoteSwiftPackageReference "realm-swift" */;
 			productName = RealmSwift;
