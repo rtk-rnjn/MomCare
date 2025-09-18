@@ -28,15 +28,23 @@ class PlaylistCollectionViewCell: UICollectionViewCell {
 
     private func updateUI(with imageUri: String, label: String, applyLargeTitle: Bool) async {
         imageView.image = await UIImage().fetchImage(from: imageUri)
-        imageView.accessibilityLabel = label
-        imageView.accessibilityHint = "Album artwork for \(label)"
+        imageView.accessibilityLabel = "Album artwork for \(label)"
+        imageView.accessibilityHint = "Cover image for the playlist"
 
         playlistLabel.text = label
         if applyLargeTitle {
             playlistLabel.font = UIFont.preferredFont(forTextStyle: .largeTitle)
+        } else {
+            playlistLabel.font = UIFont.preferredFont(forTextStyle: .headline)
         }
+        playlistLabel.adjustsFontForContentSizeCategory = true
 
         playlistLabel.accessibilityLabel = label
-        playlistLabel.accessibilityHint = "Represents the cover image for the song \(label)"
+        
+        // Configure cell as accessible element
+        self.isAccessibilityElement = true
+        self.accessibilityLabel = "Playlist: \(label)"
+        self.accessibilityHint = "Double tap to play this playlist"
+        self.accessibilityTraits = .button
     }
 }

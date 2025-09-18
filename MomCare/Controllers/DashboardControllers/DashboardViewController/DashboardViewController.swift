@@ -109,6 +109,11 @@ class DashboardViewController: UIViewController, UICollectionViewDataSource, UIC
         profileBtn.imageView?.contentMode = .scaleAspectFit
         profileBtn.contentHorizontalAlignment = .fill
         profileBtn.contentVerticalAlignment = .fill
+        
+        // Accessibility setup
+        profileBtn.accessibilityLabel = "Profile"
+        profileBtn.accessibilityHint = "Opens your profile settings and information"
+        profileBtn.accessibilityTraits = .button
 
         customView.addSubview(profileBtn)
         navigationBar.addSubview(customView)
@@ -119,8 +124,8 @@ class DashboardViewController: UIViewController, UICollectionViewDataSource, UIC
         NSLayoutConstraint.activate([
             customView.trailingAnchor.constraint(equalTo: navigationBar.trailingAnchor, constant: -16),
             customView.bottomAnchor.constraint(equalTo: navigationBar.bottomAnchor, constant: -10),
-            customView.widthAnchor.constraint(equalToConstant: 40),
-            customView.heightAnchor.constraint(equalToConstant: 40),
+            customView.widthAnchor.constraint(equalToConstant: 44), // Increased to meet minimum touch target
+            customView.heightAnchor.constraint(equalToConstant: 44), // Increased to meet minimum touch target
 
             profileBtn.centerXAnchor.constraint(equalTo: customView.centerXAnchor),
             profileBtn.centerYAnchor.constraint(equalTo: customView.centerYAnchor),

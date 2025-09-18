@@ -36,6 +36,16 @@ class ExerciseProgressCollectionViewCell: UICollectionViewCell {
         updateStepsLabel()
         updateExerciseDurationLabel()
         updateCaloriesBurnedLabel()
+        
+        // Apply Dynamic Type to all labels
+        stepsLabel.font = UIFont.preferredFont(forTextStyle: .headline)
+        stepsLabel.adjustsFontForContentSizeCategory = true
+        
+        exerciseDurationLabel.font = UIFont.preferredFont(forTextStyle: .headline)
+        exerciseDurationLabel.adjustsFontForContentSizeCategory = true
+        
+        caloriesBurnedLabel.font = UIFont.preferredFont(forTextStyle: .headline)
+        caloriesBurnedLabel.adjustsFontForContentSizeCategory = true
     }
 
     // MARK: Private
@@ -45,6 +55,7 @@ class ExerciseProgressCollectionViewCell: UICollectionViewCell {
             await HealthKitHandler.shared.readStepCount { steps in
                 DispatchQueue.main.async {
                     self.stepsLabel.text = "\(Int(steps))"
+                    self.stepsLabel.accessibilityLabel = "\(Int(steps)) steps today"
                 }
             }
         }
@@ -54,7 +65,9 @@ class ExerciseProgressCollectionViewCell: UICollectionViewCell {
         Task {
             await HealthKitHandler.shared.readWorkout { duration in
                 DispatchQueue.main.async {
-                    self.exerciseDurationLabel.text = "\(round(Double(duration)))"
+                    let roundedDuration = round(Double(duration))
+                    self.exerciseDurationLabel.text = "\(roundedDuration)"
+                    self.exerciseDurationLabel.accessibilityLabel = "\(roundedDuration) minutes of exercise today"
                 }
             }
         }
@@ -65,6 +78,17 @@ class ExerciseProgressCollectionViewCell: UICollectionViewCell {
             await HealthKitHandler.shared.readCaloriesBurned { calories in
                 DispatchQueue.main.async {
                     self.caloriesBurnedLabel.text = "\(Int(calories))"
+                    self.caloriesBurnedLabel.accessibilityLabel = "\(Int(calories)) calories burned today"
+                    
+                    // Configure cell accessibility after all data is loaded
+                    let stepsText = self.stepsLabel.text ?? "0"
+                    let durationText = self.exerciseDurationLabel.text ?? "0"
+                    let caloriesText = self.caloriesBurnedLabel.text ?? "0"
+                    
+                    self.isAccessibilityElement = true
+                    self.accessibilityLabel = "Exercise progress: \(stepsText) steps, \(durationText) minutes exercise, \(caloriesText) calories burned today"
+                    self.accessibilityHint = "Double tap to view detailed exercise information"
+                    self.accessibilityTraits = .button
                 }
             }
         }

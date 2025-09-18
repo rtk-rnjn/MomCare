@@ -13,6 +13,15 @@ class TipCardCollectionViewCell: UICollectionViewCell {
 
     func updateElements(with tip: Tip) {
         currentTipLabel.text = tip.dailyTip
+        currentTipLabel.accessibilityLabel = tip.dailyTip
+        currentTipLabel.accessibilityHint = "Daily health tip for your pregnancy"
+        currentTipLabel.font = UIFont.preferredFont(forTextStyle: .body)
+        currentTipLabel.adjustsFontForContentSizeCategory = true
+        
+        isAccessibilityElement = true
+        accessibilityLabel = "Daily tip: \(tip.dailyTip)"
+        accessibilityHint = "Daily health tip for your pregnancy"
+        accessibilityTraits = .staticText
     }
 
 }

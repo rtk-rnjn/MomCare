@@ -48,10 +48,39 @@ class WeekCardCollectionViewCell: UICollectionViewCell {
                 currentWeekLabel.text = "Week \(String(weekAndDay?.week ?? 0))"
                 currentDayLabel.text = "Day \(String(weekAndDay?.day ?? 0))"
                 currentTrimesterLabel.text = "Trimester \(String(weekAndDay?.trimester ?? "0"))"
+                
+                // Accessibility setup
+                let weekText = currentWeekLabel.text ?? "Week NaN"
+                let dayText = currentDayLabel.text ?? "Day NaN"
+                let trimesterText = currentTrimesterLabel.text ?? "Trimester NaN"
+                
+                currentWeekLabel.accessibilityLabel = weekText
+                currentDayLabel.accessibilityLabel = dayText
+                currentTrimesterLabel.accessibilityLabel = trimesterText
+                
+                // Apply Dynamic Type
+                currentWeekLabel.font = UIFont.preferredFont(forTextStyle: .headline)
+                currentDayLabel.font = UIFont.preferredFont(forTextStyle: .subheadline)
+                currentTrimesterLabel.font = UIFont.preferredFont(forTextStyle: .subheadline)
+                
+                currentWeekLabel.adjustsFontForContentSizeCategory = true
+                currentDayLabel.adjustsFontForContentSizeCategory = true
+                currentTrimesterLabel.adjustsFontForContentSizeCategory = true
+                
+                // Configure cell as accessible element
+                isAccessibilityElement = true
+                accessibilityLabel = "Pregnancy progress: \(weekText), \(dayText), \(trimesterText)"
+                accessibilityHint = "Double tap to view detailed pregnancy timeline"
+                accessibilityTraits = .button
             } else {
                 currentWeekLabel.text = "Week NaN"
                 currentDayLabel.text = "Day NaN"
                 currentTrimesterLabel.text = "Trimester NaN"
+                
+                isAccessibilityElement = true
+                accessibilityLabel = "Pregnancy progress: Week not available, Day not available, Trimester not available"
+                accessibilityHint = "Double tap to view detailed pregnancy timeline"
+                accessibilityTraits = .button
             }
         }
         self.tapHandler = tapHandler

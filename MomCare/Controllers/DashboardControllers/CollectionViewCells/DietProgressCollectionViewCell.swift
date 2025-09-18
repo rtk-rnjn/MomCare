@@ -39,6 +39,8 @@ class DietProgressCollectionViewCell: UICollectionViewCell {
 
         let caloriesGoal = MomCareUser.shared.user?.plan.totalCalories ?? 1
         caloriesGoalLabel.text = "/ \(Int(caloriesGoal)) kcal"
+        caloriesGoalLabel.font = UIFont.preferredFont(forTextStyle: .subheadline)
+        caloriesGoalLabel.adjustsFontForContentSizeCategory = true
 
         Task {
             await HealthKitHandler.shared.readCaloriesIntake { caloriesIntake in
@@ -53,6 +55,22 @@ class DietProgressCollectionViewCell: UICollectionViewCell {
                     var displayProgress = Int(progress * 100)
                     displayProgress = displayProgress > 100 ? 100 : displayProgress
                     self.percentageLabel.text = "\(displayProgress)%"
+                    
+                    // Accessibility setup
+                    self.currentKcalLabel.font = UIFont.preferredFont(forTextStyle: .headline)
+                    self.currentKcalLabel.adjustsFontForContentSizeCategory = true
+                    self.percentageLabel.font = UIFont.preferredFont(forTextStyle: .subheadline)
+                    self.percentageLabel.adjustsFontForContentSizeCategory = true
+                    
+                    // Progress bar accessibility
+                    self.progressBar.accessibilityLabel = "Diet progress"
+                    self.progressBar.accessibilityValue = "\(displayProgress) percent"
+                    
+                    // Configure cell as accessible element
+                    self.isAccessibilityElement = true
+                    self.accessibilityLabel = "Diet progress: \(Int(caloriesIntake)) calories consumed out of \(Int(caloriesGoal)) calories goal, \(displayProgress) percent complete"
+                    self.accessibilityHint = "Double tap to view detailed diet information"
+                    self.accessibilityTraits = .button
                 }
             }
         }

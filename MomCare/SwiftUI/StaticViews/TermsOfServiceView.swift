@@ -17,12 +17,14 @@ struct TermsOfServiceView: View {
                                                             .font(.system(size: 60, weight: .bold))
                                                             .foregroundColor(accentColor)
                         }
+                        .accessibilityLabel("Terms of service icon")
 
                         Text("Good rules create a space where everyone can feel safe and respected.")
                             .font(.system(size: 28, weight: .semibold, design: .default))
                                 .tracking(-0.5)
                                 .multilineTextAlignment(.center)
                                 .lineSpacing(0)
+                                .accessibilityAddTraits(.isHeader)
 
                         Text("Clarity is the foundation of trust. Our terms are designed to be clear, so our relationship can be strong.")
                             .font(.subheadline)
@@ -130,8 +132,10 @@ struct OverviewOfServicesView: View {
                     .font(.title2)
                     .foregroundColor(accentColor)
                     .frame(width: 24, alignment: .center)
+                    .accessibilityLabel("Services icon")
                 Text("Overview of Services")
                     .font(.title3.weight(.semibold))
+                    .accessibilityAddTraits(.isHeader)
             }
 
             Text("MomCare offers a range of tools designed to enhance your pregnancy journey:")
@@ -157,9 +161,14 @@ struct ServiceDetail: View {
             Text(title)
                 .fontWeight(.semibold)
                 .foregroundColor(.primary)
+                .font(.system(.headline, design: .default))
+                .accessibilityAddTraits(.isHeader)
             Text(description)
                 .foregroundColor(.primary)
+                .font(.system(.body, design: .default))
         }
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel("\(title): \(description)")
     }
 }
 
@@ -173,6 +182,7 @@ struct ThirdPartyServicesView: View {
                     .font(.title2)
                     .foregroundColor(accentColor)
                     .frame(width: 24, alignment: .center)
+                    .accessibilityLabel("Third party services icon")
                 Text("Third-Party Services and Frameworks")
                     .font(.title3.weight(.semibold))
             }

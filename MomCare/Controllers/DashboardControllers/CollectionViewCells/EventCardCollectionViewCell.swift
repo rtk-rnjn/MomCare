@@ -46,7 +46,37 @@ class EventCardCollectionViewCell: UICollectionViewCell {
             eventDateLabel.isHidden = false
             addEventButton.isHidden = !eventDateLabel.isHidden
             eventDateLabel.text = dateFormatter.string(from: event.startDate)
+            
+            // Accessibility setup
+            upcomingEventLabel.accessibilityLabel = event.title
+            upcomingEventLabel.font = UIFont.preferredFont(forTextStyle: .headline)
+            upcomingEventLabel.adjustsFontForContentSizeCategory = true
+            
+            eventDateLabel.accessibilityLabel = "Event date: \(dateFormatter.string(from: event.startDate))"
+            eventDateLabel.font = UIFont.preferredFont(forTextStyle: .subheadline)
+            eventDateLabel.adjustsFontForContentSizeCategory = true
+            
+            // Configure cell as accessible element
+            isAccessibilityElement = true
+            accessibilityLabel = "Upcoming event: \(event.title) on \(dateFormatter.string(from: event.startDate))"
+            accessibilityHint = "Double tap to view event details"
+            accessibilityTraits = .button
+        } else {
+            // Configure for no events state
+            isAccessibilityElement = true
+            accessibilityLabel = "No upcoming events"
+            accessibilityHint = "Double tap to add a new event"
+            accessibilityTraits = .button
         }
+
+        // Add button accessibility
+        addEventButton.accessibilityLabel = "Add new event"
+        addEventButton.accessibilityHint = "Opens the event creation screen"
+        addEventButton.accessibilityTraits = .button
+        
+        // Ensure minimum touch target size (44x44 points)
+        addEventButton.widthAnchor.constraint(greaterThanOrEqualToConstant: 44).isActive = true
+        addEventButton.heightAnchor.constraint(greaterThanOrEqualToConstant: 44).isActive = true
 
         self.tapHandler = tapHandler
         self.segueHandler = segueHandler

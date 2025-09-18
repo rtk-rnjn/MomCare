@@ -22,6 +22,11 @@ class MusicPlayerViewController: UIViewController {
         slider.thumbTintColor = .clear
         slider.translatesAutoresizingMaskIntoConstraints = false
         slider.applyDefaultPriorities()
+        
+        // Accessibility setup
+        slider.accessibilityLabel = "Song progress"
+        slider.accessibilityHint = "Drag to seek to a different position in the song"
+        slider.accessibilityTraits = .adjustable
 
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(durationSliderTapped))
         slider.addGestureRecognizer(tapGesture)
@@ -36,8 +41,10 @@ class MusicPlayerViewController: UIViewController {
         label.text = "-:--"
         label.textColor = .white
         label.font = UIFont.preferredFont(forTextStyle: .footnote)
+        label.adjustsFontForContentSizeCategory = true
         label.translatesAutoresizingMaskIntoConstraints = false
         label.applyDefaultPriorities()
+        label.accessibilityLabel = "Current time"
         return label
     }()
 
@@ -46,9 +53,11 @@ class MusicPlayerViewController: UIViewController {
         label.text = "--:--"
         label.textColor = .white
         label.font = UIFont.preferredFont(forTextStyle: .footnote)
+        label.adjustsFontForContentSizeCategory = true
         label.textAlignment = .right
         label.translatesAutoresizingMaskIntoConstraints = false
         label.applyDefaultPriorities()
+        label.accessibilityLabel = "Total duration"
         return label
     }()
 
@@ -60,6 +69,11 @@ class MusicPlayerViewController: UIViewController {
         button.contentHorizontalAlignment = .center
         button.translatesAutoresizingMaskIntoConstraints = false
         button.applyDefaultPriorities()
+        
+        // Accessibility setup
+        button.accessibilityLabel = "Play"
+        button.accessibilityHint = "Plays or pauses the current song"
+        button.accessibilityTraits = .button
 
         button.addTarget(self, action: #selector(playPauseTapped), for: .touchUpInside)
 
@@ -87,6 +101,10 @@ class MusicPlayerViewController: UIViewController {
         imageView.layer.masksToBounds = true
         imageView.clipsToBounds = true
         imageView.layer.cornerRadius = 20
+        
+        // Accessibility setup
+        imageView.accessibilityLabel = "Album artwork for \(song?.metadata?.title ?? "current song")"
+        imageView.accessibilityTraits = .image
 
         Task {
             let image = await song?.image ?? UIImage(systemName: "music.note")
@@ -107,10 +125,12 @@ class MusicPlayerViewController: UIViewController {
         let label = UILabel()
         label.text = song?.metadata?.title
         label.font = UIFont.preferredFont(forTextStyle: .title1)
+        label.adjustsFontForContentSizeCategory = true
         label.textColor = .white
         label.lineBreakMode = .byTruncatingTail
         label.translatesAutoresizingMaskIntoConstraints = false
         label.applyDefaultPriorities()
+        label.accessibilityLabel = "Song title: \(song?.metadata?.title ?? "Unknown")"
         return label
     }()
 
@@ -119,9 +139,11 @@ class MusicPlayerViewController: UIViewController {
         label.text = song?.metadata?.artist
         label.textColor = .white
         label.font = UIFont.preferredFont(forTextStyle: .subheadline)
+        label.adjustsFontForContentSizeCategory = true
         label.lineBreakMode = .byTruncatingTail
         label.translatesAutoresizingMaskIntoConstraints = false
         label.applyDefaultPriorities()
+        label.accessibilityLabel = "Artist: \(song?.metadata?.artist ?? "Unknown")"
         return label
     }()
 
@@ -133,6 +155,11 @@ class MusicPlayerViewController: UIViewController {
         button.contentHorizontalAlignment = .trailing
         button.translatesAutoresizingMaskIntoConstraints = false
         button.applyDefaultPriorities()
+        
+        // Accessibility setup
+        button.accessibilityLabel = "Previous song"
+        button.accessibilityHint = "Plays the previous song in the playlist"
+        button.accessibilityTraits = .button
 
         button.addTarget(self, action: #selector(backwardTapped), for: .touchUpInside)
 
@@ -147,6 +174,11 @@ class MusicPlayerViewController: UIViewController {
         button.contentHorizontalAlignment = .leading
         button.translatesAutoresizingMaskIntoConstraints = false
         button.applyDefaultPriorities()
+        
+        // Accessibility setup
+        button.accessibilityLabel = "Next song"
+        button.accessibilityHint = "Plays the next song in the playlist"
+        button.accessibilityTraits = .button
 
         button.addTarget(self, action: #selector(forwardTapped), for: .touchUpInside)
 
@@ -159,6 +191,8 @@ class MusicPlayerViewController: UIViewController {
         button.tintColor = .white
         button.translatesAutoresizingMaskIntoConstraints = false
         button.applyDefaultPriorities()
+        button.accessibilityLabel = "Minimum volume indicator"
+        button.accessibilityTraits = .none
         return button
     }()
 
@@ -166,6 +200,8 @@ class MusicPlayerViewController: UIViewController {
         let slider = MPVolumeView()
         slider.tintColor = .white
         slider.translatesAutoresizingMaskIntoConstraints = false
+        slider.accessibilityLabel = "Volume control"
+        slider.accessibilityHint = "Adjust the volume level"
 
         let _999Priority = UILayoutPriority(999)
 
@@ -180,6 +216,8 @@ class MusicPlayerViewController: UIViewController {
         button.tintColor = .white
         button.translatesAutoresizingMaskIntoConstraints = false
         button.applyDefaultPriorities()
+        button.accessibilityLabel = "Maximum volume indicator"
+        button.accessibilityTraits = .none
         return button
     }()
 

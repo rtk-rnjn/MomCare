@@ -34,11 +34,25 @@ class SongElementsViewController: UIViewController {
         guard let playlist else { return }
 
         playlistSongLabel.text = playlist.label
-        playlistSongLabel.accessibilityLabel = playlist.label
+        playlistSongLabel.accessibilityLabel = "Playlist name: \(playlist.label)"
+        playlistSongLabel.font = UIFont.preferredFont(forTextStyle: .title1)
+        playlistSongLabel.adjustsFontForContentSizeCategory = true
+        
+        // Add accessibility to buttons
+        playPauseButton.accessibilityLabel = "Play pause button"
+        playPauseButton.accessibilityHint = "Plays or pauses the current playlist"
+        playPauseButton.accessibilityTraits = .button
+        
+        shuffleButton.accessibilityLabel = "Shuffle button"
+        shuffleButton.accessibilityHint = "Toggles shuffle mode for the playlist"
+        shuffleButton.accessibilityTraits = .button
+        
         Task {
             let image = await UIImage().fetchImage(from: playlist.imageUri)
             DispatchQueue.main.async {
                 self.playlistCoverImage.image = image
+                self.playlistCoverImage.accessibilityLabel = "Cover artwork for \(playlist.label)"
+                self.playlistCoverImage.accessibilityTraits = .image
             }
         }
     }
