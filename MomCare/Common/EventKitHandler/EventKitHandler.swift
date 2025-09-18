@@ -252,11 +252,31 @@ actor EventKitHandler {
         }
     }
 
-    func fetchAllReminders(completionHandler: @Sendable @escaping ([ReminderInfo]) -> Void) {
-        let now = Date()
+    func fetchReminders(startDate: Date? = nil, endDate: Date? = nil) async -> [ReminderInfo] {
+        let startDate = startDate ?? Date()
+        let endDate = endDate ?? Date().addingTimeInterval(60 * 60 * 24)
 
-        let startDate = Calendar.current.date(byAdding: .month, value: -1, to: now)
-        let endDate = Calendar.current.date(byAdding: .year, value: 5, to: Date())
+        let calendar = createOrGetReminder()
+        let predicate = eventStore.predicateForReminders(in: [calendar])
+
+        return await withCheckedContinuation { continuation in
+            eventStore.fetchReminders(matching: predicate) { fetchedReminders in
+                if let fetchedReminders {
+                    let reminders = fetchedReminders
+                        .filter { ($0.dueDateComponents?.date ?? Date()) >= startDate &&
+                                  ($0.dueDateComponents?.date ?? Date()) <= endDate }
+                        .map { self.getReminderInfo(from: $0) }
+                    continuation.resume(returning: reminders)
+                } else {
+                    continuation.resume(returning: [])
+                }
+            }
+        }
+    }
+
+    func fetchAllReminders(completionHandler: @Sendable @escaping ([ReminderInfo]) -> Void) {
+        let startDate = Calendar.current.date(byAdding: .year, value: -1, to: Date())
+        let endDate = Calendar.current.date(byAdding: .year, value: 1, to: Date())
 
         return fetchReminders(startDate: startDate, endDate: endDate, completionHandler: completionHandler)
     }

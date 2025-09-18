@@ -19,5 +19,6 @@ struct PregnancyTracker: Widget {
         }
         .configurationDisplayName("Pregnancy Tracker Widget")
         .description("Track your pregnancy progress with this widget!")
+        .supportedFamilies([.systemSmall, .systemMedium, .systemLarge])
     }
 }

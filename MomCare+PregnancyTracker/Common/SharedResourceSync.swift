@@ -28,4 +28,19 @@ enum SharedResourceSync {
     static func getDay() -> Int {
         return getPregnancyData()?.day ?? 0
     }
+
+    static func getTrimester() -> String {
+        return getPregnancyData()?.trimester ?? "Invalid Trimester"
+    }
+
+    static func getBabyFruit(for week: Int) -> (fruitName: String, fruitImageURL: String)? {
+        guard let trimesterData = TriTrackData.getTrimesterData(for: week) else {
+            return nil
+        }
+
+        let fruitName = trimesterData.quote ?? "Unknown Fruit"
+        let fruitImageURL = trimesterData.imageUri ?? ""
+
+        return (fruitName, fruitImageURL)
+    }
 }
