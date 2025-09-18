@@ -36,7 +36,7 @@ jobs:
         with:
           path: |
             ~/Library/Developer/Xcode/DerivedData
-          key: deriveddata-${{ runner.os }}-${{ '**/*.xcodeproj', '**/*.xcworkspace', '**/Package.resolved') }}
+          key: deriveddata-${{ runner.os }}-${{ hashFiles('**/*.xcodeproj', '**/*.xcworkspace', '**/Package.resolved') }}
           restore-keys: |
             deriveddata-${{ runner.os }}-
 
