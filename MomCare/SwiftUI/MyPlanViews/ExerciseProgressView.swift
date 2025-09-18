@@ -96,6 +96,7 @@ struct ExerciseProgressView: View {
             Text("Week \(MomCareUser.shared.user?.pregancyData?.week ?? -1)")
                 .font(.system(size: 28, weight: .bold, design: .rounded))
                 .foregroundColor(Color(hex: "924350"))
+                .accessibilityAddTraits(.isHeader)
         }
         .padding(.top, 15)
         .padding(.bottom, 5)
@@ -119,6 +120,7 @@ struct ExerciseProgressView: View {
             Text("Weekly Progress")
                 .font(.system(size: 18, weight: .semibold))
                 .foregroundColor(.primary)
+                .accessibilityAddTraits(.isHeader)
 
             Spacer()
 
@@ -131,7 +133,10 @@ struct ExerciseProgressView: View {
                     .font(.system(size: 12, weight: .semibold))
                     .foregroundColor(.secondary)
                     .opacity(0.6)
+                    .accessibilityHidden(true)
             }
+            .accessibilityElement(children: .combine)
+            .accessibilityLabel("\(Calendar.current.component(.weekday, from: Date())) out of 7 days this week")
         }
     }
 
@@ -212,10 +217,12 @@ struct ExerciseProgressView: View {
                 Image(systemName: "figure.walk")
                     .font(.system(size: 20, weight: .medium))
                     .foregroundColor(Color(hex: "924350"))
+                    .accessibilityHidden(true)
 
                 Text("Walking")
                     .font(.system(size: 20, weight: .bold))
                     .foregroundColor(.primary)
+                    .accessibilityAddTraits(.isHeader)
             }
 
             Spacer()
@@ -229,8 +236,11 @@ struct ExerciseProgressView: View {
                     Image(systemName: "checkmark.circle.fill")
                         .font(.system(size: 16))
                         .foregroundColor(Color(hex: "924350"))
+                        .accessibilityLabel("Goal completed")
                 }
             }
+            .accessibilityElement(children: .combine)
+            .accessibilityLabel("Walking progress: \(Int(currentSteps / targetSteps * 100)) percent completed")
         }
     }
 
@@ -244,6 +254,8 @@ struct ExerciseProgressView: View {
                     .font(.system(size: 14, weight: .medium))
                     .foregroundColor(.secondary)
             }
+            .accessibilityElement(children: .combine)
+            .accessibilityLabel("\(currentSteps) steps taken today")
 
             Spacer()
 
@@ -255,6 +267,8 @@ struct ExerciseProgressView: View {
                     .font(.system(size: 14, weight: .medium))
                     .foregroundColor(.secondary)
             }
+            .accessibilityElement(children: .combine)
+            .accessibilityLabel("Daily goal: \(targetSteps) steps")
         }
     }
 
@@ -276,6 +290,10 @@ struct ExerciseProgressView: View {
             }
         }
         .frame(height: 6)
+        .accessibilityElement()
+        .accessibilityLabel("Walking progress bar")
+        .accessibilityValue("\(Int((Double(currentSteps) / Double(targetSteps)) * 100)) percent complete")
+        .accessibilityTraits(.none)
     }
 
     private var exerciseCardsView: some View {
@@ -457,6 +475,9 @@ struct ExerciseProgressView: View {
                     .fill(Color(hex: "924350"))
             )
         }
+        .accessibilityLabel("Start \(exercise.name) exercise")
+        .accessibilityHint("Begins the exercise routine")
+        .accessibilityTraits(.button)
     }
 
     private func exerciseIconSection(for exercise: Exercise, isBreathing: Bool) -> some View {
@@ -500,6 +521,9 @@ struct ExerciseProgressView: View {
                                 .frame(width: 30, height: 30)
                         )
                 }
+                .accessibilityLabel("Exercise information")
+                .accessibilityHint("Shows detailed information about this exercise")
+                .accessibilityTraits(.button)
             }
             Spacer()
         }

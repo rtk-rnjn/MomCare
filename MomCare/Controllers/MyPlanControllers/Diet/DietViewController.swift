@@ -34,6 +34,12 @@ class DietViewController: UIViewController {
         literalFatsLabel.text = "Fats"
         literalCarbsLabel.text = "Carbs"
         literalProtienLabel.text = "Protein"
+        
+        // Apply Dynamic Type support
+        setupDynamicTypeSupport()
+        
+        // Add accessibility labels
+        setupAccessibility()
 
         prepareProgressRing()
     }
@@ -122,6 +128,59 @@ class DietViewController: UIViewController {
 
     private var backgroundLayer: CAShapeLayer!
     private var shapeLayer: CAShapeLayer!
+    
+    private func setupDynamicTypeSupport() {
+        // Apply Dynamic Type to all labels
+        caloricValueLabel.font = UIFont.preferredFont(forTextStyle: .title1)
+        caloricValueLabel.adjustsFontForContentSizeCategory = true
+        
+        literalKcalLabel.font = UIFont.preferredFont(forTextStyle: .caption1)
+        literalKcalLabel.adjustsFontForContentSizeCategory = true
+        
+        proteinProgressLabel.font = UIFont.preferredFont(forTextStyle: .body)
+        proteinProgressLabel.adjustsFontForContentSizeCategory = true
+        
+        carbsProgressLabel.font = UIFont.preferredFont(forTextStyle: .body)
+        carbsProgressLabel.adjustsFontForContentSizeCategory = true
+        
+        fatsProgressLabel.font = UIFont.preferredFont(forTextStyle: .body)
+        fatsProgressLabel.adjustsFontForContentSizeCategory = true
+        
+        literalProtienLabel.font = UIFont.preferredFont(forTextStyle: .caption1)
+        literalProtienLabel.adjustsFontForContentSizeCategory = true
+        
+        literalCarbsLabel.font = UIFont.preferredFont(forTextStyle: .caption1)
+        literalCarbsLabel.adjustsFontForContentSizeCategory = true
+        
+        literalFatsLabel.font = UIFont.preferredFont(forTextStyle: .caption1)
+        literalFatsLabel.adjustsFontForContentSizeCategory = true
+    }
+    
+    private func setupAccessibility() {
+        // Caloric progress accessibility
+        caloricValueLabel.accessibilityLabel = "Daily calorie progress"
+        literalKcalLabel.accessibilityLabel = "Calories unit label"
+        
+        // Progress bars accessibility
+        proteinProgressBar.accessibilityLabel = "Protein intake progress"
+        carbsProgressBar.accessibilityLabel = "Carbohydrates intake progress"
+        fatsProgressBar.accessibilityLabel = "Fats intake progress"
+        
+        // Progress labels accessibility
+        proteinProgressLabel.accessibilityLabel = "Protein consumption details"
+        carbsProgressLabel.accessibilityLabel = "Carbohydrates consumption details"
+        fatsProgressLabel.accessibilityLabel = "Fats consumption details"
+        
+        // Nutrient category labels
+        literalProtienLabel.accessibilityLabel = "Protein category"
+        literalCarbsLabel.accessibilityLabel = "Carbohydrates category"
+        literalFatsLabel.accessibilityLabel = "Fats category"
+        
+        // Group the progress container for better VoiceOver navigation
+        progressContainerView.accessibilityLabel = "Caloric progress ring"
+        progressContainerView.accessibilityHint = "Shows your daily calorie consumption progress"
+        progressContainerView.accessibilityTraits = .none
+    }
 
     private func prepareProgressBars(_ progressBars: [UIProgressView]) {
         for progressBar in progressBars {
@@ -148,6 +207,8 @@ class DietViewController: UIViewController {
             DispatchQueue.main.async {
                 bar?.progress = progress
                 label?.text = "\(consumedRounded) / \(goalRounded)g"
+                label?.accessibilityValue = "\(consumedRounded) grams consumed out of \(goalRounded) grams goal"
+                bar?.accessibilityValue = "\(Int(progress * 100)) percent complete"
             }
         }
     }
@@ -184,6 +245,8 @@ class DietViewController: UIViewController {
                     let goal = MomCareUser.shared.user?.plan.totalCalories ?? 1
                     self.animateKalcProgress(to: CGFloat(Float(currentCaloriesIntake) / Float(goal)))
                     self.caloricValueLabel.text = "\(Int(currentCaloriesIntake))/\(Int(goal))"
+                    self.caloricValueLabel.accessibilityValue = "\(Int(currentCaloriesIntake)) calories consumed out of \(Int(goal)) calories goal"
+                    self.progressContainerView.accessibilityValue = "\(Int((Float(currentCaloriesIntake) / Float(goal)) * 100)) percent complete"
                 }
             }
         }

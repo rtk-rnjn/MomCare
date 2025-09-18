@@ -18,6 +18,7 @@ class BreathingPlayerViewController: UIViewController {
         super.viewDidLoad()
         setupUI()
         setupAnimationManager()
+        setupAccessibility()
     }
 
     // MARK: - Public Methods
@@ -101,6 +102,42 @@ class BreathingPlayerViewController: UIViewController {
         setupInstructionLabel()
         setupTimerLabel()
         setupControlButtons()
+        setupDynamicTypeSupport()
+    }
+    
+    private func setupDynamicTypeSupport() {
+        // Apply Dynamic Type to all labels
+        totalBreatingDuration.font = UIFont.preferredFont(forTextStyle: .title1)
+        totalBreatingDuration.adjustsFontForContentSizeCategory = true
+        
+        assuringMessageLabel.font = UIFont.preferredFont(forTextStyle: .title2)
+        assuringMessageLabel.adjustsFontForContentSizeCategory = true
+        
+        instructionLabel.font = UIFont.preferredFont(forTextStyle: .largeTitle)
+        instructionLabel.adjustsFontForContentSizeCategory = true
+        
+        timerLabel.font = UIFont.preferredFont(forTextStyle: .title1)
+        timerLabel.adjustsFontForContentSizeCategory = true
+    }
+    
+    private func setupAccessibility() {
+        // Duration label accessibility
+        totalBreatingDuration.accessibilityLabel = "Remaining exercise time"
+        totalBreatingDuration.accessibilityHint = "Shows time remaining in the breathing exercise"
+        
+        // Instruction label accessibility
+        instructionLabel.accessibilityLabel = "Breathing instruction"
+        instructionLabel.accessibilityHint = "Current breathing guidance"
+        instructionLabel.accessibilityTraits = .updatesFrequently
+        
+        // Timer label accessibility
+        timerLabel.accessibilityLabel = "Countdown timer"
+        timerLabel.accessibilityHint = "Countdown before next breathing phase"
+        timerLabel.accessibilityTraits = .updatesFrequently
+        
+        // Assuring message accessibility
+        assuringMessageLabel.accessibilityLabel = "Completion message"
+        assuringMessageLabel.accessibilityTraits = .staticText
     }
 
     private func setupAnimationManager() {
@@ -117,7 +154,8 @@ class BreathingPlayerViewController: UIViewController {
             assuringMessageLabel.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: 120)
         ])
         assuringMessageLabel.textColor = UIColor(hex: "#f7d6e0")
-        assuringMessageLabel.font = .systemFont(ofSize: 30, weight: .bold)
+        assuringMessageLabel.font = UIFont.preferredFont(forTextStyle: .title2)
+        assuringMessageLabel.adjustsFontForContentSizeCategory = true
         assuringMessageLabel.textAlignment = .center
         assuringMessageLabel.numberOfLines = 0
         assuringMessageLabel.alpha = 0
@@ -142,7 +180,8 @@ class BreathingPlayerViewController: UIViewController {
             instructionLabel.topAnchor.constraint(equalTo: view.topAnchor, constant: 120)
         ])
         instructionLabel.textColor = UIColor(hex: "#fff6f0")
-        instructionLabel.font = .systemFont(ofSize: 36, weight: .semibold)
+        instructionLabel.font = UIFont.preferredFont(forTextStyle: .largeTitle)
+        instructionLabel.adjustsFontForContentSizeCategory = true
         instructionLabel.text = "Inhale"
         instructionLabel.alpha = 1
         instructionLabel.layer.shadowColor = UIColor.black.cgColor
@@ -172,7 +211,8 @@ class BreathingPlayerViewController: UIViewController {
             timerLabel.topAnchor.constraint(equalTo: instructionLabel.bottomAnchor, constant: 20)
         ])
         timerLabel.textColor = UIColor(hex: "#bfaee0")
-        timerLabel.font = .systemFont(ofSize: 34, weight: .medium)
+        timerLabel.font = UIFont.preferredFont(forTextStyle: .title1)
+        timerLabel.adjustsFontForContentSizeCategory = true
         timerLabel.text = ""
         timerLabel.isHidden = true
         timerLabel.layer.shadowColor = UIColor.black.cgColor
@@ -206,22 +246,34 @@ class BreathingPlayerViewController: UIViewController {
     private func setupControlButtons() {
         startPauseButton = UIButton(type: .system)
         startPauseButton.setTitle("Start", for: .normal)
-        startPauseButton.titleLabel?.font = .systemFont(ofSize: 22, weight: .bold)
+        startPauseButton.titleLabel?.font = UIFont.preferredFont(forTextStyle: .title3)
+        startPauseButton.titleLabel?.adjustsFontForContentSizeCategory = true
         startPauseButton.setTitleColor(UIColor(hex: "#1e0d31"), for: .normal)
         startPauseButton.backgroundColor = UIColor.white.withAlphaComponent(0.8)
         startPauseButton.layer.cornerRadius = 30
         startPauseButton.addTarget(self, action: #selector(startPauseButtonTapped), for: .touchUpInside)
         startPauseButton.translatesAutoresizingMaskIntoConstraints = false
+        
+        // Accessibility for start/pause button
+        startPauseButton.accessibilityLabel = "Start breathing exercise"
+        startPauseButton.accessibilityHint = "Starts or pauses the breathing exercise"
+        startPauseButton.accessibilityTraits = .button
 
         stopButton = UIButton(type: .system)
         stopButton.setTitle("Stop", for: .normal)
-        stopButton.titleLabel?.font = .systemFont(ofSize: 22, weight: .bold)
+        stopButton.titleLabel?.font = UIFont.preferredFont(forTextStyle: .title3)
+        stopButton.titleLabel?.adjustsFontForContentSizeCategory = true
         stopButton.setTitleColor(UIColor.white, for: .normal)
         stopButton.backgroundColor = UIColor.black.withAlphaComponent(0.25)
         stopButton.layer.cornerRadius = 30
         stopButton.addTarget(self, action: #selector(stopButtonTapped), for: .touchUpInside)
         stopButton.translatesAutoresizingMaskIntoConstraints = false
         stopButton.isHidden = true
+        
+        // Accessibility for stop button
+        stopButton.accessibilityLabel = "Stop breathing exercise"
+        stopButton.accessibilityHint = "Stops the current breathing exercise"
+        stopButton.accessibilityTraits = .button
 
         let stackView = UIStackView(arrangedSubviews: [stopButton, startPauseButton])
         stackView.translatesAutoresizingMaskIntoConstraints = false
@@ -235,7 +287,7 @@ class BreathingPlayerViewController: UIViewController {
             stackView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             stackView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -50),
             stackView.widthAnchor.constraint(equalToConstant: 300),
-            stackView.heightAnchor.constraint(equalToConstant: 60)
+            stackView.heightAnchor.constraint(greaterThanOrEqualToConstant: 44) // Ensure minimum touch target
         ])
     }
 
@@ -245,6 +297,7 @@ class BreathingPlayerViewController: UIViewController {
             playerState = .playing
             startExercise()
             startPauseButton.setTitle("Pause", for: .normal)
+            startPauseButton.accessibilityLabel = "Pause breathing exercise"
             UIView.animate(withDuration: 0.3) {
                 self.stopButton.isHidden = false
             }
@@ -253,11 +306,13 @@ class BreathingPlayerViewController: UIViewController {
             playerState = .paused
             pauseExercise()
             startPauseButton.setTitle("Resume", for: .normal)
+            startPauseButton.accessibilityLabel = "Resume breathing exercise"
 
         case .paused:
             playerState = .playing
             resumeExercise()
             startPauseButton.setTitle("Pause", for: .normal)
+            startPauseButton.accessibilityLabel = "Pause breathing exercise"
 
         case .finished:
             resetExercise()
@@ -315,8 +370,10 @@ class BreathingPlayerViewController: UIViewController {
         animationManager.resetAnimation()
 
         startPauseButton.setTitle("Start", for: .normal)
+        startPauseButton.accessibilityLabel = "Start breathing exercise"
 
         stopButton.setTitle("Stop", for: .normal)
+        stopButton.accessibilityLabel = "Stop breathing exercise"
         stopButton.removeTarget(self, action: #selector(doneButtonTapped), for: .touchUpInside)
         stopButton.addTarget(self, action: #selector(stopButtonTapped), for: .touchUpInside)
 
@@ -352,8 +409,10 @@ class BreathingPlayerViewController: UIViewController {
             animationManager.finishExerciseAnimation()
 
             startPauseButton.setTitle("Restart", for: .normal)
+            startPauseButton.accessibilityLabel = "Restart breathing exercise"
 
             stopButton.setTitle("Done", for: .normal)
+            stopButton.accessibilityLabel = "Complete breathing exercise"
             stopButton.removeTarget(self, action: #selector(stopButtonTapped), for: .touchUpInside)
             stopButton.addTarget(self, action: #selector(doneButtonTapped), for: .touchUpInside)
 

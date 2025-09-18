@@ -22,6 +22,7 @@ struct FoodDetailsView: View {
                 Image(systemName: symbol)
                     .font(.headline)
                     .foregroundColor(.blue)
+                    .accessibilityHidden(true)
                 Text("\(value, specifier: "%.0f")")
                     .font(.subheadline)
                     .fontWeight(.medium)
@@ -29,6 +30,8 @@ struct FoodDetailsView: View {
                     .font(.caption2)
                     .foregroundColor(.secondary)
             }
+            .accessibilityElement(children: .combine)
+            .accessibilityLabel("\(label): \(value, specifier: "%.0f")")
         }
     }
 
@@ -53,10 +56,12 @@ struct FoodDetailsView: View {
                 .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
                 .background(Color.secondary.opacity(0.1))
                 .shadow(radius: 4)
+                .accessibilityLabel("Food image for \(food.name)")
 
                 Text(food.name)
                     .font(.title2)
                     .fontWeight(.semibold)
+                    .accessibilityAddTraits(.isHeader)
             }
 
             VStack(spacing: 16) {

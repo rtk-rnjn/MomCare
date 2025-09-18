@@ -31,10 +31,22 @@ class ContentTableViewCell: UITableViewCell {
     func updateElements(with foodItem: FoodItem, buttonTapHandler: @escaping (() -> Bool)) {
         foodItemLabel.text = foodItem.name
         kalcLabel.text = "\(String(foodItem.calories)) cal."
+        
+        // Apply Dynamic Type support
+        foodItemLabel.font = UIFont.preferredFont(forTextStyle: .headline)
+        foodItemLabel.adjustsFontForContentSizeCategory = true
+        
+        kalcLabel.font = UIFont.preferredFont(forTextStyle: .subheadline)
+        kalcLabel.adjustsFontForContentSizeCategory = true
+        
+        servingLabel.font = UIFont.preferredFont(forTextStyle: .caption1)
+        servingLabel.adjustsFontForContentSizeCategory = true
+        
         Task {
             let image = await foodItem.image
             DispatchQueue.main.async {
                 self.foodImageView.image = image
+                self.foodImageView.accessibilityLabel = "Food image for \(foodItem.name)"
             }
         }
         self.foodItem = foodItem
@@ -46,9 +58,29 @@ class ContentTableViewCell: UITableViewCell {
 
         if consumed {
             foodItemButton.setImage(UIImage(systemName: "checkmark.circle.fill", withConfiguration: configuration)?.withTintColor(color), for: .normal)
+            foodItemButton.accessibilityLabel = "Mark as not consumed"
+            foodItemButton.accessibilityValue = "Currently marked as consumed"
         } else {
             foodItemButton.setImage(UIImage(systemName: "circle", withConfiguration: configuration)?.withTintColor(color), for: .normal)
+            foodItemButton.accessibilityLabel = "Mark as consumed"
+            foodItemButton.accessibilityValue = "Currently not consumed"
         }
+        
+        foodItemButton.accessibilityHint = "Toggles consumption status of this food item"
+        foodItemButton.accessibilityTraits = .button
+        
+        // Ensure minimum touch target size
+        foodItemButton.widthAnchor.constraint(greaterThanOrEqualToConstant: 44).isActive = true
+        foodItemButton.heightAnchor.constraint(greaterThanOrEqualToConstant: 44).isActive = true
+        
+        // Set up accessibility for labels
+        foodItemLabel.accessibilityLabel = "Food item: \(foodItem.name)"
+        kalcLabel.accessibilityLabel = "\(foodItem.calories) calories"
+        servingLabel.accessibilityLabel = "Serving size: \(foodItem.serving)"
+        
+        // Configure cell accessibility
+        accessibilityElements = [foodItemLabel!, kalcLabel!, servingLabel!, foodItemButton!]
+        isAccessibilityElement = false
     }
 
     @IBAction func foodItemButtonTapped(_ sender: UIButton) {
