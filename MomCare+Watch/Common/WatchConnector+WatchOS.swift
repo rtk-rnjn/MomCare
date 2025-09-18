@@ -12,13 +12,13 @@ extension WatchConnector {
     func session(_ session: WCSession, didReceiveMessage message: [String: Any], replyHandler: @escaping ([String: Any]) -> Void) {
         if let text = message["message"] as? String, text == "ping" {
             replyHandler(["message": "pong"])
-            Watcher.shared.pongReceived = true
+            WatchObserver.shared.pongReceived = true
         }
     }
 }
 
-class Watcher: ObservableObject {
-    @MainActor static let shared: Watcher = .init()
+class WatchObserver: ObservableObject {
+    @MainActor static let shared: WatchObserver = .init()
 
     @Published var pongReceived: Bool = false
 }

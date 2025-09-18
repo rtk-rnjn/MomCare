@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct ContentView: View {
-    @ObservedObject var watcher: Watcher = .shared
+    @ObservedObject var watcher: WatchObserver = .shared
 
     var body: some View {
         VStack(spacing: 20) {

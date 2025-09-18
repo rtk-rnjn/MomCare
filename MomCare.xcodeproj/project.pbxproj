@@ -150,6 +150,9 @@
 				Common/HealthKitHandler/HealthKitHandler.swift,
 				"Common/HealthKitHandler/HealthKitHandler+Async.swift",
 				"Common/HealthKitHandler/HealthKitHandler+Reader.swift",
+				Common/MultipeerHandler/MultipeerHandler.swift,
+				"Common/MultipeerHandler/MultipeerHandler+Advertiser.swift",
+				"Common/MultipeerHandler/MultipeerHandler+Browser.swift",
 				Common/MusicPlayerHandler.swift,
 				Common/Utils.swift,
 				Common/WatchConnector.swift,
@@ -293,6 +296,7 @@
 				05BAA2162D771882008C89DB /* Embed Frameworks */,
 				05B4EFE12E3A0B080022E5DF /* Embed Foundation Extensions */,
 				3A3E58A22E7A9DD5005BD5BC /* Embed Watch Content */,
+				3A3E5AD42E7BBC08005BD5BC /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -434,6 +438,28 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		3A3E5AD42E7BBC08005BD5BC /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if [[ \"$(uname -m)\" == arm64 ]]; then\n    export PATH=\"/opt/homebrew/bin:$PATH\"\nfi\n\nif which swiftlint > /dev/null; then\n    swiftlint --fix --config .swiftlint.yml\n    swiftlint lint --strict --quiet --config .swiftlint.yml --reporter xcode\nfi\n\nif which swiftformat > /dev/null; then\n    swiftformat . --config .swiftformat\n    swiftformat --quiet --strict --lint --config .swiftformat .\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		059C46792D30D12400B4A15A /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -482,6 +508,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 73B8W4ZN6V;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = MomCare/Info.plist;
@@ -537,6 +564,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 73B8W4ZN6V;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = MomCare/Info.plist;

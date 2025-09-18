@@ -30,13 +30,17 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        
+      - name: Install SwiftFomrat and Swiftlint
+        run: |
+          brew install swiftformat swiftlint
 
       - name: Cache DerivedData
         uses: actions/cache@v4
         with:
           path: |
             ~/Library/Developer/Xcode/DerivedData
-          key: deriveddata-${{ runner.os }}-${{ '**/*.xcodeproj', '**/*.xcworkspace', '**/Package.resolved') }}
+          key: deriveddata-${{ runner.os }}-${{ hashFiles('**/*.xcodeproj', '**/*.xcworkspace', '**/Package.resolved') }}
           restore-keys: |
             deriveddata-${{ runner.os }}-
 

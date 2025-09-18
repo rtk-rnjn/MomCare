@@ -86,6 +86,7 @@ extension WatchConnector: @preconcurrency WCSessionDelegate {
     #endif
 
     func sessionReachabilityDidChange(_ session: WCSession) {
+        logger.debug("Session reachability changed: \(session.isReachable)")
         DispatchQueue.main.async {
             self.isReachable = session.isReachable
         }
