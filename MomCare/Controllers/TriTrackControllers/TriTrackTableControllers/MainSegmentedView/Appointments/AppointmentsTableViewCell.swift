@@ -14,7 +14,7 @@ class AppointmentsTableViewCell: UITableViewCell {
     @IBOutlet var dateTime: UIDatePicker!
 
     func updateElements(with event: EventInfo) {
-        dateTime.date = event.startDate ?? .init()
+        dateTime.date = event.startDate
         titleLabel.text = event.title
     }
 }

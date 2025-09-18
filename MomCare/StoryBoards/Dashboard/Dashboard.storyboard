@@ -17,7 +17,7 @@
                 </viewControllerPlaceholder>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="2FZ-Xn-H2s" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2060" y="-1353"/>
+            <point key="canvasLocation" x="2411" y="-26"/>
         </scene>
         <!--Profile-->
         <scene sceneID="5sY-3Z-DA8">
@@ -312,10 +312,53 @@
                                     </tableViewCell>
                                 </cells>
                             </tableViewSection>
+                            <tableViewSection id="704-lP-Phg">
+                                <cells>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" accessoryType="disclosureIndicator" indentationWidth="10" id="WZg-fb-5P7">
+                                        <rect key="frame" x="20" y="527.33332443237305" width="353" height="57.333332061767578"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="WZg-fb-5P7" id="LmH-dq-rZB">
+                                            <rect key="frame" x="0.0" y="0.0" width="322.66666666666669" height="57.333332061767578"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <stackView opaque="NO" contentMode="scaleToFill" spacing="11" translatesAutoresizingMaskIntoConstraints="NO" id="Rdr-pz-Tz1">
+                                                    <rect key="frame" x="15" y="14.999999999999998" width="297.66666666666669" height="27.333333333333329"/>
+                                                    <subviews>
+                                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="applewatch.watchface" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="1Qe-71-ewE">
+                                                            <rect key="frame" x="0.0" y="0.33333333333333215" width="27" height="27"/>
+                                                            <color key="tintColor" red="0.57254901960000004" green="0.26274509800000001" blue="0.31372549020000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="width" constant="27" id="7R2-l0-pob"/>
+                                                                <constraint firstAttribute="width" secondItem="1Qe-71-ewE" secondAttribute="height" multiplier="1:1" id="Z4g-XR-1Nb"/>
+                                                            </constraints>
+                                                        </imageView>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="MomCare+ Watch" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1lK-H1-4cA">
+                                                            <rect key="frame" x="38" y="0.0" width="259.66666666666669" height="27.333333333333332"/>
+                                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                            <nil key="textColor"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                    </subviews>
+                                                </stackView>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="bottom" secondItem="Rdr-pz-Tz1" secondAttribute="bottom" constant="15" id="1Vv-TT-fQm"/>
+                                                <constraint firstItem="Rdr-pz-Tz1" firstAttribute="leading" secondItem="LmH-dq-rZB" secondAttribute="leading" constant="15" id="L7E-jG-NNY"/>
+                                                <constraint firstAttribute="trailing" secondItem="Rdr-pz-Tz1" secondAttribute="trailing" constant="10" id="NaV-jy-vvb"/>
+                                                <constraint firstItem="Rdr-pz-Tz1" firstAttribute="top" secondItem="LmH-dq-rZB" secondAttribute="top" constant="15" id="vYQ-jL-jnG"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <connections>
+                                            <segue destination="y1H-BB-BC4" kind="show" id="8vY-6A-pcb"/>
+                                        </connections>
+                                    </tableViewCell>
+                                </cells>
+                            </tableViewSection>
                             <tableViewSection id="Hlm-cl-LyU">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" accessoryType="disclosureIndicator" indentationWidth="10" id="51Z-j8-Wlh">
-                                        <rect key="frame" x="20" y="527.33332443237305" width="353" height="57.333332061767578"/>
+                                        <rect key="frame" x="20" y="620.66665649414062" width="353" height="57.333332061767578"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="51Z-j8-Wlh" id="ME8-7L-yNk">
                                             <rect key="frame" x="0.0" y="0.0" width="322.66666666666669" height="57.333332061767578"/>
@@ -358,7 +401,7 @@
                             <tableViewSection id="JSU-QX-zbT">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" id="KwR-KM-bmH">
-                                        <rect key="frame" x="20" y="620.66665649414062" width="353" height="54.666667938232422"/>
+                                        <rect key="frame" x="20" y="713.9999885559082" width="353" height="54.666667938232422"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="KwR-KM-bmH" id="t7d-GM-0qA">
                                             <rect key="frame" x="0.0" y="0.0" width="353" height="54.666667938232422"/>
@@ -390,23 +433,23 @@
                             <tableViewSection id="R55-xU-5Fl">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" id="hMn-1w-31l">
-                                        <rect key="frame" x="20" y="711.33332443237305" width="353" height="143"/>
+                                        <rect key="frame" x="20" y="804.66665649414062" width="353" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="hMn-1w-31l" id="zM2-eC-HEz">
-                                            <rect key="frame" x="0.0" y="0.0" width="353" height="143"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="353" height="44"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="iHc-D3-3A1">
-                                                    <rect key="frame" x="10" y="10" width="333" height="123"/>
+                                                    <rect key="frame" x="10" y="10" width="333" height="24"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Your experience matter to us. Contact support or share feedback anytime. Tap here to connect with the MomCare+ Team." textAlignment="center" lineBreakMode="wordWrap" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="u44-rD-4ot">
-                                                            <rect key="frame" x="0.0" y="0.0" width="333" height="61.666666666666664"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="333" height="12"/>
                                                             <fontDescription key="fontDescription" style="UICTFontTextStyleCallout"/>
                                                             <color key="textColor" white="0.55903864231239375" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wW4-Qi-f5d">
-                                                            <rect key="frame" x="0.0" y="61.666666666666671" width="333" height="61.333333333333329"/>
+                                                            <rect key="frame" x="0.0" y="12" width="333" height="12"/>
                                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                             <color key="tintColor" red="0.57254901960000004" green="0.26274509800000001" blue="0.31372549020000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                             <state key="normal" title="Button"/>
@@ -438,6 +481,16 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="v2q-eC-PK4" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="2573" y="-963"/>
+        </scene>
+        <!--WatchSettings-->
+        <scene sceneID="v0e-CG-FqC">
+            <objects>
+                <viewControllerPlaceholder storyboardName="WatchSettings" id="y1H-BB-BC4" sceneMemberID="viewController">
+                    <navigationItem key="navigationItem" id="SPp-bV-Rlq"/>
+                </viewControllerPlaceholder>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="sDm-jk-ZWc" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3720" y="-949"/>
         </scene>
         <!--ProgressHub-->
         <scene sceneID="s0d-6b-0kx">
@@ -532,7 +585,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Iqw-R9-Osc" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="6323" y="-1251"/>
+            <point key="canvasLocation" x="5615" y="-2194"/>
         </scene>
         <!--Account & Security-->
         <scene sceneID="0FX-O9-Fl2">
@@ -739,7 +792,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="DNa-Qh-vz9" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5615" y="-835"/>
+            <point key="canvasLocation" x="5615" y="-1473"/>
         </scene>
         <!--Disclaimers View Controller-->
         <scene sceneID="hmF-kA-tRe">
@@ -755,7 +808,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Pva-OI-lUm" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2353" y="997"/>
+            <point key="canvasLocation" x="2361" y="973"/>
         </scene>
         <!--Health & Support-->
         <scene sceneID="bbJ-JP-jjR">
@@ -840,7 +893,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ygm-ai-Qu6" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3934" y="105"/>
+            <point key="canvasLocation" x="4579" y="-37"/>
         </scene>
         <!--Global Rights View Controller-->
         <scene sceneID="bMO-1j-rzd">
@@ -866,7 +919,7 @@
                 </hostingController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="eNv-YR-w5K" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="880" y="865"/>
+            <point key="canvasLocation" x="880" y="973"/>
         </scene>
         <!--Terms Of Service View Controller-->
         <scene sceneID="Obk-at-6qC">
@@ -998,7 +1051,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="uyl-cx-0rC" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5266" y="373"/>
+            <point key="canvasLocation" x="5615" y="-37"/>
         </scene>
         <!--Credits View Controller-->
         <scene sceneID="5n0-LQ-sZQ">
@@ -1014,12 +1067,12 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Mdw-5r-RTc" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4844" y="1118"/>
+            <point key="canvasLocation" x="5149" y="701"/>
         </scene>
-        <!--Aboutus View Controller-->
+        <!--About Us View Controller-->
         <scene sceneID="fzh-nA-bf5">
             <objects>
-                <viewController id="g6H-sL-Vso" customClass="AboutusViewController" customModule="MomCare" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="g6H-sL-Vso" customClass="AboutUsViewController" customModule="MomCare" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="qEj-cj-BfC">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="783"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -1030,7 +1083,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="cYY-Vv-WOx" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="6059" y="373"/>
+            <point key="canvasLocation" x="6418" y="-37"/>
         </scene>
         <!--Account Management-->
         <scene sceneID="QvT-ER-eg1">
@@ -1087,7 +1140,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="omm-LX-MuV" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="6245" y="-477"/>
+            <point key="canvasLocation" x="5615" y="-763"/>
         </scene>
         <!--Legal & Compliance-->
         <scene sceneID="YNF-Yn-YEs">
@@ -1199,7 +1252,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hh2-8S-yjF" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2479" y="105"/>
+            <point key="canvasLocation" x="3720" y="-37"/>
         </scene>
         <!--Health Information-->
         <scene sceneID="Nhz-Tp-3DX">
@@ -1393,7 +1446,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="IuO-CW-qz4" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4969" y="-1542"/>
+            <point key="canvasLocation" x="4724" y="-2194"/>
         </scene>
         <!--MultipleSelectorTableViewController-->
         <scene sceneID="m0k-Td-WwQ">
@@ -1403,7 +1456,7 @@
                 </viewControllerPlaceholder>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="wtj-qF-QJD" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5658" y="-1542"/>
+            <point key="canvasLocation" x="4724" y="-1724"/>
         </scene>
         <!--Personal Information-->
         <scene sceneID="iRU-kW-izF">
@@ -1780,7 +1833,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="gYL-Mc-ioF" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4007" y="-1664"/>
+            <point key="canvasLocation" x="3885" y="-2193"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="Bth-gx-cbb">
@@ -1799,7 +1852,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ien-zO-ZCE" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1607" y="-37"/>
+            <point key="canvasLocation" x="1578" y="-963"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="CV6-ce-wOC">
@@ -1817,7 +1870,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Lc9-Ul-Dsv" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1607" y="-870"/>
+            <point key="canvasLocation" x="1579" y="-26"/>
         </scene>
         <!--ProgressHub-->
         <scene sceneID="7Gh-Pb-BAL">
@@ -1854,10 +1907,11 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="8ub-W0-QIt" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5587" y="1118"/>
+            <point key="canvasLocation" x="6076" y="702"/>
         </scene>
     </scenes>
     <resources>
+        <image name="applewatch.watchface" catalog="system" width="110" height="128"/>
         <image name="bell.badge" catalog="system" width="117" height="128"/>
         <image name="gearshape" catalog="system" width="128" height="123"/>
         <image name="heart.text.square" catalog="system" width="128" height="114"/>

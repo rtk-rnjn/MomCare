@@ -10,7 +10,7 @@ import SwiftUI
 
 class SymptomsTableViewController: UITableViewController {
     var triTrackViewController: TriTrackViewController?
-    var delegate: EventKitHandlerDelegate = .init()
+    var delegate: EventKitHandlerUIDelegate = .init()
 
     var events: [EventInfo] = []
 
@@ -69,7 +69,7 @@ class SymptomsTableViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let selectedEvent = events[indexPath.section]
-        guard let symptomNameToFind = selectedEvent.title else { return }
+        let symptomNameToFind = selectedEvent.title
 
         guard let symptomToShow = PregnancySymptoms.allSymptoms.first(where: { $0.name == symptomNameToFind }) else {
             tableView.deselectRow(at: indexPath, animated: true)

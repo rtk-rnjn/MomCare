@@ -13,7 +13,7 @@ class SymptomsTableViewCell: UITableViewCell {
     @IBOutlet var titleLabel: UILabel!
 
     func updateElements(with symptom: EventInfo) {
-        dateTime.date = symptom.startDate ?? .init()
+        dateTime.date = symptom.startDate
         titleLabel.text = symptom.title
     }
 }

@@ -19,11 +19,11 @@ struct EventInfo: Sendable {
     var eventIdentifier: String
     var calendarItemIdentifier: String
     var calendarItemExternalIdentifier: String?
-    var title: String?
+    var title: String
     var location: String?
     var notes: String?
     var url: URL?
-    var startDate: Date?
+    var startDate: Date
     var endDate: Date
     var isAllDay: Bool
     var calendarTitle: String
@@ -118,39 +118,26 @@ actor EventKitHandler {
     }
 
     func fetchAppointments(startDate: Date? = nil, endDate: Date? = nil) -> [EventInfo] {
-        let events = fetchEvents(startDate: startDate, endDate: endDate).filter { $0.notes != "Symptom event" }
-        return events.map { getEventInfo(from: $0) }
+        let events = fetchEvents(startDate: startDate, endDate: endDate).map { getEventInfo(from: $0) }
+        let symptoms = fetchAllSymptoms()
+
+        let symptomIds = Set(symptoms.map { $0.eventIdentifier })
+
+        return events.filter { !symptomIds.contains($0.eventIdentifier) }
     }
 
     func fetchAllAppointments() -> [EventInfo] {
         let now = Date()
 
-        let startDate = Calendar.current.date(byAdding: .month, value: -1, to: now)
-        let endDate = Calendar.current.date(byAdding: .month, value: 2, to: now)
+        let startDate = Calendar.current.date(byAdding: .year, value: -1, to: now)
+        let endDate = Calendar.current.date(byAdding: .year, value: 1, to: now)
 
         return fetchAppointments(startDate: startDate, endDate: endDate)
     }
 
     func fetchUpcomingAppointment() -> EventInfo? {
-        let calendar = createOrGetEvent()
-        let predicate = eventStore.predicateForEvents(withStart: Date(), end: Date().addingTimeInterval(60 * 60 * 24), calendars: [calendar])
-
-        let events = eventStore.events(matching: predicate)
-        return events.first.map { getEventInfo(from: $0) }
-    }
-
-    func fetchSymptoms(startDate: Date? = nil, endDate: Date? = nil) -> [EventInfo] {
-        let events = fetchEvents(startDate: startDate, endDate: endDate)
-        return events.filter { $0.notes == "Symptom event" }.map { getEventInfo(from: $0) }
-    }
-
-    func fetchAllSymptoms() -> [EventInfo] {
-        let now = Date()
-
-        let startDate = Calendar.current.date(byAdding: .month, value: -3, to: now)
-        let endDate = Calendar.current.date(byAdding: .month, value: 3, to: now)
-
-        return fetchSymptoms(startDate: startDate, endDate: endDate)
+        let events = fetchAppointments(startDate: Date(), endDate: Date().addingTimeInterval(60 * 60 * 24))
+        return events.first
     }
 
     func deleteEvent(event eventInfo: EventInfo) async {
@@ -164,7 +151,8 @@ actor EventKitHandler {
         }
     }
 
-    func createEvent(title: String, startDate: Date, endDate: Date, isAllDay: Bool = false, notes: String? = nil, recurrenceRules: [EKRecurrenceRule]? = nil, location: String? = nil, structuredLocaltion: EKStructuredLocation? = nil, alarm: EKAlarm? = nil) {
+    @discardableResult
+    func createEvent(title: String, startDate: Date, endDate: Date, isAllDay: Bool = false, notes: String? = nil, recurrenceRules: [EKRecurrenceRule]? = nil, location: String? = nil, structuredLocaltion: EKStructuredLocation? = nil, alarm: EKAlarm? = nil) -> EventInfo? {
         let event = EKEvent(eventStore: eventStore)
 
         event.title = title
@@ -185,6 +173,8 @@ actor EventKitHandler {
         } catch let error {
             logger.error("Error saving event: \(String(describing: error))")
         }
+
+        return getEventInfo(from: event)
     }
 
     func getCalendar(with identifierKey: String) -> [EKCalendar]? {
@@ -299,16 +289,7 @@ actor EventKitHandler {
         }
     }
 
-    // MARK: Private
-
-    private func applyUpdates(to reminder: EKReminder, from reminderInfo: ReminderInfo) {
-        reminder.title = reminderInfo.title
-        reminder.notes = reminderInfo.notes
-        reminder.dueDateComponents = reminderInfo.dueDateComponents
-        reminder.isCompleted = reminderInfo.isCompleted
-    }
-
-    private func fetchEvents(startDate: Date?, endDate: Date?) -> [EKEvent] {
+    func fetchEvents(startDate: Date?, endDate: Date?) -> [EKEvent] {
         let currentCalendar = Calendar.current
         let startDate = startDate ?? currentCalendar.startOfDay(for: startDate ?? Date())
         let endDate = endDate ?? currentCalendar.date(byAdding: .day, value: 1, to: startDate) ?? Date()
@@ -317,6 +298,47 @@ actor EventKitHandler {
         let predicate = eventStore.predicateForEvents(withStart: startDate, end: endDate, calendars: [calendar])
 
         return eventStore.events(matching: predicate)
+    }
+
+    func getEventInfo(from event: EKEvent) -> EventInfo {
+        return EventInfo(
+            eventIdentifier: event.eventIdentifier,
+            calendarItemIdentifier: event.calendarItemIdentifier,
+            calendarItemExternalIdentifier: event.calendarItemExternalIdentifier,
+            title: event.title,
+            location: event.location,
+            notes: event.notes,
+            url: event.url,
+            startDate: event.startDate,
+            endDate: event.endDate,
+            isAllDay: event.isAllDay,
+            calendarTitle: event.calendar.title,
+            timeZone: event.timeZone,
+            availability: event.availability
+        )
+    }
+
+    func getReminderInfo(from reminder: EKReminder) -> ReminderInfo {
+        return ReminderInfo(
+            reminderIdentifier: reminder.calendarItemIdentifier,
+            calendarItemIdentifier: reminder.calendarItemIdentifier,
+            calendarItemExternalIdentifier: reminder.calendarItemExternalIdentifier,
+            title: reminder.title,
+            notes: reminder.notes,
+            dueDateComponents: reminder.dueDateComponents,
+            isCompleted: reminder.isCompleted,
+            calendarTitle: reminder.calendar.title,
+            timeZone: reminder.timeZone
+        )
+    }
+
+    // MARK: Private
+
+    private func applyUpdates(to reminder: EKReminder, from reminderInfo: ReminderInfo) {
+        reminder.title = reminderInfo.title
+        reminder.notes = reminderInfo.notes
+        reminder.dueDateComponents = reminderInfo.dueDateComponents
+        reminder.isCompleted = reminderInfo.isCompleted
     }
 
     private func createOrGetCalendar(identifierKey: String, eventType: EKEntityType, title: String, defaultCalendar: EKCalendar?) -> EKCalendar {
@@ -345,93 +367,6 @@ actor EventKitHandler {
         }
 
         return newCalendar
-    }
-
-    private func getEventInfo(from event: EKEvent) -> EventInfo {
-        return EventInfo(
-            eventIdentifier: event.eventIdentifier,
-            calendarItemIdentifier: event.calendarItemIdentifier,
-            calendarItemExternalIdentifier: event.calendarItemExternalIdentifier,
-            title: event.title,
-            location: event.location,
-            notes: event.notes,
-            url: event.url,
-            startDate: event.startDate,
-            endDate: event.endDate,
-            isAllDay: event.isAllDay,
-            calendarTitle: event.calendar.title,
-            timeZone: event.timeZone,
-            availability: event.availability
-        )
-    }
-
-    private func getReminderInfo(from reminder: EKReminder) -> ReminderInfo {
-        return ReminderInfo(
-            reminderIdentifier: reminder.calendarItemIdentifier,
-            calendarItemIdentifier: reminder.calendarItemIdentifier,
-            calendarItemExternalIdentifier: reminder.calendarItemExternalIdentifier,
-            title: reminder.title,
-            notes: reminder.notes,
-            dueDateComponents: reminder.dueDateComponents,
-            isCompleted: reminder.isCompleted,
-            calendarTitle: reminder.calendar.title,
-            timeZone: reminder.timeZone
-        )
-    }
-
-}
-
-@MainActor
-class EventKitHandlerDelegate: NSObject, EKEventEditViewDelegate, EKEventViewDelegate {
-    var viewController: UIViewController?
-
-    nonisolated func eventEditViewController(_ controller: EKEventEditViewController, didCompleteWith action: EKEventEditViewAction) {
-        switch action {
-        case .saved:
-            break
-        case .canceled, .deleted:
-            DispatchQueue.main.async {
-                controller.dismiss(animated: true)
-            }
-
-        @unknown default:
-            break
-        }
-    }
-
-    nonisolated func eventViewController(_ controller: EKEventViewController, didCompleteWith action: EKEventViewAction) {
-        switch action {
-        case .done:
-            DispatchQueue.main.async {
-                controller.dismiss(animated: true)
-            }
-
-        default:
-            break
-        }
-    }
-
-    func presentEKEventEditViewController(with eventInfo: EventInfo?) async {
-        let eventEditViewController = EKEventEditViewController()
-        eventEditViewController.eventStore = await EventKitHandler.shared.getEventStore()
-        eventEditViewController.event = await EventKitHandler.shared.getEKEvent(from: eventInfo)
-        eventEditViewController.editViewDelegate = self
-
-        DispatchQueue.main.async {
-            self.viewController?.present(eventEditViewController, animated: true, completion: nil)
-        }
-    }
-
-    func presentEKEventViewController(with eventInfo: EventInfo?) async {
-        let eventViewController = EKEventViewController()
-        eventViewController.event = await EventKitHandler.shared.getEKEvent(from: eventInfo)
-        eventViewController.allowsEditing = true
-        eventViewController.allowsCalendarPreview = true
-
-        let navigationController = UINavigationController(rootViewController: eventViewController)
-        eventViewController.delegate = self
-
-        viewController?.present(navigationController, animated: true)
     }
 
 }

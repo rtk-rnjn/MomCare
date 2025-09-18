@@ -45,6 +45,7 @@
 		<string>fetch</string>
 		<string>processing</string>
 		<string>audio</string>
+		<string>remote-notification</string>
 	</array>
 </dict>
 </plist>

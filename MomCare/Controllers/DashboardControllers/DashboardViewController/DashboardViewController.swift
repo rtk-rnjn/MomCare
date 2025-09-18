@@ -271,9 +271,8 @@ extension DashboardViewController {
                         Task {
                             guard let event = await EventKitHandler.shared.fetchUpcomingAppointment() else { return }
                             let startDate = event.startDate
-                            let interval = startDate?.timeIntervalSinceReferenceDate
+                            let interval = startDate.timeIntervalSinceReferenceDate
 
-                            guard let interval else { return }
                             DispatchQueue.main.async {
                                 if let url = URL(string: "calshow:\(interval)") {
                                     UIApplication.shared.open(url, options: [:], completionHandler: nil)

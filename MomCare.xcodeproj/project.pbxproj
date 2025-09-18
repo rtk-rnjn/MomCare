@@ -14,6 +14,10 @@
 		05B4EFDE2E3A0B080022E5DF /* PregnancyTracker.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 059FE8BC2E336E05001BCB05 /* PregnancyTracker.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		05BAA2152D771882008C89DB /* LNPopupController in Embed Frameworks */ = {isa = PBXBuildFile; productRef = F5F1D6112D739C6A00F65BA7 /* LNPopupController */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		05E7F9672D37748E00F4D81E /* .swiftlint.yml in Resources */ = {isa = PBXBuildFile; fileRef = 05E7F9662D37748300F4D81E /* .swiftlint.yml */; };
+		3A3E589E2E7A9DD5005BD5BC /* Watch.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 3A3E58942E7A9DD3005BD5BC /* Watch.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		3A3E58CD2E7B2AF9005BD5BC /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 3A3E58CC2E7B2AF9005BD5BC /* RealmSwift */; };
+		3A3E58CE2E7B2AF9005BD5BC /* RealmSwift in Embed Frameworks */ = {isa = PBXBuildFile; productRef = 3A3E58CC2E7B2AF9005BD5BC /* RealmSwift */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		3A3E58D12E7B2B15005BD5BC /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3A3E58D02E7B2B15005BD5BC /* SwiftUI.framework */; };
 		F59454F42DEDACAA00002917 /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = F59454F32DEDACAA00002917 /* RealmSwift */; };
 		F59454F52DEDACAA00002917 /* RealmSwift in Embed Frameworks */ = {isa = PBXBuildFile; productRef = F59454F32DEDACAA00002917 /* RealmSwift */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		F5F1D6122D739C6A00F65BA7 /* LNPopupController in Frameworks */ = {isa = PBXBuildFile; productRef = F5F1D6112D739C6A00F65BA7 /* LNPopupController */; };
@@ -26,6 +30,13 @@
 			proxyType = 1;
 			remoteGlobalIDString = 059FE8BB2E336E05001BCB05;
 			remoteInfo = PregnancyTracker;
+		};
+		3A3E589C2E7A9DD5005BD5BC /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 059C46752D30D12400B4A15A /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 3A3E58932E7A9DD3005BD5BC;
+			remoteInfo = "MomCare+ Watch Watch App";
 		};
 /* End PBXContainerItemProxy section */
 
@@ -63,6 +74,28 @@
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		3A3E58A22E7A9DD5005BD5BC /* Embed Watch Content */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "$(CONTENTS_FOLDER_PATH)/Watch";
+			dstSubfolderSpec = 16;
+			files = (
+				3A3E589E2E7A9DD5005BD5BC /* Watch.app in Embed Watch Content */,
+			);
+			name = "Embed Watch Content";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		3A3E58CF2E7B2AFA005BD5BC /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				3A3E58CE2E7B2AF9005BD5BC /* RealmSwift in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
@@ -71,6 +104,8 @@
 		059FE8BD2E336E05001BCB05 /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
 		059FE8BF2E336E05001BCB05 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
 		05E7F9662D37748300F4D81E /* .swiftlint.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = .swiftlint.yml; sourceTree = "<group>"; };
+		3A3E58942E7A9DD3005BD5BC /* Watch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Watch.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		3A3E58D02E7B2B15005BD5BC /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = Platforms/WatchOS.platform/Developer/SDKs/WatchOS11.5.sdk/System/Library/Frameworks/SwiftUI.framework; sourceTree = DEVELOPER_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -99,7 +134,9 @@
 				"Common/DataControllers/MomCareUser/MomCareUser+DataTransferObjects.swift",
 				"Common/DataControllers/MomCareUser/MomCareUser+UserHandler.swift",
 				Common/DataControllers/NetworkManager.swift,
-				Common/EventKitHandler.swift,
+				Common/EventKitHandler/EventKitHandler.swift,
+				"Common/EventKitHandler/EventKitHandler+Symptom.swift",
+				"Common/EventKitHandler/EventKitHandler+UI.swift",
 				"Common/Extensions/Array+Subscript.swift",
 				"Common/Extensions/Color+Hex.swift",
 				"Common/Extensions/Data+Decoding.swift",
@@ -115,6 +152,7 @@
 				"Common/HealthKitHandler/HealthKitHandler+Reader.swift",
 				Common/MusicPlayerHandler.swift,
 				Common/Utils.swift,
+				Common/WatchConnector.swift,
 				DataModels/Global/AppContent.swift,
 				DataModels/Global/PregnancySymptoms.swift,
 				DataModels/Global/ProfileDisclaimerData.swift,
@@ -135,6 +173,13 @@
 			);
 			target = 059C467C2D30D12400B4A15A /* MomCare */;
 		};
+		3A3E58B42E7ADD2F005BD5BC /* Exceptions for "MomCare" folder in "Watch" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Common/WatchConnector.swift,
+			);
+			target = 3A3E58932E7A9DD3005BD5BC /* Watch */;
+		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -143,6 +188,7 @@
 			exceptions = (
 				059C468F2D30D12500B4A15A /* Exceptions for "MomCare" folder in "MomCare" target */,
 				059FE8DC2E3381FB001BCB05 /* Exceptions for "MomCare" folder in "PregnancyTracker" target */,
+				3A3E58B42E7ADD2F005BD5BC /* Exceptions for "MomCare" folder in "Watch" target */,
 			);
 			path = MomCare;
 			sourceTree = "<group>";
@@ -159,6 +205,11 @@
 		05E7F8CB2D376B8200F4D81E /* .github */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = .github;
+			sourceTree = "<group>";
+		};
+		3A3E58952E7A9DD3005BD5BC /* MomCare+Watch */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = "MomCare+Watch";
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -184,6 +235,15 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		3A3E58912E7A9DD3005BD5BC /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3A3E58D12E7B2B15005BD5BC /* SwiftUI.framework in Frameworks */,
+				3A3E58CD2E7B2AF9005BD5BC /* RealmSwift in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -194,6 +254,7 @@
 				05E7F8CB2D376B8200F4D81E /* .github */,
 				059C467F2D30D12400B4A15A /* MomCare */,
 				059FE8C12E336E05001BCB05 /* MomCare+PregnancyTracker */,
+				3A3E58952E7A9DD3005BD5BC /* MomCare+Watch */,
 				F59454F22DEDACAA00002917 /* Frameworks */,
 				059C467E2D30D12400B4A15A /* Products */,
 			);
@@ -204,6 +265,7 @@
 			children = (
 				059C467D2D30D12400B4A15A /* MomCare.app */,
 				059FE8BC2E336E05001BCB05 /* PregnancyTracker.appex */,
+				3A3E58942E7A9DD3005BD5BC /* Watch.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -211,6 +273,7 @@
 		F59454F22DEDACAA00002917 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				3A3E58D02E7B2B15005BD5BC /* SwiftUI.framework */,
 				059FE8BD2E336E05001BCB05 /* WidgetKit.framework */,
 				059FE8BF2E336E05001BCB05 /* SwiftUI.framework */,
 			);
@@ -229,11 +292,13 @@
 				059C467B2D30D12400B4A15A /* Resources */,
 				05BAA2162D771882008C89DB /* Embed Frameworks */,
 				05B4EFE12E3A0B080022E5DF /* Embed Foundation Extensions */,
+				3A3E58A22E7A9DD5005BD5BC /* Embed Watch Content */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 				05B4EFE02E3A0B080022E5DF /* PBXTargetDependency */,
+				3A3E589D2E7A9DD5005BD5BC /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				059C467F2D30D12400B4A15A /* MomCare */,
@@ -273,6 +338,30 @@
 			productReference = 059FE8BC2E336E05001BCB05 /* PregnancyTracker.appex */;
 			productType = "com.apple.product-type.app-extension";
 		};
+		3A3E58932E7A9DD3005BD5BC /* Watch */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 3A3E589F2E7A9DD5005BD5BC /* Build configuration list for PBXNativeTarget "Watch" */;
+			buildPhases = (
+				3A3E58902E7A9DD3005BD5BC /* Sources */,
+				3A3E58912E7A9DD3005BD5BC /* Frameworks */,
+				3A3E58922E7A9DD3005BD5BC /* Resources */,
+				3A3E58CF2E7B2AFA005BD5BC /* Embed Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				3A3E58952E7A9DD3005BD5BC /* MomCare+Watch */,
+			);
+			name = Watch;
+			packageProductDependencies = (
+				3A3E58CC2E7B2AF9005BD5BC /* RealmSwift */,
+			);
+			productName = "MomCare+ Watch Watch App";
+			productReference = 3A3E58942E7A9DD3005BD5BC /* Watch.app */;
+			productType = "com.apple.product-type.application";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -287,6 +376,9 @@
 						CreatedOnToolsVersion = 16.1;
 					};
 					059FE8BB2E336E05001BCB05 = {
+						CreatedOnToolsVersion = 16.4;
+					};
+					3A3E58932E7A9DD3005BD5BC = {
 						CreatedOnToolsVersion = 16.4;
 					};
 				};
@@ -312,6 +404,7 @@
 			targets = (
 				059C467C2D30D12400B4A15A /* MomCare */,
 				059FE8BB2E336E05001BCB05 /* PregnancyTracker */,
+				3A3E58932E7A9DD3005BD5BC /* Watch */,
 			);
 		};
 /* End PBXProject section */
@@ -326,6 +419,13 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		059FE8BA2E336E05001BCB05 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		3A3E58922E7A9DD3005BD5BC /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -349,6 +449,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		3A3E58902E7A9DD3005BD5BC /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -356,6 +463,11 @@
 			isa = PBXTargetDependency;
 			target = 059FE8BB2E336E05001BCB05 /* PregnancyTracker */;
 			targetProxy = 05B4EFDF2E3A0B080022E5DF /* PBXContainerItemProxy */;
+		};
+		3A3E589D2E7A9DD5005BD5BC /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 3A3E58932E7A9DD3005BD5BC /* Watch */;
+			targetProxy = 3A3E589C2E7A9DD5005BD5BC /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -365,11 +477,11 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = MomCare/MomCareDebug.entitlements;
+				CODE_SIGN_ENTITLEMENTS = MomCare/MomCare.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 4MLB4J69LF;
+				DEVELOPMENT_TEAM = 73B8W4ZN6V;
 				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = MomCare/Info.plist;
@@ -424,7 +536,7 @@
 				CODE_SIGN_ENTITLEMENTS = MomCare/MomCare.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 4MLB4J69LF;
+				DEVELOPMENT_TEAM = 73B8W4ZN6V;
 				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = MomCare/Info.plist;
@@ -628,7 +740,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
-				CODE_SIGN_ENTITLEMENTS = "MomCare+PregnancyTracker/PregnancyTrackerDebug.entitlements";
+				CODE_SIGN_ENTITLEMENTS = "MomCare+PregnancyTracker/PregnancyTracker.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
@@ -661,6 +773,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_ENTITLEMENTS = "MomCare+PregnancyTracker/PregnancyTracker.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -684,6 +797,67 @@
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 6.0;
 				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
+		3A3E58A02E7A9DD5005BD5BC /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = "MomCare+Watch/Watch.entitlements";
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 73B8W4ZN6V;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "MomCare+ Watch";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = com.Team05.MomCare;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.Team05.MomCare.watchkitapp;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 11.5;
+			};
+			name = Debug;
+		};
+		3A3E58A12E7A9DD5005BD5BC /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = "MomCare+Watch/Watch.entitlements";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 73B8W4ZN6V;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "MomCare+ Watch";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = com.Team05.MomCare;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.Team05.MomCare.watchkitapp;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 11.5;
 			};
 			name = Release;
 		};
@@ -713,6 +887,15 @@
 			buildConfigurations = (
 				059FE8CD2E336E07001BCB05 /* Debug */,
 				059FE8CE2E336E07001BCB05 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		3A3E589F2E7A9DD5005BD5BC /* Build configuration list for PBXNativeTarget "Watch" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				3A3E58A02E7A9DD5005BD5BC /* Debug */,
+				3A3E58A12E7A9DD5005BD5BC /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -753,6 +936,11 @@
 			productName = FSCalendar;
 		};
 		059FE8F32E33838C001BCB05 /* RealmSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = F5AF1ECD2DE91021008B14F1 /* XCRemoteSwiftPackageReference "realm-swift" */;
+			productName = RealmSwift;
+		};
+		3A3E58CC2E7B2AF9005BD5BC /* RealmSwift */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = F5AF1ECD2DE91021008B14F1 /* XCRemoteSwiftPackageReference "realm-swift" */;
 			productName = RealmSwift;
