@@ -31,6 +31,8 @@ struct SymptomsListView: View {
                         Text("Other")
                             .foregroundColor(.primary)
                     })
+                    .accessibilityLabel("Other symptom")
+                    .accessibilityHint("Select this to add a custom symptom not listed")
                 }
 
                 Section {
@@ -42,6 +44,8 @@ struct SymptomsListView: View {
                             Text(symptom.name)
                                 .foregroundColor(.primary)
                         })
+                        .accessibilityLabel(symptom.name)
+                        .accessibilityHint("Select this symptom to add to your symptom list")
                     }
                 }
             }
@@ -54,6 +58,8 @@ struct SymptomsListView: View {
                     Button("Cancel") {
                         dismiss()
                     }
+                    .accessibilityLabel("Cancel")
+                    .accessibilityHint("Closes the symptom selection without selecting a symptom")
                 }
             }
         }

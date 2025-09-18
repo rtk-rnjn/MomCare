@@ -54,11 +54,13 @@ struct PregnancyProgressView: View {
                             Text(trimester)
                                 .font(.title3)
                                 .fontWeight(.semibold)
+                                .accessibilityAddTraits(.isHeader)
 
                             Text(weekDay)
                                 .font(.title)
                                 .fontWeight(.bold)
                                 .foregroundColor(Color(hex: "924350"))
+                                .accessibilityAddTraits(.isHeader)
                         }
 
                         VStack(spacing: 16) {
@@ -112,6 +114,7 @@ struct PregnancyProgressView: View {
                 .multilineTextAlignment(.center)
                 .padding(.horizontal, 16)
                 .padding(.vertical, 12) // More vertical padding to fill space evenly
+                .accessibilityAddTraits(.isStaticText)
         }
         .padding(.vertical, 12) // Consistent vertical padding
         .padding(.horizontal, 12)
@@ -135,9 +138,11 @@ struct PregnancyProgressView: View {
                     HStack {
                         Image(systemName: "ruler")
                             .font(.system(size: 22))
+                            .accessibilityHidden(true)
 
                         Text("Height")
                             .font(.headline)
+                            .accessibilityAddTraits(.isHeader)
                     }
 
                     Text(babyHeight)
@@ -145,6 +150,8 @@ struct PregnancyProgressView: View {
                         .fontWeight(.bold)
                         .foregroundColor(Color(hex: "924350"))
                 }
+                .accessibilityElement(children: .combine)
+                .accessibilityLabel("Baby height: \(babyHeight)")
                 .padding()
                 .frame(width: (geo.size.width - 12) / 2)
                 .frame(height: 110)
@@ -165,9 +172,11 @@ struct PregnancyProgressView: View {
                     HStack {
                         Image(systemName: "scalemass")
                             .font(.system(size: 22))
+                            .accessibilityHidden(true)
 
                         Text("Weight")
                             .font(.headline)
+                            .accessibilityAddTraits(.isHeader)
                     }
 
                     Text(babyWeight)
@@ -175,6 +184,8 @@ struct PregnancyProgressView: View {
                         .fontWeight(.bold)
                         .foregroundColor(Color(hex: "924350"))
                 }
+                .accessibilityElement(children: .combine)
+                .accessibilityLabel("Baby weight: \(babyWeight)")
                 .padding()
                 .frame(width: (geo.size.width - 12) / 2)
                 .frame(height: 110)
@@ -418,6 +429,8 @@ struct PopupInfoCard: View {
                             .padding(.horizontal, 20)
                             .padding(.bottom, 16)
                     }
+                    .accessibilityLabel("Close information card")
+                    .accessibilityHint("Closes this information dialog and returns to the main view")
                 }
                 .background(Color.white)
             }
@@ -599,6 +612,8 @@ struct ComparisonView: View {
                         .onAppear {
                             wiggleAmount.toggle()
                         }
+                        .accessibilityLabel("Size comparison fruit")
+                        .accessibilityHint("Your baby is currently about the size of this fruit")
                 }
             }
             .frame(maxWidth: .infinity)
@@ -614,6 +629,7 @@ struct ComparisonView: View {
                     value: isShowingAnimation
                 )
                 .frame(width: 40)
+                .accessibilityHidden(true)
 
             // Right section with baby - making the baby smaller and better centered
             VStack(alignment: .center) {
@@ -634,6 +650,8 @@ struct ComparisonView: View {
                                     .repeatCount(2, autoreverses: true),
                                 value: isShowingAnimation
                             )
+                            .accessibilityLabel("Baby development illustration")
+                            .accessibilityHint("Shows how your baby looks at this stage of development")
                     }
                 }
             }
@@ -648,6 +666,9 @@ struct ComparisonView: View {
                 isShowingAnimation = false
             }
         }
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel("Size comparison: Your baby is currently about the size of the shown fruit")
+        .accessibilityHint("Double tap to animate the comparison")
     }
 
     // MARK: Private
