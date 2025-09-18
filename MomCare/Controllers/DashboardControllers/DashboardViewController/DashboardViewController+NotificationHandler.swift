@@ -8,6 +8,9 @@
 import Foundation
 @preconcurrency import UserNotifications
 import UIKit
+import OSLog
+
+private let logger: Logger = .init(subsystem: "com.MomCare.DashboardViewController", category: "ViewController")
 
 extension DashboardViewController {
     func requestAccessForNotification() async {
@@ -22,7 +25,7 @@ extension DashboardViewController {
                 }
             }
         } catch {
-            print(error.localizedDescription)
+            logger.error("Error while requesting notification access: \(String(describing: error))")
         }
     }
 

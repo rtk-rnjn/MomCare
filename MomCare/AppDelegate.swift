@@ -8,9 +8,11 @@
 import UIKit
 import UserNotifications
 import WatchConnectivity
+import OSLog
+
+private let logger: Logger = .init(subsystem: "com.MomCare.AppDelegate", category: "AppDelegate")
 
 @main
-
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
@@ -18,6 +20,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         UNUserNotificationCenter.current().delegate = self
         _ = WatchConnector.shared
 
+        logger.info("App Launched")
         return true
     }
 
@@ -25,7 +28,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return UISceneConfiguration(name: "Default Configuration", sessionRole: connectingSceneSession.role)
     }
 
-    func application(_ application: UIApplication, didDiscardSceneSessions sceneSessions: Set<UISceneSession>) {}
+    func application(_ application: UIApplication, didDiscardSceneSessions sceneSessions: Set<UISceneSession>) {
+        logger.debug("Did discard scene sessions: \(sceneSessions)")
+    }
+
+    func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
+        let token = deviceToken.map { String(format: "%02.2hhx", $0) }.joined
+        logger.info("Device Token: \(String(describing: token))")
+    }
+
+    func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: any Error) {
+        logger.error("Failed to register for remote notifications: \(String(describing: error))")
+    }
 }
 
 extension AppDelegate: UNUserNotificationCenterDelegate {

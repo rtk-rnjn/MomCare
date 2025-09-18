@@ -54,7 +54,7 @@ class WatchConnector: NSObject, ObservableObject {
 
     func ping() {
         send(message: ["message": "ping"]) { reply in
-            logger.info("\(String(describing: reply))")
+            logger.info("Recieved `\(String(describing: reply))` from Paired Device")
         }
     }
 }
