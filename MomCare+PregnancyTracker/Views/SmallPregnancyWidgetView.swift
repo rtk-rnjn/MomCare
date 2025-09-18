@@ -7,7 +7,7 @@ struct SmallPregnancyWidgetView: View {
     var body: some View {
         VStack(spacing: 6) {
             Text("Week \(entry.week)")
-                .font(.title2)
+                .font(.title3)
                 .fontWeight(.bold)
 
             Text("Day \(entry.day)")

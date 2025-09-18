@@ -7,6 +7,9 @@
 
 import Foundation
 @preconcurrency import MultipeerConnectivity
+import OSLog
+
+private let logger: Logger = .init(subsystem: "com.MomCare.MultipeerHandler", category: "MultipeerHandler")
 
 @MainActor
 class MultipeerHandler: NSObject {
@@ -61,7 +64,7 @@ class MultipeerHandler: NSObject {
         do {
             try session.send(data, toPeers: targetPeers, with: .reliable)
         } catch {
-            print("Error sending data: \(error.localizedDescription)")
+            logger.error("Error sending data: \(String(describing: error))")
         }
     }
 
@@ -89,11 +92,15 @@ extension MultipeerHandler: @preconcurrency MCSessionDelegate {
         DispatchQueue.main.async {
             switch state {
             case .connected:
+                logger.info("Connected to peer: \(peerID.displayName)")
                 self.onPeerConnected?(peerID)
+
             case .notConnected:
+                logger.info("Disconnected from peer: \(peerID.displayName)")
                 self.onPeerDisconnected?(peerID)
+
             case .connecting:
-                break
+                logger.info("Connecting to peer: \(peerID.displayName)")
             @unknown default: break
             }
         }
