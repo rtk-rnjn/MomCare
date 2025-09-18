@@ -460,24 +460,6 @@ struct ExerciseProgressView: View {
     }
 
     private func exerciseIconSection(for exercise: Exercise, isBreathing: Bool) -> some View {
-//        AsyncImage(url: URL(string: exercise.imageUri ?? "")) { image in
-//            image
-//                .resizable()
-//                .aspectRatio(contentMode: .fill)
-//        } placeholder: {
-//            Image(systemName: isBreathing ? "lungs.fill" : "figure.yoga")
-//                .font(.system(size: 36, weight: .medium))
-//                .foregroundColor(Color(hex: "924350"))
-//        }
-//        .frame(width: 90, height: 90)
-//        .background(
-//            LinearGradient(
-//                colors: [Color(hex: "FBE8E5")],
-//                startPoint: .topLeading,
-//                endPoint: .bottomTrailing
-//            )
-//        )
-//        .clipShape(RoundedRectangle(cornerRadius: 16))
         ExerciseImageView(exercise: exercise, isBreathing: isBreathing)
     }
 

@@ -29,9 +29,11 @@ extension Encodable {
 
     func toData(keyEncodingStrategy: JSONEncoder.KeyEncodingStrategy = .convertToSnakeCase) -> Data? {
         let encoder = JSONEncoder()
+
         encoder.keyEncodingStrategy = keyEncodingStrategy
         encoder.dateEncodingStrategy = .iso8601
         encoder.outputFormatting = .prettyPrinted
+
         do {
             return try encoder.encode(self)
         } catch {

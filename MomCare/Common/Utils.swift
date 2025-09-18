@@ -6,26 +6,32 @@
 //
 
 import Foundation
-import UIKit
 import Network
 import UserNotifications
 import Security
+
+#if os(iOS)
+import UIKit
+#endif
 
 enum AlertType {
     case ok
     case okCancel
 }
 
+#if os(iOS)
 struct AlertActionHandler {
     var title: String
     var style: UIAlertAction.Style
     var handler: ((UIAlertAction) -> Void)?
 }
+#endif
 
 enum Utils {
 
     // MARK: Public
 
+    #if os(iOS)
     @MainActor public static func getAlert(title: String, message: String, actions: [AlertActionHandler]? = nil) -> UIAlertController {
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
 
@@ -40,6 +46,7 @@ enum Utils {
 
         return alert
     }
+    #endif
 
     // MARK: - User Defaults
 
@@ -66,7 +73,7 @@ enum Utils {
         content.interruptionLevel = .timeSensitive
         content.userInfo = userInfo ?? [:]
 
-        let timeInterval = Date().relativeInterval(from: date)
+        let timeInterval = Date().relativeInterval(from: date) + 0.01
         let trigger = UNTimeIntervalNotificationTrigger(timeInterval: timeInterval, repeats: false)
         let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
 

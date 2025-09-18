@@ -13,6 +13,7 @@ extension Color {
         var int: UInt64 = 0
         Scanner(string: hex).scanHexInt64(&int)
         let a, r, g, b: UInt64
+
         switch hex.count {
         case 3:
             (a, r, g, b) = (255, (int >> 8) * 17, (int >> 4 & 0xF) * 17, (int & 0xF) * 17)
@@ -23,6 +24,7 @@ extension Color {
         default:
             (a, r, g, b) = (255, 0, 0, 0)
         }
+
         self.init(
             .sRGB,
             red: Double(r) / 255,

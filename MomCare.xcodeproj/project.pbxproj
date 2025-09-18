@@ -126,7 +126,8 @@
 		059FE8DC2E3381FB001BCB05 /* Exceptions for "MomCare" folder in "PregnancyTracker" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
-				Common/CacheHandler.swift,
+				Common/CacheHandler/CacheHandler.swift,
+				"Common/CacheHandler/CacheHandler+Image.swift",
 				Common/DataControllers/ContentHandler.swift,
 				"Common/DataControllers/ContentHandler+DataTransferObjects.swift",
 				Common/DataControllers/Endpoint.swift,
@@ -179,6 +180,8 @@
 		3A3E58B42E7ADD2F005BD5BC /* Exceptions for "MomCare" folder in "Watch" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
+				"Common/Extensions/Date+Relative.swift",
+				Common/Utils.swift,
 				Common/WatchConnector.swift,
 			);
 			target = 3A3E58932E7A9DD3005BD5BC /* Watch */;

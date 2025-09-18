@@ -1,0 +1,18 @@
+
+/* Class = "UIButton"; configuration.title = "Sign In"; ObjectID = "Ess-wU-kGH"; */
+"Ess-wU-kGH.configuration.title" = "Sign In";
+
+/* Class = "UIButton"; normalTitle = "Button"; ObjectID = "Ess-wU-kGH"; */
+"Ess-wU-kGH.normalTitle" = "Button";
+
+/* Class = "UIButton"; configuration.title = "Sign Up"; ObjectID = "KZg-B5-rnl"; */
+"KZg-B5-rnl.configuration.title" = "Sign Up";
+
+/* Class = "UIButton"; normalTitle = "Button"; ObjectID = "KZg-B5-rnl"; */
+"KZg-B5-rnl.normalTitle" = "Button";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "Uth-Sx-6fO"; */
+"Uth-Sx-6fO.text" = "Label";
+
+/* Class = "UINavigationItem"; title = "MomCare+"; ObjectID = "vaL-Ae-w1w"; */
+"vaL-Ae-w1w.title" = "MomCare+";
