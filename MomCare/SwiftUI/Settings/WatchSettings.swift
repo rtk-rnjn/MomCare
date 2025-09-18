@@ -28,7 +28,7 @@ struct WatchSettingsView: View {
 
             Section("Actions") {
                 Button("Ping Watch") {
-                    connector.pingWatch()
+                    connector.ping()
                 }
             }
         }

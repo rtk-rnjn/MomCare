@@ -19,11 +19,15 @@ struct ContentView: View {
                 .foregroundStyle(.tint)
 
             if watcher.pongReceived {
-                Text("⌚️ MomCare+ is running")
+                Text("⌚️ Running")
                     .foregroundColor(.green)
             } else {
-                Text("⌚️ Waiting for MomCare+")
+                Text("⌚️ Waiting")
                     .foregroundColor(.secondary)
+            }
+
+            Button("Ping") {
+                WatchConnector.shared.ping()
             }
         }
         .padding()

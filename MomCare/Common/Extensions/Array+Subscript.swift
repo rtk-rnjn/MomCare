@@ -10,6 +10,7 @@ extension Array {
         guard indices.contains(index) else {
             return nil
         }
+
         return self[index]
     }
 }

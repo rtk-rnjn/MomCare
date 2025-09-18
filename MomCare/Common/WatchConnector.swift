@@ -52,13 +52,11 @@ class WatchConnector: NSObject, ObservableObject {
         session.transferUserInfo(userInfo)
     }
 
-    #if os(iOS)
-    func pingWatch() {
+    func ping() {
         send(message: ["message": "ping"]) { reply in
             logger.info("\(String(describing: reply))")
         }
     }
-    #endif
 }
 
 // MARK: - WCSessionDelegate
