@@ -11,6 +11,10 @@ import WidgetKit
 struct SmallPregnancyWidgetView: View {
     let entry: TriTrackEntry
 
+    @State private var animatedProgress: CGFloat = 0
+    @State private var pulse: Bool = false
+    @State private var breathe: Bool = false
+
     private let segmentColors: [Color] = [
         Color(hex: "#D27C8C"),
         Color(hex: "#C98393"),
@@ -20,27 +24,50 @@ struct SmallPregnancyWidgetView: View {
 
     var body: some View {
         ZStack {
-            Color(hex: "#E9D3D3")
-                .ignoresSafeArea()
+            // MARK: - Glassmorphism Background
+            RoundedRectangle(cornerRadius: 16, style: .continuous)
+                .fill(.ultraThinMaterial)
+                .background(Color(hex: "#E9D3D3").opacity(0.4))
+                .overlay(
+                    RoundedRectangle(cornerRadius: 16, style: .continuous)
+                        .stroke(Color.white.opacity(0.3), lineWidth: 1)
+                )
 
             GeometryReader { geo in
                 let size = min(geo.size.width, geo.size.height)
-                let circleSize = size * 0.78
+                let circleSize = size * 0.75
                 let lineWidth = size * 0.07
 
                 ZStack {
+                    // Background Segments
                     backgroundSegments(circleSize: circleSize, lineWidth: lineWidth)
+
+                    // Progress Arc with pulse
                     progressArc(circleSize: circleSize)
+                        .scaleEffect(pulse ? 1.03 : 1.0)
+
+                    // Center Text with breathing animation
                     centerText(circleSize: circleSize)
+                        .scaleEffect(breathe ? 1.02 : 1.0)
+                        .animation(.easeInOut(duration: 2).repeatForever(autoreverses: true), value: breathe)
                 }
                 .frame(width: geo.size.width, height: geo.size.height)
+                .onAppear {
+                    withAnimation(.easeOut(duration: 0.8)) {
+                        animatedProgress = CGFloat(min(Double(entry.week) / 40.0, 1.0))
+                    }
+                    withAnimation(.easeInOut(duration: 1).repeatForever(autoreverses: true)) {
+                        pulse.toggle()
+                    }
+                    breathe.toggle()
+                }
             }
         }
         .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
+        .shadow(color: Color.black.opacity(0.15), radius: 5, x: 0, y: 3)
     }
 
-    // MARK: - Extracted Subviews
-
+    // MARK: - Background Segments
     private func backgroundSegments(circleSize: CGFloat, lineWidth: CGFloat) -> some View {
         ForEach(0..<4) { i in
             Circle()
@@ -54,12 +81,10 @@ struct SmallPregnancyWidgetView: View {
         }
     }
 
+    // MARK: - Progress Arc
     private func progressArc(circleSize: CGFloat) -> some View {
-        // Calculate progress based on week (0 to 40 weeks)
-        let progress = min(Double(entry.week) / 40.0, 1.0)
-
-        return Circle()
-            .trim(from: 0, to: CGFloat(progress)) // use calculated progress
+        Circle()
+            .trim(from: 0, to: animatedProgress)
             .stroke(
                 AngularGradient(
                     gradient: Gradient(colors: [
@@ -73,19 +98,22 @@ struct SmallPregnancyWidgetView: View {
             )
             .rotationEffect(.degrees(-90))
             .frame(width: circleSize, height: circleSize)
-            .shadow(color: Color.black.opacity(0.2), radius: 3, x: 0, y: 2)
+            .shadow(color: Color.pink.opacity(0.3), radius: pulse ? 8 : 3)
+            .animation(.easeInOut(duration: 1).repeatForever(autoreverses: true), value: pulse)
     }
 
-
+    // MARK: - Center Text
     private func centerText(circleSize: CGFloat) -> some View {
         VStack(spacing: -3) {
             Text("Week \(entry.week)")
-                .font(.subheadline)
+                .font(.system(.subheadline, design: .rounded))
+                .monospacedDigit()
                 .fontWeight(.bold)
                 .foregroundColor(Color(hex: "#924350"))
 
             Text("Day \(entry.day)")
-                .font(.subheadline)
+                .font(.system(.subheadline, design: .rounded))
+                .monospacedDigit()
                 .fontWeight(.bold)
                 .foregroundColor(Color(hex: "#924350"))
 
