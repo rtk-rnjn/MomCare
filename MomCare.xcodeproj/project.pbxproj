@@ -18,6 +18,8 @@
 		3A3E58CD2E7B2AF9005BD5BC /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 3A3E58CC2E7B2AF9005BD5BC /* RealmSwift */; };
 		3A3E58CE2E7B2AF9005BD5BC /* RealmSwift in Embed Frameworks */ = {isa = PBXBuildFile; productRef = 3A3E58CC2E7B2AF9005BD5BC /* RealmSwift */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		3A3E58D12E7B2B15005BD5BC /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3A3E58D02E7B2B15005BD5BC /* SwiftUI.framework */; };
+		3A3E635E2E7D462D005BD5BC /* ActivityKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3A3E635D2E7D462D005BD5BC /* ActivityKit.framework */; };
+		3A3E635F2E7D46BA005BD5BC /* ActivityKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3A3E635D2E7D462D005BD5BC /* ActivityKit.framework */; };
 		F59454F42DEDACAA00002917 /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = F59454F32DEDACAA00002917 /* RealmSwift */; };
 		F59454F52DEDACAA00002917 /* RealmSwift in Embed Frameworks */ = {isa = PBXBuildFile; productRef = F59454F32DEDACAA00002917 /* RealmSwift */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		F5F1D6122D739C6A00F65BA7 /* LNPopupController in Frameworks */ = {isa = PBXBuildFile; productRef = F5F1D6112D739C6A00F65BA7 /* LNPopupController */; };
@@ -106,6 +108,7 @@
 		05E7F9662D37748300F4D81E /* .swiftlint.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = .swiftlint.yml; sourceTree = "<group>"; };
 		3A3E58942E7A9DD3005BD5BC /* Watch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Watch.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3A3E58D02E7B2B15005BD5BC /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = Platforms/WatchOS.platform/Developer/SDKs/WatchOS11.5.sdk/System/Library/Frameworks/SwiftUI.framework; sourceTree = DEVELOPER_DIR; };
+		3A3E635D2E7D462D005BD5BC /* ActivityKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ActivityKit.framework; path = System/Library/Frameworks/ActivityKit.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -228,6 +231,7 @@
 			files = (
 				F59454F42DEDACAA00002917 /* RealmSwift in Frameworks */,
 				053290F42D40AEC000295E58 /* FSCalendar in Frameworks */,
+				3A3E635F2E7D46BA005BD5BC /* ActivityKit.framework in Frameworks */,
 				F5F1D6122D739C6A00F65BA7 /* LNPopupController in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -238,6 +242,7 @@
 			files = (
 				059FE8F42E33838C001BCB05 /* RealmSwift in Frameworks */,
 				059FE8C02E336E05001BCB05 /* SwiftUI.framework in Frameworks */,
+				3A3E635E2E7D462D005BD5BC /* ActivityKit.framework in Frameworks */,
 				059FE8BE2E336E05001BCB05 /* WidgetKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -280,6 +285,7 @@
 		F59454F22DEDACAA00002917 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				3A3E635D2E7D462D005BD5BC /* ActivityKit.framework */,
 				3A3E58D02E7B2B15005BD5BC /* SwiftUI.framework */,
 				059FE8BD2E336E05001BCB05 /* WidgetKit.framework */,
 				059FE8BF2E336E05001BCB05 /* SwiftUI.framework */,
@@ -780,6 +786,7 @@
 				INFOPLIST_FILE = "MomCare+PregnancyTracker/Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "Pregnancy Tracker";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				INFOPLIST_KEY_NSSupportsLiveActivities = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -812,6 +819,7 @@
 				INFOPLIST_FILE = "MomCare+PregnancyTracker/Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "Pregnancy Tracker";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				INFOPLIST_KEY_NSSupportsLiveActivities = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -847,6 +855,7 @@
 				INFOPLIST_KEY_CFBundleDisplayName = "MomCare+ Watch";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = com.Team05.MomCare;
+				INFOPLIST_KEY_WKRunsIndependentlyOfCompanionApp = YES;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -877,6 +886,7 @@
 				INFOPLIST_KEY_CFBundleDisplayName = "MomCare+ Watch";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = com.Team05.MomCare;
+				INFOPLIST_KEY_WKRunsIndependentlyOfCompanionApp = YES;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

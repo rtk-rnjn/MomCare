@@ -10,7 +10,7 @@ import EventKitUI
 import UIKit
 import OSLog
 
-private let logger: Logger = .init(subsystem: "com.example.MomCare", category: "EventKitHandler")
+private let logger: Logger = .init(subsystem: "com.example.EventKitHandler", category: "EventKitHandler")
 
 private let eventIdentifier: String = "TriTrackEvent"
 private let reminderIdentifier: String = "TriTrackReminder"
@@ -43,11 +43,12 @@ struct ReminderInfo: Sendable {
     var timeZone: TimeZone?
 }
 
-actor EventKitHandler {
+actor EventKitHandler: NSObject {
 
     // MARK: Lifecycle
 
-    private init() {
+    private override init() {
+        super.init()
         eventStore = EKEventStore()
     }
 

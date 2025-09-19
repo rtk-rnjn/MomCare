@@ -43,6 +43,8 @@ class MultipeerHandler: NSObject {
     var advertiser: MCNearbyServiceAdvertiser?
     var browser: MCNearbyServiceBrowser?
 
+    var peerID: MCPeerID
+
     var connectedPeers: [MCPeerID] {
         session?.connectedPeers ?? []
     }
@@ -52,7 +54,9 @@ class MultipeerHandler: NSObject {
         advertiser?.delegate = self
         advertiser?.startAdvertisingPeer()
 
-        logger.info("Started hosting with peer ID: \(peerID.displayName)")
+        let displayName = peerID.displayName
+
+        logger.info("Started hosting with peer ID: \(displayName)")
     }
 
     func stopHosting() {
@@ -65,7 +69,9 @@ class MultipeerHandler: NSObject {
         browser?.delegate = self
         browser?.startBrowsingForPeers()
 
-        logger.info("Started browsing for peers with peer ID: \(peerID.displayName)")
+        let displayName = peerID.displayName
+
+        logger.info("Started browsing for peers with peer ID: \(displayName)")
     }
 
     func stopBrowsing() {
@@ -99,7 +105,6 @@ class MultipeerHandler: NSObject {
     // MARK: Private
 
     private let serviceType = "MomCare-share"
-    private var peerID: MCPeerID
 
     private func setupSession() {
         session = MCSession(peer: peerID, securityIdentity: nil, encryptionPreference: .required)

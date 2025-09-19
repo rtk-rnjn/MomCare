@@ -35,8 +35,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
-        let token = deviceToken.map { String(format: "%02.2hhx", $0) }.joined
-        logger.info("Device Token: \(String(describing: token))")
+        let tokenString = deviceToken.map { String(format: "%02.2hhx", $0) }.joined()
+        logger.info("Device Token: \(tokenString)")
         // TODO: Send the device token to server
     }
 

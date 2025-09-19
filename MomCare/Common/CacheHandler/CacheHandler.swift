@@ -10,7 +10,7 @@ import UIKit
 import OSLog
 import RealmSwift
 
-private let logger: os.Logger = .init(subsystem: "com.MomCare.DataHandler", category: "Cache")
+private let logger: os.Logger = .init(subsystem: "com.MomCare.CacheHandler", category: "CacheHandler")
 
 class Entity<T> {
 
