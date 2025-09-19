@@ -8,8 +8,7 @@
 import MultipeerConnectivity
 
 extension MultipeerHandler: @preconcurrency MCNearbyServiceBrowserDelegate {
-    func browser(_ browser: MCNearbyServiceBrowser, foundPeer peerID: MCPeerID,
-                 withDiscoveryInfo info: [String: String]?) {
+    func browser(_ browser: MCNearbyServiceBrowser, foundPeer peerID: MCPeerID, withDiscoveryInfo info: [String: String]?) {
         if let session {
             browser.invitePeer(peerID, to: session, withContext: nil, timeout: 10)
         }

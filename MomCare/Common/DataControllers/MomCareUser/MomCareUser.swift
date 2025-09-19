@@ -10,11 +10,9 @@ import Foundation
 @MainActor
 class MomCareUser {
 
-    // MARK: Public
-
-    public static var shared: MomCareUser = .init()
-
     // MARK: Internal
+
+    static var shared: MomCareUser = .init()
 
     let queue: DispatchQueue = .init(label: "MomCareUserQueue")
 

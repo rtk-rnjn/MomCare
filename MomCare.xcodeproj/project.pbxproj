@@ -143,6 +143,7 @@
 				"Common/Extensions/Data+Decoding.swift",
 				"Common/Extensions/Date+Relative.swift",
 				"Common/Extensions/Encodable+Serialization.swift",
+				"Common/Extensions/String+Serialization.swift",
 				"Common/Extensions/String+Validation.swift",
 				"Common/Extensions/UIButton+Loading.swift",
 				"Common/Extensions/UIColor+Hex.swift",
