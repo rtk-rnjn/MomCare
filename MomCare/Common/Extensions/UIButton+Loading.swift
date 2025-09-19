@@ -5,8 +5,10 @@
 //  Created by RITIK RANJAN on 18/06/25.
 //
 
+#if canImport(UIKit)
 import UIKit
 
+#if !os(tvOS) && !os(watchOS)
 extension UIButton {
     func startLoadingAnimation() {
         setTitle("", for: .normal)
@@ -31,3 +33,5 @@ extension UIButton {
         }
     }
 }
+#endif
+#endif

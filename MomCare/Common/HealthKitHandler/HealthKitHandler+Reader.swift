@@ -8,7 +8,7 @@
 import OSLog
 import HealthKit
 
-private let logger: Logger = .init(subsystem: "com.MomCare.HealthKit", category: "Framework")
+private let logger: Logger = .init(subsystem: "com.MomCare.HealthKit", category: "HealthKit")
 
 extension HealthKitHandler {
     func readStepCount(completionHandler: @escaping @Sendable (Double) -> Void) {

@@ -8,7 +8,7 @@
 import Foundation
 import OSLog
 
-private let logger: Logger = .init(subsystem: "com.MomCare.NetworkManager", category: "Network")
+private let logger: Logger = .init(subsystem: "com.MomCare.NetworkManager", category: "NetworkManager")
 
 enum HTTPMethod: String {
     case GET
@@ -67,7 +67,7 @@ actor NetworkManager {
             let lines = fullText.split(separator: "\n")
             for line in lines {
                 if let jsonData = line.data(using: .utf8) {
-                    let item: T? = jsonData.decode()
+                    let item: T? = jsonData.decodeUsingJSONDecoder()
                     if let item {
                         onItem?(item)
                     }
@@ -156,7 +156,7 @@ actor NetworkManager {
             throw URLError(.badServerResponse)
         }
 
-        return data.decode()
+        return data.decodeUsingJSONDecoder()
     }
 
     private func shouldRetry(for error: (any Error)?, response: HTTPURLResponse?) -> Bool {

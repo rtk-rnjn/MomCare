@@ -5,6 +5,7 @@
 //  Created by RITIK RANJAN on 18/06/25.
 //
 
+#if canImport(UIKit)
 import UIKit
 
 nonisolated(unsafe) private var shimmerLayerKey: UInt8 = 0
@@ -77,3 +78,4 @@ extension UIView {
     }
 
 }
+#endif

@@ -6,11 +6,13 @@
 //
 
 @preconcurrency import EventKit
+#if canImport(EventKitUI)
 import EventKitUI
+#endif
 import UIKit
 import OSLog
 
-private let logger: Logger = .init(subsystem: "com.example.MomCare", category: "EventKitHandler")
+private let logger: Logger = .init(subsystem: "com.example.EventKitHandler", category: "EventKitHandler")
 
 private let eventIdentifier: String = "TriTrackEvent"
 private let reminderIdentifier: String = "TriTrackReminder"
@@ -43,11 +45,12 @@ struct ReminderInfo: Sendable {
     var timeZone: TimeZone?
 }
 
-actor EventKitHandler {
+actor EventKitHandler: NSObject {
 
     // MARK: Lifecycle
 
-    private init() {
+    private override init() {
+        super.init()
         eventStore = EKEventStore()
     }
 
@@ -61,7 +64,9 @@ actor EventKitHandler {
 
     @MainActor func getEventStore() async -> EKEventStore {
         do {
+            #if os(iOS)
             try await eventStore.commit()
+            #endif
         } catch let error {
             logger.error("Error committing changes to event store: \(String(describing: error))")
         }
@@ -145,7 +150,9 @@ actor EventKitHandler {
             return
         }
         do {
+            #if os(iOS)
             try eventStore.remove(event, span: .thisEvent, commit: true)
+            #endif
         } catch let error {
             logger.error("Error deleting event: \(String(describing: error))")
         }
@@ -169,7 +176,9 @@ actor EventKitHandler {
         }
 
         do {
+            #if os(iOS)
             try eventStore.save(event, span: .thisEvent, commit: true)
+            #endif
         } catch let error {
             logger.error("Error saving event: \(String(describing: error))")
         }
@@ -204,7 +213,9 @@ actor EventKitHandler {
         }
 
         do {
+            #if os(iOS)
             try eventStore.save(reminder, commit: true)
+            #endif
         } catch let error {
             logger.error("Error saving reminder: \(String(describing: error))")
         }
@@ -219,7 +230,9 @@ actor EventKitHandler {
         applyUpdates(to: reminder, from: updatedReminder)
 
         do {
+            #if os(iOS)
             try eventStore.save(reminder, commit: true)
+            #endif
         } catch let error {
             logger.error("Error updating reminder: \(String(describing: error))")
         }
@@ -231,7 +244,10 @@ actor EventKitHandler {
             return
         }
         do {
+            #if os(iOS)
             try eventStore.remove(reminder, commit: true)
+            #endif
+
         } catch let error {
             logger.error("Error deleting reminder: \(String(describing: error))")
         }
@@ -381,7 +397,9 @@ actor EventKitHandler {
         UserDefaults.standard.set(newCalendar.calendarIdentifier, forKey: identifierKey)
 
         do {
+            #if os(iOS)
             try eventStore.saveCalendar(newCalendar, commit: true)
+            #endif
         } catch let error {
             logger.error("Error saving calendar: \(String(describing: error))")
         }

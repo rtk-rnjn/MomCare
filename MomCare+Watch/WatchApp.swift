@@ -9,7 +9,7 @@ import SwiftUI
 import UserNotifications
 import OSLog
 
-private let logger: Logger = .init(subsystem: "com.MomCare.Watch.WatchApp", category: "WatchApp")
+private let logger: Logger = .init(subsystem: "com.MomCare.WatchApp", category: "WatchApp")
 
 @main
 struct WatchApp: App {

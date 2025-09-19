@@ -5,6 +5,7 @@
 //  Created by Aryan Singh on 17/09/25.
 //
 
+#if canImport(EventKit) && canImport(EventKitUI) && canImport(UIKit)
 @preconcurrency import EventKit
 import EventKitUI
 import UIKit
@@ -63,3 +64,4 @@ class EventKitHandlerUIDelegate: NSObject, EKEventEditViewDelegate, EKEventViewD
     }
 
 }
+#endif
