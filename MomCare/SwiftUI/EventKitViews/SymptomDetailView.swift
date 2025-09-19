@@ -42,6 +42,7 @@ struct SymptomDetailView: View {
                     HStack(spacing: 10) {
                         Image(systemName: "list.bullet.clipboard.fill")
                             .foregroundColor(themeColor)
+                            .accessibilityHidden(true)
                         Text("What you can do")
                             .foregroundColor(.black)
                     }
@@ -53,6 +54,7 @@ struct SymptomDetailView: View {
                                 Image(systemName: "circle.fill")
                                     .font(.system(size: 6))
                                     .foregroundColor(accentColor)
+                                    .accessibilityHidden(true)
                                 Text(remedy)
                             }
                         }
@@ -102,13 +104,19 @@ struct SymptomSectionView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
             HStack(spacing: 10) {
-                Image(systemName: iconName).foregroundColor(color)
-                Text(title).foregroundColor(.black)
-            }.font(.headline)
+                Image(systemName: iconName)
+                    .foregroundColor(color)
+                    .accessibilityHidden(true)
+                Text(title)
+                    .foregroundColor(.black)
+            }
+            .font(.headline)
 
             Text(LocalizedStringKey(content))
                 .font(.body)
                 .foregroundColor(Color(.darkGray))
         }
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel("\(title). \(content)")
     }
 }

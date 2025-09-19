@@ -46,6 +46,8 @@ struct OTPScreen: View {
                     .keyboardType(.numberPad)
                     .textContentType(.oneTimeCode)
                     .focused($isFieldFocused)
+                    .accessibilityLabel("Enter verification code")
+                    .accessibilityHint("6 digit code sent to your email")
                     .onChange(of: otpString) { _, newValue in
                         if newValue.count > otpLength {
                             otpString = String(newValue.prefix(otpLength))
@@ -63,6 +65,10 @@ struct OTPScreen: View {
             .onTapGesture {
                 isFieldFocused = true
             }
+            .accessibilityElement(children: .combine)
+            .accessibilityLabel("Verification code input area")
+            .accessibilityHint("Double tap to activate the keyboard and enter your 6-digit verification code")
+            .accessibilityAddTraits(.isButton)
 
             Button(action: verifyOTP) {
                 Text("Verify")

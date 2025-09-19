@@ -12,10 +12,11 @@ struct TermsOfServiceView: View {
                         ZStack {
                             RoundedRectangle(cornerRadius: 12, style: .continuous)
                                 .fill(Color(hex: "FFFFFF").opacity(0.12))
-                                                            .frame(width: 60, height: 60)
-                                                        Image(systemName: "text.page")
-                                                            .font(.system(size: 60, weight: .bold))
-                                                            .foregroundColor(accentColor)
+                                .frame(width: 60, height: 60)
+                            Image(systemName: "text.page")
+                                .font(.system(size: 60, weight: .bold))
+                                .foregroundColor(accentColor)
+                                .accessibilityLabel("Legal document icon")
                         }
 
                         Text("Good rules create a space where everyone can feel safe and respected.")
@@ -79,6 +80,7 @@ struct LegalSectionView: View {
                     .font(.title2)
                     .foregroundColor(accentColor)
                     .frame(width: 24, alignment: .center)
+                    .accessibilityHidden(true)
 
                 Text(title)
                     .font(.title3.weight(.semibold))
@@ -102,6 +104,7 @@ struct EligibilitySectionView: View {
                     .font(.title2)
                     .foregroundColor(accentColor)
                     .frame(width: 24, alignment: .center)
+                    .accessibilityHidden(true)
                 Text("Eligibility – Who Can Use MomCare")
                     .font(.title3.weight(.semibold))
             }
@@ -130,6 +133,7 @@ struct OverviewOfServicesView: View {
                     .font(.title2)
                     .foregroundColor(accentColor)
                     .frame(width: 24, alignment: .center)
+                    .accessibilityHidden(true)
                 Text("Overview of Services")
                     .font(.title3.weight(.semibold))
             }
@@ -173,6 +177,7 @@ struct ThirdPartyServicesView: View {
                     .font(.title2)
                     .foregroundColor(accentColor)
                     .frame(width: 24, alignment: .center)
+                    .accessibilityHidden(true)
                 Text("Third-Party Services and Frameworks")
                     .font(.title3.weight(.semibold))
             }
