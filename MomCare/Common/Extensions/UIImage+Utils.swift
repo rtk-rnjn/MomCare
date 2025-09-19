@@ -6,12 +6,16 @@
 //
 
 import UIKit
+
+#if canImport(CoreImage)
 import CoreImage.CIFilterBuiltins
+#endif
 
 extension UIImage {
     // https://stackoverflow.com/questions/79194950/get-dominant-color-from-image-in-swiftui
 
     func dominantColor() -> UIColor? {
+        #if canImport(CoreImage)
         guard let inputImage = CIImage(image: self) else { return nil }
 
         let filter = CIFilter.areaAverage()
@@ -36,6 +40,9 @@ extension UIImage {
             blue: CGFloat(bitmap[2]) / 255.0,
             alpha: CGFloat(bitmap[3]) / 255.0
         )
+        #else
+        return nil
+        #endif
     }
 
     func fetchImage(from imageUri: String?, default defaultImage: UIImage? = nil) async -> UIImage? {
