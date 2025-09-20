@@ -32,6 +32,7 @@ struct EventDetailsView: View {
                 Image(systemName: "calendar")
                     .font(.title2)
                     .foregroundColor(.blue)
+                    .accessibilityHidden(true)
 
                 VStack(alignment: .leading, spacing: 4) {
                     Text(event?.title ?? "No Title")
@@ -49,6 +50,7 @@ struct EventDetailsView: View {
             HStack(spacing: 8) {
                 Image(systemName: "clock")
                     .foregroundColor(.orange)
+                    .accessibilityHidden(true)
 
                 VStack(alignment: .leading, spacing: 2) {
                     if Calendar.current.isDate(startDate, inSameDayAs: endDate) {

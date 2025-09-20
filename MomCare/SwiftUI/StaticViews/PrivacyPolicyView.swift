@@ -60,6 +60,7 @@ struct PrivacyPolicyView: View {
                 Image(systemName: "lock.shield")
                     .font(.system(size: 60, weight: .bold))
                     .foregroundColor(accentColor)
+                    .accessibilityLabel("Privacy shield icon")
             }
 
             Text(PrivacyPolicyText.headerTitle)
@@ -82,6 +83,7 @@ struct PrivacyPolicyView: View {
                     .font(.title2)
                     .foregroundColor(accentColor)
                     .frame(width: 24, alignment: .center)
+                    .accessibilityHidden(true)
 
                 Text(PrivacyPolicyText.contactTitle)
                     .font(.title3.weight(.semibold))
@@ -96,6 +98,7 @@ struct PrivacyPolicyView: View {
                 HStack(spacing: 8) {
                     Image(systemName: "envelope.fill")
                         .foregroundColor(accentColor)
+                        .accessibilityHidden(true)
                     Text(PrivacyPolicyText.contactEmail)
                         .font(.subheadline)
                         .foregroundColor(.primary)
@@ -104,6 +107,7 @@ struct PrivacyPolicyView: View {
                 HStack(spacing: 8) {
                     Image(systemName: "globe")
                         .foregroundColor(accentColor)
+                        .accessibilityHidden(true)
                     Text(PrivacyPolicyText.contactWebsite)
                         .font(.subheadline)
                         .foregroundColor(.primary)
@@ -136,6 +140,7 @@ struct PolicySectionView: View {
                     .font(.title2)
                     .foregroundColor(accentColor)
                     .frame(width: 24, alignment: .center)
+                    .accessibilityHidden(true)
 
                 Text(title)
                     .font(.title3.weight(.semibold))

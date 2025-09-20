@@ -24,6 +24,7 @@ struct FillingLoadingScreen: View {
                     .scaledToFit()
                     .frame(width: 60, height: 60)
                     .padding(.bottom, -10)
+                    .accessibilityLabel("MomCare app icon")
 
                 Text("Loading")
                     .font(.system(size: 20, weight: .medium, design: .rounded))
