@@ -71,7 +71,9 @@ struct AboutInfoView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
             HStack(spacing: 8) {
-                Image(systemName: iconName).foregroundColor(iconColor)
+                Image(systemName: iconName)
+                    .foregroundColor(iconColor)
+                    .accessibilityHidden(true)
                 Text(eyebrowText).foregroundColor(.primary)
                 Spacer()
             }
@@ -114,6 +116,7 @@ struct ValueCardView: View {
                 Image(systemName: iconName)
                     .font(.title3)
                     .foregroundColor(brandPink)
+                    .accessibilityHidden(true)
             }
 
             Text(title)
@@ -136,6 +139,7 @@ struct QuoteView: View {
                 .font(.title)
                 .fontWeight(.bold)
                 .foregroundColor(brandPink.opacity(0.5))
+                .accessibilityHidden(true)
 
                 Text(AppContent.AboutUs.quote)
                     .font(.title3)

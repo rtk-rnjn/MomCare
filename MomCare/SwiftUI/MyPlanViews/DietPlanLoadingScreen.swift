@@ -29,6 +29,7 @@ struct DietPlanLoadingScreen: View {
                     .resizable()
                     .scaledToFit()
                     .frame(width: 80, height: 80)
+                    .accessibilityLabel("MomCare app icon")
 
                 Text("Curating Your Diet Plan")
                     .font(.system(size: 28, weight: .bold, design: .rounded))
@@ -91,5 +92,6 @@ struct FoodToAnimate: View {
             .onAppear {
                 isPulsing = true
             }
+            .accessibilityHidden(true)
     }
 }

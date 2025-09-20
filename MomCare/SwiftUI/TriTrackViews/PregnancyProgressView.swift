@@ -135,6 +135,7 @@ struct PregnancyProgressView: View {
                     HStack {
                         Image(systemName: "ruler")
                             .font(.system(size: 22))
+                            .accessibilityHidden(true)
 
                         Text("Height")
                             .font(.headline)
@@ -165,6 +166,7 @@ struct PregnancyProgressView: View {
                     HStack {
                         Image(systemName: "scalemass")
                             .font(.system(size: 22))
+                            .accessibilityHidden(true)
 
                         Text("Weight")
                             .font(.headline)
@@ -232,6 +234,7 @@ struct PregnancyProgressView: View {
                 // Update state
                 showingBabyInfo = true
             }
+            .accessibilityAddTraits(.isButton)
 
             // Mom info card with content preview
             CompactInfoCard(
@@ -273,6 +276,7 @@ struct PregnancyProgressView: View {
                     OverlayWindowManager.shared.setContent(popupContent)
                 }
             }
+            .accessibilityAddTraits(.isButton)
         }
     }
 }
@@ -315,6 +319,7 @@ struct InfoCardButton: View {
 
             Image(systemName: "chevron.right")
                 .foregroundColor(.secondary)
+                .accessibilityHidden(true)
         }
         .padding()
         .background(
@@ -599,6 +604,7 @@ struct ComparisonView: View {
                         .onAppear {
                             wiggleAmount.toggle()
                         }
+                        .accessibilityLabel("Fruit size comparison")
                 }
             }
             .frame(maxWidth: .infinity)
@@ -614,6 +620,7 @@ struct ComparisonView: View {
                     value: isShowingAnimation
                 )
                 .frame(width: 40)
+                .accessibilityHidden(true)
 
             // Right section with baby - making the baby smaller and better centered
             VStack(alignment: .center) {
@@ -634,6 +641,7 @@ struct ComparisonView: View {
                                     .repeatCount(2, autoreverses: true),
                                 value: isShowingAnimation
                             )
+                            .accessibilityLabel("Baby development illustration")
                     }
                 }
             }
@@ -648,6 +656,10 @@ struct ComparisonView: View {
                 isShowingAnimation = false
             }
         }
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel("Size comparison between fruit and baby")
+        .accessibilityHint("Double tap to play animation")
+        .accessibilityAddTraits(.isButton)
     }
 
     // MARK: Private
@@ -687,6 +699,7 @@ struct InfoCardSquare: View {
                 .font(.system(size: 16))
                 .foregroundColor(.secondary.opacity(0.6))
                 .padding(.top, 4)
+                .accessibilityHidden(true)
         }
         .padding()
         .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -731,6 +744,7 @@ struct RectangularInfoCard: View {
                 Image(systemName: "chevron.right")
                     .font(.system(size: 14))
                     .foregroundColor(.secondary)
+                    .accessibilityHidden(true)
             }
         }
         .padding()

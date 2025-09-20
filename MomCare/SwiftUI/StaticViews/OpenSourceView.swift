@@ -93,6 +93,7 @@ struct LicenseCardView: View {
                     Image(systemName: "arrow.up.right.square")
                         .font(.title3)
                         .foregroundColor(textSecondary.opacity(0.7))
+                        .accessibilityHidden(true)
                 }
                 .padding()
                 .background(.white)

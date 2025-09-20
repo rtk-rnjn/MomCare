@@ -10,10 +10,11 @@ struct DisclaimersView: View {
                     ZStack {
                         RoundedRectangle(cornerRadius: 12, style: .continuous)
                             .fill(Color(hex: "FFFFFF").opacity(0.12))
-                                                        .frame(width: 60, height: 60)
-                                                    Image(systemName: "exclamationmark.shield")
-                                                        .font(.system(size: 60, weight: .bold))
-                                                        .foregroundColor(accentColor)
+                            .frame(width: 60, height: 60)
+                        Image(systemName: "exclamationmark.shield")
+                            .font(.system(size: 60, weight: .bold))
+                            .foregroundColor(accentColor)
+                            .accessibilityLabel("Warning shield icon")
                     }
                     Text("MomCare supports you, but your doctor knows you best!")
                         .font(.system(size: 28, weight: .semibold, design: .default))
@@ -73,6 +74,7 @@ struct DisclaimerSection: View {
                     .font(.title2)
                     .foregroundColor(accentColor)
                     .frame(width: 24, alignment: .leading)
+                    .accessibilityHidden(true)
 
                 Text(title)
                     .font(.title3.weight(.semibold))

@@ -19,6 +19,9 @@ struct ExerciseProgressView: View {
                                 showingCalendar = true
                             }
                         }
+                        .accessibilityLabel("Weekly progress rings")
+                        .accessibilityHint("Double tap to view calendar")
+                        .accessibilityAddTraits(.isButton)
                     walkingCardView
 
                     exerciseCard(for: Exercise(name: "Breathing", type: .breathing, duration: 600, description: "Deep breathing exercises help reduce stress and anxiety during pregnancy. This gentle practice improves oxygen flow to both you and your baby while promoting relaxation and better sleep quality.", tags: ["Stress Relief", "Better Sleep", "Oxygen Flow", "Relaxation"], week: "", targetedBodyParts: ["Lungs"], assignedAt: Date()), isBreathing: true)
@@ -131,6 +134,7 @@ struct ExerciseProgressView: View {
                     .font(.system(size: 12, weight: .semibold))
                     .foregroundColor(.secondary)
                     .opacity(0.6)
+                    .accessibilityHidden(true)
             }
         }
     }
@@ -157,6 +161,7 @@ struct ExerciseProgressView: View {
                 Image(systemName: "target")
                     .font(.system(size: 16, weight: .medium))
                     .foregroundColor(Color(hex: "924350"))
+                    .accessibilityHidden(true)
 
                 Text("Total Goal: \(viewModel.totalCompletedExercises)/\(2 + viewModel.exercises.count)")
                     .font(.system(size: 16, weight: .semibold))
@@ -308,6 +313,8 @@ struct ExerciseProgressView: View {
                         showingCalendar = false
                     }
                 }
+                .accessibilityLabel("Close calendar")
+                .accessibilityAddTraits(.isButton)
 
             VStack {
                 Text("Calendar Coming Soon")
@@ -334,6 +341,8 @@ struct ExerciseProgressView: View {
                     showingExerciseInfo = nil
                 }
             }
+            .accessibilityLabel("Close exercise details")
+            .accessibilityAddTraits(.isButton)
     }
 
     // swiftlint:disable multiple_closures_with_trailing_closure

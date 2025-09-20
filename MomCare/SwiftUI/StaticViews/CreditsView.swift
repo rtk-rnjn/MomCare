@@ -86,6 +86,7 @@ struct TeamMemberCard: View {
                     .aspectRatio(contentMode: .fill)
                     .frame(width: 90, height: 90)
                     .clipShape(Circle())
+                    .accessibilityLabel("Profile picture of \(name)")
             } else {
                 Circle()
                     .fill(imagePlaceholderBackground)
@@ -94,7 +95,9 @@ struct TeamMemberCard: View {
                         Image(systemName: "person.fill")
                             .font(.largeTitle)
                             .foregroundColor(imagePlaceholderForeground)
+                            .accessibilityHidden(true)
                     )
+                    .accessibilityLabel("Default profile picture")
             }
 
             VStack(spacing: 2) {

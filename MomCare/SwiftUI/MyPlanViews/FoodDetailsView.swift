@@ -22,6 +22,7 @@ struct FoodDetailsView: View {
                 Image(systemName: symbol)
                     .font(.headline)
                     .foregroundColor(.blue)
+                    .accessibilityHidden(true)
                 Text("\(value, specifier: "%.0f")")
                     .font(.subheadline)
                     .fontWeight(.medium)
@@ -29,6 +30,8 @@ struct FoodDetailsView: View {
                     .font(.caption2)
                     .foregroundColor(.secondary)
             }
+            .accessibilityElement(children: .combine)
+            .accessibilityLabel("\(label): \(value, specifier: "%.0f")")
         }
     }
 
@@ -42,11 +45,13 @@ struct FoodDetailsView: View {
                         Image(uiImage: image)
                             .resizable()
                             .scaledToFill()
+                            .accessibilityLabel("Food image for \(food.name)")
                     } else {
                         Image(systemName: "carrot.fill")
                             .resizable()
                             .scaledToFit()
                             .foregroundColor(.orange)
+                            .accessibilityLabel("Default food icon")
                     }
                 }
                 .frame(width: 100, height: 100)

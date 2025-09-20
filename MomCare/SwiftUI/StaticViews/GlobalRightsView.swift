@@ -16,6 +16,7 @@ struct GlobalRightsView: View {
                                                     Image(systemName: "hand.raised.fill")
                                                         .font(.system(size: 60, weight: .bold))
                                                         .foregroundColor(accentColor)
+                                                        .accessibilityLabel("Raised hand icon representing rights")
                     }
 
                     Text("Your Data, Your Rights, Your Trust")
@@ -94,6 +95,7 @@ struct GDPRRightView: View {
                 .font(.title2)
                 .foregroundColor(accentColor)
                 .frame(width: 24, alignment: .center)
+                .accessibilityHidden(true)
 
             VStack(alignment: .leading, spacing: 4) {
                 Text(title)

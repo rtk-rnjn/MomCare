@@ -18,6 +18,7 @@ struct WatchSettingsView: View {
                 Label(connector.isReachable ? "Watch Reachable" : "Watch Not Reachable",
                       systemImage: connector.isReachable ? "checkmark.circle.fill" : "xmark.circle.fill")
                     .foregroundColor(connector.isReachable ? .green : .red)
+                    .accessibilityLabel(connector.isReachable ? "Watch is reachable" : "Watch is not reachable")
 
                 HStack {
                     Text("Activation State")

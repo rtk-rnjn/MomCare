@@ -18,10 +18,12 @@ struct ReminderDetailsView: View {
                     Image(systemName: "checkmark.circle.fill")
                         .font(.title2)
                         .foregroundColor(.green)
+                        .accessibilityLabel("Completed")
                 } else {
                     Image(systemName: "circle")
                         .font(.title2)
                         .foregroundColor(.gray)
+                        .accessibilityLabel("Not completed")
                 }
 
                 VStack(alignment: .leading, spacing: 4) {
@@ -35,6 +37,7 @@ struct ReminderDetailsView: View {
                 HStack(spacing: 8) {
                     Image(systemName: "clock")
                         .foregroundColor(.orange)
+                        .accessibilityHidden(true)
 
                     VStack(alignment: .leading, spacing: 2) {
                         Text(dueDate.formatted(.dateTime.weekday(.wide).day().month(.wide).year()))
