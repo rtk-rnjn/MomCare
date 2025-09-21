@@ -2,6 +2,33 @@
 
 A personalized prenatal care app designed for expecting mothers. Offers health plans, milestone tracking, and expert tips to ensure a smooth journey through pregnancy. 
 
+## Features
+
+- **Multi-Platform Support**: iOS app, watchOS companion, Widget extension, and Intents extension
+- **Cross-Target Code Sharing**: Comprehensive conditional compilation system for shared components
+- **Health Integration**: HealthKit integration for health data tracking
+- **Watch Connectivity**: Seamless communication between iOS and watchOS apps
+- **Personalized Plans**: Customized pregnancy tracking and care plans
+
+## Development
+
+### Cross-Target Architecture
+
+This project uses a sophisticated conditional compilation system to share code between multiple app targets while maintaining platform-specific functionality. See [`CONDITIONAL_COMPILATION_GUIDE.md`](CONDITIONAL_COMPILATION_GUIDE.md) for detailed information on:
+
+- Platform detection and capability checking
+- Framework availability checks
+- Target-specific code organization
+- Best practices for cross-target development
+
+### Project Structure
+
+- **MomCare** - Main iOS application
+- **MomCare+Watch** - watchOS companion app
+- **MomCare+PregnancyTracker** - WidgetKit extension
+- **MomCare+Intents** - Intents extension
+- **Common/** - Shared components with conditional compilation
+
 ## Backend
 
 The Backend for this app is available at [**MomCare Backend**](https://github.com/rtk-rnjn/MomCare-Backend). The backend is under development. API endpoints and Models are available [**here**](http://13.233.139.216:8000/redoc).
