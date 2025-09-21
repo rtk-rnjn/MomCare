@@ -9,11 +9,7 @@
 import Foundation
 import OSLog
 
-#if os(iOS)
-private let logger: os.Logger = .init(subsystem: "com.MomCare.WatchConnector", category: "WatchConnector")
-#elseif os(watchOS)
-private let logger: os.Logger = .init(subsystem: "com.MomCare.WatchApp.WatchConnector", category: "WatchConnector")
-#endif
+private let logger: os.Logger = .init(subsystem: "\(PlatformCapabilities.loggingSubsystemPrefix).WatchConnector", category: "WatchConnector")
 
 @MainActor
 class WatchConnector: NSObject, ObservableObject {

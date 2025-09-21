@@ -8,7 +8,7 @@
 import Foundation
 import OSLog
 
-private let logger: Logger = .init(subsystem: "com.MomCare.NetworkManager", category: "NetworkManager")
+private let logger: Logger = .init(subsystem: "\(PlatformCapabilities.loggingSubsystemPrefix).NetworkManager", category: "NetworkManager")
 
 enum HTTPMethod: String {
     case GET

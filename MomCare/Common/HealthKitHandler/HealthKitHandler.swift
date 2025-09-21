@@ -6,10 +6,13 @@
 //
 
 import OSLog
+#if canImport(HealthKit)
 import HealthKit
+#endif
 
-private let logger: Logger = .init(subsystem: "com.MomCare.HealthKit", category: "HealthKit")
+private let logger: Logger = .init(subsystem: "\(PlatformCapabilities.loggingSubsystemPrefix).HealthKit", category: "HealthKit")
 
+#if canImport(HealthKit) && (os(iOS) || os(watchOS))
 actor HealthKitHandler {
 
     static let shared: HealthKitHandler = .init()
@@ -78,3 +81,24 @@ actor HealthKitHandler {
         }
     }
 }
+#else
+// HealthKit not available - provide stub implementation for non-supporting platforms
+class HealthKitHandler {
+    static let shared: HealthKitHandler = .init()
+    
+    func requestAccess(completionHandler: (() -> Void)? = nil) async {
+        logger.warning("HealthKit not available on this platform")
+        completionHandler?()
+    }
+    
+    func fetchHealthData(quantityTypeIdentifier: Any, unit: Any, completionHandler: @escaping @Sendable (Double) -> Void) {
+        logger.warning("HealthKit not available on this platform")
+        completionHandler(0.0)
+    }
+    
+    func saveHealthData(quantityTypeIdentifier: Any, unit: Any, value: Double, date: Date, completionHandler: @escaping @Sendable (Bool) -> Void) {
+        logger.warning("HealthKit not available on this platform")
+        completionHandler(false)
+    }
+}
+#endif

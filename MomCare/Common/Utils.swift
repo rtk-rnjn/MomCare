@@ -65,9 +65,20 @@ enum Utils {
     }
 
     public static func createNotification(title: String? = nil, body: String? = nil, date: Date? = nil, userInfo: [String: Any]? = nil) {
+        #if canImport(UserNotifications)
+        guard PlatformCapabilities.supportsNotifications else {
+            return
+        }
+        
         let content = UNMutableNotificationContent()
 
+        // Use platform-appropriate default title
+        #if os(watchOS)
+        content.title = title ?? "MomCare+"
+        #else
         content.title = title ?? "MomCare"
+        #endif
+        
         content.body = body ?? "Reminder"
         content.sound = .defaultCritical
         content.interruptionLevel = .timeSensitive
@@ -78,6 +89,7 @@ enum Utils {
         let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
 
         UNUserNotificationCenter.current().add(request)
+        #endif
     }
 
     // MARK: Internal
