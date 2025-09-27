@@ -218,7 +218,7 @@ class DashboardViewController: UIViewController, UICollectionViewDataSource, UIC
         let endDate = eventTVC.allDaySwitch.isOn ? startDate : eventTVC.endDateTimePicker.date.addingTimeInterval(eventTVC.selectedTravelTimeOption ?? 0)
 
         Task {
-            await EventKitHandler.shared.createEvent(
+            EventKitHandler.shared.createEvent(
                 title: title,
                 startDate: startDate,
                 endDate: endDate,
@@ -269,7 +269,7 @@ extension DashboardViewController {
                 return UIMenu(children: [
                     UIAction(title: "View event in calendar", image: UIImage(systemName: "calendar")) { _ in
                         Task {
-                            guard let event = await EventKitHandler.shared.fetchUpcomingAppointment() else { return }
+                            guard let event = EventKitHandler.shared.fetchUpcomingAppointment() else { return }
                             let startDate = event.startDate
                             let interval = startDate.timeIntervalSinceReferenceDate
 

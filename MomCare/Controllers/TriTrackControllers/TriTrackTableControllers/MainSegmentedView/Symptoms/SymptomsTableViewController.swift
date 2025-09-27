@@ -98,7 +98,7 @@ class SymptomsTableViewController: UITableViewController {
         let endOfDay = calendar.date(byAdding: .day, value: 1, to: startOfDay)!
 
         Task {
-            events = await EventKitHandler.shared.fetchSymptoms(startDate: startOfDay, endDate: endOfDay)
+            events = EventKitHandler.shared.fetchSymptoms(startDate: startOfDay, endDate: endOfDay)
             DispatchQueue.main.async {
                 self.tableView.reloadData()
             }

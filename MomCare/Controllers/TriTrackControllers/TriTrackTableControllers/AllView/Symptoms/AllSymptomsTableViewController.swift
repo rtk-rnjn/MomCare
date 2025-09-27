@@ -19,7 +19,7 @@ class AllSymptomsTableViewController: UITableViewController {
         super.viewDidLoad()
         setupSymptomsHeader()
         Task {
-            symptoms = await EventKitHandler.shared.fetchAllSymptoms()
+            symptoms = EventKitHandler.shared.fetchAllSymptoms()
             DispatchQueue.main.async {
                 self.tableView.reloadData()
             }

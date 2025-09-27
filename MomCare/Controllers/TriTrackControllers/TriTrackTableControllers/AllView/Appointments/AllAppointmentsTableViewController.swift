@@ -22,7 +22,7 @@ class AllAppointmentsTableViewController: UITableViewController {
         super.viewWillAppear(animated)
 
         Task {
-            events = await EventKitHandler.shared.fetchAllAppointments()
+            events = EventKitHandler.shared.fetchAllAppointments()
             DispatchQueue.main.async {
                 self.groupEventsByDate()
                 self.tableView.reloadData()

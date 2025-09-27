@@ -103,7 +103,7 @@ class AppointmentsTableViewController: UITableViewController {
         let startDate = Calendar.current.startOfDay(for: selectedDate)
         let endDate = Calendar.current.date(byAdding: .month, value: 1, to: startDate)!
 
-        return await EventKitHandler.shared.fetchAppointments(startDate: startDate, endDate: endDate)
+        return EventKitHandler.shared.fetchAppointments(startDate: startDate, endDate: endDate)
     }
 
     func refreshData() {

@@ -45,7 +45,8 @@ struct ReminderInfo: Sendable {
     var timeZone: TimeZone?
 }
 
-actor EventKitHandler: NSObject {
+@MainActor
+final class EventKitHandler: NSObject {
 
     // MARK: Lifecycle
 
@@ -62,16 +63,16 @@ actor EventKitHandler: NSObject {
 
     static let shared: EventKitHandler = .init()
 
-    @MainActor func getEventStore() async -> EKEventStore {
+    func getEventStore() -> EKEventStore {
         do {
             #if os(iOS)
-            try await eventStore.commit()
+            try eventStore.commit()
             #endif
         } catch let error {
             logger.error("Error committing changes to event store: \(String(describing: error))")
         }
 
-        return await eventStore
+        return eventStore
     }
 
     func requestAccessForEvent(completion: ((Bool) -> Void)? = nil) async {
@@ -262,7 +263,10 @@ actor EventKitHandler: NSObject {
 
         eventStore.fetchReminders(matching: predicate) { fetchedReminders in
             if let fetchedReminders {
-                let reminders = fetchedReminders.filter { $0.dueDateComponents?.date ?? Date() >= startDate && $0.dueDateComponents?.date ?? Date() <= endDate }.map { self.getReminderInfo(from: $0) }
+                let reminders = fetchedReminders.filter {
+                    ($0.dueDateComponents?.date ?? Date()) >= startDate &&
+                    ($0.dueDateComponents?.date ?? Date()) <= endDate
+                }.map { self.getReminderInfo(from: $0) }
                 completionHandler(reminders)
             }
         }
@@ -336,7 +340,7 @@ actor EventKitHandler: NSObject {
         return eventStore.events(matching: predicate)
     }
 
-    func getEventInfo(from event: EKEvent) -> EventInfo {
+    nonisolated func getEventInfo(from event: EKEvent) -> EventInfo {
         return EventInfo(
             eventIdentifier: event.eventIdentifier,
             calendarItemIdentifier: event.calendarItemIdentifier,
@@ -354,7 +358,7 @@ actor EventKitHandler: NSObject {
         )
     }
 
-    func getReminderInfo(from reminder: EKReminder) -> ReminderInfo {
+    nonisolated func getReminderInfo(from reminder: EKReminder) -> ReminderInfo {
         return ReminderInfo(
             reminderIdentifier: reminder.calendarItemIdentifier,
             calendarItemIdentifier: reminder.calendarItemIdentifier,

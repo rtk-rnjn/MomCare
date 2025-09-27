@@ -42,7 +42,7 @@ class EventDetailsViewController: UIHostingController<EventDetailsView> {
                 return
             }
 
-            let event = await EventKitHandler.shared.fetchUpcomingAppointment()
+            let event = EventKitHandler.shared.fetchUpcomingAppointment()
             await MainActor.run {
                 rootView.event = event
             }

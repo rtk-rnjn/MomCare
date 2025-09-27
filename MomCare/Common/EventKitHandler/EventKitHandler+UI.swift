@@ -42,8 +42,8 @@ class EventKitHandlerUIDelegate: NSObject, EKEventEditViewDelegate, EKEventViewD
 
     func presentEKEventEditViewController(with eventInfo: EventInfo?) async {
         let eventEditViewController = EKEventEditViewController()
-        eventEditViewController.eventStore = await EventKitHandler.shared.getEventStore()
-        eventEditViewController.event = await EventKitHandler.shared.getEKEvent(from: eventInfo)
+        eventEditViewController.eventStore = EventKitHandler.shared.getEventStore()
+        eventEditViewController.event = EventKitHandler.shared.getEKEvent(from: eventInfo)
         eventEditViewController.editViewDelegate = self
 
         DispatchQueue.main.async {
@@ -53,7 +53,7 @@ class EventKitHandlerUIDelegate: NSObject, EKEventEditViewDelegate, EKEventViewD
 
     func presentEKEventViewController(with eventInfo: EventInfo?) async {
         let eventViewController = EKEventViewController()
-        eventViewController.event = await EventKitHandler.shared.getEKEvent(from: eventInfo)
+        eventViewController.event = EventKitHandler.shared.getEKEvent(from: eventInfo)
         eventViewController.allowsEditing = true
         eventViewController.allowsCalendarPreview = true
 

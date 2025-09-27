@@ -40,7 +40,7 @@ class AllRemindersTableViewCell: UITableViewCell {
 
         reminder.isCompleted = newStatus
         Task {
-            await EventKitHandler.shared.updateReminder(reminder: reminder)
+            EventKitHandler.shared.updateReminder(reminder: reminder)
             DispatchQueue.main.async {
                 self.updateElements(with: reminder)
             }

@@ -30,7 +30,7 @@ class EKReminderViewController: UITableViewController {
             AlertActionHandler(title: "Cancel", style: .cancel, handler: nil),
             AlertActionHandler(title: "Delete", style: .destructive) { _ in
                 Task {
-                    await EventKitHandler.shared.deleteReminder(reminder: self.reminder)
+                    EventKitHandler.shared.deleteReminder(reminder: self.reminder)
                     DispatchQueue.main.async {
                         self.dismiss(animated: true) {
                             self.reloadHandler?()
@@ -49,7 +49,7 @@ class EKReminderViewController: UITableViewController {
         updateView()
         reminder.isCompleted = !reminder.isCompleted
         Task {
-            await EventKitHandler.shared.updateReminder(reminder: reminder)
+            EventKitHandler.shared.updateReminder(reminder: reminder)
         }
     }
 

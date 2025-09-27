@@ -12,7 +12,7 @@ struct OpenAllAppointments: AppIntent {
 
     @MainActor
     func perform() async throws -> some IntentResult {
-        let appointment = await EventKitHandler.shared.fetchUpcomingAppointment()
+        let appointment = EventKitHandler.shared.fetchUpcomingAppointment()
         if let appointment {
             return .result(value: "\(appointment.title)")
         } else {
