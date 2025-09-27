@@ -54,7 +54,7 @@ class BreathingPlayerViewController: UIViewController {
                 let remainingSecondsPart = remainingSeconds % 60
                 self.remainingMinSec = Double(remainingMinutes) * 60 + Double(remainingSecondsPart)
 
-                self.totalBreatingDuration.text = String(format: "%02d:%02d", remainingMinutes, remainingSecondsPart)
+                self.totalBreatingDuration.text = unsafe String(format: "%02d:%02d", remainingMinutes, remainingSecondsPart)
             }
         }
     }
@@ -327,7 +327,7 @@ class BreathingPlayerViewController: UIViewController {
         }
 
         instructionLabel.text = "Inhale"
-        totalBreatingDuration.text = String(format: "%02d:%02d", 5, 0)
+        totalBreatingDuration.text = unsafe String(format: "%02d:%02d", 5, 0)
 
         playerState = .ready
     }
@@ -367,7 +367,7 @@ class BreathingPlayerViewController: UIViewController {
         let remainingMinutes = remainingSeconds / 60
         let remainingSecondsPart = remainingSeconds % 60
         remainingMinSec = Double(remainingMinutes) * 60 + Double(remainingSecondsPart)
-        totalBreatingDuration.text = String(format: "%02d:%02d", remainingMinutes, remainingSecondsPart)
+        totalBreatingDuration.text = unsafe String(format: "%02d:%02d", remainingMinutes, remainingSecondsPart)
     }
 
     @objc private func doneButtonTapped() {

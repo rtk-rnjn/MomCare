@@ -7,7 +7,7 @@
 
 import Foundation
 import RealmSwift
-@preconcurrency import EventKit
+import EventKit
 
 extension EventKitHandler {
     func fetchSymptoms(startDate: Date? = nil, endDate: Date? = nil) -> [EventInfo] {

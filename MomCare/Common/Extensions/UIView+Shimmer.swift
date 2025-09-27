@@ -14,19 +14,20 @@ nonisolated(unsafe) private var shimmerIsShowingKey: UInt8 = 0
 extension UIView {
     private var shimmerLayer: CAGradientLayer? {
         get {
-            return objc_getAssociatedObject(self, &shimmerLayerKey) as? CAGradientLayer
+            return unsafe objc_getAssociatedObject(self, &shimmerLayerKey) as? CAGradientLayer
         }
         set {
-            objc_setAssociatedObject(self, &shimmerLayerKey, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+            unsafe objc_setAssociatedObject(self, &shimmerLayerKey, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
         }
     }
 
     private var isShimmering: Bool {
         get {
-            return (objc_getAssociatedObject(self, &shimmerIsShowingKey) as? Bool) ?? false
+            let value = unsafe objc_getAssociatedObject(self, &shimmerIsShowingKey) as? Bool
+            return value ?? false
         }
         set {
-            objc_setAssociatedObject(self, &shimmerIsShowingKey, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+            unsafe objc_setAssociatedObject(self, &shimmerIsShowingKey, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
         }
     }
 

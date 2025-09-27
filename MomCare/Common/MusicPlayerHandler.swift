@@ -7,7 +7,7 @@
 
 import UIKit
 import MediaPlayer
-@preconcurrency import AVFoundation
+import AVFoundation
 
 @MainActor
 class MusicPlayerHandler {

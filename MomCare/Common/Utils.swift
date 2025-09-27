@@ -149,7 +149,7 @@ enum KeychainHelper {
         ]
 
         var dataTypeRef: CFTypeRef?
-        let status = SecItemCopyMatching(query as CFDictionary, &dataTypeRef)
+        let status = unsafe SecItemCopyMatching(query as CFDictionary, &dataTypeRef)
 
         if status == errSecSuccess {
             if let data = dataTypeRef as? Data {

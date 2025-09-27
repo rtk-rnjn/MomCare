@@ -5,7 +5,7 @@
 //  Created by RITIK RANJAN on 17/05/25.
 //
 
-@preconcurrency import EventKit
+import EventKit
 #if canImport(EventKitUI)
 import EventKitUI
 #endif

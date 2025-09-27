@@ -7,7 +7,7 @@
 
 import UIKit
 import FSCalendar
-@preconcurrency import EventKit
+import EventKit
 
 enum TriTrackContainerViewType: Int {
     case meAndBabyContainerView = 0

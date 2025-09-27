@@ -6,7 +6,7 @@
 //
 
 import Foundation
-@preconcurrency import MultipeerConnectivity
+import MultipeerConnectivity
 import OSLog
 
 private let logger: Logger = .init(subsystem: "com.MomCare.MultipeerHandler", category: "MultipeerHandler")

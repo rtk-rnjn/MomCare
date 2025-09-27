@@ -26,7 +26,7 @@ extension UIImage {
         guard let outputImage = filter.outputImage else { return nil }
 
         var bitmap = [UInt8](repeating: 0, count: 4)
-        context.render(
+        unsafe context.render(
             outputImage,
             toBitmap: &bitmap,
             rowBytes: 4,

@@ -6,7 +6,7 @@
 //
 
 import Foundation
-@preconcurrency import UserNotifications
+@unsafe @preconcurrency import UserNotifications
 import UIKit
 import OSLog
 

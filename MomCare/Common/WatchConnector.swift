@@ -5,7 +5,7 @@
 //  Created by Aryan Singh on 17/09/25.
 //
 
-@preconcurrency import WatchConnectivity
+@unsafe @preconcurrency import WatchConnectivity
 import Foundation
 import OSLog
 

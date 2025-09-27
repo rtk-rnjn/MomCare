@@ -18,7 +18,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
 
         UNUserNotificationCenter.current().delegate = self
-        _ = WatchConnector.shared
+//        _ = WatchConnector.shared
         MultipeerHandler.shared.startHosting()
         MultipeerHandler.shared.startBrowsing()
 
@@ -36,7 +36,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
-        let tokenString = deviceToken.map { String(format: "%02.2hhx", $0) }.joined()
+        let tokenString = deviceToken.map { unsafe String(format: "%02.2hhx", $0) }.joined()
         logger.info("Device Token: \(tokenString)")
         // TODO: Send the device token to server
     }
