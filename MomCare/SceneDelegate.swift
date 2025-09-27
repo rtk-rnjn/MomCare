@@ -27,7 +27,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         self.window = window
         window.makeKeyAndVisible()
 
-//        _ = WatchConnector.shared
+        _ = WatchConnector.shared
         logger.info("Scene connected with rootViewController: \(String(describing: initialViewController))")
     }
 

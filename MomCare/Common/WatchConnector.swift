@@ -16,13 +16,13 @@ private let logger: os.Logger = .init(subsystem: "com.MomCare.WatchConnector", c
 private let logger: os.Logger = .init(subsystem: "com.MomCare.WatchApp.WatchConnector", category: "WatchConnector")
 #endif // os(iOS)
 
-@MainActor
-final class WatchConnector: NSObject {
+class WatchConnector: NSObject, WCSessionDelegate {
 
     // MARK: Lifecycle
 
     override init() {
         super.init()
+
         WCSession.default.delegate = self
         WCSession.default.activate()
     }
@@ -30,7 +30,7 @@ final class WatchConnector: NSObject {
     // MARK: Internal
 
     // MARK: Singleton
-    static let shared: WatchConnector = .init()
+    nonisolated(unsafe) static let shared: WatchConnector = .init()
 
     var session: WCSession {
         return WCSession.default
@@ -57,10 +57,7 @@ final class WatchConnector: NSObject {
             logger.info("Recieved `\(String(describing: reply))` from Paired Device")
         }
     }
-}
 
-// MARK: - WCSessionDelegate
-extension WatchConnector: WCSessionDelegate {
     func session(_ session: WCSession, activationDidCompleteWith activationState: WCSessionActivationState, error: (any Error)?) {
 
         if let error {
