@@ -25,7 +25,7 @@ concurrency:
 jobs:
   build:
     name: Build default scheme using any available iPhone simulator
-    runs-on: macos-latest
+    runs-on: macos-26
 
     steps:
       - name: Checkout
@@ -48,7 +48,7 @@ jobs:
         run: xcodebuild -version
 
       - name: Select Xcode Version
-        run: sudo xcode-select -s "/Applications/Xcode_16.4.app"
+        run: sudo xcode-select -s "/Applications/Xcode_26.app"
 
       - name: Debug Available Simulators
         run: xcrun simctl list devices
