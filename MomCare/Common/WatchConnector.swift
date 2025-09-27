@@ -16,14 +16,14 @@ private let logger: os.Logger = .init(subsystem: "com.MomCare.WatchApp.WatchConn
 #endif // os(iOS)
 
 @MainActor
-class WatchConnector: NSObject, ObservableObject {
+final class WatchConnector: NSObject, ObservableObject {
 
     // MARK: Lifecycle
 
     override init() {
         super.init()
-        session.delegate = self
-        session.activate()
+        WCSession.default.delegate = self
+        WCSession.default.activate()
     }
 
     // MARK: Internal
@@ -31,10 +31,9 @@ class WatchConnector: NSObject, ObservableObject {
     // MARK: Singleton
     static let shared: WatchConnector = .init()
 
-    var session: WCSession = .default
-
-    @Published var isReachable: Bool = WCSession.default.isReachable
-    @Published var activationState: WCSessionActivationState = WCSession.default.activationState
+    var session: WCSession {
+        return WCSession.default
+    }
 
     // MARK: Messaging
 
@@ -62,9 +61,6 @@ class WatchConnector: NSObject, ObservableObject {
 // MARK: - WCSessionDelegate
 extension WatchConnector: WCSessionDelegate {
     func session(_ session: WCSession, activationDidCompleteWith activationState: WCSessionActivationState, error: (any Error)?) {
-        DispatchQueue.main.async {
-            self.activationState = activationState
-        }
 
         if let error {
             logger.warning("WCSession activation failed: \(String(describing: error))")
@@ -85,8 +81,5 @@ extension WatchConnector: WCSessionDelegate {
 
     func sessionReachabilityDidChange(_ session: WCSession) {
         logger.debug("Session reachability changed: \(session.isReachable)")
-        DispatchQueue.main.async {
-            self.isReachable = session.isReachable
-        }
     }
 }

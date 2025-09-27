@@ -15,14 +15,14 @@ struct WatchSettingsView: View {
     var body: some View {
         List {
             Section("Status") {
-                Label(connector.isReachable ? "Watch Reachable" : "Watch Not Reachable",
-                      systemImage: connector.isReachable ? "checkmark.circle.fill" : "xmark.circle.fill")
-                    .foregroundColor(connector.isReachable ? .green : .red)
+                Label(connector.session.isReachable ? "Watch Reachable" : "Watch Not Reachable",
+                      systemImage: connector.session.isReachable ? "checkmark.circle.fill" : "xmark.circle.fill")
+                .foregroundColor(connector.session.isReachable ? .green : .red)
 
                 HStack {
                     Text("Activation State")
                     Spacer()
-                    Text(stateText(connector.activationState))
+                    Text(stateText(connector.session.activationState))
                 }
             }
 
