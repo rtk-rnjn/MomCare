@@ -7,27 +7,28 @@
 
 #if canImport(UIKit)
 import UIKit
-
-nonisolated(unsafe) private var shimmerLayerKey: UInt8 = 0
-nonisolated(unsafe) private var shimmerIsShowingKey: UInt8 = 0
+import ObjectiveC.runtime
 
 extension UIView {
+    private static var shimmerLayerKey: UInt8 = 0
+    private static var shimmerIsShowingKey: UInt8 = 0
+
     private var shimmerLayer: CAGradientLayer? {
         get {
-            return unsafe objc_getAssociatedObject(self, &shimmerLayerKey) as? CAGradientLayer
+            return objc_getAssociatedObject(self, &Self.shimmerLayerKey) as? CAGradientLayer
         }
         set {
-            unsafe objc_setAssociatedObject(self, &shimmerLayerKey, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+            objc_setAssociatedObject(self, &Self.shimmerLayerKey, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
         }
     }
 
     private var isShimmering: Bool {
         get {
-            let value = unsafe objc_getAssociatedObject(self, &shimmerIsShowingKey) as? Bool
+            let value = objc_getAssociatedObject(self, &Self.shimmerIsShowingKey) as? Bool
             return value ?? false
         }
         set {
-            unsafe objc_setAssociatedObject(self, &shimmerIsShowingKey, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+            objc_setAssociatedObject(self, &Self.shimmerIsShowingKey, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
         }
     }
 
@@ -79,4 +80,4 @@ extension UIView {
     }
 
 }
-#endif
+#endif // canImport(UIKit)

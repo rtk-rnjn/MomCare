@@ -54,6 +54,6 @@ extension Endpoint {
     }
 
     func urlString(with parameters: String...) -> String {
-        return unsafe String(format: urlString, arguments: parameters)
+        return String(format: urlString, arguments: parameters)
     }
 }

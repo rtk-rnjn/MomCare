@@ -39,7 +39,7 @@ struct ExerciseProgressView: View {
             .animation(.easeInOut(duration: 0.3), value: isShowingInfo || showingCalendar)
 
             if isShowingInfo, let exercise = showingExerciseInfo {
-                unsafe exerciseInfoCard(for: exercise)
+                exerciseInfoCard(for: exercise)
                     .transition(.asymmetric(
                         insertion: AnyTransition.scale(scale: 0.3).combined(with: AnyTransition.opacity).combined(with: AnyTransition.move(edge: .bottom)),
                         removal: AnyTransition.scale(scale: 0.8).combined(with: AnyTransition.opacity).combined(with: AnyTransition.move(edge: .top))
@@ -48,7 +48,7 @@ struct ExerciseProgressView: View {
             }
 
             if showingCalendar {
-                unsafe progressCalendarView
+                progressCalendarView
                     .transition(.asymmetric(
                         insertion: AnyTransition.scale.combined(with: AnyTransition.opacity),
                         removal: AnyTransition.scale.combined(with: AnyTransition.opacity)

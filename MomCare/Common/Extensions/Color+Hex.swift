@@ -11,7 +11,7 @@ extension Color {
     init(hex: String) {
         let hex = hex.trimmingCharacters(in: CharacterSet.alphanumerics.inverted)
         var int: UInt64 = 0
-        unsafe Scanner(string: hex).scanHexInt64(&int)
+        Scanner(string: hex).scanHexInt64(&int)
         let a, r, g, b: UInt64
 
         switch hex.count {
