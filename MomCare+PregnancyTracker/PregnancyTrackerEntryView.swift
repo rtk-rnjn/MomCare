@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import WidgetKit
 
 struct PregnancyTrackerEntryView: View {
     @Environment(\.widgetFamily) var widgetFamily

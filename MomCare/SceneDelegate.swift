@@ -27,7 +27,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         self.window = window
         window.makeKeyAndVisible()
 
-        _ = WatchConnector.shared
+//        _ = WatchConnector.shared
         logger.info("Scene connected with rootViewController: \(String(describing: initialViewController))")
     }
 
@@ -68,4 +68,5 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     func windowScene(_ windowScene: UIWindowScene, performActionFor shortcutItem: UIApplicationShortcutItem, completionHandler: @escaping (Bool) -> Void) {
         // Handle quick actions
     }
+
 }

@@ -7,6 +7,7 @@
 
 import AVFoundation
 import MediaPlayer
+import LNPopupController_ObjC
 
 extension PlaylistTableViewController {
 

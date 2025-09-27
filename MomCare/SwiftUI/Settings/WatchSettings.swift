@@ -37,7 +37,7 @@ struct WatchSettingsView: View {
 
     // MARK: Private
 
-    @ObservedObject private var connector: WatchConnector = .shared
+    private var connector: WatchConnector = .shared
 
     private func stateText(_ state: WCSessionActivationState) -> String {
         switch state {

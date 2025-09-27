@@ -8,6 +8,7 @@
 import WatchConnectivity
 import Foundation
 import OSLog
+import Combine
 
 #if os(iOS)
 private let logger: os.Logger = .init(subsystem: "com.MomCare.WatchConnector", category: "WatchConnector")
@@ -16,7 +17,7 @@ private let logger: os.Logger = .init(subsystem: "com.MomCare.WatchApp.WatchConn
 #endif // os(iOS)
 
 @MainActor
-final class WatchConnector: NSObject, ObservableObject {
+final class WatchConnector: NSObject {
 
     // MARK: Lifecycle
 
