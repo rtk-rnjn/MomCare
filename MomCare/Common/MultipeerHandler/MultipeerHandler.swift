@@ -17,21 +17,14 @@ class MultipeerHandler: NSObject {
     // MARK: Lifecycle
 
     private override init() {
-        var prefix = ""
-        if let user = MomCareUser.shared.fetchFromUserDefaults() {
-            prefix = user.fullName
-        } else {
-            prefix = "Unknown Guest"
-        }
-
-        peerID = MCPeerID(displayName: "MomCare+ \(prefix) \(UUID().uuidString.prefix(4))")
+        peerID = MCPeerID(displayName: "MomCare+ \(UUID().uuidString.prefix(4))")
         super.init()
         setupSession()
     }
 
     // MARK: Internal
 
-    static let shared: MultipeerHandler = .init()
+    @MainActor static let shared: MultipeerHandler = .init()
 
     var onPeerConnected: ((MCPeerID) -> Void)?
     var onPeerDisconnected: ((MCPeerID) -> Void)?
@@ -114,7 +107,7 @@ class MultipeerHandler: NSObject {
 
 }
 
-extension MultipeerHandler: @preconcurrency MCSessionDelegate {
+extension MultipeerHandler: MCSessionDelegate {
     func session(_ session: MCSession, peer peerID: MCPeerID, didChange state: MCSessionState) {
         DispatchQueue.main.async {
             switch state {

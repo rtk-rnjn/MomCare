@@ -5,7 +5,7 @@
 //  Created by Aryan Singh on 17/09/25.
 //
 
-@preconcurrency import WatchConnectivity
+import WatchConnectivity
 import Foundation
 import OSLog
 
@@ -13,7 +13,7 @@ import OSLog
 private let logger: os.Logger = .init(subsystem: "com.MomCare.WatchConnector", category: "WatchConnector")
 #elseif os(watchOS)
 private let logger: os.Logger = .init(subsystem: "com.MomCare.WatchApp.WatchConnector", category: "WatchConnector")
-#endif
+#endif // os(iOS)
 
 @MainActor
 class WatchConnector: NSObject, ObservableObject {
@@ -60,7 +60,7 @@ class WatchConnector: NSObject, ObservableObject {
 }
 
 // MARK: - WCSessionDelegate
-extension WatchConnector: @preconcurrency WCSessionDelegate {
+extension WatchConnector: WCSessionDelegate {
     func session(_ session: WCSession, activationDidCompleteWith activationState: WCSessionActivationState, error: (any Error)?) {
         DispatchQueue.main.async {
             self.activationState = activationState
@@ -81,7 +81,7 @@ extension WatchConnector: @preconcurrency WCSessionDelegate {
     func sessionDidDeactivate(_ session: WCSession) {
         logger.warning("WCSession did deactivate")
     }
-    #endif
+    #endif // os(iOS)
 
     func sessionReachabilityDidChange(_ session: WCSession) {
         logger.debug("Session reachability changed: \(session.isReachable)")
