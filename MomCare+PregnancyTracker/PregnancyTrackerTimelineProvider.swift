@@ -54,7 +54,7 @@ struct PregnancyTrackerTimelineProvider: TimelineProvider {
         let timeline = Timeline(entries: [entry], policy: .atEnd)
 
 //        Task {
-//            let reminders = await EventKitHandler.shared.fetchReminders()
+//            let reminders = EventKitHandler.shared.fetchReminders()
 //            entry.reminders = reminders
 //        }
 

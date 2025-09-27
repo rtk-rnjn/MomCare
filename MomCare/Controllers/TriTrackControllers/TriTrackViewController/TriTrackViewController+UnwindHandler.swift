@@ -53,7 +53,7 @@ extension TriTrackViewController {
         guard let notes = viewController.addSymptomsTableViewController?.notesField.text else { return }
 
         Task {
-            await EventKitHandler.shared.createSymptom(title: title, startDate: dateTime, endDate: dateTime, notes: notes)
+            EventKitHandler.shared.createSymptom(title: title, startDate: dateTime, endDate: dateTime, notes: notes)
 
             DispatchQueue.main.async {
                 self.symptomsViewController?.symptomsTableViewController?.refreshData()
@@ -72,7 +72,7 @@ extension TriTrackViewController {
         let endDate = eventTVC.allDaySwitch.isOn ? startDate : eventTVC.endDateTimePicker.date.addingTimeInterval(eventTVC.selectedTravelTimeOption ?? 0)
 
         Task {
-            await EventKitHandler.shared.createEvent(
+            EventKitHandler.shared.createEvent(
                 title: title,
                 startDate: startDate,
                 endDate: endDate,
@@ -96,7 +96,7 @@ extension TriTrackViewController {
         let recurrenceRules = TriTrackViewController.createRecurrenceRule(for: reminderTVC.selectedRepeatOption)
 
         Task {
-            await EventKitHandler.shared.createReminder(title: title, notes: reminderTVC.notesField.text, dueDateComponents: dueDateComponents, recurrenceRules: recurrenceRules)
+            EventKitHandler.shared.createReminder(title: title, notes: reminderTVC.notesField.text, dueDateComponents: dueDateComponents, recurrenceRules: recurrenceRules)
             DispatchQueue.main.async {
                 self.eventsViewController?.remindersTableViewController?.refreshData()
             }

@@ -26,15 +26,15 @@ actor NetworkManager {
 
     // MARK: Internal
 
-    func get<T: Codable>(url: String, queryParameters: [String: Any]? = nil) async -> T? {
+    func get<T: Codable & Sendable>(url: String, queryParameters: [String: Any]? = nil) async -> T? {
         return await request(url: url, method: .GET, queryParameters: queryParameters)
     }
 
-    func post<T: Codable>(url: String, body: Data) async -> T? {
+    func post<T: Codable & Sendable>(url: String, body: Data) async -> T? {
         return await request(url: url, method: .POST, body: body)
     }
 
-    func put<T: Codable>(url: String, body: Data) async -> T? {
+    func put<T: Codable & Sendable>(url: String, body: Data) async -> T? {
         return await request(url: url, method: .PUT, body: body)
     }
 
@@ -43,11 +43,11 @@ actor NetworkManager {
         return result != nil
     }
 
-    func patch<T: Codable>(url: String, body: Data) async -> T? {
+    func patch<T: Codable & Sendable>(url: String, body: Data) async -> T? {
         return await request(url: url, method: .PATCH, body: body)
     }
 
-    func fetchStreamedData<T: Codable>(_ method: HTTPMethod, url: String, queryParameters: [String: Any]? = nil, onItem: (@Sendable (T) -> Void)? = nil) {
+    func fetchStreamedData<T: Codable & Sendable>(_ method: HTTPMethod, url: String, queryParameters: [String: Any]? = nil, onItem: (@Sendable (T) -> Void)? = nil) {
         guard let url = buildURLString(url: url, queryParameters: queryParameters) else {
             fatalError("Oo haseena zulfon waali jaane jahan")
         }

@@ -15,8 +15,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/LeoNatan/LNPopupController.git",
       "state" : {
-        "revision" : "80fe14a5f38f117f81dbf7d583fe867f012fee8c",
-        "version" : "2.20.7"
+        "revision" : "b2b121ce394d1007e42bd35ff85b3034344d78ee",
+        "version" : "2.20.11"
       }
     },
     {
@@ -34,7 +34,7 @@
       "location" : "https://github.com/realm/realm-swift",
       "state" : {
         "branch" : "master",
-        "revision" : "712c52af6ae1aaca9aec83f1a14f4e5d48e3a24c"
+        "revision" : "5fcba6408c99eb3596bf5ae148bfc1a33b5adebd"
       }
     }
   ],

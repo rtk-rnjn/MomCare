@@ -65,7 +65,7 @@ class RemindersTableViewController: UITableViewController {
         return UIContextMenuConfiguration(identifier: nil, previewProvider: previewProvider(for: indexPath)) { _ in
             let deleteAction = UIAction(title: "Delete", image: UIImage(systemName: "trash"), attributes: .destructive) { _ in
                 Task {
-                    await EventKitHandler.shared.deleteReminder(reminder: reminder)
+                    EventKitHandler.shared.deleteReminder(reminder: reminder)
                     DispatchQueue.main.async {
                         self.reminders.remove(at: indexPath.row)
                         self.tableView.reloadData()
@@ -108,7 +108,7 @@ class RemindersTableViewController: UITableViewController {
         let startDate = Calendar.current.startOfDay(for: selectedFSCalendarDate)
         let endDate = Calendar.current.date(byAdding: .day, value: 1, to: startDate)!
         Task {
-            await EventKitHandler.shared.fetchReminders(startDate: startDate, endDate: endDate) { reminders in
+            EventKitHandler.shared.fetchReminders(startDate: startDate, endDate: endDate) { reminders in
                 DispatchQueue.main.async {
                     self.reminders = reminders
                     self.tableView.reloadData()

@@ -66,7 +66,7 @@ class AllRemindersTableViewController: UITableViewController {
         return UIContextMenuConfiguration(identifier: nil, previewProvider: previewProvider(for: indexPath)) { _ in
             let deleteAction = UIAction(title: "Delete", image: UIImage(systemName: "trash"), attributes: .destructive) { _ in
                 Task {
-                    await EventKitHandler.shared.deleteReminder(reminder: reminder)
+                    EventKitHandler.shared.deleteReminder(reminder: reminder)
                     DispatchQueue.main.async {
                         self.reminders.remove(at: indexPath.row)
                         self.tableView.reloadData()
@@ -108,7 +108,7 @@ class AllRemindersTableViewController: UITableViewController {
 
     private func fetchAllReminders() {
         Task {
-            await EventKitHandler.shared.fetchAllReminders { reminders in
+            EventKitHandler.shared.fetchAllReminders { reminders in
                 DispatchQueue.main.async {
                     self.reminders = reminders
                     self.tableView.reloadData()
