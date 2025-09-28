@@ -7,29 +7,40 @@
 
 #if canImport(UIKit)
 import UIKit
-
-nonisolated(unsafe) private var shimmerLayerKey: UInt8 = 0
-nonisolated(unsafe) private var shimmerIsShowingKey: UInt8 = 0
+import ObjectiveC.runtime
 
 extension UIView {
+
+    /// Private associated object key for storing the shimmer `CAGradientLayer`.
+    private static var shimmerLayerKey: UInt8 = 0
+
+    /// Private associated object key for storing whether shimmer is currently active.
+    private static var shimmerIsShowingKey: UInt8 = 0
+
+    /// The gradient layer used to display the shimmer effect.
     private var shimmerLayer: CAGradientLayer? {
-        get {
-            return objc_getAssociatedObject(self, &shimmerLayerKey) as? CAGradientLayer
-        }
-        set {
-            objc_setAssociatedObject(self, &shimmerLayerKey, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
-        }
+        get { objc_getAssociatedObject(self, &Self.shimmerLayerKey) as? CAGradientLayer }
+        set { objc_setAssociatedObject(self, &Self.shimmerLayerKey, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC) }
     }
 
+    /// Indicates whether the shimmer effect is currently active on the view.
     private var isShimmering: Bool {
-        get {
-            return (objc_getAssociatedObject(self, &shimmerIsShowingKey) as? Bool) ?? false
-        }
-        set {
-            objc_setAssociatedObject(self, &shimmerIsShowingKey, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
-        }
+        get { (objc_getAssociatedObject(self, &Self.shimmerIsShowingKey) as? Bool) ?? false }
+        set { objc_setAssociatedObject(self, &Self.shimmerIsShowingKey, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC) }
     }
 
+    /// Starts a shimmer effect on the view using a moving gradient.
+    ///
+    /// The shimmer effect is achieved by:
+    /// 1. Creating a `CAGradientLayer` with the specified colors.
+    /// 2. Setting the gradient direction from left to right.
+    /// 3. Animating the `locations` property of the gradient to create the appearance
+    ///    of a moving highlight across the view.
+    /// 4. Repeating the animation indefinitely with autoreverse enabled.
+    ///
+    /// - Parameters:
+    ///   - colors: The colors to use in the gradient. Defaults to light gray shades.
+    ///   - duration: The duration of one shimmer animation cycle. Default is 0.5 seconds.
     func startShimmer(
         colors: [UIColor] = [
             UIColor(red: 0.95, green: 0.95, blue: 0.95, alpha: 1.0),
@@ -61,6 +72,12 @@ extension UIView {
         shimmerLayer = gradientLayer
     }
 
+    /// Stops the shimmer effect if it is currently active.
+    ///
+    /// - This method:
+    ///   1. Removes all animations from the shimmer layer.
+    ///   2. Removes the gradient layer from the view's layer hierarchy.
+    ///   3. Resets the internal tracking variables.
     func stopShimmer() {
         guard isShimmering else { return }
         isShimmering = false
@@ -70,12 +87,16 @@ extension UIView {
         shimmerLayer = nil
     }
 
+    /// Applies a default priority for content hugging and compression resistance.
+    ///
+    /// Useful when you want the view to maintain its intrinsic content size in Auto Layout.
+    ///
+    /// - Parameter priority: The `UILayoutPriority` to apply. Defaults to `.required`.
     func applyDefaultPriorities(priority: UILayoutPriority = .required) {
         setContentHuggingPriority(priority, for: .horizontal)
         setContentHuggingPriority(priority, for: .vertical)
         setContentCompressionResistancePriority(priority, for: .horizontal)
         setContentCompressionResistancePriority(priority, for: .vertical)
     }
-
 }
-#endif
+#endif // canImport(UIKit)

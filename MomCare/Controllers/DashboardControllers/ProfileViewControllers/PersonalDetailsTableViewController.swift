@@ -31,7 +31,7 @@ class PersonalDetailsTableViewController: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        navigationController?.navigationBar.tintColor = UIColor(hex: "#924350")
+        navigationController?.navigationBar.tintColor = .CustomColors.mutedRaspberry
 
         updateElements()
         setupPickers()

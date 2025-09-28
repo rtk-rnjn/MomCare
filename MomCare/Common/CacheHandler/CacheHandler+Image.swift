@@ -1,21 +1,26 @@
-//
-//  CacheHandler+Image.swift
-//  MomCare
-//
-//  Created by Aryan Singh on 18/09/25.
-//
-
 import Foundation
 import UIKit
 import RealmSwift
 import OSLog
 
-private let logger: os.Logger = .init(subsystem: "com.MomCare.CacheHandler", category: "CacheHandler")
+/// Logger instance dedicated to cache operations within the `CacheHandler`.
+private let logger: os.Logger = .init(
+    subsystem: "com.MomCare.CacheHandler",
+    category: "CacheHandler"
+)
 
 extension CacheHandler {
 
-    // MARK: Internal
-
+    /// Fetches an image for the given URL, resolving through multiple sources.
+    ///
+    /// The lookup order is:
+    /// 1. In-memory cache
+    /// 2. Normalized S3 link (if applicable)
+    /// 3. Realm database
+    /// 4. Network request (and persists result in cache + database)
+    ///
+    /// - Parameter url: The URL of the image.
+    /// - Returns: The fetched `UIImage` if found or downloaded, otherwise `nil`.
     func fetchImage(from url: URL) async -> UIImage? {
         if let image = fetchFromCache(url: url) {
             return image
@@ -33,8 +38,12 @@ extension CacheHandler {
         return await fetchImageFromNetworkAndStore(url: url)
     }
 
-    // MARK: Private
-
+    /// Saves an image to the Realm database asynchronously in a background task.
+    ///
+    /// - Parameters:
+    ///   - image: The `UIImage` being stored.
+    ///   - url: The source URL of the image.
+    ///   - data: The raw image data for serialization.
     private func saveImageToDatabase(_ image: UIImage, url: URL, data: Data) {
         Task.detached(priority: .background) {
             autoreleasepool {
@@ -54,11 +63,18 @@ extension CacheHandler {
         }
     }
 
+    /// Attempts to fetch an image from the Realm database.
+    ///
+    /// - Parameter url: The source URL of the image.
+    /// - Returns: The `UIImage` if found and successfully decoded, otherwise `nil`.
+    ///
+    /// - Note: On a successful hit, the image is also written back into the in-memory cache.
     private func fetchImageFromDatabase(url: URL) -> UIImage? {
         let realm = try? Realm()
         let results = realm?.objects(Images.self).filter("uri == %@", url.absoluteString)
 
-        if let imageData = results?.first?.imageData, let image = UIImage(data: imageData) {
+        if let imageData = results?.first?.imageData,
+           let image = UIImage(data: imageData) {
             logger.debug("Image found in Realm for URL: \(url.absoluteString)")
             saveToCache(image, for: url)
             return image
@@ -68,6 +84,10 @@ extension CacheHandler {
         return nil
     }
 
+    /// Fetches an image from the network and persists it in both cache and Realm.
+    ///
+    /// - Parameter url: The source URL of the image.
+    /// - Returns: The downloaded `UIImage` if successful, otherwise `nil`.
     private func fetchImageFromNetworkAndStore(url: URL) async -> UIImage? {
         do {
             let (data, _) = try await URLSession.shared.data(from: url)
@@ -84,6 +104,10 @@ extension CacheHandler {
         }
     }
 
+    /// Normalizes an S3 link by stripping query parameters.
+    ///
+    /// - Parameter url: The original URL, possibly including S3 query params.
+    /// - Returns: A canonicalized URL without query components.
     private func parseIfS3Link(url: URL) -> URL {
         if !url.absoluteString.contains("amazonaws.com") {
             return url
@@ -99,6 +123,10 @@ extension CacheHandler {
         return url
     }
 
+    /// Retrieves an image from the in-memory cache.
+    ///
+    /// - Parameter url: The cache key, derived from the image URL.
+    /// - Returns: The cached image if found and not expired, otherwise `nil`.
     private func fetchFromCache(url: URL) -> UIImage? {
         if let cachedImage = cache.object(forKey: url as AnyObject) as? Entity<UIImage> {
             logger.debug("Cache hit for URL: \(url.absoluteString)")
@@ -113,6 +141,11 @@ extension CacheHandler {
         return nil
     }
 
+    /// Saves an image to the in-memory cache with a default expiration (24 hours).
+    ///
+    /// - Parameters:
+    ///   - image: The `UIImage` to be cached.
+    ///   - url: The cache key corresponding to the image.
     private func saveToCache(_ image: UIImage, for url: URL) {
         let entity = Entity<UIImage>(value: image)
         logger.debug("Saving image to cache for URL: \(url.absoluteString)")

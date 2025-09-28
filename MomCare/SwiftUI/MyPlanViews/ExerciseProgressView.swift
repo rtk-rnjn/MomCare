@@ -1,5 +1,6 @@
 import SwiftUI
 import HealthKit
+import Combine
 
 // swiftlint:disable:next type_body_length
 struct ExerciseProgressView: View {
@@ -95,7 +96,7 @@ struct ExerciseProgressView: View {
         VStack(spacing: 6) {
             Text("Week \(MomCareUser.shared.user?.pregancyData?.week ?? -1)")
                 .font(.system(size: 28, weight: .bold, design: .rounded))
-                .foregroundColor(Color(hex: "924350"))
+                .foregroundColor(.CustomColors.mutedRaspberry)
         }
         .padding(.top, 15)
         .padding(.bottom, 5)
@@ -156,7 +157,7 @@ struct ExerciseProgressView: View {
             HStack(spacing: 6) {
                 Image(systemName: "target")
                     .font(.system(size: 16, weight: .medium))
-                    .foregroundColor(Color(hex: "924350"))
+                    .foregroundColor(.CustomColors.mutedRaspberry)
 
                 Text("Total Goal: \(viewModel.totalCompletedExercises)/\(2 + viewModel.exercises.count)")
                     .font(.system(size: 16, weight: .semibold))
@@ -167,7 +168,7 @@ struct ExerciseProgressView: View {
 
             Text("")
                 .font(.system(size: 16, weight: .bold))
-                .foregroundColor(Color(hex: "924350"))
+                .foregroundColor(.CustomColors.mutedRaspberry)
         }
     }
 
@@ -179,7 +180,7 @@ struct ExerciseProgressView: View {
                     .frame(height: 6)
 
                 RoundedRectangle(cornerRadius: 4)
-                    .fill(Color(hex: "924350"))
+                    .fill(Color.CustomColors.mutedRaspberry)
                     .frame(
                         width: min(
                             geometry.size.width * CGFloat(viewModel.totalCompletedExercises) / CGFloat(2 + viewModel.exercises.count),
@@ -211,7 +212,7 @@ struct ExerciseProgressView: View {
             HStack(spacing: 8) {
                 Image(systemName: "figure.walk")
                     .font(.system(size: 20, weight: .medium))
-                    .foregroundColor(Color(hex: "924350"))
+                    .foregroundColor(.CustomColors.mutedRaspberry)
 
                 Text("Walking")
                     .font(.system(size: 20, weight: .bold))
@@ -223,12 +224,12 @@ struct ExerciseProgressView: View {
             VStack(alignment: .trailing, spacing: 2) {
                 Text("\(Int(currentSteps / targetSteps * 100))% Completed")
                     .font(.system(size: 14, weight: .semibold))
-                    .foregroundColor(Color(hex: "924350"))
+                    .foregroundColor(.CustomColors.mutedRaspberry)
 
                 if currentSteps / targetSteps >= 1 {
                     Image(systemName: "checkmark.circle.fill")
                         .font(.system(size: 16))
-                        .foregroundColor(Color(hex: "924350"))
+                        .foregroundColor(.CustomColors.mutedRaspberry)
                 }
             }
         }
@@ -266,7 +267,7 @@ struct ExerciseProgressView: View {
                     .frame(height: 6)
 
                 RoundedRectangle(cornerRadius: 4)
-                    .fill(Color(hex: "924350"))
+                    .fill(Color.CustomColors.mutedRaspberry)
                     .frame(
                         width: targetSteps > 0 ?
                             min(geometry.size.width * CGFloat(currentSteps) / CGFloat(targetSteps), geometry.size.width) : 0,
@@ -366,7 +367,7 @@ struct ExerciseProgressView: View {
         VStack(spacing: 8) {
             Text(dayProgress.dayName)
                 .font(.system(size: 12, weight: .semibold))
-                .foregroundColor(Color(hex: "924350"))
+                .foregroundColor(.CustomColors.mutedRaspberry)
 
             ZStack {
                 Circle()
@@ -376,7 +377,7 @@ struct ExerciseProgressView: View {
                 Circle()
                     .trim(from: 0, to: min(dayProgress.completionPercentage, 1.0))
                     .stroke(
-                        Color(hex: "924350"),
+                        Color.CustomColors.mutedRaspberry,
                         style: StrokeStyle(lineWidth: 4, lineCap: .round)
                     )
                     .frame(width: 32, height: 32)
@@ -386,13 +387,12 @@ struct ExerciseProgressView: View {
                 if dayProgress.completionPercentage >= 1.0 {
                     Image(systemName: "checkmark")
                         .font(.system(size: 10, weight: .bold))
-                        .foregroundColor(Color(hex: "924350"))
+                        .foregroundColor(.CustomColors.mutedRaspberry)
                 }
             }
         }
     }
 
-    // MARK: - Helper Functions
     private func exerciseCard(for exercise: Exercise, isBreathing: Bool = false) -> some View {
         ZStack {
             HStack(spacing: 16) {
@@ -454,7 +454,7 @@ struct ExerciseProgressView: View {
             .padding(.vertical, 10)
             .background(
                 RoundedRectangle(cornerRadius: 12)
-                    .fill(Color(hex: "924350"))
+                    .fill(Color.CustomColors.mutedRaspberry)
             )
         }
     }
@@ -539,7 +539,7 @@ struct ExerciseProgressView: View {
 
                 Text(exercise.level.rawValue.capitalized)
                     .font(.system(size: 13, weight: .medium))
-                    .foregroundColor(Color(hex: "924350"))
+                    .foregroundColor(.CustomColors.mutedRaspberry)
                     .padding(.horizontal, 10)
                     .padding(.vertical, 4)
                     .background(
@@ -570,7 +570,7 @@ struct ExerciseProgressView: View {
 
             Image(systemName: exercise.type == .breathing ? "lungs.fill" : "figure.yoga")
                 .font(.system(size: 28, weight: .medium))
-                .foregroundColor(Color(hex: "924350"))
+                .foregroundColor(.CustomColors.mutedRaspberry)
                 .scaleEffect(isShowingInfo ? 1 : 0.1)
                 .opacity(isShowingInfo ? 1 : 0)
                 .rotationEffect(.degrees(isShowingInfo ? 0 : 180))
@@ -647,7 +647,7 @@ struct ExerciseProgressView: View {
         VStack(spacing: 4) {
             Image(systemName: icon)
                 .font(.system(size: 14))
-                .foregroundColor(Color(hex: "924350"))
+                .foregroundColor(.CustomColors.mutedRaspberry)
 
             Text(value)
                 .font(.system(size: 11, weight: .medium))
@@ -660,7 +660,7 @@ struct ExerciseProgressView: View {
     private func benefitTag(text: String) -> some View {
         Text(text)
             .font(.system(size: 13, weight: .medium))
-            .foregroundColor(Color(hex: "924350"))
+            .foregroundColor(.CustomColors.mutedRaspberry)
             .padding(.horizontal, 10)
             .padding(.vertical, 4)
             .frame(maxWidth: .infinity)
@@ -677,7 +677,6 @@ struct DayProgress {
     let completionPercentage: Double
 }
 
-// MARK: - View Model
 class ExerciseGoalsViewModel: ObservableObject {
 
     // MARK: Internal
@@ -717,8 +716,6 @@ private struct ExerciseImageView: View {
     let exercise: Exercise
     let isBreathing: Bool
 
-    // MARK: - Body
-
     var body: some View {
         Group {
             if let uiImage {
@@ -728,7 +725,7 @@ private struct ExerciseImageView: View {
             } else {
                 Image(systemName: isBreathing ? "lungs.fill" : "figure.yoga")
                     .font(.system(size: 36, weight: .medium))
-                    .foregroundColor(Color(hex: "924350"))
+                    .foregroundColor(.CustomColors.mutedRaspberry)
             }
         }
         .frame(width: 90, height: 90)
@@ -742,8 +739,6 @@ private struct ExerciseImageView: View {
     }
 
     // MARK: Private
-
-    // MARK: - State
 
     @State private var uiImage: UIImage?
 

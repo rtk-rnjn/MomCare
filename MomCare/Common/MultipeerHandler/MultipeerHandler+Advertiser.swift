@@ -7,7 +7,7 @@
 
 import MultipeerConnectivity
 
-extension MultipeerHandler: @preconcurrency MCNearbyServiceAdvertiserDelegate {
+extension MultipeerHandler: MCNearbyServiceAdvertiserDelegate {
     func advertiser(_ advertiser: MCNearbyServiceAdvertiser, didReceiveInvitationFromPeer peerID: MCPeerID, withContext context: Data?, invitationHandler: @escaping (Bool, MCSession?) -> Void) {
         if let session {
             invitationHandler(true, session)

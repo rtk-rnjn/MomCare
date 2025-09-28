@@ -95,25 +95,25 @@ class DashboardViewController: UIViewController, UICollectionViewDataSource, UIC
         let customView = UIView()
         customView.backgroundColor = .clear
 
-        let profileBtn = UIButton(type: .system)
+        let profileButton = UIButton(type: .system)
 
         // Set symbol config for larger icon
         let config = UIImage.SymbolConfiguration(pointSize: 22, weight: .regular)
         if let profileImage = UIImage(systemName: "person.crop.circle.fill", withConfiguration: config)?.withRenderingMode(.alwaysTemplate) {
-            profileBtn.setImage(profileImage, for: .normal)
+            profileButton.setImage(profileImage, for: .normal)
         }
 
-        profileBtn.tintColor = UIColor(hex: "#924350")
-        profileBtn.addTarget(self, action: #selector(profileIconTapped), for: .touchUpInside)
+        profileButton.tintColor = .CustomColors.mutedRaspberry
+        profileButton.addTarget(self, action: #selector(profileIconTapped), for: .touchUpInside)
 
-        profileBtn.imageView?.contentMode = .scaleAspectFit
-        profileBtn.contentHorizontalAlignment = .fill
-        profileBtn.contentVerticalAlignment = .fill
+        profileButton.imageView?.contentMode = .scaleAspectFit
+        profileButton.contentHorizontalAlignment = .fill
+        profileButton.contentVerticalAlignment = .fill
 
-        customView.addSubview(profileBtn)
+        customView.addSubview(profileButton)
         navigationBar.addSubview(customView)
 
-        profileBtn.translatesAutoresizingMaskIntoConstraints = false
+        profileButton.translatesAutoresizingMaskIntoConstraints = false
         customView.translatesAutoresizingMaskIntoConstraints = false
 
         NSLayoutConstraint.activate([
@@ -122,13 +122,13 @@ class DashboardViewController: UIViewController, UICollectionViewDataSource, UIC
             customView.widthAnchor.constraint(equalToConstant: 40),
             customView.heightAnchor.constraint(equalToConstant: 40),
 
-            profileBtn.centerXAnchor.constraint(equalTo: customView.centerXAnchor),
-            profileBtn.centerYAnchor.constraint(equalTo: customView.centerYAnchor),
-            profileBtn.widthAnchor.constraint(equalToConstant: 36),
-            profileBtn.heightAnchor.constraint(equalToConstant: 36)
+            profileButton.centerXAnchor.constraint(equalTo: customView.centerXAnchor),
+            profileButton.centerYAnchor.constraint(equalTo: customView.centerYAnchor),
+            profileButton.widthAnchor.constraint(equalToConstant: 36),
+            profileButton.heightAnchor.constraint(equalToConstant: 36)
         ])
 
-        profileButton = profileBtn
+        self.profileButton = profileButton
     }
 
     func scrollViewDidScroll(_ scrollView: UIScrollView) {

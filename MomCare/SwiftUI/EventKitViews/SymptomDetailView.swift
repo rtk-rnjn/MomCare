@@ -4,7 +4,7 @@ struct SymptomDetailView: View {
 
     // MARK: Internal
 
-    let themeColor: Color = .init(hex: "924350")
+    let themeColor: Color = .CustomColors.mutedRaspberry
     let accentColor: Color = .init(hex: "E9D3D3")
     let symptom: Symptom
 

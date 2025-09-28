@@ -21,7 +21,7 @@ class MoodNestViewController: UIViewController, UICollectionViewDataSource, UICo
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        navigationController?.navigationBar.tintColor = UIColor(hex: "#924350")
+        navigationController?.navigationBar.tintColor = .CustomColors.mutedRaspberry
         outerView.layer.cornerRadius = 30
         registerAllNibs()
 

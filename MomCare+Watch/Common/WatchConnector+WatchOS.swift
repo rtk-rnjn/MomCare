@@ -7,6 +7,7 @@
 
 import Foundation
 import WatchConnectivity
+import Combine
 
 extension WatchConnector {
     func session(_ session: WCSession, didReceiveMessage message: [String: Any], replyHandler: @escaping ([String: Any]) -> Void) {
@@ -20,7 +21,7 @@ extension WatchConnector {
     }
 }
 
-class WatchObserver: ObservableObject {
+class WatchObserver {
     @MainActor static let shared: WatchObserver = .init()
 
     @Published var pongReceived: Bool = false

@@ -8,8 +8,13 @@
 import Foundation
 import OSLog
 
-private let logger: Logger = .init(subsystem: "com.MomCare.NetworkManager", category: "NetworkManager")
+/// Logger instance dedicated to network operations.
+private let logger: Logger = .init(
+    subsystem: "com.MomCare.NetworkManager",
+    category: "NetworkManager"
+)
 
+/// Supported HTTP methods for API requests.
 enum HTTPMethod: String {
     case GET
     case POST
@@ -18,38 +23,80 @@ enum HTTPMethod: String {
     case PATCH
 }
 
+/// Centralized, async-safe network layer for performing RESTful requests.
+///
+/// `NetworkManager` provides a typed, codable-based API for performing
+/// HTTP requests. It automatically:
+/// - Builds query strings
+/// - Injects authentication tokens from `KeychainHelper`
+/// - Retries transient failures (timeouts, 5xx)
+/// - Decodes responses into strongly-typed `Codable` models
+///
+/// Use the shared singleton (`NetworkManager.shared`) for all app-wide network calls.
 actor NetworkManager {
 
     // MARK: Public
 
+    /// Shared singleton instance for global use.
     public static let shared: NetworkManager = .init()
 
     // MARK: Internal
 
-    func get<T: Codable & Sendable>(url: String, queryParameters: [String: Any]? = nil) async -> T? {
+    /// Performs a GET request and decodes the response.
+    ///
+    /// - Parameters:
+    ///   - url: The endpoint URL string.
+    ///   - queryParameters: Optional query string parameters.
+    /// - Returns: A decoded object of type `T` or `nil` if the request fails.
+    func get<T: Codable & Sendable>(
+        url: String,
+        queryParameters: [String: Any]? = nil
+    ) async -> T? {
         return await request(url: url, method: .GET, queryParameters: queryParameters)
     }
 
+    /// Performs a POST request and decodes the response.
     func post<T: Codable & Sendable>(url: String, body: Data) async -> T? {
         return await request(url: url, method: .POST, body: body)
     }
 
+    /// Performs a PUT request and decodes the response.
     func put<T: Codable & Sendable>(url: String, body: Data) async -> T? {
         return await request(url: url, method: .PUT, body: body)
     }
 
+    /// Performs a DELETE request.
+    ///
+    /// - Note: Return type is simplified to `Bool` since many DELETE endpoints
+    ///   do not return bodies. Returns `true` if the request succeeded.
     func delete(url: String, body: Data) async -> Bool {
         let result: Bool? = await request(url: url, method: .DELETE, body: body)
         return result != nil
     }
 
+    /// Performs a PATCH request and decodes the response.
     func patch<T: Codable & Sendable>(url: String, body: Data) async -> T? {
         return await request(url: url, method: .PATCH, body: body)
     }
 
-    func fetchStreamedData<T: Codable & Sendable>(_ method: HTTPMethod, url: String, queryParameters: [String: Any]? = nil, onItem: (@Sendable (T) -> Void)? = nil) {
+    /// Fetches server-sent events or newline-delimited JSON objects.
+    ///
+    /// - Parameters:
+    ///   - method: HTTP method (`GET`, `POST`, etc.).
+    ///   - url: The endpoint URL string.
+    ///   - queryParameters: Optional query parameters.
+    ///   - onItem: Closure called for each decoded item of type `T`.
+    ///
+    /// - Note: This uses a simple `\n` delimiter. Suitable for streaming APIs
+    ///   that return NDJSON (newline-delimited JSON).
+    func fetchStreamedData<T: Codable & Sendable>(
+        _ method: HTTPMethod,
+        url: String,
+        queryParameters: [String: Any]? = nil,
+        onItem: (@Sendable (T) -> Void)? = nil
+    ) {
         guard let url = buildURLString(url: url, queryParameters: queryParameters) else {
-            fatalError("Oo haseena zulfon waali jaane jahan")
+            fatalError("Invalid URL")
         }
 
         var reqeust = URLRequest(url: url)
@@ -79,9 +126,11 @@ actor NetworkManager {
 
     // MARK: Private
 
-    private var delimiter: String = "\n"
-
-    private func buildURLString(url: String = "", queryParameters: [String: Any]? = nil) -> URL? {
+    /// Builds a `URL` with optional query parameters.
+    private func buildURLString(
+        url: String = "",
+        queryParameters: [String: Any]? = nil
+    ) -> URL? {
         var urlString = url
 
         if let queryParameters, !queryParameters.isEmpty {
@@ -95,9 +144,15 @@ actor NetworkManager {
         return URL(string: urlString)
     }
 
-    private func request<T: Codable>(url: String = "", method: HTTPMethod, body: Data? = nil, queryParameters: [String: Any]? = nil) async -> T? {
+    /// Prepares and executes a network request with automatic retries and decoding.
+    private func request<T: Codable>(
+        url: String = "",
+        method: HTTPMethod,
+        body: Data? = nil,
+        queryParameters: [String: Any]? = nil
+    ) async -> T? {
         guard let url = buildURLString(url: url, queryParameters: queryParameters) else {
-            fatalError("Oo haseena zulfon waali jaane jahan")
+            fatalError("Invalid URL")
         }
 
         var request = URLRequest(url: url)
@@ -107,14 +162,17 @@ actor NetworkManager {
         }
 
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+
         if let accessToken = KeychainHelper.get("accessToken") {
             request.setValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization")
         }
 
         logger.debug("Preparing request: method=\(method.rawValue, privacy: .public), url=\(url, privacy: .public), queryParameters=\(String(describing: queryParameters), privacy: .public), body=\(String(describing: body?.count), privacy: .public)")
+
         return await handleRequest(request)
     }
 
+    /// Executes the request with exponential backoff retry logic.
     private func handleRequest<T: Codable>(
         _ request: URLRequest,
         retryCount: Int = 3,
@@ -142,6 +200,7 @@ actor NetworkManager {
         return nil
     }
 
+    /// Performs the actual request and attempts to decode the response.
     private func performRequest<T: Codable>(_ request: URLRequest) async throws -> T? {
         let (data, response) = try await URLSession.shared.data(for: request)
 
@@ -159,6 +218,7 @@ actor NetworkManager {
         return data.decodeUsingJSONDecoder()
     }
 
+    /// Determines whether a request should be retried based on the error or response.
     private func shouldRetry(for error: (any Error)?, response: HTTPURLResponse?) -> Bool {
         if let urlError = error as? URLError, urlError.code == .timedOut {
             logger.error("Request timed out: \(urlError.localizedDescription)")

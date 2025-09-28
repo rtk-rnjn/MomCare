@@ -4,11 +4,7 @@ class BreathingPlayerViewController: UIViewController {
 
     // MARK: Internal
 
-    // MARK: - IBOutlets
-
     @IBOutlet var totalBreatingDuration: UILabel!
-
-    // MARK: - Public Properties
 
     var exerciseProgressViewController: ExerciseProgressViewController?
     var remainingMinSec: Double = 0.0
@@ -19,8 +15,6 @@ class BreathingPlayerViewController: UIViewController {
         setupUI()
         setupAnimationManager()
     }
-
-    // MARK: - Public Methods
 
     func updateGradientBackground() {
         let gradientLayer = CAGradientLayer()
@@ -75,8 +69,6 @@ class BreathingPlayerViewController: UIViewController {
 
     // MARK: Private
 
-    // MARK: - Private Properties
-
     private enum PlayerState { case ready, playing, paused, finished }
 
     private let animationManager: BreathingAnimationManager = .init()
@@ -93,8 +85,6 @@ class BreathingPlayerViewController: UIViewController {
 
     private let textAnimationDuration: TimeInterval = 0.5
     private var totalBreathingTime: TimeInterval = 600
-
-    // MARK: - Private Methods
 
     private func setupUI() {
         setupAssuringMessageLabel()
@@ -378,8 +368,6 @@ class BreathingPlayerViewController: UIViewController {
         }
     }
 }
-
-// MARK: - BreathingAnimationDelegate
 
 extension BreathingPlayerViewController: BreathingAnimationDelegate {
     nonisolated func animationDidCompleteInhale() {

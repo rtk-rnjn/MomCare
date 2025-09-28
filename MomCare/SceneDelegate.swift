@@ -30,6 +30,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         self.window = window
         window.makeKeyAndVisible()
 
+        _ = WatchConnector.shared
         logger.info("Scene connected with rootViewController: \(String(describing: initialViewController))")
 
         if let shortcutItem = connectionOptions.shortcutItem {
@@ -79,6 +80,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         logger.debug("Scene did become active: \(String(describing: scene))")
         // Called when the scene has moved from an inactive state to an active state.
         // Use this method to restart any tasks that were paused (or not yet started) when the scene was inactive.
+        UIApplication.shared.shortcutItems = []
     }
 
     func sceneWillResignActive(_ scene: UIScene) {

@@ -7,31 +7,40 @@
 
 import Foundation
 
+/// `MomCareUser` is a singleton class responsible for managing the currently
+/// authenticated user in the MomCare app. It handles local storage, database
+/// updates, meal management, and access token refreshing.
+///
+/// Marked with `@MainActor` to ensure all UI-related updates occur on the main thread.
 @MainActor
 class MomCareUser {
 
     // MARK: Internal
 
+    /// Shared singleton instance of `MomCareUser`.
     static var shared: MomCareUser = .init()
 
+    /// Private dispatch queue for database operations to avoid blocking the main thread.
     let queue: DispatchQueue = .init(label: "MomCareUserQueue")
 
+    /// Access token expiration date. When set, automatically schedules a refresh.
     var accessTokenExpiresAt: Date? {
         didSet {
             scheduleRefresh()
         }
     }
 
+    /// Current authenticated user. Updates to this property automatically
+    /// trigger local and database updates.
     var user: User? {
         didSet {
-            guard let user, oldValue != user else {
-                return
-            }
+            guard let user, oldValue != user else { return }
             updateToDatabase()
             updateToUserDefaults()
         }
     }
 
+    /// Saves the current `user` to the app group UserDefaults for persistence.
     func updateToUserDefaults() {
         let userDefaults = UserDefaults(suiteName: "group.MomCare")
         if let user, let userDefaults, let data = try? PropertyListEncoder().encode(user) {
@@ -39,7 +48,12 @@ class MomCareUser {
         }
     }
 
-    @MainActor func fetchFromUserDefaults(updateToDatabase: Bool = false) -> User? {
+    /// Fetches the current user from UserDefaults.
+    ///
+    /// - Parameter updateToDatabase: If true, sets the fetched user to `self.user`.
+    /// - Returns: The decoded `User` object or `nil` if not found.
+    @MainActor
+    func fetchFromUserDefaults(updateToDatabase: Bool = false) -> User? {
         if let data = UserDefaults(suiteName: "group.MomCare")?.value(forKey: "user") as? Data {
             let user: User? = try? PropertyListDecoder().decode(User.self, from: data)
 
@@ -53,8 +67,7 @@ class MomCareUser {
         return user
     }
 
-    // https://medium.com/@harshaag99/understanding-dispatchqueue-in-swift-c73058df6b37
-
+    /// Updates the current user to the database asynchronously using a private queue.
     func updateToDatabase() {
         queue.async {
             Task {
@@ -63,12 +76,14 @@ class MomCareUser {
         }
     }
 
+    /// Schedules a timer to refresh the access token before it expires.
+    /// If the token has already expired, refreshes immediately.
     func scheduleRefresh() {
         refreshTimer?.invalidate()
 
         guard let expiryDate = accessTokenExpiresAt else { return }
 
-        let timeInterval = expiryDate.timeIntervalSinceNow - 10 // fuck you. I know you might ask why -10
+        let timeInterval = expiryDate.timeIntervalSinceNow - 10 // Refresh 10 seconds before expiry
         guard timeInterval > 0 else {
             Task { await refreshToken() }
             return
@@ -79,6 +94,11 @@ class MomCareUser {
         }
     }
 
+    /// Adds a food item to a specific meal type.
+    ///
+    /// - Parameters:
+    ///   - foodItem: The food item to add.
+    ///   - meal: The meal type (breakfast, lunch, snacks, dinner).
     func addFoodItem(_ foodItem: FoodItem, to meal: MealType) {
         switch meal {
         case .breakfast:
@@ -90,9 +110,13 @@ class MomCareUser {
         case .dinner:
             user?.plan.dinner.append(foodItem)
         }
-
     }
 
+    /// Removes a food item from a specific meal type.
+    ///
+    /// - Parameters:
+    ///   - foodItem: The food item to remove.
+    ///   - meal: The meal type (breakfast, lunch, snacks, dinner).
     func removeFoodItem(_ foodItem: FoodItem, from meal: MealType) {
         switch meal {
         case .breakfast:
@@ -106,6 +130,12 @@ class MomCareUser {
         }
     }
 
+    /// Toggles the `consumed` status of a food item in a specific meal.
+    ///
+    /// - Parameters:
+    ///   - foodItem: The food item to toggle.
+    ///   - meal: The meal type.
+    /// - Returns: The updated consumed state or `false` if the item was not found.
     func toggleConsumed(for foodItem: FoodItem, in meal: MealType) -> Bool? {
         switch meal {
         case .breakfast:
@@ -135,6 +165,11 @@ class MomCareUser {
         return false
     }
 
+    /// Marks all food items in a meal as consumed or not consumed.
+    ///
+    /// - Parameters:
+    ///   - meal: The meal type.
+    ///   - consumed: The desired consumed state (default: true).
     func markFoodsAsConsumed(in meal: MealType, consumed: Bool = true) {
         switch meal {
         case .breakfast:
@@ -150,6 +185,7 @@ class MomCareUser {
 
     // MARK: Private
 
+    /// Timer used to schedule token refreshes before expiration.
     private var refreshTimer: Timer?
 
 }
