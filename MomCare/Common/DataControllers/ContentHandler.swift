@@ -29,12 +29,8 @@ class ContentHandler {
 
     // MARK: Internal
 
-    // MARK: - Singleton
-
     /// Shared global instance for content access.
     static var shared: ContentHandler = .init()
-
-    // MARK: - Cached Properties
 
     /// Cached copy of the user’s current plan.
     ///
@@ -53,8 +49,6 @@ class ContentHandler {
         get { CacheHandler.shared.get(forKey: "tips") }
         set { CacheHandler.shared.set(newValue, forKey: "tips") }
     }
-
-    // MARK: - Fetching Content
 
     /// Fetches the user’s plan, either from cache or the backend.
     ///
@@ -157,8 +151,6 @@ class ContentHandler {
 
     // MARK: Private
 
-    // MARK: - Private Helpers
-
     /// Retrieves tips from `UserDefaults`, if available.
     private func fetchFromUserDefaults() -> Tip? {
         guard let data = UserDefaults.standard.data(forKey: "tips") else { return nil }
@@ -204,8 +196,6 @@ extension ContentHandler {
 }
 
 extension ContentHandler {
-
-    // MARK: - Playlist Fetching
 
     /// Fetches playlists for a given mood.
     ///
@@ -259,8 +249,6 @@ extension ContentHandler {
             .components(separatedBy: "/")
             .last ?? ""
     }
-
-    // MARK: - Songs Fetching
 
     /// Fetches songs for a specific playlist and mood.
     ///
@@ -327,8 +315,6 @@ extension ContentHandler {
             return name.map { songKey.contains($0) } ?? false
         }
     }
-
-    // MARK: - Song Download
 
     /// Downloads a song from a given URI and stores it in a temporary file.
     ///

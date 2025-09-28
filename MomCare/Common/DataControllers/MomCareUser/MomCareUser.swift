@@ -17,8 +17,6 @@ class MomCareUser {
 
     // MARK: Internal
 
-    // MARK: - Singleton
-
     /// Shared singleton instance of `MomCareUser`.
     static var shared: MomCareUser = .init()
 
@@ -41,8 +39,6 @@ class MomCareUser {
             updateToUserDefaults()
         }
     }
-
-    // MARK: - UserDefaults Handling
 
     /// Saves the current `user` to the app group UserDefaults for persistence.
     func updateToUserDefaults() {
@@ -71,8 +67,6 @@ class MomCareUser {
         return user
     }
 
-    // MARK: - Database Handling
-
     /// Updates the current user to the database asynchronously using a private queue.
     func updateToDatabase() {
         queue.async {
@@ -81,8 +75,6 @@ class MomCareUser {
             }
         }
     }
-
-    // MARK: - Token Refresh
 
     /// Schedules a timer to refresh the access token before it expires.
     /// If the token has already expired, refreshes immediately.
@@ -101,8 +93,6 @@ class MomCareUser {
             Task { await self.refreshToken() }
         }
     }
-
-    // MARK: - Meal Management
 
     /// Adds a food item to a specific meal type.
     ///

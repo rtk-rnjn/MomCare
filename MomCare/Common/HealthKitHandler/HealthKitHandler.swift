@@ -23,8 +23,6 @@ actor HealthKitHandler {
     /// The underlying HealthKit store
     let healthStore: HKHealthStore = .init()
 
-    // MARK: - Authorization
-
     /// Requests access to read and write selected HealthKit data types.
     ///
     /// - Parameter completionHandler: Optional closure called after authorization attempt completes.
@@ -53,8 +51,6 @@ actor HealthKitHandler {
 
         completionHandler?()
     }
-
-    // MARK: - Reading Health Data
 
     /// Fetches cumulative health data for today for the given quantity type.
     ///
@@ -93,8 +89,6 @@ actor HealthKitHandler {
 
         healthStore.execute(query)
     }
-
-    // MARK: - Writing Health Data
 
     /// Writes health data to HealthKit.
     ///

@@ -13,8 +13,6 @@ private let logger: Logger = .init(subsystem: "com.MomCare.MomCareUser", categor
 
 extension MomCareUser {
 
-    // MARK: - Network Helper Methods
-
     /// Serializes a Codable object to Data and performs a POST request to the specified endpoint.
     ///
     /// - Parameters:
@@ -56,8 +54,6 @@ extension MomCareUser {
 
         accessTokenExpiresAt = Date().addingTimeInterval(accessTokenValidDuration)
     }
-
-    // MARK: - User Authentication
 
     /// Creates a new user by sending a registration request to the backend.
     ///
@@ -128,8 +124,6 @@ extension MomCareUser {
         return true
     }
 
-    // MARK: - User Updates
-
     /// Updates the current user in the backend.
     ///
     /// - Parameter updatedUser: User object with updated data.
@@ -171,14 +165,10 @@ extension MomCareUser {
         return true
     }
 
-    // MARK: - User State Checks
-
     /// Checks if the user is signed up according to UserDefaults.
     func isUserSignedUp() -> Bool {
         return Utils.get(fromKey: "isUserSignedUp", withDefaultValue: false) ?? false
     }
-
-    // MARK: - Fetch User
 
     /// Fetches user from the backend database, handling token refresh or login if needed.
     ///
@@ -233,8 +223,6 @@ extension MomCareUser {
             return false
         }
     }
-
-    // MARK: - OTP Handling
 
     /// Requests an OTP for the stored email address.
     func requestOTP() async -> Bool? {

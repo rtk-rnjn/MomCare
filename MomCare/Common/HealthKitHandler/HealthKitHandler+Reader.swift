@@ -15,8 +15,6 @@ private let logger: Logger = .init(subsystem: "com.MomCare.HealthKit", category:
 /// common health metrics such as steps, calories, macronutrients, and workouts.
 extension HealthKitHandler {
 
-    // MARK: - Steps
-
     /// Reads the user's step count for today.
     ///
     /// - Parameter completionHandler: Closure called with the total step count as `Double`.
@@ -27,8 +25,6 @@ extension HealthKitHandler {
             completionHandler($0)
         }
     }
-
-    // MARK: - Calories
 
     /// Reads the user's active calories burned for today.
     ///
@@ -51,8 +47,6 @@ extension HealthKitHandler {
             completionHandler($0)
         }
     }
-
-    // MARK: - Macronutrients
 
     /// Reads the user's total fat intake for today.
     ///
@@ -86,8 +80,6 @@ extension HealthKitHandler {
             completionHandler($0)
         }
     }
-
-    // MARK: - Workout
 
     /// Reads the user's workout duration for the past day.
     ///

@@ -183,7 +183,6 @@ class MusicPlayerViewController: UIViewController {
         return button
     }()
 
-    // MARK: - Stack Views
     private lazy var titleStackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [songLabel, artistLabel])
         stackView.axis = .vertical

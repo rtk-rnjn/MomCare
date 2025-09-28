@@ -12,8 +12,6 @@ import HealthKit
 /// with Swift concurrency, removing the need for completion handlers.
 extension HealthKitHandler {
 
-    // MARK: - Steps
-
     /// Reads the user's step count for today asynchronously.
     ///
     /// - Returns: Total steps as `Double`.
@@ -26,8 +24,6 @@ extension HealthKitHandler {
         }
     }
 
-    // MARK: - Workouts
-
     /// Reads the user's workout duration for the past day asynchronously.
     ///
     /// - Returns: Total workout duration in minutes as `Double`.
@@ -38,8 +34,6 @@ extension HealthKitHandler {
             }
         }
     }
-
-    // MARK: - Calories
 
     /// Reads the user's active calories burned asynchronously.
     ///
@@ -62,8 +56,6 @@ extension HealthKitHandler {
             }
         }
     }
-
-    // MARK: - Macronutrients
 
     /// Reads the user's total fat intake asynchronously.
     ///
@@ -97,8 +89,6 @@ extension HealthKitHandler {
             }
         }
     }
-
-    // MARK: - Generic fetch
 
     /// Fetches health data for any quantity type asynchronously.
     ///

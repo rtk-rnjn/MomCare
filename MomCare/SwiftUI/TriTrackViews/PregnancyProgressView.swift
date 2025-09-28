@@ -90,15 +90,11 @@ struct PregnancyProgressView: View {
 
     // MARK: Private
 
-    // MARK: - Body
-
     @State private var isScrollEnabled = true
 
     @State private var showingBabyInfo = false
     @State private var showingMomInfo = false
     @State private var selectedCardPosition: CGRect = .zero
-
-    // MARK: - Component Views
 
     private var sizeComparisonView: some View {
         VStack(spacing: 0) { // Reduce spacing to avoid empty gaps

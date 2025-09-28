@@ -132,8 +132,6 @@ extension DashboardViewController {
 
 }
 
-// MARK: - Event Handlers (When tapped on cards)
-
 extension DashboardViewController {
     func eventCardTapped() {
         if let tabController = tabBarController as? InitialTabBarController {

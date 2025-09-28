@@ -393,7 +393,6 @@ struct ExerciseProgressView: View {
         }
     }
 
-    // MARK: - Helper Functions
     private func exerciseCard(for exercise: Exercise, isBreathing: Bool = false) -> some View {
         ZStack {
             HStack(spacing: 16) {
@@ -678,7 +677,6 @@ struct DayProgress {
     let completionPercentage: Double
 }
 
-// MARK: - View Model
 class ExerciseGoalsViewModel: ObservableObject {
 
     // MARK: Internal
@@ -718,8 +716,6 @@ private struct ExerciseImageView: View {
     let exercise: Exercise
     let isBreathing: Bool
 
-    // MARK: - Body
-
     var body: some View {
         Group {
             if let uiImage {
@@ -743,8 +739,6 @@ private struct ExerciseImageView: View {
     }
 
     // MARK: Private
-
-    // MARK: - State
 
     @State private var uiImage: UIImage?
 

@@ -7,8 +7,6 @@
 
 import Foundation
 
-// MARK: - CreateResponse
-
 /// Response returned after creating a new user in the backend.
 ///
 /// Example: After signing up a new user, the API might return this DTO
@@ -29,8 +27,6 @@ struct CreateResponse: Codable {
     /// JWT or API access token returned upon successful creation.
     let accessToken: String
 }
-
-// MARK: - UpdateResponse
 
 /// Response returned after updating user information in the backend.
 ///
@@ -53,8 +49,6 @@ struct UpdateResponse: Codable {
     let matchedCount: Int
 }
 
-// MARK: - Credentials
-
 /// Represents a user's login credentials.
 ///
 /// Example: Used when sending login requests to the backend.
@@ -71,8 +65,6 @@ struct Credentials: Codable {
     let password: String
 }
 
-// MARK: - EmailAddress
-
 /// Represents only the email address of a user.
 ///
 /// Example: Used when requesting OTPs or password reset links.
@@ -84,8 +76,6 @@ struct EmailAddress: Codable {
     /// The user's email address.
     let emailAddress: String
 }
-
-// MARK: - VerifyOTP
 
 /// Represents the verification of an OTP (One-Time Password) for a user.
 ///

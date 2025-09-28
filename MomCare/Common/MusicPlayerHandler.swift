@@ -28,8 +28,6 @@ class MusicPlayerHandler {
 
     // MARK: Public
 
-    // MARK: - Public Properties
-
     /// The active `AVPlayer` instance used for playback.
     public private(set) var player: AVPlayer?
 
@@ -38,12 +36,8 @@ class MusicPlayerHandler {
 
     // MARK: Internal
 
-    // MARK: - Singleton
-
     /// Shared singleton instance of the `MusicPlayerHandler`.
     nonisolated(unsafe) static let shared: MusicPlayerHandler = .init()
-
-    // MARK: - Internal Callbacks
 
     /// Closure to update the UI based on player's time control status (playing/paused).
     var interfaceUpdater: ((AVPlayer.TimeControlStatus?) -> Void)?
@@ -56,8 +50,6 @@ class MusicPlayerHandler {
 
     /// Closure called when the current song finishes playing.
     var songFinishedCompletionHandler: (() -> Void)?
-
-    // MARK: - Playback Control Methods
 
     /// Prepares the player with a given song and sets up periodic and completion callbacks.
     ///
@@ -175,8 +167,6 @@ class MusicPlayerHandler {
     }
 
     // MARK: Private
-
-    // MARK: - Private Helper Methods
 
     /// Discards the current player and stops observing its events.
     private func discardPlayer() {

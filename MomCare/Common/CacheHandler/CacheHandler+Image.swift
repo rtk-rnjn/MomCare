@@ -11,8 +11,6 @@ private let logger: os.Logger = .init(
 
 extension CacheHandler {
 
-    // MARK: - Internal
-
     /// Fetches an image for the given URL, resolving through multiple sources.
     ///
     /// The lookup order is:
@@ -39,8 +37,6 @@ extension CacheHandler {
 
         return await fetchImageFromNetworkAndStore(url: url)
     }
-
-    // MARK: - Private
 
     /// Saves an image to the Realm database asynchronously in a background task.
     ///

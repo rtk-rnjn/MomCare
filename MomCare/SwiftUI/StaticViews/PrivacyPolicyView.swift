@@ -49,8 +49,6 @@ struct PrivacyPolicyView: View {
     private let accentColor: Color = AppColors.accentColor
     private let policySections: [PolicySectionItem] = PrivacyPolicyText.policySections
 
-    // MARK: Private Views
-
     private var headerView: some View {
         VStack(spacing: 16) {
             ZStack {

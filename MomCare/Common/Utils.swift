@@ -12,9 +12,7 @@ import Security
 
 #if os(iOS)
 import UIKit
-#endif
-
-// MARK: - Alert Types
+#endif // os(iOS)
 
 /// Defines the type of alert to display.
 enum AlertType {
@@ -31,14 +29,10 @@ struct AlertActionHandler {
 }
 #endif // os(iOS)
 
-// MARK: - Utils
-
 /// A collection of general-purpose utility functions used throughout the MomCare app.
 enum Utils {
 
-    // MARK: Public
-
-    // MARK: - Alerts (iOS only)
+// MARK: Public
 
 #if os(iOS)
     /// Creates and returns a pre-configured `UIAlertController`.
@@ -69,8 +63,6 @@ enum Utils {
     }
 #endif // os(iOS)
 
-    // MARK: - User Defaults
-
     /// Saves a value in `UserDefaults` for the specified key.
     ///
     /// - Parameters:
@@ -98,8 +90,6 @@ enum Utils {
     public static func remove(_ key: String) {
         UserDefaults.standard.removeObject(forKey: key)
     }
-
-    // MARK: - Notifications
 
     /// Creates a local notification.
     ///
@@ -129,8 +119,6 @@ enum Utils {
     }
 
     // MARK: Internal
-
-    // MARK: - Pregnancy Calculations
 
     /// Calculates the current pregnancy week, day, and trimester based on the due date.
     ///
@@ -189,8 +177,6 @@ enum Utils {
 /// ```
 enum KeychainHelper {
 
-    // MARK: - Save Value
-
     /// Stores a string value in the Keychain for a given key.
     ///
     /// - Parameters:
@@ -218,8 +204,6 @@ enum KeychainHelper {
         return SecItemAdd(query as CFDictionary, nil) == errSecSuccess
     }
 
-    // MARK: - Retrieve Value
-
     /// Retrieves a string value from the Keychain for a given key.
     ///
     /// - Parameter key: The key associated with the stored value.
@@ -244,8 +228,6 @@ enum KeychainHelper {
         }
         return nil
     }
-
-    // MARK: - Remove Value
 
     /// Removes a value from the Keychain for a given key.
     ///
