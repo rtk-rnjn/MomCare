@@ -25,13 +25,13 @@ struct AlertActionHandler {
     var style: UIAlertAction.Style
     var handler: ((UIAlertAction) -> Void)?
 }
-#endif
+#endif // os(iOS)
 
 enum Utils {
 
     // MARK: Public
 
-    #if os(iOS)
+#if os(iOS)
     @MainActor public static func getAlert(title: String, message: String, actions: [AlertActionHandler]? = nil) -> UIAlertController {
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
 
@@ -46,7 +46,7 @@ enum Utils {
 
         return alert
     }
-    #endif
+#endif // os(iOS)
 
     // MARK: - User Defaults
 
