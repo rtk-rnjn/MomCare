@@ -16,15 +16,15 @@ private let logger: Logger = .init(subsystem: "com.MomCare.HealthKit", category:
 /// It handles common health metrics such as steps, calories, exercise time,
 /// and macronutrients.
 actor HealthKitHandler {
-    
+
     /// Shared singleton instance
     static let shared: HealthKitHandler = .init()
-    
+
     /// The underlying HealthKit store
     let healthStore: HKHealthStore = .init()
-    
+
     // MARK: - Authorization
-    
+
     /// Requests access to read and write selected HealthKit data types.
     ///
     /// - Parameter completionHandler: Optional closure called after authorization attempt completes.
@@ -35,27 +35,27 @@ actor HealthKitHandler {
             .activeEnergyBurned, .stepCount, .appleExerciseTime,
             .dietaryEnergyConsumed, .dietaryProtein, .dietaryCarbohydrates, .dietaryFatTotal
         ]
-        
+
         // Health data types to write
         let writeIdentifiers: [HKQuantityTypeIdentifier] = [
             .dietaryEnergyConsumed, .dietaryProtein, .dietaryCarbohydrates, .dietaryFatTotal
         ]
-        
+
         // Convert identifiers to HKQuantityType objects
         let readTypes = Set(readIdentifiers.compactMap { HKQuantityType.quantityType(forIdentifier: $0) })
         let writeTypes = Set(writeIdentifiers.compactMap { HKQuantityType.quantityType(forIdentifier: $0) })
-        
+
         do {
             try await healthStore.requestAuthorization(toShare: writeTypes, read: readTypes)
         } catch {
             logger.error("HealthKit authorization failed: \(error.localizedDescription)")
         }
-        
+
         completionHandler?()
     }
-    
+
     // MARK: - Reading Health Data
-    
+
     /// Fetches cumulative health data for today for the given quantity type.
     ///
     /// - Parameters:
@@ -73,11 +73,11 @@ actor HealthKitHandler {
             logger.error("Invalid quantity type for identifier: \(quantityTypeIdentifier.rawValue)")
             return
         }
-        
+
         let now = Date()
         let startDate = Calendar.current.startOfDay(for: now)
         let predicate = HKQuery.predicateForSamples(withStart: startDate, end: now, options: .strictStartDate)
-        
+
         let query = HKStatisticsQuery(
             quantityType: quantityType,
             quantitySamplePredicate: predicate,
@@ -90,12 +90,12 @@ actor HealthKitHandler {
             logger.debug("Fetched \(quantityTypeIdentifier.rawValue): \(value)")
             completionHandler(value)
         }
-        
+
         healthStore.execute(query)
     }
-    
+
     // MARK: - Writing Health Data
-    
+
     /// Writes health data to HealthKit.
     ///
     /// - Parameters:
@@ -120,10 +120,10 @@ actor HealthKitHandler {
             completionHandler(false)
             return
         }
-        
+
         let quantity = HKQuantity(unit: unit, doubleValue: value)
         let sample = HKQuantitySample(type: quantityType, quantity: quantity, start: start, end: end)
-        
+
         healthStore.save(sample) { success, error in
             if let error {
                 logger.error("Failed to save health data for \(quantityTypeIdentifier.rawValue): \(error.localizedDescription)")

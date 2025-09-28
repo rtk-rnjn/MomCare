@@ -14,9 +14,9 @@ private let logger: Logger = .init(subsystem: "com.MomCare.HealthKit", category:
 /// Extension to `HealthKitHandler` providing convenience methods for reading
 /// common health metrics such as steps, calories, macronutrients, and workouts.
 extension HealthKitHandler {
-    
+
     // MARK: - Steps
-    
+
     /// Reads the user's step count for today.
     ///
     /// - Parameter completionHandler: Closure called with the total step count as `Double`.
@@ -27,9 +27,9 @@ extension HealthKitHandler {
             completionHandler($0)
         }
     }
-    
+
     // MARK: - Calories
-    
+
     /// Reads the user's active calories burned for today.
     ///
     /// - Parameter completionHandler: Closure called with the calories burned as `Double`.
@@ -40,7 +40,7 @@ extension HealthKitHandler {
             completionHandler($0)
         }
     }
-    
+
     /// Reads the user's dietary calories intake for today.
     ///
     /// - Parameter completionHandler: Closure called with the calories consumed as `Double`.
@@ -51,9 +51,9 @@ extension HealthKitHandler {
             completionHandler($0)
         }
     }
-    
+
     // MARK: - Macronutrients
-    
+
     /// Reads the user's total fat intake for today.
     ///
     /// - Parameter completionHandler: Closure called with total fat in grams as `Double`.
@@ -64,7 +64,7 @@ extension HealthKitHandler {
             completionHandler($0)
         }
     }
-    
+
     /// Reads the user's total protein intake for today.
     ///
     /// - Parameter completionHandler: Closure called with total protein in grams as `Double`.
@@ -75,7 +75,7 @@ extension HealthKitHandler {
             completionHandler($0)
         }
     }
-    
+
     /// Reads the user's total carbohydrate intake for today.
     ///
     /// - Parameter completionHandler: Closure called with total carbohydrates in grams as `Double`.
@@ -86,9 +86,9 @@ extension HealthKitHandler {
             completionHandler($0)
         }
     }
-    
+
     // MARK: - Workout
-    
+
     /// Reads the user's workout duration for the past day.
     ///
     /// - Parameter completionHandler: Closure called with total workout duration in minutes as `Double`.
@@ -99,7 +99,7 @@ extension HealthKitHandler {
         let now = Date()
         let startDate = Calendar.current.date(byAdding: .day, value: -1, to: now)
         let predicate = HKQuery.predicateForSamples(withStart: startDate, end: now, options: .strictStartDate)
-        
+
         let query = HKSampleQuery(
             sampleType: workoutType,
             predicate: predicate,
@@ -109,13 +109,13 @@ extension HealthKitHandler {
             if let error {
                 logger.error("Workout query failed: \(error.localizedDescription)")
             }
-            
+
             // Sum all workout durations and convert seconds to minutes
             let totalMinutes = (samples as? [HKWorkout])?.reduce(0) { $0 + ($1.duration / 60) } ?? 0
             logger.debug("Workout duration fetched: \(totalMinutes) minutes")
             completionHandler(totalMinutes)
         }
-        
+
         healthStore.execute(query)
     }
 }

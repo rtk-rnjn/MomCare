@@ -11,9 +11,9 @@ import HealthKit
 /// health data reading methods. These allow calling HealthKit methods
 /// with Swift concurrency, removing the need for completion handlers.
 extension HealthKitHandler {
-    
+
     // MARK: - Steps
-    
+
     /// Reads the user's step count for today asynchronously.
     ///
     /// - Returns: Total steps as `Double`.
@@ -25,9 +25,9 @@ extension HealthKitHandler {
             }
         }
     }
-    
+
     // MARK: - Workouts
-    
+
     /// Reads the user's workout duration for the past day asynchronously.
     ///
     /// - Returns: Total workout duration in minutes as `Double`.
@@ -38,9 +38,9 @@ extension HealthKitHandler {
             }
         }
     }
-    
+
     // MARK: - Calories
-    
+
     /// Reads the user's active calories burned asynchronously.
     ///
     /// - Returns: Calories burned as `Double`.
@@ -51,7 +51,7 @@ extension HealthKitHandler {
             }
         }
     }
-    
+
     /// Reads the user's dietary calories intake asynchronously.
     ///
     /// - Returns: Calories consumed as `Double`.
@@ -62,9 +62,9 @@ extension HealthKitHandler {
             }
         }
     }
-    
+
     // MARK: - Macronutrients
-    
+
     /// Reads the user's total fat intake asynchronously.
     ///
     /// - Returns: Total fat in grams as `Double`.
@@ -75,7 +75,7 @@ extension HealthKitHandler {
             }
         }
     }
-    
+
     /// Reads the user's total protein intake asynchronously.
     ///
     /// - Returns: Total protein in grams as `Double`.
@@ -86,7 +86,7 @@ extension HealthKitHandler {
             }
         }
     }
-    
+
     /// Reads the user's total carbohydrate intake asynchronously.
     ///
     /// - Returns: Total carbohydrates in grams as `Double`.
@@ -97,9 +97,9 @@ extension HealthKitHandler {
             }
         }
     }
-    
+
     // MARK: - Generic fetch
-    
+
     /// Fetches health data for any quantity type asynchronously.
     ///
     /// - Parameters:
