@@ -6,7 +6,7 @@
 //
 
 #if canImport(EventKit) && canImport(EventKitUI) && canImport(UIKit)
-@preconcurrency import EventKit
+import EventKit
 import EventKitUI
 import UIKit
 

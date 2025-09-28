@@ -5,36 +5,36 @@
 //  Created by Aryan Singh on 17/09/25.
 //
 
-@preconcurrency import WatchConnectivity
+import WatchConnectivity
 import Foundation
 import OSLog
+import Combine
 
 #if os(iOS)
 private let logger: os.Logger = .init(subsystem: "com.MomCare.WatchConnector", category: "WatchConnector")
 #elseif os(watchOS)
 private let logger: os.Logger = .init(subsystem: "com.MomCare.WatchApp.WatchConnector", category: "WatchConnector")
-#endif
+#endif // os(iOS)
 
-@MainActor
-class WatchConnector: NSObject, ObservableObject {
+class WatchConnector: NSObject, WCSessionDelegate {
 
     // MARK: Lifecycle
 
     override init() {
         super.init()
-        session.delegate = self
-        session.activate()
+
+        WCSession.default.delegate = self
+        WCSession.default.activate()
     }
 
     // MARK: Internal
 
     // MARK: Singleton
-    static let shared: WatchConnector = .init()
+    nonisolated(unsafe) static let shared: WatchConnector = .init()
 
-    var session: WCSession = .default
-
-    @Published var isReachable: Bool = WCSession.default.isReachable
-    @Published var activationState: WCSessionActivationState = WCSession.default.activationState
+    var session: WCSession {
+        return WCSession.default
+    }
 
     // MARK: Messaging
 
@@ -57,14 +57,8 @@ class WatchConnector: NSObject, ObservableObject {
             logger.info("Recieved `\(String(describing: reply))` from Paired Device")
         }
     }
-}
 
-// MARK: - WCSessionDelegate
-extension WatchConnector: @preconcurrency WCSessionDelegate {
     func session(_ session: WCSession, activationDidCompleteWith activationState: WCSessionActivationState, error: (any Error)?) {
-        DispatchQueue.main.async {
-            self.activationState = activationState
-        }
 
         if let error {
             logger.warning("WCSession activation failed: \(String(describing: error))")
@@ -81,12 +75,9 @@ extension WatchConnector: @preconcurrency WCSessionDelegate {
     func sessionDidDeactivate(_ session: WCSession) {
         logger.warning("WCSession did deactivate")
     }
-    #endif
+    #endif // os(iOS)
 
     func sessionReachabilityDidChange(_ session: WCSession) {
         logger.debug("Session reachability changed: \(session.isReachable)")
-        DispatchQueue.main.async {
-            self.isReachable = session.isReachable
-        }
     }
 }

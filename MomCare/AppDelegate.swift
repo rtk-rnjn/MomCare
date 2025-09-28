@@ -18,12 +18,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
 
         UNUserNotificationCenter.current().delegate = self
-        _ = WatchConnector.shared
+
         MultipeerHandler.shared.startHosting()
         MultipeerHandler.shared.startBrowsing()
 
         logger.info("App Launched")
-        applicationDidBecomeActive(application)
         return true
     }
 
@@ -45,40 +44,25 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         logger.error("Failed to register for remote notifications: \(String(describing: error))")
     }
 
-    func applicationDidBecomeActive(_ application: UIApplication) {
-        let logSymptom = UIApplicationShortcutItem(
-            type: "com.MomCare.LogSymptom",
-            localizedTitle: "Log Symptom",
-            localizedSubtitle: "Log your symptoms quickly",
-            icon: UIApplicationShortcutIcon(type: .date),
-            userInfo: ["info": "LogSymptomShortcut"] as [String: any NSSecureCoding]
-        )
-
-        let addAppointment = UIApplicationShortcutItem(
-            type: "com.MomCare.AddAppointment",
-            localizedTitle: "Add Appointment",
-            localizedSubtitle: "Schedule a new appointment",
-            icon: UIApplicationShortcutIcon(type: .date),
-            userInfo: ["info": "AddAppointmentShortcut"] as [String: any NSSecureCoding]
-        )
-
-        application.shortcutItems = [logSymptom, addAppointment]
-    }
-
-    func application(_ application: UIApplication, performActionFor shortcutItem: UIApplicationShortcutItem, completionHandler: @escaping (Bool) -> Void) {
-        switch shortcutItem.type {
-        case "com.MomCare.LogSymptom":
-            logger.debug("Log Symptom shortcut selected")
-            completionHandler(false)
-
-        case "com.MomCare.AddAppointment":
-            logger.debug("Add Appointment shortcut selected")
-            completionHandler(false)
-
-        default:
-            completionHandler(false)
-        }
-    }
+//    func applicationDidBecomeActive(_ application: UIApplication) {
+//        let logSymptom = UIApplicationShortcutItem(
+//            type: "com.MomCare.LogSymptom",
+//            localizedTitle: "Log Symptom",
+//            localizedSubtitle: "Log your symptoms quickly",
+//            icon: UIApplicationShortcutIcon(type: .date),
+//            userInfo: ["info": "LogSymptomShortcut"] as [String: any NSSecureCoding]
+//        )
+//
+//        let addAppointment = UIApplicationShortcutItem(
+//            type: "com.MomCare.AddAppointment",
+//            localizedTitle: "Add Appointment",
+//            localizedSubtitle: "Schedule a new appointment",
+//            icon: UIApplicationShortcutIcon(type: .date),
+//            userInfo: ["info": "AddAppointmentShortcut"] as [String: any NSSecureCoding]
+//        )
+//
+//        application.shortcutItems = [logSymptom, addAppointment]
+//    }
 }
 
 extension AppDelegate: UNUserNotificationCenterDelegate {

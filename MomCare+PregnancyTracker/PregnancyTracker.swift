@@ -7,6 +7,7 @@
 
 import WidgetKit
 import SwiftUI
+import Intents
 
 struct PregnancyTracker: Widget {
     let kind: String = "PregnancyTracker"

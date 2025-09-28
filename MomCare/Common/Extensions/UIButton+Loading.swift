@@ -33,5 +33,5 @@ extension UIButton {
         }
     }
 }
-#endif
-#endif
+#endif // !os(tvOS) && !os(watchOS)
+#endif // canImport(UIKit)

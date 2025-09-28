@@ -9,7 +9,6 @@ import UIKit
 import MediaPlayer
 @preconcurrency import AVFoundation
 
-@MainActor
 class MusicPlayerHandler {
 
     // MARK: Lifecycle
@@ -25,9 +24,13 @@ class MusicPlayerHandler {
 
     // MARK: Internal
 
-    static let shared: MusicPlayerHandler = .init()
+    nonisolated(unsafe) static let shared: MusicPlayerHandler = .init()
 
     var interfaceUpdater: ((AVPlayer.TimeControlStatus?) -> Void)?
+
+    var timeObserverToken: Any?
+    var periodicUpdater: ((CMTime) -> Void)?
+    var songFinishedCompletionHandler: (() -> Void)?
 
     func preparePlayer(song: Song, periodicUpdater: @escaping (CMTime) -> Void, songFinishedCompletionHandler: @escaping () -> Void, completion: @Sendable @escaping () -> Void) {
         discardPlayer()
@@ -63,11 +66,11 @@ class MusicPlayerHandler {
 
         completion?(player?.timeControlStatus)
 
+        guard let song = currentSong else {
+            return
+        }
         Task.detached(priority: .background) {
-            guard let song = await self.currentSong else {
-                return
-            }
-            await self.updateNowPlayingInfo(song)
+            await MusicPlayerHandler.shared.updateNowPlayingInfo(song)
         }
     }
 
@@ -83,7 +86,7 @@ class MusicPlayerHandler {
         player?.seek(to: newTime)
     }
 
-    func jumpToTime(_ timePercent: CMTime, completion: (@Sendable () -> Void)?) {
+    func jumpToTime(_ timePercent: CMTime, completion: (() -> Void)?) {
         guard let player else { return }
         let duration = player.currentItem?.duration ?? .zero
         let newTime = CMTime(seconds: timePercent.seconds * duration.seconds, preferredTimescale: 1)
@@ -91,67 +94,15 @@ class MusicPlayerHandler {
         player.play()
 
         completion?()
-
+        guard let song = currentSong else {
+            return
+        }
         Task.detached(priority: .background) {
-            guard let song = await self.currentSong else {
-                return
-            }
-            await self.updateNowPlayingInfo(song)
+            await MusicPlayerHandler.shared.updateNowPlayingInfo(song)
         }
     }
 
-    // MARK: Private
-
-    private var timeObserverToken: Any?
-    private var periodicUpdater: ((CMTime) -> Void)?
-    private var songFinishedCompletionHandler: (() -> Void)?
-
-    private func discardPlayer() {
-        stopObserving()
-        player = nil
-        currentSong = nil
-        periodicUpdater = nil
-
-        try? stopAudioSession()
-    }
-
-    private func startObserving(_ player: AVPlayer?) {
-        guard let player else { return }
-        let interval = CMTime(seconds: 0.02, preferredTimescale: 600)
-        timeObserverToken = player.addPeriodicTimeObserver(forInterval: interval, queue: DispatchQueue.main) { time in
-            DispatchQueue.main.async {
-                self.periodicUpdater?(time)
-            }
-            Task.detached(priority: .background) {
-                guard let song = await self.currentSong else {
-                    return
-                }
-                await self.updateNowPlayingInfo(song)
-            }
-        }
-
-        NotificationCenter.default.addObserver(self, selector: #selector(playerDidFinishPlaying(_:)), name: .AVPlayerItemDidPlayToEndTime, object: player.currentItem)
-    }
-
-    private func stopObserving() {
-        NotificationCenter.default.removeObserver(self, name: .AVPlayerItemDidPlayToEndTime, object: player?.currentItem)
-        if let token = timeObserverToken {
-            player?.removeTimeObserver(token)
-            timeObserverToken = nil
-        }
-        player = nil
-        currentSong = nil
-    }
-
-    @objc private func playerDidFinishPlaying(_ notification: Notification) {
-        guard let item = notification.object as? AVPlayerItem else { return }
-        if item == player?.currentItem {
-            discardPlayer()
-        }
-        songFinishedCompletionHandler?()
-    }
-
-    private func updateNowPlayingInfo(_ song: Song) async {
+    func updateNowPlayingInfo(_ song: Song) async {
         var nowPlayingInfo: [String: Any] = [:]
 
         if let title = song.metadata?.title {
@@ -182,6 +133,55 @@ class MusicPlayerHandler {
         }
     }
 
+    // MARK: Private
+
+    private func discardPlayer() {
+        stopObserving()
+        player = nil
+        currentSong = nil
+        periodicUpdater = nil
+
+        try? stopAudioSession()
+    }
+
+    private func startObserving(_ player: AVPlayer?) {
+        guard let player else { return }
+        let interval = CMTime(seconds: 0.02, preferredTimescale: 600)
+        let song = currentSong
+        timeObserverToken = player.addPeriodicTimeObserver(forInterval: interval, queue: .main) { time in
+            DispatchQueue.main.async {
+                MusicPlayerHandler.shared.periodicUpdater?(time)
+            }
+            guard let song else {
+                return
+            }
+            Task.detached(priority: .background) {
+
+                await MusicPlayerHandler.shared.updateNowPlayingInfo(song)
+            }
+        }
+
+        NotificationCenter.default.addObserver(self, selector: #selector(playerDidFinishPlaying(_:)), name: .AVPlayerItemDidPlayToEndTime, object: player.currentItem)
+    }
+
+    private func stopObserving() {
+        NotificationCenter.default.removeObserver(self, name: .AVPlayerItemDidPlayToEndTime, object: player?.currentItem)
+        if let token = timeObserverToken {
+            player?.removeTimeObserver(token)
+            timeObserverToken = nil
+        }
+        player = nil
+        currentSong = nil
+    }
+
+    @objc private func playerDidFinishPlaying(_ notification: Notification) {
+        guard let item = notification.object as? AVPlayerItem else { return }
+        if item == player?.currentItem {
+            discardPlayer()
+        }
+        songFinishedCompletionHandler?()
+    }
+
     private func startAudioSession() throws {
         try AVAudioSession.sharedInstance().setCategory(.playback, mode: .default, options: [.allowAirPlay, .defaultToSpeaker, .interruptSpokenAudioAndMixWithOthers])
         try AVAudioSession.sharedInstance().setActive(true)
@@ -197,26 +197,24 @@ class MusicPlayerHandler {
         commandCenter.playCommand.addTarget { _ in
             self.player?.play()
 
-            DispatchQueue.main.async {
-                self.interfaceUpdater?(self.player?.timeControlStatus)
-            }
+            self.interfaceUpdater?(self.player?.timeControlStatus)
+
             return .success
         }
 
         commandCenter.pauseCommand.addTarget { _ in
             self.player?.pause()
 
-            DispatchQueue.main.async {
-                self.interfaceUpdater?(self.player?.timeControlStatus)
-            }
+            self.interfaceUpdater?(self.player?.timeControlStatus)
+
             return .success
         }
 
         commandCenter.togglePlayPauseCommand.addTarget { _ in
             self.togglePlayPause(completion: nil)
-            DispatchQueue.main.async {
-                self.interfaceUpdater?(self.player?.timeControlStatus)
-            }
+
+            self.interfaceUpdater?(self.player?.timeControlStatus)
+
             return .success
         }
 
@@ -224,9 +222,9 @@ class MusicPlayerHandler {
         commandCenter.skipForwardCommand.preferredIntervals = [15]
         commandCenter.skipForwardCommand.addTarget { _ in
             self.player?.seek(to: CMTime(seconds: (self.player?.currentTime().seconds ?? 0) + 15, preferredTimescale: 1))
-            DispatchQueue.main.async {
-                self.interfaceUpdater?(self.player?.timeControlStatus)
-            }
+
+            self.interfaceUpdater?(self.player?.timeControlStatus)
+
             return .success
         }
 
@@ -234,17 +232,17 @@ class MusicPlayerHandler {
         commandCenter.skipBackwardCommand.preferredIntervals = [15]
         commandCenter.skipBackwardCommand.addTarget { _ in
             self.player?.seek(to: CMTime(seconds: (self.player?.currentTime().seconds ?? 0) - 15, preferredTimescale: 1))
-            DispatchQueue.main.async {
-                self.interfaceUpdater?(self.player?.timeControlStatus)
-            }
+
+            self.interfaceUpdater?(self.player?.timeControlStatus)
+
             return .success
         }
 
         commandCenter.stopCommand.addTarget { _ in
             self.stop()
-            DispatchQueue.main.async {
-                self.interfaceUpdater?(self.player?.timeControlStatus)
-            }
+
+            self.interfaceUpdater?(self.player?.timeControlStatus)
+
             return .success
         }
     }

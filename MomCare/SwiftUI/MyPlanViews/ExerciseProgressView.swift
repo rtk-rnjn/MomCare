@@ -1,5 +1,6 @@
 import SwiftUI
 import HealthKit
+import Combine
 
 // swiftlint:disable:next type_body_length
 struct ExerciseProgressView: View {

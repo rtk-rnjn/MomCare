@@ -5,7 +5,7 @@
 //  Created by RITIK RANJAN on 17/05/25.
 //
 
-@preconcurrency import EventKit
+import EventKit
 #if canImport(EventKitUI)
 import EventKitUI
 #endif
@@ -45,7 +45,6 @@ struct ReminderInfo: Sendable {
     var timeZone: TimeZone?
 }
 
-@MainActor
 final class EventKitHandler: NSObject {
 
     // MARK: Lifecycle
@@ -61,7 +60,7 @@ final class EventKitHandler: NSObject {
 
     // MARK: Internal
 
-    static let shared: EventKitHandler = .init()
+    @MainActor static let shared: EventKitHandler = .init()
 
     func getEventStore() -> EKEventStore {
         do {
