@@ -68,9 +68,7 @@ class WatchConnector: NSObject, WCSessionDelegate {
     }
 
     /// Called when the session activation completes.
-    func session(_ session: WCSession,
-                 activationDidCompleteWith activationState: WCSessionActivationState,
-                 error: (any Error)?) {
+    func session(_ session: WCSession, activationDidCompleteWith activationState: WCSessionActivationState, error: (any Error)?) {
         if let error {
             logger.warning("WCSession activation failed: \(String(describing: error))")
         } else {
