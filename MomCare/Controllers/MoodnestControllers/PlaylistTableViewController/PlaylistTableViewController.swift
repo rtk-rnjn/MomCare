@@ -171,7 +171,7 @@ class PlaylistTableViewController: UITableViewController {
 
         MusicPlayerHandler.shared.preparePlayer(song: song, periodicUpdater: periodicUpdater, songFinishedCompletionHandler: prepareNextIfPossible) {
             DispatchQueue.main.async {
-                self.initialTabBarController?.presentPopupBar(with: self.musicPlayer, openPopup: true, animated: true) {
+                self.initialTabBarController?.presentPopupBar(with: self.musicPlayer, openPopup: false, animated: true) {
                     self.playPauseButtonTapped(nil)
                 }
             }

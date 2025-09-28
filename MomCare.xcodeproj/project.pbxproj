@@ -1273,8 +1273,8 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/LeoNatan/LNPopupController.git";
 			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 2.20.7;
+				branch = master;
+				kind = branch;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */

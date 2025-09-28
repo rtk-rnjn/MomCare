@@ -15,8 +15,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/LeoNatan/LNPopupController.git",
       "state" : {
-        "revision" : "b2b121ce394d1007e42bd35ff85b3034344d78ee",
-        "version" : "2.20.11"
+        "branch" : "master",
+        "revision" : "874a726ffd8b1c1a27fab07743941aa944dc378e"
       }
     },
     {
