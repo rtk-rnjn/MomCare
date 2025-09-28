@@ -196,7 +196,7 @@ class DietViewController: UIViewController {
         let circlePath = UIBezierPath(arcCenter: center, radius: radius, startAngle: -.pi / 2, endAngle: .pi * 3 / 2, clockwise: true)
 
         backgroundLayer = createShapeLayer(path: circlePath.cgPath, lineWidth: lineWidth, strokeColor: UIColor(hex: "D2ABAF").cgColor)
-        shapeLayer = createShapeLayer(path: circlePath.cgPath, lineWidth: lineWidth, strokeColor: UIColor(hex: "924350").cgColor)
+        shapeLayer = createShapeLayer(path: circlePath.cgPath, lineWidth: lineWidth, strokeColor: UIColor.CustomColors.mutedRaspberry?.cgColor ?? UIColor.red.cgColor)
 
         progressContainerView.layer.addSublayer(backgroundLayer)
         progressContainerView.layer.addSublayer(shapeLayer)

@@ -58,7 +58,7 @@ struct PregnancyProgressView: View {
                             Text(weekDay)
                                 .font(.title)
                                 .fontWeight(.bold)
-                                .foregroundColor(Color(hex: "924350"))
+                                .foregroundColor(.CustomColors.mutedRaspberry)
                         }
 
                         VStack(spacing: 16) {
@@ -122,7 +122,7 @@ struct PregnancyProgressView: View {
                     .fill(Color(.systemBackground))
 
                 // Stitching effect overlay
-                StitchingBorder(cornerRadius: 16, color: Color(hex: "924350"))
+                StitchingBorder(cornerRadius: 16, color: .CustomColors.mutedRaspberry)
             }
         )
     }
@@ -143,24 +143,20 @@ struct PregnancyProgressView: View {
                     Text(babyHeight)
                         .font(.title2)
                         .fontWeight(.bold)
-                        .foregroundColor(Color(hex: "924350"))
+                        .foregroundColor(.CustomColors.mutedRaspberry)
                 }
                 .padding()
                 .frame(width: (geo.size.width - 12) / 2)
                 .frame(height: 110)
                 .background(
                     ZStack {
-                        // Base card background - using system background with no shadow
                         RoundedRectangle(cornerRadius: 16)
                             .fill(Color(.systemBackground))
-                            // Shadow removed
 
-                        // Only keep the stitching effect overlay
-                        StitchingBorder(cornerRadius: 16, color: Color(hex: "924350"))
+                        StitchingBorder(cornerRadius: 16, color: .CustomColors.mutedRaspberry)
                     }
                 )
 
-                // Weight card with stitching effect only
                 VStack(spacing: 8) {
                     HStack {
                         Image(systemName: "scalemass")
@@ -173,20 +169,17 @@ struct PregnancyProgressView: View {
                     Text(babyWeight)
                         .font(.title2)
                         .fontWeight(.bold)
-                        .foregroundColor(Color(hex: "924350"))
+                        .foregroundColor(.CustomColors.mutedRaspberry)
                 }
                 .padding()
                 .frame(width: (geo.size.width - 12) / 2)
                 .frame(height: 110)
                 .background(
                     ZStack {
-                        // Base card background - using system background with no shadow
                         RoundedRectangle(cornerRadius: 16)
                             .fill(Color(.systemBackground))
-                            // Shadow removed
 
-                        // Only keep the stitching effect overlay
-                        StitchingBorder(cornerRadius: 16, color: Color(hex: "924350"))
+                        StitchingBorder(cornerRadius: 16, color: .CustomColors.mutedRaspberry)
                     }
                 )
             }
@@ -203,7 +196,7 @@ struct PregnancyProgressView: View {
                 previewText: getTruncatedText(from: babyInfo, maxLength: 100),
                 isEmoji: true,
                 backgroundColor: Color(hex: "FBE8E5"),
-                accentColor: Color(hex: "924350")
+                accentColor: .CustomColors.mutedRaspberry
             )
             .background(
                 GeometryReader { geo -> Color in
@@ -214,33 +207,26 @@ struct PregnancyProgressView: View {
                 }
             )
             .onTapGesture {
-                // Create popup card directly
                 let popupContent = PopupInfoCard(
                     title: "Baby This Week",
                     content: babyInfo,
                     isShowing: $showingBabyInfo,
                     cardPosition: selectedCardPosition,
-                    accentColor: Color(hex: "924350")
+                    accentColor: .CustomColors.mutedRaspberry
                 )
 
-                // First show overlay window
                 OverlayWindowManager.shared.showOverlay()
-
-                // Set content in the overlay window - this will display the popup
                 OverlayWindowManager.shared.setContent(popupContent)
-
-                // Update state
                 showingBabyInfo = true
             }
 
-            // Mom info card with content preview
             CompactInfoCard(
                 title: "Mom This Week",
                 iconName: "🤰",
                 previewText: getTruncatedText(from: momInfo, maxLength: 100),
                 isEmoji: true,
                 backgroundColor: Color(hex: "FBE8E5"),
-                accentColor: Color(hex: "924350")
+                accentColor: .CustomColors.mutedRaspberry
             )
             .background(
                 GeometryReader { geo -> Color in
@@ -262,13 +248,10 @@ struct PregnancyProgressView: View {
                     content: momInfo, // Pass the full content
                     isShowing: $showingMomInfo,
                     cardPosition: selectedCardPosition,
-                    accentColor: Color(hex: "924350")
+                    accentColor: .CustomColors.mutedRaspberry
                 )
 
-                // First show overlay window
                 OverlayWindowManager.shared.showOverlay()
-
-                // Set content in the overlay window
                 DispatchQueue.main.async {
                     OverlayWindowManager.shared.setContent(popupContent)
                 }
@@ -277,18 +260,16 @@ struct PregnancyProgressView: View {
     }
 }
 
-// Info card button component
 struct InfoCardButton: View {
     let title: String
     let subtitle: String
     let iconName: String
-    var isEmoji: Bool = false // Flag to determine if we're using emoji or SF Symbol
+    var isEmoji: Bool = false
     let backgroundColor: Color
     let accentColor: Color
 
     var body: some View {
         HStack {
-            // Use either emoji or SF Symbol based on isEmoji flag
             if isEmoji {
                 Text(iconName)
                     .font(.system(size: 30))
@@ -364,15 +345,13 @@ struct PopupInfoCard: View {
                     Text(title)
                         .font(.title3)
                         .fontWeight(.bold)
-                        .foregroundColor(Color(hex: "924350"))
+                        .foregroundColor(.CustomColors.mutedRaspberry)
                         .offset(y: envelopeOpen ? 5 : 15)
                 }
                 .frame(height: 60)
                 .animation(.spring(response: 0.5, dampingFraction: 0.7), value: envelopeOpen)
 
-                // Content section
                 VStack(spacing: 0) {
-                    // Heart decoration at top
                     HStack(spacing: 4) {
                         ForEach(0..<15) { _ in
                             Image(systemName: "heart.fill")
@@ -413,7 +392,7 @@ struct PopupInfoCard: View {
                             .frame(maxWidth: .infinity)
                             .background(
                                 RoundedRectangle(cornerRadius: 8)
-                                    .fill(Color(hex: "924350"))
+                                    .fill(Color.CustomColors.mutedRaspberry)
                             )
                             .padding(.horizontal, 20)
                             .padding(.bottom, 16)
@@ -606,7 +585,7 @@ struct ComparisonView: View {
             // Center arrow - keep centered vertically
             Image(systemName: "arrow.right")
                 .font(.system(size: 24, weight: .bold))
-                .foregroundColor(isShowingAnimation ? Color(hex: "924350") : .secondary)
+                .foregroundColor(isShowingAnimation ? .CustomColors.mutedRaspberry : .secondary)
                 .scaleEffect(isShowingAnimation ? 1.2 : 1.0)
                 .animation(
                     Animation.easeInOut(duration: 0.6)
@@ -944,13 +923,9 @@ struct PregnancyProgressView_Previews: PreviewProvider {
                     Text("Week 14 - Day 1")
                         .font(.title)
                         .fontWeight(.bold)
-                        .foregroundColor(Color(hex: "924350"))
+                        .foregroundColor(.CustomColors.mutedRaspberry)
 
-                    // Sample size comparison and stats
                     VStack(spacing: 16) {
-                        // Rest of your preview content
-
-                        // Test the new compact info cards
                         HStack(spacing: 12) {
                             CompactInfoCard(
                                 title: "Baby Development",
@@ -958,7 +933,7 @@ struct PregnancyProgressView_Previews: PreviewProvider {
                                 previewText: "At this point, your baby is the size of a peach. The baby is developing more defined facial features and unique fingerprints...",
                                 isEmoji: true,
                                 backgroundColor: Color(hex: "FBE8E5"),
-                                accentColor: Color(hex: "924350")
+                                accentColor: .CustomColors.mutedRaspberry
                             )
 
                             CompactInfoCard(
@@ -967,7 +942,7 @@ struct PregnancyProgressView_Previews: PreviewProvider {
                                 previewText: "Your pregnancy is starting to show! Morning sickness should be easing up as the second trimester begins...",
                                 isEmoji: true,
                                 backgroundColor: Color(hex: "FBE8E5"),
-                                accentColor: Color(hex: "924350")
+                                accentColor: .CustomColors.mutedRaspberry
                             )
                         }
                     }

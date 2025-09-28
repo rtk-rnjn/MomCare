@@ -61,7 +61,7 @@ struct TermsOfServiceView: View {
 
     // MARK: Private
 
-    private let accentColor: Color = .init(hex: "924350")
+    private let accentColor: Color = .CustomColors.mutedRaspberry
     private let legalSections: [LegalSectionItem] = TermsData.allSections
 
     }

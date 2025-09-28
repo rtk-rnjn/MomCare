@@ -57,10 +57,10 @@ class MyPlanViewController: UIViewController {
             .foregroundColor: UIColor.white
         ]
 
-        let selectedBackground = UIColor(hex: "924350")
+        let selectedBackground: UIColor? = .CustomColors.mutedRaspberry
 
         let selectedTextAttribute: [NSAttributedString.Key: Any] = [
-            .foregroundColor: selectedBackground
+            .foregroundColor: selectedBackground ?? .red
         ]
 
         myPlanSegmentedControl.setTitleTextAttributes(normalTextAttribute, for: .normal)

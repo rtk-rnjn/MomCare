@@ -21,7 +21,7 @@ class ProfileSecurityTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         updatePageElements()
-        navigationController?.navigationBar.tintColor = UIColor(hex: "#924350")
+        navigationController?.navigationBar.tintColor = .CustomColors.mutedRaspberry
     }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {

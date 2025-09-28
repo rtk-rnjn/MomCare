@@ -186,8 +186,6 @@ class BreathingAnimationManager {
     private var animationPhaseStartTime: TimeInterval = 0
     private var timeRemainingForPhase: TimeInterval = 0
 
-    // MARK: - Constants
-
     private let numberOfPetals = 6
     private let circleSize: CGFloat = 100
     private let animationDuration: TimeInterval = 4.0

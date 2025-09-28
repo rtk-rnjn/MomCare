@@ -70,5 +70,10 @@ class ContentTableViewCell: UITableViewCell {
 
     // MARK: Private
 
-    private let color: UIColor = .init(hex: "924350")
+    private var color: UIColor {
+        if let customColor: UIColor = .CustomColors.mutedRaspberry {
+            return customColor
+        }
+        return .red
+    }
 }
