@@ -66,19 +66,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func application(_ application: UIApplication, performActionFor shortcutItem: UIApplicationShortcutItem, completionHandler: @escaping (Bool) -> Void) {
-        switch shortcutItem.type {
-        case "com.MomCare.LogSymptom":
-            logger.debug("Log Symptom shortcut selected")
-            completionHandler(false)
+        guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+                  let sceneDelegate = windowScene.delegate as? SceneDelegate else {
+                completionHandler(false)
+                return
+            }
 
-        case "com.MomCare.AddAppointment":
-            logger.debug("Add Appointment shortcut selected")
-            completionHandler(false)
-
-        default:
-            completionHandler(false)
+            let success = sceneDelegate.handleShortcut(item: shortcutItem)
+            completionHandler(success)
         }
-    }
 }
 
 extension AppDelegate: UNUserNotificationCenterDelegate {
