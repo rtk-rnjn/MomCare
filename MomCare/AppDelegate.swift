@@ -64,17 +64,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         application.shortcutItems = [logSymptom, addAppointment]
     }
-
-    func application(_ application: UIApplication, performActionFor shortcutItem: UIApplicationShortcutItem, completionHandler: @escaping (Bool) -> Void) {
-        guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
-                  let sceneDelegate = windowScene.delegate as? SceneDelegate else {
-                completionHandler(false)
-                return
-            }
-
-            let success = sceneDelegate.handleShortcut(item: shortcutItem)
-            completionHandler(success)
-        }
 }
 
 extension AppDelegate: UNUserNotificationCenterDelegate {

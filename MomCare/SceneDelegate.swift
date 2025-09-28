@@ -39,6 +39,12 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                     }
         }
     }
+    
+    func windowScene(_ windowScene: UIWindowScene, performActionFor shortcutItem: UIApplicationShortcutItem, completionHandler: @escaping (Bool) -> Void) {
+            
+            let success = handleShortcut(item: shortcutItem)
+            completionHandler(success)
+    }
 
     @discardableResult
         func handleShortcut(item: UIApplicationShortcutItem) -> Bool {
