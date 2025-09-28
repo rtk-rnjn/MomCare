@@ -42,8 +42,6 @@ actor NetworkManager {
 
     // MARK: Internal
 
-    // MARK: - REST Endpoints
-
     /// Performs a GET request and decodes the response.
     ///
     /// - Parameters:
@@ -127,8 +125,6 @@ actor NetworkManager {
     }
 
     // MARK: Private
-
-    // MARK: - Private Helpers
 
     /// Builds a `URL` with optional query parameters.
     private func buildURLString(

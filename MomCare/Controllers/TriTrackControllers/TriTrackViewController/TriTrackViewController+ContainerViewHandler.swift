@@ -15,10 +15,10 @@ extension TriTrackViewController {
             .foregroundColor: UIColor.white
         ]
 
-        let selectedBackground = UIColor(hex: "924350")
+        let selectedBackground: UIColor? = .CustomColors.mutedRaspberry
 
         let selectedTextAttribute: [NSAttributedString.Key: Any] = [
-            .foregroundColor: selectedBackground
+            .foregroundColor: selectedBackground ?? .red
         ]
 
         triTrackSegmentedControl.setTitleTextAttributes(normalTextAttribute, for: .normal)

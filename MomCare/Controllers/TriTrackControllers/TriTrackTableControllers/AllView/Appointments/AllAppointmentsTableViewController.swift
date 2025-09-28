@@ -153,7 +153,7 @@ class AllAppointmentsTableViewController: UITableViewController {
         let headerLabel = UILabel()
         headerLabel.text = "Appointments"
         headerLabel.font = UIFont.systemFont(ofSize: 34, weight: .bold)
-        headerLabel.textColor = UIColor(hex: "924350")
+        headerLabel.textColor = .CustomColors.mutedRaspberry
         headerLabel.textAlignment = .left
         headerLabel.numberOfLines = 1
         headerLabel.backgroundColor = .clear

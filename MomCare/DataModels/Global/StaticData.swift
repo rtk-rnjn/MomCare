@@ -273,7 +273,7 @@ enum CountryData {
 }
 
 enum AppColors {
-    static let accentColor: Color = .init(hex: "924350")
+    static let accentColor: Color = .CustomColors.mutedRaspberry
 }
 
 enum PrivacyPolicyText {

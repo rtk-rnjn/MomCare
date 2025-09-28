@@ -69,7 +69,7 @@ struct OTPScreen: View {
                     .fontWeight(.semibold)
                     .frame(maxWidth: .infinity)
                     .padding()
-                    .background(isOTPComplete() ? Color(hex: "924350") : Color.gray.opacity(0.3))
+                    .background(isOTPComplete() ? .CustomColors.mutedRaspberry : Color.gray.opacity(0.3))
                     .foregroundColor(.white)
                     .cornerRadius(14)
             }
@@ -78,7 +78,7 @@ struct OTPScreen: View {
 
             Button(action: resendCode) {
                 Text(resendTimer > 0 ? "Resend in \(resendTimer)s" : "Didn't receive a code?")
-                    .foregroundColor(resendTimer > 0 ? .gray : Color(hex: "924350"))
+                    .foregroundColor(resendTimer > 0 ? .gray : .CustomColors.mutedRaspberry)
                     .padding(.top)
             }
             .disabled(resendTimer > 0)
@@ -147,7 +147,7 @@ struct OTPBox: View {
     var body: some View {
         ZStack {
             RoundedRectangle(cornerRadius: 8)
-                .stroke(isActive ? Color(hex: "924350") : Color.gray.opacity(0.3), lineWidth: isActive ? 2 : 1)
+                .stroke(isActive ? .CustomColors.mutedRaspberry : Color.gray.opacity(0.3), lineWidth: isActive ? 2 : 1)
                 .background(
                     RoundedRectangle(cornerRadius: 8)
                         .fill(Color(.systemBackground))
@@ -160,7 +160,7 @@ struct OTPBox: View {
                     .font(.title2.weight(.semibold))
             } else if isActive {
                 Rectangle()
-                    .fill(Color(hex: "924350"))
+                    .fill(Color.CustomColors.mutedRaspberry)
                     .frame(width: 2, height: 24)
                     .opacity(showCursor ? 1 : 0)
                     .animation(Animation.easeInOut(duration: 0.6).repeatForever(autoreverses: true), value: showCursor)

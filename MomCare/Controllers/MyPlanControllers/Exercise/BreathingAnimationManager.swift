@@ -20,13 +20,9 @@ class BreathingAnimationManager {
 
     // MARK: Internal
 
-    // MARK: - Public Properties
-
     weak var delegate: (any BreathingAnimationDelegate)?
     var isInhaling = true
     var breathingCycles = 0
-
-    // MARK: - Public Methods
 
     @MainActor func setupAnimatedGradientBackground(in view: UIView) {
         let gradientLayer = CAGradientLayer()
@@ -163,8 +159,6 @@ class BreathingAnimationManager {
 
     // MARK: Private
 
-    // MARK: - Private Properties
-
     private enum PetalAnimationPhase { case none, expanding, collapsing }
     private enum AnimationState { case ready, playing, paused, finished }
 
@@ -186,8 +180,6 @@ class BreathingAnimationManager {
     private var animationPhaseStartTime: TimeInterval = 0
     private var timeRemainingForPhase: TimeInterval = 0
 
-    // MARK: - Constants
-
     private let numberOfPetals = 6
     private let circleSize: CGFloat = 100
     private let animationDuration: TimeInterval = 4.0
@@ -203,8 +195,6 @@ class BreathingAnimationManager {
         UIColor(hex: "#e3c6f7")
     ]
     private let centerColor: UIColor = .init(hex: "#fff6f0")
-
-    // MARK: - Private Methods
 
     private func animateGradientColors() {
         guard let gradientLayer = animatedGradientLayer else { return }

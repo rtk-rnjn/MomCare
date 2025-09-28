@@ -36,9 +36,9 @@ class HeaderTableViewCell: UITableViewCell {
         let configuration = UIImage.SymbolConfiguration(scale: .medium)
 
         if self.allConsumed {
-            mealHeaderButton.setImage(UIImage(systemName: "checkmark.circle.fill", withConfiguration: configuration)?.withTintColor(color), for: .normal)
+            mealHeaderButton.setImage(UIImage(systemName: "checkmark.circle.fill", withConfiguration: configuration)?.withTintColor(mutedRaspberryColor), for: .normal)
         } else {
-            mealHeaderButton.setImage(UIImage(systemName: "circle", withConfiguration: configuration)?.withTintColor(color), for: .normal)
+            mealHeaderButton.setImage(UIImage(systemName: "circle", withConfiguration: configuration)?.withTintColor(mutedRaspberryColor), for: .normal)
         }
     }
 
@@ -54,7 +54,12 @@ class HeaderTableViewCell: UITableViewCell {
 
     // MARK: Private
 
-    private let color: UIColor = .init(hex: "924350")
+    private var mutedRaspberryColor: UIColor {
+        if let customColor: UIColor = .CustomColors.mutedRaspberry {
+            return customColor
+        }
+        return .red
+    }
 
     private func configurePullDownMenu() {
         let addItem = UIAction(title: "Add Item", image: UIImage(systemName: "plus"), handler: addItemHandler)

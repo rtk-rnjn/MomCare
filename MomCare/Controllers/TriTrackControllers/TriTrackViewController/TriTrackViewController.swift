@@ -47,7 +47,7 @@ class TriTrackViewController: UIViewController, FSCalendarDelegate, FSCalendarDa
             await EventKitHandler.shared.requestAccessForEvent()
             await EventKitHandler.shared.requestAccessForReminder()
         }
-        navigationController?.navigationBar.tintColor = UIColor(hex: "#924350")
+        navigationController?.navigationBar.tintColor = .CustomColors.mutedRaspberry
         navigationController?.navigationBar.isTranslucent = false
     }
 
@@ -119,7 +119,7 @@ class TriTrackViewController: UIViewController, FSCalendarDelegate, FSCalendarDa
 
         fsCalendarView.dataSource = self
         fsCalendarView.delegate = self
-        fsCalendarView.appearance.selectionColor = UIColor(hex: "#924350")
+        fsCalendarView.appearance.selectionColor = .CustomColors.mutedRaspberry
         fsCalendarView.appearance.weekdayTextColor = .darkGray
         fsCalendarView.appearance.headerTitleColor = .darkGray
         fsCalendarView.appearance.titleDefaultColor = .darkGray

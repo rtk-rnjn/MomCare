@@ -40,11 +40,13 @@ class CircularProgressView: UIView {
     private let progressLayer: CAShapeLayer = .init()
 
     private func setupLayer() {
-        let circlePath = UIBezierPath(arcCenter: CGPoint(x: bounds.midX, y: bounds.midY),
-                                                       radius: min(bounds.width, bounds.height) / 2 - 5, // Adjust radius
-                                                       startAngle: -.pi / 2,
-                                                       endAngle: 1.5 * .pi,
-                                                       clockwise: true)
+        let circlePath = UIBezierPath(
+            arcCenter: CGPoint(x: bounds.midX, y: bounds.midY),
+            radius: min(bounds.width, bounds.height) / 2 - 5, // Adjust radius
+            startAngle: -.pi / 2,
+            endAngle: 1.5 * .pi,
+            clockwise: true
+        )
 
         progressLayer.path = circlePath.cgPath
         progressLayer.strokeColor = UIColor.systemBlue.cgColor

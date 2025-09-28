@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct DisclaimersView: View {
-    let accentColor: Color = .init(hex: "924350")
+    let accentColor: Color = .CustomColors.mutedRaspberry
 
     var body: some View {
         ScrollView {
@@ -9,11 +9,11 @@ struct DisclaimersView: View {
                 VStack(spacing: 16) {
                     ZStack {
                         RoundedRectangle(cornerRadius: 12, style: .continuous)
-                            .fill(Color(hex: "FFFFFF").opacity(0.12))
-                                                        .frame(width: 60, height: 60)
-                                                    Image(systemName: "exclamationmark.shield")
-                                                        .font(.system(size: 60, weight: .bold))
-                                                        .foregroundColor(accentColor)
+                            .fill(Color.white.opacity(0.12))
+                            .frame(width: 60, height: 60)
+                        Image(systemName: "exclamationmark.shield")
+                            .font(.system(size: 60, weight: .bold))
+                            .foregroundColor(accentColor)
                     }
                     Text("MomCare supports you, but your doctor knows you best!")
                         .font(.system(size: 28, weight: .semibold, design: .default))

@@ -12,7 +12,7 @@ struct FillingLoadingScreen: View {
     @State private var fillAmount: CGFloat = 0.0
     @State private var showMessage = false
 
-    let pinkColor: Color = .init(hex: "924350")
+    let pinkColor: Color = .CustomColors.mutedRaspberry
     let timer = Timer.publish(every: 0.05, on: .main, in: .common).autoconnect()
 
     var body: some View {

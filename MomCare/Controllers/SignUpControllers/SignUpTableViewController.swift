@@ -26,7 +26,7 @@ class SignUpTableViewController: UITableViewController, UITextFieldDelegate {
         super.viewDidLoad()
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
         view.addGestureRecognizer(tapGesture)
-        navigationController?.navigationBar.tintColor = UIColor(hex: "#924350")
+        navigationController?.navigationBar.tintColor = .CustomColors.mutedRaspberry
         firstNameField.becomeFirstResponder()
     }
 
