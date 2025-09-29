@@ -11,7 +11,9 @@ import OSLog
 private let logger: Logger = .init(subsystem: "com.MomCare.SceneDelegate", category: "SceneDelegate")
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
+
     var window: UIWindow?
+    var launchedShortcutItem: UIApplicationShortcutItem?
 
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         logger.debug("Scene will connect: \(String(describing: scene))")
@@ -28,7 +30,17 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window.makeKeyAndVisible()
 
         _ = WatchConnector.shared
+        _ = MomCareUser.shared
+
         logger.info("Scene connected with rootViewController: \(String(describing: initialViewController))")
+
+        launchedShortcutItem = connectionOptions.shortcutItem
+    }
+
+    func windowScene(_ windowScene: UIWindowScene, performActionFor shortcutItem: UIApplicationShortcutItem, completionHandler: @escaping (Bool) -> Void) {
+
+        let success = AppShortcuts.shared.performAction(for: shortcutItem, in: window)
+        completionHandler(success)
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {
@@ -41,9 +53,12 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     func sceneDidBecomeActive(_ scene: UIScene) {
         logger.debug("Scene did become active: \(String(describing: scene))")
-        // Called when the scene has moved from an inactive state to an active state.
-        // Use this method to restart any tasks that were paused (or not yet started) when the scene was inactive.
-        UIApplication.shared.shortcutItems = []
+        UIApplication.shared.shortcutItems = AppShortcuts.shared.items
+
+        if let launchedShortcutItem {
+            AppShortcuts.shared.performAction(for: launchedShortcutItem, in: window)
+            self.launchedShortcutItem = nil
+        }
     }
 
     func sceneWillResignActive(_ scene: UIScene) {
@@ -64,9 +79,4 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // Use this method to save data, release shared resources, and store enough scene-specific state information
         // to restore the scene back to its current state.
     }
-
-    func windowScene(_ windowScene: UIWindowScene, performActionFor shortcutItem: UIApplicationShortcutItem, completionHandler: @escaping (Bool) -> Void) {
-        // Handle quick actions
-    }
-
 }

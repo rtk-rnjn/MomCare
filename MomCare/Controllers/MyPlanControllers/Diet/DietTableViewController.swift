@@ -79,7 +79,7 @@ class DietTableViewController: UITableViewController {
                 return
             }
 
-            if user.plan.isEmpty() || user.plan.isOutdated() {
+            if user.plan.isEmpty() {
                 logger.debug("Fetching new plan for user: \(user.emailAddress)")
                 let meals = await ContentHandler.shared.fetchPlan(from: medical)
                 MomCareUser.shared.user?.plan = meals
