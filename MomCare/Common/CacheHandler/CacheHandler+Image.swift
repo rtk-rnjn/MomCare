@@ -131,13 +131,13 @@ extension CacheHandler {
         if let cachedImage = cache.object(forKey: url as AnyObject) as? Entity<UIImage> {
             logger.debug("Cache hit for URL: \(url.absoluteString)")
             if cachedImage.isExpired {
-                logger.debug("Cached image expired for URL: \(url.absoluteString), fetching from network")
+                logger.debug("Cached image expired for URL: \(url.absoluteString)")
                 return nil
             }
             return cachedImage.value
         }
 
-        logger.debug("Cache miss for URL: \(url.absoluteString), fetching from internal database")
+        logger.debug("Cache miss for URL: \(url.absoluteString)")
         return nil
     }
 

@@ -43,26 +43,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: any Error) {
         logger.error("Failed to register for remote notifications: \(String(describing: error))")
     }
-
-    func applicationDidBecomeActive(_ application: UIApplication) {
-        let logSymptom = UIApplicationShortcutItem(
-            type: "com.MomCare.LogSymptom",
-            localizedTitle: "Log Symptom",
-            localizedSubtitle: "Log your symptoms quickly",
-            icon: UIApplicationShortcutIcon(type: .date),
-            userInfo: ["info": "LogSymptomShortcut"] as [String: any NSSecureCoding]
-        )
-
-        let addAppointment = UIApplicationShortcutItem(
-            type: "com.MomCare.AddAppointment",
-            localizedTitle: "Add Appointment",
-            localizedSubtitle: "Schedule a new appointment",
-            icon: UIApplicationShortcutIcon(type: .date),
-            userInfo: ["info": "AddAppointmentShortcut"] as [String: any NSSecureCoding]
-        )
-
-        application.shortcutItems = [logSymptom, addAppointment]
-    }
 }
 
 extension AppDelegate: UNUserNotificationCenterDelegate {

@@ -192,7 +192,6 @@ actor NetworkManager {
                     continue
                 } else {
                     logger.error("Request failed on attempt \(attempt): \(error.localizedDescription)")
-                    return nil
                 }
             }
         }

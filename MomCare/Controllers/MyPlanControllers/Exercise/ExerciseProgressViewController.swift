@@ -86,9 +86,7 @@ extension ExerciseProgressViewController: AVPlayerViewControllerDelegate {
             }
         }
 
-        NotificationCenter.default.addObserver(self, selector: #selector(playerDidFinishPlaying),
-                                               name: .AVPlayerItemDidPlayToEndTime,
-                                               object: player?.currentItem)
+        NotificationCenter.default.addObserver(self, selector: #selector(playerDidFinishPlaying), name: .AVPlayerItemDidPlayToEndTime, object: player?.currentItem)
 
     }
 

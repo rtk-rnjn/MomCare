@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Combine
 
 /// `MomCareUser` is a singleton class responsible for managing the currently
 /// authenticated user in the MomCare app. It handles local storage, database
@@ -13,7 +14,15 @@ import Foundation
 ///
 /// Marked with `@MainActor` to ensure all UI-related updates occur on the main thread.
 @MainActor
-class MomCareUser {
+final class MomCareUser: NSObject, ObservableObject {
+
+    // MARK: Lifecycle
+
+    private override init() {
+        super.init()
+        user = fetchFromUserDefaults()
+        publishedUser = user
+    }
 
     // MARK: Internal
 
@@ -22,6 +31,12 @@ class MomCareUser {
 
     /// Private dispatch queue for database operations to avoid blocking the main thread.
     let queue: DispatchQueue = .init(label: "MomCareUserQueue")
+
+    /// Published user property to notify observers of changes.
+    @Published var publishedUser: User?
+
+    /// Flag to control whether updates to `user` should be pushed to database and UserDefaults.
+    var pushUpdates: Bool = false
 
     /// Access token expiration date. When set, automatically schedules a refresh.
     var accessTokenExpiresAt: Date? {
@@ -34,9 +49,13 @@ class MomCareUser {
     /// trigger local and database updates.
     var user: User? {
         didSet {
-            guard let user, oldValue != user else { return }
+            guard let user, oldValue != user, pushUpdates else {
+                pushUpdates = true
+                return
+            }
             updateToDatabase()
             updateToUserDefaults()
+            publishedUser = user
         }
     }
 

@@ -11,37 +11,14 @@ struct PregnancyProgressView: View {
 
     // MARK: Lifecycle
 
-    init?() {
-        guard let pregnancyData = MomCareUser.shared.user?.pregancyData else {
-            fatalError("Pregnancy data is not available")
-        }
-        trimester = pregnancyData.trimester
-        weekDay = "Week \(pregnancyData.week) - Day \(pregnancyData.day)"
-
-        let trimesterData = TriTrackData.getTrimesterData(for: pregnancyData.week)
-
-        babyWeight = "\(trimesterData?.babyWeightInGrams ?? 0) g"
-        babyHeight = "\(trimesterData?.babyHeightInCentimeters ?? 0) cm"
-        quote = trimesterData?.quote ?? "Keep growing strong!"
-
-        babyInfo = trimesterData?.babyTipText ?? "Your baby is developing rapidly this week. Keep up with your prenatal care!"
-        momInfo = trimesterData?.momTipText ?? "Remember to stay hydrated and get plenty of rest. Your body is doing amazing things!"
-
-        self.trimesterData = trimesterData
+    init() {
+        trimesterData = TriTrackData.getTrimesterData(for: momCareUser.publishedUser?.pregancyData?.week ?? 1)
     }
 
     // MARK: Internal
 
     @State var fruitImage: UIImage?
     @State var babyImage: UIImage?
-
-    var trimester: String
-    var weekDay: String
-    var babyHeight: String
-    var babyWeight: String
-    var babyInfo: String
-    var momInfo: String
-    var quote: String
 
     var trimesterData: TrimesterData?
 
@@ -51,14 +28,16 @@ struct PregnancyProgressView: View {
                 ScrollView {
                     VStack(spacing: 16) {
                         VStack(spacing: 2) {
-                            Text(trimester)
-                                .font(.title3)
-                                .fontWeight(.semibold)
+                            if let pregnancyData = momCareUser.publishedUser?.pregancyData {
+                                Text(pregnancyData.trimester)
+                                    .font(.title3)
+                                    .fontWeight(.semibold)
 
-                            Text(weekDay)
-                                .font(.title)
-                                .fontWeight(.bold)
-                                .foregroundColor(.CustomColors.mutedRaspberry)
+                                Text("Week \(pregnancyData.week) - Day \(pregnancyData.day)")
+                                    .font(.title)
+                                    .fontWeight(.bold)
+                                    .foregroundColor(.CustomColors.mutedRaspberry)
+                            }
                         }
 
                         VStack(spacing: 16) {
@@ -86,9 +65,14 @@ struct PregnancyProgressView: View {
             // REMOVE the popup cards from this ZStack - they will be handled by the OverlayWindowManager
         }
         .edgesIgnoringSafeArea(.all)
+        .onChange(of: momCareUser.publishedUser) {
+            trimesterData = TriTrackData.getTrimesterData(for: momCareUser.publishedUser?.pregancyData?.week ?? -1)
+        }
     }
 
     // MARK: Private
+
+    @ObservedObject private var momCareUser: MomCareUser = .shared
 
     @State private var isScrollEnabled = true
 
@@ -97,27 +81,31 @@ struct PregnancyProgressView: View {
     @State private var selectedCardPosition: CGRect = .zero
 
     private var sizeComparisonView: some View {
-        VStack(spacing: 0) { // Reduce spacing to avoid empty gaps
-            // Comparison view with images
+        VStack(spacing: 0) {
             ComparisonView(fruitImage: fruitImage, babyImage: babyImage)
                 .frame(height: 120)
 
-            // Quote text - moved closer to the comparison view
-            Text(quote)
-                .font(.headline)
-                .multilineTextAlignment(.center)
-                .padding(.horizontal, 16)
-                .padding(.vertical, 12) // More vertical padding to fill space evenly
+            if let quote = trimesterData?.quote {
+                Text(quote)
+                    .font(.headline)
+                    .multilineTextAlignment(.center)
+                    .padding(.horizontal, 16)
+                    .padding(.vertical, 12)
+            } else {
+                Text("Keep growing strong!")
+                    .font(.headline)
+                    .multilineTextAlignment(.center)
+                    .padding(.horizontal, 16)
+                    .padding(.vertical, 12)
+            }
         }
-        .padding(.vertical, 12) // Consistent vertical padding
+        .padding(.vertical, 12)
         .padding(.horizontal, 12)
         .background(
             ZStack {
-                // Base card background
                 RoundedRectangle(cornerRadius: 16)
                     .fill(Color(.systemBackground))
 
-                // Stitching effect overlay
                 StitchingBorder(cornerRadius: 16, color: .CustomColors.mutedRaspberry)
             }
         )
@@ -126,7 +114,6 @@ struct PregnancyProgressView: View {
     private var growthStatsView: some View {
         GeometryReader { geo in
             HStack(spacing: 12) {
-                // Height card with stitching effect only
                 VStack(spacing: 8) {
                     HStack {
                         Image(systemName: "ruler")
@@ -136,10 +123,17 @@ struct PregnancyProgressView: View {
                             .font(.headline)
                     }
 
-                    Text(babyHeight)
-                        .font(.title2)
-                        .fontWeight(.bold)
-                        .foregroundColor(.CustomColors.mutedRaspberry)
+                    if let babyHeight = trimesterData?.babyHeightInCentimeters {
+                        Text("\(babyHeight) cm")
+                            .font(.title2)
+                            .fontWeight(.bold)
+                            .foregroundColor(.CustomColors.mutedRaspberry)
+                    } else {
+                        Text("0 cm")
+                            .font(.title2)
+                            .fontWeight(.bold)
+                            .foregroundColor(.CustomColors.mutedRaspberry)
+                    }
                 }
                 .padding()
                 .frame(width: (geo.size.width - 12) / 2)
@@ -162,10 +156,17 @@ struct PregnancyProgressView: View {
                             .font(.headline)
                     }
 
-                    Text(babyWeight)
-                        .font(.title2)
-                        .fontWeight(.bold)
-                        .foregroundColor(.CustomColors.mutedRaspberry)
+                    if let babyWeight = trimesterData?.babyWeightInGrams {
+                        Text("\(babyWeight) g")
+                            .font(.title2)
+                            .fontWeight(.bold)
+                            .foregroundColor(.CustomColors.mutedRaspberry)
+                    } else {
+                        Text("0 g")
+                            .font(.title2)
+                            .fontWeight(.bold)
+                            .foregroundColor(.CustomColors.mutedRaspberry)
+                    }
                 }
                 .padding()
                 .frame(width: (geo.size.width - 12) / 2)
@@ -185,71 +186,71 @@ struct PregnancyProgressView: View {
 
     private var infoCardsView: some View {
         HStack(spacing: 12) {
-            // Baby info card with content preview
-            CompactInfoCard(
-                title: "Baby This Week",
-                iconName: "👶",
-                previewText: getTruncatedText(from: babyInfo, maxLength: 100),
-                isEmoji: true,
-                backgroundColor: Color(hex: "FBE8E5"),
-                accentColor: .CustomColors.mutedRaspberry
-            )
-            .background(
-                GeometryReader { geo -> Color in
-                    DispatchQueue.main.async {
-                        selectedCardPosition = geo.frame(in: .global)
-                    }
-                    return Color.clear
-                }
-            )
-            .onTapGesture {
-                let popupContent = PopupInfoCard(
+            if let babyInfo = trimesterData?.babyTipText,
+               let momInfo = trimesterData?.momTipText {
+                CompactInfoCard(
                     title: "Baby This Week",
-                    content: babyInfo,
-                    isShowing: $showingBabyInfo,
-                    cardPosition: selectedCardPosition,
+                    iconName: "👶",
+                    previewText: getTruncatedText(from: babyInfo, maxLength: 100),
+                    isEmoji: true,
+                    backgroundColor: Color(hex: "FBE8E5"),
                     accentColor: .CustomColors.mutedRaspberry
                 )
-
-                OverlayWindowManager.shared.showOverlay()
-                OverlayWindowManager.shared.setContent(popupContent)
-                showingBabyInfo = true
-            }
-
-            CompactInfoCard(
-                title: "Mom This Week",
-                iconName: "🤰",
-                previewText: getTruncatedText(from: momInfo, maxLength: 100),
-                isEmoji: true,
-                backgroundColor: Color(hex: "FBE8E5"),
-                accentColor: .CustomColors.mutedRaspberry
-            )
-            .background(
-                GeometryReader { geo -> Color in
-                    DispatchQueue.main.async {
-                        if showingMomInfo {
+                .background(
+                    GeometryReader { geo -> Color in
+                        DispatchQueue.main.async {
                             selectedCardPosition = geo.frame(in: .global)
                         }
+                        return Color.clear
                     }
-                    return Color.clear
-                }
-            )
-            .onTapGesture {
-                // Create and show popup using the overlay window manager directly
-                showingMomInfo = true
+                )
+                .onTapGesture {
+                    let popupContent = PopupInfoCard(
+                        title: "Baby This Week",
+                        content: babyInfo,
+                        isShowing: $showingBabyInfo,
+                        cardPosition: selectedCardPosition,
+                        accentColor: .CustomColors.mutedRaspberry
+                    )
 
-                // Create popup card directly in the overlay window
-                let popupContent = PopupInfoCard(
+                    OverlayWindowManager.shared.showOverlay()
+                    OverlayWindowManager.shared.setContent(popupContent)
+                    showingBabyInfo = true
+                }
+
+                CompactInfoCard(
                     title: "Mom This Week",
-                    content: momInfo, // Pass the full content
-                    isShowing: $showingMomInfo,
-                    cardPosition: selectedCardPosition,
+                    iconName: "🤰",
+                    previewText: getTruncatedText(from: momInfo, maxLength: 100),
+                    isEmoji: true,
+                    backgroundColor: Color(hex: "FBE8E5"),
                     accentColor: .CustomColors.mutedRaspberry
                 )
+                .background(
+                    GeometryReader { geo -> Color in
+                        DispatchQueue.main.async {
+                            if showingMomInfo {
+                                selectedCardPosition = geo.frame(in: .global)
+                            }
+                        }
+                        return Color.clear
+                    }
+                )
+                .onTapGesture {
+                    showingMomInfo = true
 
-                OverlayWindowManager.shared.showOverlay()
-                DispatchQueue.main.async {
-                    OverlayWindowManager.shared.setContent(popupContent)
+                    let popupContent = PopupInfoCard(
+                        title: "Mom This Week",
+                        content: momInfo,
+                        isShowing: $showingMomInfo,
+                        cardPosition: selectedCardPosition,
+                        accentColor: .CustomColors.mutedRaspberry
+                    )
+
+                    OverlayWindowManager.shared.showOverlay()
+                    DispatchQueue.main.async {
+                        OverlayWindowManager.shared.setContent(popupContent)
+                    }
                 }
             }
         }
