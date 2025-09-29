@@ -20,7 +20,7 @@ struct PregnancyProgressView: View {
     @State var fruitImage: UIImage?
     @State var babyImage: UIImage?
 
-    var trimesterData: TrimesterData?
+    @State var trimesterData: TrimesterData?
 
     var body: some View {
         ZStack {

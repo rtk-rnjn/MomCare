@@ -30,6 +30,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window.makeKeyAndVisible()
 
         _ = WatchConnector.shared
+        _ = MomCareUser.shared
+
         logger.info("Scene connected with rootViewController: \(String(describing: initialViewController))")
 
         launchedShortcutItem = connectionOptions.shortcutItem
