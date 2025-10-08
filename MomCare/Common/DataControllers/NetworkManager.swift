@@ -56,27 +56,27 @@ actor NetworkManager {
     }
 
     /// Performs a POST request and decodes the response.
-    func post<T: Codable & Sendable>(url: String, body: Data) async -> T? {
-        return await request(url: url, method: .POST, body: body)
+    func post<T: Codable & Sendable>(url: String, queryParameters: [String: Any]? = nil, body: Data) async -> T? {
+        return await request(url: url, method: .POST, body: body, queryParameters: queryParameters)
     }
 
     /// Performs a PUT request and decodes the response.
-    func put<T: Codable & Sendable>(url: String, body: Data) async -> T? {
-        return await request(url: url, method: .PUT, body: body)
+    func put<T: Codable & Sendable>(url: String, queryParameters: [String: Any]? = nil, body: Data) async -> T? {
+        return await request(url: url, method: .PUT, body: body, queryParameters: queryParameters)
     }
 
     /// Performs a DELETE request.
     ///
     /// - Note: Return type is simplified to `Bool` since many DELETE endpoints
     ///   do not return bodies. Returns `true` if the request succeeded.
-    func delete(url: String, body: Data) async -> Bool {
-        let result: Bool? = await request(url: url, method: .DELETE, body: body)
+    func delete(url: String, queryParameters: [String: Any]? = nil, body: Data) async -> Bool {
+        let result: Bool? = await request(url: url, method: .DELETE, body: body, queryParameters: queryParameters)
         return result != nil
     }
 
     /// Performs a PATCH request and decodes the response.
-    func patch<T: Codable & Sendable>(url: String, body: Data) async -> T? {
-        return await request(url: url, method: .PATCH, body: body)
+    func patch<T: Codable & Sendable>(url: String, queryParameters: [String: Any]? = nil, body: Data) async -> T? {
+        return await request(url: url, method: .PATCH, body: body, queryParameters: queryParameters)
     }
 
     /// Fetches server-sent events or newline-delimited JSON objects.

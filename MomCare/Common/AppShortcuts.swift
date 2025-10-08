@@ -5,6 +5,60 @@ import OSLog
 private let logger: Logger = .init(subsystem: "com.MomCare.AppShortcuts", category: "AppShortcuts`")
 private let appBundleIdentifier = "com.MomCare."
 
+enum TriTrackShortcut: CaseIterable {
+    case logSymptom
+    case addAppointment
+
+    // MARK: Internal
+
+    var type: String {
+        switch self {
+        case .logSymptom: return appBundleIdentifier + "LogSymptom"
+        case .addAppointment: return appBundleIdentifier + "AddAppointment"
+        }
+    }
+
+    var title: String {
+        switch self {
+        case .logSymptom: return "Log Symptom"
+        case .addAppointment: return "Add Appointment"
+        }
+    }
+
+    var subtitle: String {
+        switch self {
+        case .logSymptom: return "Log your symptoms quickly"
+        case .addAppointment: return "Schedule a new appointment"
+        }
+    }
+
+    var userInfoKey: String {
+        switch self {
+        case .logSymptom: return "LogSymptomShortcut"
+        case .addAppointment: return "AddAppointmentShortcut"
+        }
+    }
+
+    var updateViewValue: Int {
+        switch self {
+        case .logSymptom: return 2
+        case .addAppointment: return 1
+        }
+    }
+
+    var tabIndex: Int { 2 }
+
+    var shortcutItem: UIApplicationShortcutItem {
+        .init(
+            type: type,
+            localizedTitle: title,
+            localizedSubtitle: subtitle,
+            icon: UIApplicationShortcutIcon(type: .date),
+            userInfo: ["info": userInfoKey] as [String: any NSSecureCoding]
+        )
+    }
+}
+
 @MainActor
 class AppShortcuts: NSObject {
 
@@ -25,60 +79,6 @@ class AppShortcuts: NSObject {
     }
 
     // MARK: Private
-
-    private enum TriTrackShortcut: CaseIterable {
-        case logSymptom
-        case addAppointment
-
-        // MARK: Internal
-
-        var type: String {
-            switch self {
-            case .logSymptom: return appBundleIdentifier + "LogSymptom"
-            case .addAppointment: return appBundleIdentifier + "AddAppointment"
-            }
-        }
-
-        var title: String {
-            switch self {
-            case .logSymptom: return "Log Symptom"
-            case .addAppointment: return "Add Appointment"
-            }
-        }
-
-        var subtitle: String {
-            switch self {
-            case .logSymptom: return "Log your symptoms quickly"
-            case .addAppointment: return "Schedule a new appointment"
-            }
-        }
-
-        var userInfoKey: String {
-            switch self {
-            case .logSymptom: return "LogSymptomShortcut"
-            case .addAppointment: return "AddAppointmentShortcut"
-            }
-        }
-
-        var updateViewValue: Int {
-            switch self {
-            case .logSymptom: return 2
-            case .addAppointment: return 1
-            }
-        }
-
-        var tabIndex: Int { 2 }
-
-        var shortcutItem: UIApplicationShortcutItem {
-            .init(
-                type: type,
-                localizedTitle: title,
-                localizedSubtitle: subtitle,
-                icon: UIApplicationShortcutIcon(type: .date),
-                userInfo: ["info": userInfoKey] as [String: any NSSecureCoding]
-            )
-        }
-    }
 
     private func handleTriTrackShortcutAction(_ shortcut: TriTrackShortcut, in window: UIWindow? = nil) {
         guard let window,
