@@ -13,7 +13,7 @@ import AVFoundation
 /// `ContentHandler` provides high-level access to various pieces of content
 /// required by **MomCare**, including:
 /// - The user’s current plan (`MyPlan`)
-/// - Daily focus tips (`Tip`)
+/// - Daily focus tips (`Tips`)
 /// - Food search results (`FoodItem`)
 /// - Mood-based quotes (`String`)
 ///
@@ -37,17 +37,19 @@ class ContentHandler {
     /// - Stored in `CacheHandler` under the key `"plan"`.
     /// - If not available, fetch a new plan via ``fetchPlan(from:)``.
     var plan: MyPlan? {
-        get { CacheHandler.shared.get(forKey: "plan") }
-        set { CacheHandler.shared.set(newValue, forKey: "plan") }
+        didSet {
+            CacheHandler.shared.set(plan, forKey: "plan")
+        }
     }
 
     /// Cached copy of today’s tips.
     ///
     /// - Stored in `CacheHandler` under the key `"tips"`.
     /// - If not available, fetch fresh tips via ``fetchTips(from:)``.
-    var tips: Tip? {
-        get { CacheHandler.shared.get(forKey: "tips") }
-        set { CacheHandler.shared.set(newValue, forKey: "tips") }
+    var tips: Tips? {
+        didSet {
+            CacheHandler.shared.set(tips, forKey: "tips")
+        }
     }
 
     /// Fetches the user’s plan, either from cache or the backend.
@@ -57,7 +59,9 @@ class ContentHandler {
     /// - Returns: A `MyPlan` object. If the server fetch fails, returns an empty plan.
     @discardableResult
     func fetchPlan(from userMedical: UserMedical) async -> MyPlan {
-        if let plan { return plan }
+        if let plan: MyPlan = CacheHandler.shared.get(forKey: "plan") {
+            return plan
+        }
 
         let plan: MyPlan? = await NetworkManager.shared.get(url: Endpoint.plan.urlString)
         guard let plan else {
@@ -72,15 +76,17 @@ class ContentHandler {
     ///
     /// - Parameter user: The current user (not currently used but
     ///   provided for future API personalization).
-    /// - Returns: A `Tip` object. If the server fetch fails, returns a fallback `Tip`
+    /// - Returns: A `Tips` object. If the server fetch fails, returns a fallback `Tips`
     ///   with default error messages.
     @discardableResult
-    func fetchTips(from user: User) async -> Tip {
-        if let tips { return tips }
+    func fetchTips(from user: User) async -> Tips {
+        if let tips: Tips = CacheHandler.shared.get(forKey: "tips") {
+            return tips
+        }
 
-        let tips: Tip? = await NetworkManager.shared.get(url: Endpoint.tips.urlString)
+        let tips: Tips? = await NetworkManager.shared.get(url: Endpoint.tips.urlString)
         guard let tips else {
-            return Tip(
+            return Tips(
                 todaysFocus: "Unable to fetch Today's Focus from the server",
                 dailyTip: "Unable to fetch Daily Tip from the server"
             )
@@ -152,13 +158,13 @@ class ContentHandler {
     // MARK: Private
 
     /// Retrieves tips from `UserDefaults`, if available.
-    private func fetchFromUserDefaults() -> Tip? {
+    private func fetchFromUserDefaults() -> Tips? {
         guard let data = UserDefaults.standard.data(forKey: "tips") else { return nil }
         return data.decodeUsingJSONDecoder()
     }
 
     /// Persists tips to `UserDefaults` for offline access.
-    private func saveToUserDefaults(_ tips: Tip) {
+    private func saveToUserDefaults(_ tips: Tips) {
         guard let data = tips.toData() else { return }
         UserDefaults.standard.set(data, forKey: "tips")
     }

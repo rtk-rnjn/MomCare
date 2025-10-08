@@ -1,8 +1,6 @@
 import UIKit
 import OSLog
 
-private let logger: Logger = .init(subsystem: "com.MomCare.DietTableViewController", category: "ViewController")
-
 class DietTableViewController: UITableViewController {
 
     // MARK: Internal
@@ -18,7 +16,6 @@ class DietTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         registerCells()
-        logger.debug("All cells registered successfully")
 
         tableView.showsVerticalScrollIndicator = false
     }
@@ -75,12 +72,10 @@ class DietTableViewController: UITableViewController {
 
         Task {
             guard let user = MomCareUser.shared.user, let medical = user.medicalData else {
-                logger.error("User or medical data not found")
                 return
             }
 
-            if user.plan.isEmpty() {
-                logger.debug("Fetching new plan for user: \(user.emailAddress)")
+            if user.plan.isEmpty() || user.plan.isOutdated() {
                 let meals = await ContentHandler.shared.fetchPlan(from: medical)
                 MomCareUser.shared.user?.plan = meals
             }
@@ -245,7 +240,6 @@ class DietTableViewController: UITableViewController {
     }
 
     private func refreshHandler(with indexPaths: [IndexPath]? = nil) {
-        logger.debug("Refreshing diet table view data")
         if let indexPaths {
             tableView.reloadRows(at: indexPaths, with: .automatic)
         } else {

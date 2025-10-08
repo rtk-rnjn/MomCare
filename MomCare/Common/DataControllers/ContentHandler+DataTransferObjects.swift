@@ -12,7 +12,7 @@ import Foundation
 /// This model is typically returned from the backend as part of the
 /// "Daily Tips" or "Focus of the Day" API.
 /// - Important: Uses snake_case keys when decoded from JSON.
-struct Tip: Codable, Sendable {
+struct Tips: Codable, Sendable {
 
     /// Coding keys mapping the Swift properties to the backend JSON keys.
     enum CodingKeys: String, CodingKey {

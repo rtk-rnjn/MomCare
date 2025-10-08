@@ -11,7 +11,7 @@ class FocusCardCollectionViewCell: UICollectionViewCell {
 
     @IBOutlet var currentFocusLabel: UILabel!
 
-    func updateElements(with tip: Tip) {
+    func updateElements(with tip: Tips) {
         currentFocusLabel.text = tip.todaysFocus
     }
 }

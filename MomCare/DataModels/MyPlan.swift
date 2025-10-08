@@ -120,10 +120,10 @@ struct MyPlan: Codable, Sendable, Equatable {
     func isOutdated() -> Bool {
         guard let createdAt else { return false }
 
-        let calendar = Calendar.current
-        let yesterday = calendar.date(byAdding: .day, value: -1, to: createdAt)
-        let now = Date()
-        return calendar.isDate(createdAt, inSameDayAs: yesterday!) || createdAt < now
+        if abs(createdAt.timeIntervalSince(createdAt)) > 86400 {
+            return true
+        }
+        return false
     }
 
     subscript(index: Int) -> [FoodItem] {
