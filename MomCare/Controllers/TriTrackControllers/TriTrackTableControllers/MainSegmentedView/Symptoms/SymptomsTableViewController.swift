@@ -45,7 +45,7 @@ class SymptomsTableViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
-        let event = events[indexPath.row]
+        let event = events[indexPath.section]
 
         return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in
             let editAction = UIAction(title: "Edit", image: UIImage(systemName: "pencil")) { _ in
