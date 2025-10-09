@@ -84,7 +84,8 @@ class SearchViewController: UIViewController, UISearchResultsUpdating, UISearchC
             DispatchQueue.main.async {
                 self.tableView.reloadData()
             }
-        } }
+        }
+    }
 
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         searchBar.text = ""
@@ -106,14 +107,23 @@ class SearchViewController: UIViewController, UISearchResultsUpdating, UISearchC
     private func searchFood(query: String) async {
         searchedFood = .init()
 
+        if query.isEmpty {
+            return
+        }
+
         await ContentHandler.shared.searchStreamedFoodName(with: query) { foodItem in
             DispatchQueue.main.async {
                 self.searchedFood.append(foodItem)
                 self.tableView.reloadData()
+
+//                self.fetchImage(for: foodItem)
             }
         }
     }
 
+    private func fetchImage(for foodItem: FoodItem) {
+        // TODO: Implement image fetching logic if needed
+    }
 }
 
 extension SearchViewController: UITableViewDelegate, UITableViewDataSource {

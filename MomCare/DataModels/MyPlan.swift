@@ -54,7 +54,7 @@ struct FoodItem: Codable, Sendable, Equatable {
     }
 
     let name: String
-    let imageUri: String?
+    var imageUri: String?
 
     var calories: Double = 0
     var protein: Double = 0

@@ -136,6 +136,10 @@ class ContentHandler {
         )
     }
 
+    func fetchFoodImage(with query: String) async -> String? {
+        await NetworkManager.shared.get(url: Endpoint.searchFoodImage.urlString(with: query))
+    }
+
     /// Fetches a motivational quote for a given mood.
     ///
     /// - Parameter mood: The user’s current `MoodType`.

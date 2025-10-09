@@ -9,6 +9,8 @@ import UIKit
 
 class MoodsViewController: UIViewController {
 
+    // MARK: Internal
+
     @IBOutlet var rightEyeView: SemiCircleAnimationView!
     @IBOutlet var leftEyeView: SemiCircleAnimationView!
     @IBOutlet var smileView: UIView!
@@ -25,6 +27,10 @@ class MoodsViewController: UIViewController {
 
         makeHappyFace()
         makeSmile()
+
+        if #available(iOS 26.0, *) {
+            slider.trackConfiguration = .init(numberOfTicks: 4)
+        }
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -41,11 +47,21 @@ class MoodsViewController: UIViewController {
     }
 
     @IBAction func sliderValueChanged(_ sender: UISlider) {
-        slider.value = Float(round(sender.value))
+        let sliderValue = Float(round(sender.value))
 
+        if isAnimating { return }
+        animateEyes(for: sliderValue)
+    }
+
+    // MARK: Private
+
+    private var isAnimating = false
+
+    private func animateEyes(for value: Float) {
+        isAnimating = true
         UIView.animate(withDuration: 0.5) {
             self.resetTransformations()
-            switch sender.value {
+            switch value {
             case 0..<1:
                 self.makeHappyFace()
                 self.moodLabel.text = "Happy"
@@ -70,5 +86,6 @@ class MoodsViewController: UIViewController {
                 break
             }
         }
+        isAnimating = false
     }
 }
