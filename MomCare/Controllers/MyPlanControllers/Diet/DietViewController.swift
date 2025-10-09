@@ -106,13 +106,8 @@ class DietViewController: UIViewController {
     }
 
     func refreshStats() {
-        logger.debug("Refreshing diet progress bars and caloric progress")
         prepareProgressBars([proteinProgressBar, carbsProgressBar, fatsProgressBar])
-
-        logger.debug("Preparing caloric progress and nutrient progress bars")
         prepareCaloricProgress()
-
-        logger.debug("Preparing nutrient progress bars")
         prepareProgress()
     }
 

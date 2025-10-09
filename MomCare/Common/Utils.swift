@@ -124,7 +124,7 @@ enum Utils {
     ///
     /// - Parameter dueDate: The expected delivery date.
     /// - Returns: A tuple `(week, day, trimester)` if the pregnancy is ongoing, otherwise `nil`.
-    static func pregnancyWeekAndDay(dueDate: Date) -> (week: Int, day: Int, trimester: String)? { // swiftlint:disable:this large_tuple
+    static func pregnancyWeekAndDay(dueDate: Date) -> (week: Int, day: Int, trimester: String)? {
         let calendar = Calendar.current
         let today = Date()
 

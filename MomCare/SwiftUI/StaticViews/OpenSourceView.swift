@@ -30,38 +30,38 @@ struct OpenSourceView: View {
                         }
                     }
 
-                VStack(alignment: .leading, spacing: 12) {
-                    Text("Project Report")
-                        .font(.title2)
-                        .fontWeight(.bold)
-                        .foregroundColor(brandPink)
+                    VStack(alignment: .leading, spacing: 12) {
+                        Text("Project Report")
+                            .font(.title2)
+                            .fontWeight(.bold)
+                            .foregroundColor(brandPink)
 
-                    ForEach(LicenseData.projectReport) { report in
-                        LicenseCardView(
-                            name: report.name,
-                            license: report.license,
-                            urlString: report.urlString
-                        )
+                        ForEach(LicenseData.projectReport) { report in
+                            LicenseCardView(
+                                name: report.name,
+                                license: report.license,
+                                urlString: report.urlString
+                            )
+                        }
+                    }
+
+                    VStack(alignment: .leading, spacing: 12) {
+                        Text("Third-Party Libraries")
+                            .font(.title2)
+                            .fontWeight(.bold)
+                            .foregroundColor(brandPink)
+
+                        ForEach(LicenseData.thirdPartyLicenses) { license in
+                            LicenseCardView(
+                                name: license.name,
+                                license: license.license,
+                                urlString: license.urlString
+                            )
+                        }
                     }
                 }
-
-                VStack(alignment: .leading, spacing: 12) {
-                    Text("Third-Party Libraries")
-                        .font(.title2)
-                        .fontWeight(.bold)
-                        .foregroundColor(brandPink)
-
-                    ForEach(LicenseData.thirdPartyLicenses) { license in
-                        LicenseCardView(
-                            name: license.name,
-                            license: license.license,
-                            urlString: license.urlString
-                        )
-                    }
-                }
-            }
-            .padding(.horizontal, 30)
-            .padding(.top, 30)
+                .padding(.horizontal, 30)
+                .padding(.top, 30)
             }
         }
         .navigationBarTitleDisplayMode(.inline)

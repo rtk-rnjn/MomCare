@@ -36,7 +36,7 @@ class SearchViewController: UIViewController, UISearchResultsUpdating, UISearchC
 
     var completionHandlerOnFoodItemAdd: (() -> Void)?
 
-    var searchedFood: [FoodItem] = []
+    var searchedFood: [FoodItem] = .init()
 
     var mealName: String?
 
@@ -88,14 +88,14 @@ class SearchViewController: UIViewController, UISearchResultsUpdating, UISearchC
 
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         searchBar.text = ""
-        searchedFood = []
+        searchedFood = .init()
         tableView.reloadData()
     }
 
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         searchBar.resignFirstResponder()
         searchBar.text = ""
-        searchedFood = []
+        searchedFood = .init()
         tableView.reloadData()
     }
 
@@ -104,7 +104,7 @@ class SearchViewController: UIViewController, UISearchResultsUpdating, UISearchC
     private var debouncer: Debouncer = .init()
 
     private func searchFood(query: String) async {
-        searchedFood = []
+        searchedFood = .init()
 
         await ContentHandler.shared.searchStreamedFoodName(with: query) { foodItem in
             DispatchQueue.main.async {

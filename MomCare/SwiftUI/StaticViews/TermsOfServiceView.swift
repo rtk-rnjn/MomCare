@@ -12,59 +12,59 @@ struct TermsOfServiceView: View {
                         ZStack {
                             RoundedRectangle(cornerRadius: 12, style: .continuous)
                                 .fill(Color(hex: "FFFFFF").opacity(0.12))
-                                                            .frame(width: 60, height: 60)
-                                                        Image(systemName: "text.page")
-                                                            .font(.system(size: 60, weight: .bold))
-                                                            .foregroundColor(accentColor)
+                                .frame(width: 60, height: 60)
+                            Image(systemName: "text.page")
+                                .font(.system(size: 60, weight: .bold))
+                                .foregroundColor(accentColor)
                         }
 
                         Text("Good rules create a space where everyone can feel safe and respected.")
                             .font(.system(size: 28, weight: .semibold, design: .default))
-                                .tracking(-0.5)
-                                .multilineTextAlignment(.center)
-                                .lineSpacing(0)
+                            .tracking(-0.5)
+                            .multilineTextAlignment(.center)
+                            .lineSpacing(0)
 
                         Text("Clarity is the foundation of trust. Our terms are designed to be clear, so our relationship can be strong.")
                             .font(.subheadline)
-                                                    .foregroundColor(.primary)
-                                                    .multilineTextAlignment(.center)
-                                            }
-                                            .padding(.top, 32)
-                                            .padding(.bottom, 8)
+                            .foregroundColor(.primary)
+                            .multilineTextAlignment(.center)
                     }
-                    .frame(maxWidth: .infinity)
-                    .padding(.vertical, 24)
+                    .padding(.top, 32)
+                    .padding(.bottom, 8)
+                }
+                .frame(maxWidth: .infinity)
+                .padding(.vertical, 24)
 
-                    Divider()
+                Divider()
 
-                    ForEach(legalSections) { section in
-                        switch section.type {
-                        case let .standard(icon, title, content):
-                            LegalSectionView(iconName: icon, title: title, content: content, accentColor: accentColor)
-                        case .eligibility:
-                            EligibilitySectionView(accentColor: accentColor)
-                        case .overview:
-                            OverviewOfServicesView(accentColor: accentColor)
-                        case .thirdParty:
-                            ThirdPartyServicesView(accentColor: accentColor)
-                        }
+                ForEach(legalSections) { section in
+                    switch section.type {
+                    case let .standard(icon, title, content):
+                        LegalSectionView(iconName: icon, title: title, content: content, accentColor: accentColor)
+                    case .eligibility:
+                        EligibilitySectionView(accentColor: accentColor)
+                    case .overview:
+                        OverviewOfServicesView(accentColor: accentColor)
+                    case .thirdParty:
+                        ThirdPartyServicesView(accentColor: accentColor)
+                    }
 
-                        if section.id != legalSections.last?.id {
-                            Divider().padding(.vertical, 8)
-                        }
+                    if section.id != legalSections.last?.id {
+                        Divider().padding(.vertical, 8)
                     }
                 }
-                .padding(.horizontal, 24)
-                .padding(.bottom, 40)
             }
+            .padding(.horizontal, 24)
+            .padding(.bottom, 40)
         }
+    }
 
     // MARK: Private
 
     private let accentColor: Color = .CustomColors.mutedRaspberry
     private let legalSections: [LegalSectionItem] = TermsData.allSections
 
-    }
+}
 
 struct LegalSectionView: View {
     let iconName: String
@@ -205,8 +205,8 @@ struct ThirdPartyServicesView: View {
             }
 
             VStack(alignment: .leading, spacing: 10) {
-                 Text("Use of these services is subject to their respective privacy policies and terms of use. By using MomCare, you acknowledge and consent to the processing of relevant data by these services, solely for the purposes of enhancing your experience and delivering the app’s features.")
-                 Text("We do not share or sell your data to third parties for advertising or marketing purposes.")
+                Text("Use of these services is subject to their respective privacy policies and terms of use. By using MomCare, you acknowledge and consent to the processing of relevant data by these services, solely for the purposes of enhancing your experience and delivering the app’s features.")
+                Text("We do not share or sell your data to third parties for advertising or marketing purposes.")
             }
             .font(.subheadline)
             .foregroundColor(.primary)

@@ -13,7 +13,7 @@ class AllSymptomsTableViewController: UITableViewController {
 
     // MARK: Internal
 
-    var symptoms: [EventInfo] = []
+    var symptoms: [EventInfo] = .init()
 
     override func viewDidLoad() {
         super.viewDidLoad()

@@ -18,9 +18,9 @@ class SignUpExtendedTableViewController: UITableViewController {
     var userMedical: UserMedical?
     var multipleSelectorTableViewController: MultipleSelectorTableViewController?
 
-    var intolerances: [String] = []
-    var preExistingConditions: [String] = []
-    var dietaryPreferences: [String] = []
+    var intolerances: [String] = .init()
+    var preExistingConditions: [String] = .init()
+    var dietaryPreferences: [String] = .init()
 
     override func viewDidLoad() {
         super.viewDidLoad()

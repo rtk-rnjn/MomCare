@@ -40,9 +40,9 @@ extension TriTrackViewController {
     }
 
     func updateView(with index: Int? = nil) {
-        if index != nil {
-            currentSegmentValue = index!
-            triTrackSegmentedControl.selectedSegmentIndex = index!
+        if let index {
+            currentSegmentValue = index
+            triTrackSegmentedControl.selectedSegmentIndex = index
             triTrackSegmentedControl.sendActions(for: .valueChanged)
         } else {
             currentSegmentValue = triTrackSegmentedControl.selectedSegmentIndex

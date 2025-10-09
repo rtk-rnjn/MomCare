@@ -50,10 +50,10 @@ enum HealthProfileType: String {
 }
 
 enum MoodType: String, Codable, Sendable {
-   case happy = "Happy"
-   case sad = "Sad"
-   case stressed = "Stressed"
-   case angry = "Angry"
+    case happy = "Happy"
+    case sad = "Sad"
+    case stressed = "Stressed"
+    case angry = "Angry"
 }
 
 struct MoodHistory: Codable, Sendable, Equatable {
@@ -92,18 +92,18 @@ struct User: Codable, Sendable, Equatable {
     var phoneNumber: String
     var medicalData: UserMedical?
 
-    var moodHistory: [MoodHistory] = []
+    var moodHistory: [MoodHistory] = .init()
 
     var plan: MyPlan = .init()
-    var exercises: [Exercise] = []
-    var history: [History] = []
+    var exercises: [Exercise] = .init()
+    var history: [History] = .init()
 
     var fullName: String {
         let fullName = "\(firstName) \(lastName ?? "")"
         return fullName.trimmingCharacters(in: .whitespaces)
     }
 
-    var pregancyData: (week: Int, day: Int, trimester: String)? { // swiftlint:disable:this large_tuple
+    var pregancyData: (week: Int, day: Int, trimester: String)? {
         return Utils.pregnancyWeekAndDay(dueDate: medicalData?.dueDate ?? .init())
     }
 
@@ -130,8 +130,8 @@ struct History: Codable, Sendable, Equatable {
 
     var date: Date = .init()
     var plan: MyPlan?
-    var exercises: [Exercise] = []
-    var moods: [MoodHistory] = []
+    var exercises: [Exercise] = .init()
+    var moods: [MoodHistory] = .init()
 
     var completionPercentage: Double {
         return exercises.map { $0.completionPercentage }.reduce(0, +) / Double(exercises.count)
@@ -155,7 +155,7 @@ struct UserMedical: Codable, Sendable, Equatable {
     var prePregnancyWeight: Double
     var currentWeight: Double
     var dueDate: Date?
-    var preExistingConditions: [PreExistingCondition] = []
-    var foodIntolerances: [Intolerance] = []
-    var dietaryPreferences: [DietaryPreference] = []
+    var preExistingConditions: [PreExistingCondition] = .init()
+    var foodIntolerances: [Intolerance] = .init()
+    var dietaryPreferences: [DietaryPreference] = .init()
 }

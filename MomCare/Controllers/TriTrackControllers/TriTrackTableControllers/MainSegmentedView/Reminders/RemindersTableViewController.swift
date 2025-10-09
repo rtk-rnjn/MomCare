@@ -14,7 +14,7 @@ class RemindersTableViewController: UITableViewController {
 
     var eventsViewController: EventsViewController?
 
-    var reminders: [ReminderInfo] = []
+    var reminders: [ReminderInfo] = .init()
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)

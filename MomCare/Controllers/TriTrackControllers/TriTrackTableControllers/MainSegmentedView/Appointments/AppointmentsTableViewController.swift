@@ -14,7 +14,7 @@ class AppointmentsTableViewController: UITableViewController {
 
     var delegate: EventKitHandlerUIDelegate = .init()
     var eventsViewController: EventsViewController?
-    var events: [EventInfo] = []
+    var events: [EventInfo] = .init()
 
     override func viewDidLoad() {
         super.viewDidLoad()

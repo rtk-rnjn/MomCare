@@ -86,10 +86,10 @@ struct MyPlan: Codable, Sendable, Equatable {
         case createdAt = "created_at"
     }
 
-    var breakfast: [FoodItem] = []
-    var lunch: [FoodItem] = []
-    var snacks: [FoodItem] = []
-    var dinner: [FoodItem] = []
+    var breakfast: [FoodItem] = .init()
+    var lunch: [FoodItem] = .init()
+    var snacks: [FoodItem] = .init()
+    var dinner: [FoodItem] = .init()
 
     var createdAt: Date?
 
@@ -120,10 +120,10 @@ struct MyPlan: Codable, Sendable, Equatable {
     func isOutdated() -> Bool {
         guard let createdAt else { return false }
 
-        let calendar = Calendar.current
-        let yesterday = calendar.date(byAdding: .day, value: -1, to: createdAt)
-        let now = Date()
-        return calendar.isDate(createdAt, inSameDayAs: yesterday!) || createdAt < now
+        if abs(createdAt.timeIntervalSince(createdAt)) > 86400 {
+            return true
+        }
+        return false
     }
 
     subscript(index: Int) -> [FoodItem] {
@@ -173,10 +173,10 @@ struct Exercise: Codable, Sendable, Equatable {
     var type: ExerciseType
     var duration: TimeInterval?
     var description: String
-    var tags: [String] = []
+    var tags: [String] = .init()
     var level: Difficulty = .beginner
     var week: String
-    var targetedBodyParts: [String] = []
+    var targetedBodyParts: [String] = .init()
     var durationCompleted: TimeInterval = 0
 
     var assignedAt: Date

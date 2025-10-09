@@ -18,7 +18,7 @@ class DashboardViewController: UIViewController, UICollectionViewDataSource, UIC
     var profileButton: UIButton?
 
     var dataFetched: Bool = false
-    var tip: Tip?
+    var tips: Tips?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -26,15 +26,20 @@ class DashboardViewController: UIViewController, UICollectionViewDataSource, UIC
         Task {
             await HealthKitHandler.shared.requestAccess()
             await requestAccessForNotification()
-            await self.loadUser()
 
             if let user = MomCareUser.shared.user {
-                self.tip = await ContentHandler.shared.fetchTips(from: user)
-
-                DispatchQueue.main.async {
-                    self.dataFetched = true
-                    self.collectionView.reloadData()
+                if let tips = ContentHandler.shared.tips {
+                    self.tips = tips
+                } else {
+                    self.tips = await ContentHandler.shared.fetchTips(from: user)
                 }
+            } else {
+                await self.loadUser()
+            }
+
+            DispatchQueue.main.async {
+                self.dataFetched = true
+                self.collectionView.reloadData()
             }
         }
     }

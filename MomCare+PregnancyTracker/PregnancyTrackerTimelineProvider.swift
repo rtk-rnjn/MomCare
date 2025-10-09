@@ -12,7 +12,7 @@ struct TriTrackEntry: TimelineEntry {
 
     let week: Int
     let day: Int
-    var reminders: [ReminderInfo] = []
+    var reminders: [ReminderInfo] = .init()
 
     var trimester: String
 

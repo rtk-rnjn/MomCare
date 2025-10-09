@@ -118,7 +118,7 @@ class SignUpDetailsTableViewController: UITableViewController, UIViewControllerT
     }
 
     @IBAction func nextButtonTapped(_ sender: UIButton) {
-        var errors: [(String, String)] = []
+        var errors = [(String, String)]()
         if height == nil {
             errors.append(("Height", "Please select your height"))
         }

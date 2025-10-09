@@ -17,17 +17,17 @@ struct DisclaimersView: View {
                     }
                     Text("MomCare supports you, but your doctor knows you best!")
                         .font(.system(size: 28, weight: .semibold, design: .default))
-                            .tracking(-0.5)
-                            .multilineTextAlignment(.center)
-                            .lineSpacing(0)
+                        .tracking(-0.5)
+                        .multilineTextAlignment(.center)
+                        .lineSpacing(0)
 
                     Text("Your safety and understanding are important to us. Please review the information below before using MomCare+.")
                         .font(.subheadline)
-                                                .foregroundColor(.primary)
-                                                .multilineTextAlignment(.center)
-                                        }
-                                        .padding(.top, 32)
-                                        .padding(.bottom, 8)
+                        .foregroundColor(.primary)
+                        .multilineTextAlignment(.center)
+                }
+                .padding(.top, 32)
+                .padding(.bottom, 8)
 
                 Divider()
 
@@ -52,12 +52,12 @@ struct DisclaimersView: View {
                 }
                 .padding(.top, 16)
             }
-                            .padding(.horizontal, 30)
-                            .padding(.bottom, 16)
-                        }
-                        .background(Color(.systemBackground))
-                    }
-                }
+            .padding(.horizontal, 30)
+            .padding(.bottom, 16)
+        }
+        .background(Color(.systemBackground))
+    }
+}
 
 struct DisclaimerSection: View {
     let icon: String

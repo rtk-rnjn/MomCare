@@ -19,9 +19,7 @@ extension HealthKitHandler {
     ///
     /// - Parameter completionHandler: Closure called with the total step count as `Double`.
     func readStepCount(completionHandler: @escaping @Sendable (Double) -> Void) {
-        logger.debug("Reading step count...")
         fetchHealthData(quantityTypeIdentifier: .stepCount, unit: .count()) {
-            logger.debug("Step count fetched: \($0)")
             completionHandler($0)
         }
     }
@@ -30,9 +28,7 @@ extension HealthKitHandler {
     ///
     /// - Parameter completionHandler: Closure called with the calories burned as `Double`.
     func readCaloriesBurned(completionHandler: @escaping @Sendable (Double) -> Void) {
-        logger.debug("Reading calories burned...")
         fetchHealthData(quantityTypeIdentifier: .activeEnergyBurned, unit: .kilocalorie()) {
-            logger.debug("Calories burned fetched: \($0)")
             completionHandler($0)
         }
     }
@@ -41,9 +37,7 @@ extension HealthKitHandler {
     ///
     /// - Parameter completionHandler: Closure called with the calories consumed as `Double`.
     func readCaloriesIntake(completionHandler: @escaping @Sendable (Double) -> Void) {
-        logger.debug("Reading calories intake...")
         fetchHealthData(quantityTypeIdentifier: .dietaryEnergyConsumed, unit: .kilocalorie()) {
-            logger.debug("Calories intake fetched: \($0)")
             completionHandler($0)
         }
     }
@@ -52,9 +46,7 @@ extension HealthKitHandler {
     ///
     /// - Parameter completionHandler: Closure called with total fat in grams as `Double`.
     func readTotalFat(completionHandler: @escaping @Sendable (Double) -> Void) {
-        logger.debug("Reading total fat...")
         fetchHealthData(quantityTypeIdentifier: .dietaryFatTotal, unit: .gram()) {
-            logger.debug("Total fat fetched: \($0)")
             completionHandler($0)
         }
     }
@@ -63,9 +55,7 @@ extension HealthKitHandler {
     ///
     /// - Parameter completionHandler: Closure called with total protein in grams as `Double`.
     func readTotalProtein(completionHandler: @escaping @Sendable (Double) -> Void) {
-        logger.debug("Reading total protein...")
         fetchHealthData(quantityTypeIdentifier: .dietaryProtein, unit: .gram()) {
-            logger.debug("Total protein fetched: \($0)")
             completionHandler($0)
         }
     }
@@ -74,9 +64,7 @@ extension HealthKitHandler {
     ///
     /// - Parameter completionHandler: Closure called with total carbohydrates in grams as `Double`.
     func readTotalCarbs(completionHandler: @escaping @Sendable (Double) -> Void) {
-        logger.debug("Reading total carbs...")
         fetchHealthData(quantityTypeIdentifier: .dietaryCarbohydrates, unit: .gram()) {
-            logger.debug("Total carbohydrates fetched: \($0)")
             completionHandler($0)
         }
     }
@@ -86,7 +74,6 @@ extension HealthKitHandler {
     /// - Parameter completionHandler: Closure called with total workout duration in minutes as `Double`.
     /// - Note: This method sums up all workouts recorded in HealthKit for the past day.
     func readWorkout(completionHandler: @escaping @Sendable (Double) -> Void) {
-        logger.debug("Reading workout data...")
         let workoutType = HKWorkoutType.workoutType()
         let now = Date()
         let startDate = Calendar.current.date(byAdding: .day, value: -1, to: now)
@@ -104,7 +91,6 @@ extension HealthKitHandler {
 
             // Sum all workout durations and convert seconds to minutes
             let totalMinutes = (samples as? [HKWorkout])?.reduce(0) { $0 + ($1.duration / 60) } ?? 0
-            logger.debug("Workout duration fetched: \(totalMinutes) minutes")
             completionHandler(totalMinutes)
         }
 

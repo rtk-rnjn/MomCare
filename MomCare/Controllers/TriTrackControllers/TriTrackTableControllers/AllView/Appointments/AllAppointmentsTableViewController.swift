@@ -13,7 +13,7 @@ class AllAppointmentsTableViewController: UITableViewController {
     // MARK: Internal
 
     var searchController: UISearchController = .init(searchResultsController: nil)
-    var events: [EventInfo] = []
+    var events: [EventInfo] = .init()
     var groupedEvents: [Date: [EventInfo]] = [:]
 
     var delegate: EventKitHandlerUIDelegate = .init()
@@ -141,7 +141,7 @@ class AllAppointmentsTableViewController: UITableViewController {
         for event in events {
             let date = Calendar.current.startOfDay(for: event.startDate)
             if groupedEvents[date] == nil {
-                groupedEvents[date] = []
+                groupedEvents[date] = .init()
             }
             groupedEvents[date]?.append(event)
         }

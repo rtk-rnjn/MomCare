@@ -55,7 +55,7 @@ class PickerViewController: UIViewController, UIPickerViewDelegate, UIPickerView
 
     // MARK: Private
 
-    private var sortedOptions: [(key: String, value: String)] = []
+    private var sortedOptions: [(key: String, value: String)] = .init()
     private var selectedOption: (key: String, value: String)?
 
     private func sortOptions(_ dict: [String: String]) -> [(key: String, value: String)] {

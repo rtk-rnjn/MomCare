@@ -137,7 +137,7 @@ class MusicPlayerHandler {
     ///
     /// - Parameter song: The `Song` object containing metadata and artwork.
     func updateNowPlayingInfo(_ song: Song) async {
-        var nowPlayingInfo: [String: Any] = [:]
+        var nowPlayingInfo = [String: Any]()
 
         if let title = song.metadata?.title {
             nowPlayingInfo[MPMediaItemPropertyTitle] = title

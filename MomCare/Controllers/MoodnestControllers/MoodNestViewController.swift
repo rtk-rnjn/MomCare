@@ -14,7 +14,7 @@ class MoodNestViewController: UIViewController, UICollectionViewDataSource, UICo
     @IBOutlet var collectionView: UICollectionView!
     @IBOutlet var outerView: UIView!
 
-    var playlists: [(imageUri: String, label: String)] = []
+    var playlists: [(imageUri: String, label: String)] = .init()
     var playlistsFetched: Bool = false
 
     var mood: MoodType?

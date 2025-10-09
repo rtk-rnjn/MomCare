@@ -12,7 +12,7 @@ class AllRemindersTableViewController: UITableViewController {
 
     // MARK: Internal
 
-    var reminders: [ReminderInfo] = []
+    var reminders: [ReminderInfo] = .init()
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)

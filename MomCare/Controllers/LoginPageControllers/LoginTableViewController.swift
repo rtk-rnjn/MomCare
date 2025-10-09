@@ -42,16 +42,14 @@ class LoginTableViewController: UITableViewController, UITextFieldDelegate {
     @IBAction func textFieldChanged(_ sender: UITextField) {}
 
     @IBAction func signInButtonTapped(_ sender: UIButton) {
-        // swiftlint:disable large_tuple
         view.endEditing(true)
 
         let requiredFields: [(UITextField, String, String)] = [
             (emailAddressField, "Email Required", "Please enter your email."),
             (passwordField, "Password Required", "Please enter your password.")
         ]
-        // swiftlint:enable large_tuple
 
-        var errors: [[String]] = []
+        var errors = [[String]]()
 
         for (field, title, message) in requiredFields where (field.text ?? "").isEmpty {
             errors.append([title, message])

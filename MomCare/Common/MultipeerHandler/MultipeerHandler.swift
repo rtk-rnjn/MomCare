@@ -30,7 +30,7 @@ class MultipeerHandler: NSObject {
     var onPeerDisconnected: ((MCPeerID) -> Void)?
 
     /// Callbacks to be invoked when data is received. Each callback takes the received Data and the MCPeerID of the sender as parameters.
-    var callbacks: [(Data, MCPeerID) -> Void] = []
+    var callbacks: [(Data, MCPeerID) -> Void] = .init()
 
     var session: MCSession?
     var advertiser: MCNearbyServiceAdvertiser?
