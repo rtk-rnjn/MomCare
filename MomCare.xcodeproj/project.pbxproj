@@ -16,13 +16,11 @@
 		05E7F9672D37748E00F4D81E /* .swiftlint.yml in Resources */ = {isa = PBXBuildFile; fileRef = 05E7F9662D37748300F4D81E /* .swiftlint.yml */; };
 		3A3E589E2E7A9DD5005BD5BC /* Watch.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 3A3E58942E7A9DD3005BD5BC /* Watch.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		3A3E58CD2E7B2AF9005BD5BC /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 3A3E58CC2E7B2AF9005BD5BC /* RealmSwift */; };
-		3A3E58CE2E7B2AF9005BD5BC /* RealmSwift in Embed Frameworks */ = {isa = PBXBuildFile; productRef = 3A3E58CC2E7B2AF9005BD5BC /* RealmSwift */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		3A3E58D12E7B2B15005BD5BC /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3A3E58D02E7B2B15005BD5BC /* SwiftUI.framework */; };
 		3A3E635E2E7D462D005BD5BC /* ActivityKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3A3E635D2E7D462D005BD5BC /* ActivityKit.framework */; };
 		3A3E635F2E7D46BA005BD5BC /* ActivityKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3A3E635D2E7D462D005BD5BC /* ActivityKit.framework */; };
 		3A3E636D2E7D4CAE005BD5BC /* Intents.appex in Embed ExtensionKit Extensions */ = {isa = PBXBuildFile; fileRef = 3A3E63642E7D4CAD005BD5BC /* Intents.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		3A3E637C2E7D5059005BD5BC /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 3A3E637B2E7D5059005BD5BC /* RealmSwift */; };
-		3A3E637D2E7D5059005BD5BC /* RealmSwift in Embed Frameworks */ = {isa = PBXBuildFile; productRef = 3A3E637B2E7D5059005BD5BC /* RealmSwift */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		F59454F42DEDACAA00002917 /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = F59454F32DEDACAA00002917 /* RealmSwift */; };
 		F59454F52DEDACAA00002917 /* RealmSwift in Embed Frameworks */ = {isa = PBXBuildFile; productRef = F59454F32DEDACAA00002917 /* RealmSwift */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		F5F1D6122D739C6A00F65BA7 /* LNPopupController in Frameworks */ = {isa = PBXBuildFile; productRef = F5F1D6112D739C6A00F65BA7 /* LNPopupController */; };
@@ -103,7 +101,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				3A3E58CE2E7B2AF9005BD5BC /* RealmSwift in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -125,7 +122,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				3A3E637D2E7D5059005BD5BC /* RealmSwift in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;

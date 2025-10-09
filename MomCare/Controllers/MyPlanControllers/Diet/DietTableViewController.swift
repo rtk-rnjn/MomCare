@@ -203,7 +203,6 @@ class DietTableViewController: UITableViewController {
         return UIContextMenuConfiguration(identifier: nil, previewProvider: previewProvider) { _ in
             let deleteAction = UIAction(title: "Delete", image: UIImage(systemName: "trash"), attributes: .destructive) { _ in
                 let actionHandlers = [
-                    AlertActionHandler(title: "Cancel", style: .cancel, handler: nil),
                     AlertActionHandler(title: "Delete", style: .destructive) { _ in
                         self.deleteFood(at: indexPath)
                         self.refreshHandler()
