@@ -63,6 +63,7 @@ struct MoodHistory: Codable, Sendable, Equatable {
 
 struct User: Codable, Sendable, Equatable {
     enum CodingKeys: String, CodingKey {
+        case id
         case firstName = "first_name"
         case lastName = "last_name"
         case emailAddress = "email_address"
@@ -76,6 +77,8 @@ struct User: Codable, Sendable, Equatable {
         case exercises
         case history
     }
+
+    var id: String = UUID().uuidString
 
     var firstName: String
     var lastName: String?
