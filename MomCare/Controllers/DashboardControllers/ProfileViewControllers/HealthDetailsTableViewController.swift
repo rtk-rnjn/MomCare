@@ -24,7 +24,7 @@ class HealthDetailsTableViewController: UITableViewController {
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "segueShowMultipleSelectorTableViewController", let destination = segue.destination as? MultipleSelectorTableViewController {
-            if let sender = sender as? (options: [String], button: UIButton, category: HealthProfileType) { // swiftlint:disable:this large_tuple
+            if let sender = sender as? (options: [String], button: UIButton, category: HealthProfileType) {
                 destination.options = sender.options
 
                 switch sender.category {

@@ -13,8 +13,14 @@ class PregnancyProgressViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Create the SwiftUI view
-        let pregnancyProgressView = PregnancyProgressView()
+        let trimesterData = TriTrackData.getTrimesterData(for: MomCareUser.shared.user?.pregancyData?.week ?? 1)
+        let pregnancyData = MomCareUser.shared.user?.pregancyData
+
+        guard let trimesterData, let pregnancyData else {
+            return
+        }
+
+        let pregnancyProgressView = PregnancyProgressView(trimesterData: trimesterData, pregnancyData: pregnancyData)
         let hostingController = UIHostingController(rootView: pregnancyProgressView)
 
         // Add the hosting controller as a child

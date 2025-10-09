@@ -50,10 +50,10 @@ enum HealthProfileType: String {
 }
 
 enum MoodType: String, Codable, Sendable {
-   case happy = "Happy"
-   case sad = "Sad"
-   case stressed = "Stressed"
-   case angry = "Angry"
+    case happy = "Happy"
+    case sad = "Sad"
+    case stressed = "Stressed"
+    case angry = "Angry"
 }
 
 struct MoodHistory: Codable, Sendable, Equatable {
@@ -100,7 +100,7 @@ struct User: Codable, Sendable, Equatable {
         return fullName.trimmingCharacters(in: .whitespaces)
     }
 
-    var pregancyData: (week: Int, day: Int, trimester: String)? { // swiftlint:disable:this large_tuple
+    var pregancyData: (week: Int, day: Int, trimester: String)? {
         return Utils.pregnancyWeekAndDay(dueDate: medicalData?.dueDate ?? .init())
     }
 
