@@ -52,20 +52,25 @@ class ContentTableViewCell: UITableViewCell {
     }
 
     @IBAction func foodItemButtonTapped(_ sender: UIButton) {
+        Task {
+            await handleFoodItemButtonTap()
+        }
+    }
+
+    func handleFoodItemButtonTap() async {
         guard let buttonTapHandler else { return }
 
         let consumed = buttonTapHandler()
 
-        Task {
-            await self.dietViewController?.addCalories(energy: Double(foodItem?.calories ?? 0), consumed: consumed)
-            await self.dietViewController?.addCarbs(carbs: Double(foodItem?.carbs ?? 0), consumed: consumed)
-            await self.dietViewController?.addProtein(protein: Double(foodItem?.protein ?? 0), consumed: consumed)
-            await self.dietViewController?.addFats(fats: Double(foodItem?.fat ?? 0), consumed: consumed)
+        await dietViewController?.addCalories(energy: Double(foodItem?.calories ?? 0), consumed: consumed)
+        await dietViewController?.addCarbs(carbs: Double(foodItem?.carbs ?? 0), consumed: consumed)
+        await dietViewController?.addProtein(protein: Double(foodItem?.protein ?? 0), consumed: consumed)
+        await dietViewController?.addFats(fats: Double(foodItem?.fat ?? 0), consumed: consumed)
 
-            DispatchQueue.main.async {
-                self.refreshHandler?()
-            }
+        DispatchQueue.main.async {
+            self.refreshHandler?()
         }
+
     }
 
     // MARK: Private

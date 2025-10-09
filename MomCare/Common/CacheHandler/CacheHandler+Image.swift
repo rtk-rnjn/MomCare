@@ -75,7 +75,6 @@ extension CacheHandler {
 
         if let imageData = results?.first?.imageData,
            let image = UIImage(data: imageData) {
-            logger.debug("Image found in Realm for URL: \(url.absoluteString)")
             saveToCache(image, for: url)
             return image
         }
@@ -129,7 +128,6 @@ extension CacheHandler {
     /// - Returns: The cached image if found and not expired, otherwise `nil`.
     private func fetchFromCache(url: URL) -> UIImage? {
         if let cachedImage = cache.object(forKey: url as AnyObject) as? Entity<UIImage> {
-            logger.debug("Cache hit for URL: \(url.absoluteString)")
             if cachedImage.isExpired {
                 logger.debug("Cached image expired for URL: \(url.absoluteString)")
                 return nil
@@ -137,7 +135,6 @@ extension CacheHandler {
             return cachedImage.value
         }
 
-        logger.debug("Cache miss for URL: \(url.absoluteString)")
         return nil
     }
 

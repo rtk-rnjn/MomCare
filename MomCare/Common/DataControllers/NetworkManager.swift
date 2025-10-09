@@ -102,6 +102,7 @@ actor NetworkManager {
         var reqeust = URLRequest(url: url)
         reqeust.httpMethod = method.rawValue
 
+        logger.debug("Preparing streamed request: method=\(method.rawValue, privacy: .public), url=\(url, privacy: .public), queryParameters=\(String(describing: queryParameters), privacy: .public)")
         let task = URLSession.shared.dataTask(with: reqeust) { data, response, _ in
             guard let response = response as? HTTPURLResponse, response.statusCode == 200 else {
                 return

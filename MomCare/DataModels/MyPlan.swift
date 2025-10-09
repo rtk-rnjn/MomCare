@@ -54,7 +54,7 @@ struct FoodItem: Codable, Sendable, Equatable {
     }
 
     let name: String
-    let imageUri: String?
+    var imageUri: String?
 
     var calories: Double = 0
     var protein: Double = 0
@@ -119,11 +119,9 @@ struct MyPlan: Codable, Sendable, Equatable {
 
     func isOutdated() -> Bool {
         guard let createdAt else { return false }
+        let calendar = Calendar.current
 
-        if abs(createdAt.timeIntervalSince(createdAt)) > 86400 {
-            return true
-        }
-        return false
+        return !calendar.isDateInToday(createdAt)
     }
 
     subscript(index: Int) -> [FoodItem] {
