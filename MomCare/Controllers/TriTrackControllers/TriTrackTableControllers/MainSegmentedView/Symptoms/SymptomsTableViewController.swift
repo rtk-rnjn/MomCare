@@ -12,7 +12,7 @@ class SymptomsTableViewController: UITableViewController {
     var triTrackViewController: TriTrackViewController?
     var delegate: EventKitHandlerUIDelegate = .init()
 
-    var events: [EventInfo] = []
+    var events: [EventInfo] = .init()
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)

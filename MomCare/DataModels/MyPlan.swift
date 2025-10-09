@@ -86,10 +86,10 @@ struct MyPlan: Codable, Sendable, Equatable {
         case createdAt = "created_at"
     }
 
-    var breakfast: [FoodItem] = []
-    var lunch: [FoodItem] = []
-    var snacks: [FoodItem] = []
-    var dinner: [FoodItem] = []
+    var breakfast: [FoodItem] = .init()
+    var lunch: [FoodItem] = .init()
+    var snacks: [FoodItem] = .init()
+    var dinner: [FoodItem] = .init()
 
     var createdAt: Date?
 
@@ -173,10 +173,10 @@ struct Exercise: Codable, Sendable, Equatable {
     var type: ExerciseType
     var duration: TimeInterval?
     var description: String
-    var tags: [String] = []
+    var tags: [String] = .init()
     var level: Difficulty = .beginner
     var week: String
-    var targetedBodyParts: [String] = []
+    var targetedBodyParts: [String] = .init()
     var durationCompleted: TimeInterval = 0
 
     var assignedAt: Date

@@ -79,7 +79,7 @@ class BreathingAnimationManager {
             let now = CACurrentMediaTime()
             let elapsed = now - petalAnimationStartTime
             petalAnimationRemaining = max(0, petalAnimationDuration - elapsed)
-            petalPausedPositions = []
+            petalPausedPositions = .init()
 
             for (index, circle) in circleLayers.enumerated() {
                 if index == 0 { continue }
@@ -128,7 +128,7 @@ class BreathingAnimationManager {
                 scheduleNextState(after: timeRemainingForPhase)
             }
             petalAnimationRemaining = 0
-            petalPausedPositions = []
+            petalPausedPositions = .init()
         }
 
         if isInhaling && petalAnimationPhase == .none {
@@ -164,7 +164,7 @@ class BreathingAnimationManager {
 
     private var animatedGradientLayer: CAGradientLayer?
     private var circlesContainer: CALayer = .init()
-    private var circleLayers: [CAShapeLayer] = []
+    private var circleLayers: [CAShapeLayer] = .init()
     private var timer: Timer?
     private var currentCount = 0
 
@@ -172,8 +172,8 @@ class BreathingAnimationManager {
     private var petalAnimationStartTime: TimeInterval = 0
     private var petalAnimationDuration: TimeInterval = 0
     private var petalAnimationRemaining: TimeInterval = 0
-    private var petalTargetPositions: [CGPoint] = []
-    private var petalPausedPositions: [CGPoint] = []
+    private var petalTargetPositions: [CGPoint] = .init()
+    private var petalPausedPositions: [CGPoint] = .init()
     private var animationState: AnimationState = .ready
 
     private var nextStateWorkItem: DispatchWorkItem?
@@ -285,8 +285,8 @@ class BreathingAnimationManager {
         petalAnimationStartTime = CACurrentMediaTime()
         petalAnimationDuration = animationDuration
         petalAnimationRemaining = animationDuration
-        petalTargetPositions = []
-        petalPausedPositions = []
+        petalTargetPositions = .init()
+        petalPausedPositions = .init()
 
         CATransaction.begin()
         CATransaction.setCompletionBlock {
@@ -350,7 +350,7 @@ class BreathingAnimationManager {
         petalAnimationDuration = animationDuration
         petalAnimationRemaining = animationDuration
         petalTargetPositions = Array(repeating: CGPoint(x: circlesContainer.bounds.midX, y: circlesContainer.bounds.midY), count: numberOfPetals)
-        petalPausedPositions = []
+        petalPausedPositions = .init()
 
         CATransaction.begin()
         CATransaction.setCompletionBlock(completion)

@@ -7,7 +7,7 @@ class PlaylistTableViewController: UITableViewController {
 
     // MARK: Internal
 
-    var songs: [Song] = []
+    var songs: [Song] = .init()
     var songsFetched: Bool = false
 
     var playlist: (imageUri: String, label: String)?

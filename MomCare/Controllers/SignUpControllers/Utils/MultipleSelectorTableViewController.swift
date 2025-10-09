@@ -8,7 +8,7 @@
 import UIKit
 
 class MultipleSelectorTableViewController: UITableViewController {
-    var options: [String] = []
+    var options: [String] = .init()
     var selectedMappedOptions: [String: Bool] = [:]
     var dismissHandler: (() -> Void)?
 

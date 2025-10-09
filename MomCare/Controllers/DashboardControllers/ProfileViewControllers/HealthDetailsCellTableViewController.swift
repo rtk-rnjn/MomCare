@@ -10,7 +10,7 @@ import UIKit
 class HealthDetailsCellTableViewController: UITableViewController {
 
     var healthProfile: HealthProfileType?
-    var selectedCells: [String] = []
+    var selectedCells: [String] = .init()
 
     var onSelection: ((HealthProfileType, [String]) -> Void)?
 

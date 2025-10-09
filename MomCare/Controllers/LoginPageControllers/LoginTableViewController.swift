@@ -49,7 +49,7 @@ class LoginTableViewController: UITableViewController, UITextFieldDelegate {
             (passwordField, "Password Required", "Please enter your password.")
         ]
 
-        var errors: [[String]] = []
+        var errors = [[String]]()
 
         for (field, title, message) in requiredFields where (field.text ?? "").isEmpty {
             errors.append([title, message])

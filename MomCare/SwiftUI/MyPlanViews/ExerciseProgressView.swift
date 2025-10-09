@@ -681,8 +681,8 @@ class ExerciseGoalsViewModel: ObservableObject {
 
     // MARK: Internal
 
-    @Published var weeklyProgress: [DayProgress] = []
-    @Published var exercises: [Exercise] = []
+    @Published var weeklyProgress: [DayProgress] = .init()
+    @Published var exercises: [Exercise] = .init()
     @Published var totalCompletedExercises: Int = 0
 
     // MARK: Private
@@ -691,7 +691,7 @@ class ExerciseGoalsViewModel: ObservableObject {
         let dayNames = ["S", "M", "T", "W", "T", "F", "S"]
         let mockProgressValues = [1.0, 0.8, 1.0, 0.6, 0.0, 0.0, 0.0]
 
-        var progress: [DayProgress] = []
+        var progress = [DayProgress]()
 
         for i in 0..<7 {
             let today = Date()

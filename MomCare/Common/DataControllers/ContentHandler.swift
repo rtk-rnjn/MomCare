@@ -232,7 +232,7 @@ extension ContentHandler {
     /// - Parameter directories: List of S3 directories representing playlists.
     /// - Returns: Array of tuples containing `imageUri` and playlist `label`.
     private func buildPlaylistData(from directories: [String]) async -> [(imageUri: String, label: String)] {
-        var result: [(imageUri: String, label: String)] = []
+        var result = [(imageUri: String, label: String)]()
 
         for directory in directories where !directory.isEmpty {
             let label = extractLastPathComponent(from: directory)
@@ -291,7 +291,7 @@ extension ContentHandler {
 
     /// Matches songs to their corresponding images and fetches metadata.
     private func matchSongsToImages(songsPath: [String], imageNames: [String], imagePath: String) async -> [Song] {
-        var result: [Song] = []
+        var result = [Song]()
 
         for songPath in songsPath {
             guard let imageFile = findMatchingImage(for: songPath, from: imageNames) else { continue }

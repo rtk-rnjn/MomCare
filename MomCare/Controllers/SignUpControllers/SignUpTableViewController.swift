@@ -50,7 +50,7 @@ class SignUpTableViewController: UITableViewController, UITextFieldDelegate {
             (mobileNumberField, "Mobile Number Required", "Please enter your mobile number.")
         ]
 
-        var errors: [[String]] = []
+        var errors = [[String]]()
 
         for (field, title, message) in requiredFields where (field.text ?? "").isEmpty {
             errors.append([title, message])
