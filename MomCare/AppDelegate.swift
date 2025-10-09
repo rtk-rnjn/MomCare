@@ -15,6 +15,8 @@ private let logger: Logger = .init(subsystem: "com.MomCare.AppDelegate", categor
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
+    var metricHandler: MetricsHandler = .init()
+
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
 
         UNUserNotificationCenter.current().delegate = self
