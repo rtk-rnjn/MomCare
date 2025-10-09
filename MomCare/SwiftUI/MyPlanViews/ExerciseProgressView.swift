@@ -270,7 +270,7 @@ struct ExerciseProgressView: View {
                     .fill(Color.CustomColors.mutedRaspberry)
                     .frame(
                         width: targetSteps > 0 ?
-                            min(geometry.size.width * CGFloat(currentSteps) / CGFloat(targetSteps), geometry.size.width) : 0,
+                        min(geometry.size.width * CGFloat(currentSteps) / CGFloat(targetSteps), geometry.size.width) : 0,
                         height: 6
                     )
                     .animation(.easeInOut(duration: 1.2), value: currentSteps)
@@ -625,7 +625,7 @@ struct ExerciseProgressView: View {
                         .rotationEffect(.degrees(isShowingInfo ? 0 : (index % 2 == 0 ? -15 : 15)))
                         .animation(
                             .spring(response: 0.9, dampingFraction: 0.7)
-                                .delay(0.9 + Double(index) * 0.1),
+                            .delay(0.9 + Double(index) * 0.1),
                             value: isShowingInfo
                         )
                 }

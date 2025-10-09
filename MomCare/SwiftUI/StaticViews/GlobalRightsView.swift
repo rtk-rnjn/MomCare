@@ -12,41 +12,41 @@ struct GlobalRightsView: View {
                     ZStack {
                         RoundedRectangle(cornerRadius: 12, style: .continuous)
                             .fill(Color(hex: "FFFFFF").opacity(0.12))
-                                                        .frame(width: 60, height: 60)
-                                                    Image(systemName: "hand.raised.fill")
-                                                        .font(.system(size: 60, weight: .bold))
-                                                        .foregroundColor(accentColor)
+                            .frame(width: 60, height: 60)
+                        Image(systemName: "hand.raised.fill")
+                            .font(.system(size: 60, weight: .bold))
+                            .foregroundColor(accentColor)
                     }
 
                     Text("Your Data, Your Rights, Your Trust")
                         .font(.system(size: 28, weight: .semibold, design: .default))
-                            .tracking(-0.5)
-                            .multilineTextAlignment(.center)
-                            .lineSpacing(0)
+                        .tracking(-0.5)
+                        .multilineTextAlignment(.center)
+                        .lineSpacing(0)
 
                     Text("We are committed to safeguarding your privacy. You have the right to control your personal information, and we make it easy for you to do so.")
                         .font(.subheadline)
                         .foregroundColor(.primary)
                         .multilineTextAlignment(.center)
-                    }
-                    .padding(.top, 32)
-                    .padding(.bottom, 8)
+                }
+                .padding(.top, 32)
+                .padding(.bottom, 8)
 
                 Divider()
 
                 VStack(alignment: .leading, spacing: 24) {
                     ForEach(rights) { right in
-                            GDPRRightView(
-                                iconName: right.iconName,
-                                title: right.title,
-                                description: right.description,
-                                accentColor: accentColor
-                            )
+                        GDPRRightView(
+                            iconName: right.iconName,
+                            title: right.title,
+                            description: right.description,
+                            accentColor: accentColor
+                        )
 
-                            if right.id != rights.last?.id {
-                                Divider()
-                            }
+                        if right.id != rights.last?.id {
+                            Divider()
                         }
+                    }
                 }
                 VStack(alignment: .center, spacing: 16) {
                     Text("How to Exercise Your Rights")
