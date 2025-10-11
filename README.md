@@ -10,4 +10,6 @@ The Backend for this app is available at [**MomCare Backend**](https://github.co
 
 ![Alt](https://repobeats.axiom.co/api/embed/b1bae23496c5d73f5f4a63e03c6cca7de9836f31.svg "Repobeats analytics image")
 
+---
+
 > This code is licensed under CC BY-NC-ND 4.0 for transparency only. No modification, redistribution, or commercial use allowed.
