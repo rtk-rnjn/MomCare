@@ -117,7 +117,11 @@ class PersonalDetailsTableViewController: UITableViewController {
         userCurrentWeightButton.setTitle("\(userMedical.currentWeight) kgs", for: .normal)
         userPrePregnancyWeightButton.setTitle("\(userMedical.prePregnancyWeight) kgs", for: .normal)
 
-        let weekAndDay = Utils.pregnancyWeekAndDay(dueDate: userMedical.dueDate!)
+        var weekAndDay: (week: Int, day: Int, trimester: String)?
+
+        if let dueDate = userMedical.dueDate {
+            weekAndDay = Utils.pregnancyWeekAndDay(dueDate: dueDate)
+        }
 
         userPregnancyDayButton.setTitle(String(weekAndDay?.day ?? 0), for: .normal)
         userPregnancyWeekButton.setTitle(String(weekAndDay?.week ?? 0), for: .normal)
@@ -126,7 +130,7 @@ class PersonalDetailsTableViewController: UITableViewController {
     }
 
     func saveUser() async {
-        MomCareUser.shared.user?.medicalData?.dateOfBirth = userDatOfBirthPicker.date
+        MomCareUser.shared.user?.dateOfBirthTimestamp = userDatOfBirthPicker.date.timeIntervalSince1970
 
         if let fullName = userNameField.text {
             let nameParts = fullName.split(separator: " ")
@@ -136,17 +140,17 @@ class PersonalDetailsTableViewController: UITableViewController {
 
         if let heightText = userHeightButton.title(for: .normal)?.replacingOccurrences(of: " cm", with: ""),
            let height = Double(heightText) {
-            MomCareUser.shared.user?.medicalData?.height = height
+            MomCareUser.shared.user?.height = height
         }
 
         if let weightText = userCurrentWeightButton.title(for: .normal)?.replacingOccurrences(of: " kgs", with: ""),
            let weight = Double(weightText) {
-            MomCareUser.shared.user?.medicalData?.currentWeight = weight
+            MomCareUser.shared.user?.currentWeight = weight
         }
 
         if let preWeightText = userPrePregnancyWeightButton.title(for: .normal)?.replacingOccurrences(of: " kgs", with: ""),
            let preWeight = Double(preWeightText) {
-            MomCareUser.shared.user?.medicalData?.prePregnancyWeight = preWeight
+            MomCareUser.shared.user?.prePregnancyWeight = preWeight
         }
     }
 }

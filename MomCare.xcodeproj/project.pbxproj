@@ -727,7 +727,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.14;
+				MARKETING_VERSION = 0.15;
 				PRODUCT_BUNDLE_IDENTIFIER = com.Team05.MomCare;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -789,7 +789,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.14;
+				MARKETING_VERSION = 0.15;
 				PRODUCT_BUNDLE_IDENTIFIER = com.Team05.MomCare;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";

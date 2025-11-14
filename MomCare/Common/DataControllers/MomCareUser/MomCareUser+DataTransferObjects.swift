@@ -28,6 +28,17 @@ struct CreateResponse: Codable {
     let accessToken: String
 }
 
+/// Response containing an access token after authentication.
+struct TokenResponse: Codable {
+    enum CodingKeys: String, CodingKey {
+        case accessToken = "access_token"
+    }
+
+    /// JWT or API access token.
+    /// Used for authenticating subsequent requests.
+    let accessToken: String
+}
+
 /// Response returned after updating user information in the backend.
 ///
 /// Example: When updating profile details, this DTO contains

@@ -139,10 +139,10 @@ class MusicPlayerHandler {
     func updateNowPlayingInfo(_ song: Song) async {
         var nowPlayingInfo = [String: Any]()
 
-        if let title = song.metadata?.title {
+        if let title = song.title {
             nowPlayingInfo[MPMediaItemPropertyTitle] = title
         }
-        if let artist = song.metadata?.artist {
+        if let artist = song.artist {
             nowPlayingInfo[MPMediaItemPropertyArtist] = artist
         }
 

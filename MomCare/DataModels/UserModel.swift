@@ -56,47 +56,78 @@ enum MoodType: String, Codable, Sendable {
     case angry = "Angry"
 }
 
-struct MoodHistory: Codable, Sendable, Equatable {
-    var date: Date = .init()
-    var mood: MoodType
-}
-
 struct User: Codable, Sendable, Equatable {
     enum CodingKeys: String, CodingKey {
-        case id
         case firstName = "first_name"
         case lastName = "last_name"
         case emailAddress = "email_address"
         case password
         case countryCode = "country_code"
         case country
+        case timezone
         case phoneNumber = "phone_number"
-        case medicalData = "medical_data"
-        case moodHistory = "mood_history"
-        case plan
-        case exercises
-        case history
+
+        case dateOfBirthTimestamp = "date_of_birth_timestamp"
+        case height
+        case prePregnancyWeight = "pre_pregnancy_weight"
+        case currentWeight = "current_weight"
+        case dueDateTimestamp = "due_date_timestamp"
+
+        case preExistingConditions = "pre_existing_conditions"
+        case foodIntolerances = "food_intolerances"
+        case dietaryPreferences = "dietary_preferences"
     }
 
-    var id: String = UUID().uuidString
+    // swiftlint:disable nesting
+
+    struct UserMedical: Codable, Sendable, Equatable {
+        enum CodingKeys: String, CodingKey {
+            case dateOfBirth = "date_of_birth"
+            case height
+            case prePregnancyWeight = "pre_pregnancy_weight"
+            case currentWeight = "current_weight"
+            case dueDate = "due_date"
+            case preExistingConditions = "pre_existing_conditions"
+            case foodIntolerances = "food_intolerances"
+            case dietaryPreferences = "dietary_preferences"
+        }
+
+        var dateOfBirth: Date = .init()
+        var height: Double
+        var prePregnancyWeight: Double
+        var currentWeight: Double
+        var dueDate: Date?
+        var preExistingConditions: [PreExistingCondition] = .init()
+        var foodIntolerances: [Intolerance] = .init()
+        var dietaryPreferences: [DietaryPreference] = .init()
+    }
+
+    // swiftlint:enable nesting
 
     var firstName: String
     var lastName: String?
 
     var emailAddress: String
-    var password: String
+    var password: String?
 
     var countryCode: String = "91"
     var country: String = "India"
 
+    var timezone: String?
     var phoneNumber: String
-    var medicalData: UserMedical?
 
-    var moodHistory: [MoodHistory] = .init()
+    var dateOfBirthTimestamp: TimeInterval?
+    var height: Double?
+    var prePregnancyWeight: Double?
+    var currentWeight: Double?
+    var dueDateTimestamp: TimeInterval?
+
+    var preExistingConditions: [PreExistingCondition] = []
+    var foodIntolerances: [Intolerance] = []
+    var dietaryPreferences: [DietaryPreference] = []
 
     var plan: MyPlan = .init()
-    var exercises: [Exercise] = .init()
-    var history: [History] = .init()
+    var exercises: [Exercise] = []
 
     var fullName: String {
         let fullName = "\(firstName) \(lastName ?? "")"
@@ -104,58 +135,31 @@ struct User: Codable, Sendable, Equatable {
     }
 
     var pregancyData: (week: Int, day: Int, trimester: String)? {
-        return Utils.pregnancyWeekAndDay(dueDate: medicalData?.dueDate ?? .init())
+        let dueDate = Date(timeIntervalSince1970: dueDateTimestamp ?? 0)
+        return Utils.pregnancyWeekAndDay(dueDate: dueDate)
     }
 
-    var lastMood: MoodType? {
-        return moodHistory.sorted(by: { $0.date > $1.date }).first?.mood
+    var medicalData: UserMedical? {
+        guard let dateOfBirthTimestamp,
+              let height,
+              let prePregnancyWeight,
+              let currentWeight else {
+            return nil
+        }
+
+        let dob = Date(timeIntervalSince1970: dateOfBirthTimestamp)
+        let dueDate = dueDateTimestamp != nil ? Date(timeIntervalSince1970: dueDateTimestamp!) : nil
+
+        return UserMedical(
+            dateOfBirth: dob,
+            height: Double(height),
+            prePregnancyWeight: prePregnancyWeight,
+            currentWeight: currentWeight,
+            dueDate: dueDate,
+            preExistingConditions: preExistingConditions,
+            foodIntolerances: foodIntolerances,
+            dietaryPreferences: dietaryPreferences
+        )
     }
 
-    var totalExercisesSeconds: Double {
-        return exercises.reduce(0) { $0 + ($1.duration ?? 0) }
-    }
-
-    var totalExercisesDurationComplete: Double {
-        return exercises.reduce(0) { $0 + ($1.durationCompleted) }
-    }
-}
-
-struct History: Codable, Sendable, Equatable {
-    enum CodingKeys: String, CodingKey {
-        case date
-        case plan
-        case exercises
-        case moods
-    }
-
-    var date: Date = .init()
-    var plan: MyPlan?
-    var exercises: [Exercise] = .init()
-    var moods: [MoodHistory] = .init()
-
-    var completionPercentage: Double {
-        return exercises.map { $0.completionPercentage }.reduce(0, +) / Double(exercises.count)
-    }
-}
-
-struct UserMedical: Codable, Sendable, Equatable {
-    enum CodingKeys: String, CodingKey {
-        case dateOfBirth = "date_of_birth"
-        case height
-        case prePregnancyWeight = "pre_pregnancy_weight"
-        case currentWeight = "current_weight"
-        case dueDate = "due_date"
-        case preExistingConditions = "pre_existing_conditions"
-        case foodIntolerances = "food_intolerances"
-        case dietaryPreferences = "dietary_preferences"
-    }
-
-    var dateOfBirth: Date = .init()
-    var height: Double
-    var prePregnancyWeight: Double
-    var currentWeight: Double
-    var dueDate: Date?
-    var preExistingConditions: [PreExistingCondition] = .init()
-    var foodIntolerances: [Intolerance] = .init()
-    var dietaryPreferences: [DietaryPreference] = .init()
 }

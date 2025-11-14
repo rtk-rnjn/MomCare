@@ -40,9 +40,6 @@ class MoodsViewController: UIViewController {
     }
 
     @IBAction func setMoodButtonTapped(_ sender: UIButton) {
-        let moodHistory = MoodHistory(date: Date(), mood: MoodType(rawValue: moodLabel.text ?? "") ?? .happy)
-        MomCareUser.shared.user?.moodHistory.append(moodHistory)
-
         performSegue(withIdentifier: "segueShowMoodNestViewController", sender: MoodType(rawValue: moodLabel.text ?? ""))
     }
 

@@ -105,7 +105,7 @@ class MusicPlayerViewController: UIViewController {
 
     private lazy var songLabel: UILabel = {
         let label = UILabel()
-        label.text = song?.metadata?.title
+        label.text = song?.title
         label.font = UIFont.preferredFont(forTextStyle: .title1)
         label.textColor = .white
         label.lineBreakMode = .byTruncatingTail
@@ -116,7 +116,7 @@ class MusicPlayerViewController: UIViewController {
 
     private lazy var artistLabel: UILabel = {
         let label = UILabel()
-        label.text = song?.metadata?.artist
+        label.text = song?.artist
         label.textColor = .white
         label.font = UIFont.preferredFont(forTextStyle: .subheadline)
         label.lineBreakMode = .byTruncatingTail

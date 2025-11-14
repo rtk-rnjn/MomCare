@@ -36,7 +36,7 @@ class HealthDetailsTableViewController: UITableViewController {
                     destination.preViewDidLoad = preViewDidLoad
                     destination.selectedMappedOptions = selectedOptions
                     destination.dismissHandler = {
-                        MomCareUser.shared.user?.medicalData?.dietaryPreferences = destination.selectedMappedOptions.filter { $1 }.keys.compactMap(DietaryPreference.init(rawValue:))
+                        MomCareUser.shared.user?.dietaryPreferences = destination.selectedMappedOptions.filter { $1 }.keys.compactMap(DietaryPreference.init(rawValue:))
                         self.updatePageElements()
                     }
 
@@ -48,7 +48,7 @@ class HealthDetailsTableViewController: UITableViewController {
                     destination.preViewDidLoad = preViewDidLoad
                     destination.selectedMappedOptions = selectedOptions
                     destination.dismissHandler = {
-                        MomCareUser.shared.user?.medicalData?.foodIntolerances = destination.selectedMappedOptions.filter { $1 }.keys.compactMap(Intolerance.init(rawValue:))
+                        MomCareUser.shared.user?.foodIntolerances = destination.selectedMappedOptions.filter { $1 }.keys.compactMap(Intolerance.init(rawValue:))
                         self.updatePageElements()
                     }
 
@@ -60,7 +60,7 @@ class HealthDetailsTableViewController: UITableViewController {
                     destination.preViewDidLoad = preViewDidLoad
                     destination.selectedMappedOptions = selectedOptions
                     destination.dismissHandler = {
-                        MomCareUser.shared.user?.medicalData?.preExistingConditions = destination.selectedMappedOptions.filter { $1 }.keys.compactMap(PreExistingCondition.init(rawValue:))
+                        MomCareUser.shared.user?.preExistingConditions = destination.selectedMappedOptions.filter { $1 }.keys.compactMap(PreExistingCondition.init(rawValue:))
                         self.updatePageElements()
                     }
                 }
@@ -79,7 +79,7 @@ class HealthDetailsTableViewController: UITableViewController {
         updateUIForEditingMode()
 
         if !isEditingMode {
-            MomCareUser.shared.user?.medicalData?.dueDate = userDueDate.date
+            saveHealthDetails()
         }
     }
 
@@ -93,13 +93,17 @@ class HealthDetailsTableViewController: UITableViewController {
     func updatePageElements() {
         guard let userMedical = MomCareUser.shared.user?.medicalData else { return }
 
-        userDueDate.date = userMedical.dueDate!
+        if let dueDate = userMedical.dueDate {
+            userDueDate.date = dueDate
+        }
         userMedicalConditions.setTitle("\(userMedical.preExistingConditions.count)", for: .normal)
         userDietaryPreferences.setTitle("\(userMedical.dietaryPreferences.count)", for: .normal)
         userAllergies.setTitle("\(userMedical.foodIntolerances.count)", for: .normal)
     }
 
-    func saveHealthDetails() {}
+    func saveHealthDetails() {
+        MomCareUser.shared.user?.dueDateTimestamp = userDueDate.date.timeIntervalSince1970
+    }
 
     @IBAction func preExistingTapped(_ sender: UIButton) {
         let options = PreExistingCondition.allCases.map { $0.rawValue }

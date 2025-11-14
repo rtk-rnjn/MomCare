@@ -226,8 +226,8 @@ class PlaylistTableViewController: UITableViewController {
     }
 
     private func configurePopupItem(for playerViewController: MusicPlayerViewController, song: Song, buttons: [UIBarButtonItem]) {
-        playerViewController.popupItem.title = song.metadata?.title
-        playerViewController.popupItem.subtitle = song.metadata?.artist
+        playerViewController.popupItem.title = song.title
+        playerViewController.popupItem.subtitle = song.artist
 
         Task {
             playerViewController.popupItem.image = await song.image

@@ -209,7 +209,7 @@ actor NetworkManager {
             return nil
         }
 
-        logger.debug("Received response: statusCode=\(httpResponse.statusCode, privacy: .public), url=\(httpResponse.url?.absoluteString ?? "unknown", privacy: .public)")
+        logger.debug("Received response: statusCode=\(httpResponse.statusCode, privacy: .public), url=\(httpResponse.url?.absoluteString ?? "unknown", privacy: .public), data=\(data.toDictionary() ?? "nil", privacy: .public)")
 
         guard (200...299).contains(httpResponse.statusCode) else {
             throw URLError(.badServerResponse)

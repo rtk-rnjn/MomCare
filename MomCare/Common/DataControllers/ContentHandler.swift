@@ -58,7 +58,7 @@ class ContentHandler {
     ///   provided for future API personalization).
     /// - Returns: A `MyPlan` object. If the server fetch fails, returns an empty plan.
     @discardableResult
-    func fetchPlan(from userMedical: UserMedical) async -> MyPlan {
+    func fetchPlan() async -> MyPlan {
         if let plan: MyPlan = CacheHandler.shared.get(forKey: "plan") {
             return plan
         }

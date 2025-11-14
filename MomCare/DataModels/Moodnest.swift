@@ -1,44 +1,27 @@
 import Foundation
 import UIKit
 
-/// Represents metadata of a song such as title, artist, and duration.
-struct SongMetadata: Codable, Sendable, Equatable {
-
-    /// Keys used for encoding/decoding.
-    enum CodingKeys: String, CodingKey {
-        case title
-        case artist
-        case duration
-    }
-
-    /// The title of the song.
-    let title: String?
-
-    /// The artist of the song.
-    let artist: String?
-
-    /// Duration of the song in seconds.
-    let duration: TimeInterval
-}
-
 /// Represents a song with associated metadata and image.
 struct Song: Codable, Sendable, Equatable {
 
     /// Keys used for encoding/decoding.
     enum CodingKeys: String, CodingKey {
         case imageUri = "image_uri"
-        case metadata
         case uri
+        case title
+        case artist
+        case duration
     }
-
-    /// Metadata of the song (title, artist, duration).
-    var metadata: SongMetadata?
 
     /// URI of the song's artwork image.
     var imageUri: String?
 
     /// URI of the audio file (string format).
     var uri: String
+
+    var title: String?
+    var artist: String?
+    var duration: Double?
 
     /// Computed property to convert the `uri` string into a URL.
     var url: URL? {

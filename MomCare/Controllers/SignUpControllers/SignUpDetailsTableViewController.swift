@@ -46,9 +46,6 @@ class SignUpDetailsTableViewController: UITableViewController, UIViewControllerT
         case "segueShowSignUpExtendedTableViewController":
             if let destinationTableViewController = segue.destination as? SignUpExtendedTableViewController {
                 destinationTableViewController.initialProgress = progressView.progress
-
-                guard let medical = sender as? UserMedical else { fatalError("UserMedical not set") }
-                destinationTableViewController.userMedical = medical
             }
 
         case "segueShowPickerViewController":
@@ -137,9 +134,16 @@ class SignUpDetailsTableViewController: UITableViewController, UIViewControllerT
             return
         }
 
-        let userMedical = UserMedical(dateOfBirth: dateOfBirthPicker.date, height: Double(height!), prePregnancyWeight: Double(prePregnancyWeight!), currentWeight: Double(currentWeight!))
+        guard let height, let prePregnancyWeight, let currentWeight else {
+            fatalError()
+        }
 
-        performSegue(withIdentifier: "segueShowSignUpExtendedTableViewController", sender: userMedical)
+        MomCareUser.shared.user?.dateOfBirthTimestamp = dateOfBirthPicker.date.timeIntervalSince1970
+        MomCareUser.shared.user?.height = Double(height)
+        MomCareUser.shared.user?.prePregnancyWeight = Double(prePregnancyWeight)
+        MomCareUser.shared.user?.currentWeight = Double(currentWeight)
+
+        performSegue(withIdentifier: "segueShowSignUpExtendedTableViewController", sender: nil)
     }
 
     // MARK: Private

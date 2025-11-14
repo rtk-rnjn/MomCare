@@ -42,6 +42,7 @@ enum Difficulty: String, Codable, Equatable {
 struct FoodItem: Codable, Sendable, Equatable {
 
     enum CodingKeys: String, CodingKey {
+        case _id
         case name
         case imageUri = "image_uri"
         case calories
@@ -53,7 +54,9 @@ struct FoodItem: Codable, Sendable, Equatable {
         case consumed
     }
 
-    let name: String
+    var _id: String? // Imaging using MongoDB ObjectId as String
+
+    var name: String
     var imageUri: String?
 
     var calories: Double = 0
@@ -79,19 +82,21 @@ struct FoodItem: Codable, Sendable, Equatable {
 
 struct MyPlan: Codable, Sendable, Equatable {
     enum CodingKeys: String, CodingKey {
+        case _id
         case breakfast
         case lunch
         case snacks
         case dinner
-        case createdAt = "created_at"
+        case createdAtTimestamp = "created_at_timestamp"
     }
 
+    var _id: String?
     var breakfast: [FoodItem] = .init()
     var lunch: [FoodItem] = .init()
     var snacks: [FoodItem] = .init()
     var dinner: [FoodItem] = .init()
 
-    var createdAt: Date?
+    var createdAtTimestamp: TimeInterval = Date().timeIntervalSince1970
 
     var totalProtien: Double {
         return allMeals().reduce(0) { $0 + $1.protein }
@@ -118,7 +123,7 @@ struct MyPlan: Codable, Sendable, Equatable {
     }
 
     func isOutdated() -> Bool {
-        guard let createdAt else { return false }
+        let createdAt = Date(timeIntervalSince1970: createdAtTimestamp)
         let calendar = Calendar.current
 
         return !calendar.isDateInToday(createdAt)
@@ -151,6 +156,7 @@ struct MyPlan: Codable, Sendable, Equatable {
 
 struct Exercise: Codable, Sendable, Equatable {
     enum CodingKeys: String, CodingKey {
+        case _id
         case name
         case imageUri = "image_uri"
         case type = "exercise_type"
@@ -161,26 +167,33 @@ struct Exercise: Codable, Sendable, Equatable {
         case week
         case targetedBodyParts = "targeted_body_parts"
         case durationCompleted = "duration_completed"
-        case assignedAt = "assigned_at"
+        case assignedAtTimestamp = "assigned_at_timestamp"
     }
 
-    var id: String = UUID().uuidString
-
+    var _id: String?
     var name: String
     var imageUri: String?
-    var type: ExerciseType
+    var type: ExerciseType? = .yoga
     var duration: TimeInterval?
     var description: String
     var tags: [String] = .init()
     var level: Difficulty = .beginner
     var week: String
     var targetedBodyParts: [String] = .init()
-    var durationCompleted: TimeInterval = 0
+    var durationCompleted: TimeInterval? = 0
 
-    var assignedAt: Date
+    var assignedAtTimestamp: TimeInterval = Date().timeIntervalSince1970
+
+    var assignedAt: Date {
+        return Date(timeIntervalSince1970: assignedAtTimestamp)
+    }
+
+    var id: String {
+        return _id ?? UUID().uuidString
+    }
 
     var isCompleted: Bool {
-        if let duration, duration > 0 {
+        if let duration, duration > 0, let durationCompleted {
             return durationCompleted >= duration
         }
         return false
@@ -190,7 +203,7 @@ struct Exercise: Codable, Sendable, Equatable {
         guard let duration, duration > 0 else { return 0 }
         guard !duration.isNaN || !duration.isInfinite else { return 0 }
 
-        let percentage = (durationCompleted / duration) * 100
+        let percentage = (durationCompleted ?? 0 / duration) * 100
         let boundedPercentage = min(max(percentage, 0), 100)
         return round(boundedPercentage * 100) / 100.0
     }
