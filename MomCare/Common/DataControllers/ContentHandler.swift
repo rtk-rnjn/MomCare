@@ -293,7 +293,7 @@ extension ContentHandler {
         }
     }
 
-    /// Matches songs to their corresponding images and fetches metadata.
+    /// Matches songs to their corresponding images.
     private func matchSongsToImages(songsPath: [String], imageNames: [String], imagePath: String) async -> [Song] {
         var result = [Song]()
 
@@ -302,11 +302,9 @@ extension ContentHandler {
 
             let fullImagePath = "\(imagePath)\(imageFile)"
             let actualImageUri = await fetchS3File(fullImagePath)?.uri
-
-            let urlString = Endpoint.contentS3Song.urlString(with: songPath)
-            guard var songObject: Song = await NetworkManager.shared.get(url: urlString),
+            let songPathUri = Endpoint.contentS3File.urlString(with: songPath)
+            guard var songObject: Song = await NetworkManager.shared.get(url: songPathUri, queryParameters: ["song": true]),
                   let actualImageUri else { continue }
-//            downloadAndStoreSong(from:)
 
             songObject.imageUri = actualImageUri
             result.append(songObject)

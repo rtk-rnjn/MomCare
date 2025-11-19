@@ -7,7 +7,7 @@
 
 import Foundation
 
-private let baseURLString = "http://13.233.252.95:8000"
+private let baseURLString = "http://52.66.221.42:8000"
 
 enum Endpoint: String {
     // Authentication
@@ -38,7 +38,7 @@ enum Endpoint: String {
     case contentS3File = "/v1/content/s3/file/%@"
     case contentS3Files = "/v1/content/s3/files/%@"
     case contentS3Directories = "/v1/content/s3/directories/%@"
-    case contentS3Song = "/v1/content/s3/song/%@"
+
     case contentQuotesMood = "/v1/content/quotes/%@"
 }
 
