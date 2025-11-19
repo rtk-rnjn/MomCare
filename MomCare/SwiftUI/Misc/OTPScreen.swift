@@ -74,7 +74,9 @@ struct OTPScreen: View {
                     .cornerRadius(14)
             }
             .padding(.horizontal, 24)
+            #if !DEBUG
             .disabled(!isOTPComplete())
+            #endif
 
             Button(action: resendCode) {
                 Text(resendTimer > 0 ? "Resend in \(resendTimer)s" : "Didn't receive a code?")

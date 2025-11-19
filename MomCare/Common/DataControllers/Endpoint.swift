@@ -7,45 +7,39 @@
 
 import Foundation
 
-private let baseURLString = "http://ec2-3-110-142-208.ap-south-1.compute.amazonaws.com:8000"
+private let baseURLString = "http://52.66.221.42:8000"
 
 enum Endpoint: String {
     // Authentication
-    case register = "/auth/register"
-    case login = "/auth/login"
-    case refresh = "/auth/refresh"
-    case update = "/auth/update"
-    case updateMedicalData = "/auth/update/medical-data"
-    case fetch = "/auth/fetch"
+    case register = "/v1/auth/register"
+    case login = "/v1/auth/login"
+    case refresh = "/v1/auth/refresh"
+    case fetchUser = "/v1/auth/fetch-user"
+    case updateUser = "/v1/auth/update-user"
+    case deleteUser = "/v1/auth/delete-user"
 
-    // Meta
-    case meta = "/meta/"
-    case health = "/meta/health"
-    case version = "/meta/version"
-    case ping = "/meta/ping"
+    // OTP Authentication
+    case sendOTP = "/v1/auth/otp"
+    case verifyOTP = "/v1/auth/otp/verify"
+
+    // AI Content
+    case plan = "/v1/ai/plan"
+    case tips = "/v1/ai/tips"
+    case exercises = "/v1/ai/exercises"
 
     // Content
-    case plan = "/content/plan"
-    case search = "/content/search"
-    case searchFoodName = "/content/search/food-name"
-    case searchFoodImage = "/content/search/food-name/%@/image"
-    case searchSymptoms = "/content/search/symptoms"
-    case tips = "/content/tips"
-    case exercises = "/content/exercises"
-    case trimesterData = "/content/trimester-data"
+    case search = "/v1/content/search"
+    case searchFoodName = "/v1/content/search/food-name"
+    case searchFoodImage = "/v1/content/search/food-name/%@/image"
+    case searchSymptoms = "/v1/content/search/symptoms"
+    case trimesterData = "/v1/content/trimester-data"
 
     // Content S3
-    case contentS3File = "/content/s3/file/%@"
-    case contentS3Files = "/content/s3/files/%@"
-    case contentS3Directories = "/content/s3/directories/%@"
-    case contentS3Song = "/content/s3/song/%@"
+    case contentS3File = "/v1/content/s3/file/%@"
+    case contentS3Files = "/v1/content/s3/files/%@"
+    case contentS3Directories = "/v1/content/s3/directories/%@"
 
-    case contentQuotesMood = "/content/quotes/%@"
-    case contentYoutube = "/content/youtube"
-
-    // OTP Auth
-    case reqeustOTP = "/auth/otp"
-    case verifyOTP = "/auth/otp/verify"
+    case contentQuotesMood = "/v1/content/quotes/%@"
 }
 
 extension Endpoint {

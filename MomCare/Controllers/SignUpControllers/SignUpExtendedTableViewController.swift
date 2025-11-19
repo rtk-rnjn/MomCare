@@ -15,7 +15,6 @@ class SignUpExtendedTableViewController: UITableViewController {
     @IBOutlet var dueDatePicker: UIDatePicker!
 
     var initialProgress: Float = 0.0
-    var userMedical: UserMedical?
     var multipleSelectorTableViewController: MultipleSelectorTableViewController?
 
     var intolerances: [String] = .init()
@@ -54,16 +53,12 @@ class SignUpExtendedTableViewController: UITableViewController {
     @IBAction func finishButtonTapped(_ sender: UIButton) {
         let dueDate = dueDatePicker.date
 
-        guard var userMedical else { fatalError() }
+        MomCareUser.shared.user?.dueDateTimestamp = dueDate.timeIntervalSince1970
+        MomCareUser.shared.user?.foodIntolerances = intolerances.map({ Intolerance(rawValue: $0) ?? .none })
+        MomCareUser.shared.user?.preExistingConditions = preExistingConditions.map({ PreExistingCondition(rawValue: $0) ?? .none })
+        MomCareUser.shared.user?.dietaryPreferences = dietaryPreferences.map({ DietaryPreference(rawValue: $0) ?? .none })
 
-        userMedical.dueDate = dueDate
-        userMedical.foodIntolerances = intolerances.map({ Intolerance(rawValue: $0) ?? .none })
-        userMedical.preExistingConditions = preExistingConditions.map({ PreExistingCondition(rawValue: $0) ?? .none })
-        userMedical.dietaryPreferences = dietaryPreferences.map({ DietaryPreference(rawValue: $0) ?? .none })
-
-        Task {
-            await handleSignUpExtended(userMedical: userMedical)
-        }
+        handleSignUpExtended()
     }
 
     @IBAction func intoleranceButtonTapped(_ sender: UIButton) {
@@ -114,18 +109,9 @@ class SignUpExtendedTableViewController: UITableViewController {
         performSegue(withIdentifier: "segueShowMedicalDetailSelectorTableViewController", sender: (options, dismissHandler))
     }
 
-    private func handleSignUpExtended(userMedical: UserMedical) async {
-        let success = await MomCareUser.shared.updateUserMedical(userMedical)
-        DispatchQueue.main.async {
-            if !success {
-                let alert = Utils.getAlert(title: "Error", message: "Failed to update medical data. Please try again.")
-                self.present(alert, animated: true)
-                return
-            } else {
-                Utils.save(forKey: "isUserSignedUp", withValue: true)
-                self.performSegue(withIdentifier: "segueShowInitialTabBarController", sender: nil)
-            }
-        }
+    private func handleSignUpExtended() {
+        Utils.save(forKey: "isUserSignedUp", withValue: true)
+        performSegue(withIdentifier: "segueShowInitialTabBarController", sender: nil)
     }
 
 }

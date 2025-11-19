@@ -71,12 +71,12 @@ class DietTableViewController: UITableViewController {
         }
 
         Task {
-            guard let user = MomCareUser.shared.user, let medical = user.medicalData else {
-                return
+            guard let user = MomCareUser.shared.user else {
+                fatalError()
             }
 
-            if user.plan.isEmpty() || user.plan.isOutdated() {
-                let meals = await ContentHandler.shared.fetchPlan(from: medical)
+            if user.plan.isOutdated() || user.plan.isEmpty() {
+                let meals = await ContentHandler.shared.fetchPlan()
                 MomCareUser.shared.user?.plan = meals
             }
 

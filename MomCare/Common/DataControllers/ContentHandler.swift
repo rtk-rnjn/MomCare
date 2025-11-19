@@ -58,7 +58,7 @@ class ContentHandler {
     ///   provided for future API personalization).
     /// - Returns: A `MyPlan` object. If the server fetch fails, returns an empty plan.
     @discardableResult
-    func fetchPlan(from userMedical: UserMedical) async -> MyPlan {
+    func fetchPlan() async -> MyPlan {
         if let plan: MyPlan = CacheHandler.shared.get(forKey: "plan") {
             return plan
         }
@@ -293,7 +293,7 @@ extension ContentHandler {
         }
     }
 
-    /// Matches songs to their corresponding images and fetches metadata.
+    /// Matches songs to their corresponding images.
     private func matchSongsToImages(songsPath: [String], imageNames: [String], imagePath: String) async -> [Song] {
         var result = [Song]()
 
@@ -302,11 +302,9 @@ extension ContentHandler {
 
             let fullImagePath = "\(imagePath)\(imageFile)"
             let actualImageUri = await fetchS3File(fullImagePath)?.uri
-
-            let urlString = Endpoint.contentS3Song.urlString(with: songPath)
-            guard var songObject: Song = await NetworkManager.shared.get(url: urlString),
+            let songPathUri = Endpoint.contentS3File.urlString(with: songPath)
+            guard var songObject: Song = await NetworkManager.shared.get(url: songPathUri, queryParameters: ["song": true]),
                   let actualImageUri else { continue }
-//            downloadAndStoreSong(from:)
 
             songObject.imageUri = actualImageUri
             result.append(songObject)

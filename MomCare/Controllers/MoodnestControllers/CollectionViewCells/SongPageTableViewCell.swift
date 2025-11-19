@@ -14,9 +14,9 @@ class SongPageTableViewCell: UITableViewCell {
     @IBOutlet var durationLabel: UILabel!
 
     func updateElements(with song: Song) {
-        songLabel.text = song.metadata?.title
+        songLabel.text = song.title
         songLabel.accessibilityLabel = "Tune name: \(songLabel.text ?? "Unknown")"
-        artistOrAlbumLabel.text = song.metadata?.artist
+        artistOrAlbumLabel.text = song.artist
         artistOrAlbumLabel.accessibilityLabel = "Composure name: \(artistOrAlbumLabel.text ?? "Unknown")"
         Task {
             songImageView.image = await song.image
@@ -24,7 +24,7 @@ class SongPageTableViewCell: UITableViewCell {
             songImageView.accessibilityHint = "Represent the cover image for the current song"
         }
 
-        let seconds = song.metadata?.duration ?? 0.0
+        let seconds = song.duration ?? 0.0
         let minutes = Int(seconds) / 60
         let remainingSeconds = Int(seconds) % 60
 

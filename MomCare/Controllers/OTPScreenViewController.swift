@@ -40,6 +40,10 @@ class OTPScreenViewController: UIHostingController<OTPScreen> {
     }
 
     func verifyOTP(otp: String) async -> Bool? {
+        #if DEBUG
+        Utils.save(forKey: "isUserSignedUp", withValue: true)
+        return true
+        #else
         guard let status = await MomCareUser.shared.verifyOTP(otp: otp) else {
             return false
         }
@@ -49,12 +53,13 @@ class OTPScreenViewController: UIHostingController<OTPScreen> {
         }
 
         return status
+        #endif // DEBUG
     }
 
     func navigate() async {
         let success = await MomCareUser.shared.automaticFetchUserFromDatabase()
 
-        if success && MomCareUser.shared.user?.medicalData == nil {
+        if success && MomCareUser.shared.user?.dueDateTimestamp == nil {
             DispatchQueue.main.async {
                 Utils.remove("isUserSignedUp")
                 self.performSegue(withIdentifier: "segueShowSignUpDetailsTableViewController", sender: nil)

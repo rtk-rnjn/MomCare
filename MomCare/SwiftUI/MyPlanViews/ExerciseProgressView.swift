@@ -22,7 +22,7 @@ struct ExerciseProgressView: View {
                         }
                     walkingCardView
 
-                    exerciseCard(for: Exercise(name: "Breathing", type: .breathing, duration: 600, description: "Deep breathing exercises help reduce stress and anxiety during pregnancy. This gentle practice improves oxygen flow to both you and your baby while promoting relaxation and better sleep quality.", tags: ["Stress Relief", "Better Sleep", "Oxygen Flow", "Relaxation"], week: "", targetedBodyParts: ["Lungs"], assignedAt: Date()), isBreathing: true)
+                    exerciseCard(for: Exercise(name: "Breathing", type: .breathing, duration: 600, description: "Deep breathing exercises help reduce stress and anxiety during pregnancy. This gentle practice improves oxygen flow to both you and your baby while promoting relaxation and better sleep quality.", tags: ["Stress Relief", "Better Sleep", "Oxygen Flow", "Relaxation"], week: "", targetedBodyParts: ["Lungs"]), isBreathing: true)
 
                     exerciseCardsView
                 }

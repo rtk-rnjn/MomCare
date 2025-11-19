@@ -35,9 +35,6 @@ final class MomCareUser: NSObject, ObservableObject {
     /// Published user property to notify observers of changes.
     @Published var publishedUser: User?
 
-    /// Flag to control whether updates to `user` should be pushed to database and UserDefaults.
-    var pushUpdates: Bool = false
-
     /// Access token expiration date. When set, automatically schedules a refresh.
     var accessTokenExpiresAt: Date? {
         didSet {
@@ -49,10 +46,15 @@ final class MomCareUser: NSObject, ObservableObject {
     /// trigger local and database updates.
     var user: User? {
         didSet {
-            guard let user, oldValue != user, pushUpdates else {
-                pushUpdates = true
+            guard let user else {
                 return
             }
+
+            if oldValue == user {
+                // No changes detected; skip updates.
+                return
+            }
+
             updateToDatabase()
             updateToUserDefaults()
             publishedUser = user
@@ -62,8 +64,16 @@ final class MomCareUser: NSObject, ObservableObject {
     /// Saves the current `user` to the app group UserDefaults for persistence.
     func updateToUserDefaults() {
         let userDefaults = UserDefaults(suiteName: "group.MomCare")
-        if let user, let userDefaults, let data = try? PropertyListEncoder().encode(user) {
-            userDefaults.set(data, forKey: "user")
+        if let user, let userDefaults, let userData = try? PropertyListEncoder().encode(user) {
+            userDefaults.set(userData, forKey: "user")
+        }
+
+        if let planData = try? PropertyListEncoder().encode(user?.plan) {
+            userDefaults?.set(planData, forKey: "plan")
+        }
+
+        if let exerciseData = try? PropertyListEncoder().encode(user?.exercises) {
+            userDefaults?.set(exerciseData, forKey: "exercises")
         }
     }
 
@@ -73,8 +83,15 @@ final class MomCareUser: NSObject, ObservableObject {
     /// - Returns: The decoded `User` object or `nil` if not found.
     @MainActor
     func fetchFromUserDefaults(updateToDatabase: Bool = false) -> User? {
-        if let data = UserDefaults(suiteName: "group.MomCare")?.value(forKey: "user") as? Data {
-            let user: User? = try? PropertyListDecoder().decode(User.self, from: data)
+        if let userData = UserDefaults(suiteName: "group.MomCare")?.value(forKey: "user") as? Data,
+           let planData = UserDefaults(suiteName: "group.MomCare")?.value(forKey: "plan") as? Data,
+           let exercisesData = UserDefaults(suiteName: "group.MomCare")?.value(forKey: "exercises") as? Data {
+            var user: User? = try? PropertyListDecoder().decode(User.self, from: userData)
+            let plan: MyPlan? = try? PropertyListDecoder().decode(MyPlan.self, from: planData)
+            let exercises: [Exercise]? = try? PropertyListDecoder().decode([Exercise].self, from: exercisesData)
+
+            user?.plan = plan ?? MyPlan()
+            user?.exercises = exercises ?? []
 
             if updateToDatabase {
                 self.user = user

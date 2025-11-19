@@ -66,10 +66,11 @@ extension ExerciseProgressViewController: AVPlayerViewControllerDelegate {
         playerViewController.modalPresentationStyle = .fullScreen
         playerViewController.delegate = self
         playerViewController.title = exercise.name
+
         DispatchQueue.main.async {
             self.present(playerViewController, animated: true) {
-                if exercise.durationCompleted > 0 {
-                    let seekTime = CMTime(seconds: exercise.durationCompleted, preferredTimescale: 1)
+                if let durationCompleted = exercise.durationCompleted, durationCompleted > 0 {
+                    let seekTime = CMTime(seconds: durationCompleted, preferredTimescale: 1)
                     playerViewController.player?.seek(to: seekTime, toleranceBefore: .zero, toleranceAfter: .zero)
                 } else {
                     playerViewController.player?.seek(to: .zero, toleranceBefore: .zero, toleranceAfter: .zero)

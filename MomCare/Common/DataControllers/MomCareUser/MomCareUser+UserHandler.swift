@@ -43,10 +43,12 @@ extension MomCareUser {
     ///   - response: `CreateResponse` returned from the backend.
     ///   - email: User's email.
     ///   - password: User's password.
-    private func handleSuccessfulAuth(_ response: CreateResponse, email: String, password: String) {
+    private func handleSuccessfulAuth(token accessToken: String, email: String, password: String?) {
         KeychainHelper.set(email, forKey: "emailAddress")
-        KeychainHelper.set(password, forKey: "password")
-        KeychainHelper.set(response.accessToken, forKey: "accessToken")
+        if let password {
+            KeychainHelper.set(password, forKey: "password")
+        }
+        KeychainHelper.set(accessToken, forKey: "accessToken")
 
         logger.info(
             "User authenticated successfully. Email: \(email, privacy: .private)."
@@ -70,7 +72,7 @@ extension MomCareUser {
             return false
         }
 
-        handleSuccessfulAuth(response, email: user.emailAddress, password: user.password)
+        handleSuccessfulAuth(token: response.accessToken, email: user.emailAddress, password: user.password)
         self.user = user
         return true
     }
@@ -85,15 +87,15 @@ extension MomCareUser {
         logger.info("Logging in user: \(email, privacy: .private)")
 
         let credentials = Credentials(emailAddress: email, password: password)
-        guard let response: CreateResponse = await serializeAndPost(
+        guard let response: TokenResponse = await serializeAndPost(
             credentials,
             endpoint: .login,
             onFailureMessage: "Login failed for email: \(email)"
-        ), response.success else {
+        ) else {
             return false
         }
 
-        handleSuccessfulAuth(response, email: email, password: password)
+        handleSuccessfulAuth(token: response.accessToken, email: email, password: password)
         return true
     }
 
@@ -110,11 +112,11 @@ extension MomCareUser {
         }
 
         let credentials = Credentials(emailAddress: email, password: password)
-        guard let response: CreateResponse = await serializeAndPost(
+        guard let response: TokenResponse = await serializeAndPost(
             credentials,
             endpoint: Endpoint.refresh,
             onFailureMessage: "Token refresh failed."
-        ), response.success else {
+        ) else {
             return false
         }
 
@@ -138,30 +140,13 @@ extension MomCareUser {
 
         guard let response: UpdateResponse = await serializeAndPost(
             updatedUser,
-            endpoint: .update,
+            endpoint: .updateUser,
             onFailureMessage: "User update failed."
         ), response.success else {
             return false
         }
 
         user = updatedUser
-        return true
-    }
-
-    /// Updates the user's medical data in the backend.
-    ///
-    /// - Parameter medicalData: UserMedical object containing updated medical information.
-    /// - Returns: True if update succeeds, false otherwise.
-    func updateUserMedical(_ medicalData: UserMedical) async -> Bool {
-        guard let response: UpdateResponse = await serializeAndPost(
-            medicalData,
-            endpoint: .updateMedicalData,
-            onFailureMessage: "User medical data update failed."
-        ), response.success else {
-            return false
-        }
-
-        user?.medicalData = medicalData
         return true
     }
 
@@ -193,14 +178,16 @@ extension MomCareUser {
         }
 
         logger.info("Fetching user from DB for email: \(email, privacy: .private)")
-        guard let user: User = await NetworkManager.shared.get(url: Endpoint.fetch.urlString) else {
+        guard let user: User = await NetworkManager.shared.get(url: Endpoint.fetchUser.urlString) else {
             logger.error("Failed to fetch user from DB.")
             return false
         }
 
         self.user = user
         KeychainHelper.set(user.emailAddress, forKey: "emailAddress")
-        KeychainHelper.set(user.password, forKey: "password")
+        if let password = user.password {
+            KeychainHelper.set(password, forKey: "password")
+        }
         return true
     }
 
@@ -234,7 +221,7 @@ extension MomCareUser {
             return false
         }
 
-        return await NetworkManager.shared.post(url: Endpoint.reqeustOTP.urlString, body: data)
+        return await NetworkManager.shared.post(url: Endpoint.sendOTP.urlString, body: data)
     }
 
     /// Resends the OTP for the stored email address.
