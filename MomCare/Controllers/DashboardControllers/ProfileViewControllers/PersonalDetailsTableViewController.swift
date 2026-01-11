@@ -108,25 +108,24 @@ class PersonalDetailsTableViewController: UITableViewController {
     }
 
     func updateElements() {
-        guard let userMedical = MomCareUser.shared.user?.medicalData else { return }
         guard let user = MomCareUser.shared.user else { return }
 
         userNameField.text = user.fullName
-        userDatOfBirthPicker.date = userMedical.dateOfBirth
-        userHeightButton.setTitle("\(userMedical.height) cm", for: .normal)
-        userCurrentWeightButton.setTitle("\(userMedical.currentWeight) kgs", for: .normal)
-        userPrePregnancyWeightButton.setTitle("\(userMedical.prePregnancyWeight) kgs", for: .normal)
+        userDatOfBirthPicker.date = Date(timeIntervalSince1970: user.dateOfBirthTimestamp ?? 0)
+        userHeightButton.setTitle("\(user.height ?? 0) cm", for: .normal)
+        userCurrentWeightButton.setTitle("\(user.currentWeight ?? 0) kgs", for: .normal)
+        userPrePregnancyWeightButton.setTitle("\(user.prePregnancyWeight ?? 0) kgs", for: .normal)
 
         var weekAndDay: (week: Int, day: Int, trimester: String)?
 
-        if let dueDate = userMedical.dueDate {
-            weekAndDay = Utils.pregnancyWeekAndDay(dueDate: dueDate)
+        if let dueDateTimestamp = user.dueDateTimestamp {
+            weekAndDay = Utils.pregnancyWeekAndDay(dueDate: Date(timeIntervalSince1970: dueDateTimestamp))
         }
 
         userPregnancyDayButton.setTitle(String(weekAndDay?.day ?? 0), for: .normal)
         userPregnancyWeekButton.setTitle(String(weekAndDay?.week ?? 0), for: .normal)
         userTrimesterButton.setTitle(String(weekAndDay?.trimester ?? "Not Set"), for: .normal)
-        userDatOfBirthPicker.date = userMedical.dateOfBirth
+        userDatOfBirthPicker.date = Date(timeIntervalSince1970: user.dateOfBirthTimestamp ?? 0)
     }
 
     func saveUser() async {

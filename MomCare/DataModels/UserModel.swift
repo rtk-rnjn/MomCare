@@ -60,9 +60,10 @@ struct User: Codable, Sendable, Equatable {
     enum CodingKeys: String, CodingKey {
         case firstName = "first_name"
         case lastName = "last_name"
+
         case emailAddress = "email_address"
         case password
-        case countryCode = "country_code"
+
         case country
         case timezone
         case phoneNumber = "phone_number"
@@ -78,42 +79,15 @@ struct User: Codable, Sendable, Equatable {
         case dietaryPreferences = "dietary_preferences"
     }
 
-    // swiftlint:disable nesting
-
-    struct UserMedical: Codable, Sendable, Equatable {
-        enum CodingKeys: String, CodingKey {
-            case dateOfBirth = "date_of_birth"
-            case height
-            case prePregnancyWeight = "pre_pregnancy_weight"
-            case currentWeight = "current_weight"
-            case dueDate = "due_date"
-            case preExistingConditions = "pre_existing_conditions"
-            case foodIntolerances = "food_intolerances"
-            case dietaryPreferences = "dietary_preferences"
-        }
-
-        var dateOfBirth: Date = .init()
-        var height: Double
-        var prePregnancyWeight: Double
-        var currentWeight: Double
-        var dueDate: Date?
-        var preExistingConditions: [PreExistingCondition] = .init()
-        var foodIntolerances: [Intolerance] = .init()
-        var dietaryPreferences: [DietaryPreference] = .init()
-    }
-
-    // swiftlint:enable nesting
-
     var firstName: String
     var lastName: String?
 
     var emailAddress: String
     var password: String?
 
-    var countryCode: String = "91"
     var country: String = "India"
 
-    var timezone: String?
+    var timezone: String = "UTC"
     var phoneNumber: String
 
     var dateOfBirthTimestamp: TimeInterval?
@@ -135,31 +109,6 @@ struct User: Codable, Sendable, Equatable {
     }
 
     var pregancyData: (week: Int, day: Int, trimester: String)? {
-        let dueDate = Date(timeIntervalSince1970: dueDateTimestamp ?? 0)
-        return Utils.pregnancyWeekAndDay(dueDate: dueDate)
+        return Utils.pregnancyWeekAndDay(dueDate: Date(timeIntervalSince1970: dueDateTimestamp ?? 0))
     }
-
-    var medicalData: UserMedical? {
-        guard let dateOfBirthTimestamp,
-              let height,
-              let prePregnancyWeight,
-              let currentWeight else {
-            return nil
-        }
-
-        let dob = Date(timeIntervalSince1970: dateOfBirthTimestamp)
-        let dueDate = dueDateTimestamp != nil ? Date(timeIntervalSince1970: dueDateTimestamp!) : nil
-
-        return UserMedical(
-            dateOfBirth: dob,
-            height: Double(height),
-            prePregnancyWeight: prePregnancyWeight,
-            currentWeight: currentWeight,
-            dueDate: dueDate,
-            preExistingConditions: preExistingConditions,
-            foodIntolerances: foodIntolerances,
-            dietaryPreferences: dietaryPreferences
-        )
-    }
-
 }

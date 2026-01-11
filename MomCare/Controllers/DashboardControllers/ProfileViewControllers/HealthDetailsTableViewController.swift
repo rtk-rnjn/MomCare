@@ -29,7 +29,7 @@ class HealthDetailsTableViewController: UITableViewController {
 
                 switch sender.category {
                 case .dietaryPreference:
-                    let selectedOptions: [String: Bool] = (MomCareUser.shared.user?.medicalData?.dietaryPreferences ?? []).reduce(into: [String: Bool]()) { dict, preference in
+                    let selectedOptions: [String: Bool] = (MomCareUser.shared.user?.dietaryPreferences ?? []).reduce(into: [String: Bool]()) { dict, preference in
                         dict[preference.rawValue] = true
                     }
 
@@ -41,7 +41,7 @@ class HealthDetailsTableViewController: UITableViewController {
                     }
 
                 case .intolerance:
-                    let selectedOptions: [String: Bool] = (MomCareUser.shared.user?.medicalData?.foodIntolerances ?? []).reduce(into: [String: Bool]()) { dict, preference in
+                    let selectedOptions: [String: Bool] = (MomCareUser.shared.user?.foodIntolerances ?? []).reduce(into: [String: Bool]()) { dict, preference in
                         dict[preference.rawValue] = true
                     }
 
@@ -53,7 +53,7 @@ class HealthDetailsTableViewController: UITableViewController {
                     }
 
                 case .preExistingCondition:
-                    let selectedOptions: [String: Bool] = (MomCareUser.shared.user?.medicalData?.preExistingConditions ?? []).reduce(into: [String: Bool]()) { dict, preference in
+                    let selectedOptions: [String: Bool] = (MomCareUser.shared.user?.preExistingConditions ?? []).reduce(into: [String: Bool]()) { dict, preference in
                         dict[preference.rawValue] = true
                     }
 
@@ -91,14 +91,18 @@ class HealthDetailsTableViewController: UITableViewController {
     }
 
     func updatePageElements() {
-        guard let userMedical = MomCareUser.shared.user?.medicalData else { return }
 
-        if let dueDate = userMedical.dueDate {
-            userDueDate.date = dueDate
+        if let dueDateTimestamp = MomCareUser.shared.user?.dueDateTimestamp {
+            userDueDate.date = Date(timeIntervalSince1970: dueDateTimestamp)
         }
-        userMedicalConditions.setTitle("\(userMedical.preExistingConditions.count)", for: .normal)
-        userDietaryPreferences.setTitle("\(userMedical.dietaryPreferences.count)", for: .normal)
-        userAllergies.setTitle("\(userMedical.foodIntolerances.count)", for: .normal)
+
+        let preExistingConditions = MomCareUser.shared.user?.preExistingConditions ?? []
+        let dietaryPreferences = MomCareUser.shared.user?.dietaryPreferences ?? []
+        let foodIntolerances = MomCareUser.shared.user?.foodIntolerances ?? []
+
+        userMedicalConditions.setTitle("\(preExistingConditions.count)", for: .normal)
+        userDietaryPreferences.setTitle("\(dietaryPreferences.count)", for: .normal)
+        userAllergies.setTitle("\(foodIntolerances.count)", for: .normal)
     }
 
     func saveHealthDetails() {

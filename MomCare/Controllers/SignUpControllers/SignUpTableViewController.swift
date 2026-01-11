@@ -70,7 +70,6 @@ class SignUpTableViewController: UITableViewController, UITextFieldDelegate {
             lastName: lastNameField.text,
             emailAddress: emailField.text!,
             password: passwordField.text!,
-            countryCode: "91",
             phoneNumber: mobileNumberField.text!
         )
 

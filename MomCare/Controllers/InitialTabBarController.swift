@@ -57,11 +57,7 @@ class InitialTabBarController: UITabBarController {
                 Utils.remove("isUserSignedUp")
                 self.performSegue(withIdentifier: "segueShowFrontPageNavigationController", sender: nil)
             },
-            AlertActionHandler(title: "Try Again", style: .default) { _ in
-                Task {
-                    await self.refreshToken()
-                }
-            }
+            AlertActionHandler(title: "Work offline", style: .default) { _ in }
         ]
         let alert = Utils.getAlert(title: "Client-Server out of sync", message: "This is awkward. We failed to authenticate you. Please login again", actions: actions)
         present(alert, animated: true)
