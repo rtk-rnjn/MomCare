@@ -639,7 +639,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "if [[ \"$(uname -m)\" == arm64 ]]; then\n    export PATH=\"/opt/homebrew/bin:$PATH\"\nfi\n\nif which swiftlint > /dev/null; then\n    swiftlint --fix --config .swiftlint.yml\n    swiftlint lint --strict --quiet --config .swiftlint.yml --reporter xcode\nfi\n\nif which swiftformat > /dev/null; then\n    swiftformat . --config .swiftformat\n    swiftformat --quiet --strict --lint --config .swiftformat .\nfi\n";
+			shellScript = "if [[ \"$(uname -m)\" == arm64 ]]; then\n    export PATH=\"/opt/homebrew/bin:$PATH\"\nfi\n\nif which swiftlint > /dev/null; then\n    swiftlint lint --strict --quiet --config .swiftlint.yml --reporter xcode\nfi\n\nif which swiftformat > /dev/null; then\n    swiftformat --quiet --strict --lint --config .swiftformat .\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
