@@ -48,7 +48,7 @@ class ContentHandler {
     /// - If not available, fetch fresh tips via ``fetchTips(from:)``.
     var tips: Tips? {
         didSet {
-            CacheHandler.shared.set(tips, forKey: "tips")
+            CacheHandler.shared.set(tips, forKey: "tips", persistance: true)
         }
     }
 
@@ -80,7 +80,7 @@ class ContentHandler {
     ///   with default error messages.
     @discardableResult
     func fetchTips(from user: User) async -> Tips {
-        if let tips: Tips = CacheHandler.shared.get(forKey: "tips") {
+        if let tips: Tips = CacheHandler.shared.get(forKey: "tips", tryUserDefault: true) {
             return tips
         }
 

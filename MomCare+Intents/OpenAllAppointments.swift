@@ -8,8 +8,10 @@
 import AppIntents
 
 struct OpenAllAppointments: AppIntent {
+    @available(iOS 16, *)
     static var title: LocalizedStringResource { "Show Upcoming Appointment" }
 
+    @available(iOS 16.0, *)
     @MainActor
     func perform() async throws -> some IntentResult {
         let appointment = EventKitHandler.shared.fetchUpcomingAppointment()

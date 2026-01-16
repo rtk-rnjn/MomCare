@@ -8,5 +8,6 @@
 import AppIntents
 import ExtensionFoundation
 
+@available(iOS 16.0, *)
 @main
 struct IntentsExtension: AppIntentsExtension {}

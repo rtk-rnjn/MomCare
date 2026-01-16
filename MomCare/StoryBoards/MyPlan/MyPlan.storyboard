@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="23727" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="nYe-Tc-BQd">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="24506" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="nYe-Tc-BQd">
     <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23721"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="24504"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -17,7 +17,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" segmentControlStyle="bar" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="t7W-2s-Nfw">
-                                <rect key="frame" x="20" y="172" width="353" height="32"/>
+                                <rect key="frame" x="20" y="182" width="353" height="32"/>
                                 <color key="backgroundColor" red="0.5725490196078431" green="0.2627450980392157" blue="0.31372549019607843" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <segments>
                                     <segment title="Diet"/>
@@ -30,13 +30,13 @@
                                 </connections>
                             </segmentedControl>
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cVv-4T-ZaS" userLabel="DietContainerView">
-                                <rect key="frame" x="0.0" y="206" width="393" height="646"/>
+                                <rect key="frame" x="0.0" y="216" width="393" height="636"/>
                                 <connections>
                                     <segue destination="L5f-CQ-P5j" kind="embed" identifier="embedShowDietViewController" id="Npz-ts-lBr"/>
                                 </connections>
                             </containerView>
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vt0-6x-Baf" userLabel="ExerciseContainerView">
-                                <rect key="frame" x="0.0" y="206" width="393" height="646"/>
+                                <rect key="frame" x="0.0" y="216" width="393" height="636"/>
                                 <connections>
                                     <segue destination="Fc1-1s-a7Z" kind="embed" id="eGZ-ap-AI0"/>
                                 </connections>
@@ -96,7 +96,7 @@
             <objects>
                 <viewController useStoryboardIdentifierAsRestorationIdentifier="YES" id="L5f-CQ-P5j" customClass="DietViewController" customModule="MomCare" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="K87-3x-RYs">
-                        <rect key="frame" x="0.0" y="0.0" width="393" height="646"/>
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="636"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="N2D-NN-8M1">
@@ -109,16 +109,16 @@
                                                 <rect key="frame" x="0.0" y="0.0" width="176.66666666666666" height="170"/>
                                                 <subviews>
                                                     <stackView opaque="NO" contentMode="center" axis="vertical" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="BP7-LY-CEU">
-                                                        <rect key="frame" x="51.333333333333329" y="67" width="74" height="36"/>
+                                                        <rect key="frame" x="57.333333333333329" y="67" width="61.666666666666671" height="36"/>
                                                         <subviews>
-                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0.00 / 0.00" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="blC-t9-jS1">
-                                                                <rect key="frame" x="0.0" y="0.0" width="74" height="18"/>
+                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="⠀⠀⠀⠀⠀⠀" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="blC-t9-jS1">
+                                                                <rect key="frame" x="0.0" y="0.0" width="61.666666666666664" height="18"/>
                                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                                                                 <nil key="textColor"/>
                                                                 <nil key="highlightedColor"/>
                                                             </label>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Kcal" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0og-14-cpv">
-                                                                <rect key="frame" x="22.333333333333343" y="18" width="29" height="18"/>
+                                                                <rect key="frame" x="16.333333333333343" y="18" width="29" height="18"/>
                                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                                                                 <nil key="textColor"/>
                                                                 <nil key="highlightedColor"/>
@@ -150,14 +150,14 @@
                                                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="equalCentering" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="tE1-Z7-ob8" userLabel="proteinLabelStack">
                                                                         <rect key="frame" x="0.0" y="0.0" width="146.33333333333334" height="36"/>
                                                                         <subviews>
-                                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="xxxxxxx..." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cgS-eP-IJY">
-                                                                                <rect key="frame" x="0.0" y="10.333333333333336" width="58.666666666666664" height="15.666666666666664"/>
+                                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="⠀⠀⠀⠀⠀⠀" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cgS-eP-IJY">
+                                                                                <rect key="frame" x="0.0" y="10.333333333333336" width="53.333333333333336" height="15.666666666666664"/>
                                                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
                                                                                 <nil key="textColor"/>
                                                                                 <nil key="highlightedColor"/>
                                                                             </label>
-                                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" text="xxxxxxx..." textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wGv-uz-gYL">
-                                                                                <rect key="frame" x="91.333333333333343" y="11" width="55" height="14.333333333333336"/>
+                                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" text="⠀⠀⠀⠀⠀⠀" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wGv-uz-gYL">
+                                                                                <rect key="frame" x="97.000000000000028" y="11" width="49.333333333333343" height="14.333333333333336"/>
                                                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
                                                                                 <nil key="textColor"/>
                                                                                 <nil key="highlightedColor"/>
@@ -177,14 +177,14 @@
                                                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="equalCentering" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="N7f-wh-NOQ" userLabel="carbsLabelStack">
                                                                         <rect key="frame" x="0.0" y="0.0" width="146.33333333333334" height="36"/>
                                                                         <subviews>
-                                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="xxxxxxx..." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qaa-K9-t3P">
-                                                                                <rect key="frame" x="0.0" y="10.333333333333343" width="58.666666666666664" height="15.666666666666664"/>
+                                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="⠀⠀⠀⠀⠀⠀" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qaa-K9-t3P">
+                                                                                <rect key="frame" x="0.0" y="10.333333333333343" width="53.333333333333336" height="15.666666666666664"/>
                                                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
                                                                                 <nil key="textColor"/>
                                                                                 <nil key="highlightedColor"/>
                                                                             </label>
-                                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" text="xxxxxxx..." textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iCO-vG-lMo">
-                                                                                <rect key="frame" x="91.333333333333343" y="11" width="55" height="14.333333333333336"/>
+                                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" text="⠀⠀⠀⠀⠀⠀" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iCO-vG-lMo">
+                                                                                <rect key="frame" x="97.000000000000028" y="11" width="49.333333333333343" height="14.333333333333336"/>
                                                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
                                                                                 <nil key="textColor"/>
                                                                                 <nil key="highlightedColor"/>
@@ -204,14 +204,14 @@
                                                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="equalCentering" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="2ov-ZS-HBT" userLabel="fatsLabelStack">
                                                                         <rect key="frame" x="0.0" y="0.0" width="146.33333333333334" height="36"/>
                                                                         <subviews>
-                                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="xxxxxxx..." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nFc-zU-qca" userLabel="Fats">
-                                                                                <rect key="frame" x="0.0" y="10.333333333333329" width="58.666666666666664" height="15.666666666666664"/>
+                                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="⠀⠀⠀⠀⠀⠀" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nFc-zU-qca" userLabel="Fats">
+                                                                                <rect key="frame" x="0.0" y="10.333333333333329" width="53.333333333333336" height="15.666666666666664"/>
                                                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
                                                                                 <nil key="textColor"/>
                                                                                 <nil key="highlightedColor"/>
                                                                             </label>
-                                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" text="xxxxxxx..." textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RRp-eh-zEG">
-                                                                                <rect key="frame" x="91.333333333333343" y="10.999999999999986" width="55" height="14.333333333333336"/>
+                                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" text="⠀⠀⠀⠀⠀⠀" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RRp-eh-zEG">
+                                                                                <rect key="frame" x="97.000000000000028" y="10.999999999999986" width="49.333333333333343" height="14.333333333333336"/>
                                                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
                                                                                 <nil key="textColor"/>
                                                                                 <nil key="highlightedColor"/>
@@ -262,10 +262,10 @@
                                 </userDefinedRuntimeAttributes>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Q1t-dE-Hiu">
-                                <rect key="frame" x="20" y="210" width="353" height="436"/>
+                                <rect key="frame" x="20" y="210" width="353" height="426"/>
                                 <subviews>
                                     <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lha-9a-J2W">
-                                        <rect key="frame" x="0.0" y="0.0" width="353" height="436"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="353" height="426"/>
                                         <connections>
                                             <segue destination="yfR-4p-uCo" kind="embed" identifier="embedShowDietTableViewController" id="dvK-G8-sC0"/>
                                         </connections>
@@ -323,7 +323,7 @@
             <objects>
                 <tableViewController id="yfR-4p-uCo" customClass="DietTableViewController" customModule="MomCare" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" id="eaD-eZ-Zte">
-                        <rect key="frame" x="0.0" y="0.0" width="353" height="436"/>
+                        <rect key="frame" x="0.0" y="0.0" width="353" height="426"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <connections>
@@ -354,7 +354,7 @@
                     <tabBarItem key="tabBarItem" title="MyPlan" image="list.bullet.clipboard.fill" catalog="system" id="12q-Mt-p1Q"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="m9O-Yy-8zM">
-                        <rect key="frame" x="0.0" y="118" width="393" height="44"/>
+                        <rect key="frame" x="0.0" y="118" width="393" height="54"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
