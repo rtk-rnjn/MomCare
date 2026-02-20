@@ -16,8 +16,8 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "184B28782F2626090086424A"
-               BuildableName = "MomCare.app"
-               BlueprintName = "MomCare"
+               BuildableName = "MomCare+.app"
+               BlueprintName = "MomCare+"
                ReferencedContainer = "container:MomCare.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -45,8 +45,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "184B28782F2626090086424A"
-            BuildableName = "MomCare.app"
-            BlueprintName = "MomCare"
+            BuildableName = "MomCare+.app"
+            BlueprintName = "MomCare+"
             ReferencedContainer = "container:MomCare.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
@@ -62,8 +62,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "184B28782F2626090086424A"
-            BuildableName = "MomCare.app"
-            BlueprintName = "MomCare"
+            BuildableName = "MomCare+.app"
+            BlueprintName = "MomCare+"
             ReferencedContainer = "container:MomCare.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>

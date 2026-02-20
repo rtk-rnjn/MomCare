@@ -37,13 +37,9 @@ struct StatePickerView: View {
     @Environment(\.dismiss) private var dismiss
     @State private var searchText = ""
 
-    private let states: IndianState = .allCases
+    private let states: [IndianState] = IndianState.allCases
 
     private var filteredStates: [IndianState] {
-        searchText.isEmpty
-            ? states
-            : states.filter {
-                $0.rawValue.localizedCaseInsensitiveContains(searchText)
-            }
+        searchText.isEmpty ? states : states.filter { $0.rawValue.localizedCaseInsensitiveContains(searchText) }
     }
 }

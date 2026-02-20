@@ -50,25 +50,13 @@ jobs:
       - name: Debug Available Simulators
         run: xcrun simctl list devices
 
-      - name: Set Default Scheme
-        run: |
-          cd MomCare+
-          scheme_list=$(xcodebuild -list -json | tr -d "\n")
-          default=$(echo $scheme_list | ruby -e "require 'json'; puts JSON.parse(STDIN.gets)['project']['targets'][0]")
-          echo $default | cat >default
-          echo Using default scheme: $default
-
       - name: Build
         id: buildstep
         env:
           scheme: ${{ 'default' }}
           platform: ${{ 'iOS Simulator' }}
         run: |
-          cd MomCare+
-          if [ $scheme = default ]; then scheme=$(cat default); fi
-          if [ -n "$(ls -A | grep -i \\.xcworkspace\$)" ]; then filetype_parameter="workspace" && file_to_build=$(ls -A | grep -i \\.xcworkspace\$); else filetype_parameter="project" && file_to_build=$(ls -A | grep -i \\.xcodeproj\$); fi
-          file_to_build=$(echo $file_to_build | awk '{$1=$1;print}')
-          xcodebuild -scheme "$scheme" -"$filetype_parameter" "$file_to_build" -destination "platform=$platform,name=iPhone 17 Pro,OS=26.1"
+          xcodebuild -scheme "MomCare+" -project MomCare+/MomCare.xcodeproj -destination "platform=iOS Simulator,name=iPhone 17 Pro Max,OS=26.2"
 
   label-build-status:
     needs: build
