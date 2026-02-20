@@ -59,7 +59,7 @@ jobs:
           scheme: ${{ 'default' }}
           platform: ${{ 'iOS Simulator' }}
         run: |
-          xcodebuild -scheme "MomCare+" -project MomCare+/MomCare.xcodeproj -destination "platform=iOS Simulator,name=iPhone 17 Pro Max,OS=26.2"
+          xcodebuild -scheme "MomCare" -project MomCare+/MomCare.xcodeproj -destination "platform=iOS Simulator,name=iPhone 17 Pro Max,OS=26.2"
 
   label-build-status:
     needs: build

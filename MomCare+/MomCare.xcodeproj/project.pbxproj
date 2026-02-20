@@ -59,18 +59,18 @@
 /* Begin PBXFileReference section */
 		182465DE2F3DD32000125667 /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
 		182465E02F3DD32000125667 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
-		184B28792F2626090086424A /* MomCare+.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "MomCare+.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		184B28792F2626090086424A /* MomCare.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MomCare.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		925F542A2F420971008C1F5A /* Intents.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.extensionkit-extension"; includeInIndex = 0; path = Intents.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		929AA43A2F475DCA00B5A347 /* TriTrack GlanceExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "TriTrack GlanceExtension.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		922E93832F40DB4300B7C2EC /* Exceptions for "MomCare+" folder in "MomCare+" target */ = {
+		922E93832F40DB4300B7C2EC /* Exceptions for "MomCare+" folder in "MomCare" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Info.plist,
 			);
-			target = 184B28782F2626090086424A /* MomCare+ */;
+			target = 184B28782F2626090086424A /* MomCare */;
 		};
 		925F54372F420971008C1F5A /* Exceptions for "Intents" folder in "Intents" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
@@ -92,7 +92,7 @@
 		184B287B2F2626090086424A /* MomCare+ */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
-				922E93832F40DB4300B7C2EC /* Exceptions for "MomCare+" folder in "MomCare+" target */,
+				922E93832F40DB4300B7C2EC /* Exceptions for "MomCare+" folder in "MomCare" target */,
 			);
 			path = "MomCare+";
 			sourceTree = "<group>";
@@ -170,7 +170,7 @@
 		184B287A2F2626090086424A /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				184B28792F2626090086424A /* MomCare+.app */,
+				184B28792F2626090086424A /* MomCare.app */,
 				925F542A2F420971008C1F5A /* Intents.appex */,
 				929AA43A2F475DCA00B5A347 /* TriTrack GlanceExtension.appex */,
 			);
@@ -187,9 +187,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		184B28782F2626090086424A /* MomCare+ */ = {
+		184B28782F2626090086424A /* MomCare */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 184B28842F26260C0086424A /* Build configuration list for PBXNativeTarget "MomCare+" */;
+			buildConfigurationList = 184B28842F26260C0086424A /* Build configuration list for PBXNativeTarget "MomCare" */;
 			buildPhases = (
 				184B28752F2626090086424A /* Sources */,
 				184B28762F2626090086424A /* Frameworks */,
@@ -207,7 +207,7 @@
 				184B287B2F2626090086424A /* MomCare+ */,
 				184B2A782F2627C20086424A /* Common */,
 			);
-			name = "MomCare+";
+			name = MomCare;
 			packageProductDependencies = (
 				184B2D002F2650000086424A /* FSCalendar */,
 				922E93862F41A5D200B7C2EC /* LNPopupUI */,
@@ -215,7 +215,7 @@
 				929AA4552F48113100B5A347 /* GoogleSignInSwift */,
 			);
 			productName = "MomCare+";
-			productReference = 184B28792F2626090086424A /* MomCare+.app */;
+			productReference = 184B28792F2626090086424A /* MomCare.app */;
 			productType = "com.apple.product-type.application";
 		};
 		925F54292F420971008C1F5A /* Intents */ = {
@@ -294,7 +294,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				184B28782F2626090086424A /* MomCare+ */,
+				184B28782F2626090086424A /* MomCare */,
 				925F54292F420971008C1F5A /* Intents */,
 				929AA4392F475DCA00B5A347 /* TriTrack GlanceExtension */,
 			);
@@ -466,7 +466,7 @@
 			};
 			name = Release;
 		};
-		184B28852F26260C0086424A /* Debug configuration for PBXNativeTarget "MomCare+" */ = {
+		184B28852F26260C0086424A /* Debug configuration for PBXNativeTarget "MomCare" */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -527,7 +527,7 @@
 			};
 			name = Debug;
 		};
-		184B28862F26260C0086424A /* Release configuration for PBXNativeTarget "MomCare+" */ = {
+		184B28862F26260C0086424A /* Release configuration for PBXNativeTarget "MomCare" */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -751,11 +751,11 @@
 			);
 			defaultConfigurationName = Release;
 		};
-		184B28842F26260C0086424A /* Build configuration list for PBXNativeTarget "MomCare+" */ = {
+		184B28842F26260C0086424A /* Build configuration list for PBXNativeTarget "MomCare" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				184B28852F26260C0086424A /* Debug configuration for PBXNativeTarget "MomCare+" */,
-				184B28862F26260C0086424A /* Release configuration for PBXNativeTarget "MomCare+" */,
+				184B28852F26260C0086424A /* Debug configuration for PBXNativeTarget "MomCare" */,
+				184B28862F26260C0086424A /* Release configuration for PBXNativeTarget "MomCare" */,
 			);
 			defaultConfigurationName = Release;
 		};

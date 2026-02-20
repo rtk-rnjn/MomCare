@@ -13,6 +13,8 @@ final class MusicPlayerHandler: ObservableObject {
         configureRemoteTransportControls()
     }
 
+    // MARK: Internal
+
     private(set) var player: AVPlayer?
     @Published var playlist: [SongModel] = []
     @Published var currentSong: SongModel?
