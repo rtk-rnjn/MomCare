@@ -1,5 +1,3 @@
-
-
 import SwiftUI
 import UIKit
 
@@ -30,7 +28,7 @@ struct PlaylistHeroCard: View {
                     Color.black.opacity(0.8),
                     Color.black.opacity(0.4),
                     Color.black.opacity(0.1),
-                    Color.clear,
+                    Color.clear
                 ],
                 startPoint: .bottom,
                 endPoint: .top
@@ -92,7 +90,7 @@ struct PlaylistCard: View {
                     Color.black.opacity(0.8),
                     Color.black.opacity(0.4),
                     Color.black.opacity(0.1),
-                    Color.clear,
+                    Color.clear
                 ],
                 startPoint: .bottom,
                 endPoint: .top

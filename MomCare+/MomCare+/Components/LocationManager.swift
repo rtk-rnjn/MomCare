@@ -35,15 +35,13 @@ class LocationManager: NSObject, ObservableObject, CLLocationManagerDelegate {
         authorizationStatus = manager.authorizationStatus
 
         if authorizationStatus == .authorizedWhenInUse ||
-            authorizationStatus == .authorizedAlways
-        {
+            authorizationStatus == .authorizedAlways {
             manager.startUpdatingLocation()
         }
     }
 
     func locationManager(_: CLLocationManager,
-                         didUpdateLocations locations: [CLLocation])
-    {
+                         didUpdateLocations locations: [CLLocation]) {
         userLocation = locations.first
     }
 

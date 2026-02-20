@@ -1,5 +1,3 @@
-
-
 import SwiftUI
 
 struct MultiSelectPickerView<T>: View where T: Hashable & CaseIterable & RawRepresentable, T.RawValue == String {

@@ -1,5 +1,3 @@
-
-
 import SwiftUI
 
 struct MealTimelineCardView: View {
@@ -152,7 +150,7 @@ private struct HeaderRow: View {
     @EnvironmentObject private var healthKitHandler: HealthKitHandler
 
     @State private var showSearchFoodSheet = false
-    @State private var selectedFood: FoodItemModel? = nil
+    @State private var selectedFood: FoodItemModel?
 
 }
 
@@ -211,7 +209,7 @@ private struct ItemRow: View {
 
     @EnvironmentObject private var healthKitHandler: HealthKitHandler
 
-    @State private var food: FoodItemModel? = nil
+    @State private var food: FoodItemModel?
 
 }
 
@@ -275,7 +273,7 @@ struct FoodThumbnail: View {
 
     // MARK: Private
 
-    @State private var uiImage: UIImage? = nil
+    @State private var uiImage: UIImage?
 
 }
 

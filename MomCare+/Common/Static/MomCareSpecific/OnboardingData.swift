@@ -1,5 +1,3 @@
-
-
 import Foundation
 
 struct OnboardingPage: Identifiable {
@@ -24,5 +22,5 @@ let onboardingPages: [OnboardingPage] = [
     OnboardingPage(
         imageName: "OnboardingImage4",
         title: "Never miss a moment with reminders"
-    ),
+    )
 ]

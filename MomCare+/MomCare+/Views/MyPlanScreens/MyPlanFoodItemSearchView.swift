@@ -78,13 +78,13 @@ struct MyPlanFoodItemSearchView: View {
 
     @EnvironmentObject private var healthKitHandler: HealthKitHandler
 
-    @State private var selectedFoodItem: FoodItemModel? = nil
+    @State private var selectedFoodItem: FoodItemModel?
     @Environment(\.dismiss) private var dismiss
 
     @State private var searchText = ""
     @State private var foodItems: Set<FoodItemModel> = []
     @State private var isLoading = false
-    @State private var task: URLSessionDataTask? = nil
+    @State private var task: URLSessionDataTask?
     @State private var showAlert: Bool = false
 
     private func debounceSearch(query: String) {

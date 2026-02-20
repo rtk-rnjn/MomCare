@@ -1,5 +1,3 @@
-
-
 import SwiftUI
 
 private let textPrimary: Color = .init(red: 0.1, green: 0.1, blue: 0.1)

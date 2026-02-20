@@ -1,4 +1,3 @@
-
 import Foundation
 
 struct TrimesterData: Codable, Equatable {
@@ -612,7 +611,7 @@ enum TriTrackData {
             momTipText: """
             You've made it to the final week! At this point, you might feel extremely impatient, uncomfortable, and exhausted. Every movement may feel like a chore, and you may be feeling strong Braxton Hicks or even real contractions if labor is beginning. Pelvic pressure and lightning crotch can be intense as the baby presses on nerves. Sleep is difficult, you may feel clumsy, and you may experience an increase in discharge or mucus. You're likely attending weekly appointments where your cervix is being checked. You may be offered membrane stripping or scheduled for an induction if you go beyond 41 weeks. Trust that your body knows what to do. Your incredible journey is about to reach a beautiful turning point.
             """
-        ),
+        )
     ]
 
     static func getTrimesterData(for week: Int) -> TrimesterData? {

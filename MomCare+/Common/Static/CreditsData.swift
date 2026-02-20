@@ -25,16 +25,16 @@ enum CreditsData {
         .init(imageName: nil, name: "Aryan Singh", role: "Team Lead, UI/UX & Ideation"),
         .init(imageName: nil, name: "Khushi Rana", role: "Frontend & Research"),
         .init(imageName: nil, name: "Nupur Sharma", role: "Frontend & Research"),
-        .init(imageName: nil, name: "Ritik Ranjan", role: "Frontend/Backend Developer"),
+        .init(imageName: nil, name: "Ritik Ranjan", role: "Frontend/Backend Developer")
     ]
 
     static let mentors: [Credit] = [
         .init(name: "Vinod Kumar", description: "For his dedicated guidance."),
-        .init(name: "Valuable Feedback From", description: "Kiran Singh, Probeer Shaw, Runumi Devi and Shruti Sachdeva."),
+        .init(name: "Valuable Feedback From", description: "Kiran Singh, Probeer Shaw, Runumi Devi and Shruti Sachdeva.")
     ]
 
     static let specialThanks: [Credit] = [
         .init(name: "Amit Gulati · Apple", description: "For expert insights."),
-        .init(name: "Prasad BS · Infosys", description: "For feedback on UI and business aspects."),
+        .init(name: "Prasad BS · Infosys", description: "For feedback on UI and business aspects.")
     ]
 }

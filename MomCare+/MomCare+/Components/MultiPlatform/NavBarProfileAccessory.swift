@@ -1,5 +1,3 @@
-
-
 import SwiftUI
 import UIKit
 
@@ -76,7 +74,7 @@ struct NavBarProfileAccessory: UIViewControllerRepresentable {
                 button.trailingAnchor.constraint(equalTo: navBar.trailingAnchor, constant: -16),
                 button.centerYAnchor.constraint(equalTo: navBar.centerYAnchor),
                 button.widthAnchor.constraint(equalToConstant: 40),
-                button.heightAnchor.constraint(equalToConstant: 40),
+                button.heightAnchor.constraint(equalToConstant: 40)
             ])
         }
 

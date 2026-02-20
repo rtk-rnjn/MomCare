@@ -45,6 +45,6 @@ enum GDPRData {
             iconName: "speaker.slash.fill",
             title: "The Right to Object",
             description: "You have the right to object to us processing your personal data for specific purposes, such as direct marketing."
-        ),
+        )
     ]
 }

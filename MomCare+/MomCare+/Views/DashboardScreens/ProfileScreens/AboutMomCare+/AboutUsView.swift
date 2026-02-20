@@ -1,5 +1,3 @@
-
-
 import SwiftUI
 
 private let brandPink: Color = .init(red: 146 / 255, green: 67 / 255, blue: 80 / 255)

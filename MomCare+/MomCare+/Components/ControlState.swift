@@ -88,7 +88,7 @@ class ControlState: ObservableObject {
     @Published var showingGlobalAlert: Bool = false
 
     @Published var showingProfileSheet: Bool = false
-    @Published var activeProfileRow: ProfileRowType? = nil
+    @Published var activeProfileRow: ProfileRowType?
 
     @Published var myPlanSegment: MyPlanSegment = .diet
     @Published var showingSearchFoodItemSheet: Bool = false

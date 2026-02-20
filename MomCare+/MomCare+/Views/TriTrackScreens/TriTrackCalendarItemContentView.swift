@@ -151,8 +151,8 @@ struct TriTrackCalendarItemContentView: View {
     @EnvironmentObject private var eventKitHandler: EventKitHandler
     @EnvironmentObject private var controlState: ControlState
 
-    @State private var selectedEvent: EKCalendarItemWrapper? = nil
-    @State private var selectedReminder: EKCalendarItemWrapper? = nil
+    @State private var selectedEvent: EKCalendarItemWrapper?
+    @State private var selectedReminder: EKCalendarItemWrapper?
 
 }
 
@@ -191,8 +191,7 @@ struct AppointmentRow: View {
                     .foregroundColor(.secondary)
 
                 if let location = event.location,
-                   !location.isEmpty
-                {
+                   !location.isEmpty {
                     Text(location)
                         .font(.caption)
                         .foregroundColor(.secondary)
@@ -275,8 +274,7 @@ struct ReminderRow: View {
                 }
 
                 if let notes = reminder.notes,
-                   !notes.isEmpty
-                {
+                   !notes.isEmpty {
                     Text(notes)
                         .font(.caption)
                         .foregroundColor(.secondary)
@@ -354,8 +352,7 @@ struct TriTrackEventDetailsContextView: View {
                         .lineLimit(2)
 
                     if let location = event?.location,
-                       !location.isEmpty
-                    {
+                       !location.isEmpty {
                         Text(location)
                             .font(.subheadline)
                             .foregroundColor(.secondary)
@@ -412,8 +409,7 @@ struct TriTrackEventDetailsContextView: View {
             // MARK: Notes
 
             if let notes = event?.notes,
-               !notes.isEmpty
-            {
+               !notes.isEmpty {
                 Divider()
                     .padding(.vertical, 4)
 
@@ -465,8 +461,7 @@ struct TriTrackReminderDetailsContextView: View {
                         .strikethrough(isCompleted)
 
                     if let priority = reminder?.priority,
-                       priority > 0
-                    {
+                       priority > 0 {
                         Text(priorityText(priority))
                             .font(.caption.weight(.medium))
                             .padding(.horizontal, 8)
@@ -514,8 +509,7 @@ struct TriTrackReminderDetailsContextView: View {
             // MARK: Notes
 
             if let notes = reminder?.notes,
-               !notes.isEmpty
-            {
+               !notes.isEmpty {
                 Divider()
                     .padding(.vertical, 4)
 
@@ -562,9 +556,6 @@ private extension TriTrackReminderDetailsContextView {
         }
     }
 }
-
-import EventKit
-import SwiftUI
 
 struct EKReminderView: View {
 
@@ -658,8 +649,7 @@ struct EKReminderView: View {
                 // MARK: Notes
 
                 if let notes = reminder.notes,
-                   !notes.isEmpty
-                {
+                   !notes.isEmpty {
                     Section("Notes") {
                         Text(notes)
                             .foregroundColor(.secondary)

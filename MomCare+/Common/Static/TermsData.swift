@@ -68,6 +68,6 @@ enum TermsData {
             icon: "envelope.fill",
             title: "Contact Us",
             content: "For questions or feedback, please contact us at:\n**Email:** support@ourdomain\n**Website:** "
-        )),
+        ))
     ]
 }

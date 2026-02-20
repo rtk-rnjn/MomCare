@@ -1,5 +1,3 @@
-
-
 import SwiftUI
 import UIKit
 
@@ -24,7 +22,7 @@ struct MoodResultView: View {
                         MomCareAccent.secondary.opacity(0.7),
                         MomCareAccent.secondary.opacity(0.5),
                         MomCareAccent.secondary.opacity(0.3),
-                        Color.clear,
+                        Color.clear
                     ],
                     startPoint: .top,
                     endPoint: .bottom
@@ -110,7 +108,7 @@ private extension MoodResultView {
                             Color.black.opacity(0.8),
                             Color.black.opacity(0.4),
                             Color.black.opacity(0.1),
-                            Color.clear,
+                            Color.clear
                         ],
                         startPoint: .bottom,
                         endPoint: .top
@@ -168,7 +166,7 @@ private extension MoodResultView {
             LazyVGrid(
                 columns: [
                     GridItem(.flexible(), spacing: 16),
-                    GridItem(.flexible(), spacing: 16),
+                    GridItem(.flexible(), spacing: 16)
                 ],
                 spacing: 16
             ) {

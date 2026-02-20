@@ -50,6 +50,9 @@ jobs:
       - name: Debug Available Simulators
         run: xcrun simctl list devices
 
+      - name: Change Directory to MomCare+
+        run: cd MomCare+
+
       - name: Set Default Scheme
         run: |
           scheme_list=$(xcodebuild -list -json | tr -d "\n")

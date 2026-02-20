@@ -1,5 +1,3 @@
-
-
 import FSCalendar
 import SwiftUI
 
@@ -113,7 +111,7 @@ class FSCalendarContainerView: UIView {
             calendar.topAnchor.constraint(equalTo: topAnchor),
             calendar.leadingAnchor.constraint(equalTo: leadingAnchor),
             calendar.trailingAnchor.constraint(equalTo: trailingAnchor),
-            calendar.bottomAnchor.constraint(equalTo: bottomAnchor),
+            calendar.bottomAnchor.constraint(equalTo: bottomAnchor)
         ])
     }
 
@@ -202,7 +200,7 @@ class FSCalendarHostingController: UIViewController, FSCalendarDelegate, FSCalen
             calendar.topAnchor.constraint(equalTo: view.topAnchor),
             calendar.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             calendar.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            calendarHeightConstraint,
+            calendarHeightConstraint
         ])
 
         calendar.select(selectedDate)

@@ -14,7 +14,7 @@ enum HTTPMethod: String {
 struct NetworkResponse<T: Codable>: Codable {
     var data: T?
     var statusCode: Int
-    var errorMessage: String? = nil
+    var errorMessage: String?
 }
 
 class NetworkManager {

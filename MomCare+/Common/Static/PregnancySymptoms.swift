@@ -252,7 +252,7 @@ enum PregnancySymptoms {
             remedies: ["Eat small, frequent meals.", "Keep plain crackers by your bed to eat before getting up.", "Avoid smells that trigger nausea.", "Try sipping ginger ale or ginger tea."],
             whenToCallDoctor: "If you are vomiting multiple times a day, unable to keep any food or liquid down, and losing weight. This could be hyperemesis gravidarum.",
             sources: "[NHS](https://www.nhs.uk/pregnancy/related-conditions/common-symptoms/vomiting-and-morning-sickness/)"
-        ),
+        )
     ]
 
     static func getOrFetch(id: Int) -> Symptom? {

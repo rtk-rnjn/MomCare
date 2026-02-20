@@ -69,6 +69,6 @@ enum PrivacyPolicyText {
         • Right to Delete – Request deletion of your entire account and associated data
         • Right to Withdraw Consent – Disable features like tracking, notifications, or cloud sync at any time
         • Right to Export – GDPR-compliant data export available upon request
-        """),
+        """)
     ]
 }

@@ -1,5 +1,3 @@
-
-
 import Combine
 import SwiftUI
 
@@ -19,7 +17,7 @@ final class AccountSecurityViewModel: ObservableObject {
     // MARK: Internal
 
     @Published var isChangingPassword: Bool = false
-    @Published var errorMessage: String? = nil
+    @Published var errorMessage: String?
 
     @Published var oldPassword = ""
     @Published var newPassword = ""

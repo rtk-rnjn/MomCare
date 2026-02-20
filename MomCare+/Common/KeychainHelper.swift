@@ -23,7 +23,7 @@ enum KeychainHelper {
         let query: [String: Any] = [
             kSecClass as String: kSecClassGenericPassword,
             kSecAttrAccount as String: key.rawValue,
-            kSecValueData as String: data,
+            kSecValueData as String: data
         ]
 
         SecItemDelete(query as CFDictionary)
@@ -37,7 +37,7 @@ enum KeychainHelper {
             kSecClass as String: kSecClassGenericPassword,
             kSecAttrAccount as String: key.rawValue,
             kSecReturnData as String: true,
-            kSecMatchLimit as String: kSecMatchLimitOne,
+            kSecMatchLimit as String: kSecMatchLimitOne
         ]
 
         var dataTypeRef: CFTypeRef?
@@ -53,7 +53,7 @@ enum KeychainHelper {
     static func remove(_ key: ValidKeychainKeys) -> Bool {
         let query: [String: Any] = [
             kSecClass as String: kSecClassGenericPassword,
-            kSecAttrAccount as String: key.rawValue,
+            kSecAttrAccount as String: key.rawValue
         ]
         return SecItemDelete(query as CFDictionary) == errSecSuccess
     }

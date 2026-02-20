@@ -1,5 +1,3 @@
-
-
 import SwiftUI
 
 struct BaseSignUpView: View {
@@ -194,21 +192,13 @@ struct BaseSignUpView: View {
 
         if !isValidEmail(email) {
             alertMessage = "Please enter a valid email address."
-        }
-
-        else if password.count < 8 {
+        } else if password.count < 8 {
             alertMessage = "Password must be at least 8 characters long."
-        }
-
-        else if password != confirmPassword {
+        } else if password != confirmPassword {
             alertMessage = "Passwords do not match."
-        }
-
-        else if mobileNumber.count != 10 {
+        } else if mobileNumber.count != 10 {
             alertMessage = "Mobile number must be exactly 10 digits."
-        }
-
-        else {
+        } else {
             isLoading = true
             await communicateWithServer()
             return

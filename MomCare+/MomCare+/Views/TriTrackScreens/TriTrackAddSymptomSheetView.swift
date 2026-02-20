@@ -99,7 +99,7 @@ struct TriTrackAddSymptomSheetView: View {
     @State private var title: String = ""
     @State private var notes: String = ""
 
-    @State private var selectedSymptom: Symptom? = nil
+    @State private var selectedSymptom: Symptom?
     @State private var showSymptomPicker = false
 
     private func save() {

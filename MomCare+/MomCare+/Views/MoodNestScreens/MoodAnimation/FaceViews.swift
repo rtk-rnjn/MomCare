@@ -1,5 +1,3 @@
-
-
 import SwiftUI
 
 struct EyeView: View {

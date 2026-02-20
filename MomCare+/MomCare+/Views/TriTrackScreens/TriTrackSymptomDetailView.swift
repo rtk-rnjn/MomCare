@@ -90,14 +90,14 @@ struct TriTrackSymptomDetailView: View {
     private var topInfoSections: [SymptomInfoSection] {
         [
             .init(title: "What is it?", iconName: "questionmark.bubble.fill", content: symptom.whatIsIt),
-            .init(title: "Why is this happening?", iconName: "arrow.2.squarepath", content: symptom.symotomDescription),
+            .init(title: "Why is this happening?", iconName: "arrow.2.squarepath", content: symptom.symotomDescription)
         ]
     }
 
     private var bottomInfoSections: [SymptomInfoSection] {
         [
             .init(title: "When to call your doctor", iconName: "phone.fill", content: symptom.whenToCallDoctor),
-            .init(title: "Sources", iconName: "book.fill", content: symptom.sources),
+            .init(title: "Sources", iconName: "book.fill", content: symptom.sources)
         ]
     }
 }

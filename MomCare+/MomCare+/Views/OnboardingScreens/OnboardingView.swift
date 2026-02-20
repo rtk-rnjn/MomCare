@@ -1,5 +1,3 @@
-
-
 import AuthenticationServices
 import GoogleSignIn
 import SwiftUI
@@ -137,7 +135,7 @@ struct OnboardingView: View {
     @State private var navigateToSecondSignup = false
     @State private var navigateToMainApp = false
     @State private var showAlert = false
-    @State private var alertMessage: String? = nil
+    @State private var alertMessage: String?
 
     private func handleAppleSignIn(_ result: Result<ASAuthorization, any Error>) {
         switch result {

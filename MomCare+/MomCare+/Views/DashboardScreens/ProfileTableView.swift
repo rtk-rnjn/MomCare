@@ -1,5 +1,3 @@
-
-
 import SwiftUI
 import UIKit
 
@@ -7,32 +5,32 @@ private let sections: [ProfileSection] = [
     ProfileSection(title: nil, rows: [
         ProfileRow(title: "Personal Information", systemImage: "person.crop.circle", type: .personalInfo),
         ProfileRow(title: "Health Information", systemImage: "heart.text.square", type: .healthInfo),
-        ProfileRow(title: "Notifications", systemImage: "bell.badge", type: .notifications),
+        ProfileRow(title: "Notifications", systemImage: "bell.badge", type: .notifications)
     ]),
 
     ProfileSection(title: nil, rows: [
         ProfileRow(title: "Account and Security", systemImage: "lock.shield", type: .security),
-        ProfileRow(title: "Legal & Compliance", systemImage: "doc.text", type: .legal),
+        ProfileRow(title: "Legal & Compliance", systemImage: "doc.text", type: .legal)
     ]),
 
     ProfileSection(title: nil, rows: [
-        ProfileRow(title: "About MomCare+", systemImage: "info.circle", type: .aboutApp),
+        ProfileRow(title: "About MomCare+", systemImage: "info.circle", type: .aboutApp)
     ]),
 
     ProfileSection(title: nil, rows: [
-        ProfileRow(title: "MomCare+ Watch", systemImage: "applewatch", type: .watch),
+        ProfileRow(title: "MomCare+ Watch", systemImage: "applewatch", type: .watch)
     ]),
 
     ProfileSection(title: nil, rows: [
-        ProfileRow(title: "Account Management", systemImage: "gearshape", type: .accountManagement),
+        ProfileRow(title: "Account Management", systemImage: "gearshape", type: .accountManagement)
     ]),
     ProfileSection(title: nil, rows: [
-        ProfileRow(title: "Sign Out", systemImage: "", type: .signOut),
+        ProfileRow(title: "Sign Out", systemImage: "", type: .signOut)
     ]),
 
     ProfileSection(title: nil, rows: [
-        ProfileRow(title: "footer", systemImage: "", type: .footerText),
-    ]),
+        ProfileRow(title: "footer", systemImage: "", type: .footerText)
+    ])
 ]
 
 final class ProfileTableView: UITableViewController {
@@ -93,7 +91,7 @@ final class ProfileTableView: UITableViewController {
                 string: "Your experience matters to us.\n",
                 attributes: [
                     .foregroundColor: UIColor.secondaryLabel,
-                    .font: UIFont.systemFont(ofSize: 16),
+                    .font: UIFont.systemFont(ofSize: 16)
                 ]
             )
 
@@ -101,7 +99,7 @@ final class ProfileTableView: UITableViewController {
                 string: "Connect with Us",
                 attributes: [
                     .foregroundColor: primary,
-                    .font: UIFont.systemFont(ofSize: 15, weight: .medium),
+                    .font: UIFont.systemFont(ofSize: 15, weight: .medium)
                 ]
             ))
 
@@ -143,8 +141,7 @@ final class ProfileTableView: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView,
-                            didSelectRowAt indexPath: IndexPath)
-    {
+                            didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
 
         let rowType = sections[indexPath.section].rows[indexPath.row].type

@@ -1,5 +1,3 @@
-
-
 import FSCalendar
 import SwiftUI
 
@@ -439,7 +437,7 @@ struct ComparisonView: View {
             "cabbage": "🥬", "coconut": "🥥", "jicama": "🥔",
             "pomelo": "🍊", "butternut squash": "🎃", "pineapple": "🍍",
             "honeydew": "🍈", "small jackfruit": "🍈", "swiss chard": "🥬",
-            "small pumpkin": "🎃", "watermelon": "🍉",
+            "small pumpkin": "🎃", "watermelon": "🍉"
         ]
 
         return emojiMap[fruit] ?? "🫘"

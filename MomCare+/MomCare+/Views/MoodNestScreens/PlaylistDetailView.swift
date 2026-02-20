@@ -1,4 +1,3 @@
-
 import AVFoundation
 import LNPopupUI
 import SwiftUI
@@ -262,8 +261,8 @@ struct PlaylistTrackRow: View {
 
     @EnvironmentObject private var musicKitHandler: MusicPlayerHandler
 
-    @State private var url: URL? = nil
-    @State private var uiImage: UIImage? = nil
+    @State private var url: URL?
+    @State private var uiImage: UIImage?
 
     @ViewBuilder
     private var nowPlayingIndicator: some View {

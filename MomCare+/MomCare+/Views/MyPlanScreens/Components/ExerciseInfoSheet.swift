@@ -201,7 +201,7 @@ struct BreathingInfoSheet: View {
         "Stress Relief",
         "Better Sleep",
         "Oxygen Flow",
-        "Relaxation",
+        "Relaxation"
     ]
 
     private let pastelColor: Color = .init(hex: "D0E1F0")

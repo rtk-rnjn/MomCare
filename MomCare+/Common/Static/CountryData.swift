@@ -224,6 +224,6 @@ enum CountryData {
         "1340": "Virgin Islands, U.S.",
         "967": "Yemen",
         "260": "Zambia",
-        "263": "Zimbabwe",
+        "263": "Zimbabwe"
     ]
 }

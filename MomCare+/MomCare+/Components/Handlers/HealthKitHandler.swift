@@ -1,4 +1,3 @@
-
 import Combine
 import HealthKit
 import SwiftUI
@@ -7,7 +6,7 @@ final class HealthKitHandler: ObservableObject {
 
     // MARK: Internal
 
-    @Published var myPlanModel: MyPlanModel? = nil
+    @Published var myPlanModel: MyPlanModel?
     @Published var userExercises: [UserExerciseModel] = []
 
     @Published var currentSteps: Double = 0
@@ -52,11 +51,11 @@ final class HealthKitHandler: ObservableObject {
     func requestAccess(completionHandler: (() -> Void)? = nil) async {
         let readIdentifiers: [HKQuantityTypeIdentifier] = [
             .activeEnergyBurned, .stepCount, .appleExerciseTime,
-            .dietaryEnergyConsumed, .dietaryProtein, .dietaryCarbohydrates, .dietaryFatTotal,
+            .dietaryEnergyConsumed, .dietaryProtein, .dietaryCarbohydrates, .dietaryFatTotal
         ]
 
         let writeIdentifiers: [HKQuantityTypeIdentifier] = [
-            .dietaryEnergyConsumed, .dietaryProtein, .dietaryCarbohydrates, .dietaryFatTotal,
+            .dietaryEnergyConsumed, .dietaryProtein, .dietaryCarbohydrates, .dietaryFatTotal
         ]
 
         let readTypes = Set(readIdentifiers.compactMap { HKQuantityType.quantityType(forIdentifier: $0) })

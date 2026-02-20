@@ -83,6 +83,6 @@ enum DisclaimerData {
             It is crucial to understand that this is an automated wellness feature intended for comfort and entertainment only. It is not a diagnostic tool and does not provide medical or psychological therapy. This feature cannot detect or treat conditions such as prenatal or postpartum depression or anxiety. If you are experiencing persistent low moods, anxiety, or have concerns about your mental health, it is essential that you speak with your healthcare provider or a mental health professional. Your well-being is the top priority, and professional care is the correct and necessary step.
             """,
             source: "CITATION: Images and Tunes are taken from [Free To Use](https://freetouse.com)."
-        ),
+        )
     ]
 }

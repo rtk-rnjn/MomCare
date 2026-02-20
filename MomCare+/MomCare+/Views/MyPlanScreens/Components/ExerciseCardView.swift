@@ -31,12 +31,12 @@ struct ExerciseCardView: View {
 
     @EnvironmentObject private var healthKitHandler: HealthKitHandler
 
-    @State private var exercise: ExerciseModel? = nil
-    @State private var exerciseURL: URL? = nil
-    @State private var uiImage: UIImage? = nil
+    @State private var exercise: ExerciseModel?
+    @State private var exerciseURL: URL?
+    @State private var uiImage: UIImage?
     @State private var completionProgress: Double = 0
     @State private var startExercisePlayer: Bool = false
-    @State private var avPlayer: AVPlayer? = nil
+    @State private var avPlayer: AVPlayer?
 
 }
 
