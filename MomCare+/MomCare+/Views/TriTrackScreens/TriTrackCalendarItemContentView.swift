@@ -37,6 +37,7 @@ struct TriTrackCalendarItemContentView: View {
                 Image(systemName: "calendar.badge.plus")
                     .font(.system(size: 48))
                     .foregroundColor(.secondary)
+                    .accessibilityHidden(true)
 
                 Text("No Events Scheduled")
                     .font(.headline)
@@ -54,6 +55,7 @@ struct TriTrackCalendarItemContentView: View {
                 }
                 .buttonStyle(.borderedProminent)
                 .tint(Color.CustomColors.mutedRaspberry)
+                .accessibilityHint("Opens a sheet to add a new event")
             } else {
                 LazyVStack {
                     ForEach(eventKitHandler.events, id: \.calendarItemIdentifier) { event in
@@ -179,6 +181,7 @@ struct AppointmentRow: View {
                         Color(.systemGray6))
             )
             .foregroundColor(isToday ? .white : .primary)
+            .accessibilityHidden(true)
 
             // Title + Time
             VStack(alignment: .leading, spacing: 4) {
@@ -203,6 +206,7 @@ struct AppointmentRow: View {
 
             Image(systemName: "chevron.right")
                 .foregroundColor(.gray.opacity(0.6))
+                .accessibilityHidden(true)
         }
         .padding()
         .background(
@@ -210,6 +214,13 @@ struct AppointmentRow: View {
                 .fill(Color(.secondarySystemBackground))
         )
         .opacity(isPast ? 0.6 : 1)
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(event.title)
+        .accessibilityValue(
+            "\(event.startDate.formatted(.dateTime.hour().minute()))\(event.location.map { ", \($0)" } ?? "")\(isToday ? ", today" : "")\(isPast ? ", past event" : "")"
+        )
+        .accessibilityHint("Tap to view event details")
+        .accessibilityAddTraits(.isButton)
     }
 
     // MARK: Private
@@ -259,6 +270,7 @@ struct ReminderRow: View {
                     isToday ? .white :
                     .primary
             )
+            .accessibilityHidden(true)
 
             // Title + Time
             VStack(alignment: .leading, spacing: 4) {
@@ -291,6 +303,7 @@ struct ReminderRow: View {
                         ? .green
                         : (isPast ? .red : .gray.opacity(0.6))
                 )
+                .accessibilityHidden(true)
         }
         .padding()
         .background(
@@ -298,6 +311,16 @@ struct ReminderRow: View {
                 .fill(Color(.secondarySystemBackground))
         )
         .opacity(reminder.isCompleted ? 0.6 : 1)
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(reminder.title)
+        .accessibilityValue(
+            reminder.isCompleted ? "Completed" :
+                isPast ? "Overdue" :
+                isToday ? "Due today" :
+                dueDate.map { $0.formatted(.dateTime.hour().minute()) } ?? "No due date"
+        )
+        .accessibilityHint("Tap to view reminder details")
+        .accessibilityAddTraits(.isButton)
     }
 
     // MARK: Private

@@ -42,6 +42,7 @@ struct BreathingCardView: View {
         .padding(18)
         .background(cardBackground)
         .shadow(color: darkAccentColor.opacity(0.08), radius: 8, x: 0, y: 4)
+        .accessibilityElement(children: .contain)
         .onAppear { updateProgress() }
     }
 
@@ -63,6 +64,7 @@ private extension BreathingCardView {
                     .font(.title3)
                     .foregroundColor(darkAccentColor.opacity(0.5))
             }
+            .accessibilityLabel("Breathing exercise information")
         }
     }
 
@@ -72,6 +74,7 @@ private extension BreathingCardView {
         } label: {
             HStack(spacing: 6) {
                 Image(systemName: "play.fill")
+                    .accessibilityHidden(true)
                 Text(completionProgress >= 1 ? "Replay" : "Start")
             }
             .font(.subheadline.weight(.semibold))
@@ -83,6 +86,7 @@ private extension BreathingCardView {
                     .fill(darkAccentColor)
             )
         }
+        .accessibilityLabel(completionProgress >= 1 ? "Replay breathing exercise" : "Start breathing exercise")
         .fullScreenCover(isPresented: $startBreathingPlayer, onDismiss: {
             updateProgress()
         }) {
@@ -98,6 +102,7 @@ private extension BreathingCardView {
             Image(systemName: "lungs.fill")
                 .font(.system(size: 30))
                 .foregroundColor(darkAccentColor)
+                .accessibilityHidden(true)
         }
         .frame(width: 80, height: 80)
     }

@@ -69,7 +69,7 @@ struct MoodResultView: View {
 private extension MoodResultView {
     var captionSection: some View {
         Text(vm.caption)
-            .font(.system(size: 28, weight: .bold, design: .rounded))
+            .font(.title.bold())
             .foregroundColor(.primary)
             .lineLimit(3)
             .frame(maxWidth: .infinity, alignment: .leading)
@@ -95,12 +95,14 @@ private extension MoodResultView {
                             .scaledToFill()
                             .frame(width: geometry.size.width, height: geometry.size.width * 0.6)
                             .clipped()
+                            .accessibilityHidden(true)
                     } else {
                         Image(systemName: "music.quarternote.3")
                             .resizable()
                             .scaledToFill()
                             .frame(width: geometry.size.width, height: geometry.size.width * 0.6)
                             .clipped()
+                            .accessibilityHidden(true)
                     }
 
                     LinearGradient(
@@ -114,10 +116,11 @@ private extension MoodResultView {
                         endPoint: .top
                     )
                     .frame(width: geometry.size.width, height: geometry.size.width * 0.6)
+                    .accessibilityHidden(true)
 
                     VStack(alignment: .leading, spacing: 16) {
                         Text(hero.name)
-                            .font(.system(size: 28, weight: .bold, design: .rounded))
+                            .font(.title2.bold())
                             .foregroundColor(.white)
                             .lineLimit(2)
                             .shadow(color: .black.opacity(0.3), radius: 4, x: 0, y: 2)
@@ -128,8 +131,9 @@ private extension MoodResultView {
                             HStack(spacing: 8) {
                                 Image(systemName: "play.fill")
                                     .font(.system(size: 14, weight: .bold))
+                                    .accessibilityHidden(true)
                                 Text("Play Now")
-                                    .font(.system(size: 16, weight: .bold))
+                                    .font(.body.bold())
                             }
                             .foregroundColor(.black)
                             .padding(.horizontal, 24)
@@ -138,6 +142,7 @@ private extension MoodResultView {
                             .clipShape(Capsule())
                             .shadow(color: .black.opacity(0.3), radius: 10, x: 0, y: 5)
                         }
+                        .accessibilityLabel("Play \(hero.name)")
                     }
                     .padding(.horizontal, 20)
                     .padding(.bottom, 20)
@@ -153,6 +158,8 @@ private extension MoodResultView {
             )
         }
         .buttonStyle(.plain)
+        .accessibilityLabel("Featured playlist: \(hero.name)")
+        .accessibilityHint("Tap to view playlist")
     }
 }
 
@@ -160,7 +167,7 @@ private extension MoodResultView {
     var featuredSection: some View {
         VStack(alignment: .leading, spacing: 16) {
             Text("More Playlists")
-                .font(.system(size: 20, weight: .bold, design: .rounded))
+                .font(.title3.bold())
                 .foregroundColor(.primary)
 
             LazyVGrid(
@@ -175,6 +182,8 @@ private extension MoodResultView {
                         PlaylistCard(playlist: playlist)
                     }
                     .buttonStyle(.plain)
+                    .accessibilityLabel(playlist.name)
+                    .accessibilityHint("Tap to view playlist")
                 }
             }
         }

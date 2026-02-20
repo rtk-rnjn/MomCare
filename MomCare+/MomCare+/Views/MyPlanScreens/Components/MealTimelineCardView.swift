@@ -117,6 +117,10 @@ private struct HeaderRow: View {
                     try? await healthKitHandler.fetchMealPlan(makeNetworkCall: false)
                 }
             }
+            .accessibilityElement(children: .ignore)
+            .accessibilityLabel(section.isCompleted ? "\(section.title) completed" : "\(section.title) not completed")
+            .accessibilityHint("Tap to toggle \(section.title) completion")
+            .accessibilityAddTraits(.isButton)
 
             Text(section.title)
                 .font(.title3.weight(.semibold))
@@ -135,6 +139,7 @@ private struct HeaderRow: View {
                     .font(.system(size: 18))
                     .foregroundColor(MomCareAccent.primary)
             }
+            .accessibilityLabel("Add food to \(section.title)")
         }
         .frame(height: 66)
         .contentShape(Rectangle())
@@ -178,8 +183,13 @@ private struct ItemRow: View {
                     try? await healthKitHandler.fetchMealPlan(makeNetworkCall: false)
                 }
             }
+            .accessibilityElement(children: .ignore)
+            .accessibilityLabel(item.isConsumed ? "\(food?.name.capitalized ?? "Food item") consumed" : "\(food?.name.capitalized ?? "Food item") not consumed")
+            .accessibilityHint("Tap to toggle consumed status")
+            .accessibilityAddTraits(.isButton)
 
             FoodThumbnail(foodReferenceModel: item)
+                .accessibilityHidden(true)
 
             VStack(alignment: .leading, spacing: 4) {
                 Text(food?.name.capitalized ?? "Food Item")
@@ -200,6 +210,7 @@ private struct ItemRow: View {
         .contentShape(.contextMenuPreview, RoundedRectangle(cornerRadius: 10, style: .continuous))
         .contentShape(Rectangle())
         .modifier(MealContextMenu(item: item, food: food, onToggle: onToggle, onDelete: onDelete))
+        .accessibilityElement(children: .contain)
         .task {
             food = await item.food
         }

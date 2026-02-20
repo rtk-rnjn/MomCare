@@ -49,6 +49,7 @@ private extension ExerciseCardView {
                     .font(.title3)
                     .foregroundColor(darkAccentColor.opacity(0.5))
             }
+            .accessibilityLabel("Exercise information")
         }
     }
 
@@ -76,6 +77,7 @@ private extension ExerciseCardView {
         } label: {
             HStack(spacing: 6) {
                 Image(systemName: "play.fill")
+                    .accessibilityHidden(true)
                 Text(completionProgress >= 1 ? "Replay" : "Start")
             }
             .font(.subheadline.weight(.semibold))
@@ -87,6 +89,7 @@ private extension ExerciseCardView {
                     .fill(darkAccentColor)
             )
         }
+        .accessibilityLabel(completionProgress >= 1 ? "Replay \(exercise?.name ?? "exercise")" : "Start \(exercise?.name ?? "exercise")")
         .fullScreenCover(isPresented: $startExercisePlayer) {
             playerView
         }
@@ -109,6 +112,7 @@ private extension ExerciseCardView {
                     .foregroundColor(.white)
                     .padding()
             }
+            .accessibilityLabel("Close exercise video")
             .padding(.top, 20)
         }
     }
@@ -132,6 +136,7 @@ private extension ExerciseCardView {
             }
         }
         .frame(width: 80, height: 80)
+        .accessibilityHidden(true)
     }
 }
 

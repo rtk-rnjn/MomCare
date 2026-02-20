@@ -52,6 +52,7 @@ struct TriTrackSymptomsContentView: View {
             Image(systemName: "heart.text.square")
                 .font(.system(size: 48))
                 .foregroundColor(.secondary)
+                .accessibilityHidden(true)
 
             Text("Track Your Symptoms")
                 .font(.headline)
@@ -73,6 +74,7 @@ struct TriTrackSymptomsContentView: View {
                 TriTrackAddSymptomSheetView()
             }
             .disabled(!Calendar.current.isDate(selectedDate, inSameDayAs: Date()))
+            .accessibilityHint(Calendar.current.isDate(selectedDate, inSameDayAs: Date()) ? "Opens a form to log a new symptom" : "Can only log symptoms for today")
         }
     }
 
@@ -116,6 +118,7 @@ struct SymptomRow: View {
             Image(systemName: "heart.text.square")
                 .font(.system(size: 24))
                 .foregroundColor(.secondary)
+                .accessibilityHidden(true)
 
             VStack(alignment: .leading, spacing: 4) {
                 Text(symptom.title ?? "Untitled Symptom")
@@ -136,12 +139,14 @@ struct SymptomRow: View {
                     .font(.title3)
                     .foregroundColor(.secondary)
             }
+            .accessibilityLabel("View details for \(symptom.title ?? "symptom")")
         }
         .padding()
         .background(
             RoundedRectangle(cornerRadius: 12)
                 .fill(Color(.systemGray6))
         )
+        .accessibilityElement(children: .contain)
         .contextMenu {
             Button {
                 onInfo()

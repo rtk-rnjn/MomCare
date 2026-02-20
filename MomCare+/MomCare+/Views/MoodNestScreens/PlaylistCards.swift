@@ -15,12 +15,14 @@ struct PlaylistHeroCard: View {
                     .scaledToFill()
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
                     .clipped()
+                    .accessibilityHidden(true)
             } else {
                 Image(systemName: "music.quarternote.3")
                     .resizable()
                     .scaledToFill()
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
                     .clipped()
+                    .accessibilityHidden(true)
             }
 
             LinearGradient(
@@ -33,10 +35,11 @@ struct PlaylistHeroCard: View {
                 startPoint: .bottom,
                 endPoint: .top
             )
+            .accessibilityHidden(true)
 
             VStack(alignment: .leading, spacing: 4) {
                 Text(playlist.name)
-                    .font(.system(size: 28, weight: .bold, design: .rounded))
+                    .font(.title2.bold())
                     .foregroundColor(.white)
                     .lineLimit(2)
                     .shadow(color: .black.opacity(0.3), radius: 4, x: 0, y: 2)
@@ -52,6 +55,9 @@ struct PlaylistHeroCard: View {
                 .stroke(Color.white.opacity(0.1), lineWidth: 1)
         )
         .contentShape(RoundedRectangle(cornerRadius: 24, style: .continuous))
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(playlist.name)
+        .accessibilityAddTraits(.isButton)
         .task {
             uiImage = await playlist.image
         }
@@ -77,12 +83,14 @@ struct PlaylistCard: View {
                     .scaledToFill()
                     .frame(width: max(0, UIScreen.main.bounds.width / 2 - 28), height: 130)
                     .clipped()
+                    .accessibilityHidden(true)
             } else {
                 Image(systemName: "music.quarternote.3")
                     .resizable()
                     .scaledToFill()
                     .frame(width: max(0, UIScreen.main.bounds.width / 2 - 28), height: 130)
                     .clipped()
+                    .accessibilityHidden(true)
             }
 
             LinearGradient(
@@ -95,9 +103,10 @@ struct PlaylistCard: View {
                 startPoint: .bottom,
                 endPoint: .top
             )
+            .accessibilityHidden(true)
 
             Text(playlist.name)
-                .font(.system(size: 16, weight: .bold, design: .rounded))
+                .font(.callout.bold())
                 .foregroundColor(.white)
                 .padding(12)
                 .lineLimit(2)
@@ -111,6 +120,9 @@ struct PlaylistCard: View {
                 .stroke(Color.white.opacity(0.1), lineWidth: 1)
         )
         .contentShape(RoundedRectangle(cornerRadius: 18, style: .continuous))
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(playlist.name)
+        .accessibilityAddTraits(.isButton)
         .task {
             uiImage = await playlist.image
         }

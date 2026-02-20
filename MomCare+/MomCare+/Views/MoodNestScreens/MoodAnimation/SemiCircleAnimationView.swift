@@ -64,6 +64,11 @@ class SemiCircleAnimationView: UIView {
     }
 
     private func animatePathChange() {
+        guard !UIAccessibility.isReduceMotionEnabled else {
+            updatePath(isFullCircle: isFullCircle)
+            return
+        }
+
         let animation = CABasicAnimation(keyPath: "path")
         animation.fromValue = shapeLayer.path
 

@@ -11,6 +11,7 @@ struct WalkingCardView: View {
                     Image(systemName: "figure.walk")
                         .font(.title3.weight(.medium))
                         .foregroundColor(Color(hex: "4A8A62"))
+                        .accessibilityHidden(true)
 
                     Text("Walking")
                         .font(.headline)
@@ -64,6 +65,7 @@ struct WalkingCardView: View {
                 }
             }
             .frame(height: 8)
+            .accessibilityHidden(true)
         }
         .padding(18)
         .background(
@@ -71,6 +73,13 @@ struct WalkingCardView: View {
                 .fill(Color(hex: "D4EDDA"))
         )
         .shadow(color: Color(hex: "4A8A62").opacity(0.08), radius: 8, x: 0, y: 4)
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel("Walking")
+        .accessibilityValue(
+            healthKitHandler.currentSteps >= healthKitHandler.targetSteps
+                ? "Goal reached, \(Int(healthKitHandler.currentSteps)) steps"
+                : "\(Int(healthKitHandler.currentSteps)) of \(Int(healthKitHandler.targetSteps)) steps, \(Int(healthKitHandler.stepsProgress)) percent"
+        )
         .task {
             progress = Double(healthKitHandler.currentSteps) / Double(healthKitHandler.targetSteps)
             progress = min(progress, 1)

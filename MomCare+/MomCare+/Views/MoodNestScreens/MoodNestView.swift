@@ -13,7 +13,7 @@ struct MoodNestView: View {
                     Spacer(minLength: 30)
 
                     Text("How are you feeling right now?")
-                        .font(.system(size: 29, weight: .semibold))
+                        .font(.title.weight(.semibold))
                         .multilineTextAlignment(.center)
                         .lineLimit(2)
                         .fixedSize(horizontal: false, vertical: true)
@@ -24,6 +24,9 @@ struct MoodNestView: View {
 
                     MoodFaceView(vm: vm)
                         .frame(height: 240)
+                        .accessibilityElement(children: .ignore)
+                        .accessibilityLabel("Mood face")
+                        .accessibilityValue(vm.mood.rawValue)
 
                     Text(vm.mood.rawValue)
                         .font(.headline)
@@ -37,6 +40,9 @@ struct MoodNestView: View {
                         .padding(.horizontal, 40)
                         .padding(.top, 30)
                         .tint(.white)
+                        .accessibilityLabel("Mood selector")
+                        .accessibilityValue(vm.mood.rawValue)
+                        .accessibilityHint("Swipe left or right to change your mood")
 
                     Button {
                         UIImpactFeedbackGenerator(style: .soft).impactOccurred()
@@ -52,6 +58,7 @@ struct MoodNestView: View {
                     }
                     .padding(.horizontal, 32)
                     .padding(.top, 30)
+                    .accessibilityLabel("Set mood to \(vm.mood.rawValue)")
                     .navigationDestination(isPresented: $navigateToResult) {
                         MoodResultView(mood: vm.mood)
                     }

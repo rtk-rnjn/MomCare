@@ -119,6 +119,11 @@ struct ProgressRingView: View {
                 showPercentage.toggle()
             }
         }
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel("Calorie progress ring")
+        .accessibilityValue("\(Int(consumed)) of \(Int(target)) kilocalories, \(percentage) percent")
+        .accessibilityHint("Tap to toggle between amount and percentage")
+        .accessibilityAddTraits(.isButton)
     }
 
     // MARK: Private
@@ -192,6 +197,7 @@ struct MacroBarRow: View {
                 }
             }
             .frame(height: 14)
+            .accessibilityHidden(true)
         }
         .contentShape(Rectangle())
         .onTapGesture {
@@ -199,6 +205,15 @@ struct MacroBarRow: View {
                 showPercentage.toggle()
             }
         }
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(title)
+        .accessibilityValue(
+            consumed != nil
+                ? "\(consumed!.formattedOneDecimal) of \(target?.formattedOneDecimal ?? "-"), \(percentageText)"
+                : "No data"
+        )
+        .accessibilityHint("Tap to toggle between amount and percentage")
+        .accessibilityAddTraits(.isButton)
     }
 
     // MARK: Private

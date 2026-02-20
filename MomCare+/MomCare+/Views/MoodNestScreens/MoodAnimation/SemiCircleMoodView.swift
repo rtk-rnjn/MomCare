@@ -17,8 +17,11 @@ struct SemiCircleMoodView: View {
                     style: StrokeStyle(lineWidth: 20, lineCap: .round)
                 )
                 .rotationEffect(.degrees(180))
-                .animation(.easeInOut(duration: 0.4), value: moodValue)
+                .animation(reduceMotion ? nil : .easeInOut(duration: 0.4), value: moodValue)
         }
         .padding(40)
+        .accessibilityHidden(true)
     }
+
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
 }

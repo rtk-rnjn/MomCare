@@ -56,11 +56,12 @@ struct DashboardEventCardView: View {
                         showEventSheet = true
                     } label: {
                         Text("Add Event")
-                            .font(.system(size: 18, weight: .semibold))
+                            .font(.title3.weight(.semibold))
                             .foregroundColor(MomCareAccent.primary)
                     }
                     .padding(.leading, 16)
                     .buttonStyle(.plain)
+                    .accessibilityHint("Opens a sheet to add a new calendar event")
 
                     Spacer()
 
@@ -72,6 +73,7 @@ struct DashboardEventCardView: View {
                         Image(systemName: "calendar.badge.clock")
                             .foregroundColor(.primary)
                             .font(.system(size: 21, weight: .regular))
+                            .accessibilityHidden(true)
                     }
                     .padding(.trailing, 12)
                     .offset(y: -20)
@@ -81,6 +83,7 @@ struct DashboardEventCardView: View {
         .frame(minHeight: 160)
         .background(Color(.systemBackground))
         .dashboardCardStyle()
+        .accessibilityElement(children: .combine)
         .sheet(
             isPresented: $showEventSheet,
             onDismiss: {

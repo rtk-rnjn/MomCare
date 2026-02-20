@@ -51,6 +51,7 @@ struct WeeklyProgressCardView: View {
                         Image(systemName: "target")
                             .font(.subheadline)
                             .foregroundColor(Color.CustomColors.mutedRaspberry)
+                            .accessibilityHidden(true)
 
                         Text("Total: \(completedCount)/\(totalCount)")
                             .font(.subheadline.weight(.semibold))
@@ -75,6 +76,7 @@ struct WeeklyProgressCardView: View {
                     }
                 }
                 .frame(height: 8)
+                .accessibilityHidden(true)
             }
         }
         .padding(18)
@@ -82,6 +84,7 @@ struct WeeklyProgressCardView: View {
             RoundedRectangle(cornerRadius: 24, style: .continuous)
                 .fill(Color(.systemBackground))
         )
+        .accessibilityElement(children: .contain)
         .task {
             let range = Utils.weekRange(containing: Date())
             var temp = [DayProgress]()
@@ -130,9 +133,13 @@ private struct DayRingView: View {
                     Image(systemName: "checkmark")
                         .font(.system(size: 9, weight: .bold))
                         .foregroundColor(Color.CustomColors.mutedRaspberry)
+                        .accessibilityHidden(true)
                 }
             }
             .frame(width: 30, height: 30)
         }
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(dayName)
+        .accessibilityValue(progress >= 1.0 ? "Complete" : "\(Int(progress * 100)) percent")
     }
 }

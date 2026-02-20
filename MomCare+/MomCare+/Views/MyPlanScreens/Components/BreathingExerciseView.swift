@@ -90,6 +90,7 @@ struct BreathingExerciseView: View {
 
     @EnvironmentObject private var healthKitHandler: HealthKitHandler
     @Environment(\.dismiss) private var dismiss
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     @State private var phase: BreathingPhase = .ready
     @State private var phaseCountdown: Int = 3
@@ -158,6 +159,7 @@ struct BreathingExerciseView: View {
             .buttonStyle(.glass)
             .buttonBorderShape(.circle)
             .tint(darkAccent)
+            .accessibilityLabel("Close breathing exercise")
         } else {
             Button {
                 stopAllTimers()
@@ -171,6 +173,7 @@ struct BreathingExerciseView: View {
                     .background(Circle().fill(Color.white.opacity(0.7)))
                     .shadow(color: Color.black.opacity(0.06), radius: 4, x: 0, y: 2)
             }
+            .accessibilityLabel("Close breathing exercise")
         }
     }
 
@@ -180,7 +183,7 @@ struct BreathingExerciseView: View {
                 Circle()
                     .fill(accent.opacity(0.06 - Double(i) * 0.015))
                     .frame(width: 260 + CGFloat(i) * 40, height: 260 + CGFloat(i) * 40)
-                    .scaleEffect(circleScale * (1.0 + CGFloat(i) * 0.05))
+                    .scaleEffect(reduceMotion ? 1.0 : circleScale * (1.0 + CGFloat(i) * 0.05))
             }
 
             Circle()
@@ -207,24 +210,29 @@ struct BreathingExerciseView: View {
                     )
                 )
                 .frame(width: 200, height: 200)
-                .scaleEffect(circleScale)
+                .scaleEffect(reduceMotion ? 1.0 : circleScale)
                 .shadow(color: accent.opacity(0.3), radius: 20, x: 0, y: 5)
 
             Circle()
                 .fill(Color.white.opacity(0.6))
                 .frame(width: 120, height: 120)
-                .scaleEffect(circleScale)
+                .scaleEffect(reduceMotion ? 1.0 : circleScale)
 
             breathingFace
-                .scaleEffect(circleScale)
+                .scaleEffect(reduceMotion ? 1.0 : circleScale)
 
-            ForEach(0 ..< 6, id: \.self) { i in
-                Circle()
-                    .fill(accent.opacity(0.3 + Double(i % 3) * 0.1))
-                    .frame(width: CGFloat(6 + (i % 3) * 3), height: CGFloat(6 + (i % 3) * 3))
-                    .offset(dotPosition(for: i))
+            if !reduceMotion {
+                ForEach(0 ..< 6, id: \.self) { i in
+                    Circle()
+                        .fill(accent.opacity(0.3 + Double(i % 3) * 0.1))
+                        .frame(width: CGFloat(6 + (i % 3) * 3), height: CGFloat(6 + (i % 3) * 3))
+                        .offset(dotPosition(for: i))
+                }
             }
         }
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel("Breathing animation, \(phase.rawValue)")
+        .accessibilityValue("\(Int(progress * 100))% of session complete")
     }
 
     private var breathingFace: some View {
@@ -297,7 +305,7 @@ struct BreathingExerciseView: View {
             Text(phase.rawValue)
                 .font(.title.weight(.semibold))
                 .foregroundColor(darkAccent)
-                .animation(.easeInOut(duration: 0.3), value: phase)
+                .animation(reduceMotion ? nil : .easeInOut(duration: 0.3), value: phase)
 
             if phase != .done {
                 if #available(iOS 16.0, *) {
@@ -320,6 +328,8 @@ struct BreathingExerciseView: View {
                     .foregroundColor(darkAccent.opacity(0.6))
             }
         }
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel("\(phase.rawValue)\(phase != .done ? ", \(phaseCountdown) seconds remaining" : "")")
     }
 
     private var sessionProgress: some View {
@@ -355,6 +365,9 @@ struct BreathingExerciseView: View {
                     .foregroundColor(darkAccent.opacity(0.5))
             }
         }
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel("Session progress")
+        .accessibilityValue("\(formatTime(totalElapsed)) of \(formatTime(totalDuration))")
     }
 
     @ViewBuilder
@@ -378,6 +391,7 @@ struct BreathingExerciseView: View {
             .buttonStyle(.glass)
             .buttonBorderShape(.circle)
             .tint(darkAccent)
+            .accessibilityLabel("Restart session")
 
             Button {
                 if phase == .done {
@@ -395,6 +409,7 @@ struct BreathingExerciseView: View {
             .buttonBorderShape(.circle)
             .tint(darkAccent)
             .controlSize(.large)
+            .accessibilityLabel(phase == .done ? "Restart session" : (isPaused ? "Resume" : "Pause"))
 
             Button {
                 skipPhase()
@@ -405,6 +420,7 @@ struct BreathingExerciseView: View {
             .buttonStyle(.glass)
             .buttonBorderShape(.circle)
             .tint(darkAccent)
+            .accessibilityLabel("Skip to next phase")
         }
     }
 
@@ -420,6 +436,7 @@ struct BreathingExerciseView: View {
                     .background(Circle().fill(Color.white.opacity(0.7)))
                     .shadow(color: Color.black.opacity(0.06), radius: 4, x: 0, y: 2)
             }
+            .accessibilityLabel("Restart session")
 
             Button {
                 if phase == .done {
@@ -446,6 +463,7 @@ struct BreathingExerciseView: View {
                     )
                     .shadow(color: darkAccent.opacity(0.25), radius: 10, x: 0, y: 4)
             }
+            .accessibilityLabel(phase == .done ? "Restart session" : (isPaused ? "Resume" : "Pause"))
 
             Button {
                 skipPhase()
@@ -457,6 +475,7 @@ struct BreathingExerciseView: View {
                     .background(Circle().fill(Color.white.opacity(0.7)))
                     .shadow(color: Color.black.opacity(0.06), radius: 4, x: 0, y: 2)
             }
+            .accessibilityLabel("Skip to next phase")
         }
     }
 
@@ -517,12 +536,17 @@ struct BreathingExerciseView: View {
     }
 
     private func animateCircle(to scale: CGFloat, duration: Double) {
-        withAnimation(.easeInOut(duration: duration)) {
+        if reduceMotion {
             circleScale = scale
+        } else {
+            withAnimation(.easeInOut(duration: duration)) {
+                circleScale = scale
+            }
         }
     }
 
     private func animateDots() {
+        guard !reduceMotion else { return }
         withAnimation(.easeInOut(duration: phase.duration)) {
             dotOffsets = dotOffsets.map { _ in
                 CGSize(

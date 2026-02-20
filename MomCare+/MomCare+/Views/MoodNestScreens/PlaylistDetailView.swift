@@ -101,6 +101,7 @@ private extension PlaylistDetailView {
                     .frame(width: 140, height: 140)
                     .clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
                     .shadow(color: .black.opacity(0.4), radius: 12, x: 0, y: 6)
+                    .accessibilityHidden(true)
             } else {
                 Image(systemName: "music.quarternote.3")
                     .resizable()
@@ -108,20 +109,23 @@ private extension PlaylistDetailView {
                     .frame(width: 140, height: 140)
                     .clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
                     .shadow(color: .black.opacity(0.4), radius: 12, x: 0, y: 6)
+                    .accessibilityHidden(true)
             }
 
             VStack(alignment: .leading, spacing: 8) {
                 Text(playlist.name)
-                    .font(.system(size: 24, weight: .bold, design: .rounded))
+                    .font(.title2.bold())
                     .foregroundColor(.white)
                     .lineLimit(2)
                     .shadow(color: .black.opacity(0.3), radius: 2, x: 0, y: 1)
 
                 Text("\(songs.count) songs • \(totalDuration)")
-                    .font(.system(size: 16))
+                    .font(.subheadline)
                     .foregroundColor(.white.opacity(0.85))
                     .shadow(color: .black.opacity(0.3), radius: 2, x: 0, y: 1)
             }
+            .accessibilityElement(children: .ignore)
+            .accessibilityLabel("\(playlist.name), \(songs.count) songs, \(totalDuration)")
 
             Spacer()
         }
@@ -156,8 +160,9 @@ private extension PlaylistDetailView {
             HStack(spacing: 8) {
                 Image(systemName: "play.fill")
                     .font(.system(size: 15, weight: .semibold))
+                    .accessibilityHidden(true)
                 Text("Play")
-                    .font(.system(size: 16, weight: .semibold))
+                    .font(.body.weight(.semibold))
             }
             .frame(maxWidth: .infinity)
             .padding(.vertical, 14)
@@ -166,6 +171,7 @@ private extension PlaylistDetailView {
             .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
             .shadow(color: .black.opacity(0.2), radius: 8, x: 0, y: 4)
         }
+        .accessibilityLabel("Play \(playlist.name)")
     }
 
     var shuffleButton: some View {
@@ -175,8 +181,9 @@ private extension PlaylistDetailView {
             HStack(spacing: 8) {
                 Image(systemName: "shuffle")
                     .font(.system(size: 15, weight: .semibold))
+                    .accessibilityHidden(true)
                 Text("Shuffle")
-                    .font(.system(size: 16, weight: .semibold))
+                    .font(.body.weight(.semibold))
             }
             .frame(maxWidth: .infinity)
             .padding(.vertical, 14)
@@ -188,6 +195,7 @@ private extension PlaylistDetailView {
                     .stroke(Color.white.opacity(0.2), lineWidth: 1)
             )
         }
+        .accessibilityLabel("Shuffle \(playlist.name)")
     }
 }
 
@@ -220,15 +228,16 @@ struct PlaylistTrackRow: View {
                             }
                         }
                     )
+                    .accessibilityHidden(true)
 
                 VStack(alignment: .leading, spacing: 3) {
                     Text(songModel.songName)
-                        .font(.system(size: 16, weight: musicKitHandler.currentSong == songModel ? .bold : .regular))
+                        .font(.callout.weight(musicKitHandler.currentSong == songModel ? .bold : .regular))
                         .foregroundStyle(Color.white)
                         .lineLimit(1)
 
                     Text(songModel.metadata?.author ?? "Unknown Artist")
-                        .font(.system(size: 14))
+                        .font(.footnote)
                         .foregroundStyle(Color.white.opacity(0.7))
                         .lineLimit(1)
                 }
@@ -236,9 +245,10 @@ struct PlaylistTrackRow: View {
                 Spacer()
 
                 Text(Utils.formattedTime(songModel.metadata?.duration ?? 0))
-                    .font(.system(size: 14))
+                    .font(.footnote)
                     .foregroundStyle(Color.white.opacity(0.6))
                     .monospacedDigit()
+                    .accessibilityHidden(true)
 
                 Button {} label: {
                     Image(systemName: "ellipsis")
@@ -246,11 +256,18 @@ struct PlaylistTrackRow: View {
                         .foregroundStyle(Color.white.opacity(0.6))
                         .frame(width: 32, height: 32)
                 }
+                .accessibilityLabel("More options for \(songModel.songName)")
             }
             .padding(.vertical, 10)
             .contentShape(Rectangle())
         }
         .buttonStyle(.plain)
+        .accessibilityLabel(
+            musicKitHandler.currentSong == songModel
+                ? "\(songModel.songName) by \(songModel.metadata?.author ?? "Unknown Artist"), now playing"
+                : "\(songModel.songName) by \(songModel.metadata?.author ?? "Unknown Artist")"
+        )
+        .accessibilityHint("Double tap to play")
         .task {
             url = await songModel.url
             uiImage = await songModel.image

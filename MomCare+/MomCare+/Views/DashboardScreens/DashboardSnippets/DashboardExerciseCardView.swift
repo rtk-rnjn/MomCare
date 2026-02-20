@@ -60,6 +60,7 @@ struct ExerciseRow: View {
                 Image(systemName: icon)
                     .foregroundColor(.white)
                     .font(.system(size: 14, weight: .bold))
+                    .accessibilityHidden(true)
             }
 
             Text(value)
@@ -68,6 +69,8 @@ struct ExerciseRow: View {
                 .contentTransition(.numericText())
                 .animation(.spring(response: 0.4, dampingFraction: 0.7), value: value)
         }
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(value)
     }
 }
 
@@ -114,9 +117,14 @@ struct ActivityRingView: View {
             .onChange(of: exercise) { animateRings() }
             .onChange(of: stand) { animateRings() }
         }
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel("Activity rings")
+        .accessibilityValue("Steps \(Int(move * 100))%, exercise \(Int(exercise * 100))%, stand \(Int(stand * 100))%")
     }
 
     // MARK: Private
+
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     @State private var animatedMove: Double = 0
     @State private var animatedExercise: Double = 0
@@ -134,10 +142,16 @@ struct ActivityRingView: View {
     }
 
     private func animateRings() {
-        withAnimation(.easeInOut(duration: 0.9)) {
+        if reduceMotion {
             animatedMove = move
             animatedExercise = exercise
             animatedStand = stand
+        } else {
+            withAnimation(.easeInOut(duration: 0.9)) {
+                animatedMove = move
+                animatedExercise = exercise
+                animatedStand = stand
+            }
         }
     }
 
