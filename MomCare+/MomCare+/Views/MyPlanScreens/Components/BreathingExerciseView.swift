@@ -38,6 +38,16 @@ enum BreathingPhase: String {
         case .done: 0.85
         }
     }
+
+    var accessibilityDescription: String {
+        switch self {
+        case .breatheIn: "Breathe in"
+        case .hold: "Hold your breath"
+        case .breatheOut: "Breathe out"
+        case .ready: "Get ready"
+        case .done: "Session complete"
+        }
+    }
 }
 
 struct BreathingExerciseView: View {
@@ -119,6 +129,13 @@ struct BreathingExerciseView: View {
     private var progress: Double {
         guard totalDuration > 0 else { return 0 }
         return min(totalElapsed / totalDuration, 1.0)
+    }
+
+    private var phaseLabelAccessibilityDescription: String {
+        if phase == .done {
+            return "Session complete"
+        }
+        return "\(phase.accessibilityDescription), \(phaseCountdown) seconds remaining"
     }
 
     private var topBar: some View {
@@ -231,7 +248,7 @@ struct BreathingExerciseView: View {
             }
         }
         .accessibilityElement(children: .ignore)
-        .accessibilityLabel("Breathing animation, \(phase.rawValue)")
+        .accessibilityLabel("Breathing animation, \(phase.accessibilityDescription)")
         .accessibilityValue("\(Int(progress * 100))% of session complete")
     }
 
@@ -329,7 +346,7 @@ struct BreathingExerciseView: View {
             }
         }
         .accessibilityElement(children: .ignore)
-        .accessibilityLabel("\(phase.rawValue)\(phase != .done ? ", \(phaseCountdown) seconds remaining" : "")")
+        .accessibilityLabel(phaseLabelAccessibilityDescription)
     }
 
     private var sessionProgress: some View {

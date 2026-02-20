@@ -216,9 +216,7 @@ struct AppointmentRow: View {
         .opacity(isPast ? 0.6 : 1)
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(event.title)
-        .accessibilityValue(
-            "\(event.startDate.formatted(.dateTime.hour().minute()))\(event.location.map { ", \($0)" } ?? "")\(isToday ? ", today" : "")\(isPast ? ", past event" : "")"
-        )
+        .accessibilityValue(appointmentAccessibilityValue)
         .accessibilityHint("Tap to view event details")
         .accessibilityAddTraits(.isButton)
     }
@@ -231,6 +229,16 @@ struct AppointmentRow: View {
 
     private var isPast: Bool {
         event.startDate < Date()
+    }
+
+    private var appointmentAccessibilityValue: String {
+        var parts = [event.startDate.formatted(.dateTime.hour().minute())]
+        if let location = event.location, !location.isEmpty {
+            parts.append(location)
+        }
+        if isToday { parts.append("today") }
+        if isPast { parts.append("past event") }
+        return parts.joined(separator: ", ")
     }
 
 }
@@ -313,12 +321,7 @@ struct ReminderRow: View {
         .opacity(reminder.isCompleted ? 0.6 : 1)
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(reminder.title)
-        .accessibilityValue(
-            reminder.isCompleted ? "Completed" :
-                isPast ? "Overdue" :
-                isToday ? "Due today" :
-                dueDate.map { $0.formatted(.dateTime.hour().minute()) } ?? "No due date"
-        )
+        .accessibilityValue(reminderAccessibilityValue)
         .accessibilityHint("Tap to view reminder details")
         .accessibilityAddTraits(.isButton)
     }
@@ -337,6 +340,16 @@ struct ReminderRow: View {
     private var isPast: Bool {
         guard let dueDate else { return false }
         return dueDate < Date() && !reminder.isCompleted
+    }
+
+    private var reminderAccessibilityValue: String {
+        if reminder.isCompleted { return "Completed" }
+        if isPast { return "Overdue" }
+        if isToday { return "Due today" }
+        if let dueDate {
+            return dueDate.formatted(.dateTime.hour().minute())
+        }
+        return "No due date"
     }
 
 }

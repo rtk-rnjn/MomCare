@@ -262,11 +262,7 @@ struct PlaylistTrackRow: View {
             .contentShape(Rectangle())
         }
         .buttonStyle(.plain)
-        .accessibilityLabel(
-            musicKitHandler.currentSong == songModel
-                ? "\(songModel.songName) by \(songModel.metadata?.author ?? "Unknown Artist"), now playing"
-                : "\(songModel.songName) by \(songModel.metadata?.author ?? "Unknown Artist")"
-        )
+        .accessibilityLabel(trackAccessibilityLabel)
         .accessibilityHint("Double tap to play")
         .task {
             url = await songModel.url
@@ -280,6 +276,11 @@ struct PlaylistTrackRow: View {
 
     @State private var url: URL?
     @State private var uiImage: UIImage?
+
+    private var trackAccessibilityLabel: String {
+        let base = "\(songModel.songName) by \(songModel.metadata?.author ?? "Unknown Artist")"
+        return musicKitHandler.currentSong == songModel ? "\(base), now playing" : base
+    }
 
     @ViewBuilder
     private var nowPlayingIndicator: some View {
