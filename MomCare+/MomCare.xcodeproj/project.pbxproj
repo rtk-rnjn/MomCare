@@ -1,0 +1,831 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 90;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		922E93872F41A5D200B7C2EC /* LNPopupUI in Frameworks */ = {isa = PBXBuildFile; productRef = 922E93862F41A5D200B7C2EC /* LNPopupUI */; };
+		922E93882F41A5D200B7C2EC /* LNPopupUI in Embed Frameworks */ = {isa = PBXBuildFile; productRef = 922E93862F41A5D200B7C2EC /* LNPopupUI */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		929AA43B2F475DCA00B5A347 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 182465DE2F3DD32000125667 /* WidgetKit.framework */; };
+		929AA43C2F475DCA00B5A347 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 182465E02F3DD32000125667 /* SwiftUI.framework */; };
+		929AA44D2F475DCD00B5A347 /* TriTrack GlanceExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 929AA43A2F475DCA00B5A347 /* TriTrack GlanceExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		929AA4542F48113100B5A347 /* GoogleSignIn in Frameworks */ = {isa = PBXBuildFile; productRef = 929AA4532F48113100B5A347 /* GoogleSignIn */; };
+		929AA4562F48113100B5A347 /* GoogleSignInSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 929AA4552F48113100B5A347 /* GoogleSignInSwift */; };
+		92B4B1C02F37F7D7004FA6E3 /* FSCalendar in Frameworks */ = {isa = PBXBuildFile; productRef = 184B2D002F2650000086424A /* FSCalendar */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		929AA44B2F475DCD00B5A347 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 184B28712F2626090086424A /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 929AA4392F475DCA00B5A347;
+			remoteInfo = "TriTrack GlanceExtension";
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		188939BB2F3DEE030022EFD4 /* Embed Watch Content */ = {
+			isa = PBXCopyFilesBuildPhase;
+			dstPath = "$(CONTENTS_FOLDER_PATH)/Watch";
+			dstSubfolder = Product;
+			files = (
+			);
+			name = "Embed Watch Content";
+		};
+		922E93892F41A5D200B7C2EC /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			dstPath = "";
+			dstSubfolder = Frameworks;
+			files = (
+				922E93882F41A5D200B7C2EC /* LNPopupUI in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+		};
+		925F54552F4209F0008C1F5A /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			dstPath = "";
+			dstSubfolder = PlugIns;
+			files = (
+				929AA44D2F475DCD00B5A347 /* TriTrack GlanceExtension.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		182465DE2F3DD32000125667 /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
+		182465E02F3DD32000125667 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
+		184B28792F2626090086424A /* MomCare.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MomCare.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		925F542A2F420971008C1F5A /* Intents.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.extensionkit-extension"; includeInIndex = 0; path = Intents.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		929AA43A2F475DCA00B5A347 /* TriTrack GlanceExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "TriTrack GlanceExtension.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		922E93832F40DB4300B7C2EC /* Exceptions for "MomCare+" folder in "MomCare" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 184B28782F2626090086424A /* MomCare */;
+		};
+		925F54372F420971008C1F5A /* Exceptions for "Intents" folder in "Intents" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 925F54292F420971008C1F5A /* Intents */;
+		};
+		929AA4512F475DCD00B5A347 /* Exceptions for "TriTrack Glance" folder in "TriTrack GlanceExtension" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 929AA4392F475DCA00B5A347 /* TriTrack GlanceExtension */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		184B287B2F2626090086424A /* MomCare+ */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				922E93832F40DB4300B7C2EC /* Exceptions for "MomCare+" folder in "MomCare" target */,
+			);
+			path = "MomCare+";
+			sourceTree = "<group>";
+		};
+		184B2A782F2627C20086424A /* Common */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = Common;
+			sourceTree = "<group>";
+		};
+		925F542B2F420971008C1F5A /* Intents */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				925F54372F420971008C1F5A /* Exceptions for "Intents" folder in "Intents" target */,
+			);
+			path = Intents;
+			sourceTree = "<group>";
+		};
+		929AA43D2F475DCA00B5A347 /* TriTrack Glance */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				929AA4512F475DCD00B5A347 /* Exceptions for "TriTrack Glance" folder in "TriTrack GlanceExtension" target */,
+			);
+			path = "TriTrack Glance";
+			sourceTree = "<group>";
+		};
+/* End PBXFileSystemSynchronizedRootGroup section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		184B28762F2626090086424A /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			files = (
+				92B4B1C02F37F7D7004FA6E3 /* FSCalendar in Frameworks */,
+				922E93872F41A5D200B7C2EC /* LNPopupUI in Frameworks */,
+				929AA4542F48113100B5A347 /* GoogleSignIn in Frameworks */,
+				929AA4562F48113100B5A347 /* GoogleSignInSwift in Frameworks */,
+			);
+		};
+		925F54272F420971008C1F5A /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			files = (
+			);
+		};
+		929AA4372F475DCA00B5A347 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			files = (
+				929AA43C2F475DCA00B5A347 /* SwiftUI.framework in Frameworks */,
+				929AA43B2F475DCA00B5A347 /* WidgetKit.framework in Frameworks */,
+			);
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		182465DD2F3DD32000125667 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				182465DE2F3DD32000125667 /* WidgetKit.framework */,
+				182465E02F3DD32000125667 /* SwiftUI.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		184B28702F2626090086424A = {
+			isa = PBXGroup;
+			children = (
+				184B2A782F2627C20086424A /* Common */,
+				184B287B2F2626090086424A /* MomCare+ */,
+				925F542B2F420971008C1F5A /* Intents */,
+				929AA43D2F475DCA00B5A347 /* TriTrack Glance */,
+				182465DD2F3DD32000125667 /* Frameworks */,
+				184B287A2F2626090086424A /* Products */,
+				1864DE892F3DE1F200415613 /* Recovered References */,
+			);
+			sourceTree = "<group>";
+		};
+		184B287A2F2626090086424A /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				184B28792F2626090086424A /* MomCare.app */,
+				925F542A2F420971008C1F5A /* Intents.appex */,
+				929AA43A2F475DCA00B5A347 /* TriTrack GlanceExtension.appex */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		1864DE892F3DE1F200415613 /* Recovered References */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = "Recovered References";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		184B28782F2626090086424A /* MomCare */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 184B28842F26260C0086424A /* Build configuration list for PBXNativeTarget "MomCare" */;
+			buildPhases = (
+				184B28752F2626090086424A /* Sources */,
+				184B28762F2626090086424A /* Frameworks */,
+				184B28772F2626090086424A /* Resources */,
+				188939BB2F3DEE030022EFD4 /* Embed Watch Content */,
+				922E93892F41A5D200B7C2EC /* Embed Frameworks */,
+				925F54552F4209F0008C1F5A /* Embed Foundation Extensions */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				929AA44C2F475DCD00B5A347 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				184B287B2F2626090086424A /* MomCare+ */,
+				184B2A782F2627C20086424A /* Common */,
+			);
+			name = MomCare;
+			packageProductDependencies = (
+				184B2D002F2650000086424A /* FSCalendar */,
+				922E93862F41A5D200B7C2EC /* LNPopupUI */,
+				929AA4532F48113100B5A347 /* GoogleSignIn */,
+				929AA4552F48113100B5A347 /* GoogleSignInSwift */,
+			);
+			productName = "MomCare+";
+			productReference = 184B28792F2626090086424A /* MomCare.app */;
+			productType = "com.apple.product-type.application";
+		};
+		925F54292F420971008C1F5A /* Intents */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 925F54342F420971008C1F5A /* Build configuration list for PBXNativeTarget "Intents" */;
+			buildPhases = (
+				925F54262F420971008C1F5A /* Sources */,
+				925F54272F420971008C1F5A /* Frameworks */,
+				925F54282F420971008C1F5A /* Resources */,
+			);
+			buildRules = (
+			);
+			fileSystemSynchronizedGroups = (
+				925F542B2F420971008C1F5A /* Intents */,
+			);
+			name = Intents;
+			productName = Intents;
+			productReference = 925F542A2F420971008C1F5A /* Intents.appex */;
+			productType = "com.apple.product-type.extensionkit-extension";
+		};
+		929AA4392F475DCA00B5A347 /* TriTrack GlanceExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 929AA4502F475DCD00B5A347 /* Build configuration list for PBXNativeTarget "TriTrack GlanceExtension" */;
+			buildPhases = (
+				929AA4362F475DCA00B5A347 /* Sources */,
+				929AA4372F475DCA00B5A347 /* Frameworks */,
+				929AA4382F475DCA00B5A347 /* Resources */,
+			);
+			buildRules = (
+			);
+			fileSystemSynchronizedGroups = (
+				929AA43D2F475DCA00B5A347 /* TriTrack Glance */,
+			);
+			name = "TriTrack GlanceExtension";
+			productName = "TriTrack GlanceExtension";
+			productReference = 929AA43A2F475DCA00B5A347 /* TriTrack GlanceExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		184B28712F2626090086424A /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 2620;
+				LastUpgradeCheck = 2620;
+				TargetAttributes = {
+					184B28782F2626090086424A = {
+						CreatedOnToolsVersion = 26.2;
+					};
+					925F54292F420971008C1F5A = {
+						CreatedOnToolsVersion = 26.2;
+					};
+					929AA4392F475DCA00B5A347 = {
+						CreatedOnToolsVersion = 26.2;
+					};
+				};
+			};
+			buildConfigurationList = 184B28742F2626090086424A /* Build configuration list for PBXProject "MomCare" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 184B28702F2626090086424A;
+			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				184B2CFF2F2650000086424A /* XCRemoteSwiftPackageReference "FSCalendar" */,
+				92C3EEB02F3EEAD8001C8C9B /* XCRemoteSwiftPackageReference "LNPopupUI" */,
+				929AA4522F48113100B5A347 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */,
+			);
+			preferredProjectObjectVersion = 90;
+			productRefGroup = 184B287A2F2626090086424A /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				184B28782F2626090086424A /* MomCare */,
+				925F54292F420971008C1F5A /* Intents */,
+				929AA4392F475DCA00B5A347 /* TriTrack GlanceExtension */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		184B28772F2626090086424A /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			files = (
+			);
+		};
+		925F54282F420971008C1F5A /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			files = (
+			);
+		};
+		929AA4382F475DCA00B5A347 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			files = (
+			);
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		184B28752F2626090086424A /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			files = (
+			);
+		};
+		925F54262F420971008C1F5A /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			files = (
+			);
+		};
+		929AA4362F475DCA00B5A347 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			files = (
+			);
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		929AA44C2F475DCD00B5A347 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 929AA4392F475DCA00B5A347 /* TriTrack GlanceExtension */;
+			targetProxy = 929AA44B2F475DCD00B5A347 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		184B28822F26260C0086424A /* Debug configuration for PBXProject "MomCare" */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_STRICT_MEMORY_SAFETY = YES;
+				SWIFT_TREAT_WARNINGS_AS_ERRORS = YES;
+				SWIFT_VERSION = 6.0;
+			};
+			name = Debug;
+		};
+		184B28832F26260C0086424A /* Release configuration for PBXProject "MomCare" */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_STRICT_MEMORY_SAFETY = YES;
+				SWIFT_TREAT_WARNINGS_AS_ERRORS = YES;
+				SWIFT_VERSION = 6.0;
+			};
+			name = Release;
+		};
+		184B28852F26260C0086424A /* Debug configuration for PBXNativeTarget "MomCare" */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = "MomCare+/MomCare+.entitlements";
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 73B8W4ZN6V;
+				ENABLE_APP_SANDBOX = YES;
+				ENABLE_PREVIEWS = YES;
+				ENABLE_USER_SELECTED_FILES = readonly;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "MomCare+/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "MomCare+";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.healthcare-fitness";
+				INFOPLIST_KEY_NSCalendarsFullAccessUsageDescription = "This app requires access to your Calendar to add and manage pregnancy-related appointments and events.";
+				INFOPLIST_KEY_NSHealthShareUsageDescription = "This app requires permission to write health data such as completed workouts and nutrition logs to support accurate tracking and progress monitoring.";
+				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "This app requires permission to write health data such as completed workouts and nutrition logs to support accurate tracking and progress monitoring.";
+				INFOPLIST_KEY_NSLocalNetworkUsageDescription = "This app requires access to the local network to securely connect with supported services and integrations.";
+				INFOPLIST_KEY_NSRemindersFullAccessUsageDescription = "This app requires access to Reminders to create medication, hydration, and appointment alerts.";
+				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
+				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
+				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
+				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphonesimulator*]" = YES;
+				"INFOPLIST_KEY_UILaunchScreen_Generation[sdk=iphoneos*]" = YES;
+				"INFOPLIST_KEY_UILaunchScreen_Generation[sdk=iphonesimulator*]" = YES;
+				INFOPLIST_KEY_UIStatusBarStyle = "";
+				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphoneos*]" = UIStatusBarStyleDefault;
+				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphonesimulator*]" = UIStatusBarStyleDefault;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
+				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 15.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.Team05.MomCare;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				REGISTER_APP_GROUPS = YES;
+				SDKROOT = auto;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_STRICT_MEMORY_SAFETY = YES;
+				SWIFT_SUPPRESS_WARNINGS = NO;
+				SWIFT_TREAT_WARNINGS_AS_ERRORS = YES;
+				SWIFT_UPCOMING_FEATURE_EXISTENTIAL_ANY = YES;
+				SWIFT_UPCOMING_FEATURE_INTERNAL_IMPORTS_BY_DEFAULT = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 6.0;
+				TARGETED_DEVICE_FAMILY = 1;
+				XROS_DEPLOYMENT_TARGET = 26.2;
+			};
+			name = Debug;
+		};
+		184B28862F26260C0086424A /* Release configuration for PBXNativeTarget "MomCare" */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = "MomCare+/MomCare+.entitlements";
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 73B8W4ZN6V;
+				ENABLE_APP_SANDBOX = YES;
+				ENABLE_PREVIEWS = YES;
+				ENABLE_USER_SELECTED_FILES = readonly;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "MomCare+/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "MomCare+";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.healthcare-fitness";
+				INFOPLIST_KEY_NSCalendarsFullAccessUsageDescription = "This app requires access to your Calendar to add and manage pregnancy-related appointments and events.";
+				INFOPLIST_KEY_NSHealthShareUsageDescription = "This app requires permission to write health data such as completed workouts and nutrition logs to support accurate tracking and progress monitoring.";
+				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "This app requires permission to write health data such as completed workouts and nutrition logs to support accurate tracking and progress monitoring.";
+				INFOPLIST_KEY_NSLocalNetworkUsageDescription = "This app requires access to the local network to securely connect with supported services and integrations.";
+				INFOPLIST_KEY_NSRemindersFullAccessUsageDescription = "This app requires access to Reminders to create medication, hydration, and appointment alerts.";
+				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
+				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
+				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
+				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphonesimulator*]" = YES;
+				"INFOPLIST_KEY_UILaunchScreen_Generation[sdk=iphoneos*]" = YES;
+				"INFOPLIST_KEY_UILaunchScreen_Generation[sdk=iphonesimulator*]" = YES;
+				INFOPLIST_KEY_UIStatusBarStyle = "";
+				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphoneos*]" = UIStatusBarStyleDefault;
+				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphonesimulator*]" = UIStatusBarStyleDefault;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
+				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 15.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.Team05.MomCare;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				REGISTER_APP_GROUPS = YES;
+				SDKROOT = auto;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_STRICT_MEMORY_SAFETY = YES;
+				SWIFT_SUPPRESS_WARNINGS = NO;
+				SWIFT_TREAT_WARNINGS_AS_ERRORS = YES;
+				SWIFT_UPCOMING_FEATURE_EXISTENTIAL_ANY = YES;
+				SWIFT_UPCOMING_FEATURE_INTERNAL_IMPORTS_BY_DEFAULT = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 6.0;
+				TARGETED_DEVICE_FAMILY = 1;
+				XROS_DEPLOYMENT_TARGET = 26.2;
+			};
+			name = Release;
+		};
+		925F54352F420971008C1F5A /* Debug configuration for PBXNativeTarget "Intents" */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 73B8W4ZN6V;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Intents/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = Intents;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.Team05.MomCare.Intents;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_EXISTENTIAL_ANY = YES;
+				SWIFT_UPCOMING_FEATURE_INTERNAL_IMPORTS_BY_DEFAULT = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 6.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		925F54362F420971008C1F5A /* Release configuration for PBXNativeTarget "Intents" */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 73B8W4ZN6V;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Intents/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = Intents;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.Team05.MomCare.Intents;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_EXISTENTIAL_ANY = YES;
+				SWIFT_UPCOMING_FEATURE_INTERNAL_IMPORTS_BY_DEFAULT = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 6.0;
+				TARGETED_DEVICE_FAMILY = 1;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		929AA44E2F475DCD00B5A347 /* Debug configuration for PBXNativeTarget "TriTrack GlanceExtension" */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 73B8W4ZN6V;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "TriTrack Glance/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "TriTrack Glance";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.Team05.MomCare.TriTrack-Glance";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_EXISTENTIAL_ANY = YES;
+				SWIFT_UPCOMING_FEATURE_INTERNAL_IMPORTS_BY_DEFAULT = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 6.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		929AA44F2F475DCD00B5A347 /* Release configuration for PBXNativeTarget "TriTrack GlanceExtension" */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 73B8W4ZN6V;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "TriTrack Glance/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "TriTrack Glance";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.Team05.MomCare.TriTrack-Glance";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_EXISTENTIAL_ANY = YES;
+				SWIFT_UPCOMING_FEATURE_INTERNAL_IMPORTS_BY_DEFAULT = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 6.0;
+				TARGETED_DEVICE_FAMILY = 1;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		184B28742F2626090086424A /* Build configuration list for PBXProject "MomCare" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				184B28822F26260C0086424A /* Debug configuration for PBXProject "MomCare" */,
+				184B28832F26260C0086424A /* Release configuration for PBXProject "MomCare" */,
+			);
+			defaultConfigurationName = Release;
+		};
+		184B28842F26260C0086424A /* Build configuration list for PBXNativeTarget "MomCare" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				184B28852F26260C0086424A /* Debug configuration for PBXNativeTarget "MomCare" */,
+				184B28862F26260C0086424A /* Release configuration for PBXNativeTarget "MomCare" */,
+			);
+			defaultConfigurationName = Release;
+		};
+		925F54342F420971008C1F5A /* Build configuration list for PBXNativeTarget "Intents" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				925F54352F420971008C1F5A /* Debug configuration for PBXNativeTarget "Intents" */,
+				925F54362F420971008C1F5A /* Release configuration for PBXNativeTarget "Intents" */,
+			);
+			defaultConfigurationName = Release;
+		};
+		929AA4502F475DCD00B5A347 /* Build configuration list for PBXNativeTarget "TriTrack GlanceExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				929AA44E2F475DCD00B5A347 /* Debug configuration for PBXNativeTarget "TriTrack GlanceExtension" */,
+				929AA44F2F475DCD00B5A347 /* Release configuration for PBXNativeTarget "TriTrack GlanceExtension" */,
+			);
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		184B2CFF2F2650000086424A /* XCRemoteSwiftPackageReference "FSCalendar" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/WenchaoD/FSCalendar";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
+		929AA4522F48113100B5A347 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/google/GoogleSignIn-iOS";
+			requirement = {
+				branch = main;
+				kind = branch;
+			};
+		};
+		92C3EEB02F3EEAD8001C8C9B /* XCRemoteSwiftPackageReference "LNPopupUI" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/LeoNatan/LNPopupUI";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		184B2D002F2650000086424A /* FSCalendar */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 184B2CFF2F2650000086424A /* XCRemoteSwiftPackageReference "FSCalendar" */;
+			productName = FSCalendar;
+		};
+		922E93862F41A5D200B7C2EC /* LNPopupUI */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 92C3EEB02F3EEAD8001C8C9B /* XCRemoteSwiftPackageReference "LNPopupUI" */;
+			productName = LNPopupUI;
+		};
+		929AA4532F48113100B5A347 /* GoogleSignIn */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 929AA4522F48113100B5A347 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */;
+			productName = GoogleSignIn;
+		};
+		929AA4552F48113100B5A347 /* GoogleSignInSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 929AA4522F48113100B5A347 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */;
+			productName = GoogleSignInSwift;
+		};
+/* End XCSwiftPackageProductDependency section */
+	};
+	rootObject = 184B28712F2626090086424A /* Project object */;
+}

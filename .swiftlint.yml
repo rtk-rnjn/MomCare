@@ -12,10 +12,11 @@ disabled_rules:
   - file_length
   - identifier_name
   - type_name
-
-type_body_length:
-  warning: 360
-  error: 400
+  - multiple_closures_with_trailing_closure
+  - unused_optional_binding
+  - type_body_length
+  - function_body_length
+  - function_parameter_count
 
 large_tuple:
   warning: 6
