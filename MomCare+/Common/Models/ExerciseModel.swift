@@ -121,8 +121,8 @@ struct UserExerciseModel: Codable, Sendable, Identifiable, Equatable {
 
             var count = 0
 
-            for await result in group {
-                if result { count += 1 }
+            for await result in group where result {
+                count += 1
             }
 
             return count

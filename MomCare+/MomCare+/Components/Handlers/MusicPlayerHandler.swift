@@ -13,8 +13,6 @@ final class MusicPlayerHandler: ObservableObject {
         configureRemoteTransportControls()
     }
 
-    // MARK: Internal
-
     private(set) var player: AVPlayer?
     @Published var playlist: [SongModel] = []
     @Published var currentSong: SongModel?
@@ -144,7 +142,11 @@ final class MusicPlayerHandler: ObservableObject {
             timeObserverToken = nil
         }
 
+        // swiftlint:disable notification_center_detachment
+
         NotificationCenter.default.removeObserver(self)
+
+        // swiftlint:enable notification_center_detachment
     }
 
     @objc private func playerDidFinishPlaying() {
