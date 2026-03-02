@@ -144,12 +144,13 @@ class NetworkManager {
                 let (data, response) = try await URLSession.shared.data(for: request)
                 return try await handleRequest(response: response, data: data, url: url)
             } catch {
+                count -= 1
+
                 if let urlError = error as? URLError {
                     switch urlError.code {
                     case .networkConnectionLost, .timedOut, .notConnectedToInternet:
                         logger.warning("Network error occurred for request to \(url): \(urlError.localizedDescription). Retrying... (\(5 - count) attempts left)")
                         try? await Task.sleep(nanoseconds: UInt64(1_000_000_000 * (count % 5)))
-                        count -= 1
 
                     default:
                         return NetworkResponse(data: nil, statusCode: -1, errorMessage: urlError.localizedDescription)
