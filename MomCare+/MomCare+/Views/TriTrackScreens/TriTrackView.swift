@@ -407,7 +407,7 @@ struct ComparisonView: View {
                         .fill(Color(hex: "E88683"))
                         .frame(width: min(110, circleSize))
 
-                    Image(trimesterData.imageUri ?? "Month1")
+                    Image(imageName ?? "Month1")
                         .resizable()
                         .scaledToFit()
                         .frame(width: circleSize * 0.7, height: circleSize * 0.7)
