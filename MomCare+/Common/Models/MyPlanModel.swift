@@ -26,7 +26,8 @@ struct FoodReferenceModel: Codable, Sendable, Identifiable {
     }
 
     var isConsumed: Bool {
-        (consumedAtTimestamp ?? 0) > 0
+        let value = (consumedAtTimestamp ?? 0) > 0
+        return value
     }
 
     var id: String {

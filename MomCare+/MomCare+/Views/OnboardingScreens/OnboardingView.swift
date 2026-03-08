@@ -34,7 +34,9 @@ struct OnboardingView: View {
                     SignInWithAppleButton(.continue) { request in
                         request.requestedScopes = [.fullName, .email]
                     } onCompletion: { result in
-                        handleAppleSignIn(result)
+                        Task {
+                            try? await handleAppleSignIn(result)
+                        }
                     }
                     .signInWithAppleButtonStyle(.black)
                     .frame(height: 52)
@@ -137,7 +139,7 @@ struct OnboardingView: View {
     @State private var showAlert = false
     @State private var alertMessage: String?
 
-    private func handleAppleSignIn(_ result: Result<ASAuthorization, any Error>) {
+    private func handleAppleSignIn(_ result: Result<ASAuthorization, any Error>) async throws {
         switch result {
         case let .success(auth):
             guard
@@ -145,24 +147,16 @@ struct OnboardingView: View {
                 let tokenData = credential.identityToken,
                 let tokenString = String(data: tokenData, encoding: .utf8)
             else {
-                print("Failed to fetch Apple identity token")
+                alertMessage = "Failed to fetch Apple identity token"
+                showAlert = true
                 return
             }
 
-            print("Apple Sign-In success, token:", tokenString)
+            try await authenticationService.login(with: .apple, token: tokenString)
 
-            let isNewUser = true
-
-            DispatchQueue.main.async {
-                if isNewUser {
-                    navigateToSecondSignup = true
-                } else {
-                    navigateToMainApp = true
-                }
-            }
-
-        case let .failure(error):
-            print("Apple Sign-In failed:", error.localizedDescription)
+        case .failure(_):
+            alertMessage = "Something fucked up while singing with apple"
+            showAlert = true
         }
     }
 }

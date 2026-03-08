@@ -10,6 +10,11 @@ protocol TokenContaining {
     var expiresAtTimestamp: TimeInterval { get }
 }
 
+enum LoginProvider {
+    case apple
+    case google
+}
+
 final class AuthenticationService: ObservableObject {
 
     // MARK: Lifecycle
@@ -279,6 +284,26 @@ final class AuthenticationService: ObservableObject {
         database.delete(ValidDatabaseKeys.accessTokenExpiresAtTimestamp.rawValue)
 
         userModel?._id = ""
+    }
+    
+    @discardableResult
+    func login(with provider: LoginProvider = .apple, token: String) async throws -> NetworkResponse<TokenPair> {
+        switch provider {
+        case .apple:
+            return try await loginWithApple(token: token)
+        case .google:
+            fatalError()
+        }
+    }
+    
+    private func loginWithApple(token: String) async throws -> NetworkResponse<TokenPair> {
+        let payload = ThirdPartyLogin(idToken: token, existingEmailAddress: nil)
+        guard let data = payload.encodeUsingJSONEncoder() else {
+            fatalError()
+        }
+        
+        let response: NetworkResponse<TokenPair> = try await NetworkManager.shared.post(url: Endpoint.appleLogin.urlString, body: data)
+        return handleSuccess(response, expectedStatusCode: 200)
     }
 
 }

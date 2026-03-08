@@ -83,8 +83,9 @@ struct MusicPlayerView: View {
                 }
 
                 Button {
-                    _ = musicPlayerHandler.togglePlayPause()
                     controlState.showingPopupBar = true
+                    controlState.showingPopup = true
+                    _ = musicPlayerHandler.togglePlayPause()
                 } label: {
                     Image(systemName: musicPlayerHandler.player?.timeControlStatus == .playing ? "pause.fill" : "play.fill")
                         .font(.system(size: 56))
@@ -146,16 +147,47 @@ struct MusicPlayerView: View {
         }
         .popupItems(selection: $musicPlayerHandler.currentSong) {
             for song in musicPlayerHandler.playlist {
-                PopupItem(id: song, progress: Float(musicPlayerHandler.player?.currentTime().seconds ?? 0)) {
-                    Text(song.metadata?.title ?? "Song Title")
-                } subtitle: {
-                    Text(song.metadata?.author ?? "Unknown Author")
-                } buttons: {
-                    ToolbarItemGroup {}
+                PopupItem(
+                    id: song,
+                    title: song.metadata?.title ?? "Song Title",
+                    subtitle: song.metadata?.author ?? "Unknown Artist",
+                    image: Image(uiImage: musicPlayerHandler.currentSongUIImage ?? UIImage()),
+                    progress: musicPlayerHandler.playbackProgress
+                ) {
+                    ToolbarItemGroup(placement: .popupBar) {
+                        Button {
+                            musicPlayerHandler.skipToPrevious()
+                        } label: {
+                            Image(systemName: "backward.fill")
+                        }
+
+                        Button {
+                            _ = musicPlayerHandler.togglePlayPause()
+                        } label: {
+                            Image(
+                                systemName:
+                                    musicPlayerHandler.isPlaying
+                                    ? "pause.fill"
+                                    : "play.fill"
+                            )
+                        }
+
+                        Button {
+                            musicPlayerHandler.skipToNext()
+                        } label: {
+                            Image(systemName: "forward.fill")
+                        }
+                        
+                        Button {
+                            controlState.showingPopup = false
+                            controlState.showingPopupBar = false
+                        } label: {
+                            Image(systemName: "x.circle.fill")
+                        }
+                    }
                 }
             }
         }
-        .popupBarMinimizationEnabled(true)
     }
 
     // MARK: Private

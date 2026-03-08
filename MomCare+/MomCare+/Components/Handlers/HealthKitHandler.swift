@@ -163,8 +163,13 @@ extension HealthKitHandler {
     }
 
     func markFoodAs(consumed: Bool, in mealType: MealType, foodReference: FoodReferenceModel) async throws {
-        guard let myPlanModel, foodReference.isConsumed == consumed else { return }
-
+        guard let myPlanModel else {
+            return
+        }
+        
+        guard foodReference.isConsumed != consumed else {
+            return
+        }
         switch mealType {
         case .breakfast:
             if let index = self.myPlanModel?.breakfast.firstIndex(where: { $0.foodId == foodReference.foodId }) {
