@@ -83,7 +83,7 @@ enum TriTrackSegment: String, CaseIterable, Identifiable {
 }
 
 @MainActor
-class ControlState: ObservableObject {
+final class ControlState: ObservableObject {
     @Published var selectedTab: AppTab = .progressHub
     @Published var showingGlobalAlert: Bool = false
 

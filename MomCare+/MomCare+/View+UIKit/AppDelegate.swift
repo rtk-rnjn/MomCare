@@ -30,12 +30,6 @@ class AppDelegate: NSObject, UIApplicationDelegate, ObservableObject {
         return config
     }
 
-    // MARK: Private
-
-    private var foregroundRefreshTask: Task<Void, Never>?
-    private let tokenValidity: TimeInterval = 60 * 60
-    private let safetyBuffer: TimeInterval = 5 * 60
-
 }
 
 extension AppDelegate: UNUserNotificationCenterDelegate {

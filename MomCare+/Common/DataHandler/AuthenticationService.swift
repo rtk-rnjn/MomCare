@@ -2,8 +2,6 @@ import Combine
 import Foundation
 import SwiftUI
 
-private let refreshTokenBackgroundTaskIdentifier = "com.MomCare.BackgroundTask.RefreshToken"
-
 protocol TokenContaining {
     var accessToken: String { get }
     var refreshToken: String { get }

@@ -1,5 +1,6 @@
 import LNPopupUI
 import SwiftUI
+import Combine
 
 struct MomCareMainTabView: View {
 
@@ -16,6 +17,7 @@ struct MomCareMainTabView: View {
     @EnvironmentObject private var authenticationService: AuthenticationService
     @EnvironmentObject private var musicKitHandler: MusicPlayerHandler
     @EnvironmentObject private var controlState: ControlState
+    @Environment(\.scenePhase) private var scenePhase
 
     private func tabViewContent(bottomPadding: CGFloat) -> some View {
         TabView(selection: $controlState.selectedTab) {
@@ -49,7 +51,19 @@ struct MomCareMainTabView: View {
         .popupInteractionStyle(.snap)
         .popupBarProgressViewStyle(.bottom)
         .popupCloseButtonStyle(.chevron)
+        .onReceive(refreshTimer) { _ in
+            Task {
+                try? await authenticationService.refresh()
+            }
+        }
+        .onChange(of: scenePhase) { _, phase in
+            if phase == .background {
+//                TODO:
+            }
+        }
     }
+    
+    private let refreshTimer = Timer.publish(every: 1800, on: .main, in: .common).autoconnect()
 }
 
 private struct BottomSafeAreaPaddingModifier: ViewModifier {
