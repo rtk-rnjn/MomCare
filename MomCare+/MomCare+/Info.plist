@@ -6,6 +6,17 @@
 	<array>
 		<string>com.MomCare.BackgroundTask.RefreshToken</string>
 	</array>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>com.googleusercontent.apps.213607683860-g69pbeuij54nhhmc36cvcumri02ej20g</string>
+			</array>
+		</dict>
+	</array>
+	<key>GIDClientID</key>
+	<string>213607683860-g69pbeuij54nhhmc36cvcumri02ej20g.apps.googleusercontent.com</string>
 	<key>NSAppTransportSecurity</key>
 	<dict>
 		<key>NSAllowsArbitraryLoads</key>
@@ -17,17 +28,6 @@
 		<string>fetch</string>
 		<string>processing</string>
 		<string>remote-notification</string>
-	</array>
-	<key>GIDClientID</key>
-	<string>213607683860-g69pbeuij54nhhmc36cvcumri02ej20g.apps.googleusercontent.com</string>
-	<key>CFBundleURLTypes</key>
-	<array>
-		<dict>
-			<key>CFBundleURLSchemes</key>
-			<array>
-				<string>com.googleusercontent.apps.213607683860-g69pbeuij54nhhmc36cvcumri02ej20g</string>
-			</array>
-		</dict>
 	</array>
 </dict>
 </plist>

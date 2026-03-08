@@ -3,7 +3,7 @@ import LNPopupUI
 import SwiftUI
 import UIKit
 
-struct PlaylistDetailView: View {
+struct MoodNestSongsView: View {
 
     // MARK: Lifecycle
 
@@ -14,6 +14,7 @@ struct PlaylistDetailView: View {
     // MARK: Internal
 
     @State var playlist: PlaylistModel
+    @EnvironmentObject private var controlState: ControlState
 
     var body: some View {
         VStack(spacing: 0) {
@@ -85,9 +86,6 @@ struct PlaylistDetailView: View {
         playlist.songs
     }
 
-}
-
-private extension PlaylistDetailView {
     var accentColor: Color {
         Color(red: 139 / 255, green: 69 / 255, blue: 87 / 255)
     }
@@ -138,9 +136,7 @@ private extension PlaylistDetailView {
         }
         return "\(minutes) min"
     }
-}
 
-private extension PlaylistDetailView {
     var controlsSection: some View {
         HStack(spacing: 12) {
             playButton
@@ -152,6 +148,8 @@ private extension PlaylistDetailView {
     var playButton: some View {
         Button {
             musicKitHandler.preparePlaylistAndPlay(playlist)
+            controlState.showingPopup = true
+            controlState.showingPopupBar = true
         } label: {
             HStack(spacing: 8) {
                 Image(systemName: "play.fill")
@@ -194,6 +192,8 @@ private extension PlaylistDetailView {
 struct PlaylistTrackRow: View {
 
     // MARK: Internal
+    
+    @EnvironmentObject private var controlState: ControlState
 
     var accentColor: Color = .init(red: 139 / 255, green: 69 / 255, blue: 87 / 255)
     let songModel: SongModel
@@ -201,6 +201,7 @@ struct PlaylistTrackRow: View {
     var body: some View {
         Button {
             musicKitHandler.preparePlaylistAndPlay(nil, song: songModel)
+            controlState.showingPopupBar = true
         } label: {
             HStack(spacing: 12) {
                 AsyncImage(url: URL(string: songModel.songImageUri!)!)
@@ -222,7 +223,7 @@ struct PlaylistTrackRow: View {
                     )
 
                 VStack(alignment: .leading, spacing: 3) {
-                    Text(songModel.songName)
+                    Text(songModel.metadata?.title ?? songModel.songName)
                         .font(.system(size: 16, weight: musicKitHandler.currentSong == songModel ? .bold : .regular))
                         .foregroundStyle(Color.white)
                         .lineLimit(1)

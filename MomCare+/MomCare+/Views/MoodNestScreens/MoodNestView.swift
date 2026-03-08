@@ -53,7 +53,7 @@ struct MoodNestView: View {
                     .padding(.horizontal, 32)
                     .padding(.top, 30)
                     .navigationDestination(isPresented: $navigateToResult) {
-                        MoodResultView(mood: vm.mood)
+                        MoodNestPlaylistsView(mood: vm.mood)
                     }
                     Spacer()
                 }
