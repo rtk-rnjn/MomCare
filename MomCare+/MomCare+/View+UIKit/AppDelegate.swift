@@ -16,6 +16,7 @@ class AppDelegate: NSObject, UIApplicationDelegate, ObservableObject {
         [UIApplication.LaunchOptionsKey: Any]? = nil
     ) -> Bool {
         logger.info("App launched with options: \(launchOptions.debugDescription)")
+        UIApplication.shared.registerForRemoteNotifications()
 
         UNUserNotificationCenter.current().delegate = self
 
@@ -31,6 +32,15 @@ class AppDelegate: NSObject, UIApplicationDelegate, ObservableObject {
         let config = UISceneConfiguration(name: nil, sessionRole: connectingSceneSession.role)
         config.delegateClass = SceneDelegate.self
         return config
+    }
+
+    func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
+        let readableToken = deviceToken.decodeToString()
+        print("Registered for remote notifications with device token: \(readableToken ?? "Unable to decode token")")
+    }
+
+    func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: any Error) {
+        print("Failed to register for remote notifications with error: \(error)")
     }
 
 }

@@ -4,7 +4,7 @@ import UIKit
 private let sections: [ProfileSection] = [
     ProfileSection(title: nil, rows: [
         ProfileRow(title: "Personal Information", systemImage: "person.crop.circle", type: .personalInfo),
-        ProfileRow(title: "Health Information", systemImage: "heart.text.square", type: .healthInfo),
+        ProfileRow(title: "Health Information", systemImage: "heart.text.square", type: .healthInfo)
 //        ProfileRow(title: "Notifications", systemImage: "bell.badge", type: .notifications)
     ]),
 
@@ -48,10 +48,10 @@ final class ProfileTableView: UITableViewController {
     // MARK: Internal
 
     var authenticationService: AuthenticationService?
-    
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
+
         Task {
             _ = try? await authenticationService?.me()
         }

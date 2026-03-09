@@ -198,7 +198,7 @@ struct PlaylistTrackRow: View {
     var accentColor: Color = .init(red: 139 / 255, green: 69 / 255, blue: 87 / 255)
     let playlist: PlaylistModel
     let songIndex: Int
-    
+
     var songModel: SongModel {
         playlist.songs[songIndex]
     }

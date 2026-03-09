@@ -10,22 +10,22 @@ final class MusicPlayerHandler: ObservableObject {
     // MARK: Lifecycle
 
     init() {
-        self.configureRemoteTransportControls()
-        
+        configureRemoteTransportControls()
+
         if let savedPlaylistData = UserDefaults.standard.data(forKey: "loadedPlaylist"),
            let savedPlaylist = try? JSONDecoder().decode([SongModel].self, from: savedPlaylistData) {
-            self.playlist = savedPlaylist
+            playlist = savedPlaylist
         }
-        
+
         if let savedCurrentSongIndex = UserDefaults.standard.value(forKey: "currentSongIndex") as? Int {
-            self.currentSongIndex = savedCurrentSongIndex
+            currentSongIndex = savedCurrentSongIndex
         }
-        
+
         if let savedImageData = UserDefaults.standard.data(forKey: "currentSongUIImage"),
            let savedImage = UIImage(data: savedImageData) {
-            self.currentSongUIImage = savedImage
+            currentSongUIImage = savedImage
         }
-        
+
         if let song = playlist[safe: currentSongIndex] {
             Task {
                 self.player = await self.prepareAVPlayer(with: song)
@@ -36,6 +36,9 @@ final class MusicPlayerHandler: ObservableObject {
     // MARK: Internal
 
     private(set) var player: AVPlayer?
+    @Published var isPlaying = false
+    @Published var playbackProgress: Float = 0.0
+
     @Published var playlist: [SongModel] = [] {
         didSet {
             let key = "loadedPlaylist"
@@ -44,9 +47,11 @@ final class MusicPlayerHandler: ObservableObject {
             }
         }
     }
+
     @Published var currentSongIndex: Int = 0 {
         didSet { UserDefaults.standard.set(currentSongIndex, forKey: "currentSongIndex") }
     }
+
     @Published var currentSongUIImage: UIImage? {
         didSet {
             if let data = currentSongUIImage?.jpegData(compressionQuality: 0.8) {
@@ -54,9 +59,7 @@ final class MusicPlayerHandler: ObservableObject {
             }
         }
     }
-    @Published var isPlaying = false
-    @Published var playbackProgress: Float = 0.0
-    
+
     var currentSong: SongModel? {
         playlist[safe: currentSongIndex]
     }
@@ -137,14 +140,14 @@ final class MusicPlayerHandler: ObservableObject {
             isPlaying = true
         }
     }
-    
+
     private func prepareAVPlayer(with songUri: URL) -> AVPlayer {
         let playerItem = AVPlayerItem(url: songUri)
         let newPlayer = AVPlayer(playerItem: playerItem)
         newPlayer.automaticallyWaitsToMinimizeStalling = true
         return newPlayer
     }
-    
+
     private func prepareAVPlayer(with song: SongModel) async -> AVPlayer? {
         guard let url = await song.url else { return nil }
         return prepareAVPlayer(with: url)
@@ -152,7 +155,7 @@ final class MusicPlayerHandler: ObservableObject {
 
     private func adjacentSong(offset: Int) -> SongModel? {
         let newIndex = currentSongIndex + offset
-        self.currentSongIndex = newIndex
+        currentSongIndex = newIndex
         return playlist.indices.contains(newIndex) ? playlist[safe: newIndex] : nil
     }
 

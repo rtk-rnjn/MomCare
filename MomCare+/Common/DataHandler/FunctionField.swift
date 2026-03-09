@@ -12,6 +12,8 @@ enum FieldType<Value: Codable> {
     case value(Value)
     case null
 
+    // MARK: Lifecycle
+
     init(from decoder: any Decoder) throws {
         let container = try decoder.singleValueContainer()
         if container.decodeNil() {
@@ -21,6 +23,8 @@ enum FieldType<Value: Codable> {
             self = .value(value)
         }
     }
+
+    // MARK: Internal
 
     func encode(to encoder: any Encoder) throws {
         var container = encoder.singleValueContainer()

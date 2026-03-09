@@ -1,21 +1,21 @@
 import SwiftUI
 
 struct InitialsAvatar: View {
-    
+
     let name: String
-    
+
     var initials: String {
         let parts = name.split(separator: " ")
         let first = parts.first?.prefix(1) ?? ""
         let last = parts.dropFirst().first?.prefix(1) ?? ""
         return (first + last).uppercased()
     }
-    
+
     var body: some View {
         ZStack {
             Circle()
                 .fill(MomCareAccent.primary.opacity(0.2))
-            
+
             Text(initials)
                 .font(.system(size: 22, weight: .semibold))
                 .foregroundColor(MomCareAccent.primary)
@@ -38,6 +38,9 @@ struct PersonalInfoView: View {
             hashValue
         }
     }
+
+    @State var name: String
+    @State var dateOfBirth: Date
 
     var body: some View {
         List {
@@ -121,7 +124,7 @@ struct PersonalInfoView: View {
             }
             let firstName = name.split(separator: " ").first.map(String.init) ?? ""
             let lastName = name.split(separator: " ").dropFirst().first.map(String.init) ?? ""
-            
+
             Task {
                 if name != authenticationService.userModel?.fullName {
                     _ = try? await authenticationService.update(
@@ -149,7 +152,7 @@ struct PersonalInfoView: View {
                     _ = try? await authenticationService.update(prePregnancyWeight: .value(prePregnancyWeight))
                     authenticationService.userModel?.prePregnancyWeight = prePregnancyWeight
                 }
-            
+
             }
         }
         .sheet(item: $activeSheet) { sheet in
@@ -181,30 +184,6 @@ struct PersonalInfoView: View {
         }
     }
 
-    // MARK: Private
-
-    @EnvironmentObject private var authenticationService: AuthenticationService
-    @Environment(\.dismiss) private var dismiss
-
-    @State private var isEditing = false
-    @State private var showDateOfBirthPicker = false
-
-    @State var name: String
-    @State var dateOfBirth: Date
-
-    @State private var height: Double?
-    @State private var currentWeight: Double?
-    @State private var prePregnancyWeight: Double?
-
-    @State private var activeSheet: SheetType?
-    
-    private var measurementFormatter: MeasurementFormatter {
-        let formatter = MeasurementFormatter()
-        formatter.unitOptions = .providedUnit
-        return formatter
-    }
-
-
     func pickerRow(_ title: String, value: String, action: @escaping () -> Void) -> some View {
         Button {
             guard isEditing else { return }
@@ -213,6 +192,26 @@ struct PersonalInfoView: View {
             InfoRow(title: title, value: value, isEditing: isEditing)
         }
         .buttonStyle(.plain)
+    }
+
+    // MARK: Private
+
+    @EnvironmentObject private var authenticationService: AuthenticationService
+    @Environment(\.dismiss) private var dismiss
+
+    @State private var isEditing = false
+    @State private var showDateOfBirthPicker = false
+
+    @State private var height: Double?
+    @State private var currentWeight: Double?
+    @State private var prePregnancyWeight: Double?
+
+    @State private var activeSheet: SheetType?
+
+    private var measurementFormatter: MeasurementFormatter {
+        let formatter = MeasurementFormatter()
+        formatter.unitOptions = .providedUnit
+        return formatter
     }
 
     private var allowedDateOfBirthRange: ClosedRange<Date> {
