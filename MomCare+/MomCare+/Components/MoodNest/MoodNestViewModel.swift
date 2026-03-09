@@ -23,9 +23,7 @@ final class MoodNestViewModel: ObservableObject {
         default: break
         }
     }
-}
 
-private extension MoodNestViewModel {
     func reset() {
         eyeScale = .init(width: 1, height: 1)
         eyeRotationLeft = .zero

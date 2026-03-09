@@ -125,7 +125,7 @@ struct MusicPlayerView: View {
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
         .background {
-            if let uiImage =  musicPlayerHandler.currentSongUIImage {
+            if let uiImage = musicPlayerHandler.currentSongUIImage {
                 Image(uiImage: uiImage)
                     .resizable()
                     .aspectRatio(contentMode: .fill)
@@ -174,7 +174,7 @@ struct MusicPlayerView: View {
                     } label: {
                         Image(systemName: "forward.fill")
                     }
-                    
+
                     Button {
                         controlState.showingPopup = false
                         controlState.showingPopupBar = false

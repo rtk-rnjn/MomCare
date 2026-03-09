@@ -14,7 +14,10 @@ struct MoodNestSongsView: View {
     // MARK: Internal
 
     @State var playlist: PlaylistModel
-    @EnvironmentObject private var controlState: ControlState
+
+    var accentColor: Color {
+        Color(red: 139 / 255, green: 69 / 255, blue: 87 / 255)
+    }
 
     var body: some View {
         VStack(spacing: 0) {
@@ -74,22 +77,6 @@ struct MoodNestSongsView: View {
         }
     }
 
-    // MARK: Private
-
-    @EnvironmentObject private var musicKitHandler: MusicPlayerHandler
-
-    @State private var uiImage: UIImage?
-
-    private var animation: Animation = .easeIn(duration: 0.25)
-
-    private var songs: [SongModel] {
-        playlist.songs
-    }
-
-    var accentColor: Color {
-        Color(red: 139 / 255, green: 69 / 255, blue: 87 / 255)
-    }
-
     var headerSection: some View {
         HStack(spacing: 18) {
             if let uiImage {
@@ -124,17 +111,6 @@ struct MoodNestSongsView: View {
             Spacer()
         }
         .padding(20)
-    }
-
-    private var totalDuration: String {
-        let total = songs.reduce(0) { $0 + ($1.metadata?.duration ?? 0) }
-        let minutes = Int(total) / 60
-        if minutes >= 60 {
-            let hours = minutes / 60
-            let remaining = minutes % 60
-            return "\(hours) hr \(remaining) min"
-        }
-        return "\(minutes) min"
     }
 
     var controlsSection: some View {
@@ -187,13 +163,37 @@ struct MoodNestSongsView: View {
             )
         }
     }
+
+    // MARK: Private
+
+    @EnvironmentObject private var controlState: ControlState
+
+    @EnvironmentObject private var musicKitHandler: MusicPlayerHandler
+
+    @State private var uiImage: UIImage?
+
+    private var animation: Animation = .easeIn(duration: 0.25)
+
+    private var songs: [SongModel] {
+        playlist.songs
+    }
+
+    private var totalDuration: String {
+        let total = songs.reduce(0) { $0 + ($1.metadata?.duration ?? 0) }
+        let minutes = Int(total) / 60
+        if minutes >= 60 {
+            let hours = minutes / 60
+            let remaining = minutes % 60
+            return "\(hours) hr \(remaining) min"
+        }
+        return "\(minutes) min"
+    }
+
 }
 
 struct PlaylistTrackRow: View {
 
     // MARK: Internal
-    
-    @EnvironmentObject private var controlState: ControlState
 
     var accentColor: Color = .init(red: 139 / 255, green: 69 / 255, blue: 87 / 255)
     let songModel: SongModel
@@ -259,6 +259,8 @@ struct PlaylistTrackRow: View {
     }
 
     // MARK: Private
+
+    @EnvironmentObject private var controlState: ControlState
 
     @EnvironmentObject private var musicKitHandler: MusicPlayerHandler
 

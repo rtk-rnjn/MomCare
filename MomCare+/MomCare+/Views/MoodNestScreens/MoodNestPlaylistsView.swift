@@ -58,15 +58,6 @@ struct MoodNestPlaylistsView: View {
         }
     }
 
-    // MARK: Private
-
-    @EnvironmentObject private var musicPlayerHandler: MusicPlayerHandler
-    @EnvironmentObject private var controlState: ControlState
-
-    @StateObject private var vm: MoodResultViewModel
-    @State private var heroPlaylist: PlaylistModel?
-    @State private var uiImage: UIImage?
-
     var captionSection: some View {
         Text(vm.caption)
             .font(.system(size: 28, weight: .bold, design: .rounded))
@@ -79,6 +70,29 @@ struct MoodNestPlaylistsView: View {
         Group {
             if let heroPlaylist {
                 heroSection(for: heroPlaylist)
+            }
+        }
+    }
+
+    var featuredSection: some View {
+        VStack(alignment: .leading, spacing: 16) {
+            Text("More Playlists")
+                .font(.system(size: 20, weight: .bold, design: .rounded))
+                .foregroundColor(.primary)
+
+            LazyVGrid(
+                columns: [
+                    GridItem(.flexible(), spacing: 16),
+                    GridItem(.flexible(), spacing: 16)
+                ],
+                spacing: 16
+            ) {
+                ForEach(vm.playlists) { playlist in
+                    NavigationLink(destination: MoodNestSongsView(playlist: playlist)) {
+                        PlaylistCard(playlist: playlist)
+                    }
+                    .buttonStyle(.plain)
+                }
             }
         }
     }
@@ -153,29 +167,14 @@ struct MoodNestPlaylistsView: View {
         }
         .buttonStyle(.plain)
     }
-}
 
-private extension MoodNestPlaylistsView {
-    var featuredSection: some View {
-        VStack(alignment: .leading, spacing: 16) {
-            Text("More Playlists")
-                .font(.system(size: 20, weight: .bold, design: .rounded))
-                .foregroundColor(.primary)
+    // MARK: Private
 
-            LazyVGrid(
-                columns: [
-                    GridItem(.flexible(), spacing: 16),
-                    GridItem(.flexible(), spacing: 16)
-                ],
-                spacing: 16
-            ) {
-                ForEach(vm.playlists) { playlist in
-                    NavigationLink(destination: MoodNestSongsView(playlist: playlist)) {
-                        PlaylistCard(playlist: playlist)
-                    }
-                    .buttonStyle(.plain)
-                }
-            }
-        }
-    }
+    @EnvironmentObject private var musicPlayerHandler: MusicPlayerHandler
+    @EnvironmentObject private var controlState: ControlState
+
+    @StateObject private var vm: MoodResultViewModel
+    @State private var heroPlaylist: PlaylistModel?
+    @State private var uiImage: UIImage?
+
 }

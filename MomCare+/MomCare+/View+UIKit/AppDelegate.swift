@@ -10,8 +10,6 @@ private let logger: Logger = .init(subsystem: "com.MomCare.AppDelegate", categor
 
 class AppDelegate: NSObject, UIApplicationDelegate, ObservableObject {
 
-    // MARK: Internal
-
     func application(
         _: UIApplication,
         didFinishLaunchingWithOptions launchOptions:

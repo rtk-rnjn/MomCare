@@ -103,4 +103,6 @@ final class ControlState: ObservableObject {
 
     @Published var showingPopup: Bool = false
     @Published var showingPopupBar: Bool = false
+
+    @Published var showingMoodnestPlaylistsView: Bool = false
 }

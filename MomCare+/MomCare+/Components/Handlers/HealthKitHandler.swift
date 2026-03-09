@@ -166,7 +166,7 @@ extension HealthKitHandler {
         guard let myPlanModel else {
             return
         }
-        
+
         guard foodReference.isConsumed != consumed else {
             return
         }

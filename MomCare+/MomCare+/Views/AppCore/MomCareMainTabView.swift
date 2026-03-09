@@ -19,6 +19,8 @@ struct MomCareMainTabView: View {
     @EnvironmentObject private var controlState: ControlState
     @Environment(\.scenePhase) private var scenePhase
 
+    private let refreshTimer = Timer.publish(every: 1800, on: .main, in: .common).autoconnect()
+
     private func tabViewContent(bottomPadding: CGFloat) -> some View {
         TabView(selection: $controlState.selectedTab) {
             NavigationStack { DashboardView() }
@@ -62,8 +64,7 @@ struct MomCareMainTabView: View {
             }
         }
     }
-    
-    private let refreshTimer = Timer.publish(every: 1800, on: .main, in: .common).autoconnect()
+
 }
 
 private struct BottomSafeAreaPaddingModifier: ViewModifier {

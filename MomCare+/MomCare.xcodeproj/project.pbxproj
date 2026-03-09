@@ -12,8 +12,6 @@
 		929AA43B2F475DCA00B5A347 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 182465DE2F3DD32000125667 /* WidgetKit.framework */; };
 		929AA43C2F475DCA00B5A347 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 182465E02F3DD32000125667 /* SwiftUI.framework */; };
 		929AA44D2F475DCD00B5A347 /* TriTrack GlanceExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 929AA43A2F475DCA00B5A347 /* TriTrack GlanceExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
-		929AA4542F48113100B5A347 /* GoogleSignIn in Frameworks */ = {isa = PBXBuildFile; productRef = 929AA4532F48113100B5A347 /* GoogleSignIn */; };
-		929AA4562F48113100B5A347 /* GoogleSignInSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 929AA4552F48113100B5A347 /* GoogleSignInSwift */; };
 		92B4B1C02F37F7D7004FA6E3 /* FSCalendar in Frameworks */ = {isa = PBXBuildFile; productRef = 184B2D002F2650000086424A /* FSCalendar */; };
 /* End PBXBuildFile section */
 
@@ -126,8 +124,6 @@
 			files = (
 				92B4B1C02F37F7D7004FA6E3 /* FSCalendar in Frameworks */,
 				922E93872F41A5D200B7C2EC /* LNPopupUI in Frameworks */,
-				929AA4542F48113100B5A347 /* GoogleSignIn in Frameworks */,
-				929AA4562F48113100B5A347 /* GoogleSignInSwift in Frameworks */,
 			);
 		};
 		925F54272F420971008C1F5A /* Frameworks */ = {
@@ -211,8 +207,6 @@
 			packageProductDependencies = (
 				184B2D002F2650000086424A /* FSCalendar */,
 				922E93862F41A5D200B7C2EC /* LNPopupUI */,
-				929AA4532F48113100B5A347 /* GoogleSignIn */,
-				929AA4552F48113100B5A347 /* GoogleSignInSwift */,
 			);
 			productName = "MomCare+";
 			productReference = 184B28792F2626090086424A /* MomCare.app */;
@@ -287,7 +281,6 @@
 			packageReferences = (
 				184B2CFF2F2650000086424A /* XCRemoteSwiftPackageReference "FSCalendar" */,
 				92C3EEB02F3EEAD8001C8C9B /* XCRemoteSwiftPackageReference "LNPopupUI" */,
-				929AA4522F48113100B5A347 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */,
 			);
 			preferredProjectObjectVersion = 90;
 			productRefGroup = 184B287A2F2626090086424A /* Products */;
@@ -475,7 +468,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = 73B8W4ZN6V;
 				ENABLE_APP_SANDBOX = YES;
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SELECTED_FILES = readonly;
@@ -536,7 +529,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = 73B8W4ZN6V;
 				ENABLE_APP_SANDBOX = YES;
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SELECTED_FILES = readonly;
@@ -593,7 +586,7 @@
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = 73B8W4ZN6V;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Intents/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Intents;
@@ -629,7 +622,7 @@
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = 73B8W4ZN6V;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Intents/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Intents;
@@ -669,7 +662,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = 73B8W4ZN6V;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "TriTrack Glance/Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "TriTrack Glance";
@@ -708,7 +701,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = 73B8W4ZN6V;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "TriTrack Glance/Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "TriTrack Glance";
@@ -786,14 +779,6 @@
 				kind = branch;
 			};
 		};
-		929AA4522F48113100B5A347 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/google/GoogleSignIn-iOS";
-			requirement = {
-				branch = main;
-				kind = branch;
-			};
-		};
 		92C3EEB02F3EEAD8001C8C9B /* XCRemoteSwiftPackageReference "LNPopupUI" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/LeoNatan/LNPopupUI";
@@ -814,16 +799,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 92C3EEB02F3EEAD8001C8C9B /* XCRemoteSwiftPackageReference "LNPopupUI" */;
 			productName = LNPopupUI;
-		};
-		929AA4532F48113100B5A347 /* GoogleSignIn */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 929AA4522F48113100B5A347 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */;
-			productName = GoogleSignIn;
-		};
-		929AA4552F48113100B5A347 /* GoogleSignInSwift */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 929AA4522F48113100B5A347 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */;
-			productName = GoogleSignInSwift;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

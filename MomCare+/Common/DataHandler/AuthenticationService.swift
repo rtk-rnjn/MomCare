@@ -250,6 +250,16 @@ final class AuthenticationService: ObservableObject {
         return response
     }
 
+    @discardableResult
+    func login(with provider: LoginProvider = .apple, token: String) async throws -> NetworkResponse<TokenPair> {
+        switch provider {
+        case .apple:
+            return try await loginWithApple(token: token)
+        case .google:
+            fatalError()
+        }
+    }
+
     // MARK: Private
 
     @AppStorage("lastTokenRefreshDate")
@@ -283,23 +293,13 @@ final class AuthenticationService: ObservableObject {
 
         userModel?._id = ""
     }
-    
-    @discardableResult
-    func login(with provider: LoginProvider = .apple, token: String) async throws -> NetworkResponse<TokenPair> {
-        switch provider {
-        case .apple:
-            return try await loginWithApple(token: token)
-        case .google:
-            fatalError()
-        }
-    }
-    
+
     private func loginWithApple(token: String) async throws -> NetworkResponse<TokenPair> {
         let payload = ThirdPartyLogin(idToken: token, existingEmailAddress: nil)
         guard let data = payload.encodeUsingJSONEncoder() else {
             fatalError()
         }
-        
+
         let response: NetworkResponse<TokenPair> = try await NetworkManager.shared.post(url: Endpoint.appleLogin.urlString, body: data)
         return handleSuccess(response, expectedStatusCode: 200)
     }

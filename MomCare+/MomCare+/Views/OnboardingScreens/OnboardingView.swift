@@ -154,7 +154,7 @@ struct OnboardingView: View {
 
             try await authenticationService.login(with: .apple, token: tokenString)
 
-        case .failure(_):
+        case .failure:
             alertMessage = "Something fucked up while singing with apple"
             showAlert = true
         }
