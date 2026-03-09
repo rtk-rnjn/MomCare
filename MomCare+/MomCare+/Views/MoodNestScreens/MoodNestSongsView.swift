@@ -34,8 +34,8 @@ struct MoodNestSongsView: View {
                         .padding(.top, 20)
                         .padding(.bottom, 16)
 
-                    ForEach(songs) { track in
-                        PlaylistTrackRow(songModel: track)
+                    ForEach(songs.indices, id: \.self) { index in
+                        PlaylistTrackRow(playlist: playlist, songIndex: index)
                             .padding(.horizontal, 20)
 
                         Divider()
@@ -196,31 +196,40 @@ struct PlaylistTrackRow: View {
     // MARK: Internal
 
     var accentColor: Color = .init(red: 139 / 255, green: 69 / 255, blue: 87 / 255)
-    let songModel: SongModel
+    let playlist: PlaylistModel
+    let songIndex: Int
+    
+    var songModel: SongModel {
+        playlist.songs[songIndex]
+    }
 
     var body: some View {
         Button {
-            musicKitHandler.preparePlaylistAndPlay(nil, song: songModel)
+            musicKitHandler.preparePlaylistAndPlay(playlist, startingWith: songIndex)
             controlState.showingPopupBar = true
         } label: {
             HStack(spacing: 12) {
-                AsyncImage(url: URL(string: songModel.songImageUri!)!)
-                    .aspectRatio(contentMode: .fill)
-                    .frame(width: 48, height: 48)
-                    .clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
-                    .overlay(
+                AsyncImage(url: URL(string: songModel.songImageUri!)!) { image in
+                    image
+                        .resizable()
+                        .scaledToFill()
+                } placeholder: {
+                    Color.gray.opacity(0.2)
+                }
+                .frame(width: 48, height: 48)
+                .clipped()
+                .clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
+                .overlay(
+                    RoundedRectangle(cornerRadius: 8, style: .continuous)
+                        .stroke(Color.white.opacity(0.1), lineWidth: 0.5)
+                )
+                .overlay {
+                    if musicKitHandler.currentSong == songModel {
                         RoundedRectangle(cornerRadius: 8, style: .continuous)
-                            .stroke(Color.white.opacity(0.1), lineWidth: 0.5)
-                    )
-                    .overlay(
-                        Group {
-                            if musicKitHandler.currentSong == songModel {
-                                RoundedRectangle(cornerRadius: 8, style: .continuous)
-                                    .fill(accentColor.opacity(0.3))
-                                    .overlay(nowPlayingIndicator)
-                            }
-                        }
-                    )
+                            .fill(accentColor.opacity(0.3))
+                            .overlay(nowPlayingIndicator)
+                    }
+                }
 
                 VStack(alignment: .leading, spacing: 3) {
                     Text(songModel.metadata?.title ?? songModel.songName)

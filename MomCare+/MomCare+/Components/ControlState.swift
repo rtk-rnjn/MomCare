@@ -108,11 +108,17 @@ final class ControlState: ObservableObject {
            let segment = TriTrackSegment(rawValue: savedTriSegment) {
             triTrackSegment = segment
         }
+        
+        if let savedShowingPopup = UserDefaults.standard.object(forKey: "showingPopup") as? Bool {
+            showingPopup = savedShowingPopup
+        }
+        
+        if let savedShowingPopupBar = UserDefaults.standard.object(forKey: "showingPopupBar") as? Bool {
+            showingPopupBar = savedShowingPopupBar
+        }
     }
 
     // MARK: Internal
-
-    // MARK: - Runtime UI State (Not Persisted)
 
     @Published var showingOnboarding: Bool = false
     @Published var showingSignIn: Bool = false
@@ -129,12 +135,14 @@ final class ControlState: ObservableObject {
     @Published var showingAddEventSheet: Bool = false
     @Published var showingAddSymptomSheet: Bool = false
 
-    @Published var showingPopup: Bool = false
-    @Published var showingPopupBar: Bool = false
+    @Published var showingPopup: Bool = false {
+        didSet { UserDefaults.standard.set(showingPopup, forKey: "showingPopup") }
+    }
+    @Published var showingPopupBar: Bool = false {
+        didSet { UserDefaults.standard.set(showingPopupBar, forKey: "showingPopupBar") }
+    }
 
     @Published var showingMoodnestPlaylistsView: Bool = false
-
-    // MARK: - Persisted State
 
     @Published var isOnboardingCompleted: Bool = false {
         didSet { UserDefaults.standard.set(isOnboardingCompleted, forKey: "isOnboardingCompleted") }

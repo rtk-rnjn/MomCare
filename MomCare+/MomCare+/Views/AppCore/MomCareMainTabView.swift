@@ -31,7 +31,7 @@ struct MomCareMainTabView: View {
 
     @Environment(\.scenePhase) private var scenePhase
 
-    private let refreshTimer = Timer.publish(every: 60, on: .main, in: .common).autoconnect()
+    private let refreshTimer = Timer.publish(every: 300, on: .main, in: .common).autoconnect()
 
     private func tabViewContent(bottomPadding: CGFloat) -> some View {
         TabView(selection: $controlState.selectedTab) {

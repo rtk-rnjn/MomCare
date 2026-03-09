@@ -11,9 +11,7 @@ enum FieldType<Value: Codable> {
     case unset
     case value(Value)
     case null
-}
 
-extension FieldType: Codable where Value: Codable {
     init(from decoder: any Decoder) throws {
         let container = try decoder.singleValueContainer()
         if container.decodeNil() {

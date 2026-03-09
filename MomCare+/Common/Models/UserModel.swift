@@ -57,10 +57,15 @@ struct UserModel: Codable, Sendable {
     }
 
     var dateOfBirth: Date? {
-        if let dateOfBirthTimestamp {
-            return Date(timeIntervalSince1970: dateOfBirthTimestamp)
+        get {
+            if let dateOfBirthTimestamp {
+                return Date(timeIntervalSince1970: dateOfBirthTimestamp)
+            }
+            return nil
         }
-        return nil
+        set {
+            dateOfBirthTimestamp = newValue?.timeIntervalSince1970
+        }
     }
 
     var fullName: String {

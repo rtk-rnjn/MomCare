@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct MultiSelectPickerView<T>: View where T: Hashable & CaseIterable & RawRepresentable, T.RawValue == String {
+struct MultiSelectPickerView<T: Hashable & CaseIterable & RawRepresentable>: View where T.RawValue == String {
 
     // MARK: Internal
 

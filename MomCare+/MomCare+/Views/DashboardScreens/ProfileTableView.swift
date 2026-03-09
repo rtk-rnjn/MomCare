@@ -5,7 +5,7 @@ private let sections: [ProfileSection] = [
     ProfileSection(title: nil, rows: [
         ProfileRow(title: "Personal Information", systemImage: "person.crop.circle", type: .personalInfo),
         ProfileRow(title: "Health Information", systemImage: "heart.text.square", type: .healthInfo),
-        ProfileRow(title: "Notifications", systemImage: "bell.badge", type: .notifications)
+//        ProfileRow(title: "Notifications", systemImage: "bell.badge", type: .notifications)
     ]),
 
     ProfileSection(title: nil, rows: [
@@ -17,9 +17,9 @@ private let sections: [ProfileSection] = [
         ProfileRow(title: "About MomCare+", systemImage: "info.circle", type: .aboutApp)
     ]),
 
-    ProfileSection(title: nil, rows: [
-        ProfileRow(title: "MomCare+ Watch", systemImage: "applewatch", type: .watch)
-    ]),
+//    ProfileSection(title: nil, rows: [
+//        ProfileRow(title: "MomCare+ Watch", systemImage: "applewatch", type: .watch)
+//    ]),
 
     ProfileSection(title: nil, rows: [
         ProfileRow(title: "Account Management", systemImage: "gearshape", type: .accountManagement)
@@ -48,6 +48,14 @@ final class ProfileTableView: UITableViewController {
     // MARK: Internal
 
     var authenticationService: AuthenticationService?
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        Task {
+            _ = try? await authenticationService?.me()
+        }
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -147,13 +155,14 @@ final class ProfileTableView: UITableViewController {
 
         switch rowType {
         case .personalInfo:
-            push(PersonalInfoView(), title: "Personal Information")
+            push(PersonalInfoView(name: authenticationService?.userModel?.fullName ?? "Not Set", dateOfBirth: authenticationService?.userModel?.dateOfBirth ?? Date()), title: "Personal Information")
 
         case .healthInfo:
             push(HealthInfoView(), title: "Health Information")
 
         case .notifications:
-            push(NotificationsView(), title: "Notifications")
+//            push(NotificationsView(), title: "Notifications")
+            break
 
         case .security:
             push(AccountSecurityView(), title: "Account & Security")
@@ -165,7 +174,8 @@ final class ProfileTableView: UITableViewController {
             push(AboutMomCareView(), title: "About MomCare+")
 
         case .watch:
-            push(MomCareWatchView(), title: "MomCare+ Watch")
+//            push(MomCareWatchView(), title: "MomCare+ Watch")
+            break
 
         case .accountManagement:
             push(AccountManagementView(), title: "Account Management")

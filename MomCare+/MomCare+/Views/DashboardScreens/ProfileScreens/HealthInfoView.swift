@@ -44,10 +44,10 @@ struct HealthInfoView: View {
             }
 
             Section {
-                pickerRow(title: "Medical Conditions", value: displayCount(conditions)) {
-                    activeSheet = .conditions
-                }
-
+//                pickerRow(title: "Medical Conditions", value: displayCount(conditions)) {
+//                    activeSheet = .conditions
+//                }
+// TODO:
                 pickerRow(title: "Dietary Preferences", value: displayCount(dietaryPrefs)) {
                     activeSheet = .diet
                 }
@@ -136,9 +136,6 @@ struct HealthInfoView: View {
         return now ... max
     }
 
-}
-
-private extension HealthInfoView {
     func pickerRow(
         title: String,
         value: String,

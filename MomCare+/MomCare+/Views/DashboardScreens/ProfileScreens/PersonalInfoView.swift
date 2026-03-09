@@ -1,5 +1,28 @@
 import SwiftUI
 
+struct InitialsAvatar: View {
+    
+    let name: String
+    
+    var initials: String {
+        let parts = name.split(separator: " ")
+        let first = parts.first?.prefix(1) ?? ""
+        let last = parts.dropFirst().first?.prefix(1) ?? ""
+        return (first + last).uppercased()
+    }
+    
+    var body: some View {
+        ZStack {
+            Circle()
+                .fill(MomCareAccent.primary.opacity(0.2))
+            
+            Text(initials)
+                .font(.system(size: 22, weight: .semibold))
+                .foregroundColor(MomCareAccent.primary)
+        }
+    }
+}
+
 struct PersonalInfoView: View {
 
     // MARK: Internal
@@ -7,7 +30,7 @@ struct PersonalInfoView: View {
     enum SheetType: Identifiable {
         case height
         case currentWeight
-        case preWeight
+        case prePregnancyWeight
 
         // MARK: Internal
 
@@ -21,8 +44,7 @@ struct PersonalInfoView: View {
             Section {
                 HStack {
                     Spacer()
-                    Image(systemName: "person.crop.circle.fill")
-                        .resizable()
+                    InitialsAvatar(name: authenticationService.userModel?.fullName ?? "-")
                         .frame(width: 80, height: 80)
                         .foregroundColor(MomCareAccent.primary)
                     Spacer()
@@ -31,23 +53,23 @@ struct PersonalInfoView: View {
             }
 
             Section {
-                ProfileEditableTextRow(title: "Name", text: $name, isEditing: isEditing, displayText: authenticationService.userModel?.fullName)
+                ProfileEditableTextRow(title: "Full name", text: $name, isEditing: isEditing, displayText: authenticationService.userModel?.fullName ?? "Not Set")
 
                 InfoRowDate(
                     title: "Date of Birth",
-                    date: dob,
+                    date: authenticationService.userModel?.dateOfBirth ?? dateOfBirth,
                     isEditing: isEditing
                 ) {
                     withAnimation {
-                        showDOBPicker.toggle()
+                        showDateOfBirthPicker.toggle()
                     }
                 }
 
-                if showDOBPicker {
+                if showDateOfBirthPicker {
                     DatePicker(
                         "",
-                        selection: $dob,
-                        in: allowedDOBRange,
+                        selection: $dateOfBirth,
+                        in: allowedDateOfBirthRange,
                         displayedComponents: .date
                     )
                     .datePickerStyle(.wheel)
@@ -56,16 +78,16 @@ struct PersonalInfoView: View {
             }
 
             Section {
-                pickerRow("Height", value: valueText(height, "cm")) {
+                pickerRow("Height", value: measurementFormatter.string(from: Measurement(value: authenticationService.userModel?.height ?? 0, unit: UnitLength.centimeters))) {
                     activeSheet = .height
                 }
 
-                pickerRow("Current Weight", value: valueText(currentWeight, "kg")) {
+                pickerRow("Current Weight", value: measurementFormatter.string(from: Measurement(value: authenticationService.userModel?.currentWeight ?? 0, unit: UnitMass.kilograms))) {
                     activeSheet = .currentWeight
                 }
 
-                pickerRow("Pre Pregnancy Weight", value: valueText(preWeight, "kg")) {
-                    activeSheet = .preWeight
+                pickerRow("Pre Pregnancy Weight", value: measurementFormatter.string(from: Measurement(value: authenticationService.userModel?.prePregnancyWeight ?? 0, unit: UnitMass.kilograms))) {
+                    activeSheet = .prePregnancyWeight
                 }
             }
         }
@@ -85,7 +107,7 @@ struct PersonalInfoView: View {
                         isEditing.toggle()
 
                         if !isEditing {
-                            showDOBPicker = false
+                            showDateOfBirthPicker = false
                         }
                     }
                 }
@@ -93,7 +115,43 @@ struct PersonalInfoView: View {
                 .tint(MomCareAccent.primary)
             }
         }
+        .onChange(of: isEditing) { _, _ in
+            if isEditing {
+                return
+            }
+            let firstName = name.split(separator: " ").first.map(String.init) ?? ""
+            let lastName = name.split(separator: " ").dropFirst().first.map(String.init) ?? ""
+            
+            Task {
+                if name != authenticationService.userModel?.fullName {
+                    _ = try? await authenticationService.update(
+                        firstName: .value(firstName),
+                        lastName: .value(lastName),
+                    )
+                    authenticationService.userModel?.firstName = firstName
+                    authenticationService.userModel?.lastName = lastName
+                }
 
+                if dateOfBirth.timeIntervalSince1970 != authenticationService.userModel?.dateOfBirthTimestamp {
+                    _ = try? await authenticationService.update(dateOfBirthTimestamp: .value(dateOfBirth.timeIntervalSince1970))
+                    authenticationService.userModel?.dateOfBirthTimestamp = dateOfBirth.timeIntervalSince1970
+                }
+
+                if let height, height != authenticationService.userModel?.height {
+                    _ = try? await authenticationService.update(height: .value(height))
+                    authenticationService.userModel?.height = height
+                }
+                if let currentWeight, currentWeight != authenticationService.userModel?.currentWeight {
+                    _ = try? await authenticationService.update(currentWeight: .value(currentWeight))
+                    authenticationService.userModel?.currentWeight = currentWeight
+                }
+                if let prePregnancyWeight, prePregnancyWeight != authenticationService.userModel?.prePregnancyWeight {
+                    _ = try? await authenticationService.update(prePregnancyWeight: .value(prePregnancyWeight))
+                    authenticationService.userModel?.prePregnancyWeight = prePregnancyWeight
+                }
+            
+            }
+        }
         .sheet(item: $activeSheet) { sheet in
             switch sheet {
             case .height:
@@ -112,12 +170,12 @@ struct PersonalInfoView: View {
                     selection: $currentWeight
                 )
 
-            case .preWeight:
+            case .prePregnancyWeight:
                 ValuePickerSheet(
                     title: "Pre Pregnancy Weight",
                     range: 30 ... 150,
                     unit: "kg",
-                    selection: $preWeight
+                    selection: $prePregnancyWeight
                 )
             }
         }
@@ -129,20 +187,24 @@ struct PersonalInfoView: View {
     @Environment(\.dismiss) private var dismiss
 
     @State private var isEditing = false
-    @State private var showDOBPicker = false
+    @State private var showDateOfBirthPicker = false
 
-    @State private var name: String = "Not Set"
-    @State private var dob: Date = .init()
+    @State var name: String
+    @State var dateOfBirth: Date
 
     @State private var height: Double?
     @State private var currentWeight: Double?
-    @State private var preWeight: Double?
+    @State private var prePregnancyWeight: Double?
 
     @State private var activeSheet: SheetType?
+    
+    private var measurementFormatter: MeasurementFormatter {
+        let formatter = MeasurementFormatter()
+        formatter.unitOptions = .providedUnit
+        return formatter
+    }
 
-}
 
-private extension PersonalInfoView {
     func pickerRow(_ title: String, value: String, action: @escaping () -> Void) -> some View {
         Button {
             guard isEditing else { return }
@@ -153,12 +215,7 @@ private extension PersonalInfoView {
         .buttonStyle(.plain)
     }
 
-    func valueText(_ value: Double?, _ unit: String) -> String {
-        guard let value else { return "Not Set" }
-        return unit.isEmpty ? "\(Int(value))" : "\(Int(value)) \(unit)"
-    }
-
-    private var allowedDOBRange: ClosedRange<Date> {
+    private var allowedDateOfBirthRange: ClosedRange<Date> {
         let calendar = Calendar.current
         let now = Date()
         let min = calendar.date(byAdding: .year, value: -45, to: now)!
