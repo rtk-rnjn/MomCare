@@ -41,9 +41,8 @@ final class ProfileTableView: UITableViewController {
         super.init(style: .insetGrouped)
     }
 
-    @available(*, unavailable)
-    required init?(coder _: NSCoder) {
-        fatalError()
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
 
     // MARK: Internal

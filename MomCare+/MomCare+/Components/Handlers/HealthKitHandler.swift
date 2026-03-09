@@ -170,26 +170,8 @@ extension HealthKitHandler {
         guard foodReference.isConsumed != consumed else {
             return
         }
-        switch mealType {
-        case .breakfast:
-            if let index = self.myPlanModel?.breakfast.firstIndex(where: { $0.foodId == foodReference.foodId }) {
-                self.myPlanModel?.breakfast[index].toggleConsume()
-            }
-
-        case .lunch:
-            if let index = self.myPlanModel?.lunch.firstIndex(where: { $0.foodId == foodReference.foodId }) {
-                self.myPlanModel?.lunch[index].toggleConsume()
-            }
-
-        case .dinner:
-            if let index = self.myPlanModel?.dinner.firstIndex(where: { $0.foodId == foodReference.foodId }) {
-                self.myPlanModel?.dinner[index].toggleConsume()
-            }
-
-        case .snacks:
-            if let index = self.myPlanModel?.snacks.firstIndex(where: { $0.foodId == foodReference.foodId }) {
-                self.myPlanModel?.snacks[index].toggleConsume()
-            }
+        if let index = self.myPlanModel?[mealType].firstIndex(where: { $0.foodId == foodReference.foodId }) {
+            self.myPlanModel?[mealType][index].toggleConsume()
         }
 
         _ = try await ContentService.shared.markFoodAs(consumed: consumed, planId: myPlanModel._id, meal: mealType, foodId: foodReference.foodId)
