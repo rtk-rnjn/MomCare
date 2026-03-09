@@ -1,4 +1,5 @@
 import BackgroundTasks
+import SwiftUI
 import Combine
 import OSLog
 import UIKit
@@ -17,6 +18,11 @@ class AppDelegate: NSObject, UIApplicationDelegate, ObservableObject {
         logger.info("App launched with options: \(launchOptions.debugDescription)")
 
         UNUserNotificationCenter.current().delegate = self
+
+        UISegmentedControl.appearance().selectedSegmentTintColor = .white
+        UISegmentedControl.appearance().backgroundColor = UIColor(Color.CustomColors.mutedRaspberry)
+        UISegmentedControl.appearance().setTitleTextAttributes([.foregroundColor: UIColor.white], for: .normal)
+        UISegmentedControl.appearance().setTitleTextAttributes([.foregroundColor: UIColor(Color.CustomColors.mutedRaspberry)], for: .selected)
 
         return true
     }

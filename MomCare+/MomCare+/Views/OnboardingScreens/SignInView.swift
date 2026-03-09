@@ -33,9 +33,6 @@ struct SignInView: View {
                 .padding(.horizontal)
                 .padding(.top, 30)
                 .padding(.bottom, 20)
-                .navigationDestination(isPresented: $navigate) {
-                    OTPScreenView(navigateTo: .mainApp)
-                }
             }
             .background(
                 Color(.systemBackground)
@@ -64,37 +61,29 @@ struct SignInView: View {
         }
 
         showAlert = false
-        navigate = true
+        controlState.isLoggedIn = true
     }
 
     // MARK: Private
 
     @EnvironmentObject private var authenticationService: AuthenticationService
+    @EnvironmentObject private var controlState: ControlState
+
     @State private var email = ""
     @State private var password = ""
     @State private var alertMessage: String = ""
     @State private var showAlert: Bool = false
     @State private var alertTitle: String = ""
-    @State private var navigate: Bool = false
 
     @ViewBuilder
     private var signInForm: some View {
-        if #available(iOS 16.0, *) {
-            Form {
-                Section {
-                    emailField
-                    passwordField
-                }
-            }
-            .scrollContentBackground(.hidden)
-        } else {
-            Form {
-                Section {
-                    emailField
-                    passwordField
-                }
+        Form {
+            Section {
+                emailField
+                passwordField
             }
         }
+        .scrollContentBackground(.hidden)
     }
 
     private var emailField: some View {
@@ -109,8 +98,4 @@ struct SignInView: View {
         SecureField("Password", text: $password)
             .listRowBackground(Color(.secondarySystemBackground))
     }
-}
-
-#Preview {
-    SignInView()
 }

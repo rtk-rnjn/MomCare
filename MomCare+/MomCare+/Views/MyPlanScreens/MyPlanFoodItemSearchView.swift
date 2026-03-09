@@ -41,6 +41,7 @@ struct MyPlanFoodItemSearchView: View {
                     Task {
                         try? await healthKitHandler.addFoodToMyPlan(foodId: selectedFoodItem?.id ?? "", mealType: mealType)
                     }
+                    dismiss()
                 }
                 Button("Cancel", role: .cancel) {}
             } message: {
@@ -134,7 +135,7 @@ struct FoodRowView: View {
                     Text(food.name.capitalized)
                         .font(.headline)
 
-                    Text("\(Int(food.totalCalories)) kcal • \(food.type.rawValue.capitalized)")
+                    Text("\(Int(food.totalCalories)) kcal • \(food.type.rawValue.capitalized) • \(food.state.rawValue.capitalized)")
                         .font(.subheadline)
                         .foregroundStyle(.secondary)
                 }

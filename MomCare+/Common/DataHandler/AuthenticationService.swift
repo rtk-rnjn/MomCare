@@ -10,7 +10,6 @@ protocol TokenContaining {
 
 enum LoginProvider {
     case apple
-    case google
 }
 
 final class AuthenticationService: ObservableObject {
@@ -43,14 +42,6 @@ final class AuthenticationService: ObservableObject {
         didSet {
             database[.userModel] = userModel
         }
-    }
-
-    var lastRefreshDate: Date {
-        Date(timeIntervalSince1970: lastTokenRefreshTimestamp)
-    }
-
-    func updateLastRefreshDate() {
-        lastTokenRefreshTimestamp = Date().timeIntervalSince1970
     }
 
     func handleSuccess<T: TokenContaining>(_ response: NetworkResponse<T>, expectedStatusCode: Int, emailAddress: String? = nil) -> NetworkResponse<T> {
@@ -255,15 +246,10 @@ final class AuthenticationService: ObservableObject {
         switch provider {
         case .apple:
             return try await loginWithApple(token: token)
-        case .google:
-            fatalError()
         }
     }
 
     // MARK: Private
-
-    @AppStorage("lastTokenRefreshDate")
-    private var lastTokenRefreshTimestamp: Double = 0
 
     private let database: Database = .init()
 

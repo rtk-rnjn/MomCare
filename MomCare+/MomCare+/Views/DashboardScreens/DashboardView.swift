@@ -44,17 +44,6 @@ struct DashboardView: View {
                 controlState.showingProfileSheet = true
             }
         )
-        .task {
-            await healthKitHandler.requestAccess()
-            _ = await authenticationService.autoLogin()
-
-            await fetchDailyInsights()
-            try? await healthKitHandler.fetchMealPlan()
-        }
-        .onAppear {
-            try? eventKitHandler.fetchAllEvents()
-            healthKitHandler.startStepCountObservation()
-        }
     }
 
     var weekAndEventSection: some View {
@@ -101,13 +90,20 @@ struct DashboardView: View {
                 goal: healthKitHandler.nutritionTargetTotals?.calories ?? 0
             )
             .padding(.horizontal)
+            .onTapGesture {
+                controlState.selectedTab = .myPlan
+                controlState.myPlanSegment = .diet
+            }
 
             DashboardExerciseCard(
                 minutes: healthKitHandler.minutes,
                 calories: healthKitHandler.caloriesBurned
             )
-
             .padding(.horizontal)
+            .onTapGesture {
+                controlState.selectedTab = .myPlan
+                controlState.myPlanSegment = .exercise
+            }
         }
     }
 

@@ -13,7 +13,7 @@ struct StatePickerView: View {
                     selectedState = state
                     dismiss()
                 } label: {
-                    Text(state.rawValue)
+                    Text(state.rawValue.capitalized)
                         .foregroundStyle(.primary)
                 }
             }

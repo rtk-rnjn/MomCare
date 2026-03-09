@@ -14,7 +14,7 @@ enum MealType: String, Codable {
     case snacks
 }
 
-struct FoodReferenceModel: Codable, Sendable, Identifiable {
+struct FoodReferenceModel: Codable, Sendable, Identifiable, Equatable {
     enum CodingKeys: String, CodingKey {
         case foodId = "food_id"
         case consumedAtTimestamp = "consumed_at_timestamp"

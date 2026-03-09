@@ -87,44 +87,6 @@ struct OnboardingView: View {
                 Color("secondaryAppColor")
                     .ignoresSafeArea()
             )
-            .navigationDestination(isPresented: $navigateToSecondSignup) {
-                HealthMetricsSignUpView()
-            }
-            .fullScreenCover(isPresented: $navigateToMainApp) {
-                MomCareMainTabView()
-            }
-            .alert("Found Login Credentials", isPresented: $authenticationService.hasAccessToken) {
-                Button("Login") {
-                    if let isProfileComplete = authenticationService.userModel?.isProfileComplete, isProfileComplete {
-                        navigateToMainApp = true
-                    } else {
-                        navigateToSecondSignup = true
-                    }
-                }
-                Button("Use Different Account", role: .cancel) {
-                    Task { _ = await authenticationService.logout() }
-                }
-            } message: {
-                Text("We found existing login credentials saved on this device. Would you like to continue with those?")
-            }
-            .alert("Login Failed", isPresented: $showAlert) {
-                Button("OK", role: .cancel) {
-                    showAlert = false
-                    Task { _ = await authenticationService.logout() }
-                }
-            } message: {
-                Text(alertMessage ?? "An unknown error occurred during login.")
-            }
-            .task {
-                guard let networkResponse = await authenticationService.autoLogin() else {
-                    return
-                }
-
-                if let error = networkResponse.errorMessage {
-                    showAlert = true
-                    alertMessage = error
-                }
-            }
         }
     }
 
@@ -133,8 +95,6 @@ struct OnboardingView: View {
     @EnvironmentObject private var authenticationService: AuthenticationService
 
     @State private var currentPage = 0
-    @State private var navigateToSecondSignup = false
-    @State private var navigateToMainApp = false
     @State private var showAlert = false
     @State private var alertMessage: String?
 
@@ -146,15 +106,15 @@ struct OnboardingView: View {
                 let tokenData = credential.identityToken,
                 let tokenString = String(data: tokenData, encoding: .utf8)
             else {
-                alertMessage = "Failed to fetch Apple identity token"
+                alertMessage = "Failed to extract Apple Sign-In token."
                 showAlert = true
                 return
             }
 
             try await authenticationService.login(with: .apple, token: tokenString)
 
-        case .failure:
-            alertMessage = "Something fucked up while singing with apple"
+        case let .failure(error):
+            alertMessage = "Apple Sign-In failed: \(error.localizedDescription)"
             showAlert = true
         }
     }

@@ -156,23 +156,21 @@ struct MusicPlayerView: View {
                         musicPlayerHandler.skipToPrevious()
                     } label: {
                         Image(systemName: "backward.fill")
+                            .foregroundStyle(.black)
                     }
 
                     Button {
                         _ = musicPlayerHandler.togglePlayPause()
                     } label: {
-                        Image(
-                            systemName:
-                                musicPlayerHandler.isPlaying
-                                ? "pause.fill"
-                                : "play.fill"
-                        )
+                        Image(systemName: musicPlayerHandler.isPlaying ? "pause.fill" : "play.fill")
+                            .foregroundStyle(.black)
                     }
 
                     Button {
                         musicPlayerHandler.skipToNext()
                     } label: {
                         Image(systemName: "forward.fill")
+                            .foregroundStyle(.black)
                     }
 
                     Button {
@@ -181,6 +179,7 @@ struct MusicPlayerView: View {
                         musicPlayerHandler.stop()
                     } label: {
                         Image(systemName: "x.circle.fill")
+                            .foregroundStyle(.black)
                     }
                 }
             }

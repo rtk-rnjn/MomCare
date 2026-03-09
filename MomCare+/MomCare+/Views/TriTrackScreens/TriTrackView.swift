@@ -148,12 +148,6 @@ struct TriTrackView: View {
             .pickerStyle(.segmented)
             .padding(.horizontal, 16)
             .padding(.top, 16)
-            .onAppear {
-                UISegmentedControl.appearance().selectedSegmentTintColor = UIColor(Color.white)
-                UISegmentedControl.appearance().backgroundColor = UIColor(Color.CustomColors.mutedRaspberry)
-                UISegmentedControl.appearance().setTitleTextAttributes([.foregroundColor: UIColor.white], for: .normal)
-                UISegmentedControl.appearance().setTitleTextAttributes([.foregroundColor: UIColor(Color.CustomColors.mutedRaspberry)], for: .selected)
-            }
 
             ScrollView(.vertical, showsIndicators: false) {
                 tabContent

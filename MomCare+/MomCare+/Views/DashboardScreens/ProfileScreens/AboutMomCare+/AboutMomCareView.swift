@@ -36,7 +36,7 @@ struct AboutMomCareView: View {
 
     // MARK: Private
 
-    private let appVersion: String = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "1.0"
+    private let appVersion: String = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "Failed to fetch app version"
 
 }
 

@@ -38,7 +38,7 @@ enum AppTab: Int, CaseIterable {
     }
 }
 
-enum ProfileRowType {
+enum ProfileRowType: Int {
     case personalInfo
     case healthInfo
     case notifications
@@ -84,19 +84,47 @@ enum TriTrackSegment: String, CaseIterable, Identifiable {
 
 @MainActor
 final class ControlState: ObservableObject {
-    @Published var selectedTab: AppTab = .progressHub
-    @Published var showingGlobalAlert: Bool = false
+
+    // MARK: Lifecycle
+
+    // MARK: - Init
+
+    init() {
+
+        isOnboardingCompleted = UserDefaults.standard.bool(forKey: "isOnboardingCompleted")
+        isLoggedIn = UserDefaults.standard.bool(forKey: "isLoggedIn")
+
+        if let savedTab = UserDefaults.standard.object(forKey: "selectedTab") as? Int,
+           let tab = AppTab(rawValue: savedTab) {
+            selectedTab = tab
+        }
+
+        if let savedSegment = UserDefaults.standard.string(forKey: "myPlanSegment"),
+           let segment = MyPlanSegment(rawValue: savedSegment) {
+            myPlanSegment = segment
+        }
+
+        if let savedTriSegment = UserDefaults.standard.string(forKey: "triTrackSegment"),
+           let segment = TriTrackSegment(rawValue: savedTriSegment) {
+            triTrackSegment = segment
+        }
+    }
+
+    // MARK: Internal
+
+    // MARK: - Runtime UI State (Not Persisted)
+
+    @Published var showingOnboarding: Bool = false
+    @Published var showingSignIn: Bool = false
+    @Published var showingSignUp: Bool = false
 
     @Published var showingProfileSheet: Bool = false
-    @Published var activeProfileRow: ProfileRowType?
 
-    @Published var myPlanSegment: MyPlanSegment = .diet
     @Published var showingSearchFoodItemSheet: Bool = false
     @Published var showingAddFoodItemAlert: Bool = false
     @Published var showingBreathingSheet: Bool = false
     @Published var showingExerciseSheet: Bool = false
 
-    @Published var triTrackSegment: TriTrackSegment = .meAndBaby
     @Published var showingExpandedCalendar: Bool = false
     @Published var showingAddEventSheet: Bool = false
     @Published var showingAddSymptomSheet: Bool = false
@@ -105,4 +133,27 @@ final class ControlState: ObservableObject {
     @Published var showingPopupBar: Bool = false
 
     @Published var showingMoodnestPlaylistsView: Bool = false
+
+    // MARK: - Persisted State
+
+    @Published var isOnboardingCompleted: Bool = false {
+        didSet { UserDefaults.standard.set(isOnboardingCompleted, forKey: "isOnboardingCompleted") }
+    }
+
+    @Published var isLoggedIn: Bool = false {
+        didSet { UserDefaults.standard.set(isLoggedIn, forKey: "isLoggedIn") }
+    }
+
+    @Published var selectedTab: AppTab = .progressHub {
+        didSet { UserDefaults.standard.set(selectedTab.rawValue, forKey: "selectedTab") }
+    }
+
+    @Published var myPlanSegment: MyPlanSegment = .diet {
+        didSet { UserDefaults.standard.set(myPlanSegment.rawValue, forKey: "myPlanSegment") }
+    }
+
+    @Published var triTrackSegment: TriTrackSegment = .meAndBaby {
+        didSet { UserDefaults.standard.set(triTrackSegment.rawValue, forKey: "triTrackSegment") }
+    }
+
 }
