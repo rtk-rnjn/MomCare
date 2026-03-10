@@ -1,7 +1,6 @@
 import Foundation
 
-// private let baseURLString = "http://13.203.42.179/api"
-private let baseURLString = "http://10.26.198.36:8080/api"
+private let baseURLString = "http://13.203.42.179/api"
 
 enum Endpoint: String {
     // Authentication
