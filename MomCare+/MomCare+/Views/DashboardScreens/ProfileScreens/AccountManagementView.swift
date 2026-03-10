@@ -29,7 +29,9 @@ struct AccountManagementView: View {
         .navigationBarTitleDisplayMode(.inline)
         .alert("Delete Account?", isPresented: $showDeleteAlert) {
             Button("Delete", role: .destructive) {
-                deleteAccount()
+                Task {
+                    await deleteAccount()
+                }
             }
 
             Button("Cancel", role: .cancel) {}
@@ -42,12 +44,9 @@ struct AccountManagementView: View {
     // MARK: Private
 
     @State private var showDeleteAlert = false
+    @EnvironmentObject private var authenticationService: AuthenticationService
 
-    private func deleteAccount() {
-        print("Account deleted")
+    private func deleteAccount() async {
+        _ = try? await authenticationService.delete()
     }
-}
-
-#Preview {
-    AccountManagementView()
 }
