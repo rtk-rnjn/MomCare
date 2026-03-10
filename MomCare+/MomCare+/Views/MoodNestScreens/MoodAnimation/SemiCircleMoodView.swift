@@ -1,6 +1,9 @@
 import SwiftUI
 
 struct SemiCircleMoodView: View {
+
+    // MARK: Internal
+
     let moodValue: Double
 
     var body: some View {
@@ -21,6 +24,8 @@ struct SemiCircleMoodView: View {
         }
         .padding(40)
     }
+
+    // MARK: Private
 
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
 }

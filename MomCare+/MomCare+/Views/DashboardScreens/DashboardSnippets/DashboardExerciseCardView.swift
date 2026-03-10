@@ -75,6 +75,9 @@ struct DashboardExerciseCard: View {
 }
 
 struct ExerciseRow: View {
+
+    // MARK: Internal
+
     let color: Color
     let icon: String
     let value: String
@@ -102,6 +105,8 @@ struct ExerciseRow: View {
         .accessibilityLabel(value)
         .accessibilityAddTraits(.updatesFrequently)
     }
+
+    // MARK: Private
 
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
 }

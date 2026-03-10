@@ -110,11 +110,12 @@ struct TriTrackSymptomsContentView: View {
 }
 
 struct SymptomRow: View {
+
+    // MARK: Internal
+
     let symptom: SymptomModel
     var onInfo: () -> Void
     var onDelete: () -> Void
-
-    @ScaledMetric private var rowIconSize: CGFloat = 24
 
     var body: some View {
         HStack {
@@ -173,4 +174,9 @@ struct SymptomRow: View {
         .accessibilityAction(named: "View Details") { onInfo() }
         .accessibilityAction(named: "Delete") { onDelete() }
     }
+
+    // MARK: Private
+
+    @ScaledMetric private var rowIconSize: CGFloat = 24
+
 }
