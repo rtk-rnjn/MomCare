@@ -73,7 +73,7 @@ struct MusicPlayerView: View {
 
             HStack(spacing: 50) {
                 Button {
-                    musicPlayerHandler.skipToNext()
+                    musicPlayerHandler.skipToPrevious()
                 } label: {
                     Image(systemName: "backward.fill")
                         .font(.system(size: 30))
@@ -91,7 +91,7 @@ struct MusicPlayerView: View {
                 }
 
                 Button {
-                    musicPlayerHandler.skipToPrevious()
+                    musicPlayerHandler.skipToNext()
                 } label: {
                     Image(systemName: "forward.fill")
                         .font(.system(size: 30))
@@ -149,7 +149,7 @@ struct MusicPlayerView: View {
                 title: musicPlayerHandler.currentSong?.metadata?.title ?? "Song Title",
                 subtitle: musicPlayerHandler.currentSong?.metadata?.author ?? "Unknown Artist",
                 image: Image(uiImage: musicPlayerHandler.currentSongUIImage ?? UIImage()),
-                progress: musicPlayerHandler.playbackProgress
+                progress: Float(musicPlayerHandler.playbackProgress)
             ) {
                 ToolbarItemGroup(placement: .popupBar) {
                     Button {

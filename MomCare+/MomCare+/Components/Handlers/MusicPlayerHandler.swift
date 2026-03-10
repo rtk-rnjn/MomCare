@@ -17,7 +17,7 @@ final class MusicPlayerHandler: ObservableObject {
             playlist = savedPlaylist
         }
 
-        if let savedCurrentSongIndex = UserDefaults.standard.value(forKey: "currentSongIndex") as? Int {
+        if let savedCurrentSongIndex = UserDefaults.standard.integer(forKey: "currentSongIndex") as Int? {
             currentSongIndex = savedCurrentSongIndex
         }
 
@@ -29,6 +29,7 @@ final class MusicPlayerHandler: ObservableObject {
         if let song = playlist[safe: currentSongIndex] {
             Task {
                 self.player = await self.prepareAVPlayer(with: song)
+                startObserving()
             }
         }
     }
@@ -36,8 +37,11 @@ final class MusicPlayerHandler: ObservableObject {
     // MARK: Internal
 
     private(set) var player: AVPlayer?
-    @Published var isPlaying = false
-    @Published var playbackProgress: Float = 0.0
+    @Published var playbackProgress: Double = 0.0
+
+    var isPlaying: Bool {
+        player?.timeControlStatus == .playing
+    }
 
     @Published var playlist: [SongModel] = [] {
         didSet {
@@ -74,6 +78,7 @@ final class MusicPlayerHandler: ObservableObject {
 
     func preparePlaylistAndPlay(_ playlist: PlaylistModel, startingWith index: Int = 0) {
         self.playlist = playlist.songs
+        currentSongIndex = index
         if let song = playlist.songs[safe: index] {
             play(song: song)
         }
@@ -92,13 +97,11 @@ final class MusicPlayerHandler: ObservableObject {
 
         if player.timeControlStatus == .playing {
             player.pause()
-            isPlaying = false
         } else {
             player.play()
-            isPlaying = true
         }
 
-        return isPlaying
+        return player.timeControlStatus == .playing
     }
 
     func stop() {
@@ -137,7 +140,6 @@ final class MusicPlayerHandler: ObservableObject {
 
             startObserving()
             player?.play()
-            isPlaying = true
         }
     }
 
@@ -155,25 +157,20 @@ final class MusicPlayerHandler: ObservableObject {
 
     private func adjacentSong(offset: Int) -> SongModel? {
         let newIndex = currentSongIndex + offset
-        currentSongIndex = newIndex
+        currentSongIndex = max(0, min(playlist.count - 1, newIndex))
         return playlist.indices.contains(newIndex) ? playlist[safe: newIndex] : nil
     }
 
     private func startObserving() {
-        guard let player else { return }
-
         let interval = CMTime(seconds: 0.02, preferredTimescale: 600)
 
-        timeObserverToken = player.addPeriodicTimeObserver(
+        timeObserverToken = player?.addPeriodicTimeObserver(
             forInterval: interval,
             queue: .main
-        ) { [weak self] _ in
-            guard let self,
-                  let duration = player.currentItem?.duration.seconds,
-                  duration > 0 else { return }
-
+        ) { _ in
             DispatchQueue.main.async {
-                self.playbackProgress = Float(player.currentTime().seconds / duration)
+                guard let duration = self.player?.currentItem?.duration.seconds, duration > 0 else { return }
+                self.playbackProgress = (self.player?.currentTime().seconds ?? 0) / duration
             }
         }
 
@@ -181,7 +178,7 @@ final class MusicPlayerHandler: ObservableObject {
             self,
             selector: #selector(playerDidFinishPlaying),
             name: .AVPlayerItemDidPlayToEndTime,
-            object: player.currentItem
+            object: player?.currentItem
         )
     }
 
@@ -207,7 +204,6 @@ final class MusicPlayerHandler: ObservableObject {
     private func discardPlayer() {
         stopObserving()
         player = nil
-        isPlaying = false
         try? stopAudioSession()
     }
 
@@ -230,13 +226,11 @@ final class MusicPlayerHandler: ObservableObject {
 
         commandCenter.playCommand.addTarget { _ in
             self.player?.play()
-            self.isPlaying = true
             return .success
         }
 
         commandCenter.pauseCommand.addTarget { _ in
             self.player?.pause()
-            self.isPlaying = false
             return .success
         }
 
