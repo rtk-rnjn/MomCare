@@ -28,22 +28,6 @@ struct DashboardView: View {
         .background(Color(.secondarySystemGroupedBackground))
         .navigationTitle("ProgressHub")
         .navigationBarTitleDisplayMode(.large)
-        .sheet(isPresented: $controlState.showingProfileSheet) {
-            ProfileTableViewWrapper(authenticationService: authenticationService)
-                .ignoresSafeArea()
-                .toolbar {
-                    ToolbarItem(placement: .topBarTrailing) {
-                        Button("Done") {
-                            dismiss()
-                        }
-                    }
-                }
-        }
-        .background(
-            NavBarProfileAccessory {
-                controlState.showingProfileSheet = true
-            }
-        )
     }
 
     var weekAndEventSection: some View {

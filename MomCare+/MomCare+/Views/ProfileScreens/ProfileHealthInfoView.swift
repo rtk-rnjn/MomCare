@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct HealthInfoView: View {
+struct ProfileHealthInfoView: View {
 
     // MARK: Internal
 
@@ -61,12 +61,6 @@ struct HealthInfoView: View {
         .navigationTitle("Health Information")
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
-            ToolbarItem(placement: .navigationBarLeading) {
-                Button { dismiss() } label: {
-                    Image(systemName: "chevron.left")
-                }
-            }
-
             ToolbarItem(placement: .navigationBarTrailing) {
                 Button(isEditing ? "Done" : "Edit") {
                     withAnimation {

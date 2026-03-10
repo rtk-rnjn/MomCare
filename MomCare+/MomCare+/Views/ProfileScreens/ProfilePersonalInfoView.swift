@@ -23,7 +23,7 @@ struct InitialsAvatar: View {
     }
 }
 
-struct PersonalInfoView: View {
+struct ProfilePersonalInfoView: View {
 
     // MARK: Internal
 
@@ -98,11 +98,6 @@ struct PersonalInfoView: View {
         .navigationTitle("Personal Information")
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
-            ToolbarItem(placement: .navigationBarLeading) {
-                Button { dismiss() } label: {
-                    Image(systemName: "chevron.left")
-                }
-            }
 
             ToolbarItem(placement: .navigationBarTrailing) {
                 Button(isEditing ? "Done" : "Edit") {
@@ -161,7 +156,7 @@ struct PersonalInfoView: View {
                 ValuePickerSheet(
                     title: "Height",
                     range: 100 ... 220,
-                    unit: "cm",
+                    unit: UnitLength.centimeters,
                     selection: $height
                 )
 
@@ -169,7 +164,7 @@ struct PersonalInfoView: View {
                 ValuePickerSheet(
                     title: "Current Weight",
                     range: 30 ... 150,
-                    unit: "kg",
+                    unit: UnitMass.kilograms,
                     selection: $currentWeight
                 )
 
@@ -177,7 +172,7 @@ struct PersonalInfoView: View {
                 ValuePickerSheet(
                     title: "Pre Pregnancy Weight",
                     range: 30 ... 150,
-                    unit: "kg",
+                    unit: UnitMass.kilograms,
                     selection: $prePregnancyWeight
                 )
             }

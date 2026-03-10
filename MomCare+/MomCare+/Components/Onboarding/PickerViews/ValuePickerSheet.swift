@@ -1,24 +1,24 @@
 import SwiftUI
 
-struct ValuePickerSheet: View {
+struct ValuePickerSheet<UnitType: Dimension>: View {
 
     // MARK: Internal
 
     let title: String
     let range: ClosedRange<Int>
-    let unit: String
+    let unit: UnitType
 
     @Binding var selection: Double?
 
     var body: some View {
         NavigationStack {
             VStack {
-                Picker(title, selection: intSelection) {
+                Picker(title, selection: bindingValue) {
                     ForEach(range, id: \.self) { value in
                         HStack {
                             Text("\(value)")
                                 .font(.title2.weight(.semibold))
-                            Text(unit)
+                            Text(unit.symbol)
                                 .foregroundStyle(.secondary)
                         }
                         .tag(value)
@@ -47,7 +47,7 @@ struct ValuePickerSheet: View {
 
     @Environment(\.dismiss) private var dismiss
 
-    private var intSelection: Binding<Int> {
+    private var bindingValue: Binding<Int> {
         Binding<Int>(
             get: { Int(selection ?? Double(range.lowerBound)) },
             set: { selection = Double($0) }

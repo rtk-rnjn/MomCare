@@ -15,21 +15,25 @@ class WatchConnector: NSObject, WCSessionDelegate {
 
     override init() {
         super.init()
-        WCSession.default.delegate = self
-        WCSession.default.activate()
+        if WCSession.isSupported() {
+            session = WCSession.default
+            session?.delegate = self
+
+            Task {
+//                session?.activate()
+            }
+        }
     }
 
     // MARK: Internal
 
     static let shared: WatchConnector = .init()
 
-    var session: WCSession {
-        WCSession.default
-    }
+    var session: WCSession?
 
     func send(message: [String: Any], replyHandler: (([String: Any]) -> Void)? = nil) {
-        if session.isReachable {
-            session.sendMessage(message, replyHandler: replyHandler, errorHandler: { error in
+        if let isReachable = session?.isReachable, isReachable {
+            session?.sendMessage(message, replyHandler: replyHandler, errorHandler: { error in
                 logger.error("Send error: \(String(describing: error))")
             })
         } else {
@@ -38,7 +42,7 @@ class WatchConnector: NSObject, WCSessionDelegate {
     }
 
     func transfer(userInfo: [String: Any]) {
-        session.transferUserInfo(userInfo)
+        session?.transferUserInfo(userInfo)
     }
 
     func ping() {

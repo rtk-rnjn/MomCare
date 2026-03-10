@@ -1,10 +1,3 @@
-//
-//  DietaryPreferenceData.swift
-//  MomCare+
-//
-//  Created by Aryan singh on 12/02/26.
-//
-
 public enum DietaryPreference: String, Codable, CaseIterable, Sendable {
     case vegetarian = "veg"
     case nonVegetarian = "non-veg"

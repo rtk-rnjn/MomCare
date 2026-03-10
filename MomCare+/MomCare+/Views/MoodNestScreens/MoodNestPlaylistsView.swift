@@ -6,7 +6,7 @@ struct MoodNestPlaylistsView: View {
     // MARK: Lifecycle
 
     init(mood: MoodType) {
-        _vm = StateObject(wrappedValue: MoodResultViewModel(mood: mood))
+        _moodResultViewModel = StateObject(wrappedValue: MoodResultViewModel(mood: mood))
     }
 
     // MARK: Internal
@@ -48,9 +48,9 @@ struct MoodNestPlaylistsView: View {
         .navigationTitle("MoodNest")
         .navigationBarTitleDisplayMode(.inline)
         .task {
-            await vm.loadData()
+            await moodResultViewModel.loadData()
 
-            let heroPlaylist = vm.playlists.randomElement()
+            let heroPlaylist = moodResultViewModel.playlists.randomElement()
             if let heroPlaylist {
                 self.heroPlaylist = heroPlaylist
                 uiImage = await heroPlaylist.image
@@ -59,7 +59,7 @@ struct MoodNestPlaylistsView: View {
     }
 
     var captionSection: some View {
-        Text(vm.caption)
+        Text(moodResultViewModel.caption)
             .font(.title.weight(.bold))
             .foregroundColor(.primary)
             .lineLimit(3)
@@ -90,7 +90,7 @@ struct MoodNestPlaylistsView: View {
                 ],
                 spacing: 16
             ) {
-                ForEach(vm.playlists) { playlist in
+                ForEach(moodResultViewModel.playlists) { playlist in
                     NavigationLink(destination: MoodNestSongsView(playlist: playlist)) {
                         PlaylistCard(playlist: playlist)
                     }
@@ -185,7 +185,7 @@ struct MoodNestPlaylistsView: View {
     @EnvironmentObject private var musicPlayerHandler: MusicPlayerHandler
     @EnvironmentObject private var controlState: ControlState
 
-    @StateObject private var vm: MoodResultViewModel
+    @StateObject private var moodResultViewModel: MoodResultViewModel
     @State private var heroPlaylist: PlaylistModel?
     @State private var uiImage: UIImage?
 

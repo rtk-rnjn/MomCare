@@ -1,10 +1,3 @@
-//
-//  Intents.swift
-//  Intents
-//
-//  Created by Aryan singh on 15/02/26.
-//
-
 import AppIntents
 
 struct Intents: AppIntent {

@@ -7,7 +7,7 @@ struct MoodNestView: View {
     var body: some View {
         NavigationStack {
             ZStack {
-                vm.backgroundColor.ignoresSafeArea()
+                moodNestViewModel.backgroundColor.ignoresSafeArea()
                     .accessibilityHidden(true)
 
                 VStack(spacing: 32) {
@@ -21,25 +21,28 @@ struct MoodNestView: View {
                         .frame(maxWidth: .infinity)
                         .padding(.horizontal, 25)
                         .accessibilityAddTraits(.isHeader)
+                        .accessibilityIdentifier("moodQuestion")
+                        .accessibilityHint("Asks the user to select their current mood")
 
                     Spacer()
 
-                    MoodFaceView(vm: vm)
+                    MoodFaceView(moodNestViewModel: moodNestViewModel)
                         .frame(height: 240)
                         .accessibilityHidden(true)
 
-                    Text(vm.mood.rawValue)
+                    Text(moodNestViewModel.mood.rawValue)
                         .font(.headline)
-                        .accessibilityLabel("Current mood: \(vm.mood.rawValue)")
+                        .accessibilityLabel("Current mood: \(moodNestViewModel.mood.rawValue)")
                         .accessibilityAddTraits(.updatesFrequently)
 
-                    Slider(value: $vm.sliderValue, in: 0 ... 3, step: 1)
-                        .onChange(of: vm.sliderValue) {
+                    Slider(value: $moodNestViewModel.sliderValue, in: 0 ... 3, step: 1)
+                        // Imagine you can not remove Haptic feedback, is you are using step: Int
+                        .onChange(of: moodNestViewModel.sliderValue) {
                             if reduceMotion {
-                                vm.updateMood()
+                                moodNestViewModel.updateMood()
                             } else {
                                 withAnimation(.easeInOut(duration: 0.4)) {
-                                    vm.updateMood()
+                                    moodNestViewModel.updateMood()
                                 }
                             }
                         }
@@ -47,7 +50,7 @@ struct MoodNestView: View {
                         .padding(.top, 30)
                         .tint(.white)
                         .accessibilityLabel("Mood selector")
-                        .accessibilityValue(vm.mood.rawValue)
+                        .accessibilityValue(moodNestViewModel.mood.rawValue)
                         .accessibilityHint("Swipe left or right to change your mood")
                         .accessibilityIdentifier("moodSlider")
 
@@ -59,17 +62,17 @@ struct MoodNestView: View {
                             .font(.headline)
                             .frame(maxWidth: .infinity)
                             .padding()
-                            .background(vm.faceColor)
+                            .background(moodNestViewModel.faceColor)
                             .foregroundStyle(.white)
                             .clipShape(Capsule())
                     }
                     .padding(.horizontal, 32)
                     .padding(.top, 30)
-                    .accessibilityLabel("Set mood to \(vm.mood.rawValue)")
+                    .accessibilityLabel("Set mood to \(moodNestViewModel.mood.rawValue)")
                     .accessibilityHint("Opens playlist recommendations for your mood")
                     .accessibilityIdentifier("setMoodButton")
                     .navigationDestination(isPresented: $controlState.showingMoodnestPlaylistsView) {
-                        MoodNestPlaylistsView(mood: vm.mood)
+                        MoodNestPlaylistsView(mood: moodNestViewModel.mood)
                     }
                     Spacer()
                 }
@@ -81,7 +84,7 @@ struct MoodNestView: View {
 
     // MARK: Private
 
-    @StateObject private var vm: MoodNestViewModel = .init()
+    @StateObject private var moodNestViewModel: MoodNestViewModel = .init()
     @EnvironmentObject private var controlState: ControlState
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
 }

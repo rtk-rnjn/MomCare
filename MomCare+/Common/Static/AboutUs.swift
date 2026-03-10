@@ -1,10 +1,3 @@
-//
-//  AboutUs.swift
-//  MomCare+
-//
-//  Created by Aryan singh on 13/02/26.
-//
-
 enum AboutUs {
     static let story = """
     The world of pregnancy apps can be a loud, cluttered, and overwhelming place. We know, because we've been there.

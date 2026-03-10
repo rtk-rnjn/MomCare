@@ -172,6 +172,7 @@ final class AuthenticationService: ObservableObject {
 
         if response.errorMessage == nil, response.statusCode == 200, let refreshToken = KeychainHelper.get(.refreshToken) {
             try await logout(refreshToken: refreshToken)
+            database[.emailAddress] = newEmailAddress
         }
 
         return response
@@ -184,6 +185,7 @@ final class AuthenticationService: ObservableObject {
 
         if response.errorMessage == nil, response.statusCode == 200, let refreshToken = KeychainHelper.get(.refreshToken) {
             try await logout(refreshToken: refreshToken)
+            KeychainHelper.set(newPassword, forKey: .password)
         }
 
         return response

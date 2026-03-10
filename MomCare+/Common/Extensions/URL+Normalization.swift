@@ -1,10 +1,3 @@
-//
-//  URL+Normalization.swift
-//  MomCare+
-//
-//  Created by Aryan singh on 14/02/26.
-//
-
 import Foundation
 
 extension URL {

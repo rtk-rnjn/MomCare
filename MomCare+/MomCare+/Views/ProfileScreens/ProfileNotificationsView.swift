@@ -1,7 +1,7 @@
 import SwiftUI
 import UserNotifications
 
-struct NotificationsView: View {
+struct ProfileNotificationsView: View {
 
     // MARK: Internal
 
@@ -26,7 +26,7 @@ struct NotificationsView: View {
 
 }
 
-private extension NotificationsView {
+private extension ProfileNotificationsView {
     func loadStatus() {}
 
     func handleToggle(_ value: Bool) {

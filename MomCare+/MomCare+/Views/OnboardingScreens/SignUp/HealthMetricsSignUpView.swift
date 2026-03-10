@@ -205,7 +205,7 @@ struct HealthMetricsSignUpView: View {
             ValuePickerSheet(
                 title: "Height",
                 range: 120 ... 220,
-                unit: "cm",
+                unit: UnitLength.centimeters,
                 selection: $height
             )
 
@@ -213,7 +213,7 @@ struct HealthMetricsSignUpView: View {
             ValuePickerSheet(
                 title: "Pre-Pregnancy Weight",
                 range: 40 ... 120,
-                unit: "kg",
+                unit: UnitMass.kilograms,
                 selection: $prePregnancyWeight
             )
 
@@ -221,7 +221,7 @@ struct HealthMetricsSignUpView: View {
             ValuePickerSheet(
                 title: "Current Weight",
                 range: 40 ... 120,
-                unit: "kg",
+                unit: UnitMass.kilograms,
                 selection: $currentWeight
             )
 

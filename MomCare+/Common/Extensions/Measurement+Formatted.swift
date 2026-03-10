@@ -1,10 +1,3 @@
-//
-//  Measurement+Formatted.swift
-//  MomCare
-//
-//  Created by Aryan singh on 19/02/26.
-//
-
 import Foundation
 
 extension Measurement where UnitType: Dimension {

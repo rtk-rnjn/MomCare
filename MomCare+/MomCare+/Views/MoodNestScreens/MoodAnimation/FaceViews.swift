@@ -1,21 +1,21 @@
 import SwiftUI
 
 struct EyeView: View {
-    @ObservedObject var vm: MoodNestViewModel
+    @ObservedObject var moodNestViewModel: MoodNestViewModel
 
     let isLeft: Bool
 
     var rotation: Angle {
-        isLeft ? vm.eyeRotationLeft : vm.eyeRotationRight
+        isLeft ? moodNestViewModel.eyeRotationLeft : moodNestViewModel.eyeRotationRight
     }
 
     var body: some View {
         SemiCircleEyeRepresentable(
-            useSemiCircle: vm.useSemiCircleEyes,
-            color: UIColor(vm.faceColor)
+            useSemiCircle: moodNestViewModel.useSemiCircleEyes,
+            color: UIColor(moodNestViewModel.faceColor)
         )
         .frame(width: 130, height: 130)
-        .scaleEffect(vm.eyeScale)
+        .scaleEffect(moodNestViewModel.eyeScale)
         .rotationEffect(rotation)
     }
 }

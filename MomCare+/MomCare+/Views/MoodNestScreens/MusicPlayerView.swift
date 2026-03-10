@@ -98,6 +98,10 @@ struct MusicPlayerView: View {
                         .font(.system(size: playPauseButtonSize))
                         .foregroundColor(.white)
                         .frame(width: 56, height: 56)
+                        .animation(
+                            reduceMotion ? .linear(duration: 0.05) : .spring(response: 0.25),
+                            value: musicPlayerHandler.player?.timeControlStatus
+                        )
                 }
                 .accessibilityLabel(musicPlayerHandler.player?.timeControlStatus == .playing ? "Pause" : "Play")
                 .accessibilityIdentifier("playPauseButton")
@@ -218,6 +222,8 @@ struct MusicPlayerView: View {
     @State private var uiImage: UIImage?
     @ScaledMetric private var transportButtonSize: CGFloat = 30
     @ScaledMetric private var playPauseButtonSize: CGFloat = 56
+
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     private var accentColor: Color {
         Color(red: 139 / 255, green: 69 / 255, blue: 87 / 255)

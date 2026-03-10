@@ -1,10 +1,3 @@
-//
-//  CountryData.swift
-//  MomCare+
-//
-//  Created by Aryan singh on 12/02/26.
-//
-
 enum CountryData {
     static let countryCodes: [String: String] = [
         "93": "Afghanistan",

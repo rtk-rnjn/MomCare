@@ -56,7 +56,10 @@ enum Endpoint: String {
 
     // Devices
 
-    case apns = "/api/v2/devices/apns"
+    case apns = "/v2/devices/apns"
+
+    case dailyMetrics = "/v2/daily-metrics"
+    case diagnosticMetrics = "/v2/diagnostic-metrics"
 }
 
 extension Endpoint {

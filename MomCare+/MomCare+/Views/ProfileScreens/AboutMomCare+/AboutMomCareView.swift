@@ -28,6 +28,12 @@ struct AboutMomCareView: View {
                     Text("Open Source")
                 }
             }
+#if DEBUG
+            Button("Crash App") {
+                fatalError("This is a test crash for Crashlytics.")
+            }
+            .foregroundStyle(.red)
+#endif // DEBUG
         }
         .navigationTitle("About MomCare+")
         .navigationBarTitleDisplayMode(.inline)
