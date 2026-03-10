@@ -158,4 +158,16 @@ final class ControlState: ObservableObject {
         didSet { UserDefaults.standard.set(triTrackSegment.rawValue, forKey: "triTrackSegment") }
     }
 
+    func clearAll() {
+        let keys: [String] = [
+            "isOnboardingCompleted",
+            "isLoggedIn",
+            "selectedTab",
+            "myPlanSegment",
+            "triTrackSegment",
+            "showingPopup",
+            "showingPopupBar"
+        ]
+        keys.forEach { UserDefaults.standard.removeObject(forKey: $0) }
+    }
 }

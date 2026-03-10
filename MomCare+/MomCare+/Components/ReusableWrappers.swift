@@ -3,13 +3,16 @@ import UIKit
 
 struct ProfileTableViewWrapper: UIViewControllerRepresentable {
     var authenticationService: AuthenticationService
+    var controlState: ControlState
 
     func makeUIViewController(context _: Context) -> UINavigationController {
-        let profileVC = ProfileTableView()
-        profileVC.authenticationService = authenticationService
-        let nav = UINavigationController(rootViewController: profileVC)
-        nav.navigationBar.prefersLargeTitles = false
-        return nav
+        let profileViewController = ProfileTableView()
+        profileViewController.authenticationService = authenticationService
+        profileViewController.controlState = controlState
+
+        let navigationController = UINavigationController(rootViewController: profileViewController)
+        navigationController.navigationBar.prefersLargeTitles = false
+        return navigationController
     }
 
     func updateUIViewController(_: UINavigationController, context _: Context) {}

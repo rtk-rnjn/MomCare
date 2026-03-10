@@ -1,6 +1,17 @@
 import SwiftUI
 import UIKit
 
+struct ProfileSection {
+    let title: String?
+    let rows: [ProfileRow]
+}
+
+struct ProfileRow {
+    let title: String
+    let systemImage: String
+    let type: ProfileRowType
+}
+
 private let sections: [ProfileSection] = [
     ProfileSection(title: nil, rows: [
         ProfileRow(title: "Personal Information", systemImage: "person.crop.circle", type: .personalInfo),
@@ -48,6 +59,7 @@ final class ProfileTableView: UITableViewController {
     // MARK: Internal
 
     var authenticationService: AuthenticationService?
+    var controlState: ControlState?
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -217,7 +229,9 @@ final class ProfileTableView: UITableViewController {
             await authenticationService?.logout()
         }
 
-        dismiss(animated: true)
+        dismiss(animated: true) {
+            self.controlState?.clearAll()
+        }
     }
 
     @objc private func closeTapped() {

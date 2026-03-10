@@ -8,14 +8,14 @@ struct MomCareWatchView: View {
     var body: some View {
         List {
             Section("Status") {
-                Label(connector.session.isReachable ? "Watch Reachable" : "Watch Not Reachable",
-                      systemImage: connector.session.isReachable ? "checkmark.circle.fill" : "xmark.circle.fill")
-                    .foregroundColor(connector.session.isReachable ? .green : .red)
+                Label(connector.session?.isReachable == true ? "Watch Reachable" : "Watch Not Reachable",
+                      systemImage: connector.session?.isReachable == true ? "checkmark.circle.fill" : "xmark.circle.fill")
+                    .foregroundColor(connector.session?.isReachable == true ? .green : .red)
 
                 HStack {
                     Text("Activation State")
                     Spacer()
-                    Text(stateText(connector.session.activationState))
+                    Text(stateText(connector.session?.activationState ?? .notActivated))
                 }
             }
 

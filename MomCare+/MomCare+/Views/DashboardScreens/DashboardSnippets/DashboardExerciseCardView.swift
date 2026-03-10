@@ -43,7 +43,7 @@ struct DashboardExerciseCard: View {
                 let totalCompletion = await UserExerciseModel.totalDurationCompletion(from: healthKitHandler.userExercises)
                 seconds = totalCompletion / 60
 
-                let measurement = Measurement(value: seconds, unit: UnitDuration.seconds)
+                let measurement = Measurement(value: seconds, unit: UnitDuration.minutes)
 
                 let formatter = MeasurementFormatter()
                 formatter.unitOptions = .providedUnit
@@ -65,7 +65,7 @@ struct DashboardExerciseCard: View {
 
     // MARK: Private
 
-    @State private var displaySeconds: String = "- min"
+    @State private var displaySeconds: String = "0 min"
 
     @EnvironmentObject private var healthKitHandler: HealthKitHandler
 

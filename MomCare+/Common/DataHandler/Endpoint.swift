@@ -1,6 +1,7 @@
 import Foundation
 
-private let baseURLString = "http://13.203.42.179/api"
+// private let baseURLString = "http://13.203.42.179/api"
+private let baseURLString = "http://10.26.198.36:8080/api"
 
 enum Endpoint: String {
     // Authentication
@@ -56,7 +57,10 @@ enum Endpoint: String {
 
     // Devices
 
-    case apns = "/api/v2/devices/apns"
+    case apns = "/v2/devices/apns"
+
+    case dailyMetrics = "/v2/daily-metrics"
+    case diagnosticMetrics = "/v2/diagnostic-metrics"
 }
 
 extension Endpoint {

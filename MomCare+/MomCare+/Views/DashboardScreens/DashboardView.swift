@@ -29,7 +29,7 @@ struct DashboardView: View {
         .navigationTitle("ProgressHub")
         .navigationBarTitleDisplayMode(.large)
         .sheet(isPresented: $controlState.showingProfileSheet) {
-            ProfileTableViewWrapper(authenticationService: authenticationService)
+            ProfileTableViewWrapper(authenticationService: authenticationService, controlState: controlState)
                 .ignoresSafeArea()
                 .toolbar {
                     ToolbarItem(placement: .topBarTrailing) {
