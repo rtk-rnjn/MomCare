@@ -63,6 +63,7 @@ final class AuthenticationService: ObservableObject {
         return handleSuccess(response, expectedStatusCode: 201, emailAddress: emailAddress)
     }
 
+    @discardableResult
     func login(emailAddress: String, password: String) async throws -> NetworkResponse<TokenPair> {
         let networkResponse: NetworkResponse<TokenPair> = try await NetworkManager.shared.post(url: Endpoint.login.urlString, body: prepareCredentialsData(emailAddress: emailAddress, password: password))
 
@@ -75,6 +76,7 @@ final class AuthenticationService: ObservableObject {
         return networkResponse
     }
 
+    @discardableResult
     func autoLogin() async -> NetworkResponse<TokenPair>? {
         let emailAddress: String? = database[.emailAddress]
         let password: String? = KeychainHelper.get(.password)
@@ -230,6 +232,7 @@ final class AuthenticationService: ObservableObject {
         return handleSuccess(response, expectedStatusCode: 200, emailAddress: existingEmailAddress)
     }
 
+    @discardableResult
     func me() async throws -> NetworkResponse<UserModel> {
         let response: NetworkResponse<UserModel> = try await NetworkManager.shared.get(url: Endpoint.me.urlString, headers: AuthenticationService.authorizationHeaders)
 

@@ -674,7 +674,7 @@
 					"@executable_path/../../Frameworks",
 				);
 				MARKETING_VERSION = 0.17;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.Team05.MomCare.TriTrack-Glance";
+				PRODUCT_BUNDLE_IDENTIFIER = com.Team05.MomCare.TriTrackGlance;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
@@ -713,7 +713,7 @@
 					"@executable_path/../../Frameworks",
 				);
 				MARKETING_VERSION = 0.17;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.Team05.MomCare.TriTrack-Glance";
+				PRODUCT_BUNDLE_IDENTIFIER = com.Team05.MomCare.TriTrackGlance;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;

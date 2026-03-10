@@ -35,6 +35,11 @@ struct OnboardingView: View {
                     } onCompletion: { result in
                         Task {
                             try? await handleAppleSignIn(result)
+                            _ = try? await authenticationService.me()
+                            if authenticationService.userModel?.dueDateTimestamp == nil {
+                                navigateToHealthMetricsSignUp = true
+                            }
+
                         }
                     }
                     .signInWithAppleButtonStyle(.black)
@@ -87,10 +92,16 @@ struct OnboardingView: View {
                 Color("secondaryAppColor")
                     .ignoresSafeArea()
             )
+            .navigationDestination(isPresented: $navigateToHealthMetricsSignUp) {
+                HealthMetricsSignUpView()
+            }
         }
+
     }
 
     // MARK: Private
+
+    @State private var navigateToHealthMetricsSignUp = false
 
     @EnvironmentObject private var authenticationService: AuthenticationService
 
@@ -111,7 +122,7 @@ struct OnboardingView: View {
                 return
             }
 
-            try await authenticationService.login(with: .apple, token: tokenString)
+            _ = try await authenticationService.login(with: .apple, token: tokenString)
 
         case let .failure(error):
             alertMessage = "Apple Sign-In failed: \(error.localizedDescription)"

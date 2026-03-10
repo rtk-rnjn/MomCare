@@ -10,7 +10,7 @@ import MapKit
 import SwiftUI
 
 enum AddMode: String, CaseIterable {
-    case appointment = "Appointment"
+    case appointment = "Event"
     case reminder = "Reminder"
 }
 

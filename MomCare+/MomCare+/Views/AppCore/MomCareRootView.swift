@@ -1,7 +1,8 @@
 import SwiftUI
 
 struct MomCareRootView: View {
-    @EnvironmentObject var authenticationService: AuthenticationService
+
+    // MARK: Internal
 
     var body: some View {
         if let isProfileComplete = authenticationService.userModel?.isProfileComplete, isProfileComplete {
@@ -12,4 +13,9 @@ struct MomCareRootView: View {
                 .transition(.opacity)
         }
     }
+
+    // MARK: Private
+
+    @EnvironmentObject private var authenticationService: AuthenticationService
+
 }

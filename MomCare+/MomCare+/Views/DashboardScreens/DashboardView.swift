@@ -18,7 +18,7 @@ struct DashboardView: View {
             .padding(.top, 20)
         }
         .refreshable {
-            _ = await authenticationService.autoLogin()
+            _ = try? await authenticationService.refresh()
             await fetchDailyInsights()
             try? eventKitHandler.fetchAllEvents()
             try? await healthKitHandler.fetchMealPlan()
