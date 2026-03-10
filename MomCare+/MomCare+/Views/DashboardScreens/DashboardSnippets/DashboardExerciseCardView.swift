@@ -29,6 +29,9 @@ struct DashboardExerciseCard: View {
         .padding(.leading, 3)
         .background(Color("secondaryAppColor"))
         .dashboardCardStyle()
+        .accessibilityElement(children: .contain)
+        .accessibilityLabel("Exercise activity")
+        .accessibilityIdentifier("dashboardExerciseCard")
         .onChange(of: healthKitHandler.userExercises) {
             Task {
                 await healthKitHandler.fetchTotalDuration()
@@ -87,6 +90,7 @@ struct ExerciseRow: View {
                     .foregroundColor(.white)
                     .font(.system(size: 14, weight: .bold))
             }
+            .accessibilityHidden(true)
 
             Text(value)
                 .font(.title3)
@@ -94,6 +98,9 @@ struct ExerciseRow: View {
                 .contentTransition(.numericText())
                 .animation(.spring(response: 0.4, dampingFraction: 0.7), value: value)
         }
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(value)
+        .accessibilityAddTraits(.updatesFrequently)
     }
 }
 
@@ -139,6 +146,10 @@ struct ActivityRingView: View {
             .onChange(of: move) { animateRings() }
             .onChange(of: exercise) { animateRings() }
             .onChange(of: stand) { animateRings() }
+            .accessibilityElement(children: .ignore)
+            .accessibilityLabel("Activity rings")
+            .accessibilityValue("Move \(Int(move * 100)) percent, Exercise \(Int(exercise * 100)) percent, Stand \(Int(stand * 100)) percent")
+            .accessibilityAddTraits(.updatesFrequently)
         }
     }
 

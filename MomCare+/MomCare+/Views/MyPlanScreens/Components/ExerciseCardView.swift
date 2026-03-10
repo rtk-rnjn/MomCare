@@ -24,6 +24,9 @@ struct ExerciseCardView: View {
         .padding(18)
         .background(cardBackground)
         .shadow(color: darkAccentColor.opacity(0.08), radius: 8, x: 0, y: 4)
+        .accessibilityElement(children: .contain)
+        .accessibilityLabel(exercise.map { "\($0.name), \($0.level.rawValue)" } ?? "Exercise")
+        .accessibilityValue("\(Int(completionProgress * 100)) percent completed")
         .task { await loadExercise() }
     }
 
@@ -49,6 +52,9 @@ private extension ExerciseCardView {
                     .font(.title3)
                     .foregroundColor(darkAccentColor.opacity(0.5))
             }
+            .accessibilityLabel("Exercise information")
+            .accessibilityHint("Shows details about this exercise")
+            .frame(minWidth: 44, minHeight: 44)
         }
     }
 
@@ -76,6 +82,7 @@ private extension ExerciseCardView {
         } label: {
             HStack(spacing: 6) {
                 Image(systemName: "play.fill")
+                    .accessibilityHidden(true)
                 Text(completionProgress >= 1 ? "Replay" : "Start")
             }
             .font(.subheadline.weight(.semibold))
@@ -87,6 +94,8 @@ private extension ExerciseCardView {
                     .fill(darkAccentColor)
             )
         }
+        .accessibilityLabel(completionProgress >= 1 ? "Replay \(exercise?.name ?? "exercise")" : "Start \(exercise?.name ?? "exercise")")
+        .accessibilityIdentifier("startExerciseButton")
         .fullScreenCover(isPresented: $startExercisePlayer) {
             playerView
         }
@@ -97,6 +106,7 @@ private extension ExerciseCardView {
             VideoPlayer(player: avPlayer)
                 .ignoresSafeArea()
                 .onAppear { avPlayer?.play() }
+                .accessibilityLabel("Exercise video player")
 
             Button {
                 avPlayer?.pause()
@@ -109,6 +119,8 @@ private extension ExerciseCardView {
                     .foregroundColor(.white)
                     .padding()
             }
+            .accessibilityLabel("Close video")
+            .accessibilityIdentifier("closeVideoButton")
             .padding(.top, 20)
         }
     }
@@ -132,6 +144,7 @@ private extension ExerciseCardView {
             }
         }
         .frame(width: 80, height: 80)
+        .accessibilityHidden(true)
     }
 }
 

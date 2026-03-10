@@ -84,6 +84,7 @@ struct DashboardView: View {
                 .font(.title2)
                 .fontWeight(.bold)
                 .padding(.leading, 20)
+                .accessibilityAddTraits(.isHeader)
 
             DashboardDietCardView(
                 consumed: healthKitHandler.nurtitionConsumedTotals?.calories ?? 0,
@@ -94,6 +95,8 @@ struct DashboardView: View {
                 controlState.selectedTab = .myPlan
                 controlState.myPlanSegment = .diet
             }
+            .accessibilityAddTraits(.isButton)
+            .accessibilityHint("Double tap to view your diet plan")
 
             DashboardExerciseCard(
                 calories: healthKitHandler.caloriesBurned
@@ -103,6 +106,8 @@ struct DashboardView: View {
                 controlState.selectedTab = .myPlan
                 controlState.myPlanSegment = .exercise
             }
+            .accessibilityAddTraits(.isButton)
+            .accessibilityHint("Double tap to view your exercise plan")
         }
     }
 
@@ -112,6 +117,7 @@ struct DashboardView: View {
                 .font(.title2)
                 .fontWeight(.bold)
                 .padding(.leading, 20)
+                .accessibilityAddTraits(.isHeader)
 
             HStack(spacing: 16) {
                 DashboardInsightCardView(

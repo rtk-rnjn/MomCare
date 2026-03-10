@@ -46,6 +46,7 @@ struct DashboardWeekCardView: View {
                             .foregroundColor(.primary)
                             .font(.system(size: 21, weight: .regular))
                     }
+                    .accessibilityHidden(true)
                     .padding(.trailing, 12)
                     .offset(y: -20)
                 }
@@ -54,6 +55,14 @@ struct DashboardWeekCardView: View {
         .frame(minHeight: 160)
         .background(Color(.systemBackground))
         .dashboardCardStyle()
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel("Pregnancy progress")
+        .accessibilityValue(
+            "Week \(authenticationService.userModel?.pregnancyProgress.week ?? 0), Day \(authenticationService.userModel?.pregnancyProgress.day ?? 0), Trimester \(authenticationService.userModel?.pregnancyProgress.trimester ?? "unknown")"
+        )
+        .accessibilityAddTraits([.isButton, .updatesFrequently])
+        .accessibilityHint("Double tap to view detailed pregnancy progress")
+        .accessibilityIdentifier("dashboardWeekCard")
     }
 
     // MARK: Private

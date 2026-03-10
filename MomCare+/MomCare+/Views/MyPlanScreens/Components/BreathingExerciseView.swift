@@ -158,6 +158,8 @@ struct BreathingExerciseView: View {
             .buttonStyle(.glass)
             .buttonBorderShape(.circle)
             .tint(darkAccent)
+            .accessibilityLabel("Close breathing exercise")
+            .frame(minWidth: 44, minHeight: 44)
         } else {
             Button {
                 stopAllTimers()
@@ -171,6 +173,8 @@ struct BreathingExerciseView: View {
                     .background(Circle().fill(Color.white.opacity(0.7)))
                     .shadow(color: Color.black.opacity(0.06), radius: 4, x: 0, y: 2)
             }
+            .accessibilityLabel("Close breathing exercise")
+            .frame(minWidth: 44, minHeight: 44)
         }
     }
 
@@ -225,6 +229,7 @@ struct BreathingExerciseView: View {
                     .offset(dotPosition(for: i))
             }
         }
+        .accessibilityHidden(true)
     }
 
     private var breathingFace: some View {
@@ -298,6 +303,8 @@ struct BreathingExerciseView: View {
                 .font(.title.weight(.semibold))
                 .foregroundColor(darkAccent)
                 .animation(.easeInOut(duration: 0.3), value: phase)
+                .accessibilityLabel("Current phase: \(phase.rawValue)")
+                .accessibilityAddTraits(.updatesFrequently)
 
             if phase != .done {
                 if #available(iOS 16.0, *) {
@@ -307,12 +314,16 @@ struct BreathingExerciseView: View {
                         .monospacedDigit()
                         .contentTransition(.numericText())
                         .animation(.easeInOut(duration: 0.2), value: phaseCountdown)
+                        .accessibilityLabel("\(phaseCountdown) seconds")
+                        .accessibilityAddTraits(.updatesFrequently)
                 } else {
                     Text("\(phaseCountdown)")
                         .font(.system(size: 44, weight: .light, design: .rounded))
                         .foregroundColor(darkAccent.opacity(0.6))
                         .monospacedDigit()
                         .animation(.easeInOut(duration: 0.2), value: phaseCountdown)
+                        .accessibilityLabel("\(phaseCountdown) seconds")
+                        .accessibilityAddTraits(.updatesFrequently)
                 }
             } else {
                 Text("Session Complete")
@@ -342,6 +353,7 @@ struct BreathingExerciseView: View {
                 }
             }
             .frame(height: 6)
+            .accessibilityHidden(true)
 
             HStack {
                 Text(formatTime(totalElapsed))
@@ -354,7 +366,12 @@ struct BreathingExerciseView: View {
                     .font(.caption2.weight(.medium))
                     .foregroundColor(darkAccent.opacity(0.5))
             }
+            .accessibilityHidden(true)
         }
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel("Session progress")
+        .accessibilityValue("\(formatTime(totalElapsed)) of \(formatTime(totalDuration))")
+        .accessibilityAddTraits(.updatesFrequently)
     }
 
     @ViewBuilder
@@ -378,6 +395,7 @@ struct BreathingExerciseView: View {
             .buttonStyle(.glass)
             .buttonBorderShape(.circle)
             .tint(darkAccent)
+            .accessibilityLabel("Reset session")
 
             Button {
                 if phase == .done {
@@ -395,6 +413,7 @@ struct BreathingExerciseView: View {
             .buttonBorderShape(.circle)
             .tint(darkAccent)
             .controlSize(.large)
+            .accessibilityLabel(phase == .done ? "Restart session" : (isPaused ? "Resume" : "Pause"))
 
             Button {
                 skipPhase()
@@ -405,6 +424,7 @@ struct BreathingExerciseView: View {
             .buttonStyle(.glass)
             .buttonBorderShape(.circle)
             .tint(darkAccent)
+            .accessibilityLabel("Skip to next phase")
         }
     }
 
@@ -420,6 +440,7 @@ struct BreathingExerciseView: View {
                     .background(Circle().fill(Color.white.opacity(0.7)))
                     .shadow(color: Color.black.opacity(0.06), radius: 4, x: 0, y: 2)
             }
+            .accessibilityLabel("Reset session")
 
             Button {
                 if phase == .done {
@@ -446,6 +467,7 @@ struct BreathingExerciseView: View {
                     )
                     .shadow(color: darkAccent.opacity(0.25), radius: 10, x: 0, y: 4)
             }
+            .accessibilityLabel(phase == .done ? "Restart session" : (isPaused ? "Resume" : "Pause"))
 
             Button {
                 skipPhase()
@@ -457,6 +479,7 @@ struct BreathingExerciseView: View {
                     .background(Circle().fill(Color.white.opacity(0.7)))
                     .shadow(color: Color.black.opacity(0.06), radius: 4, x: 0, y: 2)
             }
+            .accessibilityLabel("Skip to next phase")
         }
     }
 

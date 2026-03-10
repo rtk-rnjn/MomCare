@@ -73,6 +73,7 @@ struct DashboardEventCardView: View {
                             .foregroundColor(.primary)
                             .font(.system(size: 21, weight: .regular))
                     }
+                    .accessibilityHidden(true)
                     .padding(.trailing, 12)
                     .offset(y: -20)
                 }
@@ -81,6 +82,16 @@ struct DashboardEventCardView: View {
         .frame(minHeight: 160)
         .background(Color(.systemBackground))
         .dashboardCardStyle()
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(upcomingEvent != nil ? "Upcoming event: \(upcomingEvent!.title ?? "untitled")" : "No upcoming events")
+        .accessibilityValue(
+            upcomingEvent?.startDate.map { date in
+                "In \(date.formatted(.relative(presentation: .numeric)))"
+            } ?? ""
+        )
+        .accessibilityAddTraits(.isButton)
+        .accessibilityHint("Double tap to add a new event")
+        .accessibilityIdentifier("dashboardEventCard")
         .sheet(
             isPresented: $showEventSheet,
             onDismiss: {

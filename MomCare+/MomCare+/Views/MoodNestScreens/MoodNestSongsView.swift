@@ -86,6 +86,7 @@ struct MoodNestSongsView: View {
                     .frame(width: 140, height: 140)
                     .clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
                     .shadow(color: .black.opacity(0.4), radius: 12, x: 0, y: 6)
+                    .accessibilityLabel("\(playlist.name) album artwork")
             } else {
                 Image(systemName: "music.quarternote.3")
                     .resizable()
@@ -93,6 +94,7 @@ struct MoodNestSongsView: View {
                     .frame(width: 140, height: 140)
                     .clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
                     .shadow(color: .black.opacity(0.4), radius: 12, x: 0, y: 6)
+                    .accessibilityHidden(true)
             }
 
             VStack(alignment: .leading, spacing: 8) {
@@ -111,6 +113,8 @@ struct MoodNestSongsView: View {
             Spacer()
         }
         .padding(20)
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel("\(playlist.name), \(songs.count) songs, \(totalDuration)")
     }
 
     var controlsSection: some View {
@@ -130,6 +134,7 @@ struct MoodNestSongsView: View {
             HStack(spacing: 8) {
                 Image(systemName: "play.fill")
                     .font(.system(size: 15, weight: .semibold))
+                    .accessibilityHidden(true)
                 Text("Play")
                     .font(.system(size: 16, weight: .semibold))
             }
@@ -140,6 +145,8 @@ struct MoodNestSongsView: View {
             .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
             .shadow(color: .black.opacity(0.2), radius: 8, x: 0, y: 4)
         }
+        .accessibilityLabel("Play \(playlist.name)")
+        .accessibilityIdentifier("playPlaylistButton")
     }
 
     var shuffleButton: some View {
@@ -149,6 +156,7 @@ struct MoodNestSongsView: View {
             HStack(spacing: 8) {
                 Image(systemName: "shuffle")
                     .font(.system(size: 15, weight: .semibold))
+                    .accessibilityHidden(true)
                 Text("Shuffle")
                     .font(.system(size: 16, weight: .semibold))
             }
@@ -162,6 +170,8 @@ struct MoodNestSongsView: View {
                     .stroke(Color.white.opacity(0.2), lineWidth: 1)
             )
         }
+        .accessibilityLabel("Shuffle \(playlist.name)")
+        .accessibilityIdentifier("shufflePlaylistButton")
     }
 
     // MARK: Private
@@ -230,6 +240,7 @@ struct PlaylistTrackRow: View {
                             .overlay(nowPlayingIndicator)
                     }
                 }
+                .accessibilityHidden(true)
 
                 VStack(alignment: .leading, spacing: 3) {
                     Text(songModel.metadata?.title ?? songModel.songName)
@@ -256,11 +267,20 @@ struct PlaylistTrackRow: View {
                         .foregroundStyle(Color.white.opacity(0.6))
                         .frame(width: 32, height: 32)
                 }
+                .accessibilityLabel("More options for \(songModel.metadata?.title ?? songModel.songName)")
+                .accessibilityIdentifier("songOptionsButton")
             }
             .padding(.vertical, 10)
             .contentShape(Rectangle())
         }
         .buttonStyle(.plain)
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(
+            "\(songModel.metadata?.title ?? songModel.songName) by \(songModel.metadata?.author ?? "Unknown Artist")\(musicKitHandler.currentSong == songModel ? ", now playing" : "")"
+        )
+        .accessibilityValue(Utils.formattedTime(songModel.metadata?.duration ?? 0))
+        .accessibilityHint("Double tap to play")
+        .accessibilityAddTraits(musicKitHandler.currentSong == songModel ? [.isSelected] : [])
         .task {
             url = await songModel.url
             uiImage = await songModel.image

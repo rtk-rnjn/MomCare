@@ -8,6 +8,7 @@ struct MoodNestView: View {
         NavigationStack {
             ZStack {
                 vm.backgroundColor.ignoresSafeArea()
+                    .accessibilityHidden(true)
 
                 VStack(spacing: 32) {
                     Spacer(minLength: 30)
@@ -19,14 +20,18 @@ struct MoodNestView: View {
                         .fixedSize(horizontal: false, vertical: true)
                         .frame(maxWidth: .infinity)
                         .padding(.horizontal, 25)
+                        .accessibilityAddTraits(.isHeader)
 
                     Spacer()
 
                     MoodFaceView(vm: vm)
                         .frame(height: 240)
+                        .accessibilityHidden(true)
 
                     Text(vm.mood.rawValue)
                         .font(.headline)
+                        .accessibilityLabel("Current mood: \(vm.mood.rawValue)")
+                        .accessibilityAddTraits(.updatesFrequently)
 
                     Slider(value: $vm.sliderValue, in: 0 ... 3, step: 1)
                         .onChange(of: vm.sliderValue) {
@@ -37,6 +42,10 @@ struct MoodNestView: View {
                         .padding(.horizontal, 40)
                         .padding(.top, 30)
                         .tint(.white)
+                        .accessibilityLabel("Mood selector")
+                        .accessibilityValue(vm.mood.rawValue)
+                        .accessibilityHint("Swipe left or right to change your mood")
+                        .accessibilityIdentifier("moodSlider")
 
                     Button {
                         UIImpactFeedbackGenerator(style: .soft).impactOccurred()
@@ -52,6 +61,9 @@ struct MoodNestView: View {
                     }
                     .padding(.horizontal, 32)
                     .padding(.top, 30)
+                    .accessibilityLabel("Set mood to \(vm.mood.rawValue)")
+                    .accessibilityHint("Opens playlist recommendations for your mood")
+                    .accessibilityIdentifier("setMoodButton")
                     .navigationDestination(isPresented: $controlState.showingMoodnestPlaylistsView) {
                         MoodNestPlaylistsView(mood: vm.mood)
                     }

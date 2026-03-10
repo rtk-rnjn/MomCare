@@ -18,6 +18,7 @@ struct DashboardDietCardView: View {
                     Image(systemName: "fork.knife")
                         .foregroundColor(.white)
                 }
+                .accessibilityHidden(true)
 
                 Text("\(Int(consumed)) / \(Int(goal)) kcal")
                     .font(.title3)
@@ -56,6 +57,12 @@ struct DashboardDietCardView: View {
         .padding(16)
         .background(Color("secondaryAppColor"))
         .dashboardCardStyle()
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel("Calorie intake")
+        .accessibilityValue("\(Int(consumed)) of \(Int(goal)) calories consumed, \(Int(animatedProgress * 100)) percent")
+        .accessibilityAddTraits([.isButton, .updatesFrequently])
+        .accessibilityHint("Double tap to view diet plan")
+        .accessibilityIdentifier("dashboardDietCard")
         .onAppear {
             guard !hasAnimated else { return }
             hasAnimated = true
