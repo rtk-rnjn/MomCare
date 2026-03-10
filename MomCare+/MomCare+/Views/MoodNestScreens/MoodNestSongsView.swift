@@ -34,8 +34,8 @@ struct MoodNestSongsView: View {
                         .padding(.top, 20)
                         .padding(.bottom, 16)
 
-                    ForEach(songs.indices, id: \.self) { index in
-                        PlaylistTrackRow(playlist: playlist, songIndex: index)
+                    ForEach(songs) { song in
+                        PlaylistTrackRow(playlist: playlist, songIndex: songs.firstIndex(of: song)!)
                             .padding(.horizontal, 20)
 
                         Divider()

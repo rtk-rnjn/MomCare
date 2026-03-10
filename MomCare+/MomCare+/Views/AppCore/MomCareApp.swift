@@ -7,10 +7,7 @@ struct MomCareApp: App {
     // MARK: Lifecycle
 
     init() {
-        _ = MetricKitManager.shared
-
-        UIPageControl.appearance().currentPageIndicatorTintColor = UIColor.black
-        UIPageControl.appearance().pageIndicatorTintColor = UIColor.black.withAlphaComponent(0.3)
+//        _ = MetricKitManager.shared
     }
 
     // MARK: Internal
