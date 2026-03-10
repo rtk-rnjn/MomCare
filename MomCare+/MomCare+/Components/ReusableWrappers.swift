@@ -1,7 +1,6 @@
 import SwiftUI
 import UIKit
 
-
 struct InfoRow: View {
     let title: String
     let value: String

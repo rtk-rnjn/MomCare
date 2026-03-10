@@ -53,7 +53,7 @@ struct MomCareMainTabView: View {
                 .tabItem { Label(AppTab.moodNest.title, systemImage: AppTab.moodNest.systemImage) }
                 .tag(AppTab.moodNest)
                 .safeAreaPadding(bottomPadding)
-            
+
             NavigationStack { ProfileView() }
                 .tabItem { Label(AppTab.profile.title, systemImage: AppTab.profile.systemImage) }
                 .tag(AppTab.profile)

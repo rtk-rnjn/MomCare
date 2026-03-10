@@ -48,7 +48,7 @@ private let sections: [ProfileSection] = [
 
 struct ProfileView: View {
 
-    @State private var showSignOutAlert = false
+    // MARK: Internal
 
     var body: some View {
         List {
@@ -81,7 +81,7 @@ struct ProfileView: View {
                     }
                 }
             }
-            
+
         }
         .navigationTitle("Profile")
         .listStyle(.insetGrouped)
@@ -100,18 +100,11 @@ struct ProfileView: View {
         }
     }
 
-    // MARK: Row View
+    // MARK: Private
 
-    private func rowView(_ row: ProfileRow) -> some View {
+    @State private var showSignOutAlert = false
 
-        HStack(spacing: 12) {
-
-            Image(systemName: row.systemImage)
-                .foregroundStyle(Color("primaryAppColor"))
-
-            Text(row.title)
-        }
-    }
+    @EnvironmentObject private var authenticationService: AuthenticationService
 
     // MARK: Footer
 
@@ -130,6 +123,19 @@ struct ProfileView: View {
         .multilineTextAlignment(.center)
         .padding(.vertical, 8)
         .listRowBackground(Color.clear)
+    }
+
+    // MARK: Row View
+
+    private func rowView(_ row: ProfileRow) -> some View {
+
+        HStack(spacing: 12) {
+
+            Image(systemName: row.systemImage)
+                .foregroundStyle(Color("primaryAppColor"))
+
+            Text(row.title)
+        }
     }
 
     // MARK: Navigation
@@ -170,6 +176,5 @@ struct ProfileView: View {
              await authenticationService.logout()
         }
     }
-    
-    @EnvironmentObject private var authenticationService: AuthenticationService
+
 }
