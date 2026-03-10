@@ -52,6 +52,7 @@ struct TriTrackSymptomsContentView: View {
             Image(systemName: "heart.text.square")
                 .font(.system(size: 48))
                 .foregroundColor(.secondary)
+                .accessibilityHidden(true)
 
             Text("Track Your Symptoms")
                 .font(.headline)
@@ -73,6 +74,8 @@ struct TriTrackSymptomsContentView: View {
                 TriTrackAddSymptomSheetView()
             }
             .disabled(!Calendar.current.isDate(selectedDate, inSameDayAs: Date()))
+            .accessibilityLabel("Log symptom")
+            .accessibilityHint("Opens a form to log a new symptom for today")
         }
     }
 
@@ -116,6 +119,7 @@ struct SymptomRow: View {
             Image(systemName: "heart.text.square")
                 .font(.system(size: 24))
                 .foregroundColor(.secondary)
+                .accessibilityHidden(true)
 
             VStack(alignment: .leading, spacing: 4) {
                 Text(symptom.title ?? "Untitled Symptom")
@@ -136,6 +140,8 @@ struct SymptomRow: View {
                     .font(.title3)
                     .foregroundColor(.secondary)
             }
+            .accessibilityLabel("View details for \(symptom.title ?? "symptom")")
+            .frame(minWidth: 44, minHeight: 44)
         }
         .padding()
         .background(
@@ -157,5 +163,12 @@ struct SymptomRow: View {
                 Label("Delete", systemImage: "trash")
             }
         }
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(symptom.title ?? "Symptom")
+        .accessibilityValue(symptom.notes.flatMap { $0.isEmpty ? nil : $0 } ?? "No notes")
+        .accessibilityHint("Double tap to view details, long press for more options")
+        .accessibilityAddTraits(.isButton)
+        .accessibilityAction(named: "View Details") { onInfo() }
+        .accessibilityAction(named: "Delete") { onDelete() }
     }
 }

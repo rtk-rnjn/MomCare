@@ -37,6 +37,7 @@ struct TriTrackCalendarItemContentView: View {
                 Image(systemName: "calendar.badge.plus")
                     .font(.system(size: 48))
                     .foregroundColor(.secondary)
+                    .accessibilityHidden(true)
 
                 Text("No Events Scheduled")
                     .font(.headline)
@@ -54,6 +55,8 @@ struct TriTrackCalendarItemContentView: View {
                 }
                 .buttonStyle(.borderedProminent)
                 .tint(Color.CustomColors.mutedRaspberry)
+                .accessibilityLabel("Add event")
+                .accessibilityHint("Opens a form to add a new event or appointment")
             } else {
                 LazyVStack {
                     ForEach(eventKitHandler.events, id: \.calendarItemIdentifier) { event in
@@ -179,6 +182,7 @@ struct AppointmentRow: View {
                         Color(.systemGray6))
             )
             .foregroundColor(isToday ? .white : .primary)
+            .accessibilityHidden(true)
 
             // Title + Time
             VStack(alignment: .leading, spacing: 4) {
@@ -203,6 +207,7 @@ struct AppointmentRow: View {
 
             Image(systemName: "chevron.right")
                 .foregroundColor(.gray.opacity(0.6))
+                .accessibilityHidden(true)
         }
         .padding()
         .background(
@@ -210,6 +215,11 @@ struct AppointmentRow: View {
                 .fill(Color(.secondarySystemBackground))
         )
         .opacity(isPast ? 0.6 : 1)
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(event.title)
+        .accessibilityValue(event.startDate.formatted(.dateTime.weekday().day().month().hour().minute()))
+        .accessibilityHint("Double tap to view event details, long press for more options")
+        .accessibilityAddTraits(.isButton)
     }
 
     // MARK: Private
@@ -291,6 +301,7 @@ struct ReminderRow: View {
                         ? .green
                         : (isPast ? .red : .gray.opacity(0.6))
                 )
+                .accessibilityHidden(true)
         }
         .padding()
         .background(
@@ -298,6 +309,11 @@ struct ReminderRow: View {
                 .fill(Color(.secondarySystemBackground))
         )
         .opacity(reminder.isCompleted ? 0.6 : 1)
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(reminder.title)
+        .accessibilityValue(reminder.isCompleted ? "completed" : (isPast ? "overdue" : dueDate.map { $0.formatted(.dateTime.weekday().day().month().hour().minute()) } ?? "no due date"))
+        .accessibilityHint("Double tap to view reminder details, long press for more options")
+        .accessibilityAddTraits(reminder.isCompleted ? [.isButton, .isSelected] : .isButton)
     }
 
     // MARK: Private
