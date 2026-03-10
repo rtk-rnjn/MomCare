@@ -214,8 +214,12 @@ final class AuthenticationService: ObservableObject {
     }
 
     @discardableResult
-    func delete() async throws -> NetworkResponse<ServerMessage> {
-        try await NetworkManager.shared.delete(url: Endpoint.delete.urlString, headers: AuthenticationService.authorizationHeaders)
+    func delete() async throws -> NetworkResponse<Bool> {
+        let networkResponse: NetworkResponse<Bool> = try await NetworkManager.shared.delete(url: Endpoint.delete.urlString, headers: AuthenticationService.authorizationHeaders)
+        if networkResponse.success {
+            dropCredentials()
+        }
+        return networkResponse
     }
 
     func googleLogin(idToken: String, existingEmailAddress: String? = nil) async throws -> NetworkResponse<TokenPair> {
@@ -283,6 +287,7 @@ final class AuthenticationService: ObservableObject {
         database.delete(ValidDatabaseKeys.accessTokenExpiresAtTimestamp.rawValue)
 
         userModel?._id = ""
+        userModel = nil
     }
 
     private func loginWithApple(token: String) async throws -> NetworkResponse<TokenPair> {
