@@ -29,6 +29,7 @@ struct WeeklyProgressCardView: View {
                 Text("Weekly Progress")
                     .font(.headline)
                     .foregroundColor(.primary)
+                    .accessibilityAddTraits(.isHeader)
 
                 Spacer()
 
@@ -36,6 +37,7 @@ struct WeeklyProgressCardView: View {
                 Text("\(weekday)/7 days")
                     .font(.subheadline)
                     .foregroundColor(.secondary)
+                    .accessibilityHidden(true)
             }
 
             HStack(spacing: 0) {
@@ -44,6 +46,7 @@ struct WeeklyProgressCardView: View {
                         .frame(maxWidth: .infinity)
                 }
             }
+            .accessibilityElement(children: .contain)
 
             VStack(spacing: 10) {
                 HStack {
@@ -51,6 +54,7 @@ struct WeeklyProgressCardView: View {
                         Image(systemName: "target")
                             .font(.subheadline)
                             .foregroundColor(Color.CustomColors.mutedRaspberry)
+                            .accessibilityHidden(true)
 
                         Text("Total: \(completedCount)/\(totalCount)")
                             .font(.subheadline.weight(.semibold))
@@ -75,7 +79,12 @@ struct WeeklyProgressCardView: View {
                     }
                 }
                 .frame(height: 8)
+                .accessibilityHidden(true)
             }
+            .accessibilityElement(children: .ignore)
+            .accessibilityLabel("Overall progress")
+            .accessibilityValue("\(completedCount) of \(totalCount) exercises completed, \(Int(overallProgress * 100)) percent")
+            .accessibilityAddTraits(.updatesFrequently)
         }
         .padding(18)
         .background(
@@ -134,5 +143,8 @@ private struct DayRingView: View {
             }
             .frame(width: 30, height: 30)
         }
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(dayName)
+        .accessibilityValue(progress >= 1.0 ? "completed" : "\(Int(progress * 100)) percent")
     }
 }

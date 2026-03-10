@@ -29,6 +29,9 @@ struct DashboardExerciseCard: View {
         .padding(.leading, 3)
         .background(Color("secondaryAppColor"))
         .dashboardCardStyle()
+        .accessibilityElement(children: .contain)
+        .accessibilityLabel("Exercise activity")
+        .accessibilityIdentifier("dashboardExerciseCard")
         .onChange(of: healthKitHandler.userExercises) {
             Task {
                 await healthKitHandler.fetchTotalDuration()
@@ -72,6 +75,9 @@ struct DashboardExerciseCard: View {
 }
 
 struct ExerciseRow: View {
+
+    // MARK: Internal
+
     let color: Color
     let icon: String
     let value: String
@@ -85,16 +91,24 @@ struct ExerciseRow: View {
 
                 Image(systemName: icon)
                     .foregroundColor(.white)
-                    .font(.system(size: 14, weight: .bold))
+                    .font(.caption.weight(.bold))
             }
+            .accessibilityHidden(true)
 
             Text(value)
                 .font(.title3)
                 .fontWeight(.regular)
                 .contentTransition(.numericText())
-                .animation(.spring(response: 0.4, dampingFraction: 0.7), value: value)
+                .animation(reduceMotion ? nil : .spring(response: 0.4, dampingFraction: 0.7), value: value)
         }
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(value)
+        .accessibilityAddTraits(.updatesFrequently)
     }
+
+    // MARK: Private
+
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
 }
 
 struct ActivityRingView: View {
@@ -139,6 +153,10 @@ struct ActivityRingView: View {
             .onChange(of: move) { animateRings() }
             .onChange(of: exercise) { animateRings() }
             .onChange(of: stand) { animateRings() }
+            .accessibilityElement(children: .ignore)
+            .accessibilityLabel("Activity rings")
+            .accessibilityValue("Move \(Int(move * 100)) percent, Exercise \(Int(exercise * 100)) percent, Stand \(Int(stand * 100)) percent")
+            .accessibilityAddTraits(.updatesFrequently)
         }
     }
 
@@ -147,6 +165,7 @@ struct ActivityRingView: View {
     @State private var animatedMove: Double = 0
     @State private var animatedExercise: Double = 0
     @State private var animatedStand: Double = 0
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     private let ringWidth: CGFloat = 14
     private let spacing: CGFloat = 2
@@ -160,10 +179,16 @@ struct ActivityRingView: View {
     }
 
     private func animateRings() {
-        withAnimation(.easeInOut(duration: 0.9)) {
+        if reduceMotion {
             animatedMove = move
             animatedExercise = exercise
             animatedStand = stand
+        } else {
+            withAnimation(.easeInOut(duration: 0.9)) {
+                animatedMove = move
+                animatedExercise = exercise
+                animatedStand = stand
+            }
         }
     }
 

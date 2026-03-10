@@ -9,7 +9,6 @@ struct MomCareMainTabView: View {
     var body: some View {
         tabViewContent(bottomPadding: 0)
             .tint(MomCareAccent.primary)
-            .preferredColorScheme(.light)
     }
 
     func fetchDailyInsights() async {

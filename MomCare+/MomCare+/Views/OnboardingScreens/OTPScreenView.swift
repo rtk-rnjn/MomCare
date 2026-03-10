@@ -116,6 +116,7 @@ struct OTPScreenView: View {
                     )
                 }
             }
+            .accessibilityHidden(true)
 
             hiddenOTPTextField
         }
@@ -128,6 +129,11 @@ struct OTPScreenView: View {
                 isFieldFocused = true
             }
         }
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel("Verification code input")
+        .accessibilityValue("\(otpString.count) of \(otpLength) digits entered")
+        .accessibilityHint("Tap to enter your \(otpLength)-digit verification code")
+        .accessibilityAddTraits(.isButton)
     }
 
     private var hiddenOTPTextField: some View {
@@ -159,6 +165,9 @@ struct OTPScreenView: View {
         .tint(MomCareAccent.primary)
         .controlSize(.large)
         .disabled(otpString.count != otpLength)
+        .accessibilityLabel("Verify code")
+        .accessibilityHint("Verifies the 6-digit code you entered")
+        .accessibilityIdentifier("verifyButton")
         .navigationDestination(isPresented: $navigate) {
             switch destination {
             case .mainApp:
@@ -189,12 +198,15 @@ struct OTPScreenView: View {
             Text(
                 resendTimer > 0
                     ? "Resend in \(resendTimer)s"
-                    : "Didn’t receive a code?"
+                    : "Didn't receive a code?"
             )
         }
         .foregroundStyle(resendTimer > 0 ? .secondary : Color("primaryAppColor"))
         .disabled(resendTimer > 0)
         .padding(.top, 8)
+        .accessibilityLabel(resendTimer > 0 ? "Resend code in \(resendTimer) seconds" : "Resend code")
+        .accessibilityHint(resendTimer > 0 ? "Please wait before requesting another code" : "Sends a new verification code to your email")
+        .accessibilityIdentifier("resendButton")
     }
 
     private func showVerificationError(message: String?) {

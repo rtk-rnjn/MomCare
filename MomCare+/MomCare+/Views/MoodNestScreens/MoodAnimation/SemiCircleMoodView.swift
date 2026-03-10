@@ -1,6 +1,9 @@
 import SwiftUI
 
 struct SemiCircleMoodView: View {
+
+    // MARK: Internal
+
     let moodValue: Double
 
     var body: some View {
@@ -17,8 +20,12 @@ struct SemiCircleMoodView: View {
                     style: StrokeStyle(lineWidth: 20, lineCap: .round)
                 )
                 .rotationEffect(.degrees(180))
-                .animation(.easeInOut(duration: 0.4), value: moodValue)
+                .animation(reduceMotion ? nil : .easeInOut(duration: 0.4), value: moodValue)
         }
         .padding(40)
     }
+
+    // MARK: Private
+
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
 }

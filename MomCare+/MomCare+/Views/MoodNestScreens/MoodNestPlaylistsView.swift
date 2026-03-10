@@ -60,10 +60,12 @@ struct MoodNestPlaylistsView: View {
 
     var captionSection: some View {
         Text(vm.caption)
-            .font(.system(size: 28, weight: .bold, design: .rounded))
+            .font(.title.weight(.bold))
             .foregroundColor(.primary)
             .lineLimit(3)
+            .fixedSize(horizontal: false, vertical: true)
             .frame(maxWidth: .infinity, alignment: .leading)
+            .accessibilityAddTraits(.isHeader)
     }
 
     var heroSection: some View {
@@ -77,8 +79,9 @@ struct MoodNestPlaylistsView: View {
     var featuredSection: some View {
         VStack(alignment: .leading, spacing: 16) {
             Text("More Playlists")
-                .font(.system(size: 20, weight: .bold, design: .rounded))
+                .font(.title3.weight(.bold))
                 .foregroundColor(.primary)
+                .accessibilityAddTraits(.isHeader)
 
             LazyVGrid(
                 columns: [
@@ -107,12 +110,14 @@ struct MoodNestPlaylistsView: View {
                             .scaledToFill()
                             .frame(width: geometry.size.width, height: geometry.size.width * 0.6)
                             .clipped()
+                            .accessibilityHidden(true)
                     } else {
                         Image(systemName: "music.quarternote.3")
                             .resizable()
                             .scaledToFill()
                             .frame(width: geometry.size.width, height: geometry.size.width * 0.6)
                             .clipped()
+                            .accessibilityHidden(true)
                     }
 
                     LinearGradient(
@@ -126,10 +131,11 @@ struct MoodNestPlaylistsView: View {
                         endPoint: .top
                     )
                     .frame(width: geometry.size.width, height: geometry.size.width * 0.6)
+                    .accessibilityHidden(true)
 
                     VStack(alignment: .leading, spacing: 16) {
                         Text(hero.name)
-                            .font(.system(size: 28, weight: .bold, design: .rounded))
+                            .font(.title.weight(.bold))
                             .foregroundColor(.white)
                             .lineLimit(2)
                             .shadow(color: .black.opacity(0.3), radius: 4, x: 0, y: 2)
@@ -140,9 +146,10 @@ struct MoodNestPlaylistsView: View {
                         } label: {
                             HStack(spacing: 8) {
                                 Image(systemName: "play.fill")
-                                    .font(.system(size: 14, weight: .bold))
+                                    .font(.caption.weight(.bold))
+                                    .accessibilityHidden(true)
                                 Text("Play Now")
-                                    .font(.system(size: 16, weight: .bold))
+                                    .font(.body.weight(.bold))
                             }
                             .foregroundColor(.black)
                             .padding(.horizontal, 24)
@@ -151,6 +158,9 @@ struct MoodNestPlaylistsView: View {
                             .clipShape(Capsule())
                             .shadow(color: .black.opacity(0.3), radius: 10, x: 0, y: 5)
                         }
+                        .accessibilityLabel("Play \(hero.name)")
+                        .accessibilityHint("Starts playing this playlist")
+                        .accessibilityIdentifier("playNowButton")
                     }
                     .padding(.horizontal, 20)
                     .padding(.bottom, 20)
@@ -166,6 +176,8 @@ struct MoodNestPlaylistsView: View {
             )
         }
         .buttonStyle(.plain)
+        .accessibilityLabel(hero.name)
+        .accessibilityHint("Opens \(hero.name) playlist")
     }
 
     // MARK: Private

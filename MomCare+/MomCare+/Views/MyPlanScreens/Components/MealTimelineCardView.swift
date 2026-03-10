@@ -117,9 +117,12 @@ private struct HeaderRow: View {
                     try? await healthKitHandler.fetchMealPlan(makeNetworkCall: false)
                 }
             }
+            .accessibilityLabel(section.isCompleted ? "Mark \(section.title) as not completed" : "Mark \(section.title) as completed")
+            .accessibilityAddTraits(.isButton)
 
             Text(section.title)
                 .font(.title3.weight(.semibold))
+                .accessibilityAddTraits(.isHeader)
 
             Spacer()
 
@@ -132,9 +135,11 @@ private struct HeaderRow: View {
 
             } label: {
                 Image(systemName: "square.and.pencil")
-                    .font(.system(size: 18))
+                    .font(.title3)
                     .foregroundColor(MomCareAccent.primary)
             }
+            .accessibilityLabel("Add food to \(section.title)")
+            .frame(minWidth: 44, minHeight: 44)
         }
         .frame(height: 66)
         .contentShape(Rectangle())
@@ -178,8 +183,11 @@ private struct ItemRow: View {
                     try? await healthKitHandler.fetchMealPlan(makeNetworkCall: false)
                 }
             }
+            .accessibilityLabel(item.isConsumed ? "Mark as not consumed" : "Mark as consumed")
+            .accessibilityAddTraits(.isButton)
 
             FoodThumbnail(foodReferenceModel: item)
+                .accessibilityHidden(true)
 
             VStack(alignment: .leading, spacing: 4) {
                 Text(food?.name.capitalized ?? "Food Item")
@@ -200,6 +208,12 @@ private struct ItemRow: View {
         .contentShape(.contextMenuPreview, RoundedRectangle(cornerRadius: 10, style: .continuous))
         .contentShape(Rectangle())
         .modifier(MealContextMenu(item: item, food: food, onToggle: onToggle, onDelete: onDelete))
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(
+            "\(food?.name.capitalized ?? "Food item"), \(item.count) serving, \(food?.calories.formattedOneDecimal ?? "")"
+        )
+        .accessibilityValue(item.isConsumed ? "consumed" : "not consumed")
+        .accessibilityHint("Long press for more options")
         .task {
             food = await item.food
         }
@@ -258,7 +272,7 @@ struct FoodThumbnail: View {
                     )
             } else {
                 Image(systemName: "carrot.fill")
-                    .font(.system(size: 18, weight: .regular))
+                    .font(.title3)
                     .foregroundColor(.secondary)
             }
         }

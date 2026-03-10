@@ -36,7 +36,3 @@ private extension NotificationsView {
         } else {}
     }
 }
-
-#Preview {
-    NotificationsView()
-}

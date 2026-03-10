@@ -36,7 +36,7 @@ struct PlaylistHeroCard: View {
 
             VStack(alignment: .leading, spacing: 4) {
                 Text(playlist.name)
-                    .font(.system(size: 28, weight: .bold, design: .rounded))
+                    .font(.title2.weight(.bold))
                     .foregroundColor(.white)
                     .lineLimit(2)
                     .shadow(color: .black.opacity(0.3), radius: 4, x: 0, y: 2)
@@ -52,6 +52,9 @@ struct PlaylistHeroCard: View {
                 .stroke(Color.white.opacity(0.1), lineWidth: 1)
         )
         .contentShape(RoundedRectangle(cornerRadius: 24, style: .continuous))
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(playlist.name)
+        .accessibilityAddTraits(.isButton)
         .task {
             uiImage = await playlist.image
         }
@@ -97,7 +100,7 @@ struct PlaylistCard: View {
             )
 
             Text(playlist.name)
-                .font(.system(size: 16, weight: .bold, design: .rounded))
+                .font(.callout.weight(.bold))
                 .foregroundColor(.white)
                 .padding(12)
                 .lineLimit(2)
@@ -111,6 +114,10 @@ struct PlaylistCard: View {
                 .stroke(Color.white.opacity(0.1), lineWidth: 1)
         )
         .contentShape(RoundedRectangle(cornerRadius: 18, style: .continuous))
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(playlist.name)
+        .accessibilityAddTraits(.isButton)
+        .accessibilityHint("Opens this playlist")
         .task {
             uiImage = await playlist.image
         }

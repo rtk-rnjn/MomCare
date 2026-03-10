@@ -51,6 +51,7 @@ struct OnboardingView: View {
                         Rectangle()
                             .frame(height: 1)
                             .foregroundStyle(.gray.opacity(0.3))
+                            .accessibilityHidden(true)
 
                         Text("OR")
                             .font(.footnote)
@@ -59,6 +60,7 @@ struct OnboardingView: View {
                         Rectangle()
                             .frame(height: 1)
                             .foregroundStyle(.gray.opacity(0.3))
+                            .accessibilityHidden(true)
                     }
                     .padding(.horizontal, 20)
 
@@ -72,6 +74,9 @@ struct OnboardingView: View {
                             .cornerRadius(14)
                     }
                     .padding(.horizontal, 20)
+                    .accessibilityLabel("Continue with Email")
+                    .accessibilityHint("Sign in using your email address and password")
+                    .accessibilityIdentifier("continueWithEmailButton")
 
                     HStack(spacing: 4) {
                         Text("Don’t have an account?")
@@ -80,7 +85,7 @@ struct OnboardingView: View {
                         NavigationLink("Sign Up") {
                             BaseSignUpView()
                         }
-                        .font(.system(size: 16, weight: .semibold))
+                        .font(.body.weight(.semibold))
                         .foregroundStyle(MomCareAccent.primary)
                     }
                     .font(.subheadline)

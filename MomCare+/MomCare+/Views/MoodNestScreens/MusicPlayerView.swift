@@ -23,6 +23,7 @@ struct MusicPlayerView: View {
                 .frame(width: UIScreen.main.bounds.width - 48, height: UIScreen.main.bounds.width - 48)
                 .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
                 .shadow(color: .black.opacity(0.4), radius: 20, x: 0, y: 10)
+                .accessibilityLabel("\(musicPlayerHandler.currentSong?.metadata?.title ?? "Song") album artwork")
 
             Spacer()
 
@@ -48,6 +49,8 @@ struct MusicPlayerView: View {
                         .foregroundColor(.white.opacity(0.6))
                         .symbolRenderingMode(.hierarchical)
                 }
+                .accessibilityLabel("Song options")
+                .frame(minWidth: 44, minHeight: 44)
             }
             .padding(.horizontal, 32)
             .padding(.bottom, 24)
@@ -58,6 +61,10 @@ struct MusicPlayerView: View {
                     set: { musicPlayerHandler.seek(by: $0) }
                 ), in: 0 ... (musicPlayerHandler.totalDuration))
                     .tint(.white.opacity(0.8))
+                    .accessibilityLabel("Playback progress")
+                    .accessibilityValue(Utils.formattedTime(musicPlayerHandler.player?.currentTime().seconds ?? 0))
+                    .accessibilityHint("Drag to seek")
+                    .accessibilityAddTraits(.updatesFrequently)
 
                 HStack {
                     Text(Utils.formattedTime(musicPlayerHandler.player?.currentTime().seconds ?? 0))
@@ -67,6 +74,7 @@ struct MusicPlayerView: View {
                 .font(.caption)
                 .foregroundColor(.white.opacity(0.5))
                 .monospacedDigit()
+                .accessibilityHidden(true)
             }
             .padding(.horizontal, 32)
             .padding(.bottom, 32)
@@ -76,27 +84,33 @@ struct MusicPlayerView: View {
                     musicPlayerHandler.skipToPrevious()
                 } label: {
                     Image(systemName: "backward.fill")
-                        .font(.system(size: 30))
+                        .font(.system(size: transportButtonSize))
                         .foregroundColor(.white)
                 }
+                .accessibilityLabel("Previous track")
+                .frame(minWidth: 44, minHeight: 44)
 
                 Button {
                     controlState.showingPopupBar = true
                     _ = musicPlayerHandler.togglePlayPause()
                 } label: {
                     Image(systemName: musicPlayerHandler.player?.timeControlStatus == .playing ? "pause.fill" : "play.fill")
-                        .font(.system(size: 56))
+                        .font(.system(size: playPauseButtonSize))
                         .foregroundColor(.white)
                         .frame(width: 56, height: 56)
                 }
+                .accessibilityLabel(musicPlayerHandler.player?.timeControlStatus == .playing ? "Pause" : "Play")
+                .accessibilityIdentifier("playPauseButton")
 
                 Button {
                     musicPlayerHandler.skipToNext()
                 } label: {
                     Image(systemName: "forward.fill")
-                        .font(.system(size: 30))
+                        .font(.system(size: transportButtonSize))
                         .foregroundColor(.white)
                 }
+                .accessibilityLabel("Next track")
+                .frame(minWidth: 44, minHeight: 44)
             }
             .animation(nil, value: musicPlayerHandler.player?.timeControlStatus == .playing)
             .padding(.bottom, 40)
@@ -105,16 +119,20 @@ struct MusicPlayerView: View {
                 HStack {
                     Image(systemName: "speaker.fill")
                         .foregroundColor(.white.opacity(0.7))
+                        .accessibilityHidden(true)
 
                     SystemVolumeSlider()
                         .frame(maxWidth: .infinity)
                         .frame(height: 30)
+                        .accessibilityLabel("Volume")
 
                     HStack(spacing: 12) {
                         Image(systemName: "speaker.wave.3.fill")
                             .foregroundColor(.white.opacity(0.7))
+                            .accessibilityHidden(true)
                         SystemRoutePicker()
                             .frame(width: 30, height: 30)
+                            .accessibilityLabel("Audio output")
                     }
                 }
             }
@@ -132,9 +150,11 @@ struct MusicPlayerView: View {
                     .blur(radius: 60)
                     .overlay(Color.black.opacity(0.3))
                     .ignoresSafeArea()
+                    .accessibilityHidden(true)
             } else {
                 Color.blue
                     .ignoresSafeArea()
+                    .accessibilityHidden(true)
             }
         }
         .task {
@@ -158,6 +178,7 @@ struct MusicPlayerView: View {
                         Image(systemName: "backward.fill")
                             .foregroundStyle(.black)
                     }
+                    .accessibilityLabel("Previous track")
 
                     Button {
                         _ = musicPlayerHandler.togglePlayPause()
@@ -165,6 +186,7 @@ struct MusicPlayerView: View {
                         Image(systemName: musicPlayerHandler.isPlaying ? "pause.fill" : "play.fill")
                             .foregroundStyle(.black)
                     }
+                    .accessibilityLabel(musicPlayerHandler.isPlaying ? "Pause" : "Play")
 
                     Button {
                         musicPlayerHandler.skipToNext()
@@ -172,6 +194,7 @@ struct MusicPlayerView: View {
                         Image(systemName: "forward.fill")
                             .foregroundStyle(.black)
                     }
+                    .accessibilityLabel("Next track")
 
                     Button {
                         controlState.showingPopup = false
@@ -181,6 +204,7 @@ struct MusicPlayerView: View {
                         Image(systemName: "x.circle.fill")
                             .foregroundStyle(.black)
                     }
+                    .accessibilityLabel("Stop and close player")
                 }
             }
         }
@@ -192,6 +216,8 @@ struct MusicPlayerView: View {
     @EnvironmentObject private var controlState: ControlState
 
     @State private var uiImage: UIImage?
+    @ScaledMetric private var transportButtonSize: CGFloat = 30
+    @ScaledMetric private var playPauseButtonSize: CGFloat = 56
 
     private var accentColor: Color {
         Color(red: 139 / 255, green: 69 / 255, blue: 87 / 255)

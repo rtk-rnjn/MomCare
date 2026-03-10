@@ -50,9 +50,9 @@ struct TriTrackSymptomsContentView: View {
     var emptyState: some View {
         VStack(spacing: 12) {
             Image(systemName: "heart.text.square")
-                .font(.system(size: 48))
+                .font(.system(size: emptyStateIconSize))
                 .foregroundColor(.secondary)
-
+                .accessibilityHidden(true)
             Text("Track Your Symptoms")
                 .font(.headline)
 
@@ -73,6 +73,8 @@ struct TriTrackSymptomsContentView: View {
                 TriTrackAddSymptomSheetView()
             }
             .disabled(!Calendar.current.isDate(selectedDate, inSameDayAs: Date()))
+            .accessibilityLabel("Log symptom")
+            .accessibilityHint("Opens a form to log a new symptom for today")
         }
     }
 
@@ -103,10 +105,14 @@ struct TriTrackSymptomsContentView: View {
 
     @State private var selectedSymptom: Symptom?
     @State private var showDetail = false
+    @ScaledMetric private var emptyStateIconSize: CGFloat = 48
 
 }
 
 struct SymptomRow: View {
+
+    // MARK: Internal
+
     let symptom: SymptomModel
     var onInfo: () -> Void
     var onDelete: () -> Void
@@ -114,8 +120,9 @@ struct SymptomRow: View {
     var body: some View {
         HStack {
             Image(systemName: "heart.text.square")
-                .font(.system(size: 24))
+                .font(.system(size: rowIconSize))
                 .foregroundColor(.secondary)
+                .accessibilityHidden(true)
 
             VStack(alignment: .leading, spacing: 4) {
                 Text(symptom.title ?? "Untitled Symptom")
@@ -136,6 +143,8 @@ struct SymptomRow: View {
                     .font(.title3)
                     .foregroundColor(.secondary)
             }
+            .accessibilityLabel("View details for \(symptom.title ?? "symptom")")
+            .frame(minWidth: 44, minHeight: 44)
         }
         .padding()
         .background(
@@ -157,5 +166,17 @@ struct SymptomRow: View {
                 Label("Delete", systemImage: "trash")
             }
         }
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(symptom.title ?? "Symptom")
+        .accessibilityValue(symptom.notes.flatMap { $0.isEmpty ? nil : $0 } ?? "No notes")
+        .accessibilityHint("Double tap to view details, long press for more options")
+        .accessibilityAddTraits(.isButton)
+        .accessibilityAction(named: "View Details") { onInfo() }
+        .accessibilityAction(named: "Delete") { onDelete() }
     }
+
+    // MARK: Private
+
+    @ScaledMetric private var rowIconSize: CGFloat = 24
+
 }

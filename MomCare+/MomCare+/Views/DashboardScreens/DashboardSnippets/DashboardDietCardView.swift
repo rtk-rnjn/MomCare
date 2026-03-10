@@ -18,6 +18,7 @@ struct DashboardDietCardView: View {
                     Image(systemName: "fork.knife")
                         .foregroundColor(.white)
                 }
+                .accessibilityHidden(true)
 
                 Text("\(Int(consumed)) / \(Int(goal)) kcal")
                     .font(.title3)
@@ -25,7 +26,7 @@ struct DashboardDietCardView: View {
                     .lineLimit(1)
                     .minimumScaleFactor(0.8)
                     .contentTransition(.numericText())
-                    .animation(.spring(response: 0.4, dampingFraction: 0.7), value: goal)
+                    .animation(reduceMotion ? nil : .spring(response: 0.4, dampingFraction: 0.7), value: goal)
             }
 
             Spacer()
@@ -47,7 +48,7 @@ struct DashboardDietCardView: View {
                                 width: geo.size.width * max(animatedProgress, 0),
                                 height: 8
                             )
-                            .animation(.easeInOut(duration: 0.9), value: abs(animatedProgress))
+                            .animation(reduceMotion ? nil : .easeInOut(duration: 0.9), value: abs(animatedProgress))
                     }
                 }
                 .frame(width: 120, height: 8)
@@ -56,6 +57,12 @@ struct DashboardDietCardView: View {
         .padding(16)
         .background(Color("secondaryAppColor"))
         .dashboardCardStyle()
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel("Calorie intake")
+        .accessibilityValue("\(Int(consumed)) of \(Int(goal)) calories consumed, \(Int(animatedProgress * 100)) percent")
+        .accessibilityAddTraits([.isButton, .updatesFrequently])
+        .accessibilityHint("Double tap to view diet plan")
+        .accessibilityIdentifier("dashboardDietCard")
         .onAppear {
             guard !hasAnimated else { return }
             hasAnimated = true
@@ -63,14 +70,22 @@ struct DashboardDietCardView: View {
             animatedProgress = 0
 
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.15) {
-                withAnimation(.easeInOut(duration: 0.9)) {
+                if reduceMotion {
                     animatedProgress = progress
+                } else {
+                    withAnimation(.easeInOut(duration: 0.9)) {
+                        animatedProgress = progress
+                    }
                 }
             }
         }
         .onChange(of: progress) { _, newValue in
-            withAnimation(.easeInOut(duration: 0.9)) {
+            if reduceMotion {
                 animatedProgress = newValue
+            } else {
+                withAnimation(.easeInOut(duration: 0.9)) {
+                    animatedProgress = newValue
+                }
             }
         }
     }
@@ -79,6 +94,7 @@ struct DashboardDietCardView: View {
 
     @State private var animatedProgress: Double = 0
     @State private var hasAnimated = false
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     private var progress: Double {
         guard goal > 0 else { return 0 }
@@ -86,8 +102,12 @@ struct DashboardDietCardView: View {
     }
 
     private func animate() {
-        withAnimation(.easeInOut(duration: 0.8)) {
+        if reduceMotion {
             animatedProgress = progress
+        } else {
+            withAnimation(.easeInOut(duration: 0.8)) {
+                animatedProgress = progress
+            }
         }
     }
 }
