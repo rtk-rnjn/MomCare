@@ -69,6 +69,8 @@ private extension BaseInfoSheetLayout {
                     .padding(8)
                     .background(Circle().fill(Color(.systemGray6)))
             }
+            .accessibilityLabel("Close")
+            .frame(minWidth: 44, minHeight: 44)
         }
         .padding(20)
     }
@@ -77,6 +79,7 @@ private extension BaseInfoSheetLayout {
         VStack(alignment: .leading, spacing: 8) {
             Text("About")
                 .font(.subheadline.weight(.semibold))
+                .accessibilityAddTraits(.isHeader)
 
             Text(description)
                 .font(.subheadline)
@@ -97,6 +100,7 @@ private extension BaseInfoSheetLayout {
         VStack(alignment: .leading, spacing: 10) {
             Text("Benefits")
                 .font(.subheadline.weight(.semibold))
+                .accessibilityAddTraits(.isHeader)
 
             LazyVGrid(
                 columns: [GridItem(.flexible(), spacing: 8),
@@ -219,6 +223,7 @@ private struct StatItem: View {
             Image(systemName: icon)
                 .font(.subheadline)
                 .foregroundColor(accentColor)
+                .accessibilityHidden(true)
 
             Text(value)
                 .font(.caption2.weight(.medium))
@@ -227,5 +232,7 @@ private struct StatItem: View {
                 .lineLimit(2)
         }
         .frame(maxWidth: .infinity)
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(value)
     }
 }

@@ -23,6 +23,7 @@ struct TriTrackSymptomDetailView: View {
                         .font(.largeTitle)
                         .fontWeight(.bold)
                         .foregroundColor(.black)
+                        .accessibilityAddTraits(.isHeader)
 
                     HStack {
                         ForEach(symptom.trimesters, id: \.self) { trimester in
@@ -34,6 +35,8 @@ struct TriTrackSymptomDetailView: View {
                                 .clipShape(Capsule())
                         }
                     }
+                    .accessibilityElement(children: .combine)
+                    .accessibilityLabel("Trimesters: \(symptom.trimesters.joined(separator: ", "))")
                 }
 
                 ForEach(topInfoSections) { section in
@@ -60,6 +63,7 @@ struct TriTrackSymptomDetailView: View {
                                 Image(systemName: "circle.fill")
                                     .font(.system(size: 6))
                                     .foregroundColor(accentColor)
+                                    .accessibilityHidden(true)
                                 Text(remedy)
                             }
                         }
@@ -109,7 +113,9 @@ struct SymptomSectionView: View {
         VStack(alignment: .leading, spacing: 8) {
             HStack(spacing: 10) {
                 Image(systemName: iconName).foregroundColor(color)
+                    .accessibilityHidden(true)
                 Text(title).foregroundColor(.black)
+                    .accessibilityAddTraits(.isHeader)
             }.font(.headline)
 
             Text(LocalizedStringKey(content))

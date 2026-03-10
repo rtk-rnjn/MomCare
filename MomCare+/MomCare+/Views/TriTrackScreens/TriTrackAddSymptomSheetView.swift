@@ -19,6 +19,7 @@ struct TriTrackAddSymptomSheetView: View {
                         HStack {
                             Image(systemName: "cross.case.fill")
                                 .foregroundStyle(.pink)
+                                .accessibilityHidden(true)
 
                             Text(selectedSymptom?.name ?? "Select Symptom")
                                 .foregroundStyle(
@@ -30,8 +31,12 @@ struct TriTrackAddSymptomSheetView: View {
                             Image(systemName: "chevron.right")
                                 .font(.footnote)
                                 .foregroundStyle(.secondary)
+                                .accessibilityHidden(true)
                         }
                     }
+                    .accessibilityLabel(selectedSymptom != nil ? "Selected symptom: \(selectedSymptom!.name)" : "Select symptom")
+                    .accessibilityHint("Opens symptom picker")
+                    .accessibilityIdentifier("selectSymptomButton")
                 }
 
                 // MARK: Details
@@ -75,6 +80,9 @@ struct TriTrackAddSymptomSheetView: View {
                             .frame(maxWidth: .infinity)
                     }
                     .disabled(title.isEmpty)
+                    .accessibilityLabel("Save symptom")
+                    .accessibilityHint("Saves the symptom entry to your log")
+                    .accessibilityIdentifier("saveSymptomButton")
                 }
             }
             .navigationTitle("New Symptom")

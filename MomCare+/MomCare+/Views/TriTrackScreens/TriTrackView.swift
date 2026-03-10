@@ -54,6 +54,8 @@ struct TriTrackView: View {
                         .foregroundColor(Color.CustomColors.mutedRaspberry)
                         .symbolEffect(.bounce, value: controlState.showingExpandedCalendar)
                 }
+                .accessibilityLabel(controlState.showingExpandedCalendar ? "Collapse calendar" : "Expand calendar")
+                .accessibilityIdentifier("expandCalendarButton")
 
                 switch controlState.triTrackSegment {
                 case .meAndBaby:
@@ -67,6 +69,8 @@ struct TriTrackView: View {
                             .foregroundColor(Color.CustomColors.mutedRaspberry)
                             .transition(.scale.combined(with: .opacity))
                     }
+                    .accessibilityLabel("Add event")
+                    .accessibilityIdentifier("addEventButton")
 
                 case .symptoms:
                     Button {
@@ -77,6 +81,8 @@ struct TriTrackView: View {
                             .foregroundColor(Color.CustomColors.mutedRaspberry)
                             .transition(.scale.combined(with: .opacity))
                     }
+                    .accessibilityLabel("Add symptom")
+                    .accessibilityIdentifier("addSymptomButton")
                 }
             }
         }
@@ -148,6 +154,7 @@ struct TriTrackView: View {
             .pickerStyle(.segmented)
             .padding(.horizontal, 16)
             .padding(.top, 16)
+            .accessibilityLabel("TriTrack section")
 
             ScrollView(.vertical, showsIndicators: false) {
                 tabContent
@@ -193,12 +200,16 @@ struct PregnancyProgressView: View {
                 Text(pregnancyData.trimester)
                     .font(.title3)
                     .fontWeight(.semibold)
+                    .accessibilityAddTraits(.isHeader)
 
                 Text("Week \(pregnancyData.week) - Day \(pregnancyData.day)")
                     .font(.title)
                     .fontWeight(.bold)
                     .foregroundColor(.CustomColors.mutedRaspberry)
             }
+            .accessibilityElement(children: .ignore)
+            .accessibilityLabel("\(pregnancyData.trimester), Week \(pregnancyData.week), Day \(pregnancyData.day)")
+            .accessibilityAddTraits(.isHeader)
 
             VStack(spacing: 16) {
                 sizeComparisonView
@@ -246,6 +257,7 @@ struct PregnancyProgressView: View {
                 HStack {
                     Image(systemName: "ruler")
                         .font(.system(size: 22))
+                        .accessibilityHidden(true)
 
                     Text("Height")
                         .font(.headline)
@@ -269,11 +281,19 @@ struct PregnancyProgressView: View {
                     StitchingBorder(cornerRadius: 16, color: .CustomColors.mutedRaspberry)
                 }
             )
+            .accessibilityElement(children: .ignore)
+            .accessibilityLabel("Baby height")
+            .accessibilityValue(
+                trimesterData.babyHeight.map { h in
+                    h.formatted(.measurement(width: .abbreviated, usage: .asProvided, numberFormatStyle: .number.precision(.fractionLength(2))))
+                } ?? "Not available"
+            )
 
             VStack(spacing: 8) {
                 HStack {
                     Image(systemName: "scalemass")
                         .font(.system(size: 22))
+                        .accessibilityHidden(true)
 
                     Text("Weight")
                         .font(.headline)
@@ -296,6 +316,13 @@ struct PregnancyProgressView: View {
 
                     StitchingBorder(cornerRadius: 16, color: .CustomColors.mutedRaspberry)
                 }
+            )
+            .accessibilityElement(children: .ignore)
+            .accessibilityLabel("Baby weight")
+            .accessibilityValue(
+                trimesterData.babyWeight.map { w in
+                    w.formatted(.measurement(width: .abbreviated, usage: .personWeight, numberFormatStyle: .number.precision(.fractionLength(2))))
+                } ?? "Not available"
             )
         }
     }
@@ -387,11 +414,13 @@ struct ComparisonView: View {
                     .font(.system(size: 64))
             }
             .frame(maxWidth: .infinity)
+            .accessibilityHidden(true)
 
             Image(systemName: "arrow.right")
                 .font(.system(size: 24, weight: .bold))
                 .foregroundColor(.secondary)
                 .frame(width: 40)
+                .accessibilityHidden(true)
 
             VStack(alignment: .center) {
                 ZStack {
@@ -409,9 +438,12 @@ struct ComparisonView: View {
                 }
             }
             .frame(maxWidth: .infinity)
+            .accessibilityHidden(true)
         }
         .frame(height: 110)
         .padding(.vertical, 10)
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel("Baby size comparison: \(trimesterData.fruitComparison)")
     }
 
     // MARK: Private

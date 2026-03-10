@@ -119,6 +119,11 @@ struct ProgressRingView: View {
                 showPercentage.toggle()
             }
         }
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel("Calorie intake")
+        .accessibilityValue(showPercentage ? "\(percentage) percent" : "\(Int(consumed)) of \(Int(target)) calories")
+        .accessibilityHint("Double tap to toggle percentage view")
+        .accessibilityAddTraits([.isButton, .updatesFrequently])
     }
 
     // MARK: Private
@@ -199,6 +204,11 @@ struct MacroBarRow: View {
                 showPercentage.toggle()
             }
         }
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(title)
+        .accessibilityValue(showPercentage ? percentageText : "\(consumed?.formattedOneDecimal ?? "-") of \(target?.formattedOneDecimal ?? "-")")
+        .accessibilityHint("Double tap to toggle percentage view")
+        .accessibilityAddTraits([.isButton, .updatesFrequently])
     }
 
     // MARK: Private
