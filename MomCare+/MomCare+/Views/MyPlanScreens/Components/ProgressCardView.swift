@@ -82,7 +82,7 @@ struct ProgressRingView: View {
                     style: StrokeStyle(lineWidth: 14, lineCap: .round)
                 )
                 .rotationEffect(.degrees(-90))
-                .animation(.linear(duration: 0.5), value: progress)
+                .animation(reduceMotion ? nil : .linear(duration: 0.5), value: progress)
 
             VStack(spacing: 2) {
                 Group {
@@ -90,13 +90,13 @@ struct ProgressRingView: View {
                         Text("\(percentage)%")
                             .contentTransition(.numericText())
                             .transition(.opacity.combined(with: .scale))
-                            .animation(.spring(response: 0.4, dampingFraction: 0.7), value: percentage)
-                            .font(.system(size: 24, weight: .bold, design: .default))
+                            .animation(reduceMotion ? nil : .spring(response: 0.4, dampingFraction: 0.7), value: percentage)
+                            .font(.title2.weight(.bold))
                     } else {
                         HStack(spacing: 2) {
                             Text(Int(consumed), format: .number)
                                 .contentTransition(.numericText())
-                                .animation(.spring(response: 0.4, dampingFraction: 0.7), value: Int(consumed))
+                                .animation(reduceMotion ? nil : .spring(response: 0.4, dampingFraction: 0.7), value: Int(consumed))
 
                             Text("/")
 
@@ -115,7 +115,7 @@ struct ProgressRingView: View {
         .frame(width: 110, height: 110)
         .contentShape(Rectangle())
         .onTapGesture {
-            withAnimation(.spring(response: 0.4, dampingFraction: 0.8)) {
+            withAnimation(reduceMotion ? nil : .spring(response: 0.4, dampingFraction: 0.8)) {
                 showPercentage.toggle()
             }
         }
@@ -129,6 +129,7 @@ struct ProgressRingView: View {
     // MARK: Private
 
     @State private var showPercentage = false
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     private var percentage: Int {
         guard target > 0 else { return 0 }
@@ -182,7 +183,7 @@ struct MacroBarRow: View {
                 }
                 .font(.caption)
                 .foregroundColor(.primary)
-                .animation(.spring(response: 0.4, dampingFraction: 0.8), value: showPercentage)
+                .animation(reduceMotion ? nil : .spring(response: 0.4, dampingFraction: 0.8), value: showPercentage)
             }
 
             GeometryReader { geo in
@@ -193,14 +194,14 @@ struct MacroBarRow: View {
                     Capsule()
                         .fill(color)
                         .frame(width: geo.size.width * progress)
-                        .animation(.easeInOut(duration: 0.4), value: progress)
+                        .animation(reduceMotion ? nil : .easeInOut(duration: 0.4), value: progress)
                 }
             }
             .frame(height: 14)
         }
         .contentShape(Rectangle())
         .onTapGesture {
-            withAnimation(.spring(response: 0.4, dampingFraction: 0.8)) {
+            withAnimation(reduceMotion ? nil : .spring(response: 0.4, dampingFraction: 0.8)) {
                 showPercentage.toggle()
             }
         }
@@ -214,6 +215,7 @@ struct MacroBarRow: View {
     // MARK: Private
 
     @State private var showPercentage = false
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     // MARK: - Computed
 

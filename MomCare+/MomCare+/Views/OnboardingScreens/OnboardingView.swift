@@ -85,7 +85,7 @@ struct OnboardingView: View {
                         NavigationLink("Sign Up") {
                             BaseSignUpView()
                         }
-                        .font(.system(size: 16, weight: .semibold))
+                        .font(.body.weight(.semibold))
                         .foregroundStyle(MomCareAccent.primary)
                     }
                     .font(.subheadline)

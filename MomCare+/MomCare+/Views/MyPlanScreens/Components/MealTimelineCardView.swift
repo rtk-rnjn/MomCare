@@ -135,7 +135,7 @@ private struct HeaderRow: View {
 
             } label: {
                 Image(systemName: "square.and.pencil")
-                    .font(.system(size: 18))
+                    .font(.title3)
                     .foregroundColor(MomCareAccent.primary)
             }
             .accessibilityLabel("Add food to \(section.title)")
@@ -272,7 +272,7 @@ struct FoodThumbnail: View {
                     )
             } else {
                 Image(systemName: "carrot.fill")
-                    .font(.system(size: 18, weight: .regular))
+                    .font(.title3)
                     .foregroundColor(.secondary)
             }
         }

@@ -61,7 +61,7 @@ struct WalkingCardView: View {
                     Capsule()
                         .fill(Color(hex: "4A8A62"))
                         .frame(width: geo.size.width * progress)
-                        .animation(.easeInOut(duration: 0.8), value: progress)
+                        .animation(reduceMotion ? nil : .easeInOut(duration: 0.8), value: progress)
                 }
             }
             .frame(height: 8)
@@ -93,5 +93,6 @@ struct WalkingCardView: View {
     @EnvironmentObject private var healthKitHandler: HealthKitHandler
     @State private var progress: Double = 0
     @State private var percentCompleted: Int = 0
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
 }

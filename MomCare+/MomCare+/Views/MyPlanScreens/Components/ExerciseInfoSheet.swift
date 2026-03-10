@@ -151,7 +151,7 @@ struct ExerciseInfoSheet: View {
                     .scaledToFit()
             } else {
                 Image(systemName: "figure.strengthtraining.traditional")
-                    .font(.system(size: 24))
+                    .font(.title2)
                     .foregroundColor(accentColor)
             }
         }
@@ -191,7 +191,7 @@ struct BreathingInfoSheet: View {
             onClose: { isPresented = false }
         ) {
             Image(systemName: "lungs.fill")
-                .font(.system(size: 24))
+                .font(.title2)
                 .foregroundColor(accentColor)
         }
     }

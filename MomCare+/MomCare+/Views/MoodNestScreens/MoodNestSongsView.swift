@@ -99,13 +99,13 @@ struct MoodNestSongsView: View {
 
             VStack(alignment: .leading, spacing: 8) {
                 Text(playlist.name)
-                    .font(.system(size: 24, weight: .bold, design: .rounded))
+                    .font(.title2.weight(.bold))
                     .foregroundColor(.white)
                     .lineLimit(2)
                     .shadow(color: .black.opacity(0.3), radius: 2, x: 0, y: 1)
 
                 Text("\(songs.count) songs • \(totalDuration)")
-                    .font(.system(size: 16))
+                    .font(.body)
                     .foregroundColor(.white.opacity(0.85))
                     .shadow(color: .black.opacity(0.3), radius: 2, x: 0, y: 1)
             }
@@ -133,10 +133,10 @@ struct MoodNestSongsView: View {
         } label: {
             HStack(spacing: 8) {
                 Image(systemName: "play.fill")
-                    .font(.system(size: 15, weight: .semibold))
+                    .font(.subheadline.weight(.semibold))
                     .accessibilityHidden(true)
                 Text("Play")
-                    .font(.system(size: 16, weight: .semibold))
+                    .font(.body.weight(.semibold))
             }
             .frame(maxWidth: .infinity)
             .padding(.vertical, 14)
@@ -155,10 +155,10 @@ struct MoodNestSongsView: View {
         } label: {
             HStack(spacing: 8) {
                 Image(systemName: "shuffle")
-                    .font(.system(size: 15, weight: .semibold))
+                    .font(.subheadline.weight(.semibold))
                     .accessibilityHidden(true)
                 Text("Shuffle")
-                    .font(.system(size: 16, weight: .semibold))
+                    .font(.body.weight(.semibold))
             }
             .frame(maxWidth: .infinity)
             .padding(.vertical, 14)
@@ -181,8 +181,11 @@ struct MoodNestSongsView: View {
     @EnvironmentObject private var musicKitHandler: MusicPlayerHandler
 
     @State private var uiImage: UIImage?
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
-    private var animation: Animation = .easeIn(duration: 0.25)
+    private var animation: Animation {
+        reduceMotion ? .default : .easeIn(duration: 0.25)
+    }
 
     private var songs: [SongModel] {
         playlist.songs
@@ -244,12 +247,12 @@ struct PlaylistTrackRow: View {
 
                 VStack(alignment: .leading, spacing: 3) {
                     Text(songModel.metadata?.title ?? songModel.songName)
-                        .font(.system(size: 16, weight: musicKitHandler.currentSong == songModel ? .bold : .regular))
+                        .font(.body.weight(musicKitHandler.currentSong == songModel ? .bold : .regular))
                         .foregroundStyle(Color.white)
                         .lineLimit(1)
 
                     Text(songModel.metadata?.author ?? "Unknown Artist")
-                        .font(.system(size: 14))
+                        .font(.subheadline)
                         .foregroundStyle(Color.white.opacity(0.7))
                         .lineLimit(1)
                 }
@@ -257,13 +260,13 @@ struct PlaylistTrackRow: View {
                 Spacer()
 
                 Text(Utils.formattedTime(songModel.metadata?.duration ?? 0))
-                    .font(.system(size: 14))
+                    .font(.subheadline)
                     .foregroundStyle(Color.white.opacity(0.6))
                     .monospacedDigit()
 
                 Button {} label: {
                     Image(systemName: "ellipsis")
-                        .font(.system(size: 16))
+                        .font(.body)
                         .foregroundStyle(Color.white.opacity(0.6))
                         .frame(width: 32, height: 32)
                 }
@@ -300,7 +303,7 @@ struct PlaylistTrackRow: View {
     private var nowPlayingIndicator: some View {
         if #available(iOS 17.0, *) {
             Image(systemName: musicKitHandler.isPlaying ? "waveform" : "pause.fill")
-                .font(.system(size: 16, weight: .semibold))
+                .font(.body.weight(.semibold))
                 .foregroundColor(.white)
                 .symbolEffect(
                     .variableColor.iterative,
@@ -309,7 +312,7 @@ struct PlaylistTrackRow: View {
                 )
         } else {
             Image(systemName: musicKitHandler.isPlaying ? "waveform" : "pause.fill")
-                .font(.system(size: 16, weight: .semibold))
+                .font(.body.weight(.semibold))
                 .foregroundColor(.white)
         }
     }

@@ -30,7 +30,7 @@ struct DashboardWeekCardView: View {
 
                 HStack {
                     Text("Trimester \(authenticationService.userModel?.pregnancyProgress.trimester ?? "-")")
-                        .font(.system(size: 18, weight: .semibold))
+                        .font(.title3.weight(.semibold))
                         .lineLimit(1)
                         .minimumScaleFactor(0.85)
                         .padding(.leading, 16)
@@ -44,7 +44,7 @@ struct DashboardWeekCardView: View {
 
                         Image(systemName: "calendar")
                             .foregroundColor(.primary)
-                            .font(.system(size: 21, weight: .regular))
+                            .font(.title3)
                     }
                     .accessibilityHidden(true)
                     .padding(.trailing, 12)

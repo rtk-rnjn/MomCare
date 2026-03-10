@@ -105,7 +105,7 @@ private extension BreathingCardView {
                 .fill(accentColor.opacity(0.25))
 
             Image(systemName: "lungs.fill")
-                .font(.system(size: 30))
+                .font(.title)
                 .foregroundColor(darkAccentColor)
         }
         .frame(width: 80, height: 80)

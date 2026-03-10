@@ -35,7 +35,7 @@ struct TriTrackCalendarItemContentView: View {
         VStack(spacing: 16) {
             if eventKitHandler.events.isEmpty {
                 Image(systemName: "calendar.badge.plus")
-                    .font(.system(size: 48))
+                    .font(.system(size: emptyStateIconSize))
                     .foregroundColor(.secondary)
                     .accessibilityHidden(true)
 
@@ -90,7 +90,7 @@ struct TriTrackCalendarItemContentView: View {
                             }
                     }
                 }
-                .animation(.spring(response: 0.4, dampingFraction: 0.8), value: eventKitHandler.events)
+                .animation(reduceMotion ? nil : .spring(response: 0.4, dampingFraction: 0.8), value: eventKitHandler.events)
             }
         }
         .frame(maxWidth: .infinity)
@@ -153,6 +153,8 @@ struct TriTrackCalendarItemContentView: View {
 
     @EnvironmentObject private var eventKitHandler: EventKitHandler
     @EnvironmentObject private var controlState: ControlState
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @ScaledMetric private var emptyStateIconSize: CGFloat = 48
 
     @State private var selectedEvent: EKCalendarItemWrapper?
     @State private var selectedReminder: EKCalendarItemWrapper?
@@ -357,9 +359,10 @@ struct TriTrackEventDetailsContextView: View {
 
             HStack(alignment: .top, spacing: 14) {
                 Image(systemName: "calendar")
-                    .font(.system(size: 20, weight: .semibold))
+                    .font(.title3.weight(.semibold))
                     .foregroundColor(MomCareAccent.primary)
                     .frame(width: 28)
+                    .accessibilityHidden(true)
 
                 VStack(alignment: .leading, spacing: 4) {
                     Text(event?.title ?? "No Title")
@@ -380,9 +383,10 @@ struct TriTrackEventDetailsContextView: View {
 
             HStack(alignment: .top, spacing: 14) {
                 Image(systemName: "clock")
-                    .font(.system(size: 18, weight: .medium))
+                    .font(.body.weight(.medium))
                     .foregroundColor(.orange)
                     .frame(width: 28)
+                    .accessibilityHidden(true)
 
                 VStack(alignment: .leading, spacing: 4) {
                     if Calendar.current.isDate(startDate, inSameDayAs: endDate) {
@@ -461,13 +465,14 @@ struct TriTrackReminderDetailsContextView: View {
 
             HStack(alignment: .top, spacing: 14) {
                 Image(systemName: isCompleted ? "checkmark.circle.fill" : "list.bullet.circle")
-                    .font(.system(size: 20, weight: .semibold))
+                    .font(.title3.weight(.semibold))
                     .foregroundColor(
                         isCompleted ? .green :
                             isOverdue ? .red :
                             MomCareAccent.primary
                     )
                     .frame(width: 28)
+                    .accessibilityHidden(true)
 
                 VStack(alignment: .leading, spacing: 6) {
                     Text(reminder?.title ?? "No Title")
@@ -493,9 +498,10 @@ struct TriTrackReminderDetailsContextView: View {
 
             HStack(alignment: .top, spacing: 14) {
                 Image(systemName: "clock")
-                    .font(.system(size: 18, weight: .medium))
+                    .font(.body.weight(.medium))
                     .foregroundColor(.orange)
                     .frame(width: 28)
+                    .accessibilityHidden(true)
 
                 VStack(alignment: .leading, spacing: 4) {
                     if let dueDate {
@@ -587,12 +593,13 @@ struct EKReminderView: View {
                 Section {
                     HStack(spacing: 14) {
                         Image(systemName: isCompleted ? "checkmark.circle.fill" : "circle")
-                            .font(.system(size: 24))
+                            .font(.title2)
                             .foregroundColor(
                                 isCompleted ? .green :
                                     isOverdue ? .red :
                                     .accentColor
                             )
+                            .accessibilityHidden(true)
 
                         VStack(alignment: .leading, spacing: 4) {
                             Text(reminder.title)

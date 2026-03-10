@@ -88,7 +88,7 @@ struct ExerciseRow: View {
 
                 Image(systemName: icon)
                     .foregroundColor(.white)
-                    .font(.system(size: 14, weight: .bold))
+                    .font(.caption.weight(.bold))
             }
             .accessibilityHidden(true)
 
@@ -96,12 +96,14 @@ struct ExerciseRow: View {
                 .font(.title3)
                 .fontWeight(.regular)
                 .contentTransition(.numericText())
-                .animation(.spring(response: 0.4, dampingFraction: 0.7), value: value)
+                .animation(reduceMotion ? nil : .spring(response: 0.4, dampingFraction: 0.7), value: value)
         }
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(value)
         .accessibilityAddTraits(.updatesFrequently)
     }
+
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
 }
 
 struct ActivityRingView: View {
@@ -158,6 +160,7 @@ struct ActivityRingView: View {
     @State private var animatedMove: Double = 0
     @State private var animatedExercise: Double = 0
     @State private var animatedStand: Double = 0
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     private let ringWidth: CGFloat = 14
     private let spacing: CGFloat = 2
@@ -171,10 +174,16 @@ struct ActivityRingView: View {
     }
 
     private func animateRings() {
-        withAnimation(.easeInOut(duration: 0.9)) {
+        if reduceMotion {
             animatedMove = move
             animatedExercise = exercise
             animatedStand = stand
+        } else {
+            withAnimation(.easeInOut(duration: 0.9)) {
+                animatedMove = move
+                animatedExercise = exercise
+                animatedStand = stand
+            }
         }
     }
 

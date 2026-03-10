@@ -139,7 +139,7 @@ private extension ExerciseCardView {
                     .clipShape(RoundedRectangle(cornerRadius: 18))
             } else {
                 Image(systemName: "figure.strengthtraining.traditional")
-                    .font(.system(size: 30))
+                    .font(.title)
                     .foregroundColor(darkAccentColor)
             }
         }

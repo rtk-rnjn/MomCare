@@ -14,7 +14,7 @@ struct MoodNestView: View {
                     Spacer(minLength: 30)
 
                     Text("How are you feeling right now?")
-                        .font(.system(size: 29, weight: .semibold))
+                        .font(.title2.weight(.semibold))
                         .multilineTextAlignment(.center)
                         .lineLimit(2)
                         .fixedSize(horizontal: false, vertical: true)
@@ -35,8 +35,12 @@ struct MoodNestView: View {
 
                     Slider(value: $vm.sliderValue, in: 0 ... 3, step: 1)
                         .onChange(of: vm.sliderValue) {
-                            withAnimation(.easeInOut(duration: 0.4)) {
+                            if reduceMotion {
                                 vm.updateMood()
+                            } else {
+                                withAnimation(.easeInOut(duration: 0.4)) {
+                                    vm.updateMood()
+                                }
                             }
                         }
                         .padding(.horizontal, 40)
@@ -79,4 +83,5 @@ struct MoodNestView: View {
 
     @StateObject private var vm: MoodNestViewModel = .init()
     @EnvironmentObject private var controlState: ControlState
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
 }

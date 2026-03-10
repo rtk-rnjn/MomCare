@@ -90,6 +90,7 @@ struct BreathingExerciseView: View {
 
     @EnvironmentObject private var healthKitHandler: HealthKitHandler
     @Environment(\.dismiss) private var dismiss
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     @State private var phase: BreathingPhase = .ready
     @State private var phaseCountdown: Int = 3
@@ -199,7 +200,7 @@ struct BreathingExerciseView: View {
                 )
                 .frame(width: 220, height: 220)
                 .rotationEffect(.degrees(-90))
-                .animation(.linear(duration: 0.5), value: progress)
+                .animation(reduceMotion ? nil : .linear(duration: 0.5), value: progress)
 
             Circle()
                 .fill(
@@ -258,7 +259,7 @@ struct BreathingExerciseView: View {
         Ellipse()
             .fill(darkAccent)
             .frame(width: phase == .hold ? 8 : 7, height: phase == .hold ? 5 : 8)
-            .animation(.easeInOut(duration: 0.3), value: phase)
+            .animation(reduceMotion ? nil : .easeInOut(duration: 0.3), value: phase)
     }
 
     @ViewBuilder
@@ -268,19 +269,19 @@ struct BreathingExerciseView: View {
             Circle()
                 .stroke(darkAccent, lineWidth: 2)
                 .frame(width: 12, height: 12)
-                .animation(.easeInOut(duration: 0.3), value: phase)
+                .animation(reduceMotion ? nil : .easeInOut(duration: 0.3), value: phase)
 
         case .hold:
             RoundedRectangle(cornerRadius: 1)
                 .fill(darkAccent)
                 .frame(width: 14, height: 2)
-                .animation(.easeInOut(duration: 0.3), value: phase)
+                .animation(reduceMotion ? nil : .easeInOut(duration: 0.3), value: phase)
 
         case .breatheOut:
             Ellipse()
                 .stroke(darkAccent, lineWidth: 2)
                 .frame(width: 10, height: 7)
-                .animation(.easeInOut(duration: 0.3), value: phase)
+                .animation(reduceMotion ? nil : .easeInOut(duration: 0.3), value: phase)
 
         case .ready:
             halfCircleSmile
@@ -294,7 +295,7 @@ struct BreathingExerciseView: View {
             .trim(from: 0.1, to: 0.4)
             .stroke(darkAccent, style: StrokeStyle(lineWidth: 2, lineCap: .round))
             .frame(width: 16, height: 16)
-            .animation(.easeInOut(duration: 0.3), value: phase)
+            .animation(reduceMotion ? nil : .easeInOut(duration: 0.3), value: phase)
     }
 
     private var phaseLabel: some View {
@@ -302,26 +303,26 @@ struct BreathingExerciseView: View {
             Text(phase.rawValue)
                 .font(.title.weight(.semibold))
                 .foregroundColor(darkAccent)
-                .animation(.easeInOut(duration: 0.3), value: phase)
+                .animation(reduceMotion ? nil : .easeInOut(duration: 0.3), value: phase)
                 .accessibilityLabel("Current phase: \(phase.rawValue)")
                 .accessibilityAddTraits(.updatesFrequently)
 
             if phase != .done {
                 if #available(iOS 16.0, *) {
                     Text("\(phaseCountdown)")
-                        .font(.system(size: 44, weight: .light, design: .rounded))
+                        .font(.system(.largeTitle, design: .rounded).weight(.light))
                         .foregroundColor(darkAccent.opacity(0.6))
                         .monospacedDigit()
                         .contentTransition(.numericText())
-                        .animation(.easeInOut(duration: 0.2), value: phaseCountdown)
+                        .animation(reduceMotion ? nil : .easeInOut(duration: 0.2), value: phaseCountdown)
                         .accessibilityLabel("\(phaseCountdown) seconds")
                         .accessibilityAddTraits(.updatesFrequently)
                 } else {
                     Text("\(phaseCountdown)")
-                        .font(.system(size: 44, weight: .light, design: .rounded))
+                        .font(.system(.largeTitle, design: .rounded).weight(.light))
                         .foregroundColor(darkAccent.opacity(0.6))
                         .monospacedDigit()
-                        .animation(.easeInOut(duration: 0.2), value: phaseCountdown)
+                        .animation(reduceMotion ? nil : .easeInOut(duration: 0.2), value: phaseCountdown)
                         .accessibilityLabel("\(phaseCountdown) seconds")
                         .accessibilityAddTraits(.updatesFrequently)
                 }
@@ -349,7 +350,7 @@ struct BreathingExerciseView: View {
                             )
                         )
                         .frame(width: geo.size.width * progress)
-                        .animation(.linear(duration: 0.5), value: progress)
+                        .animation(reduceMotion ? nil : .linear(duration: 0.5), value: progress)
                 }
             }
             .frame(height: 6)
@@ -540,18 +541,27 @@ struct BreathingExerciseView: View {
     }
 
     private func animateCircle(to scale: CGFloat, duration: Double) {
-        withAnimation(.easeInOut(duration: duration)) {
+        if reduceMotion {
             circleScale = scale
+        } else {
+            withAnimation(.easeInOut(duration: duration)) {
+                circleScale = scale
+            }
         }
     }
 
     private func animateDots() {
-        withAnimation(.easeInOut(duration: phase.duration)) {
-            dotOffsets = dotOffsets.map { _ in
-                CGSize(
-                    width: CGFloat.random(in: -25 ... 25),
-                    height: CGFloat.random(in: -25 ... 25)
-                )
+        let newOffsets = dotOffsets.map { _ in
+            CGSize(
+                width: CGFloat.random(in: -25 ... 25),
+                height: CGFloat.random(in: -25 ... 25)
+            )
+        }
+        if reduceMotion {
+            dotOffsets = newOffsets
+        } else {
+            withAnimation(.easeInOut(duration: phase.duration)) {
+                dotOffsets = newOffsets
             }
         }
     }
@@ -591,9 +601,14 @@ struct BreathingExerciseView: View {
 
     private func completeSession() {
         stopAllTimers()
-        withAnimation(.spring(response: 0.6, dampingFraction: 0.8)) {
+        if reduceMotion {
             phase = .done
             circleScale = BreathingPhase.done.circleScale
+        } else {
+            withAnimation(.spring(response: 0.6, dampingFraction: 0.8)) {
+                phase = .done
+                circleScale = BreathingPhase.done.circleScale
+            }
         }
     }
 

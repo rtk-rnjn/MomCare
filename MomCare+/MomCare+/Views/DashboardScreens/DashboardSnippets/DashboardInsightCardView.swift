@@ -45,7 +45,7 @@ struct DashboardInsightCardView: View {
 
                     Image(systemName: icon)
                         .foregroundColor(.primary)
-                        .font(.system(size: 21, weight: .regular))
+                        .font(.title3)
                 }
                 .accessibilityHidden(true)
                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomTrailing)

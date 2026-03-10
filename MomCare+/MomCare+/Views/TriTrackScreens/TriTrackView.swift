@@ -45,7 +45,7 @@ struct TriTrackView: View {
         .toolbar {
             ToolbarItemGroup(placement: .navigationBarTrailing) {
                 Button {
-                    withAnimation(.spring(response: 0.3, dampingFraction: 0.8)) {
+                    withAnimation(reduceMotion ? nil : .spring(response: 0.3, dampingFraction: 0.8)) {
                         controlState.showingExpandedCalendar.toggle()
                     }
                 } label: {
@@ -92,6 +92,7 @@ struct TriTrackView: View {
 
     @EnvironmentObject private var controlState: ControlState
     @EnvironmentObject private var authenticationService: AuthenticationService
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     @State private var selectedDate: Date = .init()
 
@@ -256,7 +257,7 @@ struct PregnancyProgressView: View {
             VStack(spacing: 8) {
                 HStack {
                     Image(systemName: "ruler")
-                        .font(.system(size: 22))
+                        .font(.title3)
                         .accessibilityHidden(true)
 
                     Text("Height")
@@ -292,7 +293,7 @@ struct PregnancyProgressView: View {
             VStack(spacing: 8) {
                 HStack {
                     Image(systemName: "scalemass")
-                        .font(.system(size: 22))
+                        .font(.title3)
                         .accessibilityHidden(true)
 
                     Text("Weight")
@@ -411,13 +412,13 @@ struct ComparisonView: View {
         HStack(spacing: 0) {
             VStack(alignment: .center) {
                 Text(fruitEmoji)
-                    .font(.system(size: 64))
+                    .font(.system(size: fruitEmojiSize))
             }
             .frame(maxWidth: .infinity)
             .accessibilityHidden(true)
 
             Image(systemName: "arrow.right")
-                .font(.system(size: 24, weight: .bold))
+                .font(.title2.weight(.bold))
                 .foregroundColor(.secondary)
                 .frame(width: 40)
                 .accessibilityHidden(true)
@@ -447,6 +448,8 @@ struct ComparisonView: View {
     }
 
     // MARK: Private
+
+    @ScaledMetric private var fruitEmojiSize: CGFloat = 64
 
     private var fruitEmoji: String {
         let fruit = trimesterData.fruitComparison.lowercased()
@@ -484,24 +487,24 @@ struct CompactInfoCard: View {
             HStack(spacing: 2) {
                 if isEmoji {
                     Text(iconName)
-                        .font(.system(size: 16))
+                        .font(.body)
                         .accessibilityHidden(true)
                 } else {
                     Image(systemName: iconName)
-                        .font(.system(size: 14))
+                        .font(.subheadline)
                         .foregroundColor(accentColor)
                         .accessibilityHidden(true)
                 }
 
                 Text(title)
-                    .font(.system(size: 14, weight: .semibold, design: .default))
+                    .font(.subheadline.weight(.semibold))
                     .foregroundColor(.primary)
                     .lineLimit(1)
                     .accessibilityAddTraits(.isHeader)
             }
 
             Text(previewText)
-                .font(.system(size: 14))
+                .font(.footnote)
                 .foregroundColor(.secondary)
                 .lineLimit(5)
                 .lineSpacing(1)
@@ -560,7 +563,7 @@ struct PopupInfoCard: View {
                         .offset(y: envelopeOpen ? 5 : 15)
                 }
                 .frame(height: 60)
-                .animation(.spring(response: 0.5, dampingFraction: 0.7), value: envelopeOpen)
+                .animation(reduceMotion ? nil : .spring(response: 0.5, dampingFraction: 0.7), value: envelopeOpen)
 
                 VStack(spacing: 0) {
                     HStack(spacing: 4) {
@@ -622,6 +625,15 @@ struct PopupInfoCard: View {
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .onAppear {
+            if reduceMotion {
+                opacity = 1.0
+                scale = 1.0
+                cardOffset = .zero
+                envelopeOpen = true
+                isContentVisible = true
+                return
+            }
+
             withAnimation(.spring(response: 0.4, dampingFraction: 0.7)) {
                 opacity = 1.0
                 scale = 1.0
@@ -649,8 +661,22 @@ struct PopupInfoCard: View {
     @State private var scale = 0.8
     @State private var isContentVisible = false
     @State private var envelopeOpen = false
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     private func closeCard() {
+        if reduceMotion {
+            isContentVisible = false
+            envelopeOpen = false
+            opacity = 0.0
+            scale = 0.8
+            cardOffset = CGSize(width: 0, height: -50)
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                OverlayWindowManager.shared.hideOverlay()
+                isShowing = false
+            }
+            return
+        }
+
         withAnimation(.easeOut(duration: 0.2)) {
             isContentVisible = false
         }

@@ -36,7 +36,7 @@ struct PlaylistHeroCard: View {
 
             VStack(alignment: .leading, spacing: 4) {
                 Text(playlist.name)
-                    .font(.system(size: 28, weight: .bold, design: .rounded))
+                    .font(.title2.weight(.bold))
                     .foregroundColor(.white)
                     .lineLimit(2)
                     .shadow(color: .black.opacity(0.3), radius: 4, x: 0, y: 2)
@@ -100,7 +100,7 @@ struct PlaylistCard: View {
             )
 
             Text(playlist.name)
-                .font(.system(size: 16, weight: .bold, design: .rounded))
+                .font(.callout.weight(.bold))
                 .foregroundColor(.white)
                 .padding(12)
                 .lineLimit(2)

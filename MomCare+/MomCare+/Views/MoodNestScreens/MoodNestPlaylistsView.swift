@@ -60,9 +60,10 @@ struct MoodNestPlaylistsView: View {
 
     var captionSection: some View {
         Text(vm.caption)
-            .font(.system(size: 28, weight: .bold, design: .rounded))
+            .font(.title.weight(.bold))
             .foregroundColor(.primary)
             .lineLimit(3)
+            .fixedSize(horizontal: false, vertical: true)
             .frame(maxWidth: .infinity, alignment: .leading)
             .accessibilityAddTraits(.isHeader)
     }
@@ -78,7 +79,7 @@ struct MoodNestPlaylistsView: View {
     var featuredSection: some View {
         VStack(alignment: .leading, spacing: 16) {
             Text("More Playlists")
-                .font(.system(size: 20, weight: .bold, design: .rounded))
+                .font(.title3.weight(.bold))
                 .foregroundColor(.primary)
                 .accessibilityAddTraits(.isHeader)
 
@@ -134,7 +135,7 @@ struct MoodNestPlaylistsView: View {
 
                     VStack(alignment: .leading, spacing: 16) {
                         Text(hero.name)
-                            .font(.system(size: 28, weight: .bold, design: .rounded))
+                            .font(.title.weight(.bold))
                             .foregroundColor(.white)
                             .lineLimit(2)
                             .shadow(color: .black.opacity(0.3), radius: 4, x: 0, y: 2)
@@ -145,10 +146,10 @@ struct MoodNestPlaylistsView: View {
                         } label: {
                             HStack(spacing: 8) {
                                 Image(systemName: "play.fill")
-                                    .font(.system(size: 14, weight: .bold))
+                                    .font(.caption.weight(.bold))
                                     .accessibilityHidden(true)
                                 Text("Play Now")
-                                    .font(.system(size: 16, weight: .bold))
+                                    .font(.body.weight(.bold))
                             }
                             .foregroundColor(.black)
                             .padding(.horizontal, 24)

@@ -56,7 +56,7 @@ struct DashboardEventCardView: View {
                         showEventSheet = true
                     } label: {
                         Text("Add Event")
-                            .font(.system(size: 18, weight: .semibold))
+                            .font(.title3.weight(.semibold))
                             .foregroundColor(MomCareAccent.primary)
                     }
                     .padding(.leading, 16)
@@ -71,7 +71,7 @@ struct DashboardEventCardView: View {
 
                         Image(systemName: "calendar.badge.clock")
                             .foregroundColor(.primary)
-                            .font(.system(size: 21, weight: .regular))
+                            .font(.title3)
                     }
                     .accessibilityHidden(true)
                     .padding(.trailing, 12)

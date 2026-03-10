@@ -50,10 +50,9 @@ struct TriTrackSymptomsContentView: View {
     var emptyState: some View {
         VStack(spacing: 12) {
             Image(systemName: "heart.text.square")
-                .font(.system(size: 48))
+                .font(.system(size: emptyStateIconSize))
                 .foregroundColor(.secondary)
                 .accessibilityHidden(true)
-
             Text("Track Your Symptoms")
                 .font(.headline)
 
@@ -106,6 +105,7 @@ struct TriTrackSymptomsContentView: View {
 
     @State private var selectedSymptom: Symptom?
     @State private var showDetail = false
+    @ScaledMetric private var emptyStateIconSize: CGFloat = 48
 
 }
 
@@ -114,10 +114,12 @@ struct SymptomRow: View {
     var onInfo: () -> Void
     var onDelete: () -> Void
 
+    @ScaledMetric private var rowIconSize: CGFloat = 24
+
     var body: some View {
         HStack {
             Image(systemName: "heart.text.square")
-                .font(.system(size: 24))
+                .font(.system(size: rowIconSize))
                 .foregroundColor(.secondary)
                 .accessibilityHidden(true)
 
