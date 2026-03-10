@@ -83,7 +83,7 @@ struct DashboardEventCardView: View {
         .background(Color(.systemBackground))
         .dashboardCardStyle()
         .accessibilityElement(children: .ignore)
-        .accessibilityLabel(upcomingEvent != nil ? "Upcoming event: \(upcomingEvent!.title ?? "untitled")" : "No upcoming events")
+        .accessibilityLabel(upcomingEvent.map { "Upcoming event: \($0.title ?? "untitled")" } ?? "No upcoming events")
         .accessibilityValue(
             upcomingEvent?.startDate.map { date in
                 "In \(date.formatted(.relative(presentation: .numeric)))"

@@ -34,7 +34,7 @@ struct TriTrackAddSymptomSheetView: View {
                                 .accessibilityHidden(true)
                         }
                     }
-                    .accessibilityLabel(selectedSymptom != nil ? "Selected symptom: \(selectedSymptom!.name)" : "Select symptom")
+                    .accessibilityLabel(selectedSymptom.map { "Selected symptom: \($0.name)" } ?? "Select symptom")
                     .accessibilityHint("Opens symptom picker")
                     .accessibilityIdentifier("selectSymptomButton")
                 }
