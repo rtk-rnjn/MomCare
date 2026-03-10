@@ -1,10 +1,3 @@
-//
-//  TriTrack_GlanceControl.swift
-//  TriTrack Glance
-//
-//  Created by Aryan singh on 19/02/26.
-//
-
 import AppIntents
 import SwiftUI
 import WidgetKit

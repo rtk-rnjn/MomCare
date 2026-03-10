@@ -1,10 +1,3 @@
-//
-//  TriTrackSymptomsSheetView.swift
-//  MomCare
-//
-//  Created by Aryan singh on 18/02/26.
-//
-
 import SwiftUI
 
 struct TriTrackSymptomsSheetView: View {

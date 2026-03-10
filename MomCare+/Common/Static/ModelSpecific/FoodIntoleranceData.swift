@@ -1,10 +1,3 @@
-//
-//  FoodIntoleranceData.swift
-//  MomCare+
-//
-//  Created by Aryan singh on 12/02/26.
-//
-
 public enum Intolerance: String, Codable, CaseIterable, Sendable, Hashable {
     case banana
     case beef

@@ -1,10 +1,3 @@
-//
-//  TriTrack_GlanceLiveActivity.swift
-//  TriTrack Glance
-//
-//  Created by Aryan singh on 19/02/26.
-//
-
 import ActivityKit
 import SwiftUI
 import WidgetKit

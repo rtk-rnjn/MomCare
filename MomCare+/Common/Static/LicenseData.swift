@@ -1,10 +1,3 @@
-//
-//  LicenseData.swift
-//  MomCare+
-//
-//  Created by Aryan singh on 13/02/26.
-//
-
 import Foundation
 
 struct LicenseInfo: Identifiable {

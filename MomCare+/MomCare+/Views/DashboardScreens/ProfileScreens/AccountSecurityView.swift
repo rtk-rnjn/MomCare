@@ -12,7 +12,7 @@ struct AccountSecurityView: View {
             }
 
             Section("Security") {
-                Button(action: vm.toggleChangePassword) {
+                Button(action: accountSecurityViewModel.toggleChangePassword) {
                     HStack {
                         Text("Change Password")
                         Spacer()
@@ -22,12 +22,12 @@ struct AccountSecurityView: View {
                 }
                 .foregroundColor(.primary)
 
-                if vm.isChangingPassword {
-                    SecureFieldRow(title: "Old Password", text: $vm.oldPassword)
-                    SecureFieldRow(title: "New Password", text: $vm.newPassword)
-                    SecureFieldRow(title: "Confirm Password", text: $vm.confirmPassword)
+                if accountSecurityViewModel.isChangingPassword {
+                    SecureFieldRow(title: "Old Password", text: $accountSecurityViewModel.oldPassword)
+                    SecureFieldRow(title: "New Password", text: $accountSecurityViewModel.newPassword)
+                    SecureFieldRow(title: "Confirm Password", text: $accountSecurityViewModel.confirmPassword)
 
-                    if let error = vm.errorMessage {
+                    if let error = accountSecurityViewModel.errorMessage {
                         Text(error)
                             .font(.footnote)
                             .foregroundColor(.red)
@@ -35,11 +35,11 @@ struct AccountSecurityView: View {
                     }
 
                     Button("Change") {
-                        vm.validateAndSubmit()
+                        accountSecurityViewModel.validateAndSubmit()
                     }
                     .frame(maxWidth: .infinity, alignment: .center)
-                    .foregroundColor(vm.canSubmit ? Color("primaryAppColor") : .secondary)
-                    .disabled(!vm.canSubmit)
+                    .foregroundColor(accountSecurityViewModel.canSubmit ? Color("primaryAppColor") : .secondary)
+                    .disabled(!accountSecurityViewModel.canSubmit)
                 }
             }
         }
@@ -51,7 +51,7 @@ struct AccountSecurityView: View {
     // MARK: Private
 
     @EnvironmentObject private var authenticationService: AuthenticationService
-    @StateObject private var vm: AccountSecurityViewModel = .init()
+    @StateObject private var accountSecurityViewModel: AccountSecurityViewModel = .init()
 
     private let database: Database = .init()
 

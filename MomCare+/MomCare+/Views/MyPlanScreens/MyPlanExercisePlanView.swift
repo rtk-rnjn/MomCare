@@ -1,9 +1,3 @@
-//
-//  MyPlanExercisePlanView.swift
-//  MomCare+
-//
-//  Created by Aryan singh on 16/02/26.
-//
 import SwiftUI
 
 struct MyPlanExercisePlanView: View {

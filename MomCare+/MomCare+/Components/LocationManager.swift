@@ -1,10 +1,3 @@
-//
-//  LocationManager.swift
-//  MomCare+
-//
-//  Created by Aryan singh on 15/02/26.
-//
-
 import Combine
 import CoreLocation
 

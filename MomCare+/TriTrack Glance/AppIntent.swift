@@ -1,10 +1,3 @@
-//
-//  AppIntent.swift
-//  TriTrack Glance
-//
-//  Created by Aryan singh on 19/02/26.
-//
-
 import AppIntents
 import WidgetKit
 
@@ -17,7 +10,6 @@ struct ConfigurationAppIntent: WidgetConfigurationIntent {
         "This is an example widget."
     }
 
-    /// An example configurable parameter.
     @Parameter(title: "Favorite Emoji", default: "😃")
     var favoriteEmoji: String
 }

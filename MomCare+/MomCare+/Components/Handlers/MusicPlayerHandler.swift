@@ -162,7 +162,7 @@ final class MusicPlayerHandler: ObservableObject {
     }
 
     private func startObserving() {
-        let interval = CMTime(seconds: 0.02, preferredTimescale: 600)
+        let interval = CMTime(seconds: 0.5, preferredTimescale: CMTimeScale(NSEC_PER_SEC))
 
         timeObserverToken = player?.addPeriodicTimeObserver(
             forInterval: interval,

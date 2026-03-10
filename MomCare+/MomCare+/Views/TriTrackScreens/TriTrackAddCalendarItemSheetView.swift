@@ -1,10 +1,3 @@
-//
-//  TriTrackAddCalendarItemSheetView.swift
-//  MomCare
-//
-//  Created by Aryan singh on 18/02/26.
-//
-
 import EventKit
 import MapKit
 import SwiftUI

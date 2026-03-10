@@ -1,18 +1,18 @@
 import SwiftUI
 
 struct MoodFaceView: View {
-    @ObservedObject var vm: MoodNestViewModel
+    @ObservedObject var moodNestViewModel: MoodNestViewModel
 
     var body: some View {
         VStack(spacing: -3) {
             HStack(spacing: 30) {
-                EyeView(vm: vm, isLeft: true)
-                EyeView(vm: vm, isLeft: false)
+                EyeView(moodNestViewModel: moodNestViewModel, isLeft: true)
+                EyeView(moodNestViewModel: moodNestViewModel, isLeft: false)
             }
 
             SmileView(
-                rotation: vm.smileRotation,
-                color: vm.faceColor
+                rotation: moodNestViewModel.smileRotation,
+                color: moodNestViewModel.faceColor
             )
         }
     }

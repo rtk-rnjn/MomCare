@@ -1,10 +1,3 @@
-//
-//  MetricKitManager.swift
-//  MomCare
-//
-//  Created by Aryan singh on 19/02/26.
-//
-
 import MetricKit
 
 final class MetricKitManager: NSObject, MXMetricManagerSubscriber {

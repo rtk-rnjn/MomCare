@@ -1,10 +1,3 @@
-//
-//  BreathingCardView.swift
-//  MomCare
-//
-//  Created by Aryan singh on 19/02/26.
-//
-
 import SwiftUI
 
 struct BreathingCardView: View {
