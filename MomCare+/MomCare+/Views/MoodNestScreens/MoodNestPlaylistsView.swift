@@ -1,7 +1,7 @@
 import SwiftUI
 import UIKit
 
-struct MoodResultView: View {
+struct MoodNestPlaylistsView: View {
 
     // MARK: Lifecycle
 
@@ -58,15 +58,6 @@ struct MoodResultView: View {
         }
     }
 
-    // MARK: Private
-
-    @EnvironmentObject private var musicPlayerHandler: MusicPlayerHandler
-    @StateObject private var vm: MoodResultViewModel
-    @State private var heroPlaylist: PlaylistModel?
-    @State private var uiImage: UIImage?
-}
-
-private extension MoodResultView {
     var captionSection: some View {
         Text(vm.caption)
             .font(.system(size: 28, weight: .bold, design: .rounded))
@@ -74,9 +65,7 @@ private extension MoodResultView {
             .lineLimit(3)
             .frame(maxWidth: .infinity, alignment: .leading)
     }
-}
 
-private extension MoodResultView {
     var heroSection: some View {
         Group {
             if let heroPlaylist {
@@ -85,8 +74,31 @@ private extension MoodResultView {
         }
     }
 
+    var featuredSection: some View {
+        VStack(alignment: .leading, spacing: 16) {
+            Text("More Playlists")
+                .font(.system(size: 20, weight: .bold, design: .rounded))
+                .foregroundColor(.primary)
+
+            LazyVGrid(
+                columns: [
+                    GridItem(.flexible(), spacing: 16),
+                    GridItem(.flexible(), spacing: 16)
+                ],
+                spacing: 16
+            ) {
+                ForEach(vm.playlists) { playlist in
+                    NavigationLink(destination: MoodNestSongsView(playlist: playlist)) {
+                        PlaylistCard(playlist: playlist)
+                    }
+                    .buttonStyle(.plain)
+                }
+            }
+        }
+    }
+
     func heroSection(for hero: PlaylistModel) -> some View {
-        NavigationLink(destination: PlaylistDetailView(playlist: hero)) {
+        NavigationLink(destination: MoodNestSongsView(playlist: hero)) {
             GeometryReader { geometry in
                 ZStack(alignment: .bottomLeading) {
                     if let uiImage {
@@ -124,6 +136,7 @@ private extension MoodResultView {
 
                         Button {
                             musicPlayerHandler.preparePlaylistAndPlay(hero)
+                            controlState.showingPopupBar = true
                         } label: {
                             HStack(spacing: 8) {
                                 Image(systemName: "play.fill")
@@ -154,29 +167,14 @@ private extension MoodResultView {
         }
         .buttonStyle(.plain)
     }
-}
 
-private extension MoodResultView {
-    var featuredSection: some View {
-        VStack(alignment: .leading, spacing: 16) {
-            Text("More Playlists")
-                .font(.system(size: 20, weight: .bold, design: .rounded))
-                .foregroundColor(.primary)
+    // MARK: Private
 
-            LazyVGrid(
-                columns: [
-                    GridItem(.flexible(), spacing: 16),
-                    GridItem(.flexible(), spacing: 16)
-                ],
-                spacing: 16
-            ) {
-                ForEach(vm.playlists) { playlist in
-                    NavigationLink(destination: PlaylistDetailView(playlist: playlist)) {
-                        PlaylistCard(playlist: playlist)
-                    }
-                    .buttonStyle(.plain)
-                }
-            }
-        }
-    }
+    @EnvironmentObject private var musicPlayerHandler: MusicPlayerHandler
+    @EnvironmentObject private var controlState: ControlState
+
+    @StateObject private var vm: MoodResultViewModel
+    @State private var heroPlaylist: PlaylistModel?
+    @State private var uiImage: UIImage?
+
 }

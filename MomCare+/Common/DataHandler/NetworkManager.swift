@@ -15,6 +15,10 @@ struct NetworkResponse<T: Codable>: Codable {
     var data: T?
     var statusCode: Int
     var errorMessage: String?
+
+    var success: Bool {
+        return (200...299).contains(statusCode) && errorMessage == nil
+    }
 }
 
 class NetworkManager {

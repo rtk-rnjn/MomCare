@@ -17,14 +17,12 @@ struct MusicPlayerView: View {
                 .padding(.top, 10)
                 .padding(.bottom, 30)
 
-            if let uiImage {
-                Image(uiImage: uiImage)
-                    .resizable()
-                    .aspectRatio(contentMode: .fill)
-                    .frame(width: UIScreen.main.bounds.width - 48, height: UIScreen.main.bounds.width - 48)
-                    .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
-                    .shadow(color: .black.opacity(0.4), radius: 20, x: 0, y: 10)
-            }
+            Image(uiImage: musicPlayerHandler.currentSongUIImage ?? UIImage())
+                .resizable()
+                .aspectRatio(contentMode: .fill)
+                .frame(width: UIScreen.main.bounds.width - 48, height: UIScreen.main.bounds.width - 48)
+                .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
+                .shadow(color: .black.opacity(0.4), radius: 20, x: 0, y: 10)
 
             Spacer()
 
@@ -83,8 +81,8 @@ struct MusicPlayerView: View {
                 }
 
                 Button {
-                    _ = musicPlayerHandler.togglePlayPause()
                     controlState.showingPopupBar = true
+                    _ = musicPlayerHandler.togglePlayPause()
                 } label: {
                     Image(systemName: musicPlayerHandler.player?.timeControlStatus == .playing ? "pause.fill" : "play.fill")
                         .font(.system(size: 56))
@@ -127,7 +125,7 @@ struct MusicPlayerView: View {
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
         .background {
-            if let uiImage {
+            if let uiImage = musicPlayerHandler.currentSongUIImage {
                 Image(uiImage: uiImage)
                     .resizable()
                     .aspectRatio(contentMode: .fill)
@@ -142,20 +140,50 @@ struct MusicPlayerView: View {
         .task {
             if let song = musicPlayerHandler.currentSong {
                 uiImage = await song.image
+                musicPlayerHandler.currentSongUIImage = uiImage
             }
         }
-        .popupItems(selection: $musicPlayerHandler.currentSong) {
-            for song in musicPlayerHandler.playlist {
-                PopupItem(id: song, progress: Float(musicPlayerHandler.player?.currentTime().seconds ?? 0)) {
-                    Text(song.metadata?.title ?? "Song Title")
-                } subtitle: {
-                    Text(song.metadata?.author ?? "Unknown Author")
-                } buttons: {
-                    ToolbarItemGroup {}
+        .popupItem {
+            PopupItem(
+                id: musicPlayerHandler.currentSong,
+                title: musicPlayerHandler.currentSong?.metadata?.title ?? "Song Title",
+                subtitle: musicPlayerHandler.currentSong?.metadata?.author ?? "Unknown Artist",
+                image: Image(uiImage: musicPlayerHandler.currentSongUIImage ?? UIImage()),
+                progress: musicPlayerHandler.playbackProgress
+            ) {
+                ToolbarItemGroup(placement: .popupBar) {
+                    Button {
+                        musicPlayerHandler.skipToPrevious()
+                    } label: {
+                        Image(systemName: "backward.fill")
+                            .foregroundStyle(.black)
+                    }
+
+                    Button {
+                        _ = musicPlayerHandler.togglePlayPause()
+                    } label: {
+                        Image(systemName: musicPlayerHandler.isPlaying ? "pause.fill" : "play.fill")
+                            .foregroundStyle(.black)
+                    }
+
+                    Button {
+                        musicPlayerHandler.skipToNext()
+                    } label: {
+                        Image(systemName: "forward.fill")
+                            .foregroundStyle(.black)
+                    }
+
+                    Button {
+                        controlState.showingPopup = false
+                        controlState.showingPopupBar = false
+                        musicPlayerHandler.stop()
+                    } label: {
+                        Image(systemName: "x.circle.fill")
+                            .foregroundStyle(.black)
+                    }
                 }
             }
         }
-        .popupBarMinimizationEnabled(true)
     }
 
     // MARK: Private

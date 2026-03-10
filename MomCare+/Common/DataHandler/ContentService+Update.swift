@@ -7,13 +7,6 @@
 
 import Foundation
 
-enum MealType: String, Codable {
-    case breakfast
-    case lunch
-    case dinner
-    case snacks
-}
-
 extension ContentService {
     func markFoodAs(consumed: Bool, planId: String, meal: MealType, foodId: String) async throws -> NetworkResponse<Bool> {
         let url: String = if consumed {

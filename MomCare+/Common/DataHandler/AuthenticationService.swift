@@ -2,12 +2,14 @@ import Combine
 import Foundation
 import SwiftUI
 
-private let refreshTokenBackgroundTaskIdentifier = "com.MomCare.BackgroundTask.RefreshToken"
-
 protocol TokenContaining {
     var accessToken: String { get }
     var refreshToken: String { get }
     var expiresAtTimestamp: TimeInterval { get }
+}
+
+enum LoginProvider {
+    case apple
 }
 
 final class AuthenticationService: ObservableObject {
@@ -42,14 +44,6 @@ final class AuthenticationService: ObservableObject {
         }
     }
 
-    var lastRefreshDate: Date {
-        Date(timeIntervalSince1970: lastTokenRefreshTimestamp)
-    }
-
-    func updateLastRefreshDate() {
-        lastTokenRefreshTimestamp = Date().timeIntervalSince1970
-    }
-
     func handleSuccess<T: TokenContaining>(_ response: NetworkResponse<T>, expectedStatusCode: Int, emailAddress: String? = nil) -> NetworkResponse<T> {
         let success = response.errorMessage == nil && response.statusCode == expectedStatusCode && response.data != nil
         guard success, let data = response.data else {
@@ -69,6 +63,7 @@ final class AuthenticationService: ObservableObject {
         return handleSuccess(response, expectedStatusCode: 201, emailAddress: emailAddress)
     }
 
+    @discardableResult
     func login(emailAddress: String, password: String) async throws -> NetworkResponse<TokenPair> {
         let networkResponse: NetworkResponse<TokenPair> = try await NetworkManager.shared.post(url: Endpoint.login.urlString, body: prepareCredentialsData(emailAddress: emailAddress, password: password))
 
@@ -81,6 +76,7 @@ final class AuthenticationService: ObservableObject {
         return networkResponse
     }
 
+    @discardableResult
     func autoLogin() async -> NetworkResponse<TokenPair>? {
         let emailAddress: String? = database[.emailAddress]
         let password: String? = KeychainHelper.get(.password)
@@ -236,21 +232,29 @@ final class AuthenticationService: ObservableObject {
         return handleSuccess(response, expectedStatusCode: 200, emailAddress: existingEmailAddress)
     }
 
+    @discardableResult
     func me() async throws -> NetworkResponse<UserModel> {
         let response: NetworkResponse<UserModel> = try await NetworkManager.shared.get(url: Endpoint.me.urlString, headers: AuthenticationService.authorizationHeaders)
 
         if response.errorMessage == nil, response.statusCode == 200, let userModel = response.data {
-            self.userModel = userModel
+            DispatchQueue.main.async {
+                self.userModel = userModel
+            }
             database[.userModel] = userModel
         }
 
         return response
     }
 
-    // MARK: Private
+    @discardableResult
+    func login(with provider: LoginProvider = .apple, token: String) async throws -> NetworkResponse<TokenPair> {
+        switch provider {
+        case .apple:
+            return try await loginWithApple(token: token)
+        }
+    }
 
-    @AppStorage("lastTokenRefreshDate")
-    private var lastTokenRefreshTimestamp: Double = 0
+    // MARK: Private
 
     private let database: Database = .init()
 
@@ -279,6 +283,16 @@ final class AuthenticationService: ObservableObject {
         database.delete(ValidDatabaseKeys.accessTokenExpiresAtTimestamp.rawValue)
 
         userModel?._id = ""
+    }
+
+    private func loginWithApple(token: String) async throws -> NetworkResponse<TokenPair> {
+        let payload = ThirdPartyLogin(idToken: token, existingEmailAddress: nil)
+        guard let data = payload.encodeUsingJSONEncoder() else {
+            fatalError()
+        }
+
+        let response: NetworkResponse<TokenPair> = try await NetworkManager.shared.post(url: Endpoint.appleLogin.urlString, body: data)
+        return handleSuccess(response, expectedStatusCode: 200)
     }
 
 }

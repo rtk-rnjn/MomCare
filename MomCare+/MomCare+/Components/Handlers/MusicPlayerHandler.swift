@@ -2,7 +2,7 @@ import AVFoundation
 import Combine
 import MediaPlayer
 import SwiftUI
-import UIKit.UIImage
+import UIKit
 
 @MainActor
 final class MusicPlayerHandler: ObservableObject {
@@ -11,16 +11,58 @@ final class MusicPlayerHandler: ObservableObject {
 
     init() {
         configureRemoteTransportControls()
+
+        if let savedPlaylistData = UserDefaults.standard.data(forKey: "loadedPlaylist"),
+           let savedPlaylist = try? JSONDecoder().decode([SongModel].self, from: savedPlaylistData) {
+            playlist = savedPlaylist
+        }
+
+        if let savedCurrentSongIndex = UserDefaults.standard.value(forKey: "currentSongIndex") as? Int {
+            currentSongIndex = savedCurrentSongIndex
+        }
+
+        if let savedImageData = UserDefaults.standard.data(forKey: "currentSongUIImage"),
+           let savedImage = UIImage(data: savedImageData) {
+            currentSongUIImage = savedImage
+        }
+
+        if let song = playlist[safe: currentSongIndex] {
+            Task {
+                self.player = await self.prepareAVPlayer(with: song)
+            }
+        }
     }
 
     // MARK: Internal
 
     private(set) var player: AVPlayer?
-    @Published var playlist: [SongModel] = []
-    @Published var currentSong: SongModel?
-    @Published var currentSongUIImage: UIImage?
     @Published var isPlaying = false
     @Published var playbackProgress: Float = 0.0
+
+    @Published var playlist: [SongModel] = [] {
+        didSet {
+            let key = "loadedPlaylist"
+            if let encoded = try? JSONEncoder().encode(playlist) {
+                UserDefaults.standard.set(encoded, forKey: key)
+            }
+        }
+    }
+
+    @Published var currentSongIndex: Int = 0 {
+        didSet { UserDefaults.standard.set(currentSongIndex, forKey: "currentSongIndex") }
+    }
+
+    @Published var currentSongUIImage: UIImage? {
+        didSet {
+            if let data = currentSongUIImage?.jpegData(compressionQuality: 0.8) {
+                UserDefaults.standard.set(data, forKey: "currentSongUIImage")
+            }
+        }
+    }
+
+    var currentSong: SongModel? {
+        playlist[safe: currentSongIndex]
+    }
 
     var totalDuration: Double {
         if let duration = player?.currentItem?.duration, duration.isNumeric {
@@ -30,9 +72,9 @@ final class MusicPlayerHandler: ObservableObject {
         }
     }
 
-    func preparePlaylistAndPlay(_ playlist: PlaylistModel?, song: SongModel? = nil) {
-        self.playlist = playlist?.songs ?? []
-        if let song = song ?? playlist?.songs.first {
+    func preparePlaylistAndPlay(_ playlist: PlaylistModel, startingWith index: Int = 0) {
+        self.playlist = playlist.songs
+        if let song = playlist.songs[safe: index] {
             play(song: song)
         }
     }
@@ -89,11 +131,9 @@ final class MusicPlayerHandler: ObservableObject {
 
             try? startAudioSession()
 
-            currentSong = song
             currentSongUIImage = image
 
-            player = AVPlayer(url: url)
-            player?.automaticallyWaitsToMinimizeStalling = true
+            player = prepareAVPlayer(with: url)
 
             startObserving()
             player?.play()
@@ -101,15 +141,22 @@ final class MusicPlayerHandler: ObservableObject {
         }
     }
 
-    private func adjacentSong(offset: Int) -> SongModel? {
-        guard let currentSong,
-              let index = playlist.firstIndex(of: currentSong)
-        else {
-            return playlist.first
-        }
+    private func prepareAVPlayer(with songUri: URL) -> AVPlayer {
+        let playerItem = AVPlayerItem(url: songUri)
+        let newPlayer = AVPlayer(playerItem: playerItem)
+        newPlayer.automaticallyWaitsToMinimizeStalling = true
+        return newPlayer
+    }
 
-        let newIndex = index + offset
-        return playlist.indices.contains(newIndex) ? playlist[newIndex] : nil
+    private func prepareAVPlayer(with song: SongModel) async -> AVPlayer? {
+        guard let url = await song.url else { return nil }
+        return prepareAVPlayer(with: url)
+    }
+
+    private func adjacentSong(offset: Int) -> SongModel? {
+        let newIndex = currentSongIndex + offset
+        currentSongIndex = newIndex
+        return playlist.indices.contains(newIndex) ? playlist[safe: newIndex] : nil
     }
 
     private func startObserving() {
@@ -160,7 +207,6 @@ final class MusicPlayerHandler: ObservableObject {
     private func discardPlayer() {
         stopObserving()
         player = nil
-        currentSong = nil
         isPlaying = false
         try? stopAudioSession()
     }

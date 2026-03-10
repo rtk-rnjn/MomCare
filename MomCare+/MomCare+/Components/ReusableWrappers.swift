@@ -74,7 +74,7 @@ struct ProfileEditableTextRow: View {
     @Binding var text: String
 
     let isEditing: Bool
-    let displayText: String?
+    let displayText: String
 
     var body: some View {
         HStack {
@@ -83,14 +83,10 @@ struct ProfileEditableTextRow: View {
 
             Spacer()
 
-            if isEditing {
-                TextField("Enter", text: $text)
-                    .multilineTextAlignment(.trailing)
-                    .foregroundColor(MomCareAccent.primary)
-            } else {
-                Text(displayText ?? "Not Set")
-                    .foregroundColor(.secondary)
-            }
+            TextField(displayText, text: $text)
+                .multilineTextAlignment(.trailing)
+                .foregroundColor(isEditing ? MomCareAccent.primary : .secondary)
+                .disabled(!isEditing)
         }
     }
 }

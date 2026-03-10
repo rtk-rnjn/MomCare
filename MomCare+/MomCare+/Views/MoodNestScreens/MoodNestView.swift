@@ -40,7 +40,7 @@ struct MoodNestView: View {
 
                     Button {
                         UIImpactFeedbackGenerator(style: .soft).impactOccurred()
-                        navigateToResult = true
+                        controlState.showingMoodnestPlaylistsView = true
                     } label: {
                         Text("Set Mood ✓")
                             .font(.headline)
@@ -52,8 +52,8 @@ struct MoodNestView: View {
                     }
                     .padding(.horizontal, 32)
                     .padding(.top, 30)
-                    .navigationDestination(isPresented: $navigateToResult) {
-                        MoodResultView(mood: vm.mood)
+                    .navigationDestination(isPresented: $controlState.showingMoodnestPlaylistsView) {
+                        MoodNestPlaylistsView(mood: vm.mood)
                     }
                     Spacer()
                 }
@@ -66,6 +66,5 @@ struct MoodNestView: View {
     // MARK: Private
 
     @StateObject private var vm: MoodNestViewModel = .init()
-    @State private var navigateToResult = false
-
+    @EnvironmentObject private var controlState: ControlState
 }

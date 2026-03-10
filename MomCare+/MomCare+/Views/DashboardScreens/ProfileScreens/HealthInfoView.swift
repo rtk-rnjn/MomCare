@@ -44,10 +44,10 @@ struct HealthInfoView: View {
             }
 
             Section {
-                pickerRow(title: "Medical Conditions", value: displayCount(conditions)) {
-                    activeSheet = .conditions
-                }
-
+//                pickerRow(title: "Medical Conditions", value: displayCount(conditions)) {
+//                    activeSheet = .conditions
+//                }
+// TODO:
                 pickerRow(title: "Dietary Preferences", value: displayCount(dietaryPrefs)) {
                     activeSheet = .diet
                 }
@@ -107,38 +107,6 @@ struct HealthInfoView: View {
         .presentationDetents([.medium, .large])
     }
 
-    // MARK: Private
-
-    @EnvironmentObject private var authenticationService: AuthenticationService
-
-    @Environment(\.dismiss) private var dismiss
-    @State private var isEditing = false
-
-    @State private var showDueDatePicker = false
-    @State private var dueDate: Date = .init()
-    @State private var allergies: Set<Intolerance> = []
-    @State private var conditions: Set<PreExistingCondition> = []
-    @State private var dietaryPrefs: Set<DietaryPreference> = []
-
-    @State private var activeSheet: SheetType?
-
-    private var pregnancy: DashboardPregnancyProgress {
-        if let dueDateTimestamp = authenticationService.userModel?.dueDateTimestamp {
-            return Utils.progress(fromDueDate: Date(timeIntervalSince1970: dueDateTimestamp))
-        }
-        return Utils.progress(fromDueDate: Date())
-    }
-
-    private var allowedDueDateRange: ClosedRange<Date> {
-        let calendar = Calendar.current
-        let now = Date()
-        let max = calendar.date(byAdding: .weekOfYear, value: 40, to: now)!
-        return now ... max
-    }
-
-}
-
-private extension HealthInfoView {
     func pickerRow(
         title: String,
         value: String,
@@ -170,4 +138,34 @@ private extension HealthInfoView {
         if set.count == 1 { return "1 Selected" }
         return "\(set.count) Selected"
     }
+
+    // MARK: Private
+
+    @EnvironmentObject private var authenticationService: AuthenticationService
+
+    @Environment(\.dismiss) private var dismiss
+    @State private var isEditing = false
+
+    @State private var showDueDatePicker = false
+    @State private var dueDate: Date = .init()
+    @State private var allergies: Set<Intolerance> = []
+    @State private var conditions: Set<PreExistingCondition> = []
+    @State private var dietaryPrefs: Set<DietaryPreference> = []
+
+    @State private var activeSheet: SheetType?
+
+    private var pregnancy: DashboardPregnancyProgress {
+        if let dueDateTimestamp = authenticationService.userModel?.dueDateTimestamp {
+            return Utils.progress(fromDueDate: Date(timeIntervalSince1970: dueDateTimestamp))
+        }
+        return Utils.progress(fromDueDate: Date())
+    }
+
+    private var allowedDueDateRange: ClosedRange<Date> {
+        let calendar = Calendar.current
+        let now = Date()
+        let max = calendar.date(byAdding: .weekOfYear, value: 40, to: now)!
+        return now ... max
+    }
+
 }

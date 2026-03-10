@@ -3,7 +3,7 @@ import LNPopupUI
 import SwiftUI
 import UIKit
 
-struct PlaylistDetailView: View {
+struct MoodNestSongsView: View {
 
     // MARK: Lifecycle
 
@@ -14,6 +14,10 @@ struct PlaylistDetailView: View {
     // MARK: Internal
 
     @State var playlist: PlaylistModel
+
+    var accentColor: Color {
+        Color(red: 139 / 255, green: 69 / 255, blue: 87 / 255)
+    }
 
     var body: some View {
         VStack(spacing: 0) {
@@ -30,8 +34,8 @@ struct PlaylistDetailView: View {
                         .padding(.top, 20)
                         .padding(.bottom, 16)
 
-                    ForEach(songs) { track in
-                        PlaylistTrackRow(songModel: track)
+                    ForEach(songs.indices, id: \.self) { index in
+                        PlaylistTrackRow(playlist: playlist, songIndex: index)
                             .padding(.horizontal, 20)
 
                         Divider()
@@ -73,25 +77,6 @@ struct PlaylistDetailView: View {
         }
     }
 
-    // MARK: Private
-
-    @EnvironmentObject private var musicKitHandler: MusicPlayerHandler
-
-    @State private var uiImage: UIImage?
-
-    private var animation: Animation = .easeIn(duration: 0.25)
-
-    private var songs: [SongModel] {
-        playlist.songs
-    }
-
-}
-
-private extension PlaylistDetailView {
-    var accentColor: Color {
-        Color(red: 139 / 255, green: 69 / 255, blue: 87 / 255)
-    }
-
     var headerSection: some View {
         HStack(spacing: 18) {
             if let uiImage {
@@ -128,19 +113,6 @@ private extension PlaylistDetailView {
         .padding(20)
     }
 
-    private var totalDuration: String {
-        let total = songs.reduce(0) { $0 + ($1.metadata?.duration ?? 0) }
-        let minutes = Int(total) / 60
-        if minutes >= 60 {
-            let hours = minutes / 60
-            let remaining = minutes % 60
-            return "\(hours) hr \(remaining) min"
-        }
-        return "\(minutes) min"
-    }
-}
-
-private extension PlaylistDetailView {
     var controlsSection: some View {
         HStack(spacing: 12) {
             playButton
@@ -152,6 +124,8 @@ private extension PlaylistDetailView {
     var playButton: some View {
         Button {
             musicKitHandler.preparePlaylistAndPlay(playlist)
+            controlState.showingPopup = true
+            controlState.showingPopupBar = true
         } label: {
             HStack(spacing: 8) {
                 Image(systemName: "play.fill")
@@ -189,6 +163,32 @@ private extension PlaylistDetailView {
             )
         }
     }
+
+    // MARK: Private
+
+    @EnvironmentObject private var controlState: ControlState
+
+    @EnvironmentObject private var musicKitHandler: MusicPlayerHandler
+
+    @State private var uiImage: UIImage?
+
+    private var animation: Animation = .easeIn(duration: 0.25)
+
+    private var songs: [SongModel] {
+        playlist.songs
+    }
+
+    private var totalDuration: String {
+        let total = songs.reduce(0) { $0 + ($1.metadata?.duration ?? 0) }
+        let minutes = Int(total) / 60
+        if minutes >= 60 {
+            let hours = minutes / 60
+            let remaining = minutes % 60
+            return "\(hours) hr \(remaining) min"
+        }
+        return "\(minutes) min"
+    }
+
 }
 
 struct PlaylistTrackRow: View {
@@ -196,33 +196,43 @@ struct PlaylistTrackRow: View {
     // MARK: Internal
 
     var accentColor: Color = .init(red: 139 / 255, green: 69 / 255, blue: 87 / 255)
-    let songModel: SongModel
+    let playlist: PlaylistModel
+    let songIndex: Int
+
+    var songModel: SongModel {
+        playlist.songs[songIndex]
+    }
 
     var body: some View {
         Button {
-            musicKitHandler.preparePlaylistAndPlay(nil, song: songModel)
+            musicKitHandler.preparePlaylistAndPlay(playlist, startingWith: songIndex)
+            controlState.showingPopupBar = true
         } label: {
             HStack(spacing: 12) {
-                AsyncImage(url: URL(string: songModel.songImageUri!)!)
-                    .aspectRatio(contentMode: .fill)
-                    .frame(width: 48, height: 48)
-                    .clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
-                    .overlay(
+                AsyncImage(url: URL(string: songModel.songImageUri!)!) { image in
+                    image
+                        .resizable()
+                        .scaledToFill()
+                } placeholder: {
+                    Color.gray.opacity(0.2)
+                }
+                .frame(width: 48, height: 48)
+                .clipped()
+                .clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
+                .overlay(
+                    RoundedRectangle(cornerRadius: 8, style: .continuous)
+                        .stroke(Color.white.opacity(0.1), lineWidth: 0.5)
+                )
+                .overlay {
+                    if musicKitHandler.currentSong == songModel {
                         RoundedRectangle(cornerRadius: 8, style: .continuous)
-                            .stroke(Color.white.opacity(0.1), lineWidth: 0.5)
-                    )
-                    .overlay(
-                        Group {
-                            if musicKitHandler.currentSong == songModel {
-                                RoundedRectangle(cornerRadius: 8, style: .continuous)
-                                    .fill(accentColor.opacity(0.3))
-                                    .overlay(nowPlayingIndicator)
-                            }
-                        }
-                    )
+                            .fill(accentColor.opacity(0.3))
+                            .overlay(nowPlayingIndicator)
+                    }
+                }
 
                 VStack(alignment: .leading, spacing: 3) {
-                    Text(songModel.songName)
+                    Text(songModel.metadata?.title ?? songModel.songName)
                         .font(.system(size: 16, weight: musicKitHandler.currentSong == songModel ? .bold : .regular))
                         .foregroundStyle(Color.white)
                         .lineLimit(1)
@@ -258,6 +268,8 @@ struct PlaylistTrackRow: View {
     }
 
     // MARK: Private
+
+    @EnvironmentObject private var controlState: ControlState
 
     @EnvironmentObject private var musicKitHandler: MusicPlayerHandler
 

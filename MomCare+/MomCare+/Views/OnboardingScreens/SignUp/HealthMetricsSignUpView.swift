@@ -40,7 +40,7 @@ struct HealthMetricsSignUpView: View {
             Text(alertMessage)
         }
         .task {
-            _ = await authenticationService.autoLogin()
+            _ = try? await authenticationService.refresh()
         }
     }
 

@@ -7,7 +7,14 @@
 
 import Foundation
 
-struct FoodReferenceModel: Codable, Sendable, Identifiable {
+enum MealType: String, Codable {
+    case breakfast
+    case lunch
+    case dinner
+    case snacks
+}
+
+struct FoodReferenceModel: Codable, Sendable, Identifiable, Equatable {
     enum CodingKeys: String, CodingKey {
         case foodId = "food_id"
         case consumedAtTimestamp = "consumed_at_timestamp"
@@ -26,7 +33,7 @@ struct FoodReferenceModel: Codable, Sendable, Identifiable {
     }
 
     var isConsumed: Bool {
-        (consumedAtTimestamp ?? 0) > 0
+        return (consumedAtTimestamp ?? 0) > 0
     }
 
     var id: String {
@@ -63,6 +70,25 @@ struct MyPlanModel: Codable, Sendable {
     var snacks: [FoodReferenceModel]
 
     var createdAtTimestamp: TimeInterval
+
+    subscript(_ type: MealType) -> [FoodReferenceModel] {
+        get {
+            switch type {
+            case .breakfast: return breakfast
+            case .lunch: return lunch
+            case .dinner: return dinner
+            case .snacks: return snacks
+            }
+        }
+        set {
+            switch type {
+            case .breakfast: breakfast = newValue
+            case .lunch: lunch = newValue
+            case .dinner: dinner = newValue
+            case .snacks: snacks = newValue
+            }
+        }
+    }
 }
 
 extension MyPlanModel {

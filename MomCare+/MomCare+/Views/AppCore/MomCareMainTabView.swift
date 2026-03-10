@@ -1,5 +1,6 @@
 import LNPopupUI
 import SwiftUI
+import Combine
 
 struct MomCareMainTabView: View {
 
@@ -8,36 +9,51 @@ struct MomCareMainTabView: View {
     var body: some View {
         tabViewContent(bottomPadding: 0)
             .tint(MomCareAccent.primary)
-            .applyLiquidGlassTabBar()
+            .preferredColorScheme(.light)
+    }
+
+    func fetchDailyInsights() async {
+        guard let networkResponse = try? await ContentService.shared.fetchDailyInsights() else {
+            return
+        }
+
+        healthKitHandler.todayFocusText = networkResponse.data?.todaysFocus ?? "Failed to fetch today's focus: \(networkResponse.errorMessage ?? "Unknown error") (\(networkResponse.statusCode))"
+        healthKitHandler.dailyTipText = networkResponse.data?.dailyTip ?? "Failed to fetch today's tip: \(networkResponse.errorMessage ?? "Unknown error") (\(networkResponse.statusCode))"
     }
 
     // MARK: Private
 
     @EnvironmentObject private var authenticationService: AuthenticationService
     @EnvironmentObject private var musicKitHandler: MusicPlayerHandler
+    @EnvironmentObject private var healthKitHandler: HealthKitHandler
+    @EnvironmentObject private var eventKitHandler: EventKitHandler
     @EnvironmentObject private var controlState: ControlState
+
+    @Environment(\.scenePhase) private var scenePhase
+
+    private let refreshTimer = Timer.publish(every: 300, on: .main, in: .common).autoconnect()
 
     private func tabViewContent(bottomPadding: CGFloat) -> some View {
         TabView(selection: $controlState.selectedTab) {
             NavigationStack { DashboardView() }
                 .tabItem { Label(AppTab.progressHub.title, systemImage: AppTab.progressHub.systemImage) }
                 .tag(AppTab.progressHub)
-                .modifier(BottomSafeAreaPaddingModifier(padding: bottomPadding))
+                .safeAreaPadding(bottomPadding)
 
             NavigationStack { MyPlanView() }
                 .tabItem { Label(AppTab.myPlan.title, systemImage: AppTab.myPlan.systemImage) }
                 .tag(AppTab.myPlan)
-                .modifier(BottomSafeAreaPaddingModifier(padding: bottomPadding))
+                .safeAreaPadding(bottomPadding)
 
             NavigationStack { TriTrackView() }
                 .tabItem { Label(AppTab.triTrack.title, systemImage: AppTab.triTrack.systemImage) }
                 .tag(AppTab.triTrack)
-                .modifier(BottomSafeAreaPaddingModifier(padding: bottomPadding))
+                .safeAreaPadding(bottomPadding)
 
             MoodNestView()
                 .tabItem { Label(AppTab.moodNest.title, systemImage: AppTab.moodNest.systemImage) }
                 .tag(AppTab.moodNest)
-                .modifier(BottomSafeAreaPaddingModifier(padding: bottomPadding))
+                .safeAreaPadding(bottomPadding)
         }
         .task {
             _ = await authenticationService.autoLogin()
@@ -49,31 +65,28 @@ struct MomCareMainTabView: View {
         .popupInteractionStyle(.snap)
         .popupBarProgressViewStyle(.bottom)
         .popupCloseButtonStyle(.chevron)
-    }
-}
+        .onReceive(refreshTimer) { _ in
+            Task {
+                try? await authenticationService.refresh()
+            }
+        }
+        .onChange(of: scenePhase) { _, phase in
+            if phase == .background {
+                Task {
+                    try? await authenticationService.refresh()
+                }
+            }
+        }
+        .task {
+            await healthKitHandler.requestAccess()
 
-private struct BottomSafeAreaPaddingModifier: ViewModifier {
-    let padding: CGFloat
-
-    func body(content: Content) -> some View {
-        if #available(iOS 17.0, *) {
-            content.safeAreaPadding(.bottom, padding)
-        } else {
-            content.padding(.bottom, padding)
+            await fetchDailyInsights()
+            try? await healthKitHandler.fetchMealPlan()
+        }
+        .onAppear {
+            try? eventKitHandler.fetchAllEvents()
+            healthKitHandler.startStepCountObservation()
         }
     }
-}
 
-extension View {
-    func applyLiquidGlassTabBar() -> some View {
-        onAppear {
-            let appearance = UITabBarAppearance()
-            appearance.configureWithTransparentBackground()
-            appearance.backgroundEffect = UIBlurEffect(style: .systemThinMaterial)
-            appearance.backgroundColor = UIColor.systemBackground.withAlphaComponent(0.5)
-
-            UITabBar.appearance().standardAppearance = appearance
-            UITabBar.appearance().scrollEdgeAppearance = appearance
-        }
-    }
 }

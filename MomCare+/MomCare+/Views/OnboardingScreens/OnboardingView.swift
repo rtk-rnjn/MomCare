@@ -1,5 +1,4 @@
 import AuthenticationServices
-import GoogleSignIn
 import SwiftUI
 
 struct OnboardingView: View {
@@ -34,7 +33,14 @@ struct OnboardingView: View {
                     SignInWithAppleButton(.continue) { request in
                         request.requestedScopes = [.fullName, .email]
                     } onCompletion: { result in
-                        handleAppleSignIn(result)
+                        Task {
+                            try? await handleAppleSignIn(result)
+                            _ = try? await authenticationService.me()
+                            if authenticationService.userModel?.dueDateTimestamp == nil {
+                                navigateToHealthMetricsSignUp = true
+                            }
+
+                        }
                     }
                     .signInWithAppleButtonStyle(.black)
                     .frame(height: 52)
@@ -86,58 +92,24 @@ struct OnboardingView: View {
                 Color("secondaryAppColor")
                     .ignoresSafeArea()
             )
-            .navigationDestination(isPresented: $navigateToSecondSignup) {
+            .navigationDestination(isPresented: $navigateToHealthMetricsSignUp) {
                 HealthMetricsSignUpView()
             }
-            .fullScreenCover(isPresented: $navigateToMainApp) {
-                MomCareMainTabView()
-            }
-            .alert("Found Login Credentials", isPresented: $authenticationService.hasAccessToken) {
-                Button("Login") {
-                    if let isProfileComplete = authenticationService.userModel?.isProfileComplete, isProfileComplete {
-                        navigateToMainApp = true
-                    } else {
-                        navigateToSecondSignup = true
-                    }
-                }
-                Button("Use Different Account", role: .cancel) {
-                    Task { _ = await authenticationService.logout() }
-                }
-            } message: {
-                Text("We found existing login credentials saved on this device. Would you like to continue with those?")
-            }
-            .alert("Login Failed", isPresented: $showAlert) {
-                Button("OK", role: .cancel) {
-                    showAlert = false
-                    Task { _ = await authenticationService.logout() }
-                }
-            } message: {
-                Text(alertMessage ?? "An unknown error occurred during login.")
-            }
-            .task {
-                guard let networkResponse = await authenticationService.autoLogin() else {
-                    return
-                }
-
-                if let error = networkResponse.errorMessage {
-                    showAlert = true
-                    alertMessage = error
-                }
-            }
         }
+
     }
 
     // MARK: Private
 
+    @State private var navigateToHealthMetricsSignUp = false
+
     @EnvironmentObject private var authenticationService: AuthenticationService
 
     @State private var currentPage = 0
-    @State private var navigateToSecondSignup = false
-    @State private var navigateToMainApp = false
     @State private var showAlert = false
     @State private var alertMessage: String?
 
-    private func handleAppleSignIn(_ result: Result<ASAuthorization, any Error>) {
+    private func handleAppleSignIn(_ result: Result<ASAuthorization, any Error>) async throws {
         switch result {
         case let .success(auth):
             guard
@@ -145,24 +117,16 @@ struct OnboardingView: View {
                 let tokenData = credential.identityToken,
                 let tokenString = String(data: tokenData, encoding: .utf8)
             else {
-                print("Failed to fetch Apple identity token")
+                alertMessage = "Failed to extract Apple Sign-In token."
+                showAlert = true
                 return
             }
 
-            print("Apple Sign-In success, token:", tokenString)
-
-            let isNewUser = true
-
-            DispatchQueue.main.async {
-                if isNewUser {
-                    navigateToSecondSignup = true
-                } else {
-                    navigateToMainApp = true
-                }
-            }
+            _ = try await authenticationService.login(with: .apple, token: tokenString)
 
         case let .failure(error):
-            print("Apple Sign-In failed:", error.localizedDescription)
+            alertMessage = "Apple Sign-In failed: \(error.localizedDescription)"
+            showAlert = true
         }
     }
 }

@@ -62,6 +62,9 @@ enum Utils {
     }
 
     static func formattedTime(_ time: TimeInterval) -> String {
-        Duration.seconds(time).formatted(.time(pattern: .hourMinuteSecond))
+        if time.isNaN || time.isInfinite {
+            return "-:-"
+        }
+        return Duration.seconds(time).formatted(.time(pattern: .minuteSecond))
     }
 }

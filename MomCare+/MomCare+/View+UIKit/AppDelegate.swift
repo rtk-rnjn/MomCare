@@ -1,6 +1,6 @@
 import BackgroundTasks
+import SwiftUI
 import Combine
-import GoogleSignIn
 import OSLog
 import UIKit
 import UserNotifications
@@ -10,16 +10,20 @@ private let logger: Logger = .init(subsystem: "com.MomCare.AppDelegate", categor
 
 class AppDelegate: NSObject, UIApplicationDelegate, ObservableObject {
 
-    // MARK: Internal
-
     func application(
         _: UIApplication,
         didFinishLaunchingWithOptions launchOptions:
         [UIApplication.LaunchOptionsKey: Any]? = nil
     ) -> Bool {
         logger.info("App launched with options: \(launchOptions.debugDescription)")
+        UIApplication.shared.registerForRemoteNotifications()
 
         UNUserNotificationCenter.current().delegate = self
+
+        UISegmentedControl.appearance().selectedSegmentTintColor = .white
+        UISegmentedControl.appearance().backgroundColor = UIColor(Color.CustomColors.mutedRaspberry)
+        UISegmentedControl.appearance().setTitleTextAttributes([.foregroundColor: UIColor.white], for: .normal)
+        UISegmentedControl.appearance().setTitleTextAttributes([.foregroundColor: UIColor(Color.CustomColors.mutedRaspberry)], for: .selected)
 
         return true
     }
@@ -30,11 +34,14 @@ class AppDelegate: NSObject, UIApplicationDelegate, ObservableObject {
         return config
     }
 
-    // MARK: Private
+    func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
+        let readableToken = deviceToken.decodeToString()
+        print("Registered for remote notifications with device token: \(readableToken ?? "Unable to decode token")")
+    }
 
-    private var foregroundRefreshTask: Task<Void, Never>?
-    private let tokenValidity: TimeInterval = 60 * 60
-    private let safetyBuffer: TimeInterval = 5 * 60
+    func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: any Error) {
+        print("Failed to register for remote notifications with error: \(error)")
+    }
 
 }
 

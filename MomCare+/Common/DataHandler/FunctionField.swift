@@ -11,9 +11,9 @@ enum FieldType<Value: Codable> {
     case unset
     case value(Value)
     case null
-}
 
-extension FieldType: Codable where Value: Codable {
+    // MARK: Lifecycle
+
     init(from decoder: any Decoder) throws {
         let container = try decoder.singleValueContainer()
         if container.decodeNil() {
@@ -23,6 +23,8 @@ extension FieldType: Codable where Value: Codable {
             self = .value(value)
         }
     }
+
+    // MARK: Internal
 
     func encode(to encoder: any Encoder) throws {
         var container = encoder.singleValueContainer()
