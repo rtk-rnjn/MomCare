@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct AccountManagementView: View {
+struct ProfileAccountManagementView: View {
 
     // MARK: Internal
 

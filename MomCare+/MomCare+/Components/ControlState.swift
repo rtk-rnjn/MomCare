@@ -7,6 +7,7 @@ enum AppTab: Int, CaseIterable {
     case myPlan
     case triTrack
     case moodNest
+    case profile
 
     // MARK: Internal
 
@@ -17,6 +18,7 @@ enum AppTab: Int, CaseIterable {
         case .myPlan: "My Plan"
         case .triTrack: "TriTrack"
         case .moodNest: "Mood"
+        case .profile: "Profile"
         }
     }
 
@@ -27,6 +29,7 @@ enum AppTab: Int, CaseIterable {
         case .myPlan: "list.bullet.clipboard.fill"
         case .triTrack: "calendar"
         case .moodNest: "face.dashed.fill"
+        case .profile: "person.crop.circle"
         }
     }
 }
@@ -116,8 +119,6 @@ final class ControlState: ObservableObject {
     @Published var showingOnboarding: Bool = false
     @Published var showingSignIn: Bool = false
     @Published var showingSignUp: Bool = false
-
-    @Published var showingProfileSheet: Bool = false
 
     @Published var showingSearchFoodItemSheet: Bool = false
     @Published var showingAddFoodItemAlert: Bool = false

@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct AccountSecurityView: View {
+struct ProfileAccountSecurityView: View {
 
     // MARK: Internal
 
@@ -21,11 +21,6 @@ struct AccountSecurityView: View {
                     keyboard: .emailAddress
                 )
 
-                editableRow(
-                    title: "Phone Number",
-                    text: $phoneNumber,
-                    keyboard: .phonePad
-                )
             } header: {
                 Text("Account Information")
             } footer: {
@@ -106,7 +101,6 @@ struct AccountSecurityView: View {
 
         .onAppear {
             emailAddress = database[.emailAddress] as String? ?? ""
-            phoneNumber = authenticationService.userModel?.phoneNumber ?? ""
         }
     }
 
@@ -145,7 +139,6 @@ struct AccountSecurityView: View {
         Task {
             try? await authenticationService.changeEmailAddress(newEmailAddress: emailAddress)
         }
-        authenticationService.userModel?.phoneNumber = phoneNumber
     }
 
     // MARK: Private
@@ -162,7 +155,6 @@ struct AccountSecurityView: View {
     @State private var confirmPassword = ""
 
     @State private var emailAddress = ""
-    @State private var phoneNumber = ""
 
     private let database: Database = .init()
 }
@@ -183,7 +175,7 @@ struct SecureFieldRow: View {
     }
 }
 
-private extension AccountSecurityView {
+private extension ProfileAccountSecurityView {
 
     func editableRow(
         title: String,

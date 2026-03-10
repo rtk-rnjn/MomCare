@@ -23,7 +23,7 @@ struct InitialsAvatar: View {
     }
 }
 
-struct PersonalInfoView: View {
+struct ProfilePersonalInfoView: View {
 
     // MARK: Internal
 

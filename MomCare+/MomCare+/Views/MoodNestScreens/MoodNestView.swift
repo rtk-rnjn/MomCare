@@ -21,6 +21,8 @@ struct MoodNestView: View {
                         .frame(maxWidth: .infinity)
                         .padding(.horizontal, 25)
                         .accessibilityAddTraits(.isHeader)
+                        .accessibilityIdentifier("moodQuestion")
+                        .accessibilityHint("Asks the user to select their current mood")
 
                     Spacer()
 

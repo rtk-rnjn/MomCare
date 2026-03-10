@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct HealthInfoView: View {
+struct ProfileHealthInfoView: View {
 
     // MARK: Internal
 

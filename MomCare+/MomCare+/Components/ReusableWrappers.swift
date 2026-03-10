@@ -1,22 +1,6 @@
 import SwiftUI
 import UIKit
 
-struct ProfileTableViewWrapper: UIViewControllerRepresentable {
-    var authenticationService: AuthenticationService
-    var controlState: ControlState
-
-    func makeUIViewController(context _: Context) -> UINavigationController {
-        let profileViewController = ProfileTableView()
-        profileViewController.authenticationService = authenticationService
-        profileViewController.controlState = controlState
-
-        let navigationController = UINavigationController(rootViewController: profileViewController)
-        navigationController.navigationBar.prefersLargeTitles = false
-        return navigationController
-    }
-
-    func updateUIViewController(_: UINavigationController, context _: Context) {}
-}
 
 struct InfoRow: View {
     let title: String
