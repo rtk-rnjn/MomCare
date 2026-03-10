@@ -96,7 +96,6 @@ struct DashboardView: View {
             }
 
             DashboardExerciseCard(
-                minutes: healthKitHandler.minutes,
                 calories: healthKitHandler.caloriesBurned
             )
             .padding(.horizontal)
@@ -151,7 +150,6 @@ struct DashboardView: View {
     @Environment(\.dismiss) private var dismiss
 
     @State private var selectedEvent: EKCalendarItemWrapper?
-
 }
 
 extension View {

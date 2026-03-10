@@ -4,14 +4,15 @@ struct DashboardExerciseCard: View {
 
     // MARK: Internal
 
-    let minutes: Double
+    @State var seconds: Double = 0
+
     let calories: Int
 
     var body: some View {
         HStack {
             VStack(alignment: .leading, spacing: 18) {
                 ExerciseRow(color: .red, icon: "figure.walk", value: "\(Int(healthKitHandler.currentSteps)) Steps")
-                ExerciseRow(color: .green, icon: "timer", value: "\(Int(minutes)) Min")
+                ExerciseRow(color: .green, icon: "timer", value: displaySeconds)
                 ExerciseRow(color: .orange, icon: "flame.fill", value: "\(Int(calories)) Kcal")
             }
 
@@ -28,15 +29,40 @@ struct DashboardExerciseCard: View {
         .padding(.leading, 3)
         .background(Color("secondaryAppColor"))
         .dashboardCardStyle()
-        .task {
-            await healthKitHandler.fetchTotalDuration()
-            let completedDuration = healthKitHandler.userExercises.reduce(0) { $0 + $1.videoDurationCompletedSeconds }
+        .onChange(of: healthKitHandler.userExercises) {
+            Task {
+                await healthKitHandler.fetchTotalDuration()
+                exerciseProgress = await UserExerciseModel.totalDurationCompletionPercent(from: healthKitHandler.userExercises)
+            }
+        }
+        .onChange(of: healthKitHandler.userExercises) {
+            Task {
+                let totalCompletion = await UserExerciseModel.totalDurationCompletion(from: healthKitHandler.userExercises)
+                seconds = totalCompletion / 60
 
-            exerciseProgress = healthKitHandler.totalExerciseDuration / completedDuration
+                let measurement = Measurement(value: seconds, unit: UnitDuration.seconds)
+
+                let formatter = MeasurementFormatter()
+                formatter.unitOptions = .providedUnit
+
+                let numberFormatter = NumberFormatter()
+                numberFormatter.maximumFractionDigits = 2
+
+                formatter.numberFormatter = numberFormatter
+
+                displaySeconds = formatter.string(from: measurement)
+            }
+        }
+        .task {
+            if let networkResponse = try? await ContentService.shared.fetchUserExercises(), let userExercises = networkResponse.data {
+                healthKitHandler.userExercises = userExercises
+            }
         }
     }
 
     // MARK: Private
+
+    @State private var displaySeconds: String = "- min"
 
     @EnvironmentObject private var healthKitHandler: HealthKitHandler
 

@@ -128,4 +128,47 @@ struct UserExerciseModel: Codable, Sendable, Identifiable, Equatable {
             return count
         }
     }
+
+    static func totalDurationCompletion(from userExercises: [UserExerciseModel]) async -> TimeInterval {
+        await withTaskGroup(of: TimeInterval.self) { group in
+            for exercise in userExercises {
+                group.addTask {
+                    let percentage = await exercise.completionPercentage
+                    guard let exerciseModel = await exercise.exerciseModel else { return 0 }
+                    return percentage * exerciseModel.videoDurationSeconds
+                }
+            }
+
+            var totalDuration: TimeInterval = 0
+
+            for await duration in group {
+                totalDuration += duration
+            }
+
+            return totalDuration
+        }
+    }
+
+    static func totalDurationCompletionPercent(from userExercises: [UserExerciseModel]) async -> Double {
+        let totalDuration = await totalDurationCompletion(from: userExercises)
+        let totalPossibleDuration = await withTaskGroup(of: TimeInterval.self) { group in
+            for exercise in userExercises {
+                group.addTask {
+                    guard let exerciseModel = await exercise.exerciseModel else { return 0 }
+                    return exerciseModel.videoDurationSeconds
+                }
+            }
+
+            var total: TimeInterval = 0
+
+            for await duration in group {
+                total += duration
+            }
+
+            return total
+        }
+
+        guard totalPossibleDuration > 0 else { return 0 }
+        return min(totalDuration / totalPossibleDuration, 1.0)
+    }
 }
