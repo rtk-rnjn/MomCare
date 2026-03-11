@@ -31,16 +31,6 @@ struct TriTrackView: View {
         .ignoresSafeArea(edges: .bottom)
         .background(MomCareAccent.secondary.ignoresSafeArea())
         .navigationTitle("TriTrack")
-        .sheet(isPresented: $controlState.showingAddEventSheet) {
-            TriTrackAddCalendarItemSheetView()
-                .presentationDetents([.medium, .large])
-                .scrollDismissesKeyboard(.immediately)
-        }
-        .sheet(isPresented: $controlState.showingAddSymptomSheet) {
-            TriTrackAddSymptomSheetView()
-                .presentationDetents([.medium, .large])
-                .scrollDismissesKeyboard(.immediately)
-        }
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItemGroup(placement: .navigationBarTrailing) {
@@ -425,7 +415,7 @@ struct ComparisonView: View {
 
             VStack(alignment: .center) {
                 ZStack {
-                    let circleSize = min(110, UIScreen.main.bounds.width * 0.28)
+                    let circleSize = min(110, UIScreen.current.bounds.width * 0.28)
 
                     Circle()
                         .fill(Color(hex: "E88683"))
@@ -549,8 +539,8 @@ struct PopupInfoCard: View {
                 ZStack {
                     Path { path in
                         path.move(to: CGPoint(x: 0, y: 0))
-                        path.addLine(to: CGPoint(x: UIScreen.main.bounds.width * 0.9, y: 0))
-                        path.addLine(to: CGPoint(x: UIScreen.main.bounds.width * 0.45, y: envelopeOpen ? -20 : 40))
+                        path.addLine(to: CGPoint(x: UIScreen.current.bounds.width * 0.9, y: 0))
+                        path.addLine(to: CGPoint(x: UIScreen.current.bounds.width * 0.45, y: envelopeOpen ? -20 : 40))
                         path.addLine(to: CGPoint(x: 0, y: 0))
                     }
                     .fill(Color(hex: "FBE8E5"))
@@ -583,7 +573,7 @@ struct PopupInfoCard: View {
                             .frame(maxWidth: .infinity, alignment: .leading)
                             .opacity(isContentVisible ? 1 : 0)
                     }
-                    .frame(maxHeight: UIScreen.main.bounds.height * 0.35)
+                    .frame(maxHeight: UIScreen.current.bounds.height * 0.35)
 
                     HStack(spacing: 4) {
                         ForEach(0 ..< 15, id: \.self) { _ in
@@ -620,8 +610,8 @@ struct PopupInfoCard: View {
             .scaleEffect(scale)
             .offset(cardOffset)
             .opacity(opacity)
-            .frame(width: UIScreen.main.bounds.width * 0.9)
-            .frame(maxHeight: UIScreen.main.bounds.height * 0.65)
+            .frame(width: UIScreen.current.bounds.width * 0.9)
+            .frame(maxHeight: UIScreen.current.bounds.height * 0.65)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .onAppear {

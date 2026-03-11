@@ -1,5 +1,6 @@
-import MapKit
 import SwiftUI
+import MapKit
+import Combine
 
 struct MapPickerView: View {
 
@@ -9,48 +10,87 @@ struct MapPickerView: View {
 
     var body: some View {
         NavigationStack {
-            ZStack(alignment: .top) {
-                // MARK: Map
-
-                Map(position: $cameraPosition) {
-                    if let selectedMapItem {
-                        Marker(
-                            selectedMapItem.name ?? "",
-                            coordinate: selectedMapItem.placemark.coordinate
-                        )
+            MapReader { proxy in
+                Map(position: $cameraPosition, interactionModes: .all) {
+                    if let item = selectedMapItem {
+                        Marker(item.name ?? "", coordinate: item.location.coordinate)
                     }
                 }
                 .ignoresSafeArea()
+                .onTapGesture { screenPoint in
 
-                // MARK: Search Bar
+                    if let coordinate = proxy.convert(screenPoint, from: .local) {
 
-                searchBar
+                        let location = CLLocation(
+                            latitude: coordinate.latitude,
+                            longitude: coordinate.longitude
+                        )
+
+                        selectedMapItem = MKMapItem(location: location, address: nil)
+
+                        withAnimation(.easeInOut(duration: 0.3)) {
+                            cameraPosition = .region(
+                                MKCoordinateRegion(
+                                    center: coordinate,
+                                    span: MKCoordinateSpan(
+                                        latitudeDelta: 0.01,
+                                        longitudeDelta: 0.01
+                                    )
+                                )
+                            )
+                        }
+                    }
+                }
             }
-            .safeAreaInset(edge: .bottom) {
-                resultsView
+            .ignoresSafeArea()
+            .searchable(text: $searchService.searchText)
+            .searchFocused($isSearchFieldFocused)
+            .searchSuggestions {
+                ForEach(searchService.results, id: \.self) { item in
+                    Button {
+                        isSearchFieldFocused = false
+                        selectedMapItem = item
+                        cameraPosition = .region(MKCoordinateRegion(center: item.location.coordinate, span: MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05)))
+                    } label: {
+                        VStack(alignment: .leading) {
+                            Text(item.name ?? "Unknown Place")
+                                .font(.headline)
+                            if let address = item.address?.fullAddress {
+                                Text(address)
+                                    .font(.subheadline)
+                                    .foregroundStyle(.secondary)
+                                    .lineLimit(2)
+                            }
+                        }
+                    }
+                }
             }
             .navigationTitle("Pick Location")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
-                ToolbarItem(placement: .topBarTrailing) {
-                    Button("Done") {
+                ToolbarItem(placement: .cancellationAction) {
+                    Button(role: .cancel) {
+                        selectedMapItem = nil
+                        dismiss()
+                    }
+                    .foregroundStyle(.primary)
+                }
+
+                ToolbarItem(placement: .confirmationAction) {
+                    Button(role: .confirm) {
                         dismiss()
                     }
                     .disabled(selectedMapItem == nil)
                 }
             }
-        }
-        .onAppear {
-            locationManager.requestPermission()
-        }
-        .onChange(of: locationManager.userLocation) { _, location in
-            if let location {
-                withAnimation(.easeInOut(duration: 0.5)) {
+            .onAppear {
+                locationManager.requestPermission()
+
+                if let userLocation = locationManager.userLocation {
                     cameraPosition = .region(
                         MKCoordinateRegion(
-                            center: location.coordinate,
-                            span: MKCoordinateSpan(latitudeDelta: 0.05,
-                                                   longitudeDelta: 0.05)
+                            center: userLocation.coordinate,
+                            span: MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05)
                         )
                     )
                 }
@@ -58,154 +98,85 @@ struct MapPickerView: View {
         }
     }
 
-    var searchBar: some View {
-        HStack {
-            Image(systemName: "magnifyingglass")
-                .foregroundColor(.secondary)
-
-            TextField("Search for a place",
-                      text: $searchText)
-                .onChange(of: searchText) {
-                    performSearch()
-                }
-            Button {
-                if let location = locationManager.userLocation {
-                    let coordinate = location.coordinate
-
-                    let placemark = MKPlacemark(coordinate: coordinate)
-                    selectedMapItem = MKMapItem(placemark: placemark)
-
-                    withAnimation {
-                        cameraPosition = .region(
-                            MKCoordinateRegion(
-                                center: coordinate,
-                                span: MKCoordinateSpan(latitudeDelta: 0.01,
-                                                       longitudeDelta: 0.01)
-                            )
-                        )
-                    }
-                }
-            } label: {
-                Image(systemName: "location.fill")
-                    .foregroundColor(.blue)
-            }
-
-            if isSearching {
-                ProgressView()
-                    .scaleEffect(0.8)
-            }
-        }
-        .padding(12)
-        .background(.ultraThinMaterial)
-        .clipShape(RoundedRectangle(cornerRadius: 16))
-        .padding()
-        .shadow(radius: 5)
-    }
-
-    var resultsView: some View {
-        Group {
-            if !searchResults.isEmpty {
-                ScrollView {
-                    LazyVStack(spacing: 12) {
-                        ForEach(searchResults, id: \.self) { item in
-                            VStack(alignment: .leading, spacing: 4) {
-                                Text(item.name ?? "")
-                                    .font(.headline)
-
-                                Text(item.placemark.title ?? "")
-                                    .font(.caption)
-                                    .foregroundColor(.secondary)
-                            }
-                            .padding()
-                            .frame(maxWidth: .infinity,
-                                   alignment: .leading)
-                            .background(
-                                RoundedRectangle(cornerRadius: 12)
-                                    .fill(Color(.systemBackground))
-                            )
-                            .onTapGesture {
-                                select(item)
-                            }
-                        }
-                    }
-                    .padding()
-                }
-                .frame(maxHeight: 300)
-                .background(.ultraThinMaterial)
-                .clipShape(RoundedRectangle(cornerRadius: 24))
-                .padding()
-            }
-        }
-    }
-
-    func select(_ item: MKMapItem) {
-        selectedMapItem = item
-
-        withAnimation(.easeInOut(duration: 0.35)) {
-            cameraPosition = .region(
-                MKCoordinateRegion(
-                    center: item.placemark.coordinate,
-                    span: MKCoordinateSpan(latitudeDelta: 0.01,
-                                           longitudeDelta: 0.01)
-                )
-            )
-        }
-    }
-
     // MARK: Private
 
-    @StateObject private var locationManager: LocationManager = .init()
+    @FocusState private var isSearchFieldFocused: Bool
 
     @Environment(\.dismiss) private var dismiss
 
-    // MARK: State
-
-    @State private var searchText: String = ""
-    @State private var searchResults: [MKMapItem] = []
-    @State private var isSearching: Bool = false
+    @StateObject private var searchService: MapSearchService = .init()
+    @StateObject private var locationManager: LocationManager = .init()
 
     @State private var cameraPosition: MapCameraPosition =
         .region(
             MKCoordinateRegion(
                 center: CLLocationCoordinate2D(latitude: 28.6139, longitude: 77.2090),
-                span: MKCoordinateSpan(latitudeDelta: 0.05,
-                                       longitudeDelta: 0.05)
+                span: MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05)
             )
         )
 
-    private func performSearch() {
-        guard !searchText.trimmingCharacters(in: .whitespaces).isEmpty else {
+}
+
+final class MapSearchService: NSObject, ObservableObject {
+
+    // MARK: Lifecycle
+
+    override init() {
+        super.init()
+
+        completer.delegate = self
+        completer.resultTypes = [.address, .pointOfInterest]
+
+        $searchText
+            .debounce(for: .milliseconds(400), scheduler: RunLoop.main)
+            .removeDuplicates()
+            .sink { text in
+                self.performSearch(text)
+            }
+            .store(in: &cancellables)
+    }
+
+    // MARK: Internal
+
+    @Published var searchText: String = ""
+    @Published var results: [MKMapItem] = []
+
+    // MARK: Private
+
+    private let completer: MKLocalSearchCompleter = .init()
+    private var cancellables: Set<AnyCancellable> = []
+
+    private func performSearch(_ text: String) {
+        guard !text.trimmingCharacters(in: .whitespaces).isEmpty else {
+            results = []
             return
         }
 
-        isSearching = true
+        completer.queryFragment = text
+    }
+}
 
-        let request = MKLocalSearch.Request()
-        request.naturalLanguageQuery = searchText
-        request.resultTypes = [.address, .pointOfInterest]
+extension MapSearchService: MKLocalSearchCompleterDelegate {
 
-        // Important: give it a broad region
-        request.region = MKCoordinateRegion(
-            center: cameraCenterCoordinate(),
-            span: MKCoordinateSpan(latitudeDelta: 0.5,
-                                   longitudeDelta: 0.5)
-        )
+    func completerDidUpdateResults(_ completer: MKLocalSearchCompleter) {
+        Task {
+            var items = [MKMapItem]()
 
-        let search = MKLocalSearch(request: request)
+            for suggestion in completer.results {
 
-        search.start { response, _ in
-            DispatchQueue.main.async {
-                isSearching = false
-                searchResults = response?.mapItems ?? []
+                let request = MKLocalSearch.Request()
+                request.naturalLanguageQuery = suggestion.title
+
+                let search = MKLocalSearch(request: request)
+
+                if let response = try? await search.start() {
+                    items.append(contentsOf: response.mapItems)
+                }
+            }
+
+            await MainActor.run {
+                self.results = items
             }
         }
     }
-
-    private func cameraCenterCoordinate() -> CLLocationCoordinate2D {
-        if let region = cameraPosition.region {
-            return region.center
-        }
-        return CLLocationCoordinate2D(latitude: 28.6139, longitude: 77.2090)
-    }
-
 }

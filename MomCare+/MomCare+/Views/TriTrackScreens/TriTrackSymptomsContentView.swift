@@ -55,15 +55,18 @@ struct TriTrackSymptomsContentView: View {
                 .multilineTextAlignment(.center)
 
             Button {
-                controlState.showingAddEventSheet = true
+                controlState.showingAddSymptomSheet = true
             } label: {
                 Label("Log Symptom", systemImage: "plus")
                     .font(.body.weight(.semibold))
             }
             .buttonStyle(.borderedProminent)
             .tint(Color.CustomColors.mutedRaspberry)
-            .sheet(isPresented: $controlState.showingAddEventSheet) {
+            .sheet(isPresented: $controlState.showingAddSymptomSheet) {
                 TriTrackAddSymptomSheetView()
+                    .presentationDetents([.medium, .large])
+                    .scrollDismissesKeyboard(.immediately)
+                    .interactiveDismissDisabled(true)
             }
             .disabled(!Calendar.current.isDate(selectedDate, inSameDayAs: Date()))
             .accessibilityLabel("Log symptom")

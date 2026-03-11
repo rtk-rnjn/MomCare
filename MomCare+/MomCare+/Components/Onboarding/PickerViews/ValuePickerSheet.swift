@@ -32,7 +32,7 @@ struct ValuePickerSheet<UnitType: Dimension>: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .confirmationAction) {
-                    Button("Done") {
+                    Button(role: .confirm) {
                         dismiss()
                     }
                     .tint(MomCareAccent.primary)

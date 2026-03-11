@@ -41,13 +41,8 @@ struct ProgressCardView: View {
         }
         .padding(18)
         .background {
-            if #available(iOS 26.0, *) {
-                ConcentricRectangle()
-                    .fill(Color(.systemBackground))
-            } else {
-                RoundedRectangle(cornerRadius: 24, style: .continuous)
-                    .fill(Color(.systemBackground))
-            }
+            ConcentricRectangle()
+                .fill(Color(.systemBackground))
         }
     }
 

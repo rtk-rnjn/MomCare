@@ -86,6 +86,16 @@ struct TriTrackAddSymptomSheetView: View {
                 }
             }
             .navigationTitle("New Symptom")
+            .toolbar {
+                ToolbarItem(placement: .cancellationAction) {
+                    Button(role: .cancel) {
+                        dismiss()
+                    }
+                    .accessibilityLabel("Cancel")
+                    .accessibilityHint("Dismisses this screen without saving changes")
+                    .accessibilityAddTraits(.isButton)
+                }
+            }
             .navigationBarTitleDisplayMode(.inline)
         }
         .presentationDetents([.medium, .large])
@@ -97,6 +107,7 @@ struct TriTrackAddSymptomSheetView: View {
                 }
             }
             .presentationDetents([.medium, .large])
+            .interactiveDismissDisabled(true)
         }
     }
 

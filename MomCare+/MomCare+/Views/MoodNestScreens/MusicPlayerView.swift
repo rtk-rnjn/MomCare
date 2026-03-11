@@ -20,7 +20,7 @@ struct MusicPlayerView: View {
             Image(uiImage: musicPlayerHandler.currentSongUIImage ?? UIImage())
                 .resizable()
                 .aspectRatio(contentMode: .fill)
-                .frame(width: UIScreen.main.bounds.width - 48, height: UIScreen.main.bounds.width - 48)
+                .frame(width: UIScreen.current.bounds.width - 48, height: UIScreen.current.bounds.width - 48)
                 .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
                 .shadow(color: .black.opacity(0.4), radius: 20, x: 0, y: 10)
                 .accessibilityLabel("\(musicPlayerHandler.currentSong?.metadata?.title ?? "Song") album artwork")

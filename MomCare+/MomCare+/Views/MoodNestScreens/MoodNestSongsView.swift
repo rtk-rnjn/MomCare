@@ -301,19 +301,13 @@ struct PlaylistTrackRow: View {
 
     @ViewBuilder
     private var nowPlayingIndicator: some View {
-        if #available(iOS 17.0, *) {
-            Image(systemName: musicKitHandler.isPlaying ? "waveform" : "pause.fill")
-                .font(.body.weight(.semibold))
-                .foregroundColor(.white)
-                .symbolEffect(
-                    .variableColor.iterative,
-                    options: .repeating,
-                    isActive: musicKitHandler.isPlaying
-                )
-        } else {
-            Image(systemName: musicKitHandler.isPlaying ? "waveform" : "pause.fill")
-                .font(.body.weight(.semibold))
-                .foregroundColor(.white)
-        }
+        Image(systemName: musicKitHandler.isPlaying ? "waveform" : "pause.fill")
+            .font(.body.weight(.semibold))
+            .foregroundColor(.white)
+            .symbolEffect(
+                .variableColor.iterative,
+                options: .repeating,
+                isActive: musicKitHandler.isPlaying
+            )
     }
 }

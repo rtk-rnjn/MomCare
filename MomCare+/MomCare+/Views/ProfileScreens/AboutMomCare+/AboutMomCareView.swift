@@ -28,12 +28,17 @@ struct AboutMomCareView: View {
                     Text("Open Source")
                 }
             }
-#if DEBUG
-            Button("Crash App") {
-                fatalError("This is a test crash for Crashlytics.")
+
+            Button("Crash App", role: .destructive) {
+                crashApp = true
+            }
+            .confirmationDialog("Are you sure? This is mainly for DEBUG purpose", isPresented: $crashApp, titleVisibility: .visible) {
+                Button("FUCKING DO IT", role: .destructive) {
+                    fatalError("Crashed Intentionally")
+                }
             }
             .foregroundStyle(.red)
-#endif // DEBUG
+
         }
         .navigationTitle("About MomCare+")
         .navigationBarTitleDisplayMode(.inline)
@@ -42,10 +47,8 @@ struct AboutMomCareView: View {
 
     // MARK: Private
 
+    @State private var crashApp: Bool = false
+
     private let appVersion: String = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "Failed to fetch app version"
 
-}
-
-#Preview {
-    AboutMomCareView()
 }

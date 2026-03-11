@@ -24,7 +24,7 @@ struct TriTrackCalendarItemContentView: View {
 
     var body: some View {
         VStack(spacing: 16) {
-            if eventKitHandler.events.isEmpty {
+            if eventKitHandler.events.isEmpty && eventKitHandler.reminders.isEmpty {
                 Image(systemName: "calendar.badge.plus")
                     .font(.system(size: emptyStateIconSize))
                     .foregroundColor(.secondary)
@@ -66,12 +66,36 @@ struct TriTrackCalendarItemContentView: View {
                             }
                     }
                     ForEach(eventKitHandler.reminders, id: \.calendarItemIdentifier) { reminder in
-                        ReminderRow(reminder: reminder)
+                        ReminderRow(reminder: reminder, onTap: {
+                            let updatedReminder = try! eventKitHandler.markReminder(complete: !reminder.isCompleted, reminder: reminder)
+                            try? eventKitHandler.fetchReminders(startDate: selectedDate)
+                            return updatedReminder
+                        })
                             .contextMenu {
                                 Button {
                                     selectedReminder = EKCalendarItemWrapper(item: reminder)
                                 } label: {
                                     Label("View Details", systemImage: "eye")
+                                }
+
+                                Button {
+                                    _ = try? eventKitHandler.markReminder(complete: !reminder.isCompleted, reminder: reminder)
+                                    try? eventKitHandler.fetchReminders(startDate: selectedDate)
+
+                                } label: {
+                                    if !reminder.isCompleted {
+                                        Label("Mark as Completed", systemImage: "checkmark.circle")
+                                    } else {
+                                        Label("Mark as Incomplete", systemImage: "circle")
+                                    }
+                                }
+
+                                Button {
+                                    try? eventKitHandler.deleteReminder(reminder)
+                                    try? eventKitHandler.fetchReminders(startDate: selectedDate)
+                                } label: {
+                                    Label("Delete Reminder", systemImage: "trash")
+                                        .foregroundColor(.red)
                                 }
                             } preview: {
                                 TriTrackReminderDetailsContextView(reminder: reminder)
@@ -81,7 +105,7 @@ struct TriTrackCalendarItemContentView: View {
                             }
                     }
                 }
-                .animation(reduceMotion ? nil : .spring(response: 0.4, dampingFraction: 0.8), value: eventKitHandler.events)
+                .animation(reduceMotion ? nil : .spring(response: 0.4, dampingFraction: 0.8), value: eventKitHandler.events.count + eventKitHandler.reminders.count)
             }
         }
         .frame(maxWidth: .infinity)
@@ -98,6 +122,7 @@ struct TriTrackCalendarItemContentView: View {
                 TriTrackAddCalendarItemSheetView()
                     .presentationDetents([.medium, .large])
                     .scrollDismissesKeyboard(.immediately)
+                    .interactiveDismissDisabled(true)
             }
         )
         .sheet(
@@ -119,6 +144,7 @@ struct TriTrackCalendarItemContentView: View {
             content: { eventWrapper in
                 if let reminder = eventWrapper.item as? EKReminder {
                     EKReminderView(reminder: reminder)
+                        .interactiveDismissDisabled(true)
                 }
             }
         )
@@ -231,70 +257,21 @@ struct ReminderRow: View {
 
     // MARK: Internal
 
-    let reminder: EKReminder
+    @State var reminder: EKReminder
+
+    let onTap: (() -> EKReminder)?
 
     var body: some View {
+
         HStack(spacing: 14) {
-            // Date Capsule
-            VStack(spacing: 4) {
-                if let dueDate {
-                    Text(dueDate.formatted(.dateTime.day()))
-                        .font(.headline.weight(.bold))
 
-                    Text(dueDate.formatted(.dateTime.month(.abbreviated)))
-                        .font(.caption)
-                } else {
-                    Image(systemName: "calendar")
-                        .font(.headline)
-                }
-            }
-            .frame(width: 50, height: 50)
-            .background(
-                RoundedRectangle(cornerRadius: 12, style: .continuous)
-                    .fill(
-                        isPast ? Color.red.opacity(0.15) :
-                            isToday ? Color.CustomColors.mutedRaspberry :
-                            Color(.systemGray6)
-                    )
-            )
-            .foregroundColor(
-                isPast ? .red :
-                    isToday ? .white :
-                    .primary
-            )
+            dateCapsule
 
-            // Title + Time
-            VStack(alignment: .leading, spacing: 4) {
-                Text(reminder.title)
-                    .font(.headline)
-                    .lineLimit(1)
-                    .strikethrough(reminder.isCompleted)
-
-                if let dueDate {
-                    Text(dueDate.formatted(.dateTime.hour().minute()))
-                        .font(.subheadline)
-                        .foregroundColor(.secondary)
-                }
-
-                if let notes = reminder.notes,
-                   !notes.isEmpty {
-                    Text(notes)
-                        .font(.caption)
-                        .foregroundColor(.secondary)
-                        .lineLimit(1)
-                }
-            }
+            reminderInfo
 
             Spacer()
 
-            // Completion Indicator
-            Image(systemName: reminder.isCompleted ? "checkmark.circle.fill" : "circle")
-                .foregroundColor(
-                    reminder.isCompleted
-                        ? .green
-                        : (isPast ? .red : .gray.opacity(0.6))
-                )
-                .accessibilityHidden(true)
+            completionIndicator
         }
         .padding()
         .background(
@@ -304,12 +281,60 @@ struct ReminderRow: View {
         .opacity(reminder.isCompleted ? 0.6 : 1)
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(reminder.title)
-        .accessibilityValue(reminder.isCompleted ? "completed" : (isPast ? "overdue" : dueDate.map { $0.formatted(.dateTime.weekday().day().month().hour().minute()) } ?? "no due date"))
+        .accessibilityValue(accessibilityValue)
         .accessibilityHint("Double tap to view reminder details, long press for more options")
         .accessibilityAddTraits(reminder.isCompleted ? [.isButton, .isSelected] : .isButton)
     }
 
     // MARK: Private
+
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @Environment(\.accessibilityDifferentiateWithoutColor) private var differentiateWithoutColor
+
+    // MARK: Colors
+
+    private var backgroundColor: Color {
+
+        if isPast {
+            return Color.red.opacity(0.15)
+        } else if isToday {
+            return Color.CustomColors.mutedRaspberry
+        } else {
+            return Color(.systemGray6)
+        }
+    }
+
+    private var foregroundColor: Color {
+
+        if isPast {
+            return .red
+        } else if isToday {
+            return .white
+        } else {
+            return .primary
+        }
+    }
+
+    // MARK: Accessibility Value
+
+    private var accessibilityValue: String {
+
+        if reminder.isCompleted {
+            return "completed"
+        }
+
+        if isPast {
+            return "overdue"
+        }
+
+        if let dueDate {
+            return dueDate.formatted(.dateTime.weekday().day().month().hour().minute())
+        }
+
+        return "no due date"
+    }
+
+    // MARK: Dates
 
     private var dueDate: Date? {
         reminder.dueDateComponents?.date
@@ -323,6 +348,110 @@ struct ReminderRow: View {
     private var isPast: Bool {
         guard let dueDate else { return false }
         return dueDate < Date() && !reminder.isCompleted
+    }
+
+    // MARK: Date Capsule
+
+    private var dateCapsule: some View {
+
+        VStack(spacing: 4) {
+
+            if let dueDate {
+                Text(dueDate.formatted(.dateTime.day()))
+                    .font(.headline.weight(.bold))
+
+                Text(dueDate.formatted(.dateTime.month(.abbreviated)))
+                    .font(.caption)
+
+            } else {
+
+                Image(systemName: "calendar")
+                    .font(.headline)
+            }
+        }
+        .frame(width: 50, height: 50)
+        .background(
+            RoundedRectangle(cornerRadius: 12, style: .continuous)
+                .fill(backgroundColor)
+        )
+        .foregroundColor(foregroundColor)
+        .overlay(
+            differentiateWithoutColor && isPast
+            ? Image(systemName: "exclamationmark")
+                .font(.caption.bold())
+                .foregroundStyle(.red)
+            : nil
+        )
+    }
+
+    // MARK: Reminder Info
+
+    private var reminderInfo: some View {
+
+        VStack(alignment: .leading, spacing: 4) {
+
+            Text(reminder.title)
+                .font(.headline)
+                .lineLimit(1)
+                .strikethrough(reminder.isCompleted)
+
+            if let dueDate {
+                Text(dueDate.formatted(.dateTime.hour().minute()))
+                    .font(.subheadline)
+                    .foregroundColor(.secondary)
+            }
+
+            if let notes = reminder.notes, !notes.isEmpty {
+                Text(notes)
+                    .font(.caption)
+                    .foregroundColor(.secondary)
+                    .lineLimit(1)
+            }
+        }
+    }
+
+    // MARK: Completion Button
+
+    private var completionIndicator: some View {
+
+        Image(systemName: reminder.isCompleted ? "checkmark.circle.fill" : "circle")
+            .foregroundColor(
+                reminder.isCompleted
+                ? .green
+                : (isPast ? .red : .gray.opacity(0.6))
+            )
+            .onTapGesture {
+                toggleReminder()
+            }
+            .accessibilityLabel(
+                reminder.isCompleted
+                ? "Mark as incomplete"
+                : "Mark as completed"
+            )
+            .accessibilityHint(
+                reminder.isCompleted
+                ? "Double tap to mark as incomplete"
+                : "Double tap to mark as completed"
+            )
+    }
+
+    // MARK: Toggle
+
+    private func toggleReminder() {
+
+        let perform = {
+            if let reminder = onTap?() {
+                self.reminder = reminder
+            }
+        }
+
+        if reduceMotion {
+            perform()
+        } else {
+            withAnimation(.interactiveSpring(response: 0.35, dampingFraction: 0.85)) {
+                perform()
+            }
+        }
     }
 
 }
@@ -566,166 +695,6 @@ private extension TriTrackReminderDetailsContextView {
         case 5: .orange
         case 9: .blue
         default: .gray
-        }
-    }
-}
-
-struct EKReminderView: View {
-
-    // MARK: Internal
-
-    let reminder: EKReminder
-
-    var body: some View {
-        NavigationStack {
-            Form {
-                // MARK: Title Section
-
-                Section {
-                    HStack(spacing: 14) {
-                        Image(systemName: isCompleted ? "checkmark.circle.fill" : "circle")
-                            .font(.title2)
-                            .foregroundColor(
-                                isCompleted ? .green :
-                                    isOverdue ? .red :
-                                    .accentColor
-                            )
-                            .accessibilityHidden(true)
-
-                        VStack(alignment: .leading, spacing: 4) {
-                            Text(reminder.title)
-                                .font(.headline)
-                                .strikethrough(isCompleted)
-
-                            if isOverdue {
-                                Text("Overdue")
-                                    .font(.caption)
-                                    .foregroundColor(.red)
-                            }
-                        }
-                    }
-                    .padding(.vertical, 4)
-                }
-
-                // MARK: Due Date
-
-                Section("Due Date") {
-                    if let dueDate {
-                        VStack(alignment: .leading, spacing: 6) {
-                            Text(
-                                dueDate.formatted(
-                                    .dateTime.weekday(.wide)
-                                        .day()
-                                        .month(.wide)
-                                        .year()
-                                )
-                            )
-
-                            Text(dueDate.formatted(.dateTime.hour().minute()))
-                                .foregroundColor(.secondary)
-
-                            Text(dueDate.formatted(.relative(presentation: .named)))
-                                .font(.caption)
-                                .foregroundColor(isOverdue ? .red : .secondary)
-                        }
-                    } else {
-                        Text("No due date")
-                            .foregroundColor(.secondary)
-                    }
-                }
-
-                // MARK: Priority
-
-                if reminder.priority > 0 {
-                    Section("Priority") {
-                        HStack {
-                            Label(priorityText(reminder.priority), systemImage: "flag.fill")
-                                .foregroundColor(priorityColor(reminder.priority))
-
-                            Spacer()
-                        }
-                    }
-                }
-
-                // MARK: List
-
-                Section("List") {
-                    HStack {
-                        Circle()
-                            .fill(Color(reminder.calendar.cgColor))
-                            .frame(width: 10, height: 10)
-
-                        Text(reminder.calendar.title)
-                            .foregroundColor(.secondary)
-                    }
-                }
-
-                // MARK: Notes
-
-                if let notes = reminder.notes,
-                   !notes.isEmpty {
-                    Section("Notes") {
-                        Text(notes)
-                            .foregroundColor(.secondary)
-                    }
-                }
-            }
-            .navigationTitle("Reminder")
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .cancellationAction) {
-                    Button("Cancel") {
-                        dismiss()
-                    }
-                }
-            }
-            .interactiveDismissDisabled(false) // Allow swipe down
-        }
-    }
-
-    // MARK: Private
-
-    @Environment(\.dismiss) private var dismiss
-
-    private var dueDate: Date? {
-        reminder.dueDateComponents?.date
-    }
-
-    private var isCompleted: Bool {
-        reminder.isCompleted
-    }
-
-    private var isOverdue: Bool {
-        guard let dueDate else { return false }
-        return dueDate < Date() && !isCompleted
-    }
-
-}
-
-private extension EKReminderView {
-    func priorityText(_ value: Int) -> String {
-        switch value {
-        case 1:
-            "High"
-        case 5:
-            "Medium"
-        case 9:
-            "Low"
-        default:
-            "None"
-        }
-    }
-
-    func priorityColor(_ value: Int) -> Color {
-        switch value {
-        case 1:
-            .red
-        case 5:
-            .orange
-        case 9:
-            .blue
-        default:
-            .secondary
         }
     }
 }

@@ -52,20 +52,12 @@ struct BaseSignUpView: View {
 
     private var signUpForm: some View {
         Group {
-            if #available(iOS 16.0, *) {
-                Form {
-                    nameSection
-                    credentialsSection
-                    mobileSection
-                }
-                .scrollContentBackground(.hidden)
-            } else {
-                Form {
-                    nameSection
-                    credentialsSection
-                    mobileSection
-                }
+            Form {
+                nameSection
+                credentialsSection
+                mobileSection
             }
+            .scrollContentBackground(.hidden)
         }
     }
 

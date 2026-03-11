@@ -17,6 +17,14 @@ class SemiCircleAnimationView: UIView {
 
     // MARK: Internal
 
+    var mainScale: CGFloat {
+        if let scale = window?.windowScene?.screen.scale {
+            return scale
+        }
+
+        fatalError()
+    }
+
     override func layoutSubviews() {
         super.layoutSubviews()
 
@@ -59,7 +67,7 @@ class SemiCircleAnimationView: UIView {
 
     private func setupShape() {
         layer.addSublayer(shapeLayer)
-        shapeLayer.contentsScale = UIScreen.main.scale
+        shapeLayer.contentsScale = UIScreen.current.scale
         shapeLayer.fillColor = UIColor.black.cgColor
     }
 

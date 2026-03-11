@@ -37,13 +37,13 @@ struct MyPlanFoodItemSearchView: View {
                 debounceSearch(query: newValue)
             }
             .alert("Add Food?", isPresented: $showAlert) {
-                Button("Add", role: .none) {
+                Button("Add", role: .confirm) {
                     Task {
                         try? await healthKitHandler.addFoodToMyPlan(foodId: selectedFoodItem?.id ?? "", mealType: mealType)
                     }
                     dismiss()
                 }
-                Button("Cancel", role: .cancel) {}
+                Button(role: .cancel) {}
             } message: {
                 if let selectedFoodItem {
                     Text("Do you want to add \(selectedFoodItem.name) to your plan?")
@@ -51,7 +51,7 @@ struct MyPlanFoodItemSearchView: View {
             }
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
-                    Button("Cancel") {
+                    Button(role: .cancel) {
                         dismiss()
                         task?.cancel()
                     }

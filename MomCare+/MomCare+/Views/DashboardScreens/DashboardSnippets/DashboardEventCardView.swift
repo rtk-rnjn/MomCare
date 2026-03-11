@@ -99,6 +99,9 @@ struct DashboardEventCardView: View {
             },
             content: {
                 TriTrackAddCalendarItemSheetView()
+                    .presentationDetents([.medium, .large])
+                    .scrollDismissesKeyboard(.immediately)
+                    .interactiveDismissDisabled(true)
             }
         )
     }

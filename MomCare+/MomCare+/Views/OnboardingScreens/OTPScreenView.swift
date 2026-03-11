@@ -138,19 +138,11 @@ struct OTPScreenView: View {
 
     private var hiddenOTPTextField: some View {
         Group {
-            if #available(iOS 17.0, *) {
-                TextField("", text: $otpString)
-                    .otpTextFieldStyle(isFocused: $isFieldFocused)
-                    .onChange(of: otpString) { _, newValue in
-                        sanitizeOTP(newValue)
-                    }
-            } else {
-                TextField("", text: $otpString)
-                    .otpTextFieldStyle(isFocused: $isFieldFocused)
-                    .onChange(of: otpString) { newValue in
-                        sanitizeOTP(newValue)
-                    }
-            }
+            TextField("", text: $otpString)
+                .otpTextFieldStyle(isFocused: $isFieldFocused)
+                .onChange(of: otpString) { _, newValue in
+                    sanitizeOTP(newValue)
+                }
         }
     }
 
