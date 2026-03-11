@@ -48,7 +48,7 @@ struct ProfileHealthInfoView: View {
 //                    activeSheet = .conditions
 //                }
 
-                pickerRow(title: "Dietary Preferences", value: displayCount(dietaryPrefs)) {
+                pickerRow(title: "Dietary Preferences", value: displayCount(dietaryPreferences)) {
                     activeSheet = .diet
                 }
 
@@ -72,7 +72,26 @@ struct ProfileHealthInfoView: View {
                 .tint(MomCareAccent.primary)
             }
         }
+        .onChange(of: isEditing) {
+            if isEditing {
+                return
+            }
+            Task {
+                if dueDate != authenticationService.userModel?.dueDate {
+                    _ = try? await authenticationService.update(dueDateTimestamp: .value(dueDate.timeIntervalSince1970))
+                    authenticationService.userModel?.dueDateTimestamp = dueDate.timeIntervalSince1970
+                }
 
+                if !compare(allergies, with: authenticationService.userModel?.foodIntolerances ?? []) {
+                    _ = try? await authenticationService.update(foodIntolerances: .value(allergies.map { $0.rawValue }))
+                    authenticationService.userModel?.foodIntolerances = Array(allergies)
+                }
+                if !compare(dietaryPreferences, with: authenticationService.userModel?.dietaryPreferences ?? []) {
+                    _ = try? await authenticationService.update(dietaryPreferences: .value(dietaryPreferences.map { $0.rawValue }))
+                    authenticationService.userModel?.dietaryPreferences = Array(dietaryPreferences)
+                }
+            }
+        }
         .sheet(item: $activeSheet) { sheet in
             switch sheet {
             case .conditions:
@@ -86,7 +105,7 @@ struct ProfileHealthInfoView: View {
                 MultiSelectPickerView(
                     title: "Dietary Preference",
                     items: DietaryPreference.allCases.filter { $0 != .none },
-                    selection: $dietaryPrefs
+                    selection: $dietaryPreferences
                 )
 
             case .allergies:
@@ -99,6 +118,10 @@ struct ProfileHealthInfoView: View {
             }
         }
         .presentationDetents([.medium, .large])
+        .onAppear {
+            dietaryPreferences = Set(authenticationService.userModel?.dietaryPreferences ?? [])
+            allergies = Set(authenticationService.userModel?.foodIntolerances ?? [])
+        }
     }
 
     func pickerRow(
@@ -129,7 +152,6 @@ struct ProfileHealthInfoView: View {
 
     func displayCount(_ set: Set<some Any>) -> String {
         if set.isEmpty { return "None" }
-        if set.count == 1 { return "1 Selected" }
         return "\(set.count) Selected"
     }
 
@@ -144,7 +166,7 @@ struct ProfileHealthInfoView: View {
     @State private var dueDate: Date = .init()
     @State private var allergies: Set<Intolerance> = []
     @State private var conditions: Set<PreExistingCondition> = []
-    @State private var dietaryPrefs: Set<DietaryPreference> = []
+    @State private var dietaryPreferences: Set<DietaryPreference> = []
 
     @State private var activeSheet: SheetType?
 
@@ -162,4 +184,7 @@ struct ProfileHealthInfoView: View {
         return now ... max
     }
 
+    private func compare<T: Hashable>(_ set: Set<T>, with array: [T]) -> Bool {
+        set.count == array.count && set == Set(array)
+    }
 }
