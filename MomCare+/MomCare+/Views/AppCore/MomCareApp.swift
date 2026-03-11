@@ -4,12 +4,6 @@ import SwiftUI
 @main
 struct MomCareApp: App {
 
-    // MARK: Lifecycle
-
-    init() {
-//        _ = MetricKitManager.shared
-    }
-
     // MARK: Internal
 
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate

@@ -5,7 +5,8 @@ import SwiftUI
 private let eventIdentifier = "com.momcareplus.tritrack.calendar"
 private let reminderIdentifier = "com.momcareplus.tritrack.reminders"
 
-class EventKitHandler: ObservableObject {
+@MainActor
+final class EventKitHandler: ObservableObject {
 
     // MARK: Internal
 
@@ -48,14 +49,10 @@ class EventKitHandler: ObservableObject {
 
         let newCalendar = EKCalendar(for: eventType, eventStore: eventStore)
         newCalendar.title = title
-        if let localSource = eventStore.sources.first(where: { $0.sourceType == .local }) {
-            newCalendar.source = localSource
-        } else {
-            newCalendar.source = defaultCalendar?.source
-        }
+        newCalendar.source = defaultCalendar?.source ?? eventStore.defaultCalendarForNewEvents?.source
 
-        database.set(newCalendar.calendarIdentifier, forKey: identifierKey)
         try eventStore.saveCalendar(newCalendar, commit: true)
+        database.set(newCalendar.calendarIdentifier, forKey: identifierKey)
 
         return newCalendar
     }

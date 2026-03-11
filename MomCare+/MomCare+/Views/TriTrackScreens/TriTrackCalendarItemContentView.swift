@@ -22,8 +22,6 @@ struct TriTrackCalendarItemContentView: View {
 
     @Binding var selectedDate: Date
 
-    var eventStore: EKEventStore = .init()
-
     var body: some View {
         VStack(spacing: 16) {
             if eventKitHandler.events.isEmpty {
@@ -125,8 +123,8 @@ struct TriTrackCalendarItemContentView: View {
             }
         )
         .task {
-            _ = try? await eventStore.requestFullAccessToEvents()
-            _ = try? await eventStore.requestFullAccessToReminders()
+            _ = try? await eventKitHandler.eventStore.requestFullAccessToEvents()
+            _ = try? await eventKitHandler.eventStore.requestFullAccessToReminders()
         }
         .onAppear {
             try? eventKitHandler.fetchAppointments(selectedDate: selectedDate)

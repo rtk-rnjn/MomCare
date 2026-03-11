@@ -1,6 +1,7 @@
 import LNPopupUI
 import SwiftUI
 import Combine
+import EventKit
 
 struct MomCareMainTabView: View {
 
@@ -61,6 +62,7 @@ struct MomCareMainTabView: View {
         }
         .task {
             _ = await authenticationService.autoLogin()
+            try? await authenticationService.refresh()
         }
         .popup(isBarPresented: $controlState.showingPopupBar, isPopupOpen: $controlState.showingPopup) {
             MusicPlayerView()
@@ -86,6 +88,10 @@ struct MomCareMainTabView: View {
 
             await fetchDailyInsights()
             try? await healthKitHandler.fetchMealPlan()
+        }
+        .task {
+            _ = try? await eventKitHandler.eventStore.requestFullAccessToEvents()
+            _ = try? await eventKitHandler.eventStore.requestFullAccessToReminders()
         }
         .onAppear {
             try? eventKitHandler.fetchAllEvents()
