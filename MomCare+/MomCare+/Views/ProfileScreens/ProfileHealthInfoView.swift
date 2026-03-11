@@ -160,6 +160,7 @@ struct ProfileHealthInfoView: View {
     @EnvironmentObject private var authenticationService: AuthenticationService
 
     @Environment(\.dismiss) private var dismiss
+
     @State private var isEditing = false
 
     @State private var showDueDatePicker = false
