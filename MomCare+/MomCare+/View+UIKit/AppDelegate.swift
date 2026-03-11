@@ -94,11 +94,11 @@ extension AppDelegate: MXMetricManagerSubscriber {
         let data = payload.jsonRepresentation()
         let _: NetworkResponse<Bool> = try await NetworkManager.shared.post(url: Endpoint.diagnosticMetrics.urlString, body: data)
     }
-    
+
     func writeMetricsToFile(_ payload: MXMetricPayload) {
         let fileName = "metrics_\(Date().timeIntervalSince1970).json"
         let fileURL = FileManager.default.temporaryDirectory.appendingPathComponent(fileName)
-        
+
         do {
             try payload.jsonRepresentation().write(to: fileURL)
             logger.info("Metrics written to file: \(fileURL.path)")
@@ -106,11 +106,11 @@ extension AppDelegate: MXMetricManagerSubscriber {
             logger.error("Failed to write metrics to file: \(error.localizedDescription)")
         }
     }
-    
+
     func writeDiagnosticToFile(_ payload: MXDiagnosticPayload) {
         let fileName = "diagnostic_\(Date().timeIntervalSince1970).json"
         let fileURL = FileManager.default.temporaryDirectory.appendingPathComponent(fileName)
-        
+
         do {
             try payload.jsonRepresentation().write(to: fileURL)
             logger.info("Metrics written to file: \(fileURL.path)")
