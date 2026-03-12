@@ -1,6 +1,7 @@
 import Combine
 import Foundation
 
+@MainActor
 class ContentService {
 
     // MARK: Internal

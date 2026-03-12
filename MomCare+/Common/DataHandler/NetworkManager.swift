@@ -25,7 +25,7 @@ class NetworkManager {
 
     // MARK: Internal
 
-    static let shared: NetworkManager = .init()
+    public static let shared: NetworkManager = .init()
 
     func get<T: Codable>(
         url: String,
