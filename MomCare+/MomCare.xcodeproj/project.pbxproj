@@ -58,7 +58,6 @@
 		182465DE2F3DD32000125667 /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
 		182465E02F3DD32000125667 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
 		184B28792F2626090086424A /* MomCare.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MomCare.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		920649E82F62F16A0010A9A3 /* TriTrack GlanceExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "TriTrack Glance/TriTrack GlanceExtension.entitlements"; sourceTree = "<group>"; };
 		929AA43A2F475DCA00B5A347 /* TriTrack GlanceExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "TriTrack GlanceExtension.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -133,7 +132,6 @@
 		184B28702F2626090086424A = {
 			isa = PBXGroup;
 			children = (
-				920649E82F62F16A0010A9A3 /* TriTrack GlanceExtension.entitlements */,
 				184B2A782F2627C20086424A /* Common */,
 				184B287B2F2626090086424A /* MomCare+ */,
 				929AA43D2F475DCA00B5A347 /* TriTrack Glance */,

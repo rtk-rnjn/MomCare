@@ -2,7 +2,7 @@ import CryptoKit
 import Foundation
 import UIKit
 
-private let appGroup = "com.MomCare"
+private let appGroup = "group.MomCare"
 
 enum ValidDatabaseKeys {
     case accessTokenExpiresAtTimestamp
