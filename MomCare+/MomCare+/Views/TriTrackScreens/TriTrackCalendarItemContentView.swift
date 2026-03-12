@@ -28,8 +28,12 @@ struct TriTrackCalendarItemContentView: View {
             if eventKitHandler.events.isEmpty && eventKitHandler.reminders.isEmpty {
                 emptyState
             } else {
-                eventList
-                reminderList
+                if !eventKitHandler.events.isEmpty {
+                    eventList
+                }
+                if !eventKitHandler.reminders.isEmpty {
+                    reminderList
+                }
             }
 
         }
@@ -65,8 +69,8 @@ struct TriTrackCalendarItemContentView: View {
             }
         }
         .task {
-            _ = try? await eventKitHandler.eventStore.requestFullAccessToEvents()
-            _ = try? await eventKitHandler.eventStore.requestFullAccessToReminders()
+            try? await requestEventAccess()
+            try? await requestReminderAccess()
         }
         .onAppear(perform: refreshData)
         .onChange(of: selectedDate, refreshData)
@@ -78,6 +82,24 @@ struct TriTrackCalendarItemContentView: View {
         } message: {
             Text(alertMessage ?? "An unexpected error occurred.")
         }
+    }
+
+    func requestEventAccess() async throws {
+        let success = try await eventKitHandler.eventStore.requestFullAccessToEvents()
+        if success {
+            return
+        }
+        alertMessage = "Event access denied. Please enable calendar permissions in Settings to add and view events."
+        showErrorAlert = true
+    }
+
+    func requestReminderAccess() async throws {
+        let success = try await eventKitHandler.eventStore.requestFullAccessToReminders()
+        if success {
+            return
+        }
+        alertMessage = "Reminder access denied. Please enable reminders permissions in Settings to add and view reminders."
+        showErrorAlert = true
     }
 
     // MARK: Private

@@ -315,7 +315,7 @@ struct EKReminderView: View {
         }
 
         do {
-            self.reminder = try eventKitHandler.updateReminder(reminder)
+            reminder = try eventKitHandler.updateReminder(reminder)
         } catch {
             alertMessage = error.localizedDescription
             showErrorAlert = true
@@ -329,7 +329,7 @@ struct EKReminderView: View {
         do {
             let updatedReminder = try eventKitHandler.markReminder(complete: !isCompleted, reminder: reminder)
             performAnimated {
-                self.reminder = updatedReminder
+                reminder = updatedReminder
             }
         } catch {
             alertMessage = error.localizedDescription

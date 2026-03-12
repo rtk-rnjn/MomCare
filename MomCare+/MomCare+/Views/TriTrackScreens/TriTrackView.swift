@@ -71,6 +71,7 @@ struct TriTrackView: View {
                             .foregroundColor(Color.CustomColors.mutedRaspberry)
                             .transition(.scale.combined(with: .opacity))
                     }
+                    .disabled(selectedDate > Date())
                     .accessibilityLabel("Add symptom")
                     .accessibilityIdentifier("addSymptomButton")
                 }

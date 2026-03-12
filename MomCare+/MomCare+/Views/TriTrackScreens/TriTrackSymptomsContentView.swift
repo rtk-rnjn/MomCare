@@ -28,6 +28,12 @@ struct TriTrackSymptomsContentView: View {
                 }
             }
         }
+        .sheet(isPresented: $controlState.showingAddSymptomSheet) {
+            TriTrackAddSymptomSheetView(selectedDate: selectedDate)
+                .presentationDetents([.medium, .large])
+                .scrollDismissesKeyboard(.immediately)
+                .interactiveDismissDisabled(true)
+        }
         .frame(maxWidth: .infinity)
         .background(
             RoundedRectangle(cornerRadius: 16)
@@ -67,13 +73,7 @@ struct TriTrackSymptomsContentView: View {
             }
             .buttonStyle(.borderedProminent)
             .tint(Color.CustomColors.mutedRaspberry)
-            .sheet(isPresented: $controlState.showingAddSymptomSheet) {
-                TriTrackAddSymptomSheetView()
-                    .presentationDetents([.medium, .large])
-                    .scrollDismissesKeyboard(.immediately)
-                    .interactiveDismissDisabled(true)
-            }
-            .disabled(!Calendar.current.isDate(selectedDate, inSameDayAs: Date()))
+            .disabled(selectedDate > Date())
             .accessibilityLabel("Log symptom")
             .accessibilityHint("Opens a form to log a new symptom for today")
         }

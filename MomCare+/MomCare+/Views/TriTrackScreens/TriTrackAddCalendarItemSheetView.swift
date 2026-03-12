@@ -9,9 +9,6 @@ struct TriTrackAddCalendarItemSheetView: View {
     @EnvironmentObject var eventKitHandler: EventKitHandler
     @Environment(\.dismiss) var dismiss
 
-    @State private var showErrorAlert = false
-    @State private var alertMessage: String?
-
     let dateRange: () -> ClosedRange<Date> = {
         let today = Date()
 
@@ -79,6 +76,9 @@ struct TriTrackAddCalendarItemSheetView: View {
     }
 
     // MARK: Private
+
+    @State private var showErrorAlert = false
+    @State private var alertMessage: String?
 
     @State private var mode: AddMode = .appointment
 

@@ -7,6 +7,8 @@ struct TriTrackAddSymptomSheetView: View {
 
     @Environment(\.modelContext) var modelContext
 
+    let selectedDate: Date
+
     var body: some View {
         NavigationStack {
             Form {
@@ -95,6 +97,7 @@ struct TriTrackAddSymptomSheetView: View {
         }
         .presentationDetents([.medium, .large])
         .interactiveDismissDisabled(true)
+        .scrollDismissesKeyboard(.immediately)
         .alert("Error", isPresented: $showErrorAlert) {
             Button("OK", role: .cancel) {}
         } message: {
@@ -109,6 +112,7 @@ struct TriTrackAddSymptomSheetView: View {
             }
             .presentationDetents([.medium, .large])
             .interactiveDismissDisabled(true)
+            .scrollDismissesKeyboard(.immediately)
         }
     }
 
@@ -125,9 +129,7 @@ struct TriTrackAddSymptomSheetView: View {
     @State private var showSymptomPicker = false
 
     private func save() {
-        let loggedDate = Date()
-
-        let model = SymptomModel(date: loggedDate, symptomId: selectedSymptom?.id, title: title, notes: notes)
+        let model = SymptomModel(date: selectedDate, symptomId: selectedSymptom?.id, title: title, notes: notes)
         modelContext.insert(model)
         do {
             try modelContext.save()
