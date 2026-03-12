@@ -9,6 +9,12 @@ struct TriTrackAddCalendarItemSheetView: View {
     @EnvironmentObject var eventKitHandler: EventKitHandler
     @Environment(\.dismiss) var dismiss
 
+    let dateRange: () -> ClosedRange<Date> = {
+        let today = Date()
+
+        return today...Date.distantFuture
+    }
+
     var body: some View {
         NavigationStack {
             Form {
@@ -20,7 +26,7 @@ struct TriTrackAddCalendarItemSheetView: View {
                 .pickerStyle(.segmented)
                 .listRowBackground(Color.clear)
 
-                Section("Details") {
+                Section {
                     TextField("Title", text: $title)
                     TextField("Notes", text: $notes)
                 }
@@ -36,10 +42,8 @@ struct TriTrackAddCalendarItemSheetView: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
-                    Button {
+                    Button(role: .cancel) {
                         dismiss()
-                    } label: {
-                        Text("Cancel")
                     }
                     .accessibilityLabel("Cancel")
                     .accessibilityHint("Dismisses this screen without saving changes")
@@ -47,10 +51,8 @@ struct TriTrackAddCalendarItemSheetView: View {
                 }
 
                 ToolbarItem(placement: .confirmationAction) {
-                    Button {
+                    Button(role: .confirm) {
                         save()
-                    } label: {
-                        Text("Save")
                     }
                     .disabled(title.isEmpty)
                     .accessibilityLabel("Save")
@@ -64,7 +66,7 @@ struct TriTrackAddCalendarItemSheetView: View {
         .presentationDetents([.medium, .large])
         .sheet(isPresented: $showMapPicker) {
             MapPickerView(selectedMapItem: $selectedMapItem)
-                .presentationDetents([.medium])
+                .presentationDetents([.medium, .large])
         }
     }
 
@@ -88,23 +90,16 @@ struct TriTrackAddCalendarItemSheetView: View {
 
     private var appointmentSection: some View {
         Group {
-            Section("Schedule") {
+            Section {
                 Toggle("All Day", isOn: $isAllDay)
 
-                DatePicker("Start",
-                           selection: $startDate,
-                           displayedComponents: isAllDay ? [.date] : [.date, .hourAndMinute])
-
-                if !isAllDay {
-                    DatePicker("End",
-                               selection: $endDate,
-                               displayedComponents: [.date, .hourAndMinute])
-                }
+                DatePicker("Starts", selection: $startDate, in: dateRange(), displayedComponents: isAllDay ? [.date] : [.date, .hourAndMinute])
+                DatePicker("Ends", selection: $endDate, in: dateRange(), displayedComponents: isAllDay ? [.date] : [.date, .hourAndMinute])
 
                 Toggle("Repeat Monthly", isOn: $recurrenceEnabled)
             }
 
-            Section("Location") {
+            Section {
                 Button {
                     showMapPicker = true
                 } label: {
@@ -122,20 +117,18 @@ struct TriTrackAddCalendarItemSheetView: View {
 
     private var reminderSection: some View {
         Group {
-            Section("Due Date") {
-                DatePicker("Remind Me On",
-                           selection: $dueDate,
-                           displayedComponents: [.date, .hourAndMinute])
+            Section {
+                DatePicker("Remind Me On", selection: $dueDate, displayedComponents: [.date, .hourAndMinute])
             }
 
-            Toggle("Repeat Monthly", isOn: $recurrenceEnabled)
+            Toggle("Repeat Daily", isOn: $recurrenceEnabled)
 
             alarmSection
         }
     }
 
     private var alarmSection: some View {
-        Section("Alert") {
+        Section {
             Picker("Alert Before", selection: $selectedAlarmOffset) {
                 Text("None").tag(TimeInterval?.none)
                 Text("15 minutes before").tag(TimeInterval(-900))
@@ -155,30 +148,27 @@ struct TriTrackAddCalendarItemSheetView: View {
 
             var recurrenceRules: [EKRecurrenceRule]?
             if recurrenceEnabled {
-                recurrenceRules = [EKRecurrenceRule(recurrenceWith: .monthly, interval: 1, end: nil)]
+                recurrenceRules = [EKRecurrenceRule(recurrenceWith: .daily, interval: 1, end: nil)]
             }
 
             _ = try? eventKitHandler.createEvent(
                 title: title,
                 startDate: startDate,
-                endDate: isAllDay ? startDate : endDate,
+                endDate: endDate,
                 isAllDay: isAllDay,
                 notes: notes,
                 recurrenceRules: recurrenceRules,
                 location: selectedMapItem?.name,
                 structuredLocaltion: selectedMapItem.map {
                     let loc = EKStructuredLocation(title: $0.name ?? "")
-                    loc.geoLocation = $0.placemark.location
+                    loc.geoLocation = $0.location
                     return loc
                 },
                 alarm: alarm
             )
 
         case .reminder:
-            let components = Calendar.current.dateComponents(
-                [.year, .month, .day, .hour, .minute],
-                from: dueDate
-            )
+            let components = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute], from: dueDate)
 
             var rules: [EKRecurrenceRule]?
             if recurrenceEnabled {

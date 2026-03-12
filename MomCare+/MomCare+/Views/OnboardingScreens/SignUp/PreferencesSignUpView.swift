@@ -92,18 +92,11 @@ struct PreferencesSignUpView: View {
 
     private var formContent: some View {
         Group {
-            if #available(iOS 16.0, *) {
-                Form {
-                    dueDateSection
-                    selectionSection
-                }
-                .scrollContentBackground(.hidden)
-            } else {
-                Form {
-                    dueDateSection
-                    selectionSection
-                }
+            Form {
+                dueDateSection
+                selectionSection
             }
+            .scrollContentBackground(.hidden)
         }
         .onAppear {
             clampDueDateIfNeeded()

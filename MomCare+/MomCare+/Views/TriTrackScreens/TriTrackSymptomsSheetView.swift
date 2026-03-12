@@ -47,7 +47,7 @@ struct TriTrackSymptomsSheetView: View {
             .searchable(text: $searchText, prompt: "Search symptoms")
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
-                    Button("Cancel") {
+                    Button(role: .cancel) {
                         dismiss()
                     }
                 }

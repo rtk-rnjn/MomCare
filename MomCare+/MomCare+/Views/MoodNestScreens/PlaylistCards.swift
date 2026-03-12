@@ -78,13 +78,13 @@ struct PlaylistCard: View {
                 Image(uiImage: uiImage)
                     .resizable()
                     .scaledToFill()
-                    .frame(width: max(0, UIScreen.main.bounds.width / 2 - 28), height: 130)
+                    .frame(width: max(0, UIScreen.current.bounds.width / 2 - 28), height: 130)
                     .clipped()
             } else {
                 Image(systemName: "music.quarternote.3")
                     .resizable()
                     .scaledToFill()
-                    .frame(width: max(0, UIScreen.main.bounds.width / 2 - 28), height: 130)
+                    .frame(width: max(0, UIScreen.current.bounds.width / 2 - 28), height: 130)
                     .clipped()
             }
 

@@ -95,20 +95,12 @@ struct HealthMetricsSignUpView: View {
 
     private var formContent: some View {
         Group {
-            if #available(iOS 16.0, *) {
-                Form {
-                    dobSection
-                    measurementSection
-                    locationSection
-                }
-                .scrollContentBackground(.hidden)
-            } else {
-                Form {
-                    dobSection
-                    measurementSection
-                    locationSection
-                }
+            Form {
+                dobSection
+                measurementSection
+                locationSection
             }
+            .scrollContentBackground(.hidden)
         }
     }
 

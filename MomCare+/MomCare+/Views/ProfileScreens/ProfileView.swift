@@ -89,7 +89,7 @@ struct ProfileView: View {
         .background(Color(.systemGroupedBackground))
         .alert("Sign Out?", isPresented: $showSignOutAlert) {
 
-            Button("Cancel", role: .cancel) {}
+            Button(role: .cancel) {}
 
             Button("Sign Out", role: .destructive) {
                 performSignOut()

@@ -72,7 +72,7 @@ struct BreathingExerciseView: View {
 
                 Spacer()
 
-                bottomControls
+                glassControls
                     .padding(.horizontal, 40)
                     .padding(.bottom, 40)
             }
@@ -147,36 +147,19 @@ struct BreathingExerciseView: View {
 
     @ViewBuilder
     private var closeButton: some View {
-        if #available(iOS 26.0, *) {
-            Button {
-                stopAllTimers()
-                healthKitHandler.updateBreathingCompletionDuration(duration: totalElapsed)
-                dismiss()
-            } label: {
-                Image(systemName: "xmark")
-                    .font(.subheadline.weight(.semibold))
-            }
-            .buttonStyle(.glass)
-            .buttonBorderShape(.circle)
-            .tint(darkAccent)
-            .accessibilityLabel("Close breathing exercise")
-            .frame(minWidth: 44, minHeight: 44)
-        } else {
-            Button {
-                stopAllTimers()
-                healthKitHandler.updateBreathingCompletionDuration(duration: totalElapsed)
-                dismiss()
-            } label: {
-                Image(systemName: "xmark")
-                    .font(.subheadline.weight(.semibold))
-                    .foregroundColor(darkAccent)
-                    .padding(10)
-                    .background(Circle().fill(Color.white.opacity(0.7)))
-                    .shadow(color: Color.black.opacity(0.06), radius: 4, x: 0, y: 2)
-            }
-            .accessibilityLabel("Close breathing exercise")
-            .frame(minWidth: 44, minHeight: 44)
+        Button {
+            stopAllTimers()
+            healthKitHandler.updateBreathingCompletionDuration(duration: totalElapsed)
+            dismiss()
+        } label: {
+            Image(systemName: "xmark")
+                .font(.subheadline.weight(.semibold))
         }
+        .buttonStyle(.glass)
+        .buttonBorderShape(.circle)
+        .tint(darkAccent)
+        .accessibilityLabel("Close breathing exercise")
+        .frame(minWidth: 44, minHeight: 44)
     }
 
     private var breathingCircle: some View {
@@ -308,24 +291,14 @@ struct BreathingExerciseView: View {
                 .accessibilityAddTraits(.updatesFrequently)
 
             if phase != .done {
-                if #available(iOS 16.0, *) {
-                    Text("\(phaseCountdown)")
-                        .font(.system(.largeTitle, design: .rounded).weight(.light))
-                        .foregroundColor(darkAccent.opacity(0.6))
-                        .monospacedDigit()
-                        .contentTransition(.numericText())
-                        .animation(reduceMotion ? nil : .easeInOut(duration: 0.2), value: phaseCountdown)
-                        .accessibilityLabel("\(phaseCountdown) seconds")
-                        .accessibilityAddTraits(.updatesFrequently)
-                } else {
-                    Text("\(phaseCountdown)")
-                        .font(.system(.largeTitle, design: .rounded).weight(.light))
-                        .foregroundColor(darkAccent.opacity(0.6))
-                        .monospacedDigit()
-                        .animation(reduceMotion ? nil : .easeInOut(duration: 0.2), value: phaseCountdown)
-                        .accessibilityLabel("\(phaseCountdown) seconds")
-                        .accessibilityAddTraits(.updatesFrequently)
-                }
+                Text("\(phaseCountdown)")
+                    .font(.system(.largeTitle, design: .rounded).weight(.light))
+                    .foregroundColor(darkAccent.opacity(0.6))
+                    .monospacedDigit()
+                    .contentTransition(.numericText())
+                    .animation(reduceMotion ? nil : .easeInOut(duration: 0.2), value: phaseCountdown)
+                    .accessibilityLabel("\(phaseCountdown) seconds")
+                    .accessibilityAddTraits(.updatesFrequently)
             } else {
                 Text("Session Complete")
                     .font(.subheadline)
@@ -375,16 +348,6 @@ struct BreathingExerciseView: View {
         .accessibilityAddTraits(.updatesFrequently)
     }
 
-    @ViewBuilder
-    private var bottomControls: some View {
-        if #available(iOS 26.0, *) {
-            glassControls
-        } else {
-            fallbackControls
-        }
-    }
-
-    @available(iOS 26.0, *)
     private var glassControls: some View {
         HStack(spacing: 30) {
             Button {
@@ -425,61 +388,6 @@ struct BreathingExerciseView: View {
             .buttonStyle(.glass)
             .buttonBorderShape(.circle)
             .tint(darkAccent)
-            .accessibilityLabel("Skip to next phase")
-        }
-    }
-
-    private var fallbackControls: some View {
-        HStack(spacing: 30) {
-            Button {
-                resetSession()
-            } label: {
-                Image(systemName: "arrow.counterclockwise")
-                    .font(.title3.weight(.medium))
-                    .foregroundColor(darkAccent)
-                    .frame(width: 50, height: 50)
-                    .background(Circle().fill(Color.white.opacity(0.7)))
-                    .shadow(color: Color.black.opacity(0.06), radius: 4, x: 0, y: 2)
-            }
-            .accessibilityLabel("Reset session")
-
-            Button {
-                if phase == .done {
-                    resetSession()
-                } else if isPaused {
-                    resumeSession()
-                } else {
-                    pauseSession()
-                }
-            } label: {
-                Image(systemName: phase == .done ? "arrow.counterclockwise" : (isPaused ? "play.fill" : "pause.fill"))
-                    .font(.title2.weight(.semibold))
-                    .foregroundColor(.white)
-                    .frame(width: 70, height: 70)
-                    .background(
-                        Circle()
-                            .fill(
-                                LinearGradient(
-                                    colors: [accent, darkAccent],
-                                    startPoint: .topLeading,
-                                    endPoint: .bottomTrailing
-                                )
-                            )
-                    )
-                    .shadow(color: darkAccent.opacity(0.25), radius: 10, x: 0, y: 4)
-            }
-            .accessibilityLabel(phase == .done ? "Restart session" : (isPaused ? "Resume" : "Pause"))
-
-            Button {
-                skipPhase()
-            } label: {
-                Image(systemName: "forward.fill")
-                    .font(.title3.weight(.medium))
-                    .foregroundColor(darkAccent)
-                    .frame(width: 50, height: 50)
-                    .background(Circle().fill(Color.white.opacity(0.7)))
-                    .shadow(color: Color.black.opacity(0.06), radius: 4, x: 0, y: 2)
-            }
             .accessibilityLabel("Skip to next phase")
         }
     }

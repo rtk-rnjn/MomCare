@@ -24,119 +24,54 @@ struct TriTrackCalendarItemContentView: View {
 
     var body: some View {
         VStack(spacing: 16) {
-            if eventKitHandler.events.isEmpty {
-                Image(systemName: "calendar.badge.plus")
-                    .font(.system(size: emptyStateIconSize))
-                    .foregroundColor(.secondary)
-                    .accessibilityHidden(true)
 
-                Text("No Events Scheduled")
-                    .font(.headline)
-
-                Text("Add important appointments, check-ups, or milestones to track your pregnancy journey.")
-                    .font(.subheadline)
-                    .foregroundColor(.secondary)
-                    .multilineTextAlignment(.center)
-
-                Button {
-                    controlState.showingAddEventSheet = true
-                } label: {
-                    Label("Add Event", systemImage: "plus")
-                        .font(.body.weight(.semibold))
-                }
-                .buttonStyle(.borderedProminent)
-                .tint(Color.CustomColors.mutedRaspberry)
-                .accessibilityLabel("Add event")
-                .accessibilityHint("Opens a form to add a new event or appointment")
+            if eventKitHandler.events.isEmpty && eventKitHandler.reminders.isEmpty {
+                emptyState
             } else {
-                LazyVStack {
-                    ForEach(eventKitHandler.events, id: \.calendarItemIdentifier) { event in
-                        AppointmentRow(event: event)
-                            .contextMenu {
-                                Button {
-                                    selectedEvent = EKCalendarItemWrapper(item: event)
-                                } label: {
-                                    Label("View Details", systemImage: "eye")
-                                }
-                            } preview: {
-                                TriTrackEventDetailsContextView(event: event)
-                            }
-                            .onTapGesture {
-                                selectedEvent = EKCalendarItemWrapper(item: event)
-                            }
-                    }
-                    ForEach(eventKitHandler.reminders, id: \.calendarItemIdentifier) { reminder in
-                        ReminderRow(reminder: reminder)
-                            .contextMenu {
-                                Button {
-                                    selectedReminder = EKCalendarItemWrapper(item: reminder)
-                                } label: {
-                                    Label("View Details", systemImage: "eye")
-                                }
-                            } preview: {
-                                TriTrackReminderDetailsContextView(reminder: reminder)
-                            }
-                            .onTapGesture {
-                                selectedReminder = EKCalendarItemWrapper(item: reminder)
-                            }
-                    }
-                }
-                .animation(reduceMotion ? nil : .spring(response: 0.4, dampingFraction: 0.8), value: eventKitHandler.events)
+                eventList
+                reminderList
             }
+
         }
         .frame(maxWidth: .infinity)
         .background(
-            RoundedRectangle(cornerRadius: 16, style: .continuous)
+            RoundedRectangle(cornerRadius: 16)
                 .fill(Color(.systemBackground))
         )
         .sheet(
             isPresented: $controlState.showingAddEventSheet,
-            onDismiss: {
-                try? eventKitHandler.fetchAppointments(selectedDate: selectedDate)
-                try? eventKitHandler.fetchReminders(startDate: selectedDate)
-            }, content: {
-                TriTrackAddCalendarItemSheetView()
-                    .presentationDetents([.medium, .large])
-                    .scrollDismissesKeyboard(.immediately)
-            }
-        )
+            onDismiss: refreshData
+        ) {
+            TriTrackAddCalendarItemSheetView()
+                .presentationDetents([.medium, .large])
+                .scrollDismissesKeyboard(.immediately)
+                .interactiveDismissDisabled(true)
+        }
         .sheet(
             item: $selectedEvent,
-            onDismiss: {
-                try? eventKitHandler.fetchAppointments(selectedDate: selectedDate)
-            },
-            content: { eventWrapper in
-                if let event = eventWrapper.item as? EKEvent {
-                    EventKitEventView(event: event)
-                }
+            onDismiss: { try? eventKitHandler.fetchAppointments(selectedDate: selectedDate) }
+        ) { wrapper in
+            if let event = wrapper.item as? EKEvent {
+                EventKitEventView(event: event)
             }
-        )
+        }
         .sheet(
             item: $selectedReminder,
-            onDismiss: {
-                try? eventKitHandler.fetchReminders(startDate: selectedDate)
-            },
-            content: { eventWrapper in
-                if let reminder = eventWrapper.item as? EKReminder {
-                    EKReminderView(reminder: reminder)
-                }
+            onDismiss: { try? eventKitHandler.fetchReminders(startDate: selectedDate) }
+        ) { wrapper in
+            if let reminder = wrapper.item as? EKReminder {
+                EKReminderView(reminder: reminder)
+                    .interactiveDismissDisabled(true)
             }
-        )
+        }
         .task {
             _ = try? await eventKitHandler.eventStore.requestFullAccessToEvents()
             _ = try? await eventKitHandler.eventStore.requestFullAccessToReminders()
         }
-        .onAppear {
-            try? eventKitHandler.fetchAppointments(selectedDate: selectedDate)
-            try? eventKitHandler.fetchReminders(startDate: selectedDate)
-        }
-        .onChange(of: selectedDate) {
-            try? eventKitHandler.fetchAppointments(selectedDate: selectedDate)
-            try? eventKitHandler.fetchReminders(startDate: selectedDate)
-        }
+        .onAppear(perform: refreshData)
+        .onChange(of: selectedDate, refreshData)
         .refreshable {
-            try? eventKitHandler.fetchAppointments(selectedDate: selectedDate)
-            try? eventKitHandler.fetchReminders(startDate: selectedDate)
+            refreshData()
         }
     }
 
@@ -149,6 +84,119 @@ struct TriTrackCalendarItemContentView: View {
 
     @State private var selectedEvent: EKCalendarItemWrapper?
     @State private var selectedReminder: EKCalendarItemWrapper?
+
+    private var emptyState: some View {
+        VStack(spacing: 16) {
+            Image(systemName: "calendar.badge.plus")
+                .font(.system(size: emptyStateIconSize))
+                .foregroundColor(.secondary)
+
+            Text("No Events Scheduled")
+                .font(.headline)
+
+            Text("Add important appointments, check-ups, or milestones to track your pregnancy journey.")
+                .font(.subheadline)
+                .foregroundColor(.secondary)
+                .multilineTextAlignment(.center)
+
+            Button {
+                controlState.showingAddEventSheet = true
+            } label: {
+                Label("Add Event", systemImage: "plus")
+                    .font(.body.weight(.semibold))
+            }
+            .buttonStyle(.borderedProminent)
+            .tint(Color.CustomColors.mutedRaspberry)
+        }
+    }
+
+    private var eventList: some View {
+        LazyVStack {
+            ForEach(eventKitHandler.events, id: \.calendarItemIdentifier) { event in
+                AppointmentRow(event: event)
+                    .contextMenu {
+                        Button {
+                            selectedEvent = EKCalendarItemWrapper(item: event)
+                        } label: {
+                            Label("View Details", systemImage: "eye")
+                        }
+                    } preview: {
+                        TriTrackEventDetailsContextView(event: event)
+                    }
+                    .onTapGesture {
+                        selectedEvent = EKCalendarItemWrapper(item: event)
+                    }
+            }
+        }
+    }
+
+    private var reminderList: some View {
+        LazyVStack {
+            ForEach(eventKitHandler.reminders, id: \.calendarItemIdentifier) { reminder in
+                ReminderRow(reminder: reminder) {
+                    toggleReminder(reminder)
+                } onTap: {
+                    selectedReminder = EKCalendarItemWrapper(item: reminder)
+                }
+                .contextMenu {
+                    Button {
+                        selectedReminder = EKCalendarItemWrapper(item: reminder)
+                    } label: {
+                        Label("View Details", systemImage: "eye")
+                    }
+
+                    Button {
+                        toggleReminder(reminder)
+                    } label: {
+                        Label(
+                            reminder.isCompleted ? "Mark as Incomplete" : "Mark as Completed",
+                            systemImage: reminder.isCompleted ? "circle" : "checkmark.circle"
+                        )
+                    }
+
+                    Button(role: .destructive) {
+                        deleteReminder(reminder)
+                    } label: {
+                        Label("Delete Reminder", systemImage: "trash")
+                    }
+
+                } preview: {
+                    TriTrackReminderDetailsContextView(reminder: reminder)
+                }
+            }
+        }
+    }
+
+    private func refreshData() {
+        try? eventKitHandler.fetchAppointments(selectedDate: selectedDate)
+        try? eventKitHandler.fetchReminders(startDate: selectedDate)
+    }
+
+    private func upsertReminder(_ reminder: EKReminder) {
+        if let index = eventKitHandler.reminders.firstIndex(
+            where: { $0.calendarItemIdentifier == reminder.calendarItemIdentifier }
+        ) {
+            eventKitHandler.reminders[index] = reminder
+        } else {
+            eventKitHandler.reminders.append(reminder)
+        }
+    }
+
+    private func toggleReminder(_ reminder: EKReminder) {
+        guard let updatedReminder = try? eventKitHandler.markReminder(
+            complete: !reminder.isCompleted,
+            reminder: reminder
+        ) else { return }
+
+        upsertReminder(updatedReminder)
+    }
+
+    private func deleteReminder(_ reminder: EKReminder) {
+        try? eventKitHandler.deleteReminder(reminder)
+        eventKitHandler.reminders.removeAll {
+            $0.calendarItemIdentifier == reminder.calendarItemIdentifier
+        }
+    }
 
 }
 
@@ -232,69 +280,20 @@ struct ReminderRow: View {
     // MARK: Internal
 
     let reminder: EKReminder
+    let onToggle: () throws -> Void
+    let onTap: () -> Void
 
     var body: some View {
         HStack(spacing: 14) {
-            // Date Capsule
-            VStack(spacing: 4) {
-                if let dueDate {
-                    Text(dueDate.formatted(.dateTime.day()))
-                        .font(.headline.weight(.bold))
-
-                    Text(dueDate.formatted(.dateTime.month(.abbreviated)))
-                        .font(.caption)
-                } else {
-                    Image(systemName: "calendar")
-                        .font(.headline)
-                }
+            Group {
+                dateCapsule
+                reminderInfo
             }
-            .frame(width: 50, height: 50)
-            .background(
-                RoundedRectangle(cornerRadius: 12, style: .continuous)
-                    .fill(
-                        isPast ? Color.red.opacity(0.15) :
-                            isToday ? Color.CustomColors.mutedRaspberry :
-                            Color(.systemGray6)
-                    )
-            )
-            .foregroundColor(
-                isPast ? .red :
-                    isToday ? .white :
-                    .primary
-            )
-
-            // Title + Time
-            VStack(alignment: .leading, spacing: 4) {
-                Text(reminder.title)
-                    .font(.headline)
-                    .lineLimit(1)
-                    .strikethrough(reminder.isCompleted)
-
-                if let dueDate {
-                    Text(dueDate.formatted(.dateTime.hour().minute()))
-                        .font(.subheadline)
-                        .foregroundColor(.secondary)
-                }
-
-                if let notes = reminder.notes,
-                   !notes.isEmpty {
-                    Text(notes)
-                        .font(.caption)
-                        .foregroundColor(.secondary)
-                        .lineLimit(1)
-                }
+            .onTapGesture {
+                onTap()
             }
-
             Spacer()
-
-            // Completion Indicator
-            Image(systemName: reminder.isCompleted ? "checkmark.circle.fill" : "circle")
-                .foregroundColor(
-                    reminder.isCompleted
-                        ? .green
-                        : (isPast ? .red : .gray.opacity(0.6))
-                )
-                .accessibilityHidden(true)
+            completionIndicator
         }
         .padding()
         .background(
@@ -304,12 +303,60 @@ struct ReminderRow: View {
         .opacity(reminder.isCompleted ? 0.6 : 1)
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(reminder.title)
-        .accessibilityValue(reminder.isCompleted ? "completed" : (isPast ? "overdue" : dueDate.map { $0.formatted(.dateTime.weekday().day().month().hour().minute()) } ?? "no due date"))
+        .accessibilityValue(accessibilityValue)
         .accessibilityHint("Double tap to view reminder details, long press for more options")
         .accessibilityAddTraits(reminder.isCompleted ? [.isButton, .isSelected] : .isButton)
     }
 
     // MARK: Private
+
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @Environment(\.accessibilityDifferentiateWithoutColor) private var differentiateWithoutColor
+
+    // MARK: Colors
+
+    private var backgroundColor: Color {
+
+        if isPast {
+            return Color.red.opacity(0.15)
+        } else if isToday {
+            return Color.CustomColors.mutedRaspberry
+        } else {
+            return Color(.systemGray6)
+        }
+    }
+
+    private var foregroundColor: Color {
+
+        if isPast {
+            return .red
+        } else if isToday {
+            return .white
+        } else {
+            return .primary
+        }
+    }
+
+    // MARK: Accessibility Value
+
+    private var accessibilityValue: String {
+
+        if reminder.isCompleted {
+            return "completed"
+        }
+
+        if isPast {
+            return "overdue"
+        }
+
+        if let dueDate {
+            return dueDate.formatted(.dateTime.weekday().day().month().hour().minute())
+        }
+
+        return "no due date"
+    }
+
+    // MARK: Dates
 
     private var dueDate: Date? {
         reminder.dueDateComponents?.date
@@ -325,24 +372,107 @@ struct ReminderRow: View {
         return dueDate < Date() && !reminder.isCompleted
     }
 
+    // MARK: Date Capsule
+
+    private var dateCapsule: some View {
+
+        VStack(spacing: 4) {
+
+            if let dueDate {
+                Text(dueDate.formatted(.dateTime.day()))
+                    .font(.headline.weight(.bold))
+
+                Text(dueDate.formatted(.dateTime.month(.abbreviated)))
+                    .font(.caption)
+
+            } else {
+
+                Image(systemName: "calendar")
+                    .font(.headline)
+            }
+        }
+        .frame(width: 50, height: 50)
+        .background(
+            RoundedRectangle(cornerRadius: 12, style: .continuous)
+                .fill(backgroundColor)
+        )
+        .foregroundColor(foregroundColor)
+        .overlay(
+            differentiateWithoutColor && isPast
+            ? Image(systemName: "exclamationmark")
+                .font(.caption.bold())
+                .foregroundStyle(.red)
+            : nil
+        )
+    }
+
+    // MARK: Reminder Info
+
+    private var reminderInfo: some View {
+
+        VStack(alignment: .leading, spacing: 4) {
+
+            Text(reminder.title)
+                .font(.headline)
+                .lineLimit(1)
+                .strikethrough(reminder.isCompleted)
+
+            if let dueDate {
+                Text(dueDate.formatted(.dateTime.hour().minute()))
+                    .font(.subheadline)
+                    .foregroundColor(.secondary)
+            }
+
+            if let notes = reminder.notes, !notes.isEmpty {
+                Text(notes)
+                    .font(.caption)
+                    .foregroundColor(.secondary)
+                    .lineLimit(1)
+            }
+        }
+    }
+
+    // MARK: Completion Button
+
+    private var completionIndicator: some View {
+
+        Image(systemName: reminder.isCompleted ? "checkmark.circle.fill" : "circle")
+            .foregroundColor(
+                reminder.isCompleted
+                ? .green
+                : (isPast ? .red : .gray.opacity(0.6))
+            )
+            .onTapGesture {
+                toggleReminder()
+            }
+            .accessibilityLabel(
+                reminder.isCompleted
+                ? "Mark as incomplete"
+                : "Mark as completed"
+            )
+            .accessibilityHint(
+                reminder.isCompleted
+                ? "Double tap to mark as incomplete"
+                : "Double tap to mark as completed"
+            )
+    }
+
+    // MARK: Toggle
+
+    private func toggleReminder() {
+        if reduceMotion {
+            try? onToggle()
+        } else {
+            withAnimation(.interactiveSpring(response: 0.35, dampingFraction: 0.85)) {
+                try? onToggle()
+            }
+        }
+    }
+
 }
 
 struct TriTrackEventDetailsContextView: View {
-
-    // MARK: Lifecycle
-
-    init(event: EKEvent?) {
-        self.event = event
-        startDate = event?.startDate ?? Date()
-        endDate = event?.endDate ?? Date()
-    }
-
-    // MARK: Internal
-
-    var event: EKEvent?
-
-    var startDate: Date = .init()
-    var endDate: Date = .init()
+    let event: EKEvent
 
     var body: some View {
         VStack(alignment: .leading, spacing: 18) {
@@ -356,12 +486,12 @@ struct TriTrackEventDetailsContextView: View {
                     .accessibilityHidden(true)
 
                 VStack(alignment: .leading, spacing: 4) {
-                    Text(event?.title ?? "No Title")
+                    Text(event.title ?? "No Title")
                         .font(.headline)
                         .fontWeight(.semibold)
                         .lineLimit(2)
 
-                    if let location = event?.location,
+                    if let location = event.location,
                        !location.isEmpty {
                         Text(location)
                             .font(.subheadline)
@@ -380,14 +510,12 @@ struct TriTrackEventDetailsContextView: View {
                     .accessibilityHidden(true)
 
                 VStack(alignment: .leading, spacing: 4) {
-                    if Calendar.current.isDate(startDate, inSameDayAs: endDate) {
-                        Text(startDate.formatted(
-                            .dateTime.weekday(.wide).day().month(.wide).year()
-                        ))
+                    if Calendar.current.isDate(event.startDate, inSameDayAs: event.endDate) {
+                        Text(event.startDate.formatted(.dateTime.weekday(.wide).day().month(.wide).year()))
                         .fontWeight(.medium)
 
                         Text(
-                            "\(startDate.formatted(.dateTime.hour().minute())) – \(endDate.formatted(.dateTime.hour().minute()))"
+                            "\(event.startDate.formatted(.dateTime.hour().minute())) – \(event.endDate.formatted(.dateTime.hour().minute()))"
                         )
                         .foregroundColor(.secondary)
 
@@ -396,7 +524,7 @@ struct TriTrackEventDetailsContextView: View {
                             .fontWeight(.medium)
 
                         Text(
-                            startDate.formatted(
+                            event.startDate.formatted(
                                 .dateTime.weekday(.abbreviated).day().month().year().hour().minute()
                             )
                         )
@@ -407,7 +535,7 @@ struct TriTrackEventDetailsContextView: View {
                             .padding(.top, 6)
 
                         Text(
-                            endDate.formatted(
+                            event.endDate.formatted(
                                 .dateTime.weekday(.abbreviated).day().month().year().hour().minute()
                             )
                         )
@@ -419,7 +547,7 @@ struct TriTrackEventDetailsContextView: View {
 
             // MARK: Notes
 
-            if let notes = event?.notes,
+            if let notes = event.notes,
                !notes.isEmpty {
                 Divider()
                     .padding(.vertical, 4)
@@ -438,17 +566,9 @@ struct TriTrackEventDetailsContextView: View {
 
 struct TriTrackReminderDetailsContextView: View {
 
-    // MARK: Lifecycle
-
-    init(reminder: EKReminder?) {
-        self.reminder = reminder
-        dueDate = reminder?.dueDateComponents?.date
-    }
-
     // MARK: Internal
 
-    var reminder: EKReminder?
-    var dueDate: Date?
+    let reminder: EKReminder
 
     var body: some View {
         VStack(alignment: .leading, spacing: 18) {
@@ -457,29 +577,24 @@ struct TriTrackReminderDetailsContextView: View {
             HStack(alignment: .top, spacing: 14) {
                 Image(systemName: isCompleted ? "checkmark.circle.fill" : "list.bullet.circle")
                     .font(.title3.weight(.semibold))
-                    .foregroundColor(
-                        isCompleted ? .green :
-                            isOverdue ? .red :
-                            MomCareAccent.primary
-                    )
+                    .foregroundColor(isCompleted ? .green : isOverdue ? .red : MomCareAccent.primary)
                     .frame(width: 28)
                     .accessibilityHidden(true)
 
                 VStack(alignment: .leading, spacing: 6) {
-                    Text(reminder?.title ?? "No Title")
+                    Text(reminder.title ?? "No Title")
                         .font(.headline)
                         .fontWeight(.semibold)
                         .lineLimit(2)
                         .strikethrough(isCompleted)
 
-                    if let priority = reminder?.priority,
-                       priority > 0 {
-                        Text(priorityText(priority))
+                    if reminder.priority > 0 {
+                        Text(priorityText(reminder.priority))
                             .font(.caption.weight(.medium))
                             .padding(.horizontal, 8)
                             .padding(.vertical, 4)
-                            .background(priorityColor(priority).opacity(0.15))
-                            .foregroundColor(priorityColor(priority))
+                            .background(priorityColor(reminder.priority).opacity(0.15))
+                            .foregroundColor(priorityColor(reminder.priority))
                             .clipShape(Capsule())
                     }
                 }
@@ -495,18 +610,13 @@ struct TriTrackReminderDetailsContextView: View {
                     .accessibilityHidden(true)
 
                 VStack(alignment: .leading, spacing: 4) {
-                    if let dueDate {
-                        Text(
-                            dueDate.formatted(
-                                .dateTime.weekday(.wide).day().month(.wide).year()
-                            )
-                        )
+                    if let dueDate = reminder.dueDateComponents?.date {
+                        Text(dueDate.formatted(.dateTime.weekday(.wide).day().month(.wide).year()))
                         .fontWeight(.medium)
 
                         Text(dueDate.formatted(.dateTime.hour().minute()))
                             .foregroundColor(.secondary)
 
-                        // Relative preview
                         Text(dueDate.formatted(.relative(presentation: .named)))
                             .font(.caption)
                             .foregroundColor(isOverdue ? .red : .secondary)
@@ -521,7 +631,7 @@ struct TriTrackReminderDetailsContextView: View {
 
             // MARK: Notes
 
-            if let notes = reminder?.notes,
+            if let notes = reminder.notes,
                !notes.isEmpty {
                 Divider()
                     .padding(.vertical, 4)
@@ -540,10 +650,12 @@ struct TriTrackReminderDetailsContextView: View {
     // MARK: Private
 
     private var isCompleted: Bool {
-        reminder?.isCompleted ?? false
+        reminder.isCompleted
     }
 
     private var isOverdue: Bool {
+        let dueDate = reminder.dueDateComponents?.date
+
         guard let dueDate else { return false }
         return dueDate < Date() && !isCompleted
     }
@@ -566,166 +678,6 @@ private extension TriTrackReminderDetailsContextView {
         case 5: .orange
         case 9: .blue
         default: .gray
-        }
-    }
-}
-
-struct EKReminderView: View {
-
-    // MARK: Internal
-
-    let reminder: EKReminder
-
-    var body: some View {
-        NavigationStack {
-            Form {
-                // MARK: Title Section
-
-                Section {
-                    HStack(spacing: 14) {
-                        Image(systemName: isCompleted ? "checkmark.circle.fill" : "circle")
-                            .font(.title2)
-                            .foregroundColor(
-                                isCompleted ? .green :
-                                    isOverdue ? .red :
-                                    .accentColor
-                            )
-                            .accessibilityHidden(true)
-
-                        VStack(alignment: .leading, spacing: 4) {
-                            Text(reminder.title)
-                                .font(.headline)
-                                .strikethrough(isCompleted)
-
-                            if isOverdue {
-                                Text("Overdue")
-                                    .font(.caption)
-                                    .foregroundColor(.red)
-                            }
-                        }
-                    }
-                    .padding(.vertical, 4)
-                }
-
-                // MARK: Due Date
-
-                Section("Due Date") {
-                    if let dueDate {
-                        VStack(alignment: .leading, spacing: 6) {
-                            Text(
-                                dueDate.formatted(
-                                    .dateTime.weekday(.wide)
-                                        .day()
-                                        .month(.wide)
-                                        .year()
-                                )
-                            )
-
-                            Text(dueDate.formatted(.dateTime.hour().minute()))
-                                .foregroundColor(.secondary)
-
-                            Text(dueDate.formatted(.relative(presentation: .named)))
-                                .font(.caption)
-                                .foregroundColor(isOverdue ? .red : .secondary)
-                        }
-                    } else {
-                        Text("No due date")
-                            .foregroundColor(.secondary)
-                    }
-                }
-
-                // MARK: Priority
-
-                if reminder.priority > 0 {
-                    Section("Priority") {
-                        HStack {
-                            Label(priorityText(reminder.priority), systemImage: "flag.fill")
-                                .foregroundColor(priorityColor(reminder.priority))
-
-                            Spacer()
-                        }
-                    }
-                }
-
-                // MARK: List
-
-                Section("List") {
-                    HStack {
-                        Circle()
-                            .fill(Color(reminder.calendar.cgColor))
-                            .frame(width: 10, height: 10)
-
-                        Text(reminder.calendar.title)
-                            .foregroundColor(.secondary)
-                    }
-                }
-
-                // MARK: Notes
-
-                if let notes = reminder.notes,
-                   !notes.isEmpty {
-                    Section("Notes") {
-                        Text(notes)
-                            .foregroundColor(.secondary)
-                    }
-                }
-            }
-            .navigationTitle("Reminder")
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .cancellationAction) {
-                    Button("Cancel") {
-                        dismiss()
-                    }
-                }
-            }
-            .interactiveDismissDisabled(false) // Allow swipe down
-        }
-    }
-
-    // MARK: Private
-
-    @Environment(\.dismiss) private var dismiss
-
-    private var dueDate: Date? {
-        reminder.dueDateComponents?.date
-    }
-
-    private var isCompleted: Bool {
-        reminder.isCompleted
-    }
-
-    private var isOverdue: Bool {
-        guard let dueDate else { return false }
-        return dueDate < Date() && !isCompleted
-    }
-
-}
-
-private extension EKReminderView {
-    func priorityText(_ value: Int) -> String {
-        switch value {
-        case 1:
-            "High"
-        case 5:
-            "Medium"
-        case 9:
-            "Low"
-        default:
-            "None"
-        }
-    }
-
-    func priorityColor(_ value: Int) -> Color {
-        switch value {
-        case 1:
-            .red
-        case 5:
-            .orange
-        case 9:
-            .blue
-        default:
-            .secondary
         }
     }
 }

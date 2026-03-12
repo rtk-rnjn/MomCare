@@ -43,6 +43,10 @@ final class MusicPlayerHandler: ObservableObject {
         player?.timeControlStatus == .playing
     }
 
+    var isWaiting: Bool {
+        player?.timeControlStatus == .waitingToPlayAtSpecifiedRate
+    }
+
     @Published var playlist: [SongModel] = [] {
         didSet {
             let key = "loadedPlaylist"
@@ -257,13 +261,13 @@ final class MusicPlayerHandler: ObservableObject {
 
     private func configureSkipCommand(
         _ command: MPSkipIntervalCommand,
-        seconds: Double
+        seconds: NSNumber
     ) {
         command.isEnabled = true
-        command.preferredIntervals = [NSNumber(value: abs(seconds))]
+        command.preferredIntervals = [seconds]
 
         command.addTarget { _ in
-            self.seek(by: seconds)
+            self.seek(by: Double(truncating: seconds))
             return .success
         }
     }
