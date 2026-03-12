@@ -69,21 +69,6 @@ struct TriTrackAddSymptomSheetView: View {
                         }
                     }
                 }
-
-                // MARK: Save Button
-
-                Section {
-                    Button {
-                        save()
-                    } label: {
-                        Text("Save Symptom")
-                            .frame(maxWidth: .infinity)
-                    }
-                    .disabled(title.isEmpty)
-                    .accessibilityLabel("Save symptom")
-                    .accessibilityHint("Saves the symptom entry to your log")
-                    .accessibilityIdentifier("saveSymptomButton")
-                }
             }
             .navigationTitle("New Symptom")
             .toolbar {
@@ -95,10 +80,21 @@ struct TriTrackAddSymptomSheetView: View {
                     .accessibilityHint("Dismisses this screen without saving changes")
                     .accessibilityAddTraits(.isButton)
                 }
+
+                ToolbarItem(placement: .confirmationAction) {
+                    Button(role: .confirm) {
+                        save()
+                    }
+                    .disabled(title.isEmpty)
+                    .accessibilityLabel("Save symptom")
+                    .accessibilityHint("Saves the symptom entry to your log")
+                    .accessibilityAddTraits(.isButton)
+                }
             }
             .navigationBarTitleDisplayMode(.inline)
         }
         .presentationDetents([.medium, .large])
+        .interactiveDismissDisabled(true)
         .sheet(isPresented: $showSymptomPicker) {
             TriTrackSymptomsSheetView { symptom in
                 selectedSymptom = symptom

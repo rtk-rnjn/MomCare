@@ -39,19 +39,24 @@ struct DashboardView: View {
                     controlState.triTrackSegment = .meAndBaby
                 }
 
-            DashboardEventCardView(upcomingEvent: eventKitHandler.mostRecentEvent)
-                .frame(maxWidth: .infinity)
-                .contextMenu {
-                    Button {
-                        if let upcomingEvent = eventKitHandler.mostRecentEvent {
-                            selectedEvent = EKCalendarItemWrapper(item: upcomingEvent)
+            if let event = eventKitHandler.mostRecentEvent {
+                DashboardEventCardView(upcomingEvent: eventKitHandler.mostRecentEvent)
+                    .frame(maxWidth: .infinity)
+                    .contextMenu {
+                        Button {
+                            if let upcomingEvent = eventKitHandler.mostRecentEvent {
+                                selectedEvent = EKCalendarItemWrapper(item: upcomingEvent)
+                            }
+                        } label: {
+                            Label("View Details", systemImage: "eye")
                         }
-                    } label: {
-                        Label("View Details", systemImage: "eye")
+                    } preview: {
+                        TriTrackEventDetailsContextView(event: event)
                     }
-                } preview: {
-                    TriTrackEventDetailsContextView(event: eventKitHandler.mostRecentEvent)
-                }
+            } else {
+                DashboardEventCardView(upcomingEvent: eventKitHandler.mostRecentEvent)
+                    .frame(maxWidth: .infinity)
+            }
         }
         .sheet(item: $selectedEvent) { eventWrapper in
             if let event = eventWrapper.item as? EKEvent {

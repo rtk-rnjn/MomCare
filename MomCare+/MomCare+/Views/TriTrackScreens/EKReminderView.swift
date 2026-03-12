@@ -310,7 +310,9 @@ struct EKReminderView: View {
         }
 
         if let updatedReminder = try? eventKitHandler.updateReminder(reminder) {
-            reminder = updatedReminder.copy() as! EKReminder
+            if let reminder = updatedReminder.copy() as? EKReminder {
+                self.reminder = reminder
+            }
         }
 
         dismiss()
@@ -318,11 +320,13 @@ struct EKReminderView: View {
 
     func toggleCompletion() {
         performAnimated {
-            if let updated = try? eventKitHandler.markReminder(
+            if let updatedReminder = try? eventKitHandler.markReminder(
                 complete: !isCompleted,
                 reminder: reminder
             ) {
-                reminder = updated.copy() as! EKReminder
+                if let reminder = updatedReminder.copy() as? EKReminder {
+                    self.reminder = reminder
+                }
             }
         }
     }

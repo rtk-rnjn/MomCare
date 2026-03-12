@@ -187,9 +187,15 @@ struct MusicPlayerView: View {
                     Button {
                         _ = musicPlayerHandler.togglePlayPause()
                     } label: {
-                        Image(systemName: musicPlayerHandler.isPlaying ? "pause.fill" : "play.fill")
-                            .foregroundStyle(.black)
+                        if musicPlayerHandler.isWaiting {
+                            ProgressView()
+                                .progressViewStyle(CircularProgressViewStyle(tint: .black))
+                        } else {
+                            Image(systemName: musicPlayerHandler.isPlaying ? "pause.fill" : "play.fill")
+                                .foregroundStyle(.black)
+                        }
                     }
+                    .disabled(musicPlayerHandler.isWaiting)
                     .accessibilityLabel(musicPlayerHandler.isPlaying ? "Pause" : "Play")
 
                     Button {

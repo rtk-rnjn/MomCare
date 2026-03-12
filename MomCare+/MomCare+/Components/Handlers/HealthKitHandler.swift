@@ -24,8 +24,8 @@ final class HealthKitHandler: ObservableObject {
     @Published var minutes: Double = 0
     @Published var caloriesBurned: Int = 0
 
-    @Published var todayFocusText: String = "Loading todays focus from our server ..."
-    @Published var dailyTipText: String = "Loading today's tip from our server ..."
+    @Published var todayFocusText: String = ""
+    @Published var dailyTipText: String = ""
 
     let healthStore: HKHealthStore = .init()
 

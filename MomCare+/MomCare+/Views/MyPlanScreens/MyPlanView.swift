@@ -27,11 +27,6 @@ struct MyPlanView: View {
         .background(MomCareAccent.secondary.ignoresSafeArea())
         .navigationTitle("My Plan")
         .navigationBarTitleDisplayMode(.inline)
-        .task {
-            if let networkResponse = try? await ContentService.shared.fetchUserExercises(), let userExercises = networkResponse.data {
-                healthKitHandler.userExercises = userExercises
-            }
-        }
     }
 
     // MARK: Private

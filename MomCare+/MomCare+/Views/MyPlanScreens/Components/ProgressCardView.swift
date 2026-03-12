@@ -90,12 +90,17 @@ struct ProgressRingView: View {
                     } else {
                         HStack(spacing: 2) {
                             Text(Int(consumed), format: .number)
+                                .font(consumed > 999 ? .footnote.weight(.semibold) : .headline)
                                 .contentTransition(.numericText())
                                 .animation(reduceMotion ? nil : .spring(response: 0.4, dampingFraction: 0.7), value: Int(consumed))
 
                             Text("/")
+                                .font(consumed > 999 ? .footnote.weight(.semibold) : .headline)
 
                             Text(Int(target), format: .number)
+                                .font(consumed > 999 ? .footnote.weight(.semibold) : .headline)
+                                .contentTransition(.numericText())
+                                .animation(reduceMotion ? nil : .spring(response: 0.4, dampingFraction: 0.7), value: Int(consumed))
                         }
                         .transition(.opacity.combined(with: .scale))
                         .font(.headline)

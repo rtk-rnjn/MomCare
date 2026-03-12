@@ -97,6 +97,11 @@ struct MomCareMainTabView: View {
             try? eventKitHandler.fetchAllEvents()
             healthKitHandler.startStepCountObservation()
         }
+        .task {
+            if let networkResponse = try? await ContentService.shared.fetchUserExercises(), let userExercises = networkResponse.data {
+                healthKitHandler.userExercises = userExercises
+            }
+        }
     }
 
 }
