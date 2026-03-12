@@ -156,7 +156,7 @@ struct TriTrackAddCalendarItemSheetView: View {
 
             var recurrenceRules: [EKRecurrenceRule]?
             if recurrenceEnabled {
-                recurrenceRules = [EKRecurrenceRule(recurrenceWith: .daily, interval: 1, end: nil)]
+                recurrenceRules = [EKRecurrenceRule(recurrenceWith: .monthly, interval: 1, end: nil)]
             }
 
             do {
@@ -186,7 +186,7 @@ struct TriTrackAddCalendarItemSheetView: View {
 
             var rules: [EKRecurrenceRule]?
             if recurrenceEnabled {
-                rules = [EKRecurrenceRule(recurrenceWith: .monthly, interval: 1, end: nil)]
+                rules = [EKRecurrenceRule(recurrenceWith: .daily, interval: 1, end: nil)]
             }
 
             do {

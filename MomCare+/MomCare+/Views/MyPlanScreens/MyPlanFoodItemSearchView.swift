@@ -41,12 +41,14 @@ struct MyPlanFoodItemSearchView: View {
                     Task {
                         do {
                             try await healthKitHandler.addFoodToMyPlan(foodId: selectedFoodItem?.id ?? "", mealType: mealType)
+                            await MainActor.run {
+                                dismiss()
+                            }
                         } catch {
                             alertMessage = error.localizedDescription
                             showErrorAlert = true
                         }
                     }
-                    dismiss()
                 }
                 Button(role: .cancel) {}
             } message: {
