@@ -73,6 +73,11 @@ struct TriTrackCalendarItemContentView: View {
         .refreshable {
             refreshData()
         }
+        .alert("Error", isPresented: $showErrorAlert) {
+            Button("OK", role: .cancel) {}
+        } message: {
+            Text(alertMessage ?? "An unexpected error occurred.")
+        }
     }
 
     // MARK: Private
@@ -84,6 +89,8 @@ struct TriTrackCalendarItemContentView: View {
 
     @State private var selectedEvent: EKCalendarItemWrapper?
     @State private var selectedReminder: EKCalendarItemWrapper?
+    @State private var showErrorAlert = false
+    @State private var alertMessage: String?
 
     private var emptyState: some View {
         VStack(spacing: 16) {
@@ -183,18 +190,27 @@ struct TriTrackCalendarItemContentView: View {
     }
 
     private func toggleReminder(_ reminder: EKReminder) {
-        guard let updatedReminder = try? eventKitHandler.markReminder(
-            complete: !reminder.isCompleted,
-            reminder: reminder
-        ) else { return }
-
-        upsertReminder(updatedReminder)
+        do {
+            let updatedReminder = try eventKitHandler.markReminder(
+                complete: !reminder.isCompleted,
+                reminder: reminder
+            )
+            upsertReminder(updatedReminder)
+        } catch {
+            alertMessage = error.localizedDescription
+            showErrorAlert = true
+        }
     }
 
     private func deleteReminder(_ reminder: EKReminder) {
-        try? eventKitHandler.deleteReminder(reminder)
-        eventKitHandler.reminders.removeAll {
-            $0.calendarItemIdentifier == reminder.calendarItemIdentifier
+        do {
+            try eventKitHandler.deleteReminder(reminder)
+            eventKitHandler.reminders.removeAll {
+                $0.calendarItemIdentifier == reminder.calendarItemIdentifier
+            }
+        } catch {
+            alertMessage = error.localizedDescription
+            showErrorAlert = true
         }
     }
 

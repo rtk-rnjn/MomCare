@@ -64,10 +64,15 @@ struct ProfileAccountSecurityView: View {
 
                     Button("Change") {
                         validatePasswordAndSubmit {
-                            _ = try? await authenticationService.changePassword(
-                                currentPassword: oldPassword,
-                                newPassword: newPassword
-                            )
+                            do {
+                                _ = try await authenticationService.changePassword(
+                                    currentPassword: oldPassword,
+                                    newPassword: newPassword
+                                )
+                            } catch {
+                                alertMessage = error.localizedDescription
+                                showAlert = true
+                            }
                         }
                     }
                     .frame(maxWidth: .infinity)
@@ -85,13 +90,22 @@ struct ProfileAccountSecurityView: View {
         .listStyle(.insetGrouped)
         .navigationTitle("Account & Security")
         .navigationBarTitleDisplayMode(.inline)
+        .alert("Error", isPresented: $showAlert) {
+            Button("OK", role: .cancel) {}
+        } message: {
+            Text(alertMessage ?? "An unexpected error occurred.")
+        }
 
         // Toolbar Button
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
                 Button(isEditing ? "Done" : "Edit") {
-                    withAnimation {
+                    if reduceMotion {
                         isEditing.toggle()
+                    } else {
+                        withAnimation {
+                            isEditing.toggle()
+                        }
                     }
                 }
                 .buttonStyle(.borderedProminent)
@@ -105,9 +119,14 @@ struct ProfileAccountSecurityView: View {
     }
 
     func toggleChangePassword() {
-        withAnimation(.easeInOut) {
+        if reduceMotion {
             isChangingPassword.toggle()
             errorMessage = nil
+        } else {
+            withAnimation(.easeInOut) {
+                isChangingPassword.toggle()
+                errorMessage = nil
+            }
         }
     }
 
@@ -137,7 +156,12 @@ struct ProfileAccountSecurityView: View {
 
     func saveAccountInfo() {
         Task {
-            try? await authenticationService.changeEmailAddress(newEmailAddress: emailAddress)
+            do {
+                try await authenticationService.changeEmailAddress(newEmailAddress: emailAddress)
+            } catch {
+                alertMessage = error.localizedDescription
+                showAlert = true
+            }
         }
     }
 
@@ -149,6 +173,8 @@ struct ProfileAccountSecurityView: View {
     @State private var isEditing = false
     @State private var isChangingPassword = false
     @State private var errorMessage: String?
+    @State private var alertMessage: String?
+    @State private var showAlert = false
 
     @State private var oldPassword = ""
     @State private var newPassword = ""

@@ -95,6 +95,11 @@ struct TriTrackAddSymptomSheetView: View {
         }
         .presentationDetents([.medium, .large])
         .interactiveDismissDisabled(true)
+        .alert("Error", isPresented: $showErrorAlert) {
+            Button("OK", role: .cancel) {}
+        } message: {
+            Text(errorMessage ?? "An unexpected error occurred.")
+        }
         .sheet(isPresented: $showSymptomPicker) {
             TriTrackSymptomsSheetView { symptom in
                 selectedSymptom = symptom
@@ -113,6 +118,8 @@ struct TriTrackAddSymptomSheetView: View {
 
     @State private var title: String = ""
     @State private var notes: String = ""
+    @State private var showErrorAlert = false
+    @State private var errorMessage: String?
 
     @State private var selectedSymptom: Symptom?
     @State private var showSymptomPicker = false
@@ -122,7 +129,13 @@ struct TriTrackAddSymptomSheetView: View {
 
         let model = SymptomModel(date: loggedDate, symptomId: selectedSymptom?.id, title: title, notes: notes)
         modelContext.insert(model)
-        try? modelContext.save()
+        do {
+            try modelContext.save()
+        } catch {
+            errorMessage = error.localizedDescription
+            showErrorAlert = true
+            return
+        }
         dismiss()
     }
 }

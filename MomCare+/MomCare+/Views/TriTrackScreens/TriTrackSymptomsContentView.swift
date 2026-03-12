@@ -38,6 +38,11 @@ struct TriTrackSymptomsContentView: View {
                 TriTrackSymptomDetailView(symptom: selectedSymptom)
             }
         }
+        .alert("Error", isPresented: $showErrorAlert) {
+            Button("OK", role: .cancel) {}
+        } message: {
+            Text(alertMessage ?? "An unexpected error occurred.")
+        }
     }
 
     var emptyState: some View {
@@ -90,7 +95,12 @@ struct TriTrackSymptomsContentView: View {
 
     func delete(_ model: SymptomModel) {
         context.delete(model)
-        try? context.save()
+        do {
+            try context.save()
+        } catch {
+            alertMessage = error.localizedDescription
+            showErrorAlert = true
+        }
     }
 
     // MARK: Private
@@ -101,6 +111,8 @@ struct TriTrackSymptomsContentView: View {
 
     @State private var selectedSymptom: Symptom?
     @State private var showDetail = false
+    @State private var showErrorAlert = false
+    @State private var alertMessage: String?
     @ScaledMetric private var emptyStateIconSize: CGFloat = 48
 
 }

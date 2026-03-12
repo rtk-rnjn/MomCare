@@ -9,6 +9,9 @@ struct TriTrackAddCalendarItemSheetView: View {
     @EnvironmentObject var eventKitHandler: EventKitHandler
     @Environment(\.dismiss) var dismiss
 
+    @State private var showErrorAlert = false
+    @State private var errorMessage: String?
+
     let dateRange: () -> ClosedRange<Date> = {
         let today = Date()
 
@@ -64,6 +67,11 @@ struct TriTrackAddCalendarItemSheetView: View {
             }
         }
         .presentationDetents([.medium, .large])
+        .alert("Error", isPresented: $showErrorAlert) {
+            Button("OK", role: .cancel) {}
+        } message: {
+            Text(errorMessage ?? "An unexpected error occurred.")
+        }
         .sheet(isPresented: $showMapPicker) {
             MapPickerView(selectedMapItem: $selectedMapItem)
                 .presentationDetents([.medium, .large])
@@ -151,21 +159,27 @@ struct TriTrackAddCalendarItemSheetView: View {
                 recurrenceRules = [EKRecurrenceRule(recurrenceWith: .daily, interval: 1, end: nil)]
             }
 
-            _ = try? eventKitHandler.createEvent(
-                title: title,
-                startDate: startDate,
-                endDate: endDate,
-                isAllDay: isAllDay,
-                notes: notes,
-                recurrenceRules: recurrenceRules,
-                location: selectedMapItem?.name,
-                structuredLocaltion: selectedMapItem.map {
-                    let loc = EKStructuredLocation(title: $0.name ?? "")
-                    loc.geoLocation = $0.location
-                    return loc
-                },
-                alarm: alarm
-            )
+            do {
+                _ = try eventKitHandler.createEvent(
+                    title: title,
+                    startDate: startDate,
+                    endDate: endDate,
+                    isAllDay: isAllDay,
+                    notes: notes,
+                    recurrenceRules: recurrenceRules,
+                    location: selectedMapItem?.name,
+                    structuredLocaltion: selectedMapItem.map {
+                        let loc = EKStructuredLocation(title: $0.name ?? "")
+                        loc.geoLocation = $0.location
+                        return loc
+                    },
+                    alarm: alarm
+                )
+            } catch {
+                errorMessage = error.localizedDescription
+                showErrorAlert = true
+                return
+            }
 
         case .reminder:
             let components = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute], from: dueDate)
@@ -175,12 +189,18 @@ struct TriTrackAddCalendarItemSheetView: View {
                 rules = [EKRecurrenceRule(recurrenceWith: .monthly, interval: 1, end: nil)]
             }
 
-            try? eventKitHandler.createReminder(
-                title: title,
-                notes: notes,
-                dueDateComponents: components,
-                recurrenceRules: rules
-            )
+            do {
+                try eventKitHandler.createReminder(
+                    title: title,
+                    notes: notes,
+                    dueDateComponents: components,
+                    recurrenceRules: rules
+                )
+            } catch {
+                errorMessage = error.localizedDescription
+                showErrorAlert = true
+                return
+            }
         }
 
         dismiss()

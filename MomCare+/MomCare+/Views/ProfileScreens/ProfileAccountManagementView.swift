@@ -39,14 +39,26 @@ struct ProfileAccountManagementView: View {
         } message: {
             Text("Are you sure you want to permanently delete your MomCare+ account and all associated data?")
         }
+        .alert("Error", isPresented: $showErrorAlert) {
+            Button("OK", role: .cancel) {}
+        } message: {
+            Text(errorMessage ?? "An unexpected error occurred.")
+        }
     }
 
     // MARK: Private
 
     @State private var showDeleteAlert = false
+    @State private var showErrorAlert = false
+    @State private var errorMessage: String?
     @EnvironmentObject private var authenticationService: AuthenticationService
 
     private func deleteAccount() async {
-        _ = try? await authenticationService.delete()
+        do {
+            _ = try await authenticationService.delete()
+        } catch {
+            errorMessage = error.localizedDescription
+            showErrorAlert = true
+        }
     }
 }

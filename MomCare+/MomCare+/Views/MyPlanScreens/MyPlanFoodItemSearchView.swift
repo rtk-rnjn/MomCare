@@ -39,7 +39,12 @@ struct MyPlanFoodItemSearchView: View {
             .alert("Add Food?", isPresented: $showAlert) {
                 Button("Add", role: .confirm) {
                     Task {
-                        try? await healthKitHandler.addFoodToMyPlan(foodId: selectedFoodItem?.id ?? "", mealType: mealType)
+                        do {
+                            try await healthKitHandler.addFoodToMyPlan(foodId: selectedFoodItem?.id ?? "", mealType: mealType)
+                        } catch {
+                            foodErrorMessage = error.localizedDescription
+                            showFoodErrorAlert = true
+                        }
                     }
                     dismiss()
                 }
@@ -48,6 +53,11 @@ struct MyPlanFoodItemSearchView: View {
                 if let selectedFoodItem {
                     Text("Do you want to add \(selectedFoodItem.name) to your plan?")
                 }
+            }
+            .alert("Error", isPresented: $showFoodErrorAlert) {
+                Button("OK", role: .cancel) {}
+            } message: {
+                Text(foodErrorMessage ?? "An unexpected error occurred.")
             }
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
@@ -87,6 +97,8 @@ struct MyPlanFoodItemSearchView: View {
     @State private var isLoading = false
     @State private var task: URLSessionDataTask?
     @State private var showAlert: Bool = false
+    @State private var showFoodErrorAlert: Bool = false
+    @State private var foodErrorMessage: String?
 
     private func debounceSearch(query: String) {
         guard !query.isEmpty else {
