@@ -3,6 +3,8 @@ import EventKit
 
 struct EKReminderView: View {
 
+    // MARK: Internal
+
     enum RepeatRule: String, CaseIterable {
         case never
         case daily

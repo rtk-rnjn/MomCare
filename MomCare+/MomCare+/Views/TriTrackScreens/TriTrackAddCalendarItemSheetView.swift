@@ -6,15 +6,6 @@ struct TriTrackAddCalendarItemSheetView: View {
 
     // MARK: Internal
 
-    @EnvironmentObject var eventKitHandler: EventKitHandler
-    @Environment(\.dismiss) var dismiss
-
-    let dateRange: () -> ClosedRange<Date> = {
-        let today = Date()
-
-        return today...Date.distantFuture
-    }
-
     var body: some View {
         NavigationStack {
             Form {
@@ -28,7 +19,17 @@ struct TriTrackAddCalendarItemSheetView: View {
 
                 Section {
                     TextField("Title", text: $title)
+                        .onChange(of: title) {
+                            if !title.isEmpty {
+                                hasData = true
+                            }
+                        }
                     TextField("Notes", text: $notes)
+                        .onChange(of: notes) {
+                            if !notes.isEmpty {
+                                hasData = true
+                            }
+                        }
                 }
 
                 switch mode {
@@ -43,7 +44,16 @@ struct TriTrackAddCalendarItemSheetView: View {
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
                     Button(role: .cancel) {
-                        dismiss()
+                        if hasData {
+                            showConfirmationDialog = true
+                        } else {
+                            dismiss()
+                        }
+                    }
+                    .confirmationDialog("Are you sure you want to discard your changes?", isPresented: $showConfirmationDialog, titleVisibility: .visible) {
+                        Button("Discard Changes", role: .destructive) {
+                            dismiss()
+                        }
                     }
                     .accessibilityLabel("Cancel")
                     .accessibilityHint("Dismisses this screen without saving changes")
@@ -77,6 +87,12 @@ struct TriTrackAddCalendarItemSheetView: View {
 
     // MARK: Private
 
+    @EnvironmentObject private var eventKitHandler: EventKitHandler
+    @Environment(\.dismiss) private var dismiss
+    @State private var showConfirmationDialog: Bool = false
+
+    @State private var hasData: Bool = false
+
     @State private var showErrorAlert = false
     @State private var alertMessage: String?
 
@@ -96,15 +112,31 @@ struct TriTrackAddCalendarItemSheetView: View {
     @State private var selectedMapItem: MKMapItem?
     @State private var showMapPicker = false
 
+    private let dateRange: () -> ClosedRange<Date> = {
+        let today = Date()
+
+        return today...Date.distantFuture
+    }
+
     private var appointmentSection: some View {
         Group {
             Section {
                 Toggle("All Day", isOn: $isAllDay)
+                    .onChange(of: isAllDay) {
+                        if isAllDay {
+                            hasData = true
+                        }
+                    }
 
                 DatePicker("Starts", selection: $startDate, in: dateRange(), displayedComponents: isAllDay ? [.date] : [.date, .hourAndMinute])
                 DatePicker("Ends", selection: $endDate, in: dateRange(), displayedComponents: isAllDay ? [.date] : [.date, .hourAndMinute])
 
                 Toggle("Repeat Monthly", isOn: $recurrenceEnabled)
+                    .onChange(of: recurrenceEnabled) {
+                        if recurrenceEnabled {
+                            hasData = true
+                        }
+                    }
             }
 
             Section {
@@ -130,6 +162,11 @@ struct TriTrackAddCalendarItemSheetView: View {
             }
 
             Toggle("Repeat Daily", isOn: $recurrenceEnabled)
+                .onChange(of: recurrenceEnabled) {
+                    if recurrenceEnabled {
+                        hasData = true
+                    }
+                }
 
             alarmSection
         }

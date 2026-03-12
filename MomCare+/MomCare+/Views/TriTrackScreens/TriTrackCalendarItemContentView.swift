@@ -24,7 +24,6 @@ struct TriTrackCalendarItemContentView: View {
 
     var body: some View {
         VStack(spacing: 16) {
-
             if eventKitHandler.events.isEmpty && eventKitHandler.reminders.isEmpty {
                 emptyState
             } else {
@@ -82,24 +81,6 @@ struct TriTrackCalendarItemContentView: View {
         } message: {
             Text(alertMessage ?? "An unexpected error occurred.")
         }
-    }
-
-    func requestEventAccess() async throws {
-        let success = try await eventKitHandler.eventStore.requestFullAccessToEvents()
-        if success {
-            return
-        }
-        alertMessage = "Event access denied. Please enable calendar permissions in Settings to add and view events."
-        showErrorAlert = true
-    }
-
-    func requestReminderAccess() async throws {
-        let success = try await eventKitHandler.eventStore.requestFullAccessToReminders()
-        if success {
-            return
-        }
-        alertMessage = "Reminder access denied. Please enable reminders permissions in Settings to add and view reminders."
-        showErrorAlert = true
     }
 
     // MARK: Private
@@ -194,6 +175,24 @@ struct TriTrackCalendarItemContentView: View {
                 }
             }
         }
+    }
+
+    private func requestEventAccess() async throws {
+        let success = try await eventKitHandler.eventStore.requestFullAccessToEvents()
+        if success {
+            return
+        }
+        alertMessage = "Event access denied. Please enable calendar permissions in Settings to add and view events."
+        showErrorAlert = true
+    }
+
+    private func requestReminderAccess() async throws {
+        let success = try await eventKitHandler.eventStore.requestFullAccessToReminders()
+        if success {
+            return
+        }
+        alertMessage = "Reminder access denied. Please enable reminders permissions in Settings to add and view reminders."
+        showErrorAlert = true
     }
 
     private func refreshData() {
