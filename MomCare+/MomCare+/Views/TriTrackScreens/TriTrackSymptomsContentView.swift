@@ -156,7 +156,7 @@ struct SymptomRow: View {
         }
         .padding()
         .background(
-            RoundedRectangle(cornerRadius: 12)
+            RoundedRectangle(cornerRadius: 18)
                 .fill(Color(.systemGray6))
         )
         .contextMenu {

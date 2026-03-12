@@ -323,13 +323,8 @@ struct ReminderRow: View {
 
     var body: some View {
         HStack(spacing: 14) {
-            Group {
-                dateCapsule
-                reminderInfo
-            }
-            .onTapGesture {
-                onTap()
-            }
+            dateCapsule
+            reminderInfo
             Spacer()
             completionIndicator
         }
@@ -338,6 +333,9 @@ struct ReminderRow: View {
             RoundedRectangle(cornerRadius: 18, style: .continuous)
                 .fill(Color(.secondarySystemBackground))
         )
+        .onTapGesture {
+            onTap()
+        }
         .opacity(reminder.isCompleted ? 0.6 : 1)
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(reminder.title)

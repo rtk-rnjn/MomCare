@@ -3,10 +3,6 @@ import EventKit
 
 struct EKReminderView: View {
 
-    // MARK: Internal
-
-    // MARK: Repeat State
-
     enum RepeatRule: String, CaseIterable {
         case never
         case daily
@@ -315,7 +311,10 @@ struct EKReminderView: View {
         }
 
         do {
-            reminder = try eventKitHandler.updateReminder(reminder)
+            let reminder = try eventKitHandler.updateReminder(reminder)
+            performAnimated {
+                self.reminder = reminder
+            }
         } catch {
             alertMessage = error.localizedDescription
             showErrorAlert = true
@@ -329,7 +328,9 @@ struct EKReminderView: View {
         do {
             let updatedReminder = try eventKitHandler.markReminder(complete: !isCompleted, reminder: reminder)
             performAnimated {
-                reminder = updatedReminder
+                if let reminder = updatedReminder.copy() as? EKReminder {
+                    self.reminder = reminder
+                }
             }
         } catch {
             alertMessage = error.localizedDescription
