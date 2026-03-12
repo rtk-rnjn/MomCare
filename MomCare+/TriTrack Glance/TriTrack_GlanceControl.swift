@@ -24,4 +24,3 @@ struct OpenMomCareIntent: AppIntent {
         .result()
     }
 }
-

@@ -2,6 +2,9 @@ import SwiftUI
 import WidgetKit
 
 struct LargeWidgetView: View {
+
+    // MARK: Internal
+
     let entry: TriTrackEntry
 
     var body: some View {
@@ -38,6 +41,14 @@ struct LargeWidgetView: View {
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
         }
+    }
+
+    // MARK: Private
+
+    private var hasMeasurements: Bool {
+        let hasHeight = (entry.babyHeightCm ?? 0) > 0
+        let hasWeight = (entry.babyWeightG ?? 0) > 0
+        return hasHeight || hasWeight
     }
 
     private var headerSection: some View {
@@ -83,7 +94,7 @@ struct LargeWidgetView: View {
             if let heightCm = entry.babyHeightCm, heightCm > 0 {
                 measurementItem(
                     label: "HEIGHT",
-                    value: String(format: "%.1f cm", heightCm)
+                    value: unsafe String(format: "%.1f cm", heightCm)
                 )
             }
 
@@ -91,10 +102,38 @@ struct LargeWidgetView: View {
                 measurementItem(
                     label: "WEIGHT",
                     value: weightG >= 1000
-                        ? String(format: "%.2f kg", weightG / 1000)
-                        : String(format: "%.0f g", weightG)
+                        ? unsafe String(format: "%.2f kg", weightG / 1000)
+                        : unsafe String(format: "%.0f g", weightG)
                 )
             }
+        }
+    }
+
+    @ViewBuilder
+    private var fruitImage: some View {
+        if let imageURL = entry.fruitImageURL, let url = URL(string: imageURL) {
+            AsyncImage(url: url) { phase in
+                switch phase {
+                case let .success(image):
+                    image
+                        .resizable()
+                        .scaledToFit()
+
+                case .empty, .failure:
+                    Image(systemName: "leaf.circle.fill")
+                        .resizable()
+                        .scaledToFit()
+                        .foregroundColor(.green)
+
+                @unknown default:
+                    EmptyView()
+                }
+            }
+        } else {
+            Image(systemName: "leaf.circle.fill")
+                .resizable()
+                .scaledToFit()
+                .foregroundColor(.green)
         }
     }
 
@@ -110,35 +149,4 @@ struct LargeWidgetView: View {
         }
     }
 
-    private var hasMeasurements: Bool {
-        let hasHeight = (entry.babyHeightCm ?? 0) > 0
-        let hasWeight = (entry.babyWeightG ?? 0) > 0
-        return hasHeight || hasWeight
-    }
-
-    @ViewBuilder
-    private var fruitImage: some View {
-        if let imageURL = entry.fruitImageURL, let url = URL(string: imageURL) {
-            AsyncImage(url: url) { phase in
-                switch phase {
-                case let .success(image):
-                    image
-                        .resizable()
-                        .scaledToFit()
-                case .empty, .failure:
-                    Image(systemName: "leaf.circle.fill")
-                        .resizable()
-                        .scaledToFit()
-                        .foregroundColor(.green)
-                @unknown default:
-                    EmptyView()
-                }
-            }
-        } else {
-            Image(systemName: "leaf.circle.fill")
-                .resizable()
-                .scaledToFit()
-                .foregroundColor(.green)
-        }
-    }
 }

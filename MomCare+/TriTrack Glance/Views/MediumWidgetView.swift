@@ -2,6 +2,9 @@ import SwiftUI
 import WidgetKit
 
 struct MediumWidgetView: View {
+
+    // MARK: Internal
+
     let entry: TriTrackEntry
 
     var body: some View {
@@ -71,6 +74,8 @@ struct MediumWidgetView: View {
         }
     }
 
+    // MARK: Private
+
     @ViewBuilder
     private var fruitImage: some View {
         if let imageURL = entry.fruitImageURL, let url = URL(string: imageURL) {
@@ -80,11 +85,13 @@ struct MediumWidgetView: View {
                     image
                         .resizable()
                         .scaledToFit()
+
                 case .empty, .failure:
                     Image(systemName: "leaf.circle.fill")
                         .resizable()
                         .scaledToFit()
                         .foregroundColor(.green)
+
                 @unknown default:
                     EmptyView()
                 }

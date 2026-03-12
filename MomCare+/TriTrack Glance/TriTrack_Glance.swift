@@ -14,7 +14,8 @@ struct TriTrackEntry: TimelineEntry {
 }
 
 struct TriTrackGlanceProvider: TimelineProvider {
-    private let database = Database()
+
+    // MARK: Internal
 
     func placeholder(in _: Context) -> TriTrackEntry {
         TriTrackEntry(
@@ -39,6 +40,10 @@ struct TriTrackGlanceProvider: TimelineProvider {
         let nextUpdate = Calendar.current.startOfDay(for: Date(timeIntervalSinceNow: 24 * 60 * 60))
         completion(Timeline(entries: [entry], policy: .after(nextUpdate)))
     }
+
+    // MARK: Private
+
+    private let database: Database = .init()
 
     private func makeEntry() -> TriTrackEntry {
         guard let progress = database.pregnancyProgress(), progress.isValid else {
@@ -72,6 +77,7 @@ struct TriTrackGlanceProvider: TimelineProvider {
 
 struct TriTrack_GlanceEntryView: View {
     @Environment(\.widgetFamily) var widgetFamily
+
     let entry: TriTrackEntry
 
     var body: some View {
