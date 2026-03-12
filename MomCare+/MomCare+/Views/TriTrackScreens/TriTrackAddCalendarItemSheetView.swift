@@ -10,7 +10,7 @@ struct TriTrackAddCalendarItemSheetView: View {
     @Environment(\.dismiss) var dismiss
 
     @State private var showErrorAlert = false
-    @State private var errorMessage: String?
+    @State private var alertMessage: String?
 
     let dateRange: () -> ClosedRange<Date> = {
         let today = Date()
@@ -70,7 +70,7 @@ struct TriTrackAddCalendarItemSheetView: View {
         .alert("Error", isPresented: $showErrorAlert) {
             Button("OK", role: .cancel) {}
         } message: {
-            Text(errorMessage ?? "An unexpected error occurred.")
+            Text(alertMessage ?? "An unexpected error occurred.")
         }
         .sheet(isPresented: $showMapPicker) {
             MapPickerView(selectedMapItem: $selectedMapItem)
@@ -176,7 +176,7 @@ struct TriTrackAddCalendarItemSheetView: View {
                     alarm: alarm
                 )
             } catch {
-                errorMessage = error.localizedDescription
+                alertMessage = error.localizedDescription
                 showErrorAlert = true
                 return
             }
@@ -197,7 +197,7 @@ struct TriTrackAddCalendarItemSheetView: View {
                     recurrenceRules: rules
                 )
             } catch {
-                errorMessage = error.localizedDescription
+                alertMessage = error.localizedDescription
                 showErrorAlert = true
                 return
             }

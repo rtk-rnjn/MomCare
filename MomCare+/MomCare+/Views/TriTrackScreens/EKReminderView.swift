@@ -315,9 +315,7 @@ struct EKReminderView: View {
         }
 
         do {
-            if let updatedReminder = try eventKitHandler.updateReminder(reminder).copy() as? EKReminder {
-                self.reminder = updatedReminder
-            }
+            self.reminder = try eventKitHandler.updateReminder(reminder)
         } catch {
             alertMessage = error.localizedDescription
             showErrorAlert = true
@@ -328,30 +326,25 @@ struct EKReminderView: View {
     }
 
     func toggleCompletion() {
-        performAnimated {
-            do {
-                if let updatedReminder = try eventKitHandler.markReminder(
-                    complete: !isCompleted,
-                    reminder: reminder
-                ).copy() as? EKReminder {
-                    self.reminder = updatedReminder
-                }
-            } catch {
-                alertMessage = error.localizedDescription
-                showErrorAlert = true
+        do {
+            let updatedReminder = try eventKitHandler.markReminder(complete: !isCompleted, reminder: reminder)
+            performAnimated {
+                self.reminder = updatedReminder
             }
+        } catch {
+            alertMessage = error.localizedDescription
+            showErrorAlert = true
         }
     }
 
     func deleteReminder() {
         do {
             try eventKitHandler.deleteReminder(reminder)
+            dismiss()
         } catch {
             alertMessage = error.localizedDescription
             showErrorAlert = true
-            return
         }
-        dismiss()
     }
 
     func performAnimated(_ action: () -> Void) {

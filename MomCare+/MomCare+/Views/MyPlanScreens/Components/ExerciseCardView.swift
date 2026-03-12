@@ -31,7 +31,7 @@ struct ExerciseCardView: View {
         .alert("Error", isPresented: $showErrorAlert) {
             Button("OK", role: .cancel) {}
         } message: {
-            Text(errorMessage ?? "An unexpected error occurred.")
+            Text(alertMessage ?? "An unexpected error occurred.")
         }
     }
 
@@ -46,7 +46,7 @@ struct ExerciseCardView: View {
     @State private var startExercisePlayer: Bool = false
     @State private var avPlayer: AVPlayer?
     @State private var showErrorAlert = false
-    @State private var errorMessage: String?
+    @State private var alertMessage: String?
 
 }
 
@@ -121,7 +121,7 @@ private extension ExerciseCardView {
                     do {
                         try await updateDuration()
                     } catch {
-                        errorMessage = error.localizedDescription
+                        alertMessage = error.localizedDescription
                         showErrorAlert = true
                     }
                     startExercisePlayer = false

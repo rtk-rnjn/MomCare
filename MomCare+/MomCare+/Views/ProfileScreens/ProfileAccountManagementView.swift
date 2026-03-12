@@ -42,7 +42,7 @@ struct ProfileAccountManagementView: View {
         .alert("Error", isPresented: $showErrorAlert) {
             Button("OK", role: .cancel) {}
         } message: {
-            Text(errorMessage ?? "An unexpected error occurred.")
+            Text(alertMessage ?? "An unexpected error occurred.")
         }
     }
 
@@ -50,14 +50,14 @@ struct ProfileAccountManagementView: View {
 
     @State private var showDeleteAlert = false
     @State private var showErrorAlert = false
-    @State private var errorMessage: String?
+    @State private var alertMessage: String?
     @EnvironmentObject private var authenticationService: AuthenticationService
 
     private func deleteAccount() async {
         do {
             _ = try await authenticationService.delete()
         } catch {
-            errorMessage = error.localizedDescription
+            alertMessage = error.localizedDescription
             showErrorAlert = true
         }
     }
