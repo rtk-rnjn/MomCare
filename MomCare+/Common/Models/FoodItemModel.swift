@@ -58,32 +58,26 @@ struct FoodItemModel: Equatable, Hashable, Identifiable, Sendable, Codable, Cust
 
 extension FoodItemModel {
     var calories: Measurement<UnitEnergy> {
-        Measurement(value: totalCalories,
-                    unit: .kilocalories)
+        Measurement(value: totalCalories, unit: .kilocalories)
     }
 
     var sodium: Measurement<UnitMass> {
-        Measurement(value: totalSodiumInMiligrams,
-                    unit: .milligrams)
+        Measurement(value: totalSodiumInMiligrams, unit: .milligrams)
     }
 
     var protein: Measurement<UnitMass> {
-        Measurement(value: totalProteinInGrams,
-                    unit: .grams)
+        Measurement(value: totalProteinInGrams, unit: .grams)
     }
 
     var carbs: Measurement<UnitMass> {
-        Measurement(value: totalCarbsInGrams,
-                    unit: .grams)
+        Measurement(value: totalCarbsInGrams, unit: .grams)
     }
 
     var fats: Measurement<UnitMass> {
-        Measurement(value: totalFatsInGrams,
-                    unit: .grams)
+        Measurement(value: totalFatsInGrams, unit: .grams)
     }
 
     var sugar: Measurement<UnitMass> {
-        Measurement(value: totalSugarInGrams,
-                    unit: .grams)
+        Measurement(value: totalSugarInGrams, unit: .grams)
     }
 }

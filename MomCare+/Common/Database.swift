@@ -2,7 +2,7 @@ import CryptoKit
 import Foundation
 import UIKit
 
-private let appGroup = "com.MomCare"
+private let appGroup = "group.MomCare"
 
 enum ValidDatabaseKeys {
     case accessTokenExpiresAtTimestamp
@@ -123,4 +123,17 @@ extension Database {
         let keys = userDefaults.dictionaryRepresentation().keys.filter { $0.starts(with: "food_") }
         return keys.compactMap { get($0) as FoodItemModel? }
     }
+}
+
+extension Database {
+    func pregnancyProgress() -> PregnancyProgress? {
+        guard let user: UserModel = self[.userModel],
+              let dueDate = user.dueDate
+        else {
+            return nil
+        }
+
+        return Utils.progress(fromDueDate: dueDate)
+    }
+
 }

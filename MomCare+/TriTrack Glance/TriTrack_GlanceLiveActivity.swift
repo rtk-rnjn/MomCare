@@ -4,70 +4,79 @@ import WidgetKit
 
 struct TriTrack_GlanceAttributes: ActivityAttributes {
     struct ContentState: Codable, Hashable {
-        /// Dynamic stateful properties about your activity go here!
-        var emoji: String
+        var week: Int
+        var day: Int
+        var trimester: String
     }
 
-    /// Fixed non-changing properties about your activity go here!
-    var name: String
+    var pregnancyStartDate: Date
 }
 
 struct TriTrack_GlanceLiveActivity: Widget {
     var body: some WidgetConfiguration {
         ActivityConfiguration(for: TriTrack_GlanceAttributes.self) { context in
-            // Lock screen/banner UI goes here
-            VStack {
-                Text("Hello \(context.state.emoji)")
+            HStack(spacing: 16) {
+                VStack(alignment: .leading, spacing: 2) {
+                    Text("Week \(context.state.week)")
+                        .font(.headline)
+                        .fontWeight(.bold)
+
+                    Text("Day \(context.state.day)")
+                        .font(.subheadline)
+                        .foregroundColor(.secondary)
+                }
+
+                Spacer()
+
+                Text("Trimester \(context.state.trimester)")
+                    .font(.subheadline)
+                    .fontWeight(.semibold)
+                    .foregroundColor(Color(red: 139 / 255, green: 69 / 255, blue: 87 / 255))
             }
-            .activityBackgroundTint(Color.cyan)
-            .activitySystemActionForegroundColor(Color.black)
+            .padding(16)
+            .activityBackgroundTint(Color(.systemBackground))
 
         } dynamicIsland: { context in
             DynamicIsland {
-                // Expanded UI goes here.  Compose the expanded UI through
-                // various regions, like leading/trailing/center/bottom
                 DynamicIslandExpandedRegion(.leading) {
-                    Text("Leading")
+                    VStack(alignment: .leading, spacing: 2) {
+                        Text("Week \(context.state.week)")
+                            .font(.headline)
+                            .fontWeight(.bold)
+
+                        Text("Day \(context.state.day)")
+                            .font(.caption)
+                            .foregroundColor(.secondary)
+                    }
+                    .padding(.leading, 4)
                 }
+
                 DynamicIslandExpandedRegion(.trailing) {
-                    Text("Trailing")
+                    Text("T\(context.state.trimester)")
+                        .font(.subheadline)
+                        .fontWeight(.semibold)
+                        .foregroundColor(Color(red: 139 / 255, green: 69 / 255, blue: 87 / 255))
+                        .padding(.trailing, 4)
                 }
+
                 DynamicIslandExpandedRegion(.bottom) {
-                    Text("Bottom \(context.state.emoji)")
-                    // more content
+                    Text("Trimester \(context.state.trimester)")
+                        .font(.caption)
+                        .foregroundColor(.secondary)
                 }
             } compactLeading: {
-                Text("L")
+                Text("W\(context.state.week)")
+                    .font(.caption2)
+                    .fontWeight(.bold)
             } compactTrailing: {
-                Text("T \(context.state.emoji)")
+                Text("D\(context.state.day)")
+                    .font(.caption2)
+                    .foregroundColor(.secondary)
             } minimal: {
-                Text(context.state.emoji)
+                Text("\(context.state.week)")
+                    .font(.caption2)
+                    .fontWeight(.bold)
             }
-            .widgetURL(URL(string: "http://www.apple.com"))
-            .keylineTint(Color.red)
         }
     }
-}
-
-private extension TriTrack_GlanceAttributes {
-    static var preview: TriTrack_GlanceAttributes {
-        TriTrack_GlanceAttributes(name: "World")
-    }
-}
-
-private extension TriTrack_GlanceAttributes.ContentState {
-    static var smiley: TriTrack_GlanceAttributes.ContentState {
-        TriTrack_GlanceAttributes.ContentState(emoji: "😀")
-    }
-
-    static var starEyes: TriTrack_GlanceAttributes.ContentState {
-        TriTrack_GlanceAttributes.ContentState(emoji: "🤩")
-    }
-}
-
-#Preview("Notification", as: .content, using: TriTrack_GlanceAttributes.preview) {
-    TriTrack_GlanceLiveActivity()
-} contentStates: {
-    TriTrack_GlanceAttributes.ContentState.smiley
-    TriTrack_GlanceAttributes.ContentState.starEyes
 }

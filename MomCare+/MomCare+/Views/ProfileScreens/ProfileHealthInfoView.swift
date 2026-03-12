@@ -179,7 +179,7 @@ struct ProfileHealthInfoView: View {
 
     @State private var activeSheet: SheetType?
 
-    private var pregnancy: DashboardPregnancyProgress {
+    private var pregnancy: PregnancyProgress {
         if let dueDateTimestamp = authenticationService.userModel?.dueDateTimestamp {
             return Utils.progress(fromDueDate: Date(timeIntervalSince1970: dueDateTimestamp))
         }

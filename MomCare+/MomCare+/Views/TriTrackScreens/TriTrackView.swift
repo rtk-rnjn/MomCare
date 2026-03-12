@@ -87,8 +87,8 @@ struct TriTrackView: View {
 
     @State private var selectedDate: Date = .init()
 
-    private var currentProgress: DashboardPregnancyProgress {
-        authenticationService.userModel?.pregnancyProgress ?? DashboardPregnancyProgress(week: 0, day: 0, trimester: "-", isValid: false)
+    private var currentProgress: PregnancyProgress {
+        authenticationService.userModel?.pregnancyProgress ?? PregnancyProgress(week: 0, day: 0, trimester: "-", isValid: false)
     }
 
     private var trimesterData: TrimesterData? {
@@ -184,7 +184,7 @@ struct PregnancyProgressView: View {
     // MARK: Internal
 
     @State var trimesterData: TrimesterData
-    @State var pregnancyData: DashboardPregnancyProgress
+    @State var pregnancyData: PregnancyProgress
 
     var body: some View {
         VStack(spacing: 16) {

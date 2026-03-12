@@ -1,20 +1,24 @@
 import Foundation
 
-struct DashboardPregnancyProgress {
+struct PregnancyProgress: Codable {
     let week: Int
     let day: Int
     let trimester: String
     let isValid: Bool
+
+    var formatted: String {
+        "Week \(week) • Day \(day) • Trimester \(trimester)"
+    }
 }
 
 private let totalDays = 280
 
 enum Utils {
-    static func progress(fromDueDate dueDate: Date, today: Date = Date()) -> DashboardPregnancyProgress {
+    static func progress(fromDueDate dueDate: Date, today: Date = Date()) -> PregnancyProgress {
         let calendar = Calendar.current
 
         guard let startDate = calendar.date(byAdding: .day, value: -totalDays, to: dueDate) else {
-            return DashboardPregnancyProgress(week: 0, day: 0, trimester: "—", isValid: false)
+            return PregnancyProgress(week: 0, day: 0, trimester: "—", isValid: false)
         }
 
         let daysPassed = calendar.dateComponents([.day], from: startDate, to: today).day ?? 0
@@ -33,7 +37,7 @@ enum Utils {
             "III"
         }
 
-        return DashboardPregnancyProgress(
+        return PregnancyProgress(
             week: week,
             day: day,
             trimester: trimester,

@@ -243,7 +243,7 @@ final class AuthenticationService: ObservableObject {
         let response: NetworkResponse<UserModel> = try await NetworkManager.shared.get(url: Endpoint.me.urlString, headers: AuthenticationService.authorizationHeaders)
 
         if response.errorMessage == nil, response.statusCode == 200, let userModel = response.data {
-            DispatchQueue.main.async {
+            await MainActor.run {
                 self.userModel = userModel
             }
             database[.userModel] = userModel

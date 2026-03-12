@@ -58,7 +58,6 @@
 		182465DE2F3DD32000125667 /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
 		182465E02F3DD32000125667 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
 		184B28792F2626090086424A /* MomCare.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MomCare.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		925F542A2F420971008C1F5A /* Intents.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.extensionkit-extension"; includeInIndex = 0; path = Intents.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		929AA43A2F475DCA00B5A347 /* TriTrack GlanceExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "TriTrack GlanceExtension.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -69,13 +68,6 @@
 				Info.plist,
 			);
 			target = 184B28782F2626090086424A /* MomCare */;
-		};
-		925F54372F420971008C1F5A /* Exceptions for "Intents" folder in "Intents" target */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			membershipExceptions = (
-				Info.plist,
-			);
-			target = 925F54292F420971008C1F5A /* Intents */;
 		};
 		929AA4512F475DCD00B5A347 /* Exceptions for "TriTrack Glance" folder in "TriTrack GlanceExtension" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
@@ -100,14 +92,6 @@
 			path = Common;
 			sourceTree = "<group>";
 		};
-		925F542B2F420971008C1F5A /* Intents */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-				925F54372F420971008C1F5A /* Exceptions for "Intents" folder in "Intents" target */,
-			);
-			path = Intents;
-			sourceTree = "<group>";
-		};
 		929AA43D2F475DCA00B5A347 /* TriTrack Glance */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
@@ -124,11 +108,6 @@
 			files = (
 				92B4B1C02F37F7D7004FA6E3 /* FSCalendar in Frameworks */,
 				922E93872F41A5D200B7C2EC /* LNPopupUI in Frameworks */,
-			);
-		};
-		925F54272F420971008C1F5A /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			files = (
 			);
 		};
 		929AA4372F475DCA00B5A347 /* Frameworks */ = {
@@ -155,7 +134,6 @@
 			children = (
 				184B2A782F2627C20086424A /* Common */,
 				184B287B2F2626090086424A /* MomCare+ */,
-				925F542B2F420971008C1F5A /* Intents */,
 				929AA43D2F475DCA00B5A347 /* TriTrack Glance */,
 				182465DD2F3DD32000125667 /* Frameworks */,
 				184B287A2F2626090086424A /* Products */,
@@ -167,7 +145,6 @@
 			isa = PBXGroup;
 			children = (
 				184B28792F2626090086424A /* MomCare.app */,
-				925F542A2F420971008C1F5A /* Intents.appex */,
 				929AA43A2F475DCA00B5A347 /* TriTrack GlanceExtension.appex */,
 			);
 			name = Products;
@@ -212,24 +189,6 @@
 			productReference = 184B28792F2626090086424A /* MomCare.app */;
 			productType = "com.apple.product-type.application";
 		};
-		925F54292F420971008C1F5A /* Intents */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 925F54342F420971008C1F5A /* Build configuration list for PBXNativeTarget "Intents" */;
-			buildPhases = (
-				925F54262F420971008C1F5A /* Sources */,
-				925F54272F420971008C1F5A /* Frameworks */,
-				925F54282F420971008C1F5A /* Resources */,
-			);
-			buildRules = (
-			);
-			fileSystemSynchronizedGroups = (
-				925F542B2F420971008C1F5A /* Intents */,
-			);
-			name = Intents;
-			productName = Intents;
-			productReference = 925F542A2F420971008C1F5A /* Intents.appex */;
-			productType = "com.apple.product-type.extensionkit-extension";
-		};
 		929AA4392F475DCA00B5A347 /* TriTrack GlanceExtension */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 929AA4502F475DCD00B5A347 /* Build configuration list for PBXNativeTarget "TriTrack GlanceExtension" */;
@@ -241,6 +200,7 @@
 			buildRules = (
 			);
 			fileSystemSynchronizedGroups = (
+				184B2A782F2627C20086424A /* Common */,
 				929AA43D2F475DCA00B5A347 /* TriTrack Glance */,
 			);
 			name = "TriTrack GlanceExtension";
@@ -259,9 +219,6 @@
 				LastUpgradeCheck = 2620;
 				TargetAttributes = {
 					184B28782F2626090086424A = {
-						CreatedOnToolsVersion = 26.2;
-					};
-					925F54292F420971008C1F5A = {
 						CreatedOnToolsVersion = 26.2;
 					};
 					929AA4392F475DCA00B5A347 = {
@@ -288,7 +245,6 @@
 			projectRoot = "";
 			targets = (
 				184B28782F2626090086424A /* MomCare */,
-				925F54292F420971008C1F5A /* Intents */,
 				929AA4392F475DCA00B5A347 /* TriTrack GlanceExtension */,
 			);
 		};
@@ -296,11 +252,6 @@
 
 /* Begin PBXResourcesBuildPhase section */
 		184B28772F2626090086424A /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			files = (
-			);
-		};
-		925F54282F420971008C1F5A /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			files = (
 			);
@@ -314,11 +265,6 @@
 
 /* Begin PBXSourcesBuildPhase section */
 		184B28752F2626090086424A /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			files = (
-			);
-		};
-		925F54262F420971008C1F5A /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			files = (
 			);
@@ -497,7 +443,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 15.0;
-				MARKETING_VERSION = 0.17.2;
+				MARKETING_VERSION = 0.18;
 				PRODUCT_BUNDLE_IDENTIFIER = com.Team05.MomCare;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -558,7 +504,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 15.0;
-				MARKETING_VERSION = 0.17.2;
+				MARKETING_VERSION = 0.18;
 				PRODUCT_BUNDLE_IDENTIFIER = com.Team05.MomCare;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -582,84 +528,12 @@
 			};
 			name = Release;
 		};
-		925F54352F420971008C1F5A /* Debug configuration for PBXNativeTarget "Intents" */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 73B8W4ZN6V;
-				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = Intents/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = Intents;
-				INFOPLIST_KEY_NSHumanReadableCopyright = "";
-				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@executable_path/../../Frameworks",
-				);
-				MARKETING_VERSION = 0.17.2;
-				PRODUCT_BUNDLE_IDENTIFIER = com.Team05.MomCare.Intents;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				STRING_CATALOG_GENERATE_SYMBOLS = YES;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
-				SUPPORTS_MACCATALYST = NO;
-				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
-				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
-				SWIFT_APPROACHABLE_CONCURRENCY = YES;
-				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_UPCOMING_FEATURE_EXISTENTIAL_ANY = YES;
-				SWIFT_UPCOMING_FEATURE_INTERNAL_IMPORTS_BY_DEFAULT = YES;
-				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
-				SWIFT_VERSION = 6.0;
-				TARGETED_DEVICE_FAMILY = 1;
-			};
-			name = Debug;
-		};
-		925F54362F420971008C1F5A /* Release configuration for PBXNativeTarget "Intents" */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 73B8W4ZN6V;
-				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = Intents/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = Intents;
-				INFOPLIST_KEY_NSHumanReadableCopyright = "";
-				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@executable_path/../../Frameworks",
-				);
-				MARKETING_VERSION = 0.17.2;
-				PRODUCT_BUNDLE_IDENTIFIER = com.Team05.MomCare.Intents;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				STRING_CATALOG_GENERATE_SYMBOLS = YES;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
-				SUPPORTS_MACCATALYST = NO;
-				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
-				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
-				SWIFT_APPROACHABLE_CONCURRENCY = YES;
-				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_UPCOMING_FEATURE_EXISTENTIAL_ANY = YES;
-				SWIFT_UPCOMING_FEATURE_INTERNAL_IMPORTS_BY_DEFAULT = YES;
-				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
-				SWIFT_VERSION = 6.0;
-				TARGETED_DEVICE_FAMILY = 1;
-				VALIDATE_PRODUCT = YES;
-			};
-			name = Release;
-		};
 		929AA44E2F475DCD00B5A347 /* Debug configuration for PBXNativeTarget "TriTrack GlanceExtension" */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_ENTITLEMENTS = "TriTrack Glance/TriTrack GlanceExtension.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
@@ -674,7 +548,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 0.17.2;
+				MARKETING_VERSION = 0.18;
 				PRODUCT_BUNDLE_IDENTIFIER = com.Team05.MomCare.TriTrackGlance;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
@@ -699,6 +573,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_ENTITLEMENTS = "TriTrack Glance/TriTrack GlanceExtension.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
@@ -713,7 +588,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 0.17.2;
+				MARKETING_VERSION = 0.18;
 				PRODUCT_BUNDLE_IDENTIFIER = com.Team05.MomCare.TriTrackGlance;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
@@ -750,14 +625,6 @@
 			buildConfigurations = (
 				184B28852F26260C0086424A /* Debug configuration for PBXNativeTarget "MomCare" */,
 				184B28862F26260C0086424A /* Release configuration for PBXNativeTarget "MomCare" */,
-			);
-			defaultConfigurationName = Release;
-		};
-		925F54342F420971008C1F5A /* Build configuration list for PBXNativeTarget "Intents" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				925F54352F420971008C1F5A /* Debug configuration for PBXNativeTarget "Intents" */,
-				925F54362F420971008C1F5A /* Release configuration for PBXNativeTarget "Intents" */,
 			);
 			defaultConfigurationName = Release;
 		};

@@ -23,9 +23,11 @@ struct NetworkResponse<T: Codable>: Codable {
 
 class NetworkManager {
 
-    // MARK: Internal
+    // MARK: Public
 
-    static let shared: NetworkManager = .init()
+    public static let shared: NetworkManager = .init()
+
+    // MARK: Internal
 
     func get<T: Codable>(
         url: String,
