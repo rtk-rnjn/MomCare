@@ -136,7 +136,4 @@ extension Database {
         return Utils.progress(fromDueDate: dueDate)
     }
 
-    func widgetPregnancyData() -> PregnancyProgress? {
-        return pregnancyProgress()
-    }
 }
