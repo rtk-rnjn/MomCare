@@ -124,3 +124,19 @@ extension Database {
         return keys.compactMap { get($0) as FoodItemModel? }
     }
 }
+
+extension Database {
+    func pregnancyProgress() -> PregnancyProgress? {
+        guard let user: UserModel = self[.userModel],
+              let dueDate = user.dueDate
+        else {
+            return nil
+        }
+
+        return Utils.progress(fromDueDate: dueDate)
+    }
+
+    func widgetPregnancyData() -> PregnancyProgress? {
+        return pregnancyProgress()
+    }
+}

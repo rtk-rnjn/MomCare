@@ -45,7 +45,7 @@ struct UserModel: Codable, Sendable {
         return true
     }
 
-    var pregnancyProgress: DashboardPregnancyProgress {
+    var pregnancyProgress: PregnancyProgress {
         Utils.progress(fromDueDate: Date(timeIntervalSince1970: dueDateTimestamp ?? 0))
     }
 

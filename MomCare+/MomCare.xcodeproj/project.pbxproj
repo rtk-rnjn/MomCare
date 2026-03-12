@@ -200,6 +200,7 @@
 			buildRules = (
 			);
 			fileSystemSynchronizedGroups = (
+				184B2A782F2627C20086424A /* Common */,
 				929AA43D2F475DCA00B5A347 /* TriTrack Glance */,
 			);
 			name = "TriTrack GlanceExtension";

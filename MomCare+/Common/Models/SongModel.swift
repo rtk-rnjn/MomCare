@@ -88,16 +88,4 @@ struct SongModel: Codable, Sendable, Identifiable, Equatable, Hashable {
             try? await UIImage.getOrFetch(from: songImageUri ?? "")
         }
     }
-
-    var url: URL? {
-        get async {
-            guard let networkResponse = try? await ContentService.shared.fetchSongStreamUri(id: _id) else {
-                return nil
-            }
-            if let uri = networkResponse.data?.detail {
-                return URL(string: uri)
-            }
-            return nil
-        }
-    }
 }
