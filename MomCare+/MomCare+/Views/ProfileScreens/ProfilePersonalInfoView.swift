@@ -101,11 +101,11 @@ struct ProfilePersonalInfoView: View {
 
             ToolbarItem(placement: .navigationBarTrailing) {
                 Button(isEditing ? "Done" : "Edit") {
-                    withAnimation {
+                    if reduceMotion {
                         isEditing.toggle()
-
-                        if !isEditing {
-                            showDateOfBirthPicker = false
+                    } else {
+                        withAnimation {
+                            isEditing.toggle()
                         }
                     }
                 }
@@ -113,42 +113,28 @@ struct ProfilePersonalInfoView: View {
                 .tint(MomCareAccent.primary)
             }
         }
-        .onChange(of: isEditing) { _, _ in
+        .onChange(of: isEditing) {
+            if !isEditing {
+                showDateOfBirthPicker = false
+            }
+        }
+        .onChange(of: isEditing) {
             if isEditing {
                 return
             }
-            let firstName = name.split(separator: " ").first.map(String.init) ?? ""
-            let lastName = name.split(separator: " ").dropFirst().first.map(String.init) ?? ""
 
             Task {
-                if name != authenticationService.userModel?.fullName {
-                    _ = try? await authenticationService.update(
-                        firstName: .value(firstName),
-                        lastName: .value(lastName),
-                    )
-                    authenticationService.userModel?.firstName = firstName
-                    authenticationService.userModel?.lastName = lastName
-                }
-
-                if dateOfBirth.timeIntervalSince1970 != authenticationService.userModel?.dateOfBirthTimestamp {
-                    _ = try? await authenticationService.update(dateOfBirthTimestamp: .value(dateOfBirth.timeIntervalSince1970))
-                    authenticationService.userModel?.dateOfBirthTimestamp = dateOfBirth.timeIntervalSince1970
-                }
-
-                if let height, height != authenticationService.userModel?.height {
-                    _ = try? await authenticationService.update(height: .value(height))
-                    authenticationService.userModel?.height = height
-                }
-                if let currentWeight, currentWeight != authenticationService.userModel?.currentWeight {
-                    _ = try? await authenticationService.update(currentWeight: .value(currentWeight))
-                    authenticationService.userModel?.currentWeight = currentWeight
-                }
-                if let prePregnancyWeight, prePregnancyWeight != authenticationService.userModel?.prePregnancyWeight {
-                    _ = try? await authenticationService.update(prePregnancyWeight: .value(prePregnancyWeight))
-                    authenticationService.userModel?.prePregnancyWeight = prePregnancyWeight
+                do {
+                    try await makeChanges()
+                } catch {
+                    showingAlert = true
+                    alertMessage = error.localizedDescription
                 }
 
             }
+        }
+        .alert(isPresented: $showingAlert) {
+            Alert(title: Text("Error"), message: Text(alertMessage), dismissButton: .default(Text("OK")))
         }
         .sheet(item: $activeSheet) { sheet in
             switch sheet {
@@ -189,7 +175,41 @@ struct ProfilePersonalInfoView: View {
         .buttonStyle(.plain)
     }
 
+    func makeChanges() async throws {
+        if name != authenticationService.userModel?.fullName {
+            let firstName = name.split(separator: " ").first.map(String.init) ?? ""
+            let lastName = name.split(separator: " ").dropFirst().first.map(String.init) ?? ""
+
+            _ = try await authenticationService.update(
+                firstName: .value(firstName),
+                lastName: .value(lastName),
+            )
+            authenticationService.userModel?.firstName = firstName
+            authenticationService.userModel?.lastName = lastName
+        }
+
+        if dateOfBirth.timeIntervalSince1970 != authenticationService.userModel?.dateOfBirthTimestamp {
+            _ = try await authenticationService.update(dateOfBirthTimestamp: .value(dateOfBirth.timeIntervalSince1970))
+            authenticationService.userModel?.dateOfBirthTimestamp = dateOfBirth.timeIntervalSince1970
+        }
+
+        if let height, height != authenticationService.userModel?.height {
+            _ = try await authenticationService.update(height: .value(height))
+            authenticationService.userModel?.height = height
+        }
+        if let currentWeight, currentWeight != authenticationService.userModel?.currentWeight {
+            _ = try await authenticationService.update(currentWeight: .value(currentWeight))
+            authenticationService.userModel?.currentWeight = currentWeight
+        }
+        if let prePregnancyWeight, prePregnancyWeight != authenticationService.userModel?.prePregnancyWeight {
+            _ = try await authenticationService.update(prePregnancyWeight: .value(prePregnancyWeight))
+            authenticationService.userModel?.prePregnancyWeight = prePregnancyWeight
+        }
+    }
+
     // MARK: Private
+
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion: Bool
 
     @EnvironmentObject private var authenticationService: AuthenticationService
     @Environment(\.dismiss) private var dismiss
@@ -202,6 +222,8 @@ struct ProfilePersonalInfoView: View {
     @State private var prePregnancyWeight: Double?
 
     @State private var activeSheet: SheetType?
+    @State private var showingAlert = false
+    @State private var alertMessage = ""
 
     private var measurementFormatter: MeasurementFormatter {
         let formatter = MeasurementFormatter()

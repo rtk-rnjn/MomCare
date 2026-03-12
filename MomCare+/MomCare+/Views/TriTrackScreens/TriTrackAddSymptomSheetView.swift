@@ -7,6 +7,8 @@ struct TriTrackAddSymptomSheetView: View {
 
     @Environment(\.modelContext) var modelContext
 
+    let selectedDate: Date
+
     var body: some View {
         NavigationStack {
             Form {
@@ -95,6 +97,12 @@ struct TriTrackAddSymptomSheetView: View {
         }
         .presentationDetents([.medium, .large])
         .interactiveDismissDisabled(true)
+        .scrollDismissesKeyboard(.immediately)
+        .alert("Error", isPresented: $showErrorAlert) {
+            Button("OK", role: .cancel) {}
+        } message: {
+            Text(alertMessage ?? "An unexpected error occurred.")
+        }
         .sheet(isPresented: $showSymptomPicker) {
             TriTrackSymptomsSheetView { symptom in
                 selectedSymptom = symptom
@@ -104,6 +112,7 @@ struct TriTrackAddSymptomSheetView: View {
             }
             .presentationDetents([.medium, .large])
             .interactiveDismissDisabled(true)
+            .scrollDismissesKeyboard(.immediately)
         }
     }
 
@@ -113,16 +122,22 @@ struct TriTrackAddSymptomSheetView: View {
 
     @State private var title: String = ""
     @State private var notes: String = ""
+    @State private var showErrorAlert = false
+    @State private var alertMessage: String?
 
     @State private var selectedSymptom: Symptom?
     @State private var showSymptomPicker = false
 
     private func save() {
-        let loggedDate = Date()
-
-        let model = SymptomModel(date: loggedDate, symptomId: selectedSymptom?.id, title: title, notes: notes)
+        let model = SymptomModel(date: selectedDate, symptomId: selectedSymptom?.id, title: title, notes: notes)
         modelContext.insert(model)
-        try? modelContext.save()
+        do {
+            try modelContext.save()
+        } catch {
+            alertMessage = error.localizedDescription
+            showErrorAlert = true
+            return
+        }
         dismiss()
     }
 }

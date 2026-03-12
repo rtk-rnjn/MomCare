@@ -63,14 +63,20 @@ struct ProfileHealthInfoView: View {
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
                 Button(isEditing ? "Done" : "Edit") {
-                    withAnimation {
+                    if reduceMotion {
                         isEditing.toggle()
-                        if !isEditing { showDueDatePicker = false }
+                    } else {
+                        withAnimation {
+                            isEditing.toggle()
+                        }
                     }
                 }
                 .buttonStyle(.borderedProminent)
                 .tint(MomCareAccent.primary)
             }
+        }
+        .onChange(of: isEditing) {
+            if !isEditing { showDueDatePicker = false }
         }
         .onChange(of: isEditing) {
             if isEditing {
@@ -150,12 +156,14 @@ struct ProfileHealthInfoView: View {
         .buttonStyle(.plain)
     }
 
-    func displayCount(_ set: Set<some Any>) -> String {
+    func displayCount<T>(_ set: Set<T>) -> String {
         if set.isEmpty { return "None" }
         return "\(set.count) Selected"
     }
 
     // MARK: Private
+
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion: Bool
 
     @EnvironmentObject private var authenticationService: AuthenticationService
 

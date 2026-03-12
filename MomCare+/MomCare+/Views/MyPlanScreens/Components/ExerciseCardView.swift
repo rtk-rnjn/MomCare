@@ -28,6 +28,11 @@ struct ExerciseCardView: View {
         .accessibilityLabel(exercise.map { "\($0.name), \($0.level.rawValue)" } ?? "Exercise")
         .accessibilityValue("\(Int(completionProgress * 100)) percent completed")
         .task { await loadExercise() }
+        .alert("Error", isPresented: $showErrorAlert) {
+            Button("OK", role: .cancel) {}
+        } message: {
+            Text(alertMessage ?? "An unexpected error occurred.")
+        }
     }
 
     // MARK: Private
@@ -40,6 +45,8 @@ struct ExerciseCardView: View {
     @State private var completionProgress: Double = 0
     @State private var startExercisePlayer: Bool = false
     @State private var avPlayer: AVPlayer?
+    @State private var showErrorAlert = false
+    @State private var alertMessage: String?
 
 }
 
@@ -110,8 +117,15 @@ private extension ExerciseCardView {
 
             Button {
                 avPlayer?.pause()
-                Task { try? await updateDuration() }
-                startExercisePlayer = false
+                Task {
+                    do {
+                        try await updateDuration()
+                    } catch {
+                        alertMessage = error.localizedDescription
+                        showErrorAlert = true
+                    }
+                    startExercisePlayer = false
+                }
             } label: {
                 Image(systemName: "xmark.circle.fill")
                     .resizable()

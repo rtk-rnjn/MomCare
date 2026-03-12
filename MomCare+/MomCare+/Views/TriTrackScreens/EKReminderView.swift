@@ -69,6 +69,11 @@ struct EKReminderView: View {
             .navigationTitle("Reminder")
             .navigationBarTitleDisplayMode(.inline)
             .onAppear(perform: populateState)
+            .alert("Error", isPresented: $showErrorAlert) {
+                Button("OK", role: .cancel) {}
+            } message: {
+                Text(alertMessage ?? "An unexpected error occurred.")
+            }
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
                     Button(role: .cancel) {
@@ -309,33 +314,37 @@ struct EKReminderView: View {
             reminder.recurrenceRules = [rule]
         }
 
-        if let updatedReminder = try? eventKitHandler.updateReminder(reminder) {
-            if let reminder = updatedReminder.copy() as? EKReminder {
-                self.reminder = reminder
-            }
+        do {
+            reminder = try eventKitHandler.updateReminder(reminder)
+        } catch {
+            alertMessage = error.localizedDescription
+            showErrorAlert = true
+            return
         }
 
         dismiss()
     }
 
     func toggleCompletion() {
-        performAnimated {
-            if let updatedReminder = try? eventKitHandler.markReminder(
-                complete: !isCompleted,
-                reminder: reminder
-            ) {
-                if let reminder = updatedReminder.copy() as? EKReminder {
-                    self.reminder = reminder
-                }
+        do {
+            let updatedReminder = try eventKitHandler.markReminder(complete: !isCompleted, reminder: reminder)
+            performAnimated {
+                reminder = updatedReminder
             }
+        } catch {
+            alertMessage = error.localizedDescription
+            showErrorAlert = true
         }
     }
 
     func deleteReminder() {
-        performAnimated {
-            try? eventKitHandler.deleteReminder(reminder)
+        do {
+            try eventKitHandler.deleteReminder(reminder)
+            dismiss()
+        } catch {
+            alertMessage = error.localizedDescription
+            showErrorAlert = true
         }
-        dismiss()
     }
 
     func performAnimated(_ action: () -> Void) {
@@ -371,5 +380,7 @@ struct EKReminderView: View {
     @State private var showDeleteConfirm = false
     @State private var showDiscardAlert = false
     @State private var hasChanges = false
+    @State private var showErrorAlert = false
+    @State private var alertMessage: String?
 
 }

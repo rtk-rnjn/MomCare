@@ -26,7 +26,7 @@ struct MyPlanExercisePlanView: View {
                         .padding(.horizontal, 4)
 
                         BreathingCardView(onInfo: {
-                            withAnimation(.spring(response: 0.5, dampingFraction: 0.85)) {
+                            withAnimation(reduceMotion ? nil : .spring(response: 0.5, dampingFraction: 0.85)) {
                                 showingBreathingInfo = true
                             }
                         })
@@ -36,7 +36,7 @@ struct MyPlanExercisePlanView: View {
                                 userExerciseModel: exercise,
                                 onInfo: {
                                     selectedExerciseInfo = exercise
-                                    withAnimation(.spring(response: 0.5, dampingFraction: 0.85)) {
+                                    withAnimation(reduceMotion ? nil : .spring(response: 0.5, dampingFraction: 0.85)) {
                                         showingExerciseInfo = true
                                     }
                                 }
@@ -83,6 +83,7 @@ struct MyPlanExercisePlanView: View {
     // MARK: Private
 
     @EnvironmentObject private var healthKitHandler: HealthKitHandler
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     @State private var selectedExerciseInfo: UserExerciseModel?
     @State private var showingExerciseInfo = false
@@ -97,7 +98,7 @@ struct MyPlanExercisePlanView: View {
             Color.black.opacity(0.4)
                 .ignoresSafeArea()
                 .onTapGesture {
-                    withAnimation(.spring(response: 0.5, dampingFraction: 0.85)) {
+                    withAnimation(reduceMotion ? nil : .spring(response: 0.5, dampingFraction: 0.85)) {
                         showingExerciseInfo = false
                     }
                 }

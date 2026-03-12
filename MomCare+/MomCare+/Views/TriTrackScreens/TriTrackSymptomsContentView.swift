@@ -28,6 +28,12 @@ struct TriTrackSymptomsContentView: View {
                 }
             }
         }
+        .sheet(isPresented: $controlState.showingAddSymptomSheet) {
+            TriTrackAddSymptomSheetView(selectedDate: selectedDate)
+                .presentationDetents([.medium, .large])
+                .scrollDismissesKeyboard(.immediately)
+                .interactiveDismissDisabled(true)
+        }
         .frame(maxWidth: .infinity)
         .background(
             RoundedRectangle(cornerRadius: 16)
@@ -37,6 +43,11 @@ struct TriTrackSymptomsContentView: View {
             if let selectedSymptom {
                 TriTrackSymptomDetailView(symptom: selectedSymptom)
             }
+        }
+        .alert("Error", isPresented: $showErrorAlert) {
+            Button("OK", role: .cancel) {}
+        } message: {
+            Text(alertMessage ?? "An unexpected error occurred.")
         }
     }
 
@@ -62,13 +73,7 @@ struct TriTrackSymptomsContentView: View {
             }
             .buttonStyle(.borderedProminent)
             .tint(Color.CustomColors.mutedRaspberry)
-            .sheet(isPresented: $controlState.showingAddSymptomSheet) {
-                TriTrackAddSymptomSheetView()
-                    .presentationDetents([.medium, .large])
-                    .scrollDismissesKeyboard(.immediately)
-                    .interactiveDismissDisabled(true)
-            }
-            .disabled(!Calendar.current.isDate(selectedDate, inSameDayAs: Date()))
+            .disabled(selectedDate > Date())
             .accessibilityLabel("Log symptom")
             .accessibilityHint("Opens a form to log a new symptom for today")
         }
@@ -90,7 +95,12 @@ struct TriTrackSymptomsContentView: View {
 
     func delete(_ model: SymptomModel) {
         context.delete(model)
-        try? context.save()
+        do {
+            try context.save()
+        } catch {
+            alertMessage = error.localizedDescription
+            showErrorAlert = true
+        }
     }
 
     // MARK: Private
@@ -101,6 +111,8 @@ struct TriTrackSymptomsContentView: View {
 
     @State private var selectedSymptom: Symptom?
     @State private var showDetail = false
+    @State private var showErrorAlert = false
+    @State private var alertMessage: String?
     @ScaledMetric private var emptyStateIconSize: CGFloat = 48
 
 }

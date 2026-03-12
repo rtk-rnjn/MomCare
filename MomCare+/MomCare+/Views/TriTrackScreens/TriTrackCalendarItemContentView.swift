@@ -28,8 +28,12 @@ struct TriTrackCalendarItemContentView: View {
             if eventKitHandler.events.isEmpty && eventKitHandler.reminders.isEmpty {
                 emptyState
             } else {
-                eventList
-                reminderList
+                if !eventKitHandler.events.isEmpty {
+                    eventList
+                }
+                if !eventKitHandler.reminders.isEmpty {
+                    reminderList
+                }
             }
 
         }
@@ -65,14 +69,37 @@ struct TriTrackCalendarItemContentView: View {
             }
         }
         .task {
-            _ = try? await eventKitHandler.eventStore.requestFullAccessToEvents()
-            _ = try? await eventKitHandler.eventStore.requestFullAccessToReminders()
+            try? await requestEventAccess()
+            try? await requestReminderAccess()
         }
         .onAppear(perform: refreshData)
         .onChange(of: selectedDate, refreshData)
         .refreshable {
             refreshData()
         }
+        .alert("Error", isPresented: $showErrorAlert) {
+            Button("OK", role: .cancel) {}
+        } message: {
+            Text(alertMessage ?? "An unexpected error occurred.")
+        }
+    }
+
+    func requestEventAccess() async throws {
+        let success = try await eventKitHandler.eventStore.requestFullAccessToEvents()
+        if success {
+            return
+        }
+        alertMessage = "Event access denied. Please enable calendar permissions in Settings to add and view events."
+        showErrorAlert = true
+    }
+
+    func requestReminderAccess() async throws {
+        let success = try await eventKitHandler.eventStore.requestFullAccessToReminders()
+        if success {
+            return
+        }
+        alertMessage = "Reminder access denied. Please enable reminders permissions in Settings to add and view reminders."
+        showErrorAlert = true
     }
 
     // MARK: Private
@@ -84,6 +111,8 @@ struct TriTrackCalendarItemContentView: View {
 
     @State private var selectedEvent: EKCalendarItemWrapper?
     @State private var selectedReminder: EKCalendarItemWrapper?
+    @State private var showErrorAlert = false
+    @State private var alertMessage: String?
 
     private var emptyState: some View {
         VStack(spacing: 16) {
@@ -183,18 +212,27 @@ struct TriTrackCalendarItemContentView: View {
     }
 
     private func toggleReminder(_ reminder: EKReminder) {
-        guard let updatedReminder = try? eventKitHandler.markReminder(
-            complete: !reminder.isCompleted,
-            reminder: reminder
-        ) else { return }
-
-        upsertReminder(updatedReminder)
+        do {
+            let updatedReminder = try eventKitHandler.markReminder(
+                complete: !reminder.isCompleted,
+                reminder: reminder
+            )
+            upsertReminder(updatedReminder)
+        } catch {
+            alertMessage = error.localizedDescription
+            showErrorAlert = true
+        }
     }
 
     private func deleteReminder(_ reminder: EKReminder) {
-        try? eventKitHandler.deleteReminder(reminder)
-        eventKitHandler.reminders.removeAll {
-            $0.calendarItemIdentifier == reminder.calendarItemIdentifier
+        do {
+            try eventKitHandler.deleteReminder(reminder)
+            eventKitHandler.reminders.removeAll {
+                $0.calendarItemIdentifier == reminder.calendarItemIdentifier
+            }
+        } catch {
+            alertMessage = error.localizedDescription
+            showErrorAlert = true
         }
     }
 
