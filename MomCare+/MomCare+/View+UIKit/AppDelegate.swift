@@ -6,6 +6,7 @@ import UIKit
 import UserNotifications
 import WatchConnectivity
 import MetricKit
+import WidgetKit
 
 private let refreshTokenBackgroundTaskIdentifier = "com.MomCare.BackgroundTask.RefreshToken"
 private let logger: Logger = .init(subsystem: "com.MomCare.AppDelegate", category: "AppDelegate")
@@ -22,6 +23,7 @@ class AppDelegate: NSObject, UIApplicationDelegate, ObservableObject {
 
 //        MXMetricManager.shared.add(self)
 //        _ = WatchConnector.shared
+        WidgetCenter.shared.reloadAllTimelines()
 
         UNUserNotificationCenter.current().delegate = self
 

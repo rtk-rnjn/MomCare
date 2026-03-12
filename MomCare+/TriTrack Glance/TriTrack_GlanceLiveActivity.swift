@@ -80,26 +80,3 @@ struct TriTrack_GlanceLiveActivity: Widget {
         }
     }
 }
-
-private extension TriTrack_GlanceAttributes {
-    static var preview: TriTrack_GlanceAttributes {
-        TriTrack_GlanceAttributes(pregnancyStartDate: Date())
-    }
-}
-
-private extension TriTrack_GlanceAttributes.ContentState {
-    static var week20: TriTrack_GlanceAttributes.ContentState {
-        TriTrack_GlanceAttributes.ContentState(week: 20, day: 3, trimester: "II")
-    }
-
-    static var week32: TriTrack_GlanceAttributes.ContentState {
-        TriTrack_GlanceAttributes.ContentState(week: 32, day: 1, trimester: "III")
-    }
-}
-
-#Preview("Notification", as: .content, using: TriTrack_GlanceAttributes.preview) {
-    TriTrack_GlanceLiveActivity()
-} contentStates: {
-    TriTrack_GlanceAttributes.ContentState.week20
-    TriTrack_GlanceAttributes.ContentState.week32
-}
