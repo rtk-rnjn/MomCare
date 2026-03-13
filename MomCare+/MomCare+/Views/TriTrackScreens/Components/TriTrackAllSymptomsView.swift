@@ -1,7 +1,7 @@
 import SwiftUI
 import SwiftData
 
-struct AllSymptomsView: View {
+struct TriTrackAllSymptomsView: View {
 
     // MARK: Internal
 
@@ -15,6 +15,9 @@ struct AllSymptomsView: View {
                     Section {
                         ForEach(section.symptoms) { model in
                             SymptomRow(model: model, isPast: isPast, showDetails: showDetails)
+                                .onTapGesture {
+                                    selectedSymptomModel = model
+                                }
                         }
                     } header: {
                         SymptomSectionHeader(date: section.date, isToday: isToday, isPast: isPast)
@@ -26,6 +29,11 @@ struct AllSymptomsView: View {
             .background(Color(.systemGroupedBackground))
             .navigationTitle("Symptom History")
             .navigationBarTitleDisplayMode(.large)
+            .navigationDestination(item: $selectedSymptomModel) { item in
+                if let symptom = PregnancySymptoms.allSymptoms.first(where: { $0.id == item.symptomId }) {
+                    TriTrackSymptomDetailView(symptom: symptom)
+                }
+            }
             .searchable(text: $searchText, placement: .automatic, prompt: "Search symptoms or notes…")
             .searchToolbarBehavior(.minimize)
             .toolbar {
@@ -60,6 +68,8 @@ struct AllSymptomsView: View {
     }
 
     // MARK: Private
+
+    @State private var selectedSymptomModel: SymptomModel?
 
     @Query(sort: \SymptomModel.date, order: .forward) private var symptomModels: [SymptomModel]
     @State private var showDetails = true

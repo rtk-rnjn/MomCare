@@ -39,7 +39,7 @@ struct TriTrackView: View {
             TriTrackAllRemindersView()
         }
         .navigationDestination(isPresented: $showingAllSymptoms) {
-            AllSymptomsView()
+            TriTrackAllSymptomsView()
         }
         .toolbar {
             ToolbarItem(placement: .topBarLeading) {

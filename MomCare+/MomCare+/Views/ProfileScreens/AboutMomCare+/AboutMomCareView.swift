@@ -84,7 +84,7 @@ struct AboutMomCareView: View {
 
     // MARK: Private
 
-    @AppStorage("showDebugOptions") private var showDebugOptions: Bool = false
+    @AppStorage("showDebugOptions", store: UserDefaults(suiteName: "group.MomCare")) private var showDebugOptions: Bool = false
 
     @State private var crashApp: Bool = false
     @State private var showLogs: Bool = false

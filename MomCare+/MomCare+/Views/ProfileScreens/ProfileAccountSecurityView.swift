@@ -11,9 +11,7 @@ struct ProfileAccountSecurityView: View {
 
     var body: some View {
         List {
-
             Section {
-
                 editableRow(
                     title: "Email Address",
                     text: $emailAddress,
@@ -164,6 +162,8 @@ struct ProfileAccountSecurityView: View {
 
     // MARK: Private
 
+    @AppStorage(ValidDatabaseKeys.emailAddress.rawValue, store: UserDefaults(suiteName: "group.MomCare")) private var emailAddress: String = ""
+
     @EnvironmentObject private var authenticationService: AuthenticationService
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
@@ -176,8 +176,6 @@ struct ProfileAccountSecurityView: View {
     @State private var oldPassword = ""
     @State private var newPassword = ""
     @State private var confirmPassword = ""
-
-    @State private var emailAddress = ""
 
     private let database: Database = .init()
 }

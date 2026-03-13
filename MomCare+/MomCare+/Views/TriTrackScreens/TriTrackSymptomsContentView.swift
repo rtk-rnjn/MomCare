@@ -24,12 +24,23 @@ struct TriTrackSymptomsContentView: View {
                                 delete(symptomModel)
                             }
                         )
+                        .onTapGesture {
+                            selectedSymptomModel = symptomModel
+                        }
                     }
                 }
             }
         }
         .sheet(isPresented: $controlState.showingAddSymptomSheet) {
-            TriTrackAddSymptomSheetView(selectedDate: selectedDate)
+            TriTrackAddEditSymptomSheetView(selectedDate: selectedDate)
+                .presentationDetents([.medium, .large])
+                .scrollDismissesKeyboard(.immediately)
+                .interactiveDismissDisabled(true)
+        }
+        .sheet(item: $selectedSymptomModel, onDismiss: {
+            selectedSymptomModel = nil
+        }) { symptomModel in
+            TriTrackAddEditSymptomSheetView(selectedDate: selectedDate, existingSymptom: symptomModel)
                 .presentationDetents([.medium, .large])
                 .scrollDismissesKeyboard(.immediately)
                 .interactiveDismissDisabled(true)
@@ -104,6 +115,8 @@ struct TriTrackSymptomsContentView: View {
     }
 
     // MARK: Private
+
+    @State private var selectedSymptomModel: SymptomModel?
 
     @EnvironmentObject private var controlState: ControlState
 

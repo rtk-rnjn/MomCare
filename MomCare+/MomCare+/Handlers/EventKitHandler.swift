@@ -103,7 +103,13 @@ final class EventKitHandler: ObservableObject {
     }
 
     func fetchAllEvents() throws {
-        let predicate = try eventStore.predicateForEvents(withStart: Date(), end: Date.distantFuture, calendars: [createOrGetEventCalendar()])
+        let now = Date()
+        let lastTwoYear = Calendar.current.date(byAdding: .year, value: -2, to: now)!
+        let nextTwoYear = Calendar.current.date(byAdding: .year, value: 2, to: now)!
+
+        // Well. We have to limit the range to 4yr, as per the docs.
+
+        let predicate = try eventStore.predicateForEvents(withStart: lastTwoYear, end: nextTwoYear, calendars: [createOrGetEventCalendar()])
         let events = eventStore.events(matching: predicate)
         allEvents = events
         mostRecentEvent = allEvents.sorted { $0.startDate <= $1.startDate }.first

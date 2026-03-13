@@ -1,13 +1,15 @@
 import SwiftData
 import SwiftUI
 
-struct TriTrackAddSymptomSheetView: View {
+struct TriTrackAddEditSymptomSheetView: View {
 
     // MARK: Internal
 
     @Environment(\.modelContext) var modelContext
 
     let selectedDate: Date
+
+    @State var existingSymptom: SymptomModel?
 
     var body: some View {
         NavigationStack {
@@ -67,7 +69,7 @@ struct TriTrackAddSymptomSheetView: View {
                     }
                 }
             }
-            .navigationTitle("New Symptom")
+            .navigationTitle(existingSymptom == nil ? "New Symptom" : "Edit Symptom")
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
                     Button(role: .cancel) {
@@ -80,7 +82,7 @@ struct TriTrackAddSymptomSheetView: View {
 
                 ToolbarItem(placement: .confirmationAction) {
                     Button(role: .confirm) {
-                        save()
+                        saveOrEdit()
                     }
                     .disabled(title.isEmpty)
                     .accessibilityLabel("Save symptom")
@@ -109,6 +111,9 @@ struct TriTrackAddSymptomSheetView: View {
             .interactiveDismissDisabled(true)
             .scrollDismissesKeyboard(.immediately)
         }
+        .onAppear {
+            populate()
+        }
     }
 
     // MARK: Private
@@ -123,9 +128,30 @@ struct TriTrackAddSymptomSheetView: View {
     @State private var selectedSymptom: Symptom?
     @State private var showSymptomPicker = false
 
-    private func save() {
-        let model = SymptomModel(date: selectedDate, symptomId: selectedSymptom?.id, title: title, notes: notes)
-        modelContext.insert(model)
+    private func saveOrEdit() {
+        if existingSymptom == nil {
+            let model = SymptomModel(date: selectedDate, symptomId: selectedSymptom?.id, title: title, notes: notes)
+            modelContext.insert(model)
+
+        } else {
+            guard let id = existingSymptom?.id else {
+                alertMessage = "Failed to find the symptom entry to update."
+                showErrorAlert = true
+                return
+            }
+
+            let model = FetchDescriptor<SymptomModel>(predicate: #Predicate { $0.id == id })
+            guard let existingSymptom = try? modelContext.fetch(model).first else {
+                alertMessage = "Failed to find the symptom entry to update."
+                showErrorAlert = true
+                return
+            }
+
+            existingSymptom.title = title
+            existingSymptom.notes = notes
+            existingSymptom.symptomId = selectedSymptom?.id
+        }
+
         do {
             try modelContext.save()
         } catch {
@@ -134,5 +160,14 @@ struct TriTrackAddSymptomSheetView: View {
             return
         }
         dismiss()
+    }
+
+    private func populate() {
+        guard let existingSymptom else { return }
+        title = existingSymptom.title ?? ""
+        notes = existingSymptom.notes ?? ""
+        if let symptomId = existingSymptom.symptomId {
+            selectedSymptom = PregnancySymptoms.allSymptoms.first { $0.id == symptomId }
+        }
     }
 }
