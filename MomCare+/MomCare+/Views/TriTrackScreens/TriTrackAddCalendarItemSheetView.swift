@@ -83,6 +83,7 @@ struct TriTrackAddCalendarItemSheetView: View {
             MapPickerView(selectedMapItem: $selectedMapItem)
                 .presentationDetents([.medium, .large])
         }
+        .interactiveDismissDisabled(hasData)
     }
 
     // MARK: Private

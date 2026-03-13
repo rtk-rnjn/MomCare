@@ -8,6 +8,7 @@ import UIKit
 struct MusicPlayerView: View {
 
     // MARK: Internal
+    @Environment(\.popupBarPlacement) private var popupBarPlacement
 
     var body: some View {
         VStack(spacing: 0) {
@@ -29,7 +30,7 @@ struct MusicPlayerView: View {
 
             HStack(alignment: .center) {
                 VStack(alignment: .leading, spacing: 4) {
-                    Text(musicPlayerHandler.currentSong?.metadata?.title ?? "Not Playing")
+                    Text(musicPlayerHandler.currentSong?.metadata?.title ?? "Unknown Title")
                         .font(.title2)
                         .fontWeight(.bold)
                         .foregroundColor(.white)
@@ -155,6 +156,7 @@ struct MusicPlayerView: View {
                     .overlay(Color.black.opacity(0.3))
                     .ignoresSafeArea()
                     .accessibilityHidden(true)
+                    .popupTransitionTarget()
             } else {
                 Color.blue
                     .ignoresSafeArea()
@@ -171,18 +173,20 @@ struct MusicPlayerView: View {
             PopupItem(
                 id: musicPlayerHandler.currentSong,
                 title: musicPlayerHandler.currentSong?.metadata?.title ?? "Song Title",
-                subtitle: musicPlayerHandler.currentSong?.metadata?.author ?? "Unknown Artist",
+                subtitle: popupBarPlacement == .regular ? musicPlayerHandler.currentSong?.metadata?.author : nil,
                 image: Image(uiImage: musicPlayerHandler.currentSongUIImage ?? UIImage()),
                 progress: Float(musicPlayerHandler.playbackProgress)
             ) {
                 ToolbarItemGroup(placement: .popupBar) {
-                    Button {
-                        musicPlayerHandler.skipToPrevious()
-                    } label: {
-                        Image(systemName: "backward.fill")
-                            .foregroundStyle(.black)
+                    if popupBarPlacement == .regular {
+                        Button {
+                            musicPlayerHandler.skipToPrevious()
+                        } label: {
+                            Image(systemName: "backward.fill")
+                                .foregroundStyle(.black)
+                        }
+                        .accessibilityLabel("Previous track")
                     }
-                    .accessibilityLabel("Previous track")
 
                     Button {
                         _ = musicPlayerHandler.togglePlayPause()
@@ -197,14 +201,16 @@ struct MusicPlayerView: View {
                     }
                     .disabled(musicPlayerHandler.isWaiting)
                     .accessibilityLabel(musicPlayerHandler.isPlaying ? "Pause" : "Play")
-
-                    Button {
-                        musicPlayerHandler.skipToNext()
-                    } label: {
-                        Image(systemName: "forward.fill")
-                            .foregroundStyle(.black)
+                    
+                    if popupBarPlacement == .regular {
+                        Button {
+                            musicPlayerHandler.skipToNext()
+                        } label: {
+                            Image(systemName: "forward.fill")
+                                .foregroundStyle(.black)
+                        }
+                        .accessibilityLabel("Next track")
                     }
-                    .accessibilityLabel("Next track")
 
                     Button {
                         controlState.showingPopup = false

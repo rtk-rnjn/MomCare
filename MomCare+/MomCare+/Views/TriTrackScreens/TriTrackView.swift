@@ -33,7 +33,7 @@ struct TriTrackView: View {
         .navigationTitle("TriTrack")
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
-            ToolbarItemGroup(placement: .navigationBarTrailing) {
+            ToolbarItem(placement: .topBarLeading) {
                 Button {
                     withAnimation(reduceMotion ? nil : .spring(response: 0.3, dampingFraction: 0.8)) {
                         controlState.showingExpandedCalendar.toggle()
@@ -46,6 +46,37 @@ struct TriTrackView: View {
                 }
                 .accessibilityLabel(controlState.showingExpandedCalendar ? "Collapse calendar" : "Expand calendar")
                 .accessibilityIdentifier("expandCalendarButton")
+            }
+
+            ToolbarItemGroup(placement: .navigationBarTrailing) {
+                Menu {
+                    switch controlState.triTrackSegment {
+                    case .events:
+                        Button {
+                            
+                        } label: {
+                            Label("Show all events", systemImage: "calendar")
+                        }
+                        
+                        Button {
+                            
+                        } label: {
+                            Label("Show all reminders", systemImage: "bell")
+                        }
+                    case .symptoms:
+                        Button {
+                            
+                        } label: {
+                            Label("Show all symptoms", systemImage: "calendar")
+                        }
+                    case .meAndBaby:
+                        EmptyView()
+                    }
+                    
+                } label: {
+                    Image(systemName: "ellipsis")
+                }
+                .menuStyle(.button)
 
                 switch controlState.triTrackSegment {
                 case .meAndBaby:

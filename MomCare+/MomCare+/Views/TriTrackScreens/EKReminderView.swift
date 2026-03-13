@@ -19,6 +19,7 @@ struct EKReminderView: View {
     }
 
     @State var reminder: EKReminder
+    @Binding var selectedDate: Date
 
     var repeatUnitText: (EKRecurrenceFrequency, Int) -> String = { unit, frequency in
         let unitString: String
@@ -59,7 +60,6 @@ struct EKReminderView: View {
                 prioritySection
                 repeatSection
                 notesSection
-                completionSection
                 deleteSection
             }
             .scrollIndicators(.hidden)
@@ -211,20 +211,6 @@ struct EKReminderView: View {
         }
     }
 
-    var completionSection: some View {
-        Section {
-            Button {
-                toggleCompletion()
-            } label: {
-                Label(
-                    isCompleted ? "Mark as Incomplete" : "Mark as Completed",
-                    systemImage: isCompleted ? "arrow.uturn.backward.circle" : "checkmark.circle"
-                )
-                .foregroundStyle(isCompleted ? .orange : .green)
-            }
-        }
-    }
-
     var deleteSection: some View {
         Section {
             Button(role: .destructive) {
@@ -328,7 +314,7 @@ struct EKReminderView: View {
 
     func toggleCompletion() {
         do {
-            let updatedReminder = try eventKitHandler.markReminder(complete: !isCompleted, reminder: reminder)
+            let updatedReminder = try eventKitHandler.markReminder(complete: !isCompleted, reminder: reminder, date: selectedDate)
             performAnimated {
                 if let reminder = updatedReminder.copy() as? EKReminder {
                     self.reminder = reminder
