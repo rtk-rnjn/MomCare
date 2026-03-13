@@ -12,7 +12,6 @@ struct TriTrackAddSymptomSheetView: View {
     var body: some View {
         NavigationStack {
             Form {
-                // MARK: Symptom Selection
 
                 Section("Symptom") {
                     Button {
@@ -41,8 +40,6 @@ struct TriTrackAddSymptomSheetView: View {
                     .accessibilityIdentifier("selectSymptomButton")
                 }
 
-                // MARK: Details
-
                 Section("Details") {
                     TextField("Title", text: $title)
                         .onChange(of: selectedSymptom) { _, newValue in
@@ -54,8 +51,6 @@ struct TriTrackAddSymptomSheetView: View {
                     TextField("Notes", text: $notes, axis: .vertical)
                         .lineLimit(3 ... 6)
                 }
-
-                // MARK: Info Preview (if predefined symptom)
 
                 if let symptom = selectedSymptom {
                     Section("About This Symptom") {

@@ -12,7 +12,6 @@ struct ProfileAccountSecurityView: View {
     var body: some View {
         List {
 
-            // MARK: Account Information
             Section {
 
                 editableRow(
@@ -28,8 +27,6 @@ struct ProfileAccountSecurityView: View {
                     .font(.footnote)
                     .foregroundColor(.secondary)
             }
-
-            // MARK: Security
 
             Section {
                 Button {

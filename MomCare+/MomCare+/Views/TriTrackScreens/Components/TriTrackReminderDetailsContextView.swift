@@ -9,7 +9,6 @@ struct TriTrackReminderDetailsContextView: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 18) {
-            // MARK: Title + Priority
 
             HStack(alignment: .top, spacing: 14) {
                 Image(systemName: isCompleted ? "checkmark.circle.fill" : "list.bullet.circle")
@@ -37,8 +36,6 @@ struct TriTrackReminderDetailsContextView: View {
                 }
             }
 
-            // MARK: Due Date
-
             HStack(alignment: .top, spacing: 14) {
                 Image(systemName: "clock")
                     .font(.body.weight(.medium))
@@ -65,8 +62,6 @@ struct TriTrackReminderDetailsContextView: View {
                 }
                 .font(.subheadline)
             }
-
-            // MARK: Notes
 
             if let notes = reminder.notes,
                !notes.isEmpty {

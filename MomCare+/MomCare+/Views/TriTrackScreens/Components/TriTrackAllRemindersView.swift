@@ -1,14 +1,91 @@
 import SwiftUI
 import EventKit
 
-// MARK: - All Reminders View
-
 struct TriTrackAllRemindersView: View {
+
+    // MARK: Internal
+
+    var body: some View {
+        ScrollViewReader { proxy in
+            List {
+                ForEach(Array(groupedReminders.enumerated()), id: \.offset) { index, section in
+                    let isToday: Bool = {
+                        guard let date = section.date else { return false }
+                        return Calendar.current.isDate(date, inSameDayAs: today)
+                    }()
+                    let isPast: Bool = {
+                        guard let date = section.date else { return false }
+                        return date < today
+                    }()
+
+                    Section {
+                        ForEach(section.reminders, id: \.calendarItemIdentifier) { reminder in
+                            ReminderRow(reminder: reminder, showDetails: showDetails)
+                                .onTapGesture {
+                                    selectedReminder = EKCalendarItemWrapper(item: reminder)
+                                }
+                        }
+                    } header: {
+                        ReminderSectionHeader(date: section.date, isToday: isToday, isPast: isPast)
+                    }
+                    .id(index)
+                }
+            }
+            .navigationTitle("All Reminders")
+            .navigationBarTitleDisplayMode(.large)
+            .sheet(item: $selectedReminder, onDismiss: {
+                try? eventKitHandler.fetchAllReminders()
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                    if let idx = todaySectionIndex {
+                        proxy.scrollTo(idx, anchor: .top)
+                    }
+                }
+            }) { itemWrapper in
+                if let reminder = itemWrapper.item as? EKReminder {
+                    EKReminderView(reminder: reminder, selectedDate: $today)
+                }
+            }
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button {
+                        withAnimation(.snappy) {
+                            showDetails.toggle()
+                        }
+                    } label: {
+                        Label(
+                            showDetails ? "Compact" : "Detailed",
+                            systemImage: showDetails ? "list.bullet" : "list.bullet.below.rectangle"
+                        )
+                    }
+                }
+            }
+            .overlay {
+                if eventKitHandler.allReminders.isEmpty {
+                    ContentUnavailableView(
+                        "No Reminders",
+                        systemImage: "checklist",
+                        description: Text("You don't have any reminders.")
+                    )
+                }
+            }
+            .onAppear {
+                try? eventKitHandler.fetchAllReminders()
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                    if let idx = todaySectionIndex {
+                        proxy.scrollTo(idx, anchor: .top)
+                    }
+                }
+            }
+        }
+    }
+
+    // MARK: Private
 
     @EnvironmentObject private var eventKitHandler: EventKitHandler
     @State private var showDetails = true
+    @State private var selectedReminder: EKCalendarItemWrapper?
 
-    private let today = Calendar.current.startOfDay(for: Date())
+    @State private var today = Calendar.current.startOfDay(for: Date())
 
     private var groupedReminders: [(date: Date?, reminders: [EKReminder])] {
         let withDue = eventKitHandler.allReminders.filter { $0.dueDateComponents != nil }
@@ -45,67 +122,7 @@ struct TriTrackAllRemindersView: View {
         })
     }
 
-    var body: some View {
-        ScrollViewReader { proxy in
-            List {
-                ForEach(Array(groupedReminders.enumerated()), id: \.offset) { index, section in
-                    let isToday: Bool = {
-                        guard let date = section.date else { return false }
-                        return Calendar.current.isDate(date, inSameDayAs: today)
-                    }()
-                    let isPast: Bool = {
-                        guard let date = section.date else { return false }
-                        return date < today
-                    }()
-
-                    Section {
-                        ForEach(section.reminders, id: \.calendarItemIdentifier) { reminder in
-                            ReminderRow(reminder: reminder, showDetails: showDetails)
-                        }
-                    } header: {
-                        ReminderSectionHeader(date: section.date, isToday: isToday, isPast: isPast)
-                    }
-                    .id(index)
-                }
-            }
-            .navigationTitle("All Reminders")
-            .navigationBarTitleDisplayMode(.large)
-            .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    Button {
-                        withAnimation(.snappy) {
-                            showDetails.toggle()
-                        }
-                    } label: {
-                        Label(
-                            showDetails ? "Compact" : "Detailed",
-                            systemImage: showDetails ? "list.bullet" : "list.bullet.below.rectangle"
-                        )
-                    }
-                }
-            }
-            .overlay {
-                if eventKitHandler.allReminders.isEmpty {
-                    ContentUnavailableView(
-                        "No Reminders",
-                        systemImage: "checklist",
-                        description: Text("You don't have any reminders.")
-                    )
-                }
-            }
-            .onAppear {
-                try? eventKitHandler.fetchAllReminders()
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                    if let idx = todaySectionIndex {
-                        proxy.scrollTo(idx, anchor: .top)
-                    }
-                }
-            }
-        }
-    }
 }
-
-// MARK: - Reminder Status (mirrored from TriTrackReminderRow)
 
 enum ReminderRowStatus {
     case past
@@ -114,6 +131,8 @@ enum ReminderRowStatus {
     case futureRecurring
     case futureRecurringWithEnd
     case today
+
+    // MARK: Lifecycle
 
     init(reminder: EKReminder, now: Date = Date()) {
         guard let dueDate = reminder.dueDateComponents?.date else {
@@ -135,30 +154,30 @@ enum ReminderRowStatus {
         }
     }
 
+    // MARK: Internal
+
     var indicatorColor: Color {
         switch self {
-        case .past:                return .red
-        case .pastRecurring:       return .orange
-        case .today:               return Color.CustomColors.mutedRaspberry
-        case .future:              return Color(.systemGray4)
-        case .futureRecurring:     return .blue
+        case .past: return .red
+        case .pastRecurring: return .orange
+        case .today: return Color.CustomColors.mutedRaspberry
+        case .future: return Color(.systemGray4)
+        case .futureRecurring: return .blue
         case .futureRecurringWithEnd: return .purple
         }
     }
 
     var labelColor: Color {
         switch self {
-        case .past:                return .red
-        case .pastRecurring:       return .orange
-        case .today:               return Color.CustomColors.mutedRaspberry
-        case .future:              return .secondary
-        case .futureRecurring:     return .blue
+        case .past: return .red
+        case .pastRecurring: return .orange
+        case .today: return Color.CustomColors.mutedRaspberry
+        case .future: return .secondary
+        case .futureRecurring: return .blue
         case .futureRecurringWithEnd: return .purple
         }
     }
 }
-
-// MARK: - Reminder Section Header
 
 struct ReminderSectionHeader: View {
     let date: Date?
@@ -197,88 +216,20 @@ struct ReminderSectionHeader: View {
     }
 }
 
-// MARK: - Reminder Row
-
 struct ReminderRow: View {
 
-    let reminder: EKReminder
-    let showDetails: Bool
-
-    @State private var isCompleted: Bool
-    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    // MARK: Lifecycle
 
     init(reminder: EKReminder, showDetails: Bool) {
         self.reminder = reminder
         self.showDetails = showDetails
-        self._isCompleted = State(initialValue: reminder.isCompleted)
+        _isCompleted = State(initialValue: reminder.isCompleted)
     }
 
-    private var status: ReminderRowStatus { ReminderRowStatus(reminder: reminder) }
+    // MARK: Internal
 
-    private var reminderColor: Color {
-        Color(reminder.calendar.cgColor ?? UIColor.systemOrange.cgColor)
-    }
-
-    private var priorityLabel: String? {
-        switch reminder.priority {
-        case 1: return "High"
-        case 5: return "Medium"
-        case 9: return "Low"
-        default: return nil
-        }
-    }
-
-    private var priorityColor: Color {
-        switch reminder.priority {
-        case 1: return .red
-        case 5: return .orange
-        case 9: return .blue
-        default: return .secondary
-        }
-    }
-
-    private var priorityIcon: String {
-        switch reminder.priority {
-        case 1: return "exclamationmark.3"
-        case 5: return "exclamationmark.2"
-        case 9: return "exclamationmark"
-        default: return ""
-        }
-    }
-
-    private var timeLabel: String? {
-        guard let comps = reminder.dueDateComponents,
-              comps.hour != nil, comps.minute != nil,
-              let date = Calendar.current.date(from: comps) else { return nil }
-        return date.formatted(date: .omitted, time: .shortened)
-    }
-
-    private var hasRecurrence: Bool {
-        !(reminder.recurrenceRules ?? []).isEmpty
-    }
-
-    private var hasRecurrenceEnd: Bool {
-        reminder.recurrenceRules?.contains { $0.recurrenceEnd != nil } ?? false
-    }
-
-    private var alarmLabel: String? {
-        guard let alarms = reminder.alarms, !alarms.isEmpty else { return nil }
-        let descriptions = alarms.compactMap { alarm -> String? in
-            if let absoluteDate = alarm.absoluteDate {
-                return absoluteDate.formatted(date: .abbreviated, time: .shortened)
-            } else {
-                let offset = Int(alarm.relativeOffset / 60)
-                if offset == 0 { return "At time of due date" }
-                let absOffset = abs(offset)
-                let sign = offset < 0 ? "Before" : "After"
-                if absOffset < 60 { return "\(absOffset)m \(sign)" }
-                let hours = absOffset / 60
-                let mins = absOffset % 60
-                return mins == 0 ? "\(hours)h \(sign)" : "\(hours)h \(mins)m \(sign)"
-            }
-        }
-        return descriptions.joined(separator: ", ")
-    }
+    let reminder: EKReminder
+    let showDetails: Bool
 
     var body: some View {
         HStack(alignment: .top, spacing: 14) {
@@ -428,12 +379,6 @@ struct ReminderRow: View {
                                 .lineLimit(1)
                         }
                     }
-
-                    // List name
-                    Text(reminder.calendar.title)
-                        .font(.caption2)
-                        .foregroundStyle(.tertiary)
-                        .padding(.top, 2)
                 }
             }
             .padding(.vertical, showDetails ? 8 : 6)
@@ -441,9 +386,81 @@ struct ReminderRow: View {
         .opacity(isCompleted ? 0.5 : 1.0)
     }
 
+    // MARK: Private
+
+    @State private var isCompleted: Bool
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+
+    private var status: ReminderRowStatus { ReminderRowStatus(reminder: reminder) }
+
+    private var reminderColor: Color {
+        Color(reminder.calendar.cgColor ?? UIColor.systemOrange.cgColor)
+    }
+
+    private var priorityLabel: String? {
+        switch reminder.priority {
+        case 1: return "High"
+        case 5: return "Medium"
+        case 9: return "Low"
+        default: return nil
+        }
+    }
+
+    private var priorityColor: Color {
+        switch reminder.priority {
+        case 1: return .red
+        case 5: return .orange
+        case 9: return .blue
+        default: return .secondary
+        }
+    }
+
+    private var priorityIcon: String {
+        switch reminder.priority {
+        case 1: return "exclamationmark.3"
+        case 5: return "exclamationmark.2"
+        case 9: return "exclamationmark"
+        default: return ""
+        }
+    }
+
+    private var timeLabel: String? {
+        guard let comps = reminder.dueDateComponents,
+              comps.hour != nil, comps.minute != nil,
+              let date = Calendar.current.date(from: comps) else { return nil }
+        return date.formatted(date: .omitted, time: .shortened)
+    }
+
+    private var hasRecurrence: Bool {
+        !(reminder.recurrenceRules ?? []).isEmpty
+    }
+
+    private var hasRecurrenceEnd: Bool {
+        reminder.recurrenceRules?.contains { $0.recurrenceEnd != nil } ?? false
+    }
+
+    private var alarmLabel: String? {
+        guard let alarms = reminder.alarms, !alarms.isEmpty else { return nil }
+        let descriptions = alarms.compactMap { alarm -> String? in
+            if let absoluteDate = alarm.absoluteDate {
+                return absoluteDate.formatted(date: .abbreviated, time: .shortened)
+            } else {
+                let offset = Int(alarm.relativeOffset / 60)
+                if offset == 0 { return "At time of due date" }
+                let absOffset = abs(offset)
+                let sign = offset < 0 ? "Before" : "After"
+                if absOffset < 60 { return "\(absOffset)m \(sign)" }
+                let hours = absOffset / 60
+                let mins = absOffset % 60
+                return mins == 0 ? "\(hours)h \(sign)" : "\(hours)h \(mins)m \(sign)"
+            }
+        }
+        return descriptions.joined(separator: ", ")
+    }
+
     private func toggleCompletion() {
         isCompleted.toggle()
         reminder.isCompleted = isCompleted
-//        try? reminder.calendar.source.eventStore.save(reminder, commit: true)
+
     }
 }

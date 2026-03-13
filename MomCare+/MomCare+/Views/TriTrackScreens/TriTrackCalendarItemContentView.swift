@@ -30,13 +30,13 @@ struct TriTrackCalendarItemContentView: View {
                 VStack(alignment: .leading, spacing: 24) {
                     if !eventKitHandler.events.isEmpty {
                         sectionHeader(title: "Events")
-                        
+
                         eventList
                     }
-                    
+
                     if !eventKitHandler.reminders.isEmpty {
                         sectionHeader(title: "Reminders")
-                        
+
                         reminderList
                     }
                 }
@@ -58,9 +58,9 @@ struct TriTrackCalendarItemContentView: View {
         .sheet(
             item: $selectedEvent,
             onDismiss: { try? eventKitHandler.fetchAppointments(selectedDate: selectedDate) }
-        ) { wrapper in
-            if let event = wrapper.item as? EKEvent {
-                EventKitEventView(event: event)
+        ) { itemWrapper in
+            if let event = itemWrapper.item as? EKEvent {
+                EKEventView(event: event)
             }
         }
         .sheet(
@@ -87,7 +87,7 @@ struct TriTrackCalendarItemContentView: View {
             Text(alertMessage ?? "An unexpected error occurred.")
         }
     }
-    
+
     @ViewBuilder
     func sectionHeader(title: String) -> some View {
         HStack {

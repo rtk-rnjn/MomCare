@@ -352,8 +352,6 @@ struct EKReminderView: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
-    // MARK: Editable State
-
     @State private var title = ""
     @State private var notes = ""
     @State private var dueDate: Date?

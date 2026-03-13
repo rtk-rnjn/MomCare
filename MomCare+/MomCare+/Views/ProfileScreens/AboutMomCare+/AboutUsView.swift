@@ -145,11 +145,3 @@ struct QuoteView: View {
         .padding(.horizontal)
     }
 }
-
-struct AboutUsView_Previews: PreviewProvider {
-    static var previews: some View {
-        NavigationView {
-            AboutUsView()
-        }
-    }
-}

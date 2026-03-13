@@ -60,7 +60,7 @@ struct DashboardView: View {
         }
         .sheet(item: $selectedEvent) { eventWrapper in
             if let event = eventWrapper.item as? EKEvent {
-                EventKitEventView(event: event)
+                EKEventView(event: event)
             }
         }
         .frame(maxWidth: .infinity)

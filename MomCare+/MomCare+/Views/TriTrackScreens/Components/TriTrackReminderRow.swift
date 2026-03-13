@@ -3,14 +3,13 @@ import EventKit
 
 struct TriTrackReminderRow: View {
 
+    // MARK: Internal
+
     let reminder: EKReminder
     @Binding var selectedDate: Date
 
     let onToggle: () throws -> Void
     let onTap: () -> Void
-
-    @Environment(\.accessibilityReduceMotion) private var reduceMotion
-    @Environment(\.accessibilityDifferentiateWithoutColor) private var differentiateWithoutColor
 
     var body: some View {
 
@@ -31,6 +30,12 @@ struct TriTrackReminderRow: View {
             .opacity(reminder.isCompleted ? 0.6 : 1)
         }
     }
+
+    // MARK: Private
+
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @Environment(\.accessibilityDifferentiateWithoutColor) private var differentiateWithoutColor
+
 }
 
 extension TriTrackReminderRow {

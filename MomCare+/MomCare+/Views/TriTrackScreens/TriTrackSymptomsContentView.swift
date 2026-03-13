@@ -15,7 +15,7 @@ struct TriTrackSymptomsContentView: View {
             } else {
                 VStack(spacing: 12) {
                     ForEach(filterSymptoms(for: selectedDate)) { symptomModel in
-                        SymptomRow(
+                        TriTrackSymptomRow(
                             symptom: symptomModel,
                             onInfo: {
                                 openDetails(for: symptomModel)
@@ -117,7 +117,7 @@ struct TriTrackSymptomsContentView: View {
 
 }
 
-struct SymptomRow: View {
+struct TriTrackSymptomRow: View {
 
     // MARK: Internal
 

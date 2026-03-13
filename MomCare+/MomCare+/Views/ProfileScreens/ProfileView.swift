@@ -18,7 +18,7 @@ private let sections: [ProfileSection] = [
     ProfileSection(rows: [
         ProfileRow(title: "Personal Information", systemImage: "person.crop.circle", type: .personalInfo),
         ProfileRow(title: "Health Information", systemImage: "heart.text.square", type: .healthInfo)
-//        ProfileRow(title: "Notifications", systemImage: "bell.badge", type: .notifications)
+///        ProfileRow(title: "Notifications", systemImage: "bell.badge", type: .notifications)
     ]),
 
     ProfileSection(rows: [
@@ -30,9 +30,9 @@ private let sections: [ProfileSection] = [
         ProfileRow(title: "About MomCare+", systemImage: "info.circle", type: .aboutApp)
     ]),
 
-//    ProfileSection(rows: [
-//        ProfileRow(title: "MomCare+ Watch", systemImage: "applewatch", type: .watch)
-//    ]),
+///    ProfileSection(rows: [
+///        ProfileRow(title: "MomCare+ Watch", systemImage: "applewatch", type: .watch)
+///    ]),
 
     ProfileSection(rows: [
         ProfileRow(title: "Account Management", systemImage: "gearshape", type: .accountManagement)
@@ -106,8 +106,6 @@ struct ProfileView: View {
 
     @EnvironmentObject private var authenticationService: AuthenticationService
 
-    // MARK: Footer
-
     private var footerView: some View {
 
         VStack(spacing: 4) {
@@ -125,8 +123,6 @@ struct ProfileView: View {
         .listRowBackground(Color.clear)
     }
 
-    // MARK: Row View
-
     private func rowView(_ row: ProfileRow) -> some View {
 
         HStack(spacing: 12) {
@@ -137,8 +133,6 @@ struct ProfileView: View {
             Text(row.title)
         }
     }
-
-    // MARK: Navigation
 
     @ViewBuilder
     private func destinationView(for type: ProfileRowType) -> some View {
@@ -167,8 +161,6 @@ struct ProfileView: View {
             EmptyView()
         }
     }
-
-    // MARK: Sign Out
 
     private func performSignOut() {
 

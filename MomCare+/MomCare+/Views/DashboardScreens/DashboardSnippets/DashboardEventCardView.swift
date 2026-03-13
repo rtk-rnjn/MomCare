@@ -6,7 +6,6 @@ struct DashboardEventCardView: View {
     // MARK: Internal
 
     let upcomingEvent: EKEvent?
-    @State private var date: Date = .init()
 
     var body: some View {
         VStack(spacing: 0) {
@@ -108,6 +107,8 @@ struct DashboardEventCardView: View {
     }
 
     // MARK: Private
+
+    @State private var date: Date = .init()
 
     @EnvironmentObject private var eventKitHandler: EventKitHandler
     @Environment(\.accessibilityReduceMotion) private var reduceMotion

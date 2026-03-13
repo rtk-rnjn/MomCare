@@ -83,8 +83,6 @@ final class ControlState: ObservableObject {
 
     // MARK: Lifecycle
 
-    // MARK: - Init
-
     init() {
 
         isOnboardingCompleted = UserDefaults.standard.bool(forKey: "isOnboardingCompleted")

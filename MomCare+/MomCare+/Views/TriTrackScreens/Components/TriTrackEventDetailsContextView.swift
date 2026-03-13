@@ -6,7 +6,6 @@ struct TriTrackEventDetailsContextView: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 18) {
-            // MARK: Title + Location
 
             HStack(alignment: .top, spacing: 14) {
                 Image(systemName: "calendar")
@@ -29,8 +28,6 @@ struct TriTrackEventDetailsContextView: View {
                     }
                 }
             }
-
-            // MARK: Date + Time
 
             HStack(alignment: .top, spacing: 14) {
                 Image(systemName: "clock")
@@ -75,8 +72,6 @@ struct TriTrackEventDetailsContextView: View {
                 .font(.subheadline)
             }
 
-            // MARK: Notes
-
             if let notes = event.notes,
                !notes.isEmpty {
                 Divider()
@@ -93,4 +88,3 @@ struct TriTrackEventDetailsContextView: View {
         .padding(.vertical, 20)
     }
 }
-

@@ -6,20 +6,12 @@ import EventKit
 struct MomCareMainTabView: View {
 
     // MARK: Internal
+
     @Environment(\.horizontalSizeClass) var sizeClass
 
     var body: some View {
         tabViewContent(bottomPadding: 0)
             .tint(MomCareAccent.primary)
-    }
-
-    private func fetchDailyInsights() async {
-        guard let networkResponse = try? await ContentService.shared.fetchDailyInsights() else {
-            return
-        }
-
-        healthKitHandler.todayFocusText = networkResponse.data?.todaysFocus ?? "Failed to fetch today's focus: \(networkResponse.errorMessage ?? "Unknown error") (\(networkResponse.statusCode))"
-        healthKitHandler.dailyTipText = networkResponse.data?.dailyTip ?? "Failed to fetch today's tip: \(networkResponse.errorMessage ?? "Unknown error") (\(networkResponse.statusCode))"
     }
 
     // MARK: Private
@@ -41,7 +33,7 @@ struct MomCareMainTabView: View {
                     .safeAreaPadding(bottomPadding)
                     .tag(AppTab.progressHub)
             }
-            
+
             Tab(AppTab.myPlan.title, systemImage: AppTab.myPlan.systemImage, value: AppTab.myPlan) {
                 NavigationStack { MyPlanView() }
                     .safeAreaPadding(bottomPadding)
@@ -53,13 +45,13 @@ struct MomCareMainTabView: View {
                     .safeAreaPadding(bottomPadding)
                     .tag(AppTab.triTrack)
             }
-            
+
             Tab(AppTab.moodNest.title, systemImage: AppTab.moodNest.systemImage, value: AppTab.moodNest) {
                 MoodNestView()
                     .safeAreaPadding(bottomPadding)
                     .tag(AppTab.moodNest)
             }
-            
+
             Tab(AppTab.profile.title, systemImage: AppTab.profile.systemImage, value: AppTab.profile) {
                 NavigationStack { ProfileView() }
                     .safeAreaPadding(bottomPadding)
@@ -109,6 +101,15 @@ struct MomCareMainTabView: View {
                 healthKitHandler.userExercises = userExercises
             }
         }
+    }
+
+    private func fetchDailyInsights() async {
+        guard let networkResponse = try? await ContentService.shared.fetchDailyInsights() else {
+            return
+        }
+
+        healthKitHandler.todayFocusText = networkResponse.data?.todaysFocus ?? "Failed to fetch today's focus: \(networkResponse.errorMessage ?? "Unknown error") (\(networkResponse.statusCode))"
+        healthKitHandler.dailyTipText = networkResponse.data?.dailyTip ?? "Failed to fetch today's tip: \(networkResponse.errorMessage ?? "Unknown error") (\(networkResponse.statusCode))"
     }
 
 }

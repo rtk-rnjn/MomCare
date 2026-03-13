@@ -4,6 +4,7 @@ import SwiftUI
 struct TriTrackEventRow: View {
 
     let event: EKEvent
+
     @Binding var selectedDate: Date
 
     var body: some View {

@@ -8,7 +8,6 @@ import UIKit
 struct MusicPlayerView: View {
 
     // MARK: Internal
-    @Environment(\.popupBarPlacement) private var popupBarPlacement
 
     var body: some View {
         VStack(spacing: 0) {
@@ -201,7 +200,7 @@ struct MusicPlayerView: View {
                     }
                     .disabled(musicPlayerHandler.isWaiting)
                     .accessibilityLabel(musicPlayerHandler.isPlaying ? "Pause" : "Play")
-                    
+
                     if popupBarPlacement == .regular {
                         Button {
                             musicPlayerHandler.skipToNext()
@@ -227,6 +226,8 @@ struct MusicPlayerView: View {
     }
 
     // MARK: Private
+
+    @Environment(\.popupBarPlacement) private var popupBarPlacement
 
     @EnvironmentObject private var musicPlayerHandler: MusicPlayerHandler
     @EnvironmentObject private var controlState: ControlState

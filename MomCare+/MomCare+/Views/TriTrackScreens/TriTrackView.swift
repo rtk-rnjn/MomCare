@@ -38,6 +38,9 @@ struct TriTrackView: View {
         .navigationDestination(isPresented: $showingAllReminders) {
             TriTrackAllRemindersView()
         }
+        .navigationDestination(isPresented: $showingAllSymptoms) {
+            AllSymptomsView()
+        }
         .toolbar {
             ToolbarItem(placement: .topBarLeading) {
                 Button {
@@ -63,18 +66,20 @@ struct TriTrackView: View {
                         } label: {
                             Label("Show all events", systemImage: "calendar")
                         }
-                        
+
                         Button {
                             showingAllReminders = true
                         } label: {
                             Label("Show all reminders", systemImage: "bell")
                         }
+
                     case .symptoms:
                         Button {
-                            
+                            showingAllSymptoms = true
                         } label: {
                             Label("Show all symptoms", systemImage: "calendar")
                         }
+
                     case .meAndBaby:
                         Button {
                             fatalError("Crash triggered for testing purposes")
@@ -82,7 +87,7 @@ struct TriTrackView: View {
                             Label("Click to Crash App", systemImage: "exclamationmark.triangle")
                         }
                     }
-                    
+
                 } label: {
                     Image(systemName: "ellipsis")
                 }
@@ -129,6 +134,7 @@ struct TriTrackView: View {
     @State private var selectedDate: Date = .init()
     @State private var showingAllEvents: Bool = false
     @State private var showingAllReminders: Bool = false
+    @State private var showingAllSymptoms: Bool = false
 
     private var currentProgress: PregnancyProgress {
         authenticationService.userModel?.pregnancyProgress ?? PregnancyProgress(week: 0, day: 0, trimester: "-", isValid: false)

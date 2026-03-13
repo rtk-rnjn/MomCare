@@ -3,27 +3,9 @@ import EventKit
 
 struct TriTrackAllCalendarItemView: View {
 
-    @EnvironmentObject private var eventKitHandler: EventKitHandler
+    // MARK: Internal
+
     @Binding var selectedDate: Date
-    @State private var showDetails = true
-
-    private let today = Calendar.current.startOfDay(for: Date())
-
-    private var groupedEvents: [(date: Date, events: [EKEvent])] {
-        let grouped = Dictionary(
-            grouping: eventKitHandler.allEvents
-        ) { event in
-            Calendar.current.startOfDay(for: event.startDate)
-        }
-        return grouped
-            .map { ($0.key, $0.value.sorted { $0.startDate < $1.startDate }) }
-            .sorted { $0.0 < $1.0 }
-    }
-
-    private var todaySectionIndex: Int? {
-        groupedEvents.firstIndex(where: { Calendar.current.isDate($0.date, inSameDayAs: today) })
-            ?? groupedEvents.firstIndex(where: { $0.date >= today })
-    }
 
     var body: some View {
         ScrollViewReader { proxy in
@@ -35,6 +17,9 @@ struct TriTrackAllCalendarItemView: View {
                     Section {
                         ForEach(section.events, id: \.eventIdentifier) { event in
                             TimelineRow(event: event, isPast: isPast, showDetails: showDetails)
+                                .onTapGesture {
+                                    selectedEvent = EKCalendarItemWrapper(item: event)
+                                }
                         }
                     } header: {
                         DateSectionHeader(date: section.date, isToday: isToday, isPast: isPast)
@@ -44,6 +29,18 @@ struct TriTrackAllCalendarItemView: View {
             }
             .navigationTitle("All Events")
             .navigationBarTitleDisplayMode(.large)
+            .sheet(item: $selectedEvent, onDismiss: {
+                try? eventKitHandler.fetchAllEvents()
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                    if let idx = todaySectionIndex {
+                        proxy.scrollTo(idx, anchor: .top)
+                    }
+                }
+            }) { itemWrapper in
+                if let event = itemWrapper.item as? EKEvent {
+                    EKEventView(event: event)
+                }
+            }
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button {
@@ -77,6 +74,31 @@ struct TriTrackAllCalendarItemView: View {
             }
         }
     }
+
+    // MARK: Private
+
+    @EnvironmentObject private var eventKitHandler: EventKitHandler
+    @State private var showDetails = true
+    @State private var selectedEvent: EKCalendarItemWrapper?
+
+    private let today = Calendar.current.startOfDay(for: Date())
+
+    private var groupedEvents: [(date: Date, events: [EKEvent])] {
+        let grouped = Dictionary(
+            grouping: eventKitHandler.allEvents
+        ) { event in
+            Calendar.current.startOfDay(for: event.startDate)
+        }
+        return grouped
+            .map { ($0.key, $0.value.sorted { $0.startDate < $1.startDate }) }
+            .sorted { $0.0 < $1.0 }
+    }
+
+    private var todaySectionIndex: Int? {
+        groupedEvents.firstIndex(where: { Calendar.current.isDate($0.date, inSameDayAs: today) })
+            ?? groupedEvents.firstIndex(where: { $0.date >= today })
+    }
+
 }
 
 struct DateSectionHeader: View {
@@ -110,38 +132,12 @@ struct DateSectionHeader: View {
 }
 
 struct TimelineRow: View {
+
+    // MARK: Internal
+
     let event: EKEvent
     let isPast: Bool
     let showDetails: Bool
-
-    private var eventColor: Color {
-        if let cgColor = event.calendar.cgColor {
-            return Color(cgColor)
-        }
-        return .blue
-    }
-
-    private var timeLabel: String {
-        if event.isAllDay {
-            return "All Day"
-        }
-        let start = event.startDate.formatted(date: .omitted, time: .shortened)
-        let end = event.endDate.formatted(date: .omitted, time: .shortened)
-        return "\(start) – \(end)"
-    }
-
-    private var durationLabel: String? {
-        guard !event.isAllDay else { return nil }
-        let seconds = event.endDate.timeIntervalSince(event.startDate)
-        let minutes = Int(seconds / 60)
-        if minutes < 60 {
-            return "\(minutes)m"
-        } else if minutes % 60 == 0 {
-            return "\(minutes / 60)h"
-        } else {
-            return "\(minutes / 60)h \(minutes % 60)m"
-        }
-    }
 
     var body: some View {
         HStack(alignment: .top, spacing: 14) {
@@ -244,4 +240,36 @@ struct TimelineRow: View {
         }
         .opacity(isPast ? 0.5 : 1.0)
     }
+
+    // MARK: Private
+
+    private var eventColor: Color {
+        if let cgColor = event.calendar.cgColor {
+            return Color(cgColor)
+        }
+        return .blue
+    }
+
+    private var timeLabel: String {
+        if event.isAllDay {
+            return "All Day"
+        }
+        let start = event.startDate.formatted(date: .omitted, time: .shortened)
+        let end = event.endDate.formatted(date: .omitted, time: .shortened)
+        return "\(start) – \(end)"
+    }
+
+    private var durationLabel: String? {
+        guard !event.isAllDay else { return nil }
+        let seconds = event.endDate.timeIntervalSince(event.startDate)
+        let minutes = Int(seconds / 60)
+        if minutes < 60 {
+            return "\(minutes)m"
+        } else if minutes % 60 == 0 {
+            return "\(minutes / 60)h"
+        } else {
+            return "\(minutes / 60)h \(minutes % 60)m"
+        }
+    }
+
 }

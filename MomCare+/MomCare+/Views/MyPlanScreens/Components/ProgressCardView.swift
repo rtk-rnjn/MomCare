@@ -147,8 +147,6 @@ struct MacroBarRow: View {
     let target: Measurement<UnitMass>?
     let color: Color
 
-    // MARK: - Body
-
     var body: some View {
         VStack(alignment: .leading, spacing: 6) {
             HStack {
@@ -216,8 +214,6 @@ struct MacroBarRow: View {
 
     @State private var showPercentage = false
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
-
-    // MARK: - Computed
 
     private var progress: Double {
         guard let consumed, let target else {
