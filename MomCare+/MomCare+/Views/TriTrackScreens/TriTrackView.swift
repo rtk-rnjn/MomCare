@@ -32,6 +32,12 @@ struct TriTrackView: View {
         .background(MomCareAccent.secondary.ignoresSafeArea())
         .navigationTitle("TriTrack")
         .navigationBarTitleDisplayMode(.inline)
+        .navigationDestination(isPresented: $showingAllEvents) {
+            TriTrackAllCalendarItemView(selectedDate: $selectedDate)
+        }
+        .navigationDestination(isPresented: $showingAllReminders) {
+            TriTrackAllRemindersView()
+        }
         .toolbar {
             ToolbarItem(placement: .topBarLeading) {
                 Button {
@@ -53,13 +59,13 @@ struct TriTrackView: View {
                     switch controlState.triTrackSegment {
                     case .events:
                         Button {
-                            
+                            showingAllEvents = true
                         } label: {
                             Label("Show all events", systemImage: "calendar")
                         }
                         
                         Button {
-                            
+                            showingAllReminders = true
                         } label: {
                             Label("Show all reminders", systemImage: "bell")
                         }
@@ -70,7 +76,11 @@ struct TriTrackView: View {
                             Label("Show all symptoms", systemImage: "calendar")
                         }
                     case .meAndBaby:
-                        EmptyView()
+                        Button {
+                            fatalError("Crash triggered for testing purposes")
+                        } label: {
+                            Label("Click to Crash App", systemImage: "exclamationmark.triangle")
+                        }
                     }
                     
                 } label: {
@@ -117,6 +127,8 @@ struct TriTrackView: View {
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     @State private var selectedDate: Date = .init()
+    @State private var showingAllEvents: Bool = false
+    @State private var showingAllReminders: Bool = false
 
     private var currentProgress: PregnancyProgress {
         authenticationService.userModel?.pregnancyProgress ?? PregnancyProgress(week: 0, day: 0, trimester: "-", isValid: false)

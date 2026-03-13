@@ -52,7 +52,7 @@ struct TriTrackCalendarItemContentView: View {
             isPresented: $controlState.showingAddEventSheet,
             onDismiss: refreshData
         ) {
-            TriTrackAddCalendarItemSheetView()
+            TriTrackAddCalendarItemSheetView(selectedDate: $selectedDate)
                 .scrollDismissesKeyboard(.immediately)
         }
         .sheet(
@@ -96,14 +96,6 @@ struct TriTrackCalendarItemContentView: View {
                 .fontWeight(.semibold)
 
             Spacer()
-
-            Button {
-                
-            } label: {
-                Image(systemName: "chevron.right")
-                    .font(.subheadline.weight(.semibold))
-                    .foregroundStyle(.secondary)
-            }
         }
         .padding(.horizontal)
     }

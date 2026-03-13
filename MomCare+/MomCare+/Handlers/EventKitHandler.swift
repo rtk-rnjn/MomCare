@@ -11,11 +11,11 @@ final class EventKitHandler: ObservableObject {
     // MARK: Internal
 
     @Published var events: [EKEvent] = []
-    @Published var upcommingEvents: [EKEvent] = []
+    @Published var allEvents: [EKEvent] = []
     @Published var mostRecentEvent: EKEvent?
 
     @Published var reminders: [EKReminder] = []
-    @Published var upcommingReminders: [EKReminder] = []
+    @Published var allReminders: [EKReminder] = []
     @Published var eventStore: EKEventStore = .init()
 
     func startObservingEventStore() {
@@ -179,12 +179,7 @@ final class EventKitHandler: ObservableObject {
         let predicate = try eventStore.predicateForReminders(in: [createOrGetReminderCalendar()])
         eventStore.fetchReminders(matching: predicate) { reminders in
             DispatchQueue.main.async {
-                self.upcommingReminders = reminders?.filter { reminder in
-                    if let dueDate = reminder.dueDateComponents?.date {
-                        return dueDate >= Date()
-                    }
-                    return false
-                } ?? []
+                self.allReminders = reminders ?? []
             }
         }
     }
@@ -192,8 +187,8 @@ final class EventKitHandler: ObservableObject {
     func fetchAllEvents() throws {
         let predicate = try eventStore.predicateForEvents(withStart: Date(), end: Date.distantFuture, calendars: [createOrGetEventCalendar()])
         let events = eventStore.events(matching: predicate)
-        upcommingEvents = events.filter { $0.startDate >= Date() }
-        mostRecentEvent = upcommingEvents.sorted { $0.startDate <= $1.startDate }.first
+        allEvents = events
+        mostRecentEvent = allEvents.sorted { $0.startDate <= $1.startDate }.first
     }
 
     func createOrGetEventCalendar() throws -> EKCalendar {

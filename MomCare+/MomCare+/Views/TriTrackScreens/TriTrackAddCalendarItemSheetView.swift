@@ -4,7 +4,7 @@ import SwiftUI
 
 struct TriTrackAddCalendarItemSheetView: View {
 
-    // MARK: Internal
+    @Binding var selectedDate: Date
 
     var body: some View {
         NavigationStack {
@@ -84,6 +84,15 @@ struct TriTrackAddCalendarItemSheetView: View {
                 .presentationDetents([.medium, .large])
         }
         .interactiveDismissDisabled(hasData)
+        .onAppear {
+            startDate = selectedDate
+            endDate = startDate.addingTimeInterval(1)
+        }
+        .onChange(of: startDate) {
+            if startDate > endDate {
+                endDate = startDate.addingTimeInterval(1)
+            }
+        }
     }
 
     // MARK: Private
@@ -103,7 +112,7 @@ struct TriTrackAddCalendarItemSheetView: View {
     @State private var notes = ""
 
     @State private var startDate: Date = .init()
-    @State private var endDate = Date().addingTimeInterval(3600)
+    @State private var endDate = Date().addingTimeInterval(1)
     @State private var isAllDay = false
     @State private var recurrenceEnabled = false
 

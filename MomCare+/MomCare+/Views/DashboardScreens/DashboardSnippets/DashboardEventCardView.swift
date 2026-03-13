@@ -6,6 +6,7 @@ struct DashboardEventCardView: View {
     // MARK: Internal
 
     let upcomingEvent: EKEvent?
+    @State private var date: Date = .init()
 
     var body: some View {
         VStack(spacing: 0) {
@@ -98,7 +99,7 @@ struct DashboardEventCardView: View {
                 try? eventKitHandler.fetchAllEvents()
             },
             content: {
-                TriTrackAddCalendarItemSheetView()
+                TriTrackAddCalendarItemSheetView(selectedDate: $date)
                     .presentationDetents([.medium, .large])
                     .scrollDismissesKeyboard(.immediately)
                     .interactiveDismissDisabled(true)
