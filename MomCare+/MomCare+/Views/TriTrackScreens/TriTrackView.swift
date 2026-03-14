@@ -451,7 +451,8 @@ struct ComparisonView: View {
         HStack(spacing: 0) {
             VStack(alignment: .center) {
                 Text(fruitEmoji)
-                    .font(.largeTitle)
+                    .font(.system(size: 64))
+
             }
             .frame(maxWidth: .infinity)
             .accessibilityHidden(true)
