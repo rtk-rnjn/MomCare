@@ -92,15 +92,6 @@ struct TriTrackAllCalendarItemView: View {
 
     private let today = Calendar.current.startOfDay(for: Date())
 
-    private func fetchEvents() {
-        do {
-            try eventKitHandler.fetchAllEvents()
-        } catch {
-            alertMessage = error.localizedDescription
-            showErrorAlert = true
-        }
-    }
-
     private var groupedEvents: [(date: Date, events: [EKEvent])] {
         let grouped = Dictionary(
             grouping: eventKitHandler.allEvents
@@ -115,6 +106,15 @@ struct TriTrackAllCalendarItemView: View {
     private var todaySectionIndex: Int? {
         groupedEvents.firstIndex(where: { Calendar.current.isDate($0.date, inSameDayAs: today) })
             ?? groupedEvents.firstIndex(where: { $0.date >= today })
+    }
+
+    private func fetchEvents() {
+        do {
+            try eventKitHandler.fetchAllEvents()
+        } catch {
+            alertMessage = error.localizedDescription
+            showErrorAlert = true
+        }
     }
 
 }

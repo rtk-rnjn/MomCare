@@ -58,9 +58,11 @@ struct TriTrackView: View {
             }
 
             ToolbarItemGroup(placement: .navigationBarTrailing) {
-                Menu {
-                    switch controlState.triTrackSegment {
-                    case .events:
+                switch controlState.triTrackSegment {
+                case .meAndBaby:
+                    EmptyView()
+                case .events:
+                    Menu {
                         Button {
                             showingAllEvents = true
                         } label: {
@@ -72,35 +74,13 @@ struct TriTrackView: View {
                         } label: {
                             Label("Show all reminders", systemImage: "bell")
                         }
-
-                    case .symptoms:
-                        Button {
-                            showingAllSymptoms = true
-                        } label: {
-                            Label("Show all symptoms", systemImage: "calendar")
-                        }
-
-                    case .meAndBaby:
-                        if showDebugOptions {
-                            Button(role: .destructive) {
-                                fatalError("Crash triggered for testing purposes")
-                            } label: {
-                                Label("Crash App", systemImage: "exclamationmark.triangle")
-                            }
-                        }
+                    } label: {
+                        Image(systemName: "ellipsis")
+                            .accessibilityHidden(true)
                     }
+                    .menuStyle(.button)
+                    .accessibilityLabel("More options")
 
-                } label: {
-                    Image(systemName: "ellipsis")
-                        .accessibilityHidden(true)
-                }
-                .menuStyle(.button)
-                .accessibilityLabel("More options")
-
-                switch controlState.triTrackSegment {
-                case .meAndBaby:
-                    EmptyView()
-                case .events:
                     Button {
                         controlState.showingAddEventSheet = true
                     } label: {
@@ -113,6 +93,19 @@ struct TriTrackView: View {
                     .accessibilityIdentifier("addEventButton")
 
                 case .symptoms:
+                    Menu {
+                        Button {
+                            showingAllSymptoms = true
+                        } label: {
+                            Label("Show all symptoms", systemImage: "calendar")
+                        }
+                    } label: {
+                        Image(systemName: "ellipsis")
+                            .accessibilityHidden(true)
+                    }
+                    .menuStyle(.button)
+                    .accessibilityLabel("More options")
+
                     Button {
                         controlState.showingAddSymptomSheet = true
                     } label: {

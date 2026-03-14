@@ -96,15 +96,6 @@ struct TriTrackAllRemindersView: View {
 
     @State private var today = Calendar.current.startOfDay(for: Date())
 
-    private func fetchReminders() {
-        do {
-            try eventKitHandler.fetchAllReminders()
-        } catch {
-            alertMessage = error.localizedDescription
-            showErrorAlert = true
-        }
-    }
-
     private var groupedReminders: [(date: Date?, reminders: [EKReminder])] {
         let withDue = eventKitHandler.allReminders.filter { $0.dueDateComponents != nil }
         let withoutDue = eventKitHandler.allReminders.filter { $0.dueDateComponents == nil }
@@ -138,6 +129,15 @@ struct TriTrackAllRemindersView: View {
             guard let date = $0.date else { return false }
             return date >= today
         })
+    }
+
+    private func fetchReminders() {
+        do {
+            try eventKitHandler.fetchAllReminders()
+        } catch {
+            alertMessage = error.localizedDescription
+            showErrorAlert = true
+        }
     }
 
 }
