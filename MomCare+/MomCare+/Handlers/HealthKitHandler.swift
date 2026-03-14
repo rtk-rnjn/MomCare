@@ -1,6 +1,9 @@
 import Combine
 import HealthKit
 import SwiftUI
+import OSLog
+
+private let logger: Logger = .init(subsystem: "com.MomCare.HealthKitHandler", category: "ObservableObject")
 
 final class HealthKitHandler: ObservableObject {
 
@@ -29,7 +32,7 @@ final class HealthKitHandler: ObservableObject {
 
     let healthStore: HKHealthStore = .init()
 
-    func startStepCountObservation() {
+    nonisolated func startStepCountObservation() async {
         guard let stepType = HKQuantityType.quantityType(forIdentifier: .stepCount) else {
             fatalError()
         }
@@ -37,13 +40,15 @@ final class HealthKitHandler: ObservableObject {
         let startOfDate = Calendar.current.startOfDay(for: now)
         let predicate = HKQuery.predicateForSamples(withStart: startOfDate, end: now, options: .strictStartDate)
 
-        let query = HKObserverQuery(sampleType: stepType, predicate: predicate) { _, _, _ in
-            Task {
-                await self.fetchTodaySteps()
+        let query = HKObserverQuery(sampleType: stepType, predicate: predicate) { _, _, error in
+            if error != nil {
+                return
             }
+
+            self.fetchTodaySteps()
         }
         healthStore.execute(query)
-        healthStore.enableBackgroundDelivery(for: stepType, frequency: .immediate) { _, _ in }
+        try? await healthStore.enableBackgroundDelivery(for: stepType, frequency: .immediate)
 
         fetchTodaySteps()
     }
@@ -83,13 +88,13 @@ final class HealthKitHandler: ObservableObject {
         let nurtitionConsumedTotals = await myPlanModel?.consumedNutrition()
         let nutritionTargetTotals = await myPlanModel?.targetNutrition()
 
-        DispatchQueue.main.async {
+        await MainActor.run {
             self.nutritionTargetTotals = nutritionTargetTotals
             self.nurtitionConsumedTotals = nurtitionConsumedTotals
         }
     }
 
-    func fetchHealthData(
+    nonisolated func fetchHealthData(
         quantityTypeIdentifier: HKQuantityTypeIdentifier,
         unit: HKUnit,
         completionHandler: @escaping @Sendable (Double) -> Void
@@ -114,14 +119,12 @@ final class HealthKitHandler: ObservableObject {
         healthStore.execute(query)
     }
 
-    func writeHealthData(
+    nonisolated func writeHealthData(
         quantityTypeIdentifier: HKQuantityTypeIdentifier,
         value: Double,
         unit: HKUnit,
-        completionHandler: (@Sendable (Bool) -> Void)? = nil
-    ) {
+    ) async throws {
         guard let quantityType = HKQuantityType.quantityType(forIdentifier: quantityTypeIdentifier) else {
-            completionHandler?(false)
             return
         }
         let calendar = Calendar.current
@@ -131,12 +134,10 @@ final class HealthKitHandler: ObservableObject {
         let quantity = HKQuantity(unit: unit, doubleValue: value)
         let sample = HKQuantitySample(type: quantityType, quantity: quantity, start: start, end: end)
 
-        healthStore.save(sample) { success, _ in
-            completionHandler?(success)
-        }
+        try await healthStore.save(sample)
     }
 
-    func fetchTodaySteps() {
+    nonisolated func fetchTodaySteps() {
         fetchHealthData(quantityTypeIdentifier: .stepCount, unit: .count()) { count in
             DispatchQueue.main.async {
                 self.currentSteps = count
@@ -152,14 +153,15 @@ final class HealthKitHandler: ObservableObject {
 }
 
 extension HealthKitHandler {
-    func consumeFoodInHealthKit(_ food: FoodItemModel, consume: Bool) {
+    func consumeFoodInHealthKit(_ food: FoodItemModel, consume: Bool) async throws {
         let multiplier = consume ? 1.0 : -1.0
-        writeHealthData(quantityTypeIdentifier: .dietaryEnergyConsumed, value: food.totalCalories * multiplier, unit: .kilocalorie())
-        writeHealthData(quantityTypeIdentifier: .dietaryProtein, value: food.totalProteinInGrams * multiplier, unit: .gram())
-        writeHealthData(quantityTypeIdentifier: .dietaryCarbohydrates, value: food.totalCarbsInGrams * multiplier, unit: .gram())
-        writeHealthData(quantityTypeIdentifier: .dietaryFatTotal, value: food.totalFatsInGrams * multiplier, unit: .gram())
-        writeHealthData(quantityTypeIdentifier: .dietarySodium, value: food.totalSodiumInMiligrams * multiplier, unit: .gramUnit(with: .milli))
-        writeHealthData(quantityTypeIdentifier: .dietarySugar, value: food.totalSugarInGrams * multiplier, unit: .gram())
+
+        try await writeHealthData(quantityTypeIdentifier: .dietaryEnergyConsumed, value: food.totalCalories * multiplier, unit: .kilocalorie())
+        try await writeHealthData(quantityTypeIdentifier: .dietaryProtein, value: food.totalProteinInGrams * multiplier, unit: .gram())
+        try await writeHealthData(quantityTypeIdentifier: .dietaryCarbohydrates, value: food.totalCarbsInGrams * multiplier, unit: .gram())
+        try await writeHealthData(quantityTypeIdentifier: .dietaryFatTotal, value: food.totalFatsInGrams * multiplier, unit: .gram())
+        try await writeHealthData(quantityTypeIdentifier: .dietarySodium, value: food.totalSodiumInMiligrams * multiplier, unit: .gramUnit(with: .milli))
+        try await writeHealthData(quantityTypeIdentifier: .dietarySugar, value: food.totalSugarInGrams * multiplier, unit: .gram())
     }
 
     func markFoodAs(consumed: Bool, in mealType: MealType, foodReference: FoodReferenceModel) async throws {
@@ -176,7 +178,7 @@ extension HealthKitHandler {
 
         _ = try await ContentService.shared.markFoodAs(consumed: consumed, planId: myPlanModel._id, meal: mealType, foodId: foodReference.foodId)
         if let food = await foodReference.food {
-            consumeFoodInHealthKit(food, consume: consumed)
+            try await consumeFoodInHealthKit(food, consume: consumed)
         }
     }
 
@@ -226,7 +228,7 @@ extension HealthKitHandler {
         let networkResponse = try await ContentService.shared.updateExerciseCompletion(exerciseId: id, duration: duration)
         if let success = networkResponse.data, success {
             if let index = userExercises.firstIndex(where: { $0.exerciseId == id }) {
-                DispatchQueue.main.async {
+                await MainActor.run {
                     self.userExercises[index].videoDurationCompletedSeconds = duration
                 }
             }
@@ -245,17 +247,13 @@ extension HealthKitHandler {
         let now = Date()
         let startOfDate = Calendar.current.startOfDay(for: now)
         database[.breathing(startOfDate)] = duration
-        DispatchQueue.main.async {
-            self.breathingCompletionDuration = duration
-        }
+        self.breathingCompletionDuration = duration
     }
 
     func fetchBreathingCompletionDuration(for date: Date) -> TimeInterval {
         let startOfDate = Calendar.current.startOfDay(for: date)
         let completionDuration: TimeInterval = database[.breathing(startOfDate)] ?? 0
-        DispatchQueue.main.async {
-            self.breathingCompletionDuration = completionDuration
-        }
+        self.breathingCompletionDuration = completionDuration
         return completionDuration
     }
 }

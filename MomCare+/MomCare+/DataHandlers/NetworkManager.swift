@@ -12,9 +12,17 @@ enum HTTPMethod: String {
 }
 
 struct NetworkResponse<T: Codable>: Codable {
+    enum CodingKeys: String, CodingKey {
+        case data
+        case statusCode
+        case errorMessage
+    }
+
     var data: T?
     var statusCode: Int
     var errorMessage: String?
+
+    var responseHeaders: [AnyHashable: Any]?
 
     var success: Bool {
         return (200...299).contains(statusCode) && errorMessage == nil
@@ -23,9 +31,12 @@ struct NetworkResponse<T: Codable>: Codable {
 
 class NetworkManager {
 
-    // MARK: Public
-
+    var debugMenuStore: DebugMenuStore?
     public static let shared: NetworkManager = .init()
+    
+    func setDebugMenuStore(_ store: DebugMenuStore) {
+        self.debugMenuStore = store
+    }
 
     // MARK: Internal
 
@@ -144,33 +155,93 @@ class NetworkManager {
     }
 
     private func performRequest<T: Codable>(_ request: URLRequest) async throws -> NetworkResponse<T> {
+        
         let url = request.url?.absoluteString ?? "unknown URL"
         logger.info("Performing \(request.httpMethod ?? "UNKNOWN") request to \(url)")
         DebugLogger.shared.log("Performing \(request.httpMethod ?? "UNKNOWN") request to \(url)", level: .info, category: .network)
 
-        var count = 5
-        while count > 0 {
+        var attempts = 5
+
+        while attempts > 0 {
+
+            let startTime = Date()
+
+            var statusCode: Int?
+            var responseBody: String?
+            var errorMessage: String?
+
+            defer {
+                debugMenuStore?.addNetworkRequest(
+                    .init(
+                        method: request.httpMethod ?? "UNKNOWN",
+                        url: url,
+                        statusCode: statusCode,
+                        responseTime: Date().timeIntervalSince(startTime),
+                        requestBody: request.httpBody.flatMap { String(data: $0, encoding: .utf8) },
+                        responseBody: responseBody,
+                        error: errorMessage
+                    )
+                )
+            }
+
             do {
                 let (data, response) = try await URLSession.shared.data(for: request)
-                return try await handleRequest(response: response, data: data, url: url)
+
+                statusCode = (response as? HTTPURLResponse)?.statusCode
+                responseBody = String(data: data, encoding: .utf8)
+
+                let networkResponse: NetworkResponse<T> = try await handleRequest(
+                    response: response,
+                    data: data,
+                    url: url
+                )
+
+                errorMessage = networkResponse.errorMessage
+
+                return networkResponse
             } catch {
-                count -= 1
+
+                attempts -= 1
+                errorMessage = error.localizedDescription
 
                 if let urlError = error as? URLError {
+
                     switch urlError.code {
+
                     case .networkConnectionLost, .timedOut, .notConnectedToInternet:
-                        logger.warning("Network error occurred for request to \(url): \(urlError.localizedDescription). Retrying... (\(5 - count) attempts left)")
-                        DebugLogger.shared.log("Network error occurred for request to \(url): \(urlError.localizedDescription). Retrying... (\(5 - count) attempts left)", level: .warning, category: .network)
-                        try? await Task.sleep(nanoseconds: UInt64(1_000_000_000 * (count % 5)))
+
+                        logger.warning("Network error occurred for request to \(url): \(urlError.localizedDescription). Retrying... (\(5 - attempts) attempts left)")
+                        
+                        DebugLogger.shared.log(
+                            "Network error occurred for request to \(url): \(urlError.localizedDescription). Retrying... (\(5 - attempts) attempts left)",
+                            level: .warning,
+                            category: .network
+                        )
+
+                        try? await Task.sleep(nanoseconds: UInt64(1_000_000_000 * (attempts % 5)))
 
                     default:
-                        return NetworkResponse(data: nil, statusCode: -1, errorMessage: urlError.localizedDescription)
+                        return NetworkResponse(
+                            data: nil,
+                            statusCode: -1,
+                            errorMessage: urlError.localizedDescription
+                        )
                     }
+                } else {
+                    return NetworkResponse(
+                        data: nil,
+                        statusCode: -1,
+                        errorMessage: error.localizedDescription
+                    )
                 }
             }
         }
 
-        return NetworkResponse(data: nil, statusCode: -1, errorMessage: "Request failed after multiple attempts due to network issues.")
+        return NetworkResponse(
+            data: nil,
+            statusCode: -1,
+            errorMessage: "Request failed after multiple attempts due to network issues."
+        )
     }
 
     private func handleRequest<T: Codable>(response: URLResponse, data: Data, url: String) async throws -> NetworkResponse<T> {

@@ -1,5 +1,5 @@
 {
-  "originHash" : "820205e999f52198e676565f98e31c59048008fa26c46be0d23029266ebcbec1",
+  "originHash" : "e4ecad75003d135d229551f6450686139abd95561ab265d31b0dbeed6969cd0f",
   "pins" : [
     {
       "identity" : "fscalendar",
@@ -35,6 +35,15 @@
       "state" : {
         "revision" : "181a95b992f84d99a14c562c86e8ebef3cbcdca9",
         "version" : "1.1.5"
+      }
+    },
+    {
+      "identity" : "swift-collections",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/apple/swift-collections.git",
+      "state" : {
+        "revision" : "8d9834a6189db730f6264db7556a7ffb751e99ee",
+        "version" : "1.4.0"
       }
     }
   ],

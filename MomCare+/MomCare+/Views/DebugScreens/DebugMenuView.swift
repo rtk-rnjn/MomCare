@@ -9,7 +9,7 @@ struct DebugMenuView: View {
             List {
                 ForEach(DebugSection.allCases) { section in
                     NavigationLink(destination: section.destination(store: store)) {
-                        Label(section.title, systemImage: section.icon)
+                        Text(section.title)
                             .foregroundStyle(.primary)
                     }
                 }
@@ -31,7 +31,7 @@ enum DebugSection: String, CaseIterable, Identifiable {
     case performance = "Performance Monitor"
     case featureFlags = "Feature Flags"
     case network = "Network Inspector"
-    case logs = "Logs Console"
+    case logs = "Console Logs"
     case osLogs = "OS Logs"
     case permissions = "Permissions Status"
     case dataInspector = "Data Inspector"
@@ -42,22 +42,6 @@ enum DebugSection: String, CaseIterable, Identifiable {
 
     var id: String { rawValue }
     var title: String { rawValue }
-
-    var icon: String {
-        switch self {
-        case .deviceInfo: return "iphone"
-        case .accessibility: return "accessibility"
-        case .performance: return "gauge.with.dots.needle.67percent"
-        case .featureFlags: return "flag.2.crossed"
-        case .network: return "network"
-        case .logs: return "text.alignleft"
-        case .osLogs: return "rectangle.stack.fill"
-        case .permissions: return "lock.shield"
-        case .dataInspector: return "cylinder.split.1x2"
-        case .notifications: return "bell.badge"
-        case .crashSimulator: return "exclamationmark.triangle"
-        }
-    }
 
     @ViewBuilder // swiftlint:disable:next cyclomatic_complexity
     func destination(store: DebugMenuStore) -> some View {
@@ -74,31 +58,5 @@ enum DebugSection: String, CaseIterable, Identifiable {
         case .notifications: NotificationTesterView()
         case .crashSimulator: CrashSimulatorView()
         }
-    }
-}
-
-struct DebugMenuGestureModifier: ViewModifier {
-
-    // MARK: Internal
-
-    func body(content: Content) -> some View {
-        content
-            .onLongPressGesture(minimumDuration: 2.0) {
-                isPresented = true
-            }
-            .sheet(isPresented: $isPresented) {
-                DebugMenuView()
-            }
-    }
-
-    // MARK: Private
-
-    @State private var isPresented = false
-
-}
-
-extension View {
-    func debugMenuGesture() -> some View {
-        modifier(DebugMenuGestureModifier())
     }
 }
