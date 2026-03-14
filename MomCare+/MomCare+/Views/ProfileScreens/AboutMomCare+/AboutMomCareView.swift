@@ -1,4 +1,5 @@
 import SwiftUI
+import OSLog
 
 struct AboutMomCareView: View {
 
@@ -29,15 +30,16 @@ struct AboutMomCareView: View {
                 }
             }
 
-            Button("Crash App", role: .destructive) {
-                crashApp = true
-            }
-            .confirmationDialog("Are you sure? This is mainly for DEBUG purpose", isPresented: $crashApp, titleVisibility: .visible) {
-                Button("FUCKING DO IT", role: .destructive) {
-                    fatalError("Crashed Intentionally")
+            Section {
+                NavigationLink(destination: DebugMenuView()) {
+                    Text("Debug Options")
                 }
+
+            } footer: {
+                Text("Debug options are intended for developers and testers to diagnose issues. Avoid using them unless you know what you're doing.")
+                    .font(.footnote)
+                    .foregroundColor(.secondary)
             }
-            .foregroundStyle(.red)
 
         }
         .navigationTitle("About MomCare+")
@@ -46,8 +48,6 @@ struct AboutMomCareView: View {
     }
 
     // MARK: Private
-
-    @State private var crashApp: Bool = false
 
     private let appVersion: String = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "Failed to fetch app version"
 

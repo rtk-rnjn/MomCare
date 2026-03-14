@@ -1,7 +1,7 @@
 import EventKitUI
 import SwiftUI
 
-struct EventKitEventView: UIViewControllerRepresentable {
+struct EKEventView: UIViewControllerRepresentable {
     let event: EKEvent
 
     @Environment(\.dismiss) var dismiss
@@ -25,13 +25,13 @@ class Coordinator: NSObject, EKEventViewDelegate {
 
     // MARK: Lifecycle
 
-    init(_ parent: EventKitEventView) {
+    init(_ parent: EKEventView) {
         self.parent = parent
     }
 
     // MARK: Internal
 
-    var parent: EventKitEventView
+    var parent: EKEventView
 
     func eventViewController(_: EKEventViewController, didCompleteWith _: EKEventViewAction) {
         parent.dismiss()

@@ -5,8 +5,6 @@ struct EKReminderView: View {
 
     // MARK: Internal
 
-    // MARK: Repeat State
-
     enum RepeatRule: String, CaseIterable {
         case never
         case daily
@@ -21,6 +19,7 @@ struct EKReminderView: View {
     }
 
     @State var reminder: EKReminder
+    @Binding var selectedDate: Date
 
     var repeatUnitText: (EKRecurrenceFrequency, Int) -> String = { unit, frequency in
         let unitString: String
@@ -61,7 +60,6 @@ struct EKReminderView: View {
                 prioritySection
                 repeatSection
                 notesSection
-                completionSection
                 deleteSection
             }
             .scrollIndicators(.hidden)
@@ -88,12 +86,16 @@ struct EKReminderView: View {
                             dismiss()
                         }
                     }
+                    .accessibilityLabel("Cancel")
+                    .accessibilityHint(hasChanges ? "Prompts to discard unsaved changes" : "Dismisses this screen")
                 }
 
                 ToolbarItem(placement: .confirmationAction) {
                     Button(role: .confirm) {
                         saveChanges()
                     }
+                    .accessibilityLabel("Save")
+                    .accessibilityHint("Saves changes to this reminder")
                 }
             }
         }
@@ -107,6 +109,8 @@ struct EKReminderView: View {
                         .font(.title2)
                         .foregroundStyle(isCompleted ? .green : Color(.tertiaryLabel))
                 }
+                .accessibilityLabel(isCompleted ? "Mark as incomplete" : "Mark as complete")
+                .accessibilityHint("Toggles the completion status of this reminder")
 
                 TextField("Title", text: $title)
                     .onChange(of: title) { hasChanges = true }
@@ -213,20 +217,6 @@ struct EKReminderView: View {
         }
     }
 
-    var completionSection: some View {
-        Section {
-            Button {
-                toggleCompletion()
-            } label: {
-                Label(
-                    isCompleted ? "Mark as Incomplete" : "Mark as Completed",
-                    systemImage: isCompleted ? "arrow.uturn.backward.circle" : "checkmark.circle"
-                )
-                .foregroundStyle(isCompleted ? .orange : .green)
-            }
-        }
-    }
-
     var deleteSection: some View {
         Section {
             Button(role: .destructive) {
@@ -234,11 +224,13 @@ struct EKReminderView: View {
             } label: {
                 Label("Delete Reminder", systemImage: "trash")
             }
-            .confirmationDialog("Delete Reminder? This action can not be undone.", isPresented: $showDeleteConfirm, titleVisibility: .visible) {
+            .confirmationDialog("Delete Reminder? This action cannot be undone.", isPresented: $showDeleteConfirm, titleVisibility: .visible) {
                 Button("Delete", role: .destructive) {
                     deleteReminder()
                 }
             }
+            .accessibilityLabel("Delete reminder")
+            .accessibilityHint("Permanently removes this reminder")
         }
     }
 
@@ -315,7 +307,10 @@ struct EKReminderView: View {
         }
 
         do {
-            reminder = try eventKitHandler.updateReminder(reminder)
+            let reminder = try eventKitHandler.updateReminder(reminder)
+            performAnimated {
+                self.reminder = reminder
+            }
         } catch {
             alertMessage = error.localizedDescription
             showErrorAlert = true
@@ -327,9 +322,11 @@ struct EKReminderView: View {
 
     func toggleCompletion() {
         do {
-            let updatedReminder = try eventKitHandler.markReminder(complete: !isCompleted, reminder: reminder)
+            let updatedReminder = try eventKitHandler.markReminder(complete: !isCompleted, reminder: reminder, date: selectedDate)
             performAnimated {
-                reminder = updatedReminder
+                if let reminder = updatedReminder.copy() as? EKReminder {
+                    self.reminder = reminder
+                }
             }
         } catch {
             alertMessage = error.localizedDescription
@@ -362,8 +359,6 @@ struct EKReminderView: View {
     @EnvironmentObject private var eventKitHandler: EventKitHandler
     @Environment(\.dismiss) private var dismiss
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
-
-    // MARK: Editable State
 
     @State private var title = ""
     @State private var notes = ""

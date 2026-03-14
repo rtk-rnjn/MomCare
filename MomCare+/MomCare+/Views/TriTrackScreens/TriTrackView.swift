@@ -32,8 +32,17 @@ struct TriTrackView: View {
         .background(MomCareAccent.secondary.ignoresSafeArea())
         .navigationTitle("TriTrack")
         .navigationBarTitleDisplayMode(.inline)
+        .navigationDestination(isPresented: $showingAllEvents) {
+            TriTrackAllCalendarItemView(selectedDate: $selectedDate)
+        }
+        .navigationDestination(isPresented: $showingAllReminders) {
+            TriTrackAllRemindersView()
+        }
+        .navigationDestination(isPresented: $showingAllSymptoms) {
+            TriTrackAllSymptomsView()
+        }
         .toolbar {
-            ToolbarItemGroup(placement: .navigationBarTrailing) {
+            ToolbarItem(placement: .topBarLeading) {
                 Button {
                     withAnimation(reduceMotion ? nil : .spring(response: 0.3, dampingFraction: 0.8)) {
                         controlState.showingExpandedCalendar.toggle()
@@ -46,11 +55,32 @@ struct TriTrackView: View {
                 }
                 .accessibilityLabel(controlState.showingExpandedCalendar ? "Collapse calendar" : "Expand calendar")
                 .accessibilityIdentifier("expandCalendarButton")
+            }
 
+            ToolbarItemGroup(placement: .navigationBarTrailing) {
                 switch controlState.triTrackSegment {
                 case .meAndBaby:
                     EmptyView()
                 case .events:
+                    Menu {
+                        Button {
+                            showingAllEvents = true
+                        } label: {
+                            Label("Show all events", systemImage: "calendar")
+                        }
+
+                        Button {
+                            showingAllReminders = true
+                        } label: {
+                            Label("Show all reminders", systemImage: "bell")
+                        }
+                    } label: {
+                        Image(systemName: "ellipsis")
+                            .accessibilityHidden(true)
+                    }
+                    .menuStyle(.button)
+                    .accessibilityLabel("More options")
+
                     Button {
                         controlState.showingAddEventSheet = true
                     } label: {
@@ -63,6 +93,19 @@ struct TriTrackView: View {
                     .accessibilityIdentifier("addEventButton")
 
                 case .symptoms:
+                    Menu {
+                        Button {
+                            showingAllSymptoms = true
+                        } label: {
+                            Label("Show all symptoms", systemImage: "calendar")
+                        }
+                    } label: {
+                        Image(systemName: "ellipsis")
+                            .accessibilityHidden(true)
+                    }
+                    .menuStyle(.button)
+                    .accessibilityLabel("More options")
+
                     Button {
                         controlState.showingAddSymptomSheet = true
                     } label: {
@@ -85,7 +128,12 @@ struct TriTrackView: View {
     @EnvironmentObject private var authenticationService: AuthenticationService
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
+    @AppStorage("showDebugOptions", store: UserDefaults(suiteName: "group.MomCare")) private var showDebugOptions: Bool = false
+
     @State private var selectedDate: Date = .init()
+    @State private var showingAllEvents: Bool = false
+    @State private var showingAllReminders: Bool = false
+    @State private var showingAllSymptoms: Bool = false
 
     private var currentProgress: PregnancyProgress {
         authenticationService.userModel?.pregnancyProgress ?? PregnancyProgress(week: 0, day: 0, trimester: "-", isValid: false)
@@ -403,7 +451,8 @@ struct ComparisonView: View {
         HStack(spacing: 0) {
             VStack(alignment: .center) {
                 Text(fruitEmoji)
-                    .font(.system(size: fruitEmojiSize))
+                    .font(.system(size: 64))
+
             }
             .frame(maxWidth: .infinity)
             .accessibilityHidden(true)
@@ -439,8 +488,6 @@ struct ComparisonView: View {
     }
 
     // MARK: Private
-
-    @ScaledMetric private var fruitEmojiSize: CGFloat = 64
 
     private var fruitEmoji: String {
         let fruit = trimesterData.fruitComparison.lowercased()
@@ -560,7 +607,7 @@ struct PopupInfoCard: View {
                     HStack(spacing: 4) {
                         ForEach(0 ..< 15, id: \.self) { _ in
                             Image(systemName: "heart.fill")
-                                .font(.system(size: 8))
+                                .font(.caption2)
                                 .foregroundColor(accentColor.opacity(0.2))
                         }
                     }
@@ -579,7 +626,7 @@ struct PopupInfoCard: View {
                     HStack(spacing: 4) {
                         ForEach(0 ..< 15, id: \.self) { _ in
                             Image(systemName: "heart.fill")
-                                .font(.system(size: 8))
+                                .font(.caption2)
                                 .foregroundColor(accentColor.opacity(0.2))
                         }
                     }

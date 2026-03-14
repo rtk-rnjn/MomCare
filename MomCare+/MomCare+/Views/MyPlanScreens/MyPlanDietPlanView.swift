@@ -20,8 +20,8 @@ struct MyPlanDietPlanView: View {
                 caloriesConsumed: healthKitHandler.nurtitionConsumedTotals?.calories ?? 0,
                 caloriesTarget: healthKitHandler.nutritionTargetTotals?.calories ?? 0
             )
-            .padding(.horizontal, 16)
             .containerShape(RoundedRectangle(cornerRadius: 24, style: .continuous))
+            .padding(.horizontal, 16)
 
             VStack(spacing: 0) {
                 ScrollView(.vertical, showsIndicators: false) {

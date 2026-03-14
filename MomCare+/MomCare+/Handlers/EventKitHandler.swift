@@ -11,11 +11,11 @@ final class EventKitHandler: ObservableObject {
     // MARK: Internal
 
     @Published var events: [EKEvent] = []
-    @Published var upcommingEvents: [EKEvent] = []
+    @Published var allEvents: [EKEvent] = []
     @Published var mostRecentEvent: EKEvent?
 
     @Published var reminders: [EKReminder] = []
-    @Published var upcommingReminders: [EKReminder] = []
+    @Published var allReminders: [EKReminder] = []
     @Published var eventStore: EKEventStore = .init()
 
     func startObservingEventStore() {
@@ -71,16 +71,13 @@ final class EventKitHandler: ObservableObject {
         eventStore.fetchReminders(matching: predicate) { reminders in
             DispatchQueue.main.async {
                 self.reminders = reminders?.filter { reminder in
-                    if let dueDate = reminder.dueDateComponents?.date {
-                        return Calendar.current.isDate(dueDate, inSameDayAs: startDate)
-                    }
-                    return false
+                    self.reminderMatchesDate(reminder, date: startDate)
                 } ?? []
             }
         }
     }
 
-    func markReminder(complete: Bool, reminder: EKReminder) throws -> EKReminder {
+    func markReminder(complete: Bool, reminder: EKReminder, date: Date) throws -> EKReminder {
         reminder.isCompleted = complete
         reminder.completionDate = complete ? Date() : nil
         try eventStore.save(reminder, commit: true)
@@ -100,21 +97,22 @@ final class EventKitHandler: ObservableObject {
         let predicate = try eventStore.predicateForReminders(in: [createOrGetReminderCalendar()])
         eventStore.fetchReminders(matching: predicate) { reminders in
             DispatchQueue.main.async {
-                self.upcommingReminders = reminders?.filter { reminder in
-                    if let dueDate = reminder.dueDateComponents?.date {
-                        return dueDate >= Date()
-                    }
-                    return false
-                } ?? []
+                self.allReminders = reminders ?? []
             }
         }
     }
 
     func fetchAllEvents() throws {
-        let predicate = try eventStore.predicateForEvents(withStart: Date(), end: Date.distantFuture, calendars: [createOrGetEventCalendar()])
+        let now = Date()
+        let lastTwoYear = Calendar.current.date(byAdding: .year, value: -2, to: now)!
+        let nextTwoYear = Calendar.current.date(byAdding: .year, value: 2, to: now)!
+
+        // Well. We have to limit the range to 4yr, as per the docs.
+
+        let predicate = try eventStore.predicateForEvents(withStart: lastTwoYear, end: nextTwoYear, calendars: [createOrGetEventCalendar()])
         let events = eventStore.events(matching: predicate)
-        upcommingEvents = events.filter { $0.startDate >= Date() }
-        mostRecentEvent = upcommingEvents.sorted { $0.startDate <= $1.startDate }.first
+        allEvents = events
+        mostRecentEvent = allEvents.sorted { $0.startDate <= $1.startDate }.first
     }
 
     func createOrGetEventCalendar() throws -> EKCalendar {
@@ -170,5 +168,121 @@ final class EventKitHandler: ObservableObject {
     private var cancellables: Set<AnyCancellable> = []
 
     private let database: Database = .init()
+
+    private func reminderMatchesDate(_ reminder: EKReminder, date: Date) -> Bool {
+
+        let calendar = Calendar.current
+
+        guard let startDate = (reminder.startDateComponents ?? reminder.dueDateComponents)?.date else {
+            return false
+        }
+
+        if let rules = reminder.recurrenceRules {
+            for rule in rules where matches(rule: rule, startDate: startDate, date: date, calendar: calendar) {
+                return true
+            }
+        }
+
+        if let dueDate = reminder.dueDateComponents?.date {
+            return calendar.isDate(dueDate, inSameDayAs: date)
+        }
+
+        return calendar.isDate(startDate, inSameDayAs: date)
+    }
+
+    private func matches(
+        rule: EKRecurrenceRule,
+        startDate: Date,
+        date: Date,
+        calendar: Calendar
+    ) -> Bool {
+
+        if let end = rule.recurrenceEnd?.endDate, date > end { return false }
+        if date < startDate { return false }
+
+        switch rule.frequency {
+
+        case .daily:
+            return matchesDaily(rule: rule, startDate: startDate, date: date, calendar: calendar)
+
+        case .weekly:
+            return matchesWeekly(rule: rule, startDate: startDate, date: date, calendar: calendar)
+
+        case .monthly:
+            return matchesMonthly(rule: rule, startDate: startDate, date: date, calendar: calendar)
+
+        case .yearly:
+            return matchesYearly(rule: rule, startDate: startDate, date: date, calendar: calendar)
+
+        @unknown default:
+            return false
+        }
+    }
+
+    private func matchesDaily(
+        rule: EKRecurrenceRule,
+        startDate: Date,
+        date: Date,
+        calendar: Calendar
+    ) -> Bool {
+
+        let days = calendar.dateComponents([.day], from: startDate, to: date).day ?? 0
+        return days % rule.interval == 0
+    }
+
+    private func matchesWeekly(
+        rule: EKRecurrenceRule,
+        startDate: Date,
+        date: Date,
+        calendar: Calendar
+    ) -> Bool {
+
+        let weeks = calendar.dateComponents([.weekOfYear], from: startDate, to: date).weekOfYear ?? 0
+        guard weeks % rule.interval == 0 else { return false }
+
+        let weekday = calendar.component(.weekday, from: date)
+
+        if let weekdays = rule.daysOfTheWeek {
+            return weekdays.contains { $0.dayOfTheWeek.rawValue == weekday }
+        }
+
+        let startWeekday = calendar.component(.weekday, from: startDate)
+        return weekday == startWeekday
+    }
+
+    private func matchesMonthly(
+        rule: EKRecurrenceRule,
+        startDate: Date,
+        date: Date,
+        calendar: Calendar
+    ) -> Bool {
+
+        let months = calendar.dateComponents([.month], from: startDate, to: date).month ?? 0
+        guard months % rule.interval == 0 else { return false }
+
+        let startDay = calendar.component(.day, from: startDate)
+        let dateDay = calendar.component(.day, from: date)
+
+        return startDay == dateDay
+    }
+
+    private func matchesYearly(
+        rule: EKRecurrenceRule,
+        startDate: Date,
+        date: Date,
+        calendar: Calendar
+    ) -> Bool {
+
+        let years = calendar.dateComponents([.year], from: startDate, to: date).year ?? 0
+        guard years % rule.interval == 0 else { return false }
+
+        let startMonth = calendar.component(.month, from: startDate)
+        let startDay = calendar.component(.day, from: startDate)
+
+        let dateMonth = calendar.component(.month, from: date)
+        let dateDay = calendar.component(.day, from: date)
+
+        return startMonth == dateMonth && startDay == dateDay
+    }
 
 }

@@ -15,7 +15,7 @@ struct TriTrackSymptomsContentView: View {
             } else {
                 VStack(spacing: 12) {
                     ForEach(filterSymptoms(for: selectedDate)) { symptomModel in
-                        SymptomRow(
+                        TriTrackSymptomRow(
                             symptom: symptomModel,
                             onInfo: {
                                 openDetails(for: symptomModel)
@@ -24,12 +24,23 @@ struct TriTrackSymptomsContentView: View {
                                 delete(symptomModel)
                             }
                         )
+                        .onTapGesture {
+                            selectedSymptomModel = symptomModel
+                        }
                     }
                 }
             }
         }
         .sheet(isPresented: $controlState.showingAddSymptomSheet) {
-            TriTrackAddSymptomSheetView(selectedDate: selectedDate)
+            TriTrackAddEditSymptomSheetView(selectedDate: selectedDate)
+                .presentationDetents([.medium, .large])
+                .scrollDismissesKeyboard(.immediately)
+                .interactiveDismissDisabled(true)
+        }
+        .sheet(item: $selectedSymptomModel, onDismiss: {
+            selectedSymptomModel = nil
+        }) { symptomModel in
+            TriTrackAddEditSymptomSheetView(selectedDate: selectedDate, existingSymptom: symptomModel)
                 .presentationDetents([.medium, .large])
                 .scrollDismissesKeyboard(.immediately)
                 .interactiveDismissDisabled(true)
@@ -54,7 +65,7 @@ struct TriTrackSymptomsContentView: View {
     var emptyState: some View {
         VStack(spacing: 12) {
             Image(systemName: "heart.text.square")
-                .font(.system(size: emptyStateIconSize))
+                .font(.largeTitle)
                 .foregroundColor(.secondary)
                 .accessibilityHidden(true)
             Text("Track Your Symptoms")
@@ -105,6 +116,8 @@ struct TriTrackSymptomsContentView: View {
 
     // MARK: Private
 
+    @State private var selectedSymptomModel: SymptomModel?
+
     @EnvironmentObject private var controlState: ControlState
 
     @Environment(\.modelContext) private var context
@@ -113,13 +126,10 @@ struct TriTrackSymptomsContentView: View {
     @State private var showDetail = false
     @State private var showErrorAlert = false
     @State private var alertMessage: String?
-    @ScaledMetric private var emptyStateIconSize: CGFloat = 48
 
 }
 
-struct SymptomRow: View {
-
-    // MARK: Internal
+struct TriTrackSymptomRow: View {
 
     let symptom: SymptomModel
     var onInfo: () -> Void
@@ -128,7 +138,7 @@ struct SymptomRow: View {
     var body: some View {
         HStack {
             Image(systemName: "heart.text.square")
-                .font(.system(size: rowIconSize))
+                .font(.title3)
                 .foregroundColor(.secondary)
                 .accessibilityHidden(true)
 
@@ -156,7 +166,7 @@ struct SymptomRow: View {
         }
         .padding()
         .background(
-            RoundedRectangle(cornerRadius: 12)
+            RoundedRectangle(cornerRadius: 18)
                 .fill(Color(.systemGray6))
         )
         .contextMenu {
@@ -184,7 +194,5 @@ struct SymptomRow: View {
     }
 
     // MARK: Private
-
-    @ScaledMetric private var rowIconSize: CGFloat = 24
 
 }

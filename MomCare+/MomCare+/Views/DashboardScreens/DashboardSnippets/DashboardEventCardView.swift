@@ -98,7 +98,7 @@ struct DashboardEventCardView: View {
                 try? eventKitHandler.fetchAllEvents()
             },
             content: {
-                TriTrackAddCalendarItemSheetView()
+                TriTrackAddCalendarItemSheetView(selectedDate: $date)
                     .presentationDetents([.medium, .large])
                     .scrollDismissesKeyboard(.immediately)
                     .interactiveDismissDisabled(true)
@@ -107,6 +107,8 @@ struct DashboardEventCardView: View {
     }
 
     // MARK: Private
+
+    @State private var date: Date = .init()
 
     @EnvironmentObject private var eventKitHandler: EventKitHandler
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
