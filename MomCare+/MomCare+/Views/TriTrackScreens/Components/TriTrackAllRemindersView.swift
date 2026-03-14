@@ -34,7 +34,7 @@ struct TriTrackAllRemindersView: View {
             .navigationTitle("All Reminders")
             .navigationBarTitleDisplayMode(.large)
             .sheet(item: $selectedReminder, onDismiss: {
-                try? eventKitHandler.fetchAllReminders()
+                fetchReminders()
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
                     if let idx = todaySectionIndex {
                         proxy.scrollTo(idx, anchor: .top)
@@ -57,6 +57,8 @@ struct TriTrackAllRemindersView: View {
                             systemImage: showDetails ? "list.bullet" : "list.bullet.below.rectangle"
                         )
                     }
+                    .accessibilityLabel(showDetails ? "Switch to compact view" : "Switch to detailed view")
+                    .accessibilityHint("Toggles the amount of detail shown for each reminder")
                 }
             }
             .overlay {
@@ -68,8 +70,13 @@ struct TriTrackAllRemindersView: View {
                     )
                 }
             }
+            .alert("Error", isPresented: $showErrorAlert) {
+                Button("OK", role: .cancel) {}
+            } message: {
+                Text(alertMessage ?? "An unexpected error occurred.")
+            }
             .onAppear {
-                try? eventKitHandler.fetchAllReminders()
+                fetchReminders()
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
                     if let idx = todaySectionIndex {
                         proxy.scrollTo(idx, anchor: .top)
@@ -84,8 +91,19 @@ struct TriTrackAllRemindersView: View {
     @EnvironmentObject private var eventKitHandler: EventKitHandler
     @State private var showDetails = true
     @State private var selectedReminder: EKCalendarItemWrapper?
+    @State private var showErrorAlert = false
+    @State private var alertMessage: String?
 
     @State private var today = Calendar.current.startOfDay(for: Date())
+
+    private func fetchReminders() {
+        do {
+            try eventKitHandler.fetchAllReminders()
+        } catch {
+            alertMessage = error.localizedDescription
+            showErrorAlert = true
+        }
+    }
 
     private var groupedReminders: [(date: Date?, reminders: [EKReminder])] {
         let withDue = eventKitHandler.allReminders.filter { $0.dueDateComponents != nil }
@@ -213,6 +231,13 @@ struct ReminderSectionHeader: View {
             }
         }
         .padding(.vertical, 2)
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel({
+            if isToday { return "Today" }
+            if let date { return date.formatted(Date.FormatStyle().weekday(.wide).day().month(.wide)) }
+            return "No due date"
+        }())
+        .accessibilityAddTraits(.isHeader)
     }
 }
 
@@ -252,6 +277,9 @@ struct ReminderRow: View {
                         )
                 }
                 .buttonStyle(.plain)
+                .accessibilityLabel(isCompleted ? "Mark as incomplete" : "Mark as complete")
+                .accessibilityHint("Toggles the completion status of this reminder")
+                .accessibilityAddTraits(.isButton)
 
                 Rectangle()
                     .fill(Color.gray.opacity(0.2))
@@ -384,6 +412,9 @@ struct ReminderRow: View {
             .padding(.vertical, showDetails ? 8 : 6)
         }
         .opacity(isCompleted ? 0.5 : 1.0)
+        .accessibilityElement(children: .combine)
+        .accessibilityHint("Double tap to view reminder details")
+        .accessibilityAddTraits(.isButton)
     }
 
     // MARK: Private

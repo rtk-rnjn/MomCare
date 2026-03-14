@@ -35,7 +35,12 @@ struct AboutMomCareView: View {
                     Text("Enable Debug Options")
                     Spacer()
                     Toggle("", isOn: $showDebugOptions)
+                        .labelsHidden()
                 }
+                .accessibilityElement(children: .combine)
+                .accessibilityLabel("Enable debug options")
+                .accessibilityValue(showDebugOptions ? "On" : "Off")
+                .accessibilityHint("Toggles visibility of developer debugging tools")
 
                 if showDebugOptions {
                     Button(role: .destructive) {
@@ -43,15 +48,18 @@ struct AboutMomCareView: View {
                     } label: {
                         HStack {
                             Image(systemName: "exclamationmark.triangle.fill")
+                                .accessibilityHidden(true)
                             Text("Crash App")
                         }
                     }
-                    .confirmationDialog("Are you sure? This is mainly for DEBUG purpose", isPresented: $crashApp, titleVisibility: .visible) {
-                        Button("FUCKING DO IT", role: .destructive) {
-                            fatalError("Crashed Intentionally")
+                    .confirmationDialog("Are you sure? This is intended for debug purposes only.", isPresented: $crashApp, titleVisibility: .visible) {
+                        Button("Crash App", role: .destructive) {
+                            fatalError("Crashed intentionally")
                         }
                     }
                     .foregroundStyle(.red)
+                    .accessibilityLabel("Crash App")
+                    .accessibilityHint("Immediately terminates the app for testing crash reporting")
 
                     Button {
                         showLogs = true
@@ -59,16 +67,21 @@ struct AboutMomCareView: View {
                         HStack {
                             Group {
                                 Image(systemName: "doc.text")
+                                    .accessibilityHidden(true)
                                 Text("View OS Logs")
                             }
                             Spacer()
                             Image(systemName: "chevron.right")
                                 .foregroundStyle(.secondary)
+                                .accessibilityHidden(true)
                         }
                     }
+                    .accessibilityLabel("View OS Logs")
+                    .accessibilityHint("Opens a viewer showing recent OS log entries")
+                    .accessibilityAddTraits(.isButton)
                 }
             } footer: {
-                Text("The debug options are meant for developers and testers to diagnose issues. Please avoid using them unless you know what you're doing.")
+                Text("Debug options are intended for developers and testers to diagnose issues. Avoid using them unless you know what you're doing.")
                     .font(.footnote)
                     .foregroundColor(.secondary)
             }

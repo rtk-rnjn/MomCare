@@ -70,6 +70,8 @@ struct ProfileView: View {
                                     .foregroundStyle(.red)
                                     .frame(maxWidth: .infinity)
                             }
+                            .accessibilityLabel("Sign out")
+                            .accessibilityHint("Signs you out of your MomCare+ account")
 
                         default:
                             NavigationLink {
@@ -77,6 +79,7 @@ struct ProfileView: View {
                             } label: {
                                 rowView(row)
                             }
+                            .accessibilityHint("Navigate to \(row.title)")
                         }
                     }
                 }

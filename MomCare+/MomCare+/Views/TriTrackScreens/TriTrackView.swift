@@ -81,17 +81,21 @@ struct TriTrackView: View {
                         }
 
                     case .meAndBaby:
-                        Button {
-                            fatalError("Crash triggered for testing purposes")
-                        } label: {
-                            Label("Click to Crash App", systemImage: "exclamationmark.triangle")
+                        if showDebugOptions {
+                            Button(role: .destructive) {
+                                fatalError("Crash triggered for testing purposes")
+                            } label: {
+                                Label("Crash App", systemImage: "exclamationmark.triangle")
+                            }
                         }
                     }
 
                 } label: {
                     Image(systemName: "ellipsis")
+                        .accessibilityHidden(true)
                 }
                 .menuStyle(.button)
+                .accessibilityLabel("More options")
 
                 switch controlState.triTrackSegment {
                 case .meAndBaby:
@@ -130,6 +134,8 @@ struct TriTrackView: View {
     @EnvironmentObject private var controlState: ControlState
     @EnvironmentObject private var authenticationService: AuthenticationService
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
+
+    @AppStorage("showDebugOptions", store: UserDefaults(suiteName: "group.MomCare")) private var showDebugOptions: Bool = false
 
     @State private var selectedDate: Date = .init()
     @State private var showingAllEvents: Bool = false

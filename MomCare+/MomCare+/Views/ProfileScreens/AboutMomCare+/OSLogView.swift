@@ -89,10 +89,14 @@ struct OSLogsView: View {
                     }
                 }
                 .disabled(isLoading)
+                .accessibilityLabel("Refresh logs")
+                .accessibilityHint("Fetches the latest OS log entries")
             }
             ToolbarItem(placement: .topBarLeading) {
                 Button("Clear") { entries.removeAll() }
                     .foregroundStyle(.red)
+                    .accessibilityLabel("Clear logs")
+                    .accessibilityHint("Removes all currently displayed log entries")
             }
         }
         .onAppear { fetchLogs() }
@@ -219,6 +223,10 @@ struct FilterChip: View {
         }
         .buttonStyle(.plain)
         .animation(.snappy, value: isSelected)
+        .accessibilityLabel(label)
+        .accessibilityValue(isSelected ? "selected" : "not selected")
+        .accessibilityHint("Filters log entries by \(label) level")
+        .accessibilityAddTraits(isSelected ? [.isButton, .isSelected] : .isButton)
     }
 }
 
@@ -291,6 +299,11 @@ struct LogEntryRow: View {
             )
         }
         .buttonStyle(.plain)
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel("\(entry.level.rawValue) log at \(entry.timeString): \(entry.message)")
+        .accessibilityHint(isExpanded ? "Double tap to collapse details" : "Double tap to expand details")
+        .accessibilityValue(isExpanded ? "expanded" : "collapsed")
+        .accessibilityAddTraits(.isButton)
     }
 }
 
@@ -304,6 +317,7 @@ struct LabeledDetail: View {
             Image(systemName: icon)
                 .font(.caption2)
                 .foregroundStyle(.secondary)
+                .accessibilityHidden(true)
             VStack(alignment: .leading, spacing: 1) {
                 Text(label)
                     .font(.caption2)
@@ -314,5 +328,7 @@ struct LabeledDetail: View {
                     .textSelection(.enabled)
             }
         }
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel("\(label): \(value)")
     }
 }

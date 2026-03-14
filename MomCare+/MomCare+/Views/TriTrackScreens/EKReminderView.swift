@@ -86,12 +86,16 @@ struct EKReminderView: View {
                             dismiss()
                         }
                     }
+                    .accessibilityLabel("Cancel")
+                    .accessibilityHint(hasChanges ? "Prompts to discard unsaved changes" : "Dismisses this screen")
                 }
 
                 ToolbarItem(placement: .confirmationAction) {
                     Button(role: .confirm) {
                         saveChanges()
                     }
+                    .accessibilityLabel("Save")
+                    .accessibilityHint("Saves changes to this reminder")
                 }
             }
         }
@@ -105,6 +109,8 @@ struct EKReminderView: View {
                         .font(.title2)
                         .foregroundStyle(isCompleted ? .green : Color(.tertiaryLabel))
                 }
+                .accessibilityLabel(isCompleted ? "Mark as incomplete" : "Mark as complete")
+                .accessibilityHint("Toggles the completion status of this reminder")
 
                 TextField("Title", text: $title)
                     .onChange(of: title) { hasChanges = true }
@@ -218,11 +224,13 @@ struct EKReminderView: View {
             } label: {
                 Label("Delete Reminder", systemImage: "trash")
             }
-            .confirmationDialog("Delete Reminder? This action can not be undone.", isPresented: $showDeleteConfirm, titleVisibility: .visible) {
+            .confirmationDialog("Delete Reminder? This action cannot be undone.", isPresented: $showDeleteConfirm, titleVisibility: .visible) {
                 Button("Delete", role: .destructive) {
                     deleteReminder()
                 }
             }
+            .accessibilityLabel("Delete reminder")
+            .accessibilityHint("Permanently removes this reminder")
         }
     }
 

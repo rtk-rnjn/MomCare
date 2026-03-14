@@ -30,7 +30,7 @@ struct TriTrackAllCalendarItemView: View {
             .navigationTitle("All Events")
             .navigationBarTitleDisplayMode(.large)
             .sheet(item: $selectedEvent, onDismiss: {
-                try? eventKitHandler.fetchAllEvents()
+                fetchEvents()
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
                     if let idx = todaySectionIndex {
                         proxy.scrollTo(idx, anchor: .top)
@@ -53,6 +53,8 @@ struct TriTrackAllCalendarItemView: View {
                             systemImage: showDetails ? "list.bullet" : "list.bullet.below.rectangle"
                         )
                     }
+                    .accessibilityLabel(showDetails ? "Switch to compact view" : "Switch to detailed view")
+                    .accessibilityHint("Toggles the amount of detail shown for each event")
                 }
             }
             .overlay {
@@ -64,8 +66,13 @@ struct TriTrackAllCalendarItemView: View {
                     )
                 }
             }
+            .alert("Error", isPresented: $showErrorAlert) {
+                Button("OK", role: .cancel) {}
+            } message: {
+                Text(alertMessage ?? "An unexpected error occurred.")
+            }
             .onAppear {
-                try? eventKitHandler.fetchAllEvents()
+                fetchEvents()
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
                     if let idx = todaySectionIndex {
                         proxy.scrollTo(idx, anchor: .top)
@@ -80,8 +87,19 @@ struct TriTrackAllCalendarItemView: View {
     @EnvironmentObject private var eventKitHandler: EventKitHandler
     @State private var showDetails = true
     @State private var selectedEvent: EKCalendarItemWrapper?
+    @State private var showErrorAlert = false
+    @State private var alertMessage: String?
 
     private let today = Calendar.current.startOfDay(for: Date())
+
+    private func fetchEvents() {
+        do {
+            try eventKitHandler.fetchAllEvents()
+        } catch {
+            alertMessage = error.localizedDescription
+            showErrorAlert = true
+        }
+    }
 
     private var groupedEvents: [(date: Date, events: [EKEvent])] {
         let grouped = Dictionary(
@@ -128,6 +146,9 @@ struct DateSectionHeader: View {
             .foregroundStyle(isPast && !isToday ? .tertiary : .primary)
         }
         .padding(.vertical, 2)
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(isToday ? "Today, \(date.formatted(Date.FormatStyle().weekday(.wide).day().month(.wide)))" : date.formatted(Date.FormatStyle().weekday(.wide).day().month(.wide)))
+        .accessibilityAddTraits(.isHeader)
     }
 }
 
@@ -239,6 +260,11 @@ struct TimelineRow: View {
             .padding(.vertical, showDetails ? 8 : 6)
         }
         .opacity(isPast ? 0.5 : 1.0)
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(event.title ?? "Untitled event")
+        .accessibilityValue(timeLabel + (durationLabel.map { ", \($0)" } ?? "") + (event.location.map { ", at \($0)" } ?? ""))
+        .accessibilityHint("Double tap to view event details")
+        .accessibilityAddTraits(.isButton)
     }
 
     // MARK: Private

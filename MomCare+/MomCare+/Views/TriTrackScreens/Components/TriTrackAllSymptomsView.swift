@@ -126,6 +126,9 @@ struct SymptomSectionHeader: View {
             .foregroundStyle(isPast && !isToday ? .secondary : .primary)
         }
         .padding(.vertical, 2)
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(isToday ? "Today, \(date.formatted(Date.FormatStyle().weekday(.wide).day().month(.wide)))" : date.formatted(Date.FormatStyle().weekday(.wide).day().month(.wide)))
+        .accessibilityAddTraits(.isHeader)
     }
 }
 
@@ -210,6 +213,11 @@ struct SymptomRow: View {
             .padding(.vertical, showDetails ? 8 : 6)
         }
         .opacity(isPast ? 0.8 : 1.0)
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(displayTitle)
+        .accessibilityValue(model.notes.flatMap { $0.isEmpty ? nil : $0 } ?? model.date.formatted(date: .omitted, time: .shortened))
+        .accessibilityHint("Double tap to view symptom details")
+        .accessibilityAddTraits(.isButton)
     }
 
     // MARK: Private

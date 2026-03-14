@@ -98,6 +98,7 @@ struct TriTrackCalendarItemContentView: View {
             Spacer()
         }
         .padding(.horizontal)
+        .accessibilityAddTraits(.isHeader)
     }
 
     // MARK: Private
@@ -117,6 +118,7 @@ struct TriTrackCalendarItemContentView: View {
             Image(systemName: "calendar.badge.plus")
                 .font(.system(size: emptyStateIconSize))
                 .foregroundColor(.secondary)
+                .accessibilityHidden(true)
 
             Text("No Events Scheduled")
                 .font(.headline)
@@ -134,7 +136,11 @@ struct TriTrackCalendarItemContentView: View {
             }
             .buttonStyle(.borderedProminent)
             .tint(Color.CustomColors.mutedRaspberry)
+            .accessibilityLabel("Add event")
+            .accessibilityHint("Opens a form to create a new calendar event")
         }
+        .accessibilityElement(children: .contain)
+        .accessibilityLabel("No events scheduled")
     }
 
     private var eventList: some View {

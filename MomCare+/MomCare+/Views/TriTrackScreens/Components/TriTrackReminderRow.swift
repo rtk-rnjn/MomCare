@@ -255,6 +255,9 @@ extension TriTrackReminderRow {
                 : (dueDate ?? Date() < Date() ? .red : .gray.opacity(0.6))
             )
             .onTapGesture { toggleReminder() }
+            .accessibilityLabel(reminder.isCompleted ? "Mark as incomplete" : "Mark as complete")
+            .accessibilityHint("Toggles the completion status of this reminder")
+            .accessibilityAddTraits(.isButton)
     }
 
     func toggleReminder() {
