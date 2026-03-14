@@ -106,7 +106,6 @@ struct TriTrackCalendarItemContentView: View {
     @EnvironmentObject private var eventKitHandler: EventKitHandler
     @EnvironmentObject private var controlState: ControlState
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
-    @ScaledMetric private var emptyStateIconSize: CGFloat = 48
 
     @State private var selectedEvent: EKCalendarItemWrapper?
     @State private var selectedReminder: EKCalendarItemWrapper?
@@ -116,7 +115,7 @@ struct TriTrackCalendarItemContentView: View {
     private var emptyState: some View {
         VStack(spacing: 16) {
             Image(systemName: "calendar.badge.plus")
-                .font(.system(size: emptyStateIconSize))
+                .font(.largeTitle)
                 .foregroundColor(.secondary)
                 .accessibilityHidden(true)
 

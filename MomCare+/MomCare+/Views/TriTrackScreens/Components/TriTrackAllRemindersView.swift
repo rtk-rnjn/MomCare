@@ -271,7 +271,7 @@ struct ReminderRow: View {
                     }
                 } label: {
                     Image(systemName: isCompleted ? "checkmark.circle.fill" : "circle")
-                        .font(.system(size: 18))
+                        .font(.title3)
                         .foregroundStyle(
                             isCompleted ? .green : status.indicatorColor
                         )

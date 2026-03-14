@@ -17,7 +17,7 @@ struct InitialsAvatar: View {
                 .fill(MomCareAccent.primary.opacity(0.2))
 
             Text(initials)
-                .font(.system(size: 22, weight: .semibold))
+                .font(.title3.weight(.semibold))
                 .foregroundColor(MomCareAccent.primary)
         }
     }

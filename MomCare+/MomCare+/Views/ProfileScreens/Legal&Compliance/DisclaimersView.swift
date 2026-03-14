@@ -12,11 +12,11 @@ struct DisclaimersView: View {
                             .fill(Color.white.opacity(0.12))
                             .frame(width: 60, height: 60)
                         Image(systemName: "exclamationmark.shield")
-                            .font(.system(size: 60, weight: .bold))
+                            .font(.largeTitle.weight(.bold))
                             .foregroundColor(accentColor)
                     }
                     Text("MomCare supports you, but your doctor knows you best!")
-                        .font(.system(size: 28, weight: .semibold, design: .default))
+                        .font(.title.weight(.semibold))
                         .tracking(-0.5)
                         .multilineTextAlignment(.center)
                         .lineSpacing(0)

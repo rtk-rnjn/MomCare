@@ -262,7 +262,8 @@ struct LogEntryRow: View {
 
                 // Message
                 Text(entry.message)
-                    .font(.system(.footnote, design: .monospaced))
+                    .font(.footnote)
+                    .fontDesign(.monospaced)
                     .foregroundStyle(.primary)
                     .lineLimit(isExpanded ? nil : 2)
                     .textSelection(.enabled)
