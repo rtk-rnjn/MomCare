@@ -173,82 +173,118 @@ final class EventKitHandler: ObservableObject {
 
         let calendar = Calendar.current
 
-        let startDateComponents = reminder.startDateComponents ?? reminder.dueDateComponents
-        guard let startDate = startDateComponents?.date else { return false }
+        guard let startDate = (reminder.startDateComponents ?? reminder.dueDateComponents)?.date else {
+            return false
+        }
 
-        for rule in reminder.recurrenceRules ?? [] {
-
-            if let end = rule.recurrenceEnd?.endDate, date > end {
-                continue
-            }
-
-            if date < startDate {
-                continue
-            }
-
-            switch rule.frequency {
-
-            case .daily:
-
-                let days = calendar.dateComponents([.day], from: startDate, to: date).day ?? 0
-                if days % rule.interval == 0 {
+        if let rules = reminder.recurrenceRules {
+            for rule in rules {
+                if matches(rule: rule, startDate: startDate, date: date, calendar: calendar) {
                     return true
                 }
-
-            case .weekly:
-
-                let weeks = calendar.dateComponents([.weekOfYear], from: startDate, to: date).weekOfYear ?? 0
-                guard weeks % rule.interval == 0 else { continue }
-
-                let weekday = calendar.component(.weekday, from: date)
-
-                if let weekdays = rule.daysOfTheWeek {
-                    if weekdays.contains(where: { $0.dayOfTheWeek.rawValue == weekday }) {
-                        return true
-                    }
-                } else {
-                    let startWeekday = calendar.component(.weekday, from: startDate)
-                    if weekday == startWeekday {
-                        return true
-                    }
-                }
-
-            case .monthly:
-
-                let months = calendar.dateComponents([.month], from: startDate, to: date).month ?? 0
-                guard months % rule.interval == 0 else { continue }
-
-                let startDay = calendar.component(.day, from: startDate)
-                let dateDay = calendar.component(.day, from: date)
-
-                if startDay == dateDay {
-                    return true
-                }
-
-            case .yearly:
-
-                let years = calendar.dateComponents([.year], from: startDate, to: date).year ?? 0
-                guard years % rule.interval == 0 else { continue }
-
-                let startMonth = calendar.component(.month, from: startDate)
-                let startDay = calendar.component(.day, from: startDate)
-
-                let dateMonth = calendar.component(.month, from: date)
-                let dateDay = calendar.component(.day, from: date)
-
-                if startMonth == dateMonth && startDay == dateDay {
-                    return true
-                }
-
-            @unknown default:
-                continue
             }
         }
 
         if let dueDate = reminder.dueDateComponents?.date {
             return calendar.isDate(dueDate, inSameDayAs: date)
         }
+
         return calendar.isDate(startDate, inSameDayAs: date)
+    }
+
+    private func matches(
+        rule: EKRecurrenceRule,
+        startDate: Date,
+        date: Date,
+        calendar: Calendar
+    ) -> Bool {
+
+        if let end = rule.recurrenceEnd?.endDate, date > end { return false }
+        if date < startDate { return false }
+
+        switch rule.frequency {
+
+        case .daily:
+            return matchesDaily(rule: rule, startDate: startDate, date: date, calendar: calendar)
+
+        case .weekly:
+            return matchesWeekly(rule: rule, startDate: startDate, date: date, calendar: calendar)
+
+        case .monthly:
+            return matchesMonthly(rule: rule, startDate: startDate, date: date, calendar: calendar)
+
+        case .yearly:
+            return matchesYearly(rule: rule, startDate: startDate, date: date, calendar: calendar)
+
+        @unknown default:
+            return false
+        }
+    }
+
+    private func matchesDaily(
+        rule: EKRecurrenceRule,
+        startDate: Date,
+        date: Date,
+        calendar: Calendar
+    ) -> Bool {
+
+        let days = calendar.dateComponents([.day], from: startDate, to: date).day ?? 0
+        return days % rule.interval == 0
+    }
+
+    private func matchesWeekly(
+        rule: EKRecurrenceRule,
+        startDate: Date,
+        date: Date,
+        calendar: Calendar
+    ) -> Bool {
+
+        let weeks = calendar.dateComponents([.weekOfYear], from: startDate, to: date).weekOfYear ?? 0
+        guard weeks % rule.interval == 0 else { return false }
+
+        let weekday = calendar.component(.weekday, from: date)
+
+        if let weekdays = rule.daysOfTheWeek {
+            return weekdays.contains { $0.dayOfTheWeek.rawValue == weekday }
+        }
+
+        let startWeekday = calendar.component(.weekday, from: startDate)
+        return weekday == startWeekday
+    }
+
+    private func matchesMonthly(
+        rule: EKRecurrenceRule,
+        startDate: Date,
+        date: Date,
+        calendar: Calendar
+    ) -> Bool {
+
+        let months = calendar.dateComponents([.month], from: startDate, to: date).month ?? 0
+        guard months % rule.interval == 0 else { return false }
+
+        let startDay = calendar.component(.day, from: startDate)
+        let dateDay = calendar.component(.day, from: date)
+
+        return startDay == dateDay
+    }
+
+    private func matchesYearly(
+        rule: EKRecurrenceRule,
+        startDate: Date,
+        date: Date,
+        calendar: Calendar
+    ) -> Bool {
+
+        let years = calendar.dateComponents([.year], from: startDate, to: date).year ?? 0
+        guard years % rule.interval == 0 else { return false }
+
+        let startMonth = calendar.component(.month, from: startDate)
+        let startDay = calendar.component(.day, from: startDate)
+
+        let dateMonth = calendar.component(.month, from: date)
+        let dateDay = calendar.component(.day, from: date)
+
+        return startMonth == dateMonth && startDay == dateDay
     }
 
 }
