@@ -131,8 +131,6 @@ struct TriTrackSymptomsContentView: View {
 
 struct TriTrackSymptomRow: View {
 
-    // MARK: Internal
-
     let symptom: SymptomModel
     var onInfo: () -> Void
     var onDelete: () -> Void
