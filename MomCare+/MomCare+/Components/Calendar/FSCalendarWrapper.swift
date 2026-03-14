@@ -307,11 +307,11 @@ struct DayCell: View {
         } label: {
             VStack(spacing: 6) {
                 Text(date.formatted(.dateTime.weekday(.short)))
-                    .font(.system(size: 13, weight: .medium))
+                    .font(.footnote.weight(.medium))
                     .foregroundColor(.secondary)
 
                 Text(date.formatted(.dateTime.day()))
-                    .font(.system(size: 17, weight: isSelected ? .semibold : .regular))
+                    .font(.body.weight(isSelected ? .semibold : .regular))
                     .foregroundColor(isSelected ? .white : (isToday ? Color.CustomColors.mutedRaspberry : .primary))
                     .frame(width: 36, height: 36)
                     .background(

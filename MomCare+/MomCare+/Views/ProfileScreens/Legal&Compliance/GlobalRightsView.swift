@@ -13,12 +13,12 @@ struct GlobalRightsView: View {
                             .fill(Color(hex: "FFFFFF").opacity(0.12))
                             .frame(width: 60, height: 60)
                         Image(systemName: "hand.raised.fill")
-                            .font(.system(size: 60, weight: .bold))
+                            .font(.largeTitle.weight(.bold))
                             .foregroundColor(accentColor)
                     }
 
                     Text("Your Data, Your Rights, Your Trust")
-                        .font(.system(size: 28, weight: .semibold, design: .default))
+                        .font(.title.weight(.semibold))
                         .tracking(-0.5)
                         .multilineTextAlignment(.center)
                         .lineSpacing(0)

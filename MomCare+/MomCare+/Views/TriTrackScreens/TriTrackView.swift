@@ -451,7 +451,7 @@ struct ComparisonView: View {
         HStack(spacing: 0) {
             VStack(alignment: .center) {
                 Text(fruitEmoji)
-                    .font(.system(size: fruitEmojiSize))
+                    .font(.largeTitle)
             }
             .frame(maxWidth: .infinity)
             .accessibilityHidden(true)
@@ -487,8 +487,6 @@ struct ComparisonView: View {
     }
 
     // MARK: Private
-
-    @ScaledMetric private var fruitEmojiSize: CGFloat = 64
 
     private var fruitEmoji: String {
         let fruit = trimesterData.fruitComparison.lowercased()
@@ -608,7 +606,7 @@ struct PopupInfoCard: View {
                     HStack(spacing: 4) {
                         ForEach(0 ..< 15, id: \.self) { _ in
                             Image(systemName: "heart.fill")
-                                .font(.system(size: 8))
+                                .font(.caption2)
                                 .foregroundColor(accentColor.opacity(0.2))
                         }
                     }
@@ -627,7 +625,7 @@ struct PopupInfoCard: View {
                     HStack(spacing: 4) {
                         ForEach(0 ..< 15, id: \.self) { _ in
                             Image(systemName: "heart.fill")
-                                .font(.system(size: 8))
+                                .font(.caption2)
                                 .foregroundColor(accentColor.opacity(0.2))
                         }
                     }

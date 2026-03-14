@@ -14,12 +14,12 @@ struct TermsOfServiceView: View {
                                 .fill(Color(hex: "FFFFFF").opacity(0.12))
                                 .frame(width: 60, height: 60)
                             Image(systemName: "text.page")
-                                .font(.system(size: 60, weight: .bold))
+                                .font(.largeTitle.weight(.bold))
                                 .foregroundColor(accentColor)
                         }
 
                         Text("Good rules create a space where everyone can feel safe and respected.")
-                            .font(.system(size: 28, weight: .semibold, design: .default))
+                            .font(.title.weight(.semibold))
                             .tracking(-0.5)
                             .multilineTextAlignment(.center)
                             .lineSpacing(0)

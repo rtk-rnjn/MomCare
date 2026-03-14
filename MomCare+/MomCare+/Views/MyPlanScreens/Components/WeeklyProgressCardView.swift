@@ -137,7 +137,7 @@ private struct DayRingView: View {
 
                 if progress >= 1.0 {
                     Image(systemName: "checkmark")
-                        .font(.system(size: 9, weight: .bold))
+                        .font(.caption2.bold())
                         .foregroundColor(Color.CustomColors.mutedRaspberry)
                 }
             }

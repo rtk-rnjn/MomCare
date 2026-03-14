@@ -84,7 +84,7 @@ struct MusicPlayerView: View {
                     musicPlayerHandler.skipToPrevious()
                 } label: {
                     Image(systemName: "backward.fill")
-                        .font(.system(size: transportButtonSize))
+                        .font(.title)
                         .foregroundColor(.white)
                 }
                 .accessibilityLabel("Previous track")
@@ -95,7 +95,7 @@ struct MusicPlayerView: View {
                     _ = musicPlayerHandler.togglePlayPause()
                 } label: {
                     Image(systemName: musicPlayerHandler.player?.timeControlStatus == .playing ? "pause.fill" : "play.fill")
-                        .font(.system(size: playPauseButtonSize))
+                        .font(.largeTitle)
                         .foregroundColor(.white)
                         .frame(width: 56, height: 56)
                         .animation(
@@ -110,7 +110,7 @@ struct MusicPlayerView: View {
                     musicPlayerHandler.skipToNext()
                 } label: {
                     Image(systemName: "forward.fill")
-                        .font(.system(size: transportButtonSize))
+                        .font(.title)
                         .foregroundColor(.white)
                 }
                 .accessibilityLabel("Next track")
@@ -233,8 +233,6 @@ struct MusicPlayerView: View {
     @EnvironmentObject private var controlState: ControlState
 
     @State private var uiImage: UIImage?
-    @ScaledMetric private var transportButtonSize: CGFloat = 30
-    @ScaledMetric private var playPauseButtonSize: CGFloat = 56
 
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
 

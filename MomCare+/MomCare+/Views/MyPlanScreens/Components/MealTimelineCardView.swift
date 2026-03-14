@@ -474,8 +474,8 @@ enum CircleStyle {
         self == .header ? 2 : 1.5
     }
 
-    var checkmarkSize: CGFloat {
-        self == .header ? 10 : 7
+    var checkmarkFont: Font {
+        self == .header ? .caption.bold() : .caption2.bold()
     }
 }
 
@@ -497,7 +497,7 @@ struct TimelineCircle: View {
                     .frame(width: style.size, height: style.size)
 
                 Image(systemName: "checkmark")
-                    .font(.system(size: style.checkmarkSize, weight: .bold))
+                    .font(style.checkmarkFont)
                     .foregroundColor(.white)
             }
         }

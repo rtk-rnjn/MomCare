@@ -54,7 +54,9 @@ struct TriTrackSymptomDetailView: View {
                         ForEach(symptom.remedies, id: \.self) { remedy in
                             HStack(alignment: .firstTextBaseline, spacing: 8) {
                                 Image(systemName: "circle.fill")
-                                    .font(.system(size: 6))
+                                    .resizable()
+                                    .scaledToFit()
+                                    .frame(width: 6, height: 6)
                                     .foregroundColor(accentColor)
                                     .accessibilityHidden(true)
                                 Text(remedy)

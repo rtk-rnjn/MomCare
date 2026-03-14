@@ -292,7 +292,8 @@ struct BreathingExerciseView: View {
 
             if phase != .done {
                 Text("\(phaseCountdown)")
-                    .font(.system(.largeTitle, design: .rounded).weight(.light))
+                    .font(.largeTitle.weight(.light))
+                    .fontDesign(.rounded)
                     .foregroundColor(darkAccent.opacity(0.6))
                     .monospacedDigit()
                     .contentTransition(.numericText())
