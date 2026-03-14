@@ -74,14 +74,37 @@ extension TriTrackEventRow {
                 .lineLimit(1)
 
             HStack(spacing: 6) {
+                if event.isAllDay {
+                    Text("All-day")
+                        .font(.subheadline)
+                        .foregroundStyle(.secondary)
+                } else {
+                    Text(event.startDate.formatted(.dateTime.hour().minute()))
+                        .font(.subheadline)
+                }
 
-                Text(event.startDate.formatted(.dateTime.hour().minute()))
-                    .font(.subheadline)
+                HStack {
+                    Text(event.startDate, style: .relative)
+                        .font(.caption.weight(.medium))
+                        .foregroundStyle(.secondary)
+                        .monospacedDigit()
 
-                Text(event.startDate, style: .relative)
-                    .font(.caption.weight(.medium))
-                    .foregroundStyle(.secondary)
-                    .monospacedDigit()
+                    // Time (.) status
+
+                    Text("•")
+                        .font(.caption.weight(.medium))
+                        .foregroundStyle(isPast(now: now) ? .red : .green)
+
+                    if isPast(now: now) {
+                        Text("Ended")
+                            .font(.caption.weight(.medium))
+                            .foregroundStyle(.red)
+                    } else if Calendar.current.isDate(event.startDate, inSameDayAs: now) {
+                        Text("Today")
+                            .font(.caption.weight(.medium))
+                            .foregroundStyle(.green)
+                    }
+                }
             }
 
             if let location = event.location,

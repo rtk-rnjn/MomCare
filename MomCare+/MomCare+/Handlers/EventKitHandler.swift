@@ -178,10 +178,8 @@ final class EventKitHandler: ObservableObject {
         }
 
         if let rules = reminder.recurrenceRules {
-            for rule in rules {
-                if matches(rule: rule, startDate: startDate, date: date, calendar: calendar) {
-                    return true
-                }
+            for rule in rules where matches(rule: rule, startDate: startDate, date: date, calendar: calendar) {
+                return true
             }
         }
 

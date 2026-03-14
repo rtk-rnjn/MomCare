@@ -67,11 +67,13 @@ class NetworkManager {
         headers?.forEach { request.setValue($0.value, forHTTPHeaderField: $0.key) }
 
         logger.info("Starting streamed request to \(finalURL.absoluteString) with method \(method.rawValue)")
+        DebugLogger.shared.log("Starting streamed request to \(finalURL.absoluteString) with method \(method.rawValue)", level: .info, category: .network)
 
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
             if let error {
                 DispatchQueue.main.async {
                     logger.error("Error fetching streamed data from \(finalURL.absoluteString): \(error.localizedDescription)")
+                    DebugLogger.shared.log("Error fetching streamed data from \(finalURL.absoluteString): \(error.localizedDescription)", level: .error, category: .network)
                 }
                 return
             }
@@ -86,6 +88,7 @@ class NetworkManager {
                 DispatchQueue.main.async {
                     if let jsonData = line.data(using: .utf8), let item: T = try? jsonData.decodeUsingJSONDecoder() {
                         logger.debug("Received streamed item from \(finalURL.absoluteString): \(item, privacy: .public)")
+                        DebugLogger.shared.log("Received streamed item from \(finalURL.absoluteString): \(item)", level: .debug, category: .network)
                         onItem?(item)
                     }
                 }
@@ -143,6 +146,7 @@ class NetworkManager {
     private func performRequest<T: Codable>(_ request: URLRequest) async throws -> NetworkResponse<T> {
         let url = request.url?.absoluteString ?? "unknown URL"
         logger.info("Performing \(request.httpMethod ?? "UNKNOWN") request to \(url)")
+        DebugLogger.shared.log("Performing \(request.httpMethod ?? "UNKNOWN") request to \(url)", level: .info, category: .network)
 
         var count = 5
         while count > 0 {
@@ -156,6 +160,7 @@ class NetworkManager {
                     switch urlError.code {
                     case .networkConnectionLost, .timedOut, .notConnectedToInternet:
                         logger.warning("Network error occurred for request to \(url): \(urlError.localizedDescription). Retrying... (\(5 - count) attempts left)")
+                        DebugLogger.shared.log("Network error occurred for request to \(url): \(urlError.localizedDescription). Retrying... (\(5 - count) attempts left)", level: .warning, category: .network)
                         try? await Task.sleep(nanoseconds: UInt64(1_000_000_000 * (count % 5)))
 
                     default:
@@ -171,14 +176,18 @@ class NetworkManager {
     private func handleRequest<T: Codable>(response: URLResponse, data: Data, url: String) async throws -> NetworkResponse<T> {
         guard let httpResponse = response as? HTTPURLResponse else {
             logger.error("Invalid response for request to \(url)")
+            DebugLogger.shared.log("Invalid response for request to \(url)", level: .error, category: .network)
             throw URLError(.badServerResponse)
         }
 
         logger.info("Received response with status code \(httpResponse.statusCode) for request to \(url)")
+        DebugLogger.shared.log("Received response with status code \(httpResponse.statusCode) for request to \(url)", level: .info, category: .network)
 
         if httpResponse.statusCode >= 400 {
             let maybeData: ServerMessage? = try data.decodeUsingJSONDecoder()
             logger.error("Decoded response body. Error detail: \(maybeData?.detail ?? "No detail")")
+            DebugLogger.shared.log("Decoded response body. Error detail: \(maybeData?.detail ?? "No detail")", level: .error, category: .network)
+
             return NetworkResponse(data: nil, statusCode: httpResponse.statusCode, errorMessage: maybeData?.detail ?? "Unknown Error")
         }
 

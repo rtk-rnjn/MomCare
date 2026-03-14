@@ -28,28 +28,30 @@ struct MomCareMainTabView: View {
 
     private func tabViewContent(bottomPadding: CGFloat) -> some View {
         TabView(selection: $controlState.selectedTab) {
-            Tab(AppTab.progressHub.title, systemImage: AppTab.progressHub.systemImage, value: AppTab.progressHub) {
-                NavigationStack { DashboardView() }
-                    .safeAreaPadding(bottomPadding)
-                    .tag(AppTab.progressHub)
-            }
+            TabSection {
+                Tab(AppTab.progressHub.title, systemImage: AppTab.progressHub.systemImage, value: AppTab.progressHub) {
+                    NavigationStack { DashboardView() }
+                        .safeAreaPadding(bottomPadding)
+                        .tag(AppTab.progressHub)
+                }
 
-            Tab(AppTab.myPlan.title, systemImage: AppTab.myPlan.systemImage, value: AppTab.myPlan) {
-                NavigationStack { MyPlanView() }
-                    .safeAreaPadding(bottomPadding)
-                    .tag(AppTab.myPlan)
-            }
+                Tab(AppTab.myPlan.title, systemImage: AppTab.myPlan.systemImage, value: AppTab.myPlan) {
+                    NavigationStack { MyPlanView() }
+                        .safeAreaPadding(bottomPadding)
+                        .tag(AppTab.myPlan)
+                }
 
-            Tab(AppTab.triTrack.title, systemImage: AppTab.triTrack.systemImage, value: AppTab.triTrack) {
-                NavigationStack { TriTrackView() }
-                    .safeAreaPadding(bottomPadding)
-                    .tag(AppTab.triTrack)
-            }
+                Tab(AppTab.triTrack.title, systemImage: AppTab.triTrack.systemImage, value: AppTab.triTrack) {
+                    NavigationStack { TriTrackView() }
+                        .safeAreaPadding(bottomPadding)
+                        .tag(AppTab.triTrack)
+                }
 
-            Tab(AppTab.moodNest.title, systemImage: AppTab.moodNest.systemImage, value: AppTab.moodNest) {
-                MoodNestView()
-                    .safeAreaPadding(bottomPadding)
-                    .tag(AppTab.moodNest)
+                Tab(AppTab.moodNest.title, systemImage: AppTab.moodNest.systemImage, value: AppTab.moodNest) {
+                    MoodNestView()
+                        .safeAreaPadding(bottomPadding)
+                        .tag(AppTab.moodNest)
+                }
             }
 
             Tab(AppTab.profile.title, systemImage: AppTab.profile.systemImage, value: AppTab.profile) {

@@ -16,6 +16,7 @@ struct MomCareApp: App {
                 .environmentObject(musicPlayerHandler)
                 .environmentObject(eventKitHandler)
                 .environmentObject(controlState)
+                .environmentObject(debugMenuStore)
                 .modelContainer(for: SymptomModel.self)
         }
     }
@@ -27,5 +28,6 @@ struct MomCareApp: App {
     @StateObject private var musicPlayerHandler: MusicPlayerHandler = .init()
     @StateObject private var eventKitHandler: EventKitHandler = .init()
     @StateObject private var controlState: ControlState = .init()
+    @StateObject private var debugMenuStore: DebugMenuStore = .init()
 
 }
