@@ -6,6 +6,7 @@ struct JSONTreeRow: View {
     let depth: Int
 
     @State private var expanded = false
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
@@ -24,49 +25,52 @@ struct JSONTreeRow: View {
                 HStack(spacing: 8) {
                     ForEach(0..<depth, id: \.self) { _ in
                         Rectangle()
-                            .fill(Color.white.opacity(0.07))
+                            .fill(Color.secondary.opacity(0.2))
                             .frame(width: 1)
                             .padding(.vertical, 2)
                     }
                 }
                 .frame(width: CGFloat(depth) * 16)
+                .accessibilityHidden(true)
             }
 
             // Expand chevron or leaf bullet
             if node.isLeaf {
                 Circle()
                     .frame(width: 5, height: 5)
+                    .accessibilityHidden(true)
             } else {
                 Image(systemName: expanded ? "chevron.down" : "chevron.right")
-                    .font(.system(size: 9, weight: .bold))
+                    .font(.caption2.bold())
                     .frame(width: 12)
+                    .accessibilityHidden(true)
             }
 
             // Key label
             if let key {
                 Text(key)
-                    .font(.system(size: 12, design: .monospaced))
+                    .font(.footnote.monospaced())
                 Text(":")
-                    .font(.system(size: 12, design: .monospaced))
+                    .font(.footnote.monospaced())
             }
 
             // Value or type badge
             if let leaf = node.leafDisplayValue {
                 Text(leaf)
-                    .font(.system(size: 12, design: .monospaced))
+                    .font(.footnote.monospaced())
                     .textSelection(.enabled)
             } else {
                 // Container badge
                 HStack(spacing: 4) {
                     Text(node.typeLabel)
-                        .font(.system(size: 9, weight: .semibold, design: .monospaced))
+                        .font(.caption2.weight(.semibold).monospaced())
                         .padding(.horizontal, 5)
                         .padding(.vertical, 2)
                         .clipShape(RoundedRectangle(cornerRadius: 3))
 
                     Text("\(node.childCount)")
-                        .font(.system(size: 10, design: .monospaced))
-                        .foregroundStyle(.white.opacity(0.3))
+                        .font(.caption2.monospaced())
+                        .foregroundStyle(.secondary)
                 }
             }
 
@@ -77,9 +81,31 @@ struct JSONTreeRow: View {
         .contentShape(Rectangle())
         .onTapGesture {
             if !node.isLeaf {
-                expanded.toggle()
-                
+                withAnimation(reduceMotion ? nil : .default) {
+                    expanded.toggle()
+                }
             }
+        }
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(rowAccessibilityLabel)
+        .accessibilityHint(node.isLeaf ? "" : (expanded ? "Double tap to collapse" : "Double tap to expand"))
+        .accessibilityAddTraits(node.isLeaf ? [] : .isButton)
+        .accessibilityValue(node.isLeaf ? "" : (expanded ? "expanded" : "collapsed"))
+        .accessibilityAction {
+            if !node.isLeaf {
+                withAnimation(reduceMotion ? nil : .default) {
+                    expanded.toggle()
+                }
+            }
+        }
+    }
+
+    private var rowAccessibilityLabel: String {
+        let keyPart = key.map { "\($0): " } ?? ""
+        if let leaf = node.leafDisplayValue {
+            return "\(keyPart)\(leaf)"
+        } else {
+            return "\(keyPart)\(node.typeLabel) with \(node.childCount) item\(node.childCount == 1 ? "" : "s")"
         }
     }
 
@@ -89,12 +115,12 @@ struct JSONTreeRow: View {
         case .array(let items):
             ForEach(Array(items.enumerated()), id: \.offset) { idx, child in
                 JSONTreeRow(key: "[\(idx)]", node: child, depth: depth + 1)
-                    .transition(.opacity.combined(with: .move(edge: .top)))
+                    .transition(reduceMotion ? .opacity : .opacity.combined(with: .move(edge: .top)))
             }
         case .object(let pairs):
             ForEach(pairs, id: \.key) { pair in
                 JSONTreeRow(key: pair.key, node: pair.value, depth: depth + 1)
-                    .transition(.opacity.combined(with: .move(edge: .top)))
+                    .transition(reduceMotion ? .opacity : .opacity.combined(with: .move(edge: .top)))
             }
         default:
             EmptyView()
@@ -198,7 +224,7 @@ struct JSONSheetView: View {
                     // Fallback: raw text
                     ScrollView {
                         Text(raw)
-                            .font(.system(size: 12, design: .monospaced))
+                            .font(.footnote.monospaced())
                             .padding()
                             .frame(maxWidth: .infinity, alignment: .leading)
                     }
@@ -217,6 +243,8 @@ struct JSONSheetView: View {
                         Label("Copy", systemImage: "doc.on.doc")
                             .font(.caption)
                     }
+                    .accessibilityLabel("Copy raw content")
+                    .accessibilityHint("Copies the full JSON body to the clipboard")
                 }
             }
         }

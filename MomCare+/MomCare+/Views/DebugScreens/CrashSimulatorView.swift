@@ -154,6 +154,7 @@ private struct SimulatorRow: View {
                         .font(.subheadline.bold())
                         .foregroundStyle(tint)
                 }
+                .accessibilityHidden(true)
                 VStack(alignment: .leading, spacing: 2) {
                     Text(label)
                         .font(.subheadline.bold())
@@ -165,5 +166,7 @@ private struct SimulatorRow: View {
             }
         }
         .buttonStyle(.plain)
+        .accessibilityLabel(label)
+        .accessibilityHint(description)
     }
 }

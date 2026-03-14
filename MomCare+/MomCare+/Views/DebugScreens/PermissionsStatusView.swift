@@ -180,5 +180,7 @@ private struct PermissionRow: View {
                 .font(.subheadline)
                 .foregroundStyle(status.color)
         }
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel("\(label): \(status.label)")
     }
 }

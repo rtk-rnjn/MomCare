@@ -163,7 +163,7 @@ private struct MetricCard: View {
                     .font(.title2.bold().monospacedDigit())
                     .foregroundStyle(statusColor)
                     .contentTransition(.numericText())
-                    .animation(.spring(duration: 0.25), value: value)
+                    .animation(reduceMotion ? nil : .spring(duration: 0.25), value: value)
                 Text(unit)
                     .font(.caption)
                     .foregroundStyle(.secondary)
@@ -218,12 +218,13 @@ private struct MetricCard: View {
                             AxisGridLine(stroke: .init(lineWidth: 0.5))
                                 .foregroundStyle(Color.secondary.opacity(0.2))
                             AxisValueLabel()
-                                .font(.system(size: 9, design: .monospaced))
+                                .font(.caption2)
+                                .fontDesign(.monospaced)
                                 .foregroundStyle(Color.secondary)
                         }
                     }
                     .chartYScale(domain: yDomain)
-                    .animation(.linear(duration: 0.5), value: history.count)
+                    .animation(reduceMotion ? nil : .linear(duration: 0.5), value: history.count)
                 }
             }
             .frame(height: 70)
@@ -236,15 +237,20 @@ private struct MetricCard: View {
                     Capsule()
                         .fill(statusColor)
                         .frame(width: geo.size.width * fraction, height: 5)
-                        .animation(.linear(duration: 0.4), value: fraction)
+                        .animation(reduceMotion ? nil : .linear(duration: 0.4), value: fraction)
                 }
             }
             .frame(height: 5)
         }
         .padding(.vertical, 6)
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel("\(title): \(value.formatted(.number.precision(.fractionLength(1)))) \(unit)")
+        .accessibilityValue("\(Int(fraction * 100))%")
     }
 
     // MARK: Private
+
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     private var fraction: Double {
         maxValue > 0 ? min(value / maxValue, 1) : 0

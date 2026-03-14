@@ -56,9 +56,10 @@ struct NetworkInspectorView: View {
     private var emptyState: some View {
         VStack(spacing: 12) {
             Image(systemName: "network.slash")
-                .font(.system(size: 44, weight: .thin))
+                .font(.largeTitle)
                 .foregroundStyle(.quaternary)
                 .padding(.top, 32)
+                .accessibilityHidden(true)
             Text("No Requests")
                 .font(.headline)
                 .foregroundStyle(.primary)
@@ -72,6 +73,7 @@ struct NetworkInspectorView: View {
         .frame(maxWidth: .infinity)
         .listRowBackground(Color.clear)
         .listRowSeparator(.hidden)
+        .accessibilityElement(children: .combine)
     }
 }
 
@@ -87,7 +89,7 @@ struct NetworkRequestRow: View {
 
             VStack(alignment: .leading, spacing: 3) {
                 Text(request.url)
-                    .font(.system(size: 13, weight: .regular, design: .default))
+                    .font(.footnote)
                     .lineLimit(1)
                     .truncationMode(.middle)
                     .foregroundStyle(.primary)
@@ -117,6 +119,10 @@ struct NetworkRequestRow: View {
             }
         }
         .padding(.vertical, 4)
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel("\(request.method.uppercased()) \(request.url)")
+        .accessibilityValue(request.statusCode.map { "Status \($0)" } ?? "")
+        .accessibilityHint(request.error.map { "Error: \($0)" } ?? "")
     }
 
     private var formattedDuration: String {
@@ -153,7 +159,7 @@ struct NetworkRequestDetailView: View {
                         MethodBadge(method: request.method, large: true)
                         VStack(alignment: .leading, spacing: 2) {
                             Text(request.url)
-                                .font(.system(size: 13, weight: .medium, design: .monospaced))
+                                .font(.footnote.weight(.medium).monospaced())
                                 .lineLimit(3)
                                 .textSelection(.enabled)
                             Text(request.timestamp.formatted(date: .abbreviated, time: .standard))
@@ -174,6 +180,7 @@ struct NetworkRequestDetailView: View {
                                 Circle()
                                     .fill(request.statusColor)
                                     .frame(width: 8, height: 8)
+                                    .accessibilityHidden(true)
                                 Text(statusDescription(for: code))
                                     .font(.subheadline.weight(.medium))
                                     .foregroundStyle(request.statusColor)
@@ -182,10 +189,11 @@ struct NetworkRequestDetailView: View {
                                     .foregroundStyle(.secondary)
                             }
                         }
+                        .accessibilityLabel("Status: \(statusDescription(for: code)), \(code)")
                     }
                     LabeledContent("Duration") {
                         Text(formattedDuration)
-                            .font(.system(.subheadline, design: .monospaced))
+                            .font(.subheadline.monospaced())
                             .foregroundStyle(.primary)
                     }
                 } header: {
@@ -282,8 +290,8 @@ struct MethodBadge: View {
     var body: some View {
         Text(method.uppercased())
             .font(large
-                  ? .system(size: 13, weight: .bold, design: .rounded)
-                  : .system(size: 10, weight: .bold, design: .rounded))
+                  ? .footnote.bold().fontDesign(.rounded)
+                  : .caption2.bold().fontDesign(.rounded))
             .foregroundStyle(color)
             .padding(.horizontal, large ? 8 : 5)
             .padding(.vertical, large ? 4 : 2)
@@ -292,6 +300,7 @@ struct MethodBadge: View {
                 RoundedRectangle(cornerRadius: 5, style: .continuous)
                     .strokeBorder(color.opacity(0.25), lineWidth: 0.5)
             )
+            .accessibilityLabel("\(method.uppercased()) method")
     }
 
     private var color: Color {
@@ -313,11 +322,12 @@ struct StatusCodeBadge: View {
 
     var body: some View {
         Text("\(code)")
-            .font(.system(size: 10, weight: .semibold, design: .monospaced))
+            .font(.caption2.weight(.semibold).monospacedDigit())
             .foregroundStyle(color)
             .padding(.horizontal, 4)
             .padding(.vertical, 1)
             .background(color.opacity(0.10), in: RoundedRectangle(cornerRadius: 4, style: .continuous))
+            .accessibilityLabel("HTTP status \(code)")
     }
 
     private var color: Color {
@@ -342,7 +352,7 @@ struct InspectorSectionHeader: View {
 
     var body: some View {
         Label(title, systemImage: icon)
-            .font(.system(size: 11, weight: .semibold))
+            .font(.caption.bold())
             .textCase(nil)
     }
 }
@@ -357,15 +367,16 @@ struct BodyPreviewButton: View {
             VStack(alignment: .leading, spacing: 6) {
                 HStack {
                     Text(label)
-                        .font(.system(size: 14, weight: .medium))
+                        .font(.subheadline.weight(.medium))
                         .foregroundStyle(.primary)
                     Spacer()
                     Image(systemName: "chevron.right")
                         .font(.caption.weight(.semibold))
                         .foregroundStyle(.tertiary)
+                        .accessibilityHidden(true)
                 }
                 Text(text.prefix(120) + (text.count > 120 ? "…" : ""))
-                    .font(.system(size: 11, design: .monospaced))
+                    .font(.caption.monospaced())
                     .foregroundStyle(.secondary)
                     .lineLimit(3)
                     .truncationMode(.tail)
@@ -379,5 +390,7 @@ struct BodyPreviewButton: View {
             .padding(.vertical, 2)
         }
         .buttonStyle(.plain)
+        .accessibilityLabel(label)
+        .accessibilityHint("Double tap to inspect the full body content")
     }
 }
