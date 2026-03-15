@@ -96,10 +96,8 @@ final class ContentServiceHandler: ObservableObject {
     func fetchTotalUserExercisesCompleted() async {
         totalUserExercisesCompleted = 0
 
-        for userExercise in userExercises {
-            if await userExercise.isCompleted {
-                totalUserExercisesCompleted += 1
-            }
+        for userExercise in userExercises where await userExercise.isCompleted {
+            totalUserExercisesCompleted += 1
         }
     }
 
