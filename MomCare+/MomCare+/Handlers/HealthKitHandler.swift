@@ -247,13 +247,13 @@ extension HealthKitHandler {
         let now = Date()
         let startOfDate = Calendar.current.startOfDay(for: now)
         database[.breathing(startOfDate)] = duration
-        self.breathingCompletionDuration = duration
+        breathingCompletionDuration = duration
     }
 
     func fetchBreathingCompletionDuration(for date: Date) -> TimeInterval {
         let startOfDate = Calendar.current.startOfDay(for: date)
         let completionDuration: TimeInterval = database[.breathing(startOfDate)] ?? 0
-        self.breathingCompletionDuration = completionDuration
+        breathingCompletionDuration = completionDuration
         return completionDuration
     }
 }

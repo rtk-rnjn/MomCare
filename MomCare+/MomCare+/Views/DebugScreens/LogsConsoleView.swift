@@ -133,12 +133,13 @@ private struct DebugLogEntryRow: View {
 }
 
 private struct CategoryChip: View {
+
+    // MARK: Internal
+
     let cat: DebugLogEntry.LogCategory
     let isSelected: Bool
     let count: Int
     let action: () -> Void
-
-    @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     var body: some View {
         Button(action: action) {
@@ -165,4 +166,9 @@ private struct CategoryChip: View {
         .accessibilityHint("Filters logs by \(cat.rawValue) category")
         .accessibilityAddTraits(isSelected ? [.isButton, .isSelected] : .isButton)
     }
+
+    // MARK: Private
+
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+
 }

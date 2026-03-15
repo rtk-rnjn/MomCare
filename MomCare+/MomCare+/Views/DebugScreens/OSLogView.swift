@@ -202,13 +202,14 @@ struct OSLogsView: View {
 }
 
 struct FilterChip: View {
+
+    // MARK: Internal
+
     let label: String
     let icon: String
     let color: Color
     let isSelected: Bool
     let action: () -> Void
-
-    @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     var body: some View {
         Button(action: action) {
@@ -232,6 +233,11 @@ struct FilterChip: View {
         .accessibilityHint("Filters log entries by \(label) level")
         .accessibilityAddTraits(isSelected ? [.isButton, .isSelected] : .isButton)
     }
+
+    // MARK: Private
+
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+
 }
 
 struct LogEntryRow: View {

@@ -1,12 +1,12 @@
 import SwiftUI
 
 struct JSONTreeRow: View {
+
+    // MARK: Internal
+
     let key: String?
     let node: JSONNode
     let depth: Int
-
-    @State private var expanded = false
-    @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
@@ -14,6 +14,20 @@ struct JSONTreeRow: View {
             if expanded {
                 children
             }
+        }
+    }
+
+    // MARK: Private
+
+    @State private var expanded = false
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+
+    private var rowAccessibilityLabel: String {
+        let keyPart = key.map { "\($0): " } ?? ""
+        if let leaf = node.leafDisplayValue {
+            return "\(keyPart)\(leaf)"
+        } else {
+            return "\(keyPart)\(node.typeLabel) with \(node.childCount) item\(node.childCount == 1 ? "" : "s")"
         }
     }
 
@@ -100,34 +114,26 @@ struct JSONTreeRow: View {
         }
     }
 
-    private var rowAccessibilityLabel: String {
-        let keyPart = key.map { "\($0): " } ?? ""
-        if let leaf = node.leafDisplayValue {
-            return "\(keyPart)\(leaf)"
-        } else {
-            return "\(keyPart)\(node.typeLabel) with \(node.childCount) item\(node.childCount == 1 ? "" : "s")"
-        }
-    }
-
     @ViewBuilder
     private var children: some View {
         switch node {
-        case .array(let items):
+        case let .array(items):
             ForEach(Array(items.enumerated()), id: \.offset) { idx, child in
                 JSONTreeRow(key: "[\(idx)]", node: child, depth: depth + 1)
                     .transition(reduceMotion ? .opacity : .opacity.combined(with: .move(edge: .top)))
             }
-        case .object(let pairs):
+
+        case let .object(pairs):
             ForEach(pairs, id: \.key) { pair in
                 JSONTreeRow(key: pair.key, node: pair.value, depth: depth + 1)
                     .transition(reduceMotion ? .opacity : .opacity.combined(with: .move(edge: .top)))
             }
+
         default:
             EmptyView()
         }
     }
 }
-
 
 indirect enum JSONNode {
     case null
@@ -137,17 +143,10 @@ indirect enum JSONNode {
     case array([JSONNode])
     case object([(key: String, value: JSONNode)])
 
-    static func parse(_ data: Data) -> JSONNode? {
-        guard let obj = try? JSONSerialization.jsonObject(with: data) else { return nil }
-        return JSONNode(any: obj)
-    }
+    // MARK: Lifecycle
 
     init?(any value: Any) {
-        if value is NSNull { self = .null }
-        else if let b = value as? Bool { self = .bool(b) }
-        else if let n = value as? Double { self = .number(n) }
-        else if let s = value as? String { self = .string(s) }
-        else if let a = value as? [Any] {
+        if value is NSNull { self = .null } else if let b = value as? Bool { self = .bool(b) } else if let n = value as? Double { self = .number(n) } else if let s = value as? String { self = .string(s) } else if let a = value as? [Any] {
             self = .array(a.compactMap { JSONNode(any: $0) })
         } else if let d = value as? [String: Any] {
             let pairs = d.sorted { $0.key < $1.key }.compactMap { k, v -> (String, JSONNode)? in
@@ -158,57 +157,61 @@ indirect enum JSONNode {
         } else { return nil }
     }
 
+    // MARK: Internal
+
     var isLeaf: Bool {
         switch self {
-        case .array(let a): return a.isEmpty
-        case .object(let o): return o.isEmpty
+        case let .array(a): return a.isEmpty
+        case let .object(o): return o.isEmpty
         default: return true
         }
     }
 
     var typeLabel: String {
         switch self {
-        case .null:   return "null"
-        case .bool:   return "bool"
+        case .null: return "null"
+        case .bool: return "bool"
         case .number: return "num"
         case .string: return "str"
-        case .array:  return "arr"
+        case .array: return "arr"
         case .object: return "obj"
         }
     }
 
     var leafDisplayValue: String? {
         switch self {
-        case .null:        return "null"
-        case .bool(let b): return b ? "true" : "false"
-        case .number(let n):
+        case .null: return "null"
+        case let .bool(b): return b ? "true" : "false"
+        case let .number(n):
             return n.truncatingRemainder(dividingBy: 1) == 0
                 ? String(Int(n)) : String(n)
-        case .string(let s): return "\"\(s)\""
+
+        case let .string(s): return "\"\(s)\""
         default: return nil
         }
     }
 
     var childCount: Int {
         switch self {
-        case .array(let a): return a.count
-        case .object(let o): return o.count
+        case let .array(a): return a.count
+        case let .object(o): return o.count
         default: return 0
         }
     }
+
+    static func parse(_ data: Data) -> JSONNode? {
+        guard let obj = try? JSONSerialization.jsonObject(with: data) else { return nil }
+        return JSONNode(any: obj)
+    }
+
 }
 
-
 struct JSONSheetView: View {
+
+    // MARK: Internal
+
     let title: String
     let raw: String
-
-    @Environment(\.dismiss) private var dismiss
-
-    private var rootNode: JSONNode? {
-        guard let data = raw.data(using: .utf8) else { return nil }
-        return JSONNode.parse(data)
-    }
 
     var body: some View {
         NavigationStack {
@@ -249,4 +252,14 @@ struct JSONSheetView: View {
             }
         }
     }
+
+    // MARK: Private
+
+    @Environment(\.dismiss) private var dismiss
+
+    private var rootNode: JSONNode? {
+        guard let data = raw.data(using: .utf8) else { return nil }
+        return JSONNode.parse(data)
+    }
+
 }

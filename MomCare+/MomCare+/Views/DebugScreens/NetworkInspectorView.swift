@@ -1,7 +1,6 @@
 import SwiftUI
 import Foundation
 
-
 struct NetworkInspectorView: View {
 
     // MARK: Internal
@@ -80,6 +79,9 @@ struct NetworkInspectorView: View {
 // MARK: - Request Row
 
 struct NetworkRequestRow: View {
+
+    // MARK: Internal
+
     let request: DebugNetworkRequest
 
     var body: some View {
@@ -125,6 +127,8 @@ struct NetworkRequestRow: View {
         .accessibilityHint(request.error.map { "Error: \($0)" } ?? "")
     }
 
+    // MARK: Private
+
     private var formattedDuration: String {
         let duration = Measurement(value: request.responseTime, unit: UnitDuration.seconds)
 
@@ -144,11 +148,9 @@ struct NetworkRequestRow: View {
 
 struct NetworkRequestDetailView: View {
 
-    let request: DebugNetworkRequest
+    // MARK: Internal
 
-    @State private var showingRequestBody = false
-    @State private var showingResponseBody = false
-    @Environment(\.dismiss) private var dismiss
+    let request: DebugNetworkRequest
 
     var body: some View {
         NavigationStack {
@@ -263,6 +265,12 @@ struct NetworkRequestDetailView: View {
         }
     }
 
+    // MARK: Private
+
+    @State private var showingRequestBody = false
+    @State private var showingResponseBody = false
+    @Environment(\.dismiss) private var dismiss
+
     private var formattedDuration: String {
         let duration = Measurement(value: request.responseTime, unit: UnitDuration.seconds)
         let ms = duration.converted(to: .milliseconds).value
@@ -284,6 +292,9 @@ struct NetworkRequestDetailView: View {
 // MARK: - Reusable Sub-components
 
 struct MethodBadge: View {
+
+    // MARK: Internal
+
     let method: String
     var large: Bool = false
 
@@ -303,21 +314,26 @@ struct MethodBadge: View {
             .accessibilityLabel("\(method.uppercased()) method")
     }
 
+    // MARK: Private
+
     private var color: Color {
         switch method.uppercased() {
-        case "GET":     return .blue
-        case "POST":    return .green
-        case "PUT":     return .orange
-        case "PATCH":   return .yellow
-        case "DELETE":  return .red
-        case "HEAD":    return .cyan
+        case "GET": return .blue
+        case "POST": return .green
+        case "PUT": return .orange
+        case "PATCH": return .yellow
+        case "DELETE": return .red
+        case "HEAD": return .cyan
         case "OPTIONS": return .purple
-        default:        return .secondary
+        default: return .secondary
         }
     }
 }
 
 struct StatusCodeBadge: View {
+
+    // MARK: Internal
+
     let code: Int
 
     var body: some View {
@@ -330,25 +346,32 @@ struct StatusCodeBadge: View {
             .accessibilityLabel("HTTP status \(code)")
     }
 
+    // MARK: Private
+
     private var color: Color {
         switch code {
         case 200..<300: return .green
         case 300..<400: return .blue
         case 400..<500: return .orange
-        case 500...:    return .red
-        default:        return .secondary
+        case 500...: return .red
+        default: return .secondary
         }
     }
 }
 
 struct InspectorSectionHeader: View {
-    let title: String
-    let icon: String
+
+    // MARK: Lifecycle
 
     init(_ title: String, icon: String) {
         self.title = title
         self.icon = icon
     }
+
+    // MARK: Internal
+
+    let title: String
+    let icon: String
 
     var body: some View {
         Label(title, systemImage: icon)

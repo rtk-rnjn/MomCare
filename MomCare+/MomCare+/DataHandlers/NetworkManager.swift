@@ -31,14 +31,17 @@ struct NetworkResponse<T: Codable>: Codable {
 
 class NetworkManager {
 
-    var debugMenuStore: DebugMenuStore?
+    // MARK: Public
+
     public static let shared: NetworkManager = .init()
-    
-    func setDebugMenuStore(_ store: DebugMenuStore) {
-        self.debugMenuStore = store
-    }
 
     // MARK: Internal
+
+    var debugMenuStore: DebugMenuStore?
+
+    func setDebugMenuStore(_ store: DebugMenuStore) {
+        debugMenuStore = store
+    }
 
     func get<T: Codable>(
         url: String,
@@ -155,7 +158,7 @@ class NetworkManager {
     }
 
     private func performRequest<T: Codable>(_ request: URLRequest) async throws -> NetworkResponse<T> {
-        
+
         let url = request.url?.absoluteString ?? "unknown URL"
         logger.info("Performing \(request.httpMethod ?? "UNKNOWN") request to \(url)")
         DebugLogger.shared.log("Performing \(request.httpMethod ?? "UNKNOWN") request to \(url)", level: .info, category: .network)
@@ -211,7 +214,7 @@ class NetworkManager {
                     case .networkConnectionLost, .timedOut, .notConnectedToInternet:
 
                         logger.warning("Network error occurred for request to \(url): \(urlError.localizedDescription). Retrying... (\(5 - attempts) attempts left)")
-                        
+
                         DebugLogger.shared.log(
                             "Network error occurred for request to \(url): \(urlError.localizedDescription). Retrying... (\(5 - attempts) attempts left)",
                             level: .warning,

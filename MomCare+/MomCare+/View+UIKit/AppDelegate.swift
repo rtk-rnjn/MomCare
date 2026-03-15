@@ -10,7 +10,7 @@ private let refreshTokenBackgroundTaskIdentifier = "com.MomCare.BackgroundTask.R
 private let logger: Logger = .init(subsystem: "com.MomCare.AppDelegate", category: "AppDelegate")
 
 class AppDelegate: NSObject, UIApplicationDelegate, ObservableObject {
-    
+
     let debugMenuStore: DebugMenuStore = .init()
 
     func application(
@@ -70,4 +70,3 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
         completionHandler([.banner, .sound, .badge])
     }
 }
-
