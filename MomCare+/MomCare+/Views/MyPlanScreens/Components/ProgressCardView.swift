@@ -19,22 +19,22 @@ struct ProgressCardView: View {
             VStack(alignment: .leading, spacing: 12) {
                 MacroBarRow(
                     title: "Protein",
-                    consumed: healthKitHandler.nurtitionConsumedTotals?.proteinMass,
-                    target: healthKitHandler.nutritionTargetTotals?.proteinMass,
+                    consumed: contentServiceHandler.nurtitionConsumedTotals?.proteinMass,
+                    target: contentServiceHandler.nutritionTargetTotals?.proteinMass,
                     color: Color(hex: "A7C0CD")
                 )
 
                 MacroBarRow(
                     title: "Carbs",
-                    consumed: healthKitHandler.nurtitionConsumedTotals?.carbsMass,
-                    target: healthKitHandler.nutritionTargetTotals?.carbsMass,
+                    consumed: contentServiceHandler.nurtitionConsumedTotals?.carbsMass,
+                    target: contentServiceHandler.nutritionTargetTotals?.carbsMass,
                     color: Color(hex: "6E8B6F")
                 )
 
                 MacroBarRow(
                     title: "Fats",
-                    consumed: healthKitHandler.nurtitionConsumedTotals?.fatsMass,
-                    target: healthKitHandler.nutritionTargetTotals?.fatsMass,
+                    consumed: contentServiceHandler.nurtitionConsumedTotals?.fatsMass,
+                    target: contentServiceHandler.nutritionTargetTotals?.fatsMass,
                     color: Color(hex: "E3B34B")
                 )
             }
@@ -48,7 +48,7 @@ struct ProgressCardView: View {
 
     // MARK: Private
 
-    @EnvironmentObject private var healthKitHandler: HealthKitHandler
+    @EnvironmentObject private var contentServiceHandler: ContentServiceHandler
 
     private var calorieProgress: Double {
         guard caloriesTarget > 0 else { return 0 }

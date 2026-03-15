@@ -2,11 +2,7 @@ import SwiftUI
 
 struct FeatureFlagsView: View {
 
-    @AppStorage(FeatureFlagState.experimentalFeatures.rawValue) private var experimentalFeatures: Bool = false
-    @AppStorage(FeatureFlagState.debugLogging.rawValue) private var debugLogging: Bool = false
-    @AppStorage(FeatureFlagState.uiDebuggingOverlays.rawValue) private var uiDebuggingOverlays: Bool = false
-    @AppStorage(FeatureFlagState.forceDarkMode.rawValue) private var forceDarkMode: Bool = false
-    @AppStorage(FeatureFlagState.forceLightMode.rawValue) private var forceLightMode: Bool = true
+    // MARK: Internal
 
     var body: some View {
         List {
@@ -68,6 +64,14 @@ struct FeatureFlagsView: View {
         .navigationTitle("Feature Flags")
         .navigationBarTitleDisplayMode(.inline)
     }
+
+    // MARK: Private
+
+    @AppStorage(FeatureFlagState.experimentalFeatures.rawValue) private var experimentalFeatures: Bool = false
+    @AppStorage(FeatureFlagState.debugLogging.rawValue) private var debugLogging: Bool = false
+    @AppStorage(FeatureFlagState.uiDebuggingOverlays.rawValue) private var uiDebuggingOverlays: Bool = false
+    @AppStorage(FeatureFlagState.forceDarkMode.rawValue) private var forceDarkMode: Bool = false
+    @AppStorage(FeatureFlagState.forceLightMode.rawValue) private var forceLightMode: Bool = true
 
 }
 

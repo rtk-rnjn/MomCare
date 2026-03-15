@@ -114,17 +114,6 @@ final class EventKitHandler: ObservableObject {
         allEvents = events
         onGoingOrMostRecentUpcomingEvent = fetchOnGoingOrMostRecentUpcomingEvent(from: events)
     }
-    
-    private func fetchOnGoingOrMostRecentUpcomingEvent(from events: [EKEvent]) -> EKEvent? {
-        let now = Date()
-        let ongoingEvents = events.filter { $0.startDate <= now && $0.endDate >= now }
-        if let ongoingEvent = ongoingEvents.first {
-            return ongoingEvent
-        }
-
-        let upcomingEvents = events.filter { $0.startDate > now }
-        return upcomingEvents.sorted { $0.startDate < $1.startDate }.first
-    }
 
     func createOrGetEventCalendar() throws -> EKCalendar {
         try createOrGetCalendar(identifierKey: eventIdentifier, eventType: .event, title: "MomCare - TriTrack Calendar", source: eventStore.defaultCalendarForNewEvents)
@@ -179,6 +168,17 @@ final class EventKitHandler: ObservableObject {
     private var cancellables: Set<AnyCancellable> = []
 
     private let database: Database = .init()
+
+    private func fetchOnGoingOrMostRecentUpcomingEvent(from events: [EKEvent]) -> EKEvent? {
+        let now = Date()
+        let ongoingEvents = events.filter { $0.startDate <= now && $0.endDate >= now }
+        if let ongoingEvent = ongoingEvents.first {
+            return ongoingEvent
+        }
+
+        let upcomingEvents = events.filter { $0.startDate > now }
+        return upcomingEvents.sorted { $0.startDate < $1.startDate }.first
+    }
 
     private func reminderMatchesDate(_ reminder: EKReminder, date: Date) -> Bool {
 

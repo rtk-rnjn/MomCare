@@ -18,7 +18,7 @@ struct MomCareMainTabView: View {
 
     @EnvironmentObject private var authenticationService: AuthenticationService
     @EnvironmentObject private var musicKitHandler: MusicPlayerHandler
-    @EnvironmentObject private var healthKitHandler: HealthKitHandler
+    @EnvironmentObject private var contentServiceHandler: ContentServiceHandler
     @EnvironmentObject private var eventKitHandler: EventKitHandler
     @EnvironmentObject private var controlState: ControlState
 
@@ -85,10 +85,10 @@ struct MomCareMainTabView: View {
             }
         }
         .task {
-            await healthKitHandler.requestAccess()
+            await contentServiceHandler.requestAccess()
 
             await fetchDailyInsights()
-            try? await healthKitHandler.fetchMealPlan()
+            try? await contentServiceHandler.fetchMealPlan()
         }
         .task {
             _ = try? await eventKitHandler.eventStore.requestFullAccessToEvents()
@@ -98,22 +98,34 @@ struct MomCareMainTabView: View {
             try? eventKitHandler.fetchAllEvents()
         }
         .task {
-            if let networkResponse = try? await ContentService.shared.fetchUserExercises(), let userExercises = networkResponse.data {
-                healthKitHandler.userExercises = userExercises
+            if let networkResponse = try? await ContentService.shared.generateUserExercises(), let userExercises = networkResponse.data {
+                contentServiceHandler.userExercises = userExercises
+
+                await contentServiceHandler.fetchTotalUserExercisesDuration()
+                await contentServiceHandler.fetchTotalUserExercisesCompletionDuration()
             }
         }
+        .onChange(of: contentServiceHandler.userExercises) {
+             Task {
+                 await contentServiceHandler.fetchTotalUserExercisesDuration()
+                 await contentServiceHandler.fetchTotalUserExercisesCompletionDuration()
+
+                 await contentServiceHandler.updateWeeklyProgressForToday()
+             }
+        }
         .task {
-            await healthKitHandler.startStepCountObservation()
+            await contentServiceHandler.startStepCountObservation()
+            await contentServiceHandler.fetchWeeklyProgress()
         }
     }
 
     private func fetchDailyInsights() async {
-        guard let networkResponse = try? await ContentService.shared.fetchDailyInsights() else {
+        guard let networkResponse = try? await ContentService.shared.generateDailyInsights() else {
             return
         }
 
-        healthKitHandler.todayFocusText = networkResponse.data?.todaysFocus ?? "Failed to fetch today's focus: \(networkResponse.errorMessage ?? "Unknown error") (\(networkResponse.statusCode))"
-        healthKitHandler.dailyTipText = networkResponse.data?.dailyTip ?? "Failed to fetch today's tip: \(networkResponse.errorMessage ?? "Unknown error") (\(networkResponse.statusCode))"
+        contentServiceHandler.todayFocusText = networkResponse.data?.todaysFocus ?? "Failed to fetch today's focus: \(networkResponse.errorMessage ?? "Unknown error") (\(networkResponse.statusCode))"
+        contentServiceHandler.dailyTipText = networkResponse.data?.dailyTip ?? "Failed to fetch today's tip: \(networkResponse.errorMessage ?? "Unknown error") (\(networkResponse.statusCode))"
     }
 
 }

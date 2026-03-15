@@ -17,8 +17,8 @@ struct MyPlanDietPlanView: View {
     var body: some View {
         VStack(spacing: 12) {
             ProgressCardView(
-                caloriesConsumed: healthKitHandler.nurtitionConsumedTotals?.calories ?? 0,
-                caloriesTarget: healthKitHandler.nutritionTargetTotals?.calories ?? 0
+                caloriesConsumed: contentServiceHandler.nurtitionConsumedTotals?.calories ?? 0,
+                caloriesTarget: contentServiceHandler.nutritionTargetTotals?.calories ?? 0
             )
             .containerShape(RoundedRectangle(cornerRadius: 24, style: .continuous))
             .padding(.horizontal, 16)
@@ -41,6 +41,6 @@ struct MyPlanDietPlanView: View {
 
     // MARK: Private
 
-    @EnvironmentObject private var healthKitHandler: HealthKitHandler
+    @EnvironmentObject private var contentServiceHandler: ContentServiceHandler
 
 }

@@ -40,7 +40,7 @@ struct MyPlanFoodItemSearchView: View {
                 Button("Add", role: .confirm) {
                     Task {
                         do {
-                            try await healthKitHandler.addFoodToMyPlan(foodId: selectedFoodItem?.id ?? "", mealType: mealType)
+                            try await contentServiceHandler.addFoodToMyPlan(foodId: selectedFoodItem?.id ?? "", mealType: mealType)
                             await MainActor.run {
                                 dismiss()
                             }
@@ -89,7 +89,7 @@ struct MyPlanFoodItemSearchView: View {
 
     // MARK: Private
 
-    @EnvironmentObject private var healthKitHandler: HealthKitHandler
+    @EnvironmentObject private var contentServiceHandler: ContentServiceHandler
 
     @State private var selectedFoodItem: FoodItemModel?
     @Environment(\.dismiss) private var dismiss

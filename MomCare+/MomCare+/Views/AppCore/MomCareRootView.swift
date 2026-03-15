@@ -2,8 +2,7 @@ import SwiftUI
 
 struct MomCareRootView: View {
 
-    @AppStorage(FeatureFlagState.forceDarkMode.rawValue) private var forceDarkMode: Bool = false
-    @AppStorage(FeatureFlagState.forceLightMode.rawValue) private var forceLightMode: Bool = true
+    // MARK: Internal
 
     var body: some View {
         if let isProfileComplete = authenticationService.userModel?.isProfileComplete, isProfileComplete {
@@ -18,6 +17,9 @@ struct MomCareRootView: View {
     }
 
     // MARK: Private
+
+    @AppStorage(FeatureFlagState.forceDarkMode.rawValue) private var forceDarkMode: Bool = false
+    @AppStorage(FeatureFlagState.forceLightMode.rawValue) private var forceLightMode: Bool = true
 
     @EnvironmentObject private var authenticationService: AuthenticationService
 }
