@@ -300,9 +300,7 @@ struct MethodBadge: View {
 
     var body: some View {
         Text(method.uppercased())
-            .font(large
-                  ? .footnote.bold().fontDesign(.rounded)
-                  : .caption2.bold().fontDesign(.rounded))
+            .font(large ? .footnote.bold() : .caption2.bold())
             .foregroundStyle(color)
             .padding(.horizontal, large ? 8 : 5)
             .padding(.vertical, large ? 4 : 2)

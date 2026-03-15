@@ -120,13 +120,13 @@ struct JSONTreeRow: View {
         case let .array(items):
             ForEach(Array(items.enumerated()), id: \.offset) { idx, child in
                 JSONTreeRow(key: "[\(idx)]", node: child, depth: depth + 1)
-                    .transition(reduceMotion ? .opacity : .opacity.combined(with: .move(edge: .top)))
+                    .transition(unsafe reduceMotion ? .opacity : .opacity.combined(with: .move(edge: .top)))
             }
 
         case let .object(pairs):
             ForEach(pairs, id: \.key) { pair in
                 JSONTreeRow(key: pair.key, node: pair.value, depth: depth + 1)
-                    .transition(reduceMotion ? .opacity : .opacity.combined(with: .move(edge: .top)))
+                    .transition(unsafe reduceMotion ? .opacity : .opacity.combined(with: .move(edge: .top)))
             }
 
         default:

@@ -155,78 +155,9 @@ private struct MetricCard: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
-            HStack(alignment: .firstTextBaseline) {
-                Text(title)
-                    .font(.subheadline.bold())
-                Spacer()
-                Text(value, format: .number.precision(.fractionLength(1)))
-                    .font(.title2.bold().monospacedDigit())
-                    .foregroundStyle(statusColor)
-                    .contentTransition(.numericText())
-                    .animation(reduceMotion ? nil : .spring(duration: 0.25), value: value)
-                Text(unit)
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
-                    .padding(.leading, 1)
-            }
+            header
 
-            Group {
-                if history.isEmpty {
-                    RoundedRectangle(cornerRadius: 6)
-                        .fill(Color.secondary.opacity(0.08))
-                        .overlay(
-                            Text("Collecting…")
-                                .font(.caption2)
-                                .foregroundStyle(.quaternary)
-                        )
-                } else {
-                    Chart(history) { pt in
-                        AreaMark(
-                            x: .value("t", pt.time),
-                            yStart: .value("zero", 0),
-                            yEnd: .value("v", pt.value)
-                        )
-                        .foregroundStyle(
-                            LinearGradient(
-                                colors: [statusColor.opacity(0.30), statusColor.opacity(0.03)],
-                                startPoint: .top,
-                                endPoint: .bottom
-                            )
-                        )
-                        .interpolationMethod(.catmullRom)
-
-                        LineMark(
-                            x: .value("t", pt.time),
-                            y: .value("v", pt.value)
-                        )
-                        .foregroundStyle(statusColor)
-                        .lineStyle(.init(lineWidth: 2))
-                        .interpolationMethod(.catmullRom)
-
-                        if pt.id == history.last?.id {
-                            PointMark(
-                                x: .value("t", pt.time),
-                                y: .value("v", pt.value)
-                            )
-                            .symbolSize(28)
-                            .foregroundStyle(statusColor)
-                        }
-                    }
-                    .chartXAxis(.hidden)
-                    .chartYAxis {
-                        AxisMarks(position: .trailing, values: .automatic(desiredCount: 3)) { _ in
-                            AxisGridLine(stroke: .init(lineWidth: 0.5))
-                                .foregroundStyle(Color.secondary.opacity(0.2))
-                            AxisValueLabel()
-                                .font(.caption2)
-                                .fontDesign(.monospaced)
-                                .foregroundStyle(Color.secondary)
-                        }
-                    }
-                    .chartYScale(domain: yDomain)
-                    .animation(reduceMotion ? nil : .linear(duration: 0.5), value: history.count)
-                }
-            }
+            chart
             .frame(height: 70)
 
             GeometryReader { geo in
@@ -264,6 +195,82 @@ private struct MetricCard: View {
     }
 
     private var yDomain: ClosedRange<Double> { 0...(maxValue * 1.1) }
+
+    private var header: some View {
+        HStack(alignment: .firstTextBaseline) {
+            Text(title)
+                .font(.subheadline.bold())
+            Spacer()
+            Text(value, format: .number.precision(.fractionLength(1)))
+                .font(.title2.bold().monospacedDigit())
+                .foregroundStyle(statusColor)
+                .contentTransition(.numericText())
+                .animation(reduceMotion ? nil : .spring(duration: 0.25), value: value)
+            Text(unit)
+                .font(.caption)
+                .foregroundStyle(.secondary)
+                .padding(.leading, 1)
+        }
+    }
+
+    private var chart: some View {
+        Group {
+            if history.isEmpty {
+                RoundedRectangle(cornerRadius: 6)
+                    .fill(Color.secondary.opacity(0.08))
+                    .overlay(
+                        Text("Collecting…")
+                            .font(.caption2)
+                            .foregroundStyle(.quaternary)
+                    )
+            } else {
+                Chart(history) { pt in
+                    AreaMark(
+                        x: .value("t", pt.time),
+                        yStart: .value("zero", 0),
+                        yEnd: .value("v", pt.value)
+                    )
+                    .foregroundStyle(
+                        LinearGradient(
+                            colors: [statusColor.opacity(0.30), statusColor.opacity(0.03)],
+                            startPoint: .top,
+                            endPoint: .bottom
+                        )
+                    )
+                    .interpolationMethod(.catmullRom)
+
+                    LineMark(
+                        x: .value("t", pt.time),
+                        y: .value("v", pt.value)
+                    )
+                    .foregroundStyle(statusColor)
+                    .lineStyle(.init(lineWidth: 2))
+                    .interpolationMethod(.catmullRom)
+
+                    if pt.id == history.last?.id {
+                        PointMark(
+                            x: .value("t", pt.time),
+                            y: .value("v", pt.value)
+                        )
+                        .symbolSize(28)
+                        .foregroundStyle(statusColor)
+                    }
+                }
+                .chartXAxis(.hidden)
+                .chartYAxis {
+                    AxisMarks(position: .trailing, values: .automatic(desiredCount: 3)) { _ in
+                        AxisGridLine(stroke: .init(lineWidth: 0.5))
+                            .foregroundStyle(Color.secondary.opacity(0.2))
+                        AxisValueLabel()
+                            .font(.caption2.monospaced())
+                            .foregroundStyle(Color.secondary)
+                    }
+                }
+                .chartYScale(domain: yDomain)
+                .animation(reduceMotion ? nil : .linear(duration: 0.5), value: history.count)
+            }
+        }
+    }
 
 }
 
