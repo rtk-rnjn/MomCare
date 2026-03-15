@@ -12,7 +12,7 @@ final class EventKitHandler: ObservableObject {
 
     @Published var events: [EKEvent] = []
     @Published var allEvents: [EKEvent] = []
-    @Published var mostRecentEvent: EKEvent?
+    @Published var onGoingOrMostRecentUpcomingEvent: EKEvent?
 
     @Published var reminders: [EKReminder] = []
     @Published var allReminders: [EKReminder] = []
@@ -112,7 +112,7 @@ final class EventKitHandler: ObservableObject {
         let predicate = try eventStore.predicateForEvents(withStart: lastTwoYear, end: nextTwoYear, calendars: [createOrGetEventCalendar()])
         let events = eventStore.events(matching: predicate)
         allEvents = events
-        mostRecentEvent = allEvents.sorted { $0.startDate <= $1.startDate }.first
+        onGoingOrMostRecentUpcomingEvent = fetchOnGoingOrMostRecentUpcomingEvent(from: events)
     }
 
     func createOrGetEventCalendar() throws -> EKCalendar {
@@ -168,6 +168,17 @@ final class EventKitHandler: ObservableObject {
     private var cancellables: Set<AnyCancellable> = []
 
     private let database: Database = .init()
+
+    private func fetchOnGoingOrMostRecentUpcomingEvent(from events: [EKEvent]) -> EKEvent? {
+        let now = Date()
+        let ongoingEvents = events.filter { $0.startDate <= now && $0.endDate >= now }
+        if let ongoingEvent = ongoingEvents.first {
+            return ongoingEvent
+        }
+
+        let upcomingEvents = events.filter { $0.startDate > now }
+        return upcomingEvents.sorted { $0.startDate < $1.startDate }.first
+    }
 
     private func reminderMatchesDate(_ reminder: EKReminder, date: Date) -> Bool {
 

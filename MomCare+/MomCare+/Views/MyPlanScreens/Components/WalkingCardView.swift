@@ -20,12 +20,12 @@ struct WalkingCardView: View {
 
                 Spacer()
 
-                if healthKitHandler.currentSteps >= healthKitHandler.targetSteps {
+                if contentServiceHandler.currentSteps >= contentServiceHandler.targetSteps {
                     Label("Done", systemImage: "checkmark.circle.fill")
                         .font(.caption.weight(.semibold))
                         .foregroundColor(Color(hex: "4A8A62"))
                 } else {
-                    Text("\(Int(healthKitHandler.stepsProgress))%")
+                    Text("\(Int(contentServiceHandler.stepsProgress))%")
                         .font(.subheadline.weight(.semibold))
                         .foregroundColor(Color(hex: "4A8A62"))
                 }
@@ -33,7 +33,7 @@ struct WalkingCardView: View {
 
             HStack {
                 VStack(alignment: .leading, spacing: 2) {
-                    Text("\(Int(healthKitHandler.currentSteps))")
+                    Text("\(Int(contentServiceHandler.currentSteps))")
                         .font(.title2.weight(.bold))
                         .foregroundColor(.primary)
                     Text("Steps")
@@ -44,7 +44,7 @@ struct WalkingCardView: View {
                 Spacer()
 
                 VStack(alignment: .trailing, spacing: 2) {
-                    Text("\(Int(healthKitHandler.targetSteps))")
+                    Text("\(Int(contentServiceHandler.targetSteps))")
                         .font(.callout.weight(.semibold))
                         .foregroundColor(.secondary)
                     Text("Goal")
@@ -76,23 +76,27 @@ struct WalkingCardView: View {
         .accessibilityElement(children: .ignore)
         .accessibilityLabel("Walking")
         .accessibilityValue(
-            healthKitHandler.currentSteps >= healthKitHandler.targetSteps
-                ? "Goal completed, \(Int(healthKitHandler.currentSteps)) steps"
-                : "\(Int(healthKitHandler.currentSteps)) of \(Int(healthKitHandler.targetSteps)) steps, \(Int(healthKitHandler.stepsProgress)) percent"
+            contentServiceHandler.currentSteps >= contentServiceHandler.targetSteps
+                ? "Goal completed, \(Int(contentServiceHandler.currentSteps)) steps"
+                : "\(Int(contentServiceHandler.currentSteps)) of \(Int(contentServiceHandler.targetSteps)) steps, \(Int(contentServiceHandler.stepsProgress)) percent"
         )
         .accessibilityAddTraits(.updatesFrequently)
-        .task {
-            progress = Double(healthKitHandler.currentSteps) / Double(healthKitHandler.targetSteps)
-            progress = min(progress, 1)
-            percentCompleted = Int(progress * 100)
-        }
+        .task { updateProgress() }
+        .onChange(of: contentServiceHandler.currentSteps) { updateProgress() }
+        .onChange(of: contentServiceHandler.targetSteps) { updateProgress() }
     }
 
     // MARK: Private
 
-    @EnvironmentObject private var healthKitHandler: HealthKitHandler
+    @EnvironmentObject private var contentServiceHandler: ContentServiceHandler
     @State private var progress: Double = 0
     @State private var percentCompleted: Int = 0
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
+
+    private func updateProgress() {
+        progress = Double(contentServiceHandler.currentSteps) / Double(contentServiceHandler.targetSteps)
+        progress = min(progress, 1)
+        percentCompleted = Int(progress * 100)
+    }
 
 }

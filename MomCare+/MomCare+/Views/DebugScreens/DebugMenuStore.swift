@@ -1,5 +1,7 @@
 import SwiftUI
 import Combine
+import Collections
+import DequeModule
 
 @MainActor
 final class DebugMenuStore: ObservableObject {
@@ -9,16 +11,16 @@ final class DebugMenuStore: ObservableObject {
     init() {
         startPerformanceTimer()
         FPSMonitor.shared.start()
-        FPSMonitor.shared.onFPSUpdate = { [weak self] fps in
-            Task { @MainActor in
-                self?.performanceSnapshot.fps = fps
+        FPSMonitor.shared.onFPSUpdate = { fps in
+            DispatchQueue.main.async {
+                self.performanceSnapshot.fps = fps
             }
         }
-        DebugLogger.shared.onNewEntry = { [weak self] entry in
-            Task { @MainActor in
-                self?.logEntries.insert(entry, at: 0)
-                if (self?.logEntries.count ?? 0) > 500 {
-                    self?.logEntries = Array(self?.logEntries.prefix(500) ?? [])
+        DebugLogger.shared.onNewEntry = { entry in
+            DispatchQueue.main.async {
+                self.logEntries.insert(entry, at: 0)
+                if (self.logEntries.count) > 500 {
+                    self.logEntries = Array(self.logEntries.prefix(500))
                 }
             }
         }
@@ -26,8 +28,7 @@ final class DebugMenuStore: ObservableObject {
 
     // MARK: Internal
 
-    @Published var featureFlags: FeatureFlagState = .init()
-    @Published var networkRequests: [DebugNetworkRequest] = []
+    @Published var networkRequests: Deque<DebugNetworkRequest> = .init()
     @Published var logEntries: [DebugLogEntry] = []
     @Published var performanceSnapshot: PerformanceSnapshot = .init()
 
@@ -35,10 +36,10 @@ final class DebugMenuStore: ObservableObject {
     @Published var ramHistory: [PerformancePoint] = []
     @Published var fpsHistory: [PerformancePoint] = []
 
-    func addNetworkRequest(_ req: DebugNetworkRequest) {
-        networkRequests.insert(req, at: 0)
+    func addNetworkRequest(_ request: DebugNetworkRequest) {
+        networkRequests.prepend(request)
         if networkRequests.count > 200 {
-            networkRequests = Array(networkRequests.prefix(200))
+            _ = networkRequests.popLast()
         }
     }
 
@@ -54,36 +55,35 @@ final class DebugMenuStore: ObservableObject {
     private func startPerformanceTimer() {
         performanceTimer = Timer.publish(every: 1, on: .main, in: .common)
             .autoconnect()
-            .sink { [weak self] _ in
-                guard let self else { return }
+            .sink { _ in
                 let snap = PerformanceSnapshot.capture()
-                performanceSnapshot = snap
+                self.performanceSnapshot = snap
 
                 let now = Date()
                 func append(_ point: PerformancePoint, to arr: inout [PerformancePoint]) {
                     if arr.count >= self.maxHistory { arr.removeFirst() }
                     arr.append(point)
                 }
-                append(.init(time: now, value: snap.cpuUsage), to: &cpuHistory)
-                append(.init(time: now, value: snap.ramUsageMB), to: &ramHistory)
-                append(.init(time: now, value: snap.fps), to: &fpsHistory)
+                append(.init(time: now, value: snap.cpuUsage), to: &self.cpuHistory)
+                append(.init(time: now, value: snap.ramUsageMB), to: &self.ramHistory)
+                append(.init(time: now, value: snap.fps), to: &self.fpsHistory)
             }
     }
 
 }
 
-struct FeatureFlagState {
-    var experimentalFeatures = false
-    var debugLogging = true
-    var forceDarkMode = false
-    var forceLightMode = false
-    var useMockAPIs = false
-    var uiDebuggingOverlays = false
+enum FeatureFlagState: String {
+    case experimentalFeatures
+    case debugLogging
+    case forceDarkMode
+    case forceLightMode
+    case useMockAPIs
+    case uiDebuggingOverlays
 }
 
 struct DebugNetworkRequest: Identifiable {
     let id: UUID = .init()
-    let timestamp: Date
+    let timestamp: Date = .init()
     let method: String
     let url: String
     let statusCode: Int?
@@ -96,8 +96,8 @@ struct DebugNetworkRequest: Identifiable {
         guard let code = statusCode else { return .gray }
         switch code {
         case 200..<300: return .green
-        case 300..<400: return .yellow
-        case 400..<500: return .orange
+        case 300..<400: return .red
+        case 400..<500: return .red
         default: return .red
         }
     }

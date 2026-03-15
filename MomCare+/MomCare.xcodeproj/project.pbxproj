@@ -9,6 +9,11 @@
 /* Begin PBXBuildFile section */
 		922E93872F41A5D200B7C2EC /* LNPopupUI in Frameworks */ = {isa = PBXBuildFile; productRef = 922E93862F41A5D200B7C2EC /* LNPopupUI */; };
 		922E93882F41A5D200B7C2EC /* LNPopupUI in Embed Frameworks */ = {isa = PBXBuildFile; productRef = 922E93862F41A5D200B7C2EC /* LNPopupUI */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		926AE2662F65E65600F98A99 /* BasicContainers in Frameworks */ = {isa = PBXBuildFile; productRef = 926AE2652F65E65600F98A99 /* BasicContainers */; };
+		926AE2682F65E65600F98A99 /* BitCollections in Frameworks */ = {isa = PBXBuildFile; productRef = 926AE2672F65E65600F98A99 /* BitCollections */; };
+		926AE26A2F65E65600F98A99 /* Collections in Frameworks */ = {isa = PBXBuildFile; productRef = 926AE2692F65E65600F98A99 /* Collections */; };
+		926AE26C2F65E65600F98A99 /* ContainersPreview in Frameworks */ = {isa = PBXBuildFile; productRef = 926AE26B2F65E65600F98A99 /* ContainersPreview */; };
+		926AE26E2F65E65600F98A99 /* DequeModule in Frameworks */ = {isa = PBXBuildFile; productRef = 926AE26D2F65E65600F98A99 /* DequeModule */; };
 		929AA43B2F475DCA00B5A347 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 182465DE2F3DD32000125667 /* WidgetKit.framework */; };
 		929AA43C2F475DCA00B5A347 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 182465E02F3DD32000125667 /* SwiftUI.framework */; };
 		929AA44D2F475DCD00B5A347 /* TriTrack GlanceExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 929AA43A2F475DCA00B5A347 /* TriTrack GlanceExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
@@ -106,6 +111,11 @@
 		184B28762F2626090086424A /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			files = (
+				926AE2682F65E65600F98A99 /* BitCollections in Frameworks */,
+				926AE2662F65E65600F98A99 /* BasicContainers in Frameworks */,
+				926AE26A2F65E65600F98A99 /* Collections in Frameworks */,
+				926AE26E2F65E65600F98A99 /* DequeModule in Frameworks */,
+				926AE26C2F65E65600F98A99 /* ContainersPreview in Frameworks */,
 				92B4B1C02F37F7D7004FA6E3 /* FSCalendar in Frameworks */,
 				922E93872F41A5D200B7C2EC /* LNPopupUI in Frameworks */,
 			);
@@ -184,6 +194,11 @@
 			packageProductDependencies = (
 				184B2D002F2650000086424A /* FSCalendar */,
 				922E93862F41A5D200B7C2EC /* LNPopupUI */,
+				926AE2652F65E65600F98A99 /* BasicContainers */,
+				926AE2672F65E65600F98A99 /* BitCollections */,
+				926AE2692F65E65600F98A99 /* Collections */,
+				926AE26B2F65E65600F98A99 /* ContainersPreview */,
+				926AE26D2F65E65600F98A99 /* DequeModule */,
 			);
 			productName = "MomCare+";
 			productReference = 184B28792F2626090086424A /* MomCare.app */;
@@ -238,6 +253,7 @@
 			packageReferences = (
 				184B2CFF2F2650000086424A /* XCRemoteSwiftPackageReference "FSCalendar" */,
 				92C3EEB02F3EEAD8001C8C9B /* XCRemoteSwiftPackageReference "LNPopupUI" */,
+				926AE2642F65E65600F98A99 /* XCRemoteSwiftPackageReference "swift-collections" */,
 			);
 			preferredProjectObjectVersion = 90;
 			productRefGroup = 184B287A2F2626090086424A /* Products */;
@@ -443,7 +459,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 15.0;
-				MARKETING_VERSION = 0.18.2;
+				MARKETING_VERSION = 0.18.3;
 				PRODUCT_BUNDLE_IDENTIFIER = com.Team05.MomCare;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -504,7 +520,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 15.0;
-				MARKETING_VERSION = 0.18.2;
+				MARKETING_VERSION = 0.18.3;
 				PRODUCT_BUNDLE_IDENTIFIER = com.Team05.MomCare;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -548,7 +564,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 0.18.2;
+				MARKETING_VERSION = 0.18.3;
 				PRODUCT_BUNDLE_IDENTIFIER = com.Team05.MomCare.TriTrackGlance;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
@@ -588,7 +604,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 0.18.2;
+				MARKETING_VERSION = 0.18.3;
 				PRODUCT_BUNDLE_IDENTIFIER = com.Team05.MomCare.TriTrackGlance;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
@@ -647,6 +663,14 @@
 				kind = branch;
 			};
 		};
+		926AE2642F65E65600F98A99 /* XCRemoteSwiftPackageReference "swift-collections" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/apple/swift-collections.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.4.0;
+			};
+		};
 		92C3EEB02F3EEAD8001C8C9B /* XCRemoteSwiftPackageReference "LNPopupUI" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/LeoNatan/LNPopupUI";
@@ -667,6 +691,31 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 92C3EEB02F3EEAD8001C8C9B /* XCRemoteSwiftPackageReference "LNPopupUI" */;
 			productName = LNPopupUI;
+		};
+		926AE2652F65E65600F98A99 /* BasicContainers */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 926AE2642F65E65600F98A99 /* XCRemoteSwiftPackageReference "swift-collections" */;
+			productName = BasicContainers;
+		};
+		926AE2672F65E65600F98A99 /* BitCollections */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 926AE2642F65E65600F98A99 /* XCRemoteSwiftPackageReference "swift-collections" */;
+			productName = BitCollections;
+		};
+		926AE2692F65E65600F98A99 /* Collections */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 926AE2642F65E65600F98A99 /* XCRemoteSwiftPackageReference "swift-collections" */;
+			productName = Collections;
+		};
+		926AE26B2F65E65600F98A99 /* ContainersPreview */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 926AE2642F65E65600F98A99 /* XCRemoteSwiftPackageReference "swift-collections" */;
+			productName = ContainersPreview;
+		};
+		926AE26D2F65E65600F98A99 /* DequeModule */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 926AE2642F65E65600F98A99 /* XCRemoteSwiftPackageReference "swift-collections" */;
+			productName = DequeModule;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

@@ -4,14 +4,12 @@ struct DashboardExerciseCard: View {
 
     // MARK: Internal
 
-    @State var seconds: Double = 0
-
     let calories: Int
 
     var body: some View {
         HStack {
             VStack(alignment: .leading, spacing: 18) {
-                ExerciseRow(color: .red, icon: "figure.walk", value: "\(Int(healthKitHandler.currentSteps)) Steps")
+                ExerciseRow(color: .red, icon: "figure.walk", value: "\(Int(contentServiceHandler.currentSteps)) Steps")
                 ExerciseRow(color: .green, icon: "timer", value: displaySeconds)
                 ExerciseRow(color: .orange, icon: "flame.fill", value: "\(Int(calories)) Kcal")
             }
@@ -19,7 +17,7 @@ struct DashboardExerciseCard: View {
             Spacer()
 
             ActivityRingView(
-                move: healthKitHandler.stepsProgress,
+                move: contentServiceHandler.stepsProgress,
                 exercise: exerciseProgress,
                 stand: standProgress
             )
@@ -32,45 +30,49 @@ struct DashboardExerciseCard: View {
         .accessibilityElement(children: .contain)
         .accessibilityLabel("Exercise activity")
         .accessibilityIdentifier("dashboardExerciseCard")
-        .onChange(of: healthKitHandler.userExercises) {
-            Task {
-                await healthKitHandler.fetchTotalDuration()
-                exerciseProgress = await UserExerciseModel.totalDurationCompletionPercent(from: healthKitHandler.userExercises)
-            }
+        .onAppear {
+            displaySeconds = formatSeconds(contentServiceHandler.totalUserExercisesCompletionDuration)
+
+            updateExerciseProgress()
         }
-        .onChange(of: healthKitHandler.userExercises) {
-            Task {
-                let totalCompletion = await UserExerciseModel.totalDurationCompletion(from: healthKitHandler.userExercises)
-                seconds = totalCompletion / 60
+        .onChange(of: contentServiceHandler.userExercises) {
+            displaySeconds = formatSeconds(contentServiceHandler.totalUserExercisesCompletionDuration)
 
-                let measurement = Measurement(value: seconds, unit: UnitDuration.minutes)
-
-                let formatter = MeasurementFormatter()
-                formatter.unitOptions = .providedUnit
-
-                let numberFormatter = NumberFormatter()
-                numberFormatter.maximumFractionDigits = 2
-
-                formatter.numberFormatter = numberFormatter
-
-                displaySeconds = formatter.string(from: measurement)
-            }
-        }
-        .task {
-            if let networkResponse = try? await ContentService.shared.fetchUserExercises(), let userExercises = networkResponse.data {
-                healthKitHandler.userExercises = userExercises
-            }
+            updateExerciseProgress()
         }
     }
 
     // MARK: Private
 
-    @State private var displaySeconds: String = "0 min"
+    @State private var displaySeconds: String?
 
-    @EnvironmentObject private var healthKitHandler: HealthKitHandler
+    @EnvironmentObject private var contentServiceHandler: ContentServiceHandler
 
     @State private var exerciseProgress: Double = 0
     @State private var standProgress: Double = 0
+
+    private func formatSeconds(_ seconds: Double) -> String {
+        let duration = Measurement(value: seconds, unit: UnitDuration.seconds)
+
+        let totalSeconds = Int(duration.value)
+        let minutes = totalSeconds / 60
+        let remainingSeconds = totalSeconds % 60
+
+        if minutes == 0 {
+            return "\(remainingSeconds) sec"
+        }
+
+        return remainingSeconds == 0 ? "\(minutes) min" : "\(minutes) min, \(remainingSeconds) sec"
+
+    }
+
+    private func updateExerciseProgress() {
+        if contentServiceHandler.totalUserExercisesDuration > 0 {
+            exerciseProgress = contentServiceHandler.totalUserExercisesCompletionDuration / contentServiceHandler.totalUserExercisesDuration
+        } else {
+            exerciseProgress = 0
+        }
+    }
 
 }
 
@@ -80,7 +82,7 @@ struct ExerciseRow: View {
 
     let color: Color
     let icon: String
-    let value: String
+    let value: String?
 
     var body: some View {
         HStack(spacing: 12) {
@@ -95,14 +97,20 @@ struct ExerciseRow: View {
             }
             .accessibilityHidden(true)
 
-            Text(value)
-                .font(.title3)
-                .fontWeight(.regular)
-                .contentTransition(.numericText())
-                .animation(reduceMotion ? nil : .spring(response: 0.4, dampingFraction: 0.7), value: value)
+            if let value {
+                Text(value)
+                    .font(.title3)
+                    .fontWeight(.regular)
+                    .contentTransition(.numericText())
+                    .animation(reduceMotion ? nil : .spring(response: 0.4, dampingFraction: 0.7), value: value)
+            } else {
+                ProgressView()
+                    .progressViewStyle(CircularProgressViewStyle(tint: color))
+                    .accessibilityLabel("Loading \(icon) data")
+            }
         }
         .accessibilityElement(children: .ignore)
-        .accessibilityLabel(value)
+        .accessibilityLabel(value ?? "Loading")
         .accessibilityAddTraits(.updatesFrequently)
     }
 

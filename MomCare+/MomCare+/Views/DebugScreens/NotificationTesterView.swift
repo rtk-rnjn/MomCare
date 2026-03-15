@@ -11,6 +11,7 @@ struct NotificationTesterView: View {
                 HStack {
                     Image(systemName: permissionIcon)
                         .foregroundStyle(permissionColor)
+                        .accessibilityHidden(true)
                     VStack(alignment: .leading) {
                         Text("Notification Permission")
                             .font(.subheadline.bold())
@@ -18,10 +19,12 @@ struct NotificationTesterView: View {
                             .font(.caption)
                             .foregroundStyle(.secondary)
                     }
+                    .accessibilityElement(children: .combine)
                     Spacer()
                     if permissionStatus == .notDetermined {
                         Button("Request") { requestPermission() }
                             .font(.caption.bold())
+                            .accessibilityLabel("Request notification permission")
                     }
                 }
             }
@@ -202,5 +205,7 @@ private struct NotifButton: View {
                 .foregroundStyle(isEnabled ? tint : .secondary)
         }
         .disabled(!isEnabled)
+        .accessibilityLabel(label)
+        .accessibilityHint(isEnabled ? "Schedules a notification" : "Notification permission required")
     }
 }

@@ -43,7 +43,7 @@ struct LogsConsoleView: View {
                     .listStyle(.plain)
                     .onChange(of: store.logEntries.count) {
                         if autoScroll, let first = filtered.first {
-                            withAnimation { proxy.scrollTo(first.id, anchor: .top) }
+                            withAnimation(reduceMotion ? nil : .default) { proxy.scrollTo(first.id, anchor: .top) }
                         }
                     }
                 }
@@ -80,6 +80,7 @@ struct LogsConsoleView: View {
     @State private var selectedCategory: DebugLogEntry.LogCategory = .all
     @State private var searchText = ""
     @State private var autoScroll = true
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     private var filtered: [DebugLogEntry] {
         store.logEntries.filter { entry in
@@ -111,6 +112,7 @@ private struct DebugLogEntryRow: View {
                 Image(systemName: entry.level.icon)
                     .font(.caption2)
                     .foregroundStyle(entry.level.color)
+                    .accessibilityHidden(true)
                 Text(entry.timestamp, format: .dateTime.hour().minute().second())
                     .font(.caption2.monospacedDigit())
                     .foregroundStyle(.secondary)
@@ -124,10 +126,16 @@ private struct DebugLogEntryRow: View {
                 .textSelection(.enabled)
         }
         .padding(.vertical, 1)
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel("\(entry.level.rawValue) log, \(entry.category.rawValue): \(entry.message.prefix(100))")
+        .accessibilityValue(entry.timestamp.formatted(.dateTime.hour().minute().second()))
     }
 }
 
 private struct CategoryChip: View {
+
+    // MARK: Internal
+
     let cat: DebugLogEntry.LogCategory
     let isSelected: Bool
     let count: Int
@@ -137,6 +145,7 @@ private struct CategoryChip: View {
         Button(action: action) {
             HStack(spacing: 4) {
                 Image(systemName: cat.icon).font(.caption)
+                    .accessibilityHidden(true)
                 Text(cat.rawValue).font(.caption.bold())
                 Text("\(count)")
                     .font(.caption2)
@@ -149,8 +158,17 @@ private struct CategoryChip: View {
             .background(isSelected ? Color.accentColor : Color(.systemBackground))
             .foregroundStyle(isSelected ? Color.white : Color.primary)
             .clipShape(Capsule())
-            .shadow(color: isSelected ? .accentColor.opacity(0.3) : .clear, radius: 4)
         }
         .buttonStyle(.plain)
+        .animation(reduceMotion ? nil : .snappy, value: isSelected)
+        .accessibilityLabel(cat.rawValue)
+        .accessibilityValue(isSelected ? "selected" : "not selected")
+        .accessibilityHint("Filters logs by \(cat.rawValue) category")
+        .accessibilityAddTraits(isSelected ? [.isButton, .isSelected] : .isButton)
     }
+
+    // MARK: Private
+
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+
 }

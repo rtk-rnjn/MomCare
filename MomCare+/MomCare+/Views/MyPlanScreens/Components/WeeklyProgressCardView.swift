@@ -1,21 +1,5 @@
 import SwiftUI
 
-struct DayProgress: Identifiable {
-    let id: UUID = .init()
-    let date: Date
-    let completionPercentage: Double = 0
-
-    var dayName: String {
-        let formatter = DateFormatter()
-        formatter.locale = Locale.current
-        formatter.dateFormat = "EEEE"
-
-        let dayName = formatter.string(from: date)
-        return String(dayName.prefix(3))
-    }
-
-}
-
 struct WeeklyProgressCardView: View {
 
     // MARK: Internal
@@ -38,10 +22,12 @@ struct WeeklyProgressCardView: View {
                     .font(.subheadline)
                     .foregroundColor(.secondary)
                     .accessibilityHidden(true)
+                    .contentTransition(reduceMotion ? .identity : .numericText(value: Double(weekday)))
+                    .animation(reduceMotion ? nil : .easeInOut, value: weekday)
             }
 
             HStack(spacing: 0) {
-                ForEach(weeklyProgress) { day in
+                ForEach(contentServiceHandler.weeklyProgress) { day in
                     DayRingView(dayName: day.dayName, progress: day.completionPercentage, date: day.date)
                         .frame(maxWidth: .infinity)
                 }
@@ -59,6 +45,8 @@ struct WeeklyProgressCardView: View {
                         Text("Total: \(completedCount)/\(totalCount)")
                             .font(.subheadline.weight(.semibold))
                             .foregroundColor(.primary)
+                            .contentTransition(reduceMotion ? .identity : .numericText(value: Double(completedCount)))
+                            .animation(reduceMotion ? nil : .easeInOut, value: completedCount)
                     }
 
                     Spacer()
@@ -66,6 +54,8 @@ struct WeeklyProgressCardView: View {
                     Text("\(Int(overallProgress * 100))%")
                         .font(.subheadline.weight(.bold))
                         .foregroundColor(Color.CustomColors.mutedRaspberry)
+                        .contentTransition(reduceMotion ? .identity : .numericText(value: overallProgress))
+                        .animation(reduceMotion ? nil : .easeInOut, value: overallProgress)
                 }
 
                 GeometryReader { geo in
@@ -76,6 +66,7 @@ struct WeeklyProgressCardView: View {
                         Capsule()
                             .fill(Color.CustomColors.mutedRaspberry)
                             .frame(width: geo.size.width * overallProgress)
+                            .animation(reduceMotion ? nil : .easeInOut, value: overallProgress)
                     }
                 }
                 .frame(height: 8)
@@ -91,19 +82,12 @@ struct WeeklyProgressCardView: View {
             RoundedRectangle(cornerRadius: 24, style: .continuous)
                 .fill(Color(.systemBackground))
         )
-        .task {
-            let range = Utils.weekRange(containing: Date())
-            var temp = [DayProgress]()
-            for date in range {
-                temp.append(DayProgress(date: date))
-            }
-            weeklyProgress = temp
-        }
     }
 
     // MARK: Private
 
-    @State private var weeklyProgress: [DayProgress] = []
+    @EnvironmentObject private var contentServiceHandler: ContentServiceHandler
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     private var overallProgress: Double {
         guard totalCount > 0 else { return 0 }
@@ -113,6 +97,9 @@ struct WeeklyProgressCardView: View {
 }
 
 private struct DayRingView: View {
+
+    // MARK: Internal
+
     let dayName: String
     let progress: Double
     let date: Date
@@ -134,6 +121,7 @@ private struct DayRingView: View {
                         style: StrokeStyle(lineWidth: 4, lineCap: .round)
                     )
                     .rotationEffect(.degrees(-90))
+                    .animation(reduceMotion ? nil : .easeInOut, value: progress)
 
                 if progress >= 1.0 {
                     Image(systemName: "checkmark")
@@ -147,4 +135,24 @@ private struct DayRingView: View {
         .accessibilityLabel(dayName)
         .accessibilityValue(progress >= 1.0 ? "completed" : "\(Int(progress * 100)) percent")
     }
+
+    // MARK: Private
+
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+}
+
+struct DayProgress: Identifiable {
+    let id: UUID = .init()
+    let date: Date
+    var completionPercentage: Double
+
+    var dayName: String {
+        let formatter = DateFormatter()
+        formatter.locale = Locale.current
+        formatter.dateFormat = "EEEE"
+
+        let dayName = formatter.string(from: date)
+        return String(dayName.prefix(3))
+    }
+
 }

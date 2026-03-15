@@ -23,7 +23,7 @@ extension ContentService {
         return try await NetworkManager.shared.get(url: url, headers: AuthenticationService.authorizationHeaders)
     }
 
-    func updateExerciseCompletion(exerciseId id: String, duration: TimeInterval) async throws -> NetworkResponse<Bool> {
+    func updateExerciseCompletion(userExerciseId id: String, duration: TimeInterval) async throws -> NetworkResponse<Bool> {
         let url = Endpoint.updateExerciseDuration.urlString(with: id)
         let exerciseDuration = ExerciseDuration(duration: duration)
         guard let data = exerciseDuration.encodeUsingJSONEncoder() else {

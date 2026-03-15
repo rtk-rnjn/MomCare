@@ -17,14 +17,6 @@ struct DashboardView: View {
             .frame(maxWidth: .infinity)
             .padding(.top, 20)
         }
-        .refreshable {
-            _ = try? await authenticationService.refresh()
-            await fetchDailyInsights()
-            try? eventKitHandler.fetchAllEvents()
-            try? await healthKitHandler.fetchMealPlan()
-
-            UIImpactFeedbackGenerator(style: .medium).impactOccurred()
-        }
         .background(Color(.secondarySystemGroupedBackground))
         .navigationTitle("ProgressHub")
         .navigationBarTitleDisplayMode(.large)
@@ -39,14 +31,12 @@ struct DashboardView: View {
                     controlState.triTrackSegment = .meAndBaby
                 }
 
-            if let event = eventKitHandler.mostRecentEvent {
-                DashboardEventCardView(upcomingEvent: eventKitHandler.mostRecentEvent)
+            if let event = eventKitHandler.onGoingOrMostRecentUpcomingEvent {
+                DashboardEventCardView(upcomingEvent: event)
                     .frame(maxWidth: .infinity)
                     .contextMenu {
                         Button {
-                            if let upcomingEvent = eventKitHandler.mostRecentEvent {
-                                selectedEvent = EKCalendarItemWrapper(item: upcomingEvent)
-                            }
+                            selectedEvent = EKCalendarItemWrapper(item: event)
                         } label: {
                             Label("View Details", systemImage: "eye")
                         }
@@ -54,7 +44,7 @@ struct DashboardView: View {
                         TriTrackEventDetailsContextView(event: event)
                     }
             } else {
-                DashboardEventCardView(upcomingEvent: eventKitHandler.mostRecentEvent)
+                DashboardEventCardView(upcomingEvent: eventKitHandler.onGoingOrMostRecentUpcomingEvent)
                     .frame(maxWidth: .infinity)
             }
         }
@@ -76,8 +66,8 @@ struct DashboardView: View {
                 .accessibilityAddTraits(.isHeader)
 
             DashboardDietCardView(
-                consumed: healthKitHandler.nurtitionConsumedTotals?.calories ?? 0,
-                goal: healthKitHandler.nutritionTargetTotals?.calories ?? 0
+                consumed: contentServiceHandler.nurtitionConsumedTotals?.calories ?? 0,
+                goal: contentServiceHandler.nutritionTargetTotals?.calories ?? 0
             )
             .padding(.horizontal)
             .onTapGesture {
@@ -88,7 +78,7 @@ struct DashboardView: View {
             .accessibilityHint("Double tap to view your diet plan")
 
             DashboardExerciseCard(
-                calories: healthKitHandler.caloriesBurned
+                calories: contentServiceHandler.caloriesBurned
             )
             .padding(.horizontal)
             .onTapGesture {
@@ -111,13 +101,13 @@ struct DashboardView: View {
             HStack(spacing: 16) {
                 DashboardInsightCardView(
                     title: "Today's Focus",
-                    message: healthKitHandler.todayFocusText,
+                    message: contentServiceHandler.todayFocusText,
                     icon: "target"
                 )
 
                 DashboardInsightCardView(
                     title: "Daily Tip",
-                    message: healthKitHandler.dailyTipText,
+                    message: contentServiceHandler.dailyTipText,
                     icon: "lightbulb"
                 )
             }
@@ -125,18 +115,9 @@ struct DashboardView: View {
         }
     }
 
-    func fetchDailyInsights() async {
-        guard let networkResponse = try? await ContentService.shared.fetchDailyInsights() else {
-            return
-        }
-
-        healthKitHandler.todayFocusText = networkResponse.data?.todaysFocus ?? "Unable to fetch today's focus"
-        healthKitHandler.dailyTipText = networkResponse.data?.dailyTip ?? "Unable to fetch today's tip"
-    }
-
     // MARK: Private
 
-    @EnvironmentObject private var healthKitHandler: HealthKitHandler
+    @EnvironmentObject private var contentServiceHandler: ContentServiceHandler
     @EnvironmentObject private var eventKitHandler: EventKitHandler
 
     @EnvironmentObject private var controlState: ControlState

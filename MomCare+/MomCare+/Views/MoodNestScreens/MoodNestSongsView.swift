@@ -5,12 +5,6 @@ import UIKit
 
 struct MoodNestSongsView: View {
 
-    // MARK: Lifecycle
-
-    init(playlist: PlaylistModel) {
-        self.playlist = playlist
-    }
-
     // MARK: Internal
 
     @State var playlist: PlaylistModel

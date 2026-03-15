@@ -7,8 +7,8 @@ struct MyPlanExercisePlanView: View {
     var body: some View {
         VStack(spacing: 12) {
             WeeklyProgressCardView(
-                completedCount: exercisesCompleted + (breathingCompleted ? 1 : 0) + (walkingCompleted ? 1 : 0),
-                totalCount: healthKitHandler.userExercises.count + 2
+                completedCount: contentServiceHandler.totalUserExercisesCompleted + (breathingCompleted ? 1 : 0) + (walkingCompleted ? 1 : 0),
+                totalCount: contentServiceHandler.userExercises.count + 2
             )
             .padding(.horizontal, 16)
 
@@ -31,7 +31,7 @@ struct MyPlanExercisePlanView: View {
                             }
                         })
 
-                        ForEach(healthKitHandler.userExercises) { exercise in
+                        ForEach(contentServiceHandler.userExercises) { exercise in
                             ExerciseCardView(
                                 userExerciseModel: exercise,
                                 onInfo: {
@@ -60,36 +60,33 @@ struct MyPlanExercisePlanView: View {
             }
         }
         .onAppear {
-            _ = healthKitHandler.fetchBreathingCompletionDuration(for: Date())
-            walkingCompleted = healthKitHandler.currentSteps >= healthKitHandler.targetSteps
-            breathingCompleted = healthKitHandler.breathingCompletionDuration >= healthKitHandler.breathingTargetInSeconds
+            _ = contentServiceHandler.fetchBreathingCompletionDuration(for: Date())
+            walkingCompleted = contentServiceHandler.currentSteps >= contentServiceHandler.targetSteps
+            breathingCompleted = contentServiceHandler.breathingCompletionDuration >= contentServiceHandler.breathingTargetInSeconds
+
         }
-        .task {
-            exercisesCompleted = await UserExerciseModel.totalCompletion(from: healthKitHandler.userExercises)
+        .onChange(of: contentServiceHandler.breathingCompletionDuration) {
+            breathingCompleted = contentServiceHandler.breathingCompletionDuration >= contentServiceHandler.breathingTargetInSeconds
         }
-        .onChange(of: healthKitHandler.userExercises) {
+        .onChange(of: contentServiceHandler.currentSteps) {
+            walkingCompleted = contentServiceHandler.currentSteps >= contentServiceHandler.targetSteps
+        }
+        .onChange(of: contentServiceHandler.userExercises) {
             Task {
-                exercisesCompleted = await UserExerciseModel.totalCompletion(from: healthKitHandler.userExercises)
+                await contentServiceHandler.fetchTotalUserExercisesCompleted()
             }
-        }
-        .onChange(of: healthKitHandler.breathingCompletionDuration) {
-            breathingCompleted = healthKitHandler.breathingCompletionDuration >= healthKitHandler.breathingTargetInSeconds
-        }
-        .onChange(of: healthKitHandler.currentSteps) {
-            walkingCompleted = healthKitHandler.currentSteps >= healthKitHandler.targetSteps
         }
     }
 
     // MARK: Private
 
-    @EnvironmentObject private var healthKitHandler: HealthKitHandler
+    @EnvironmentObject private var contentServiceHandler: ContentServiceHandler
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     @State private var selectedExerciseInfo: UserExerciseModel?
     @State private var showingExerciseInfo = false
     @State private var showingBreathingInfo = false
 
-    @State private var exercisesCompleted: Int = 0
     @State private var breathingCompleted: Bool = false
     @State private var walkingCompleted: Bool = false
 

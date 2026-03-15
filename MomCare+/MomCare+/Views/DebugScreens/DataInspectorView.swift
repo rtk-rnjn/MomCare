@@ -22,6 +22,8 @@ struct DataInspectorView: View {
                                 .lineLimit(3)
                         }
                         .padding(.vertical, 2)
+                        .accessibilityElement(children: .ignore)
+                        .accessibilityLabel("\(entry.key): \(entry.value)")
                     }
                 }
             }
@@ -49,6 +51,8 @@ struct DataInspectorView: View {
                                 .font(.caption2.monospacedDigit())
                                 .foregroundStyle(.secondary)
                         }
+                        .accessibilityElement(children: .ignore)
+                        .accessibilityLabel("\(file.name), \(file.formattedSize)")
                     }
                 }
             }

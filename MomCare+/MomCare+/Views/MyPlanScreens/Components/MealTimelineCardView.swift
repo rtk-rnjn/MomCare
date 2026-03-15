@@ -6,23 +6,23 @@ struct MealTimelineCardView: View {
 
     var body: some View {
         VStack(spacing: 0) {
-            HeaderRow(section: MealSection(title: "Breakfast", items: healthKitHandler.myPlanModel?.breakfast ?? []), hideTopLine: true, hideBottomLine: false, mealType: .breakfast) { consumed in
+            HeaderRow(section: MealSection(title: "Breakfast", items: contentServiceHandler.myPlanModel?.breakfast ?? []), hideTopLine: true, hideBottomLine: false, mealType: .breakfast) { consumed in
                 do {
-                    try await healthKitHandler.markFoodsAs(consumed: !consumed, mealType: .breakfast)
+                    try await contentServiceHandler.markFoodsAs(consumed: !consumed, mealType: .breakfast)
                 } catch {
                     alertMessage = error.localizedDescription
                     showErrorAlert = true
                 }
             }
 
-            ForEach(healthKitHandler.myPlanModel?.breakfast ?? []) { item in
+            ForEach(contentServiceHandler.myPlanModel?.breakfast ?? []) { item in
                 ItemRow(
                     item: item,
                     hideTopLine: false,
                     hideBottomLine: false,
                     onToggle: { consumed in
                         do {
-                            try await healthKitHandler.markFoodAs(consumed: !consumed, in: .breakfast, foodReference: item)
+                            try await contentServiceHandler.markFoodAs(consumed: !consumed, in: .breakfast, foodReference: item)
                         } catch {
                             alertMessage = error.localizedDescription
                             showErrorAlert = true
@@ -30,8 +30,8 @@ struct MealTimelineCardView: View {
                     },
                     onDelete: {
                         do {
-                            try await healthKitHandler.markFoodAs(consumed: false, in: .breakfast, foodReference: item)
-                            try await healthKitHandler.removeFoodFromPlan(foodId: item.foodId, mealType: .breakfast)
+                            try await contentServiceHandler.markFoodAs(consumed: false, in: .breakfast, foodReference: item)
+                            try await contentServiceHandler.removeFoodFromPlan(foodId: item.foodId, mealType: .breakfast)
                         } catch {
                             alertMessage = error.localizedDescription
                             showErrorAlert = true
@@ -40,23 +40,23 @@ struct MealTimelineCardView: View {
                 )
             }
 
-            HeaderRow(section: MealSection(title: "Lunch", items: healthKitHandler.myPlanModel?.lunch ?? []), hideTopLine: false, hideBottomLine: false, mealType: .lunch) { consumed in
+            HeaderRow(section: MealSection(title: "Lunch", items: contentServiceHandler.myPlanModel?.lunch ?? []), hideTopLine: false, hideBottomLine: false, mealType: .lunch) { consumed in
                 do {
-                    try await healthKitHandler.markFoodsAs(consumed: !consumed, mealType: .lunch)
+                    try await contentServiceHandler.markFoodsAs(consumed: !consumed, mealType: .lunch)
                 } catch {
                     alertMessage = error.localizedDescription
                     showErrorAlert = true
                 }
             }
 
-            ForEach(healthKitHandler.myPlanModel?.lunch ?? []) { item in
+            ForEach(contentServiceHandler.myPlanModel?.lunch ?? []) { item in
                 ItemRow(
                     item: item,
                     hideTopLine: false,
                     hideBottomLine: false,
                     onToggle: { consumed in
                         do {
-                            try await healthKitHandler.markFoodAs(consumed: !consumed, in: .lunch, foodReference: item)
+                            try await contentServiceHandler.markFoodAs(consumed: !consumed, in: .lunch, foodReference: item)
                         } catch {
                             alertMessage = error.localizedDescription
                             showErrorAlert = true
@@ -64,8 +64,8 @@ struct MealTimelineCardView: View {
                     },
                     onDelete: {
                         do {
-                            try await healthKitHandler.markFoodAs(consumed: false, in: .lunch, foodReference: item)
-                            try await healthKitHandler.removeFoodFromPlan(foodId: item.foodId, mealType: .lunch)
+                            try await contentServiceHandler.markFoodAs(consumed: false, in: .lunch, foodReference: item)
+                            try await contentServiceHandler.removeFoodFromPlan(foodId: item.foodId, mealType: .lunch)
                         } catch {
                             alertMessage = error.localizedDescription
                             showErrorAlert = true
@@ -74,23 +74,23 @@ struct MealTimelineCardView: View {
                 )
             }
 
-            HeaderRow(section: MealSection(title: "Snacks", items: healthKitHandler.myPlanModel?.snacks ?? []), hideTopLine: false, hideBottomLine: false, mealType: .snacks) { consumed in
+            HeaderRow(section: MealSection(title: "Snacks", items: contentServiceHandler.myPlanModel?.snacks ?? []), hideTopLine: false, hideBottomLine: false, mealType: .snacks) { consumed in
                 do {
-                    try await healthKitHandler.markFoodsAs(consumed: !consumed, mealType: .snacks)
+                    try await contentServiceHandler.markFoodsAs(consumed: !consumed, mealType: .snacks)
                 } catch {
                     alertMessage = error.localizedDescription
                     showErrorAlert = true
                 }
             }
 
-            ForEach(healthKitHandler.myPlanModel?.snacks ?? []) { item in
+            ForEach(contentServiceHandler.myPlanModel?.snacks ?? []) { item in
                 ItemRow(
                     item: item,
                     hideTopLine: false,
                     hideBottomLine: false,
                     onToggle: { consumed in
                         do {
-                            try await healthKitHandler.markFoodAs(consumed: !consumed, in: .snacks, foodReference: item)
+                            try await contentServiceHandler.markFoodAs(consumed: !consumed, in: .snacks, foodReference: item)
                         } catch {
                             alertMessage = error.localizedDescription
                             showErrorAlert = true
@@ -98,8 +98,8 @@ struct MealTimelineCardView: View {
                     },
                     onDelete: {
                         do {
-                            try await healthKitHandler.markFoodAs(consumed: false, in: .snacks, foodReference: item)
-                            try await healthKitHandler.removeFoodFromPlan(foodId: item.foodId, mealType: .snacks)
+                            try await contentServiceHandler.markFoodAs(consumed: false, in: .snacks, foodReference: item)
+                            try await contentServiceHandler.removeFoodFromPlan(foodId: item.foodId, mealType: .snacks)
                         } catch {
                             alertMessage = error.localizedDescription
                             showErrorAlert = true
@@ -108,23 +108,23 @@ struct MealTimelineCardView: View {
                 )
             }
 
-            HeaderRow(section: MealSection(title: "Dinner", items: healthKitHandler.myPlanModel?.dinner ?? []), hideTopLine: false, hideBottomLine: healthKitHandler.myPlanModel?.dinner.isEmpty ?? true, mealType: .dinner) { consumed in
+            HeaderRow(section: MealSection(title: "Dinner", items: contentServiceHandler.myPlanModel?.dinner ?? []), hideTopLine: false, hideBottomLine: contentServiceHandler.myPlanModel?.dinner.isEmpty ?? true, mealType: .dinner) { consumed in
                 do {
-                    try await healthKitHandler.markFoodsAs(consumed: !consumed, mealType: .dinner)
+                    try await contentServiceHandler.markFoodsAs(consumed: !consumed, mealType: .dinner)
                 } catch {
                     alertMessage = error.localizedDescription
                     showErrorAlert = true
                 }
             }
 
-            ForEach(healthKitHandler.myPlanModel?.dinner ?? []) { item in
+            ForEach(contentServiceHandler.myPlanModel?.dinner ?? []) { item in
                 ItemRow(
                     item: item,
                     hideTopLine: false,
                     hideBottomLine: false,
                     onToggle: { consumed in
                         do {
-                            try await healthKitHandler.markFoodAs(consumed: !consumed, in: .dinner, foodReference: item)
+                            try await contentServiceHandler.markFoodAs(consumed: !consumed, in: .dinner, foodReference: item)
                         } catch {
                             alertMessage = error.localizedDescription
                             showErrorAlert = true
@@ -132,8 +132,8 @@ struct MealTimelineCardView: View {
                     },
                     onDelete: {
                         do {
-                            try await healthKitHandler.markFoodAs(consumed: false, in: .dinner, foodReference: item)
-                            try await healthKitHandler.removeFoodFromPlan(foodId: item.foodId, mealType: .dinner)
+                            try await contentServiceHandler.markFoodAs(consumed: false, in: .dinner, foodReference: item)
+                            try await contentServiceHandler.removeFoodFromPlan(foodId: item.foodId, mealType: .dinner)
                         } catch {
                             alertMessage = error.localizedDescription
                             showErrorAlert = true
@@ -154,7 +154,7 @@ struct MealTimelineCardView: View {
 
     // MARK: Private
 
-    @EnvironmentObject private var healthKitHandler: HealthKitHandler
+    @EnvironmentObject private var contentServiceHandler: ContentServiceHandler
     @State private var showErrorAlert = false
     @State private var alertMessage: String?
 
@@ -181,7 +181,7 @@ private struct HeaderRow: View {
             .onTapGesture {
                 Task {
                     await onToggle(section.isCompleted)
-                    try? await healthKitHandler.fetchMealPlan(makeNetworkCall: false)
+                    try? await contentServiceHandler.fetchMealPlan(makeNetworkCall: false)
                 }
             }
             .accessibilityLabel(section.isCompleted ? "Mark \(section.title) as not completed" : "Mark \(section.title) as completed")
@@ -219,7 +219,7 @@ private struct HeaderRow: View {
 
     // MARK: Private
 
-    @EnvironmentObject private var healthKitHandler: HealthKitHandler
+    @EnvironmentObject private var contentServiceHandler: ContentServiceHandler
 
     @State private var showSearchFoodSheet = false
     @State private var selectedFood: FoodItemModel?
@@ -247,7 +247,7 @@ private struct ItemRow: View {
             .onTapGesture {
                 Task {
                     await onToggle(item.isConsumed)
-                    try? await healthKitHandler.fetchMealPlan(makeNetworkCall: false)
+                    try? await contentServiceHandler.fetchMealPlan(makeNetworkCall: false)
                 }
             }
             .accessibilityLabel(item.isConsumed ? "Mark as not consumed" : "Mark as consumed")
@@ -288,7 +288,7 @@ private struct ItemRow: View {
 
     // MARK: Private
 
-    @EnvironmentObject private var healthKitHandler: HealthKitHandler
+    @EnvironmentObject private var contentServiceHandler: ContentServiceHandler
 
     @State private var food: FoodItemModel?
 
@@ -380,14 +380,14 @@ private struct MealContextMenu: ViewModifier {
 
     // MARK: Private
 
-    @EnvironmentObject private var healthKitHandler: HealthKitHandler
+    @EnvironmentObject private var contentServiceHandler: ContentServiceHandler
 
     @ViewBuilder
     private var menuButtons: some View {
         Button {
             Task {
                 await onToggle(item.isConsumed)
-                try? await healthKitHandler.fetchMealPlan()
+                try? await contentServiceHandler.fetchMealPlan()
             }
         } label: {
             Label(

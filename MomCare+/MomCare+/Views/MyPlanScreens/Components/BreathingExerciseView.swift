@@ -1,94 +1,78 @@
 import SwiftUI
 
-enum BreathingPhase: String {
-    case breatheIn = "Breathe In"
-    case hold = "Hold"
-    case breatheOut = "Breathe Out"
-    case ready = "Get Ready"
-    case done = "Well Done 🎉"
-
-    // MARK: Internal
-
-    var duration: Double {
-        switch self {
-        case .breatheIn: 4.0
-        case .hold: 4.0
-        case .breatheOut: 6.0
-        case .ready: 3.0
-        case .done: 0
-        }
-    }
-
-    var next: BreathingPhase {
-        switch self {
-        case .ready: .breatheIn
-        case .breatheIn: .hold
-        case .hold: .breatheOut
-        case .breatheOut: .breatheIn
-        case .done: .done
-        }
-    }
-
-    var circleScale: CGFloat {
-        switch self {
-        case .breatheIn: 1.0
-        case .hold: 1.0
-        case .breatheOut: 0.6
-        case .ready: 0.6
-        case .done: 0.85
-        }
-    }
-}
-
 struct BreathingExerciseView: View {
 
     // MARK: Internal
 
     var body: some View {
-        ZStack {
-            LinearGradient(
-                colors: [pastel, Color(hex: "E8F4F8"), Color.white],
-                startPoint: .top,
-                endPoint: .bottom
-            )
-            .ignoresSafeArea()
+        NavigationStack {
+            ZStack {
+                LinearGradient(
+                    colors: [pastel, Color(hex: "E8F4F8"), Color.white],
+                    startPoint: .top,
+                    endPoint: .bottom
+                )
+                .ignoresSafeArea()
 
-            VStack(spacing: 0) {
-                topBar
-                    .padding(.horizontal, 20)
-                    .padding(.top, 12)
+                VStack(spacing: 0) {
+                    Spacer()
 
-                Spacer()
+                    breathingCircle
+                        .padding(.bottom, 20)
 
-                breathingCircle
-                    .padding(.bottom, 20)
+                    phaseLabel
+                        .padding(.bottom, 30)
 
-                phaseLabel
-                    .padding(.bottom, 30)
+                    sessionProgress
+                        .padding(.horizontal, 40)
+                        .padding(.bottom, 20)
 
-                sessionProgress
-                    .padding(.horizontal, 40)
-                    .padding(.bottom, 20)
+                    Spacer()
 
-                Spacer()
-
-                glassControls
-                    .padding(.horizontal, 40)
-                    .padding(.bottom, 40)
+                    glassControls
+                        .padding(.horizontal, 40)
+                        .padding(.bottom, 40)
+                }
             }
+            .toolbar {
+                ToolbarItem(placement: .cancellationAction) {
+                    Button(role: .cancel) {
+                        stopAllTimers()
+                        contentServiceHandler.updateBreathingCompletionDuration(duration: totalElapsed)
+                        dismiss()
+                    }
+                    .accessibilityLabel("Close breathing exercise")
+                }
+
+                ToolbarItem(placement: .principal) {
+                    Text("Breathing Exercise")
+                        .font(.headline.weight(.medium))
+                        .foregroundColor(darkAccent.opacity(0.7))
+                        .accessibilityAddTraits(.isHeader)
+                }
+
+            }
+            .navigationBarTitleDisplayMode(.inline)
+            .navigationSubtitle(
+                Text(formatTime(totalElapsed))
+                    .font(.title3.weight(.semibold))
+                    .foregroundColor(darkAccent)
+                    .monospacedDigit()
+            )
         }
         .onAppear {
             startReadyCountdown()
-            totalElapsed = healthKitHandler.fetchBreathingCompletionDuration(for: Date())
+            totalElapsed = contentServiceHandler.fetchBreathingCompletionDuration(for: Date())
         }
         .onDisappear {
             stopAllTimers()
         }
+
     }
 
     // MARK: Private
 
-    @EnvironmentObject private var healthKitHandler: HealthKitHandler
+    @EnvironmentObject private var contentServiceHandler: ContentServiceHandler
     @Environment(\.dismiss) private var dismiss
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
@@ -113,53 +97,12 @@ struct BreathingExerciseView: View {
     private let deepBlue: Color = .init(hex: "3A6A8B")
 
     private var totalDuration: Double {
-        healthKitHandler.breathingTargetInSeconds
+        contentServiceHandler.breathingTargetInSeconds
     }
 
     private var progress: Double {
         guard totalDuration > 0 else { return 0 }
         return min(totalElapsed / totalDuration, 1.0)
-    }
-
-    private var topBar: some View {
-        HStack {
-            closeButton
-
-            Spacer()
-
-            VStack(spacing: 2) {
-                Text("Breathing")
-                    .font(.caption.weight(.medium))
-                    .foregroundColor(darkAccent.opacity(0.7))
-
-                Text(formatTime(totalElapsed))
-                    .font(.title3.weight(.semibold))
-                    .foregroundColor(darkAccent)
-                    .monospacedDigit()
-            }
-
-            Spacer()
-
-            Color.clear
-                .frame(width: 38, height: 38)
-        }
-    }
-
-    @ViewBuilder
-    private var closeButton: some View {
-        Button {
-            stopAllTimers()
-            healthKitHandler.updateBreathingCompletionDuration(duration: totalElapsed)
-            dismiss()
-        } label: {
-            Image(systemName: "xmark")
-                .font(.subheadline.weight(.semibold))
-        }
-        .buttonStyle(.glass)
-        .buttonBorderShape(.circle)
-        .tint(darkAccent)
-        .accessibilityLabel("Close breathing exercise")
-        .frame(minWidth: 44, minHeight: 44)
     }
 
     private var breathingCircle: some View {
@@ -453,7 +396,7 @@ struct BreathingExerciseView: View {
         if reduceMotion {
             circleScale = scale
         } else {
-            withAnimation(.easeInOut(duration: duration)) {
+            withAnimation(.bouncy) {
                 circleScale = scale
             }
         }
@@ -531,7 +474,46 @@ struct BreathingExerciseView: View {
     private func formatTime(_ seconds: TimeInterval) -> String {
         guard seconds.isFinite, seconds >= 0 else { return "0:00" }
 
-        return Duration.seconds(seconds)
-            .formatted(.time(pattern: .hourMinuteSecond))
+        return Duration.seconds(seconds).formatted(.time(pattern: .minuteSecond))
+    }
+}
+
+enum BreathingPhase: String {
+    case breatheIn = "Breathe In"
+    case hold = "Hold"
+    case breatheOut = "Breathe Out"
+    case ready = "Get Ready"
+    case done = "Well Done 🎉"
+
+    // MARK: Internal
+
+    var duration: Double {
+        switch self {
+        case .breatheIn: 4.0
+        case .hold: 4.0
+        case .breatheOut: 6.0
+        case .ready: 3.0
+        case .done: 0
+        }
+    }
+
+    var next: BreathingPhase {
+        switch self {
+        case .ready: .breatheIn
+        case .breatheIn: .hold
+        case .hold: .breatheOut
+        case .breatheOut: .breatheIn
+        case .done: .done
+        }
+    }
+
+    var circleScale: CGFloat {
+        switch self {
+        case .breatheIn: 1.0
+        case .hold: 1.0
+        case .breatheOut: 0.6
+        case .ready: 0.6
+        case .done: 0.85
+        }
     }
 }

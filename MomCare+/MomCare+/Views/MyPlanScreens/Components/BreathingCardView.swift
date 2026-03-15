@@ -87,7 +87,7 @@ struct BreathingCardView: View {
 
     // MARK: Private
 
-    @EnvironmentObject private var healthKitHandler: HealthKitHandler
+    @EnvironmentObject private var contentServiceHandler: ContentServiceHandler
 
     @State private var completionProgress: Double = 0
     @State private var startBreathingPlayer: Bool = false
@@ -101,7 +101,7 @@ struct BreathingCardView: View {
     }
 
     private func updateProgress() {
-        completionProgress = healthKitHandler.fetchBreathingCompletionDuration(for: Date()) / healthKitHandler.breathingTargetInSeconds
+        completionProgress = contentServiceHandler.fetchBreathingCompletionDuration(for: Date()) / contentServiceHandler.breathingTargetInSeconds
         completionProgress = min(completionProgress, 1.0)
     }
 

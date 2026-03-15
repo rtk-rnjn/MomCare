@@ -82,10 +82,14 @@ private struct AccessibilityRow: View {
                 Circle()
                     .fill(isEnabled ? Color.green : Color.secondary.opacity(0.4))
                     .frame(width: 8, height: 8)
+                    .accessibilityHidden(true)
                 Text(isEnabled ? "On" : "Off")
                     .font(.subheadline)
                     .foregroundStyle(isEnabled ? .green : .secondary)
             }
         }
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(label)
+        .accessibilityValue(isEnabled ? "On" : "Off")
     }
 }

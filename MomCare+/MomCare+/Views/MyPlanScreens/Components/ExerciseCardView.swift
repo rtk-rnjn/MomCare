@@ -103,7 +103,7 @@ struct ExerciseCardView: View {
 
     @Environment(\.dismiss) private var dismiss
 
-    @EnvironmentObject private var healthKitHandler: HealthKitHandler
+    @EnvironmentObject private var contentServiceHandler: ContentServiceHandler
 
     @State private var exercise: ExerciseModel?
     @State private var exerciseURL: URL?
@@ -163,17 +163,17 @@ struct ExerciseCardView: View {
             avPlayer = AVPlayer(url: url)
         }
 
-        completionProgress = healthKitHandler.fetchExerciseCompletionDuration(id: userExerciseModel.id) / (exercise?.videoDurationSeconds ?? 1.0)
+        completionProgress = contentServiceHandler.fetchExerciseCompletionDuration(id: userExerciseModel.id) / (exercise?.videoDurationSeconds ?? 1.0)
 
         completionProgress = min(completionProgress, 1.0)
         uiImage = await exercise?.image
     }
 
     private func updateDuration() async throws {
-        guard let id = userExerciseModel?.exerciseId,
+        guard let id = userExerciseModel?.id,
               let current = avPlayer?.currentTime().seconds else { return }
 
-        try await healthKitHandler.updateExerciseCompletionDuration(id: id, duration: current)
+        try await contentServiceHandler.updateExerciseCompletionDuration(id: id, duration: current)
         completionProgress = current / (exercise?.videoDurationSeconds ?? 1.0)
     }
 

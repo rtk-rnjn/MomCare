@@ -16,18 +16,18 @@ struct MomCareApp: App {
                 .environmentObject(musicPlayerHandler)
                 .environmentObject(eventKitHandler)
                 .environmentObject(controlState)
-                .environmentObject(debugMenuStore)
+                .environmentObject(appDelegate.debugMenuStore)
                 .modelContainer(for: SymptomModel.self)
         }
     }
 
     // MARK: Private
 
-    @StateObject private var healthStore: HealthKitHandler = .init()
+    @StateObject private var healthStore: ContentServiceHandler = .init()
     @StateObject private var authenticationService: AuthenticationService = .init()
     @StateObject private var musicPlayerHandler: MusicPlayerHandler = .init()
     @StateObject private var eventKitHandler: EventKitHandler = .init()
     @StateObject private var controlState: ControlState = .init()
-    @StateObject private var debugMenuStore: DebugMenuStore = .init()
+//    @StateObject private var debugMenuStore: DebugMenuStore = .init()
 
 }

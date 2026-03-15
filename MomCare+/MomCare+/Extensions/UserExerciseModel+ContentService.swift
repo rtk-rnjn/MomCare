@@ -20,7 +20,7 @@ extension UserExerciseModel {
 
     var isCompleted: Bool {
         get async {
-            await completionPercentage >= 1.0
+            await completionPercentage >= 0.99
         }
     }
 
@@ -34,66 +34,4 @@ extension UserExerciseModel {
             return nil
         }
     }
-
-    static func totalCompletion(from userExercises: [UserExerciseModel]) async -> Int {
-        await withTaskGroup(of: Bool.self) { group in
-            for exercise in userExercises {
-                group.addTask {
-                    await exercise.isCompleted
-                }
-            }
-
-            var count = 0
-
-            for await result in group where result {
-                count += 1
-            }
-
-            return count
-        }
-    }
-
-    static func totalDurationCompletion(from userExercises: [UserExerciseModel]) async -> TimeInterval {
-        await withTaskGroup(of: TimeInterval.self) { group in
-            for exercise in userExercises {
-                group.addTask {
-                    let percentage = await exercise.completionPercentage
-                    guard let exerciseModel = await exercise.exerciseModel else { return 0 }
-                    return percentage * exerciseModel.videoDurationSeconds
-                }
-            }
-
-            var totalDuration: TimeInterval = 0
-
-            for await duration in group {
-                totalDuration += duration
-            }
-
-            return totalDuration
-        }
-    }
-
-    static func totalDurationCompletionPercent(from userExercises: [UserExerciseModel]) async -> Double {
-        let totalDuration = await totalDurationCompletion(from: userExercises)
-        let totalPossibleDuration = await withTaskGroup(of: TimeInterval.self) { group in
-            for exercise in userExercises {
-                group.addTask {
-                    guard let exerciseModel = await exercise.exerciseModel else { return 0 }
-                    return exerciseModel.videoDurationSeconds
-                }
-            }
-
-            var total: TimeInterval = 0
-
-            for await duration in group {
-                total += duration
-            }
-
-            return total
-        }
-
-        guard totalPossibleDuration > 0 else { return 0 }
-        return min(totalDuration / totalPossibleDuration, 1.0)
-    }
-
 }

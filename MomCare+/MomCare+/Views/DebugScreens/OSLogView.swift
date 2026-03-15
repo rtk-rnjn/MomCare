@@ -118,6 +118,7 @@ struct OSLogsView: View {
     @State private var selectedLevel: LogLevel?
     @State private var isLoading = false
     @State private var expandedIDs: Set<UUID> = []
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     private var filtered: [LogEntry] {
         entries.filter { entry in
@@ -154,7 +155,7 @@ struct OSLogsView: View {
     private var logList: some View {
         List(filtered) { entry in
             LogEntryRow(entry: entry, isExpanded: expandedIDs.contains(entry.id)) {
-                withAnimation(.snappy) {
+                withAnimation(reduceMotion ? nil : .snappy) {
                     if expandedIDs.contains(entry.id) {
                         expandedIDs.remove(entry.id)
                     } else {
@@ -201,6 +202,9 @@ struct OSLogsView: View {
 }
 
 struct FilterChip: View {
+
+    // MARK: Internal
+
     let label: String
     let icon: String
     let color: Color
@@ -211,6 +215,7 @@ struct FilterChip: View {
         Button(action: action) {
             HStack(spacing: 4) {
                 Image(systemName: icon).font(.caption2)
+                    .accessibilityHidden(true)
                 Text(label).font(.caption.weight(.medium))
             }
             .padding(.horizontal, 10)
@@ -222,12 +227,17 @@ struct FilterChip: View {
             .foregroundStyle(isSelected ? color : .secondary)
         }
         .buttonStyle(.plain)
-        .animation(.snappy, value: isSelected)
+        .animation(reduceMotion ? nil : .snappy, value: isSelected)
         .accessibilityLabel(label)
         .accessibilityValue(isSelected ? "selected" : "not selected")
         .accessibilityHint("Filters log entries by \(label) level")
         .accessibilityAddTraits(isSelected ? [.isButton, .isSelected] : .isButton)
     }
+
+    // MARK: Private
+
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+
 }
 
 struct LogEntryRow: View {

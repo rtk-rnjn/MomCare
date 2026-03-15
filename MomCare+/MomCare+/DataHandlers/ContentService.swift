@@ -12,7 +12,10 @@ class ContentService {
     private(set) var plan: MyPlanModel?
     private(set) var userExercises: [UserExerciseModel] = []
 
-    func fetchDailyInsights() async throws -> NetworkResponse<DailyInsightModel> {
+    private(set) var userExercisesByDate: [Date: [UserExerciseModel]] = [:]
+    private(set) var mealPlansByDate: [Date: [MyPlanModel]] = [:]
+
+    func generateDailyInsights() async throws -> NetworkResponse<DailyInsightModel> {
         if let cachedInsights: DailyInsightModel = await CacheHandler.shared.get(forKey: "dailyInsights") {
             dailyInsights = cachedInsights
             return NetworkResponse<DailyInsightModel>(data: cachedInsights, statusCode: 200, errorMessage: nil)
@@ -25,7 +28,7 @@ class ContentService {
         return response
     }
 
-    func fetchMealPlan() async throws -> NetworkResponse<MyPlanModel> {
+    func generateMealPlan() async throws -> NetworkResponse<MyPlanModel> {
         if let cachedPlan: MyPlanModel = await CacheHandler.shared.get(forKey: "mealPlan") {
             plan = cachedPlan
             return NetworkResponse<MyPlanModel>(data: cachedPlan, statusCode: 200, errorMessage: nil)
@@ -38,7 +41,7 @@ class ContentService {
         return response
     }
 
-    func fetchUserExercises() async throws -> NetworkResponse<[UserExerciseModel]> {
+    func generateUserExercises() async throws -> NetworkResponse<[UserExerciseModel]> {
         if let userExercises: [UserExerciseModel] = await CacheHandler.shared.get(forKey: "userExercises") {
             self.userExercises = userExercises
             return NetworkResponse(data: userExercises, statusCode: 200, errorMessage: nil)
@@ -97,8 +100,72 @@ class ContentService {
         return try await NetworkManager.shared.get(url: url)
     }
 
+    func fetchUserExercises(from startDate: Date, to endDate: Date) async throws -> NetworkResponse<[UserExerciseModel]> {
+        let startDateTimestamp = startDate.timeIntervalSince1970
+        let endDateTimestamp = endDate.timeIntervalSince1970
+
+        guard let data: Data = TimestampRange(startTimestamp: startDateTimestamp, endTimestamp: endDateTimestamp).encodeUsingJSONEncoder() else {
+            return NetworkResponse(data: nil, statusCode: 400, errorMessage: "Failed to encode date range")
+        }
+
+        let url = Endpoint.searchGeneratedExercises.urlString
+        let response: NetworkResponse<[UserExerciseModel]> = try await NetworkManager.shared.post(url: url, body: data, headers: AuthenticationService.authorizationHeaders)
+
+        if let exercises = response.data {
+            groupUserExercisesByDate(exercises)
+        }
+
+        return response
+    }
+
+    func fetchMealPlans(from startDate: Date, to endDate: Date) async throws -> NetworkResponse<[MyPlanModel]> {
+        let startDateTimestamp = startDate.timeIntervalSince1970
+        let endDateTimestamp = endDate.timeIntervalSince1970
+
+        guard let data: Data = TimestampRange(startTimestamp: startDateTimestamp, endTimestamp: endDateTimestamp).encodeUsingJSONEncoder() else {
+            return NetworkResponse(data: nil, statusCode: 400, errorMessage: "Failed to encode date range")
+        }
+
+        let url = Endpoint.searchGeneratedPlan.urlString
+        let response: NetworkResponse<[MyPlanModel]> = try await NetworkManager.shared.post(url: url, body: data, headers: AuthenticationService.authorizationHeaders)
+
+        if let mealPlans = response.data {
+            groupMealPlansByDate(mealPlans)
+        }
+
+        return response
+    }
+
+    func findUserExercises(on date: Date) -> [UserExerciseModel]? {
+        let calendar = Calendar.current
+        let startOfDay = calendar.startOfDay(for: date)
+        return userExercisesByDate[startOfDay]
+    }
+
+    func findMealPlans(on date: Date) -> [MyPlanModel]? {
+        let calendar = Calendar.current
+        let startOfDay = calendar.startOfDay(for: date)
+        return mealPlansByDate[startOfDay]
+    }
+
     // MARK: Private
 
     private let database: Database = .init()
+
+    private func groupUserExercisesByDate(_ userExercises: [UserExerciseModel]) {
+        let calendar = Calendar.current
+        userExercisesByDate = Dictionary(grouping: userExercises) { exercise in
+            let date = Date(timeIntervalSince1970: exercise.addedAtTimestamp)
+            return calendar.startOfDay(for: date)
+        }
+    }
+
+    private func groupMealPlansByDate(_ mealPlans: [MyPlanModel]) {
+        let calendar = Calendar.current
+        mealPlansByDate = Dictionary(grouping: mealPlans) { plan in
+            let date = Date(timeIntervalSince1970: plan.createdAtTimestamp)
+            return calendar.startOfDay(for: date)
+        }
+    }
 
 }
