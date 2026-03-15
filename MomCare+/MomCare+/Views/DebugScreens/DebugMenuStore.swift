@@ -28,7 +28,6 @@ final class DebugMenuStore: ObservableObject {
 
     // MARK: Internal
 
-    @Published var featureFlags: FeatureFlagState = .init()
     @Published var networkRequests: Deque<DebugNetworkRequest> = .init()
     @Published var logEntries: [DebugLogEntry] = []
     @Published var performanceSnapshot: PerformanceSnapshot = .init()
@@ -73,13 +72,13 @@ final class DebugMenuStore: ObservableObject {
 
 }
 
-struct FeatureFlagState {
-    var experimentalFeatures = false
-    var debugLogging = true
-    var forceDarkMode = false
-    var forceLightMode = false
-    var useMockAPIs = false
-    var uiDebuggingOverlays = false
+enum FeatureFlagState: String {
+    case experimentalFeatures
+    case debugLogging
+    case forceDarkMode
+    case forceLightMode
+    case useMockAPIs
+    case uiDebuggingOverlays
 }
 
 struct DebugNetworkRequest: Identifiable {

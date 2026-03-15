@@ -2,7 +2,11 @@ import SwiftUI
 
 struct FeatureFlagsView: View {
 
-    // MARK: Internal
+    @AppStorage(FeatureFlagState.experimentalFeatures.rawValue) private var experimentalFeatures: Bool = false
+    @AppStorage(FeatureFlagState.debugLogging.rawValue) private var debugLogging: Bool = false
+    @AppStorage(FeatureFlagState.uiDebuggingOverlays.rawValue) private var uiDebuggingOverlays: Bool = false
+    @AppStorage(FeatureFlagState.forceDarkMode.rawValue) private var forceDarkMode: Bool = false
+    @AppStorage(FeatureFlagState.forceLightMode.rawValue) private var forceLightMode: Bool = true
 
     var body: some View {
         List {
@@ -17,25 +21,19 @@ struct FeatureFlagsView: View {
                     label: "Experimental Features",
                     icon: "flask",
                     tint: .purple,
-                    isOn: $store.featureFlags.experimentalFeatures
+                    isOn: $experimentalFeatures
                 )
                 FlagToggle(
                     label: "Debug Logging",
                     icon: "doc.text.magnifyingglass",
                     tint: .blue,
-                    isOn: $store.featureFlags.debugLogging
-                )
-                FlagToggle(
-                    label: "Use Mock APIs",
-                    icon: "server.rack",
-                    tint: .cyan,
-                    isOn: $store.featureFlags.useMockAPIs
+                    isOn: $debugLogging
                 )
                 FlagToggle(
                     label: "UI Debugging Overlays",
                     icon: "square.dashed",
                     tint: .orange,
-                    isOn: $store.featureFlags.uiDebuggingOverlays
+                    isOn: $uiDebuggingOverlays
                 )
             }
 
@@ -45,10 +43,10 @@ struct FeatureFlagsView: View {
                     icon: "moon.fill",
                     tint: .indigo,
                     isOn: Binding(
-                        get: { store.featureFlags.forceDarkMode },
+                        get: { forceDarkMode },
                         set: { newVal in
-                            store.featureFlags.forceDarkMode = newVal
-                            if newVal { store.featureFlags.forceLightMode = false }
+                            forceDarkMode = newVal
+                            forceLightMode = !newVal
                         }
                     )
                 )
@@ -57,30 +55,19 @@ struct FeatureFlagsView: View {
                     icon: "sun.max.fill",
                     tint: .yellow,
                     isOn: Binding(
-                        get: { store.featureFlags.forceLightMode },
+                        get: { forceLightMode },
                         set: { newVal in
-                            store.featureFlags.forceLightMode = newVal
-                            if newVal { store.featureFlags.forceDarkMode = false }
+                            forceLightMode = newVal
+                            forceDarkMode = !newVal
                         }
                     )
                 )
             }
 
-            Section {
-                Button(role: .destructive) {
-                    store.featureFlags = FeatureFlagState()
-                } label: {
-                    Label("Reset All Flags", systemImage: "arrow.counterclockwise")
-                }
-            }
         }
         .navigationTitle("Feature Flags")
         .navigationBarTitleDisplayMode(.inline)
     }
-
-    // MARK: Private
-
-    @EnvironmentObject private var store: DebugMenuStore
 
 }
 

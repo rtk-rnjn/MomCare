@@ -48,7 +48,6 @@ struct JSONTreeRow: View {
                 .accessibilityHidden(true)
             }
 
-            // Expand chevron or leaf bullet
             if node.isLeaf {
                 Circle()
                     .frame(width: 5, height: 5)
@@ -60,7 +59,6 @@ struct JSONTreeRow: View {
                     .accessibilityHidden(true)
             }
 
-            // Key label
             if let key {
                 Text(key)
                     .font(.footnote.monospaced())
@@ -68,7 +66,6 @@ struct JSONTreeRow: View {
                     .font(.footnote.monospaced())
             }
 
-            // Value or type badge
             if let leaf = node.leafDisplayValue {
                 Text(leaf)
                     .font(.footnote.monospaced())
