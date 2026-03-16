@@ -58,7 +58,7 @@ final class ContentServiceHandler: ObservableObject {
         fetchTodaySteps()
     }
 
-    func requestAccess(completionHandler: (() -> Void)? = nil) async {
+    func requestHealthKitAccess() async throws {
         let readIdentifiers: [HKQuantityTypeIdentifier] = [
             .activeEnergyBurned, .stepCount, .appleExerciseTime,
             .dietaryEnergyConsumed, .dietaryProtein, .dietaryCarbohydrates, .dietaryFatTotal
@@ -71,9 +71,7 @@ final class ContentServiceHandler: ObservableObject {
         let readTypes = Set(readIdentifiers.compactMap { HKQuantityType.quantityType(forIdentifier: $0) })
         let writeTypes = Set(writeIdentifiers.compactMap { HKQuantityType.quantityType(forIdentifier: $0) })
 
-        try? await healthStore.requestAuthorization(toShare: writeTypes, read: readTypes)
-
-        completionHandler?()
+        try await healthStore.requestAuthorization(toShare: writeTypes, read: readTypes)
     }
 
     func fetchTotalUserExercisesDuration() async {

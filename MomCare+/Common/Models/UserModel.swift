@@ -29,9 +29,9 @@ struct UserModel: Codable, Sendable {
 
     var phoneNumber: String?
     var dateOfBirthTimestamp: TimeInterval?
-    var height: Double?
-    var prePregnancyWeight: Double?
-    var currentWeight: Double?
+    var height: Int?
+    var prePregnancyWeight: Int?
+    var currentWeight: Int?
     var dueDateTimestamp: TimeInterval?
 
     var foodIntolerances: [Intolerance] = []

@@ -81,15 +81,15 @@ struct ProfilePersonalInfoView: View {
             }
 
             Section {
-                pickerRow("Height", value: measurementFormatter.string(from: Measurement(value: authenticationService.userModel?.height ?? 0, unit: UnitLength.centimeters))) {
+                pickerRow("Height", value: measurementFormatter.string(from: Measurement(value: Double(authenticationService.userModel?.height ?? 0), unit: UnitLength.centimeters))) {
                     activeSheet = .height
                 }
 
-                pickerRow("Current Weight", value: measurementFormatter.string(from: Measurement(value: authenticationService.userModel?.currentWeight ?? 0, unit: UnitMass.kilograms))) {
+                pickerRow("Current Weight", value: measurementFormatter.string(from: Measurement(value: Double(authenticationService.userModel?.currentWeight ?? 0), unit: UnitMass.kilograms))) {
                     activeSheet = .currentWeight
                 }
 
-                pickerRow("Pre Pregnancy Weight", value: measurementFormatter.string(from: Measurement(value: authenticationService.userModel?.prePregnancyWeight ?? 0, unit: UnitMass.kilograms))) {
+                pickerRow("Pre Pregnancy Weight", value: measurementFormatter.string(from: Measurement(value: Double(authenticationService.userModel?.prePregnancyWeight ?? 0), unit: UnitMass.kilograms))) {
                     activeSheet = .prePregnancyWeight
                 }
             }
@@ -217,9 +217,9 @@ struct ProfilePersonalInfoView: View {
     @State private var isEditing = false
     @State private var showDateOfBirthPicker = false
 
-    @State private var height: Double?
-    @State private var currentWeight: Double?
-    @State private var prePregnancyWeight: Double?
+    @State private var height: Int?
+    @State private var currentWeight: Int?
+    @State private var prePregnancyWeight: Int?
 
     @State private var activeSheet: SheetType?
     @State private var showingAlert = false
