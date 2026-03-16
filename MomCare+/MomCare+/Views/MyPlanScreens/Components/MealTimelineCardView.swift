@@ -255,7 +255,6 @@ private struct ItemRow: View {
             Spacer()
         }
         .frame(height: 66)
-        .contentShape(.contextMenuPreview, RoundedRectangle(cornerRadius: 10, style: .continuous))
         .contentShape(Rectangle())
         .modifier(MealContextMenu(item: item, food: food, onToggle: onToggle, onDelete: onDelete))
         .swipeActions(edge: .leading, allowsFullSwipe: true) {

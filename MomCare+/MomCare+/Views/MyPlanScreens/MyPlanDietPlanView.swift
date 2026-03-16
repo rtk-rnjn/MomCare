@@ -24,17 +24,15 @@ struct MyPlanDietPlanView: View {
             .containerShape(RoundedRectangle(cornerRadius: 24, style: .continuous))
             .padding(.horizontal, 16)
 
-            VStack(spacing: 0) {
-                ScrollView(.vertical, showsIndicators: false) {
-                    MealTimelineCardView()
-                        .padding(.horizontal, 0)
-                        .padding(.top, 4)
-                        .padding(.bottom, 50)
-                }
-                .refreshable {
-                    HapticsHandler.impact(.medium)
-                    try? await contentServiceHandler.fetchMealPlan()
-                }
+            
+            ScrollView(.vertical, showsIndicators: false) {
+                MealTimelineCardView()
+                    .padding(.top, 4)
+                    .padding(.bottom, 50)
+            }
+            .refreshable {
+                HapticsHandler.impact(.medium)
+                try? await contentServiceHandler.fetchMealPlan()
             }
             .frame(maxHeight: .infinity)
             .background(Color(.systemBackground))
