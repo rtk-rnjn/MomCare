@@ -58,20 +58,29 @@ final class ContentServiceHandler: ObservableObject {
         fetchTodaySteps()
     }
 
-    func requestHealthKitAccess() async throws {
+    func requestHealthKitAccess() async throws -> [HKQuantityTypeIdentifier: HKAuthorizationStatus] {
+
         let readIdentifiers: [HKQuantityTypeIdentifier] = [
             .activeEnergyBurned, .stepCount, .appleExerciseTime,
-            .dietaryEnergyConsumed, .dietaryProtein, .dietaryCarbohydrates, .dietaryFatTotal
+            .dietaryEnergyConsumed, .dietaryProtein, .dietaryCarbohydrates, .dietaryFatTotal, .dietarySugar, .dietarySodium
         ]
 
         let writeIdentifiers: [HKQuantityTypeIdentifier] = [
-            .dietaryEnergyConsumed, .dietaryProtein, .dietaryCarbohydrates, .dietaryFatTotal
+            .dietaryEnergyConsumed, .dietaryProtein, .dietaryCarbohydrates, .dietaryFatTotal, .dietarySugar, .dietarySodium
         ]
 
         let readTypes = Set(readIdentifiers.compactMap { HKQuantityType.quantityType(forIdentifier: $0) })
         let writeTypes = Set(writeIdentifiers.compactMap { HKQuantityType.quantityType(forIdentifier: $0) })
 
         try await healthStore.requestAuthorization(toShare: writeTypes, read: readTypes)
+        
+        var status: [HKQuantityTypeIdentifier: HKAuthorizationStatus] = [:]
+        for identifier in readIdentifiers {
+            if let type = HKQuantityType.quantityType(forIdentifier: identifier) {
+                status[identifier] = healthStore.authorizationStatus(for: type)
+            }
+        }
+        return status
     }
 
     func fetchTotalUserExercisesDuration() async {

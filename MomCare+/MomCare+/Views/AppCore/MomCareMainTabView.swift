@@ -2,6 +2,7 @@ import LNPopupUI
 import SwiftUI
 import Combine
 import EventKit
+import HealthKit
 
 final class RefreshError: LocalizedError {
     var errorDescription: String? {
@@ -80,7 +81,7 @@ struct MomCareMainTabView: View {
         }
         .tabBarMinimizeBehavior(.onScrollDown)
         .task { await refreshAccessToken() }
-        .apiErrorAlert(error: $controlState.apiError)
+        .errorAlert(error: $controlState.error)
         .popup(isBarPresented: $controlState.showingPopupBar, isPopupOpen: $controlState.showingPopup) {
             MusicPlayerView()
         }
@@ -102,23 +103,37 @@ struct MomCareMainTabView: View {
         }
         .task {
             do {
-                try await contentServiceHandler.requestHealthKitAccess()
+                _ = try await contentServiceHandler.requestHealthKitAccess()
                 await contentServiceHandler.startStepCountObservation()
-            } catch {}
+
+                requestingHealthKitAccess = false
+            } catch {
+                controlState.error = error
+            }
         }
         .task {
-            _ = try? await eventKitHandler.eventStore.requestFullAccessToEvents()
-            _ = try? await eventKitHandler.eventStore.requestFullAccessToReminders()
+            do {
+                _ = try await eventKitHandler.eventStore.requestFullAccessToEvents()
+                _ = try await eventKitHandler.eventStore.requestFullAccessToReminders()
+                
+                requestingEventKitAccess = false
+            } catch {
+                controlState.error = error
+            }
         }
-        .onAppear {
-            try? eventKitHandler.fetchAllEvents()
+        .onChange(of: requestingEventKitAccess) {
+            do {
+                try eventKitHandler.fetchAllEvents()
+            } catch {
+                controlState.error = error
+            }
         }
         .onChange(of: isRefreshing) {
             Task {
                 if let networkResponse = try? await ContentService.shared.generateUserExercises(), let userExercises = networkResponse.data {
                     contentServiceHandler.userExercises = userExercises
 
-                    controlState.apiError = networkResponse.localizedError
+                    controlState.error = networkResponse.localizedError
 
                     await contentServiceHandler.fetchTotalUserExercisesDuration()
                     await contentServiceHandler.fetchTotalUserExercisesCompletionDuration()
@@ -148,7 +163,9 @@ struct MomCareMainTabView: View {
         do {
             try await authenticationService.refresh()
             isRefreshing = false
-        } catch {}
+        } catch {
+            controlState.error = RefreshError()
+        }
     }
 
     private func fetchDailyInsights() async {
@@ -156,7 +173,7 @@ struct MomCareMainTabView: View {
             return
         }
 
-        controlState.apiError = networkResponse.localizedError
+        controlState.error = networkResponse.localizedError
 
         contentServiceHandler.todayFocusText = networkResponse.data?.todaysFocus ?? "Failed to fetch today's focus: \(networkResponse.errorMessage ?? "Unknown error") (\(networkResponse.statusCode))"
         contentServiceHandler.dailyTipText = networkResponse.data?.dailyTip ?? "Failed to fetch today's tip: \(networkResponse.errorMessage ?? "Unknown error") (\(networkResponse.statusCode))"

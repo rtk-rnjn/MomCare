@@ -129,7 +129,7 @@ final class ControlState: ObservableObject {
 
     @Published var showingMoodnestPlaylistsView: Bool = false
 
-    @Published var apiError: (any APIError)?
+    @Published var error: (any Error)?
 
     @Published var showingPopup: Bool = false {
         didSet { UserDefaults.standard.set(showingPopup, forKey: "showingPopup") }

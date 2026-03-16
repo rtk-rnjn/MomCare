@@ -1,19 +1,6 @@
 import SwiftUI
 import TipKit
 
-struct ExerciseSwipeTip: Tip {
-    var title: Text {
-        Text("Swipe to Complete Exercises")
-    }
-
-    var message: Text? {
-        Text("Swipe right on an exercise card to mark it as complete, and track your weekly progress.")
-    }
-
-    var image: Image? {
-        Image(systemName: "figure.run")
-    }
-}
 
 struct MyPlanExercisePlanView: View {
 
@@ -30,8 +17,6 @@ struct MyPlanExercisePlanView: View {
             VStack(spacing: 0) {
                 ScrollView(.vertical, showsIndicators: false) {
                     VStack(spacing: 14) {
-                        TipView(exerciseSwipeTip, arrowEdge: .top)
-
                         WalkingCardView()
 
                         HStack {
@@ -116,8 +101,6 @@ struct MyPlanExercisePlanView: View {
 
     @State private var breathingCompleted: Bool = false
     @State private var walkingCompleted: Bool = false
-
-    private let exerciseSwipeTip = ExerciseSwipeTip()
 
     private func exerciseInfoOverlay() -> some View {
         ZStack {

@@ -10,8 +10,7 @@ struct MealTimelineCardView: View {
                 do {
                     try await contentServiceHandler.markFoodsAs(consumed: !consumed, mealType: .breakfast)
                 } catch {
-                    alertMessage = error.localizedDescription
-                    showErrorAlert = true
+                    controlState.error = error
                 }
             }
 
@@ -24,8 +23,7 @@ struct MealTimelineCardView: View {
                         do {
                             try await contentServiceHandler.markFoodAs(consumed: !consumed, in: .breakfast, foodReference: item)
                         } catch {
-                            alertMessage = error.localizedDescription
-                            showErrorAlert = true
+                            controlState.error = error
                         }
                     },
                     onDelete: {
@@ -33,8 +31,7 @@ struct MealTimelineCardView: View {
                             try await contentServiceHandler.markFoodAs(consumed: false, in: .breakfast, foodReference: item)
                             try await contentServiceHandler.removeFoodFromPlan(foodId: item.foodId, mealType: .breakfast)
                         } catch {
-                            alertMessage = error.localizedDescription
-                            showErrorAlert = true
+                            controlState.error = error
                         }
                     }
                 )
@@ -44,8 +41,7 @@ struct MealTimelineCardView: View {
                 do {
                     try await contentServiceHandler.markFoodsAs(consumed: !consumed, mealType: .lunch)
                 } catch {
-                    alertMessage = error.localizedDescription
-                    showErrorAlert = true
+                    controlState.error = error
                 }
             }
 
@@ -58,8 +54,7 @@ struct MealTimelineCardView: View {
                         do {
                             try await contentServiceHandler.markFoodAs(consumed: !consumed, in: .lunch, foodReference: item)
                         } catch {
-                            alertMessage = error.localizedDescription
-                            showErrorAlert = true
+                            controlState.error = error
                         }
                     },
                     onDelete: {
@@ -67,8 +62,7 @@ struct MealTimelineCardView: View {
                             try await contentServiceHandler.markFoodAs(consumed: false, in: .lunch, foodReference: item)
                             try await contentServiceHandler.removeFoodFromPlan(foodId: item.foodId, mealType: .lunch)
                         } catch {
-                            alertMessage = error.localizedDescription
-                            showErrorAlert = true
+                            controlState.error = error
                         }
                     }
                 )
@@ -78,8 +72,7 @@ struct MealTimelineCardView: View {
                 do {
                     try await contentServiceHandler.markFoodsAs(consumed: !consumed, mealType: .snacks)
                 } catch {
-                    alertMessage = error.localizedDescription
-                    showErrorAlert = true
+                    controlState.error = error
                 }
             }
 
@@ -92,8 +85,7 @@ struct MealTimelineCardView: View {
                         do {
                             try await contentServiceHandler.markFoodAs(consumed: !consumed, in: .snacks, foodReference: item)
                         } catch {
-                            alertMessage = error.localizedDescription
-                            showErrorAlert = true
+                            controlState.error = error
                         }
                     },
                     onDelete: {
@@ -101,8 +93,7 @@ struct MealTimelineCardView: View {
                             try await contentServiceHandler.markFoodAs(consumed: false, in: .snacks, foodReference: item)
                             try await contentServiceHandler.removeFoodFromPlan(foodId: item.foodId, mealType: .snacks)
                         } catch {
-                            alertMessage = error.localizedDescription
-                            showErrorAlert = true
+                            controlState.error = error
                         }
                     }
                 )
@@ -112,8 +103,7 @@ struct MealTimelineCardView: View {
                 do {
                     try await contentServiceHandler.markFoodsAs(consumed: !consumed, mealType: .dinner)
                 } catch {
-                    alertMessage = error.localizedDescription
-                    showErrorAlert = true
+                    controlState.error = error
                 }
             }
 
@@ -126,8 +116,7 @@ struct MealTimelineCardView: View {
                         do {
                             try await contentServiceHandler.markFoodAs(consumed: !consumed, in: .dinner, foodReference: item)
                         } catch {
-                            alertMessage = error.localizedDescription
-                            showErrorAlert = true
+                            controlState.error = error
                         }
                     },
                     onDelete: {
@@ -135,8 +124,7 @@ struct MealTimelineCardView: View {
                             try await contentServiceHandler.markFoodAs(consumed: false, in: .dinner, foodReference: item)
                             try await contentServiceHandler.removeFoodFromPlan(foodId: item.foodId, mealType: .dinner)
                         } catch {
-                            alertMessage = error.localizedDescription
-                            showErrorAlert = true
+                            controlState.error = error
                         }
                     }
                 )
@@ -145,19 +133,14 @@ struct MealTimelineCardView: View {
         .padding(.horizontal, 16)
         .padding(.bottom, 16)
         .background(Color(.systemBackground))
-        .alert("Error", isPresented: $showErrorAlert) {
-            Button("OK", role: .cancel) {}
-        } message: {
-            Text(alertMessage ?? "An unexpected error occurred.")
-        }
     }
 
     // MARK: Private
 
     @EnvironmentObject private var contentServiceHandler: ContentServiceHandler
-    @State private var showErrorAlert = false
-    @State private var alertMessage: String?
-
+    @EnvironmentObject private var controlState: ControlState
+    
+    @State private var error: (any Error)?
 }
 
 private struct HeaderRow: View {

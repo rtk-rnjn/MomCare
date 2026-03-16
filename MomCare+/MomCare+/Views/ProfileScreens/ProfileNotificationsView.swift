@@ -10,7 +10,9 @@ struct ProfileNotificationsView: View {
             Section {
                 Toggle("Enable Notifications", isOn: $isEnabled)
                     .onChange(of: isEnabled) { _, value in
-                        handleToggle(value)
+                        Task {
+                            await handleToggle(value)
+                        }
                     }
             } footer: {
                 Text("Reminders help you stay on track with meals and exercise.")
@@ -97,29 +99,28 @@ private extension ProfileNotificationsView {
         }
     }
 
-    func handleToggle(_ value: Bool) {
+    func handleToggle(_ value: Bool) async {
         if value {
-            UNUserNotificationCenter.current().getNotificationSettings { settings in
-                DispatchQueue.main.async {
-                    switch settings.authorizationStatus {
-                    case .authorized, .provisional:
-                        isEnabled = true
-                        UserDefaults.standard.set(true, forKey: "notificationsEnabled")
-                    case .notDetermined:
-                        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound]) { granted, _ in
-                            DispatchQueue.main.async {
-                                isEnabled = granted
-                                UserDefaults.standard.set(granted, forKey: "notificationsEnabled")
-                                if !granted {
-                                    showSettingsAlert = true
-                                }
+            let settings = await UNUserNotificationCenter.current().notificationSettings()
+            DispatchQueue.main.async {
+                switch settings.authorizationStatus {
+                case .authorized, .provisional:
+                    isEnabled = true
+                    UserDefaults.standard.set(true, forKey: "notificationsEnabled")
+                case .notDetermined:
+                    UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound]) { granted, _ in
+                        DispatchQueue.main.async {
+                            isEnabled = granted
+                            UserDefaults.standard.set(granted, forKey: "notificationsEnabled")
+                            if !granted {
+                                showSettingsAlert = true
                             }
                         }
-                    default:
-                        isEnabled = false
-                        UserDefaults.standard.set(false, forKey: "notificationsEnabled")
-                        showSettingsAlert = true
                     }
+                default:
+                    isEnabled = false
+                    UserDefaults.standard.set(false, forKey: "notificationsEnabled")
+                    showSettingsAlert = true
                 }
             }
         } else {
@@ -155,6 +156,7 @@ private extension ProfileNotificationsView {
 
         UNUserNotificationCenter.current().add(request) { error in
             if let error {
+                
                 DebugLogger.shared.log("Failed to schedule meal reminder: \(error.localizedDescription)", level: .error, category: .error)
             }
         }

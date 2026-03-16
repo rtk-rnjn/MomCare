@@ -2,15 +2,6 @@ import EventKit
 import SwiftUI
 import TipKit
 
-struct DashboardEventCardTip: Tip {
-    var title: Text {
-        Text("Context Menu")
-    }
-
-    var message: Text? {
-        Text("Long press on the event card to view contextual options like editing or deleting events.")
-    }
-}
 
 struct DashboardEventCardView: View {
 
