@@ -23,23 +23,45 @@ struct TriTrackCalendarItemContentView: View {
 
     var body: some View {
         List {
-            Section("Events") {
+            Section {
                 if isLoading {
                     loadingRow
-                } else if eventKitHandler.events.isEmpty {
-                    emptyEventsRow
                 } else {
                     eventList
                 }
+            } header: {
+                HStack {
+                    Text("Events")
+                        .font(.headline)
+
+                    Spacer()
+
+                    Text(eventKitHandler.events.count, format: .number)
+                        .font(.headline)
+                        .foregroundColor(.secondary)
+                        .contentTransition(reduceMotion ? .identity : .numericText())
+                        .animation(reduceMotion ? nil : .easeInOut, value: eventKitHandler.events.count)
+                }
             }
 
-            Section("Reminders") {
+            Section {
                 if isLoading {
                     loadingRow
-                } else if eventKitHandler.reminders.isEmpty {
-                    emptyRemindersRow
                 } else {
                     reminderList
+                }
+            } header: {
+                HStack {
+                    Text("Reminders")
+                        .font(.headline)
+
+                    Spacer()
+
+                    Text(eventKitHandler.reminders.count, format: .number)
+                        .font(.headline)
+                        .foregroundColor(.secondary)
+                        .contentTransition(reduceMotion ? .identity : .numericText())
+                        .animation(reduceMotion ? nil : .easeInOut, value: eventKitHandler.reminders.count)
                 }
             }
         }
@@ -93,6 +115,8 @@ struct TriTrackCalendarItemContentView: View {
 
     // MARK: Private
 
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+
     @EnvironmentObject private var eventKitHandler: EventKitHandler
     @EnvironmentObject private var controlState: ControlState
     @Environment(\.openURL) private var openURL
@@ -105,8 +129,6 @@ struct TriTrackCalendarItemContentView: View {
     @State private var alertMessage: String?
     @State private var isLoading = true
 
-    // MARK: - Inline Empty / Loading Rows
-
     private var loadingRow: some View {
         HStack {
             Spacer()
@@ -116,26 +138,6 @@ struct TriTrackCalendarItemContentView: View {
         }
         .listRowBackground(Color.clear)
     }
-
-    private var emptyEventsRow: some View {
-        Button {
-            controlState.showingAddEventSheet = true
-            addMode = .appointment
-        } label: {
-            Label("Add event", systemImage: "plus")
-        }
-    }
-
-    private var emptyRemindersRow: some View {
-        Button {
-            controlState.showingAddEventSheet = true
-            addMode = .reminder
-        } label: {
-            Label("Add reminder", systemImage: "plus")
-        }
-    }
-
-    // MARK: - Event List
 
     private var eventList: some View {
         ForEach(eventKitHandler.events, id: \.calendarItemIdentifier) { event in

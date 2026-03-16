@@ -243,9 +243,7 @@ final class DebugLogger {
 
     var onNewEntry: ((DebugLogEntry) -> Void)?
 
-    nonisolated func log(_ message: String,
-             level: DebugLogEntry.LogLevel = .info,
-             category: DebugLogEntry.LogCategory = .data) {
+    nonisolated func log(_ message: String, level: DebugLogEntry.LogLevel = .info, category: DebugLogEntry.LogCategory = .data) {
         let entry = DebugLogEntry(
             timestamp: Date(),
             level: level,

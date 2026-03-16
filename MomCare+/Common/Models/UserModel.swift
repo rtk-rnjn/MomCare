@@ -74,4 +74,8 @@ struct UserModel: Codable, Sendable {
 
         return "\(first) \(last)".trimmingCharacters(in: .whitespaces)
     }
+
+    func pregnancyProgress(withReferenceDate referenceDate: Date = .init()) -> PregnancyProgress {
+        Utils.progress(fromDueDate: Date(timeIntervalSince1970: dueDateTimestamp ?? 0), today: referenceDate)
+    }
 }
