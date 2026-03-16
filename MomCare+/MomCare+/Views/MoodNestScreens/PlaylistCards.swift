@@ -23,23 +23,29 @@ struct PlaylistHeroCard: View {
                     .clipped()
             }
 
-            LinearGradient(
-                colors: [
-                    Color.black.opacity(0.8),
-                    Color.black.opacity(0.4),
-                    Color.black.opacity(0.1),
-                    Color.clear
-                ],
-                startPoint: .bottom,
-                endPoint: .top
-            )
+            if reduceTransparency {
+                Color.black
+                    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottom)
+                    .frame(height: 60)
+            } else {
+                LinearGradient(
+                    colors: [
+                        Color.black.opacity(0.8),
+                        Color.black.opacity(0.4),
+                        Color.black.opacity(0.1),
+                        Color.clear
+                    ],
+                    startPoint: .bottom,
+                    endPoint: .top
+                )
+            }
 
             VStack(alignment: .leading, spacing: 4) {
                 Text(playlist.name)
                     .font(.title2.weight(.bold))
                     .foregroundColor(.white)
                     .lineLimit(2)
-                    .shadow(color: .black.opacity(0.3), radius: 4, x: 0, y: 2)
+                    .shadow(color: reduceTransparency ? .clear : .black.opacity(0.3), radius: 4, x: 0, y: 2)
             }
             .padding(.horizontal, 20)
             .padding(.bottom, 24)
@@ -63,6 +69,7 @@ struct PlaylistHeroCard: View {
     // MARK: Private
 
     @State private var uiImage: UIImage?
+    @Environment(\.accessibilityReduceTransparency) private var reduceTransparency
 
 }
 
@@ -88,23 +95,29 @@ struct PlaylistCard: View {
                     .clipped()
             }
 
-            LinearGradient(
-                colors: [
-                    Color.black.opacity(0.8),
-                    Color.black.opacity(0.4),
-                    Color.black.opacity(0.1),
-                    Color.clear
-                ],
-                startPoint: .bottom,
-                endPoint: .top
-            )
+            if reduceTransparency {
+                Color.black
+                    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottom)
+                    .frame(height: 40)
+            } else {
+                LinearGradient(
+                    colors: [
+                        Color.black.opacity(0.8),
+                        Color.black.opacity(0.4),
+                        Color.black.opacity(0.1),
+                        Color.clear
+                    ],
+                    startPoint: .bottom,
+                    endPoint: .top
+                )
+            }
 
             Text(playlist.name)
                 .font(.callout.weight(.bold))
                 .foregroundColor(.white)
                 .padding(12)
                 .lineLimit(2)
-                .shadow(color: .black.opacity(0.3), radius: 3, x: 0, y: 2)
+                .shadow(color: reduceTransparency ? .clear : .black.opacity(0.3), radius: 3, x: 0, y: 2)
         }
         .frame(height: 130)
         .clipShape(RoundedRectangle(cornerRadius: 18, style: .continuous))
@@ -126,5 +139,6 @@ struct PlaylistCard: View {
     // MARK: Private
 
     @State private var uiImage: UIImage?
+    @Environment(\.accessibilityReduceTransparency) private var reduceTransparency
 
 }

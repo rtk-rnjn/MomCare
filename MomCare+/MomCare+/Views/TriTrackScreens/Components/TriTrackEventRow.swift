@@ -32,6 +32,11 @@ struct TriTrackEventRow: View {
             .accessibilityAddTraits(.isButton)
         }
     }
+
+    // MARK: Private
+
+    @Environment(\.accessibilityDifferentiateWithoutColor) private var differentiateWithoutColor
+    @Environment(\.accessibilityReduceTransparency) private var reduceTransparency
 }
 
 extension TriTrackEventRow {
@@ -53,6 +58,12 @@ extension TriTrackEventRow {
                         Color(.systemGray6))
         )
         .foregroundColor(isToday ? .white : .primary)
+        .overlay(
+            isToday && differentiateWithoutColor
+            ? RoundedRectangle(cornerRadius: 12)
+                .stroke(Color.primary, lineWidth: 2)
+            : nil
+        )
         .accessibilityHidden(true)
     }
 }
@@ -83,11 +94,15 @@ extension TriTrackEventRow {
                         .foregroundStyle(.secondary)
                         .monospacedDigit()
 
-                    // Time (.) status
-
-                    Text("•")
-                        .font(.caption.weight(.medium))
-                        .foregroundStyle(isPast(now: now) ? .red : .green)
+                    if differentiateWithoutColor {
+                        Image(systemName: isPast(now: now) ? "xmark.circle" : "checkmark.circle")
+                            .font(.caption.weight(.medium))
+                            .foregroundStyle(isPast(now: now) ? .red : .green)
+                    } else {
+                        Text("•")
+                            .font(.caption.weight(.medium))
+                            .foregroundStyle(isPast(now: now) ? .red : .green)
+                    }
 
                     if isPast(now: now) {
                         Text("Ended")

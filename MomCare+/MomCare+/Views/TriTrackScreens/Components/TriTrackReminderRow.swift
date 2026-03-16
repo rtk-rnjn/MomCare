@@ -31,6 +31,7 @@ struct TriTrackReminderRow: View {
 
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @Environment(\.accessibilityDifferentiateWithoutColor) private var differentiateWithoutColor
+    @Environment(\.accessibilityReduceTransparency) private var reduceTransparency
 
 }
 
@@ -103,10 +104,10 @@ extension TriTrackReminderRow {
         switch status(now: now) {
 
         case .past:
-            return .red.opacity(0.15)
+            return reduceTransparency ? Color(.systemGray5) : .red.opacity(0.15)
 
         case .pastRecurring:
-            return .orange.opacity(0.15)
+            return reduceTransparency ? Color(.systemGray5) : .orange.opacity(0.15)
 
         case .today:
             return Color.CustomColors.mutedRaspberry
@@ -115,10 +116,10 @@ extension TriTrackReminderRow {
             return Color(.systemGray6)
 
         case .futureRecurring:
-            return .blue.opacity(0.15)
+            return reduceTransparency ? Color(.systemGray5) : .blue.opacity(0.15)
 
         case .futureRecurringWithEnd:
-            return .purple.opacity(0.15)
+            return reduceTransparency ? Color(.systemGray5) : .purple.opacity(0.15)
         }
     }
 
@@ -175,7 +176,7 @@ extension TriTrackReminderRow {
         .foregroundColor(foregroundColor(now: Date()))
         .overlay(
             differentiateWithoutColor && dueDate ?? Date() < Date()
-            ? Image(systemName: "exclamationmark")
+            ? Image(systemName: hasRecurrence ? "exclamationmark.2" : "exclamationmark")
                 .font(.caption.bold())
                 .foregroundStyle(.red)
             : nil

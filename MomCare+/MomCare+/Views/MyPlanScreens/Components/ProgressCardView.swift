@@ -68,7 +68,7 @@ struct ProgressRingView: View {
     var body: some View {
         ZStack {
             Circle()
-                .stroke(Color.secondary.opacity(0.2), lineWidth: 14)
+                .stroke(reduceTransparency ? Color(.systemGray4) : Color.secondary.opacity(0.2), lineWidth: 14)
 
             Circle()
                 .trim(from: 0, to: progress)
@@ -130,6 +130,7 @@ struct ProgressRingView: View {
 
     @State private var showPercentage = false
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @Environment(\.accessibilityReduceTransparency) private var reduceTransparency
 
     private var percentage: Int {
         guard target > 0 else { return 0 }
@@ -187,7 +188,7 @@ struct MacroBarRow: View {
             GeometryReader { geo in
                 ZStack(alignment: .leading) {
                     Capsule()
-                        .fill(Color.secondary.opacity(0.2))
+                        .fill(reduceTransparency ? Color(.systemGray4) : Color.secondary.opacity(0.2))
 
                     Capsule()
                         .fill(color)
@@ -214,6 +215,7 @@ struct MacroBarRow: View {
 
     @State private var showPercentage = false
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @Environment(\.accessibilityReduceTransparency) private var reduceTransparency
 
     private var progress: Double {
         guard let consumed, let target else {

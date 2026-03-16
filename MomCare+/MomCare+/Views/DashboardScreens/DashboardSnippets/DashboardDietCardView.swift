@@ -39,7 +39,7 @@ struct DashboardDietCardView: View {
                 GeometryReader { geo in
                     ZStack(alignment: .leading) {
                         Capsule()
-                            .fill(Color.gray.opacity(0.2))
+                            .fill(reduceTransparency ? Color(.systemGray4) : Color.gray.opacity(0.2))
                             .frame(height: 8)
 
                         Capsule()
@@ -95,6 +95,7 @@ struct DashboardDietCardView: View {
     @State private var animatedProgress: Double = 0
     @State private var hasAnimated = false
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @Environment(\.accessibilityReduceTransparency) private var reduceTransparency
 
     private var progress: Double {
         guard goal > 0 else { return 0 }

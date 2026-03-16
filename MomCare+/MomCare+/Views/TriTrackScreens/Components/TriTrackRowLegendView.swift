@@ -183,9 +183,29 @@ struct TriTrackRowLegendView: View {
                     )
                     LegendDivider()
                     LegendRow(
-                        badge: SymbolBadge(systemName: "exclamationmark", color: .red),
-                        label: "Accessibility: overdue",
-                        description: "When \"Differentiate without color\" is enabled in Accessibility settings, an exclamation mark overlays overdue reminder badges instead of relying on color alone."
+                        badge: SymbolBadge(systemName: "exclamationmark.2", color: .red),
+                        label: "Accessibility: overdue & repeating",
+                        description: "When \"Differentiate without color\" is enabled, a double exclamation mark appears for overdue reminders that also repeat."
+                    )
+                    LegendDivider()
+                    LegendRow(
+                        badge: SymbolBadge(systemName: "xmark.circle", color: .red),
+                        label: "Accessibility: event ended",
+                        description: "When \"Differentiate without color\" is enabled, an X-circle icon replaces the colored bullet to indicate a past event."
+                    )
+                    LegendDivider()
+                    LegendRow(
+                        badge: SymbolBadge(systemName: "checkmark.circle", color: .green),
+                        label: "Accessibility: event upcoming",
+                        description: "When \"Differentiate without color\" is enabled, a checkmark-circle replaces the colored bullet for an upcoming event."
+                    )
+                    LegendDivider()
+                    LegendRow(
+                        badge: RoundedRectangle(cornerRadius: 12)
+                            .strokeBorder(Color.primary, lineWidth: 2)
+                            .frame(width: 50, height: 50),
+                        label: "Accessibility: today",
+                        description: "When \"Differentiate without color\" is enabled, today's event badge gains a solid border outline in addition to its raspberry fill."
                     )
                 }
             }
