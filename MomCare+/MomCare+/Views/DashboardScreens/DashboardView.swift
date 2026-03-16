@@ -17,6 +17,10 @@ struct DashboardView: View {
             .frame(maxWidth: .infinity)
             .padding(.top, 20)
         }
+        .refreshable {
+            HapticsHandler.impact(.medium)
+            try? await contentServiceHandler.fetchMealPlan()
+        }
         .background(Color(.secondarySystemGroupedBackground))
         .navigationTitle("ProgressHub")
         .navigationBarTitleDisplayMode(.large)

@@ -275,12 +275,46 @@ private struct ItemRow: View {
         .contentShape(.contextMenuPreview, RoundedRectangle(cornerRadius: 10, style: .continuous))
         .contentShape(Rectangle())
         .modifier(MealContextMenu(item: item, food: food, onToggle: onToggle, onDelete: onDelete))
+        .swipeActions(edge: .leading, allowsFullSwipe: true) {
+            Button {
+                HapticsHandler.notification(item.isConsumed ? .warning : .success)
+                Task {
+                    await onToggle(item.isConsumed)
+                    try? await contentServiceHandler.fetchMealPlan(makeNetworkCall: false)
+                }
+            } label: {
+                Label(
+                    item.isConsumed ? "Undo" : "Consume",
+                    systemImage: item.isConsumed ? "arrow.uturn.backward" : "checkmark"
+                )
+            }
+            .tint(item.isConsumed ? .orange : .green)
+        }
+        .swipeActions(edge: .trailing, allowsFullSwipe: false) {
+            Button(role: .destructive) {
+                HapticsHandler.notification(.warning)
+                Task { await onDelete() }
+            } label: {
+                Label("Delete", systemImage: "trash")
+            }
+        }
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(
             "\(food?.name.capitalized ?? "Food item"), \(item.count) serving, \(food?.calories.formattedOneDecimal ?? "")"
         )
         .accessibilityValue(item.isConsumed ? "consumed" : "not consumed")
-        .accessibilityHint("Long press for more options")
+        .accessibilityHint("Long press for more options.")
+        .accessibilityAction(named: item.isConsumed ? "Undo" : "Consume") {
+            HapticsHandler.notification(item.isConsumed ? .warning : .success)
+            Task {
+                await onToggle(item.isConsumed)
+                try? await contentServiceHandler.fetchMealPlan(makeNetworkCall: false)
+            }
+        }
+        .accessibilityAction(named: "Delete") {
+            HapticsHandler.notification(.warning)
+            Task { await onDelete() }
+        }
         .task {
             food = await item.food
         }
@@ -385,6 +419,7 @@ private struct MealContextMenu: ViewModifier {
     @ViewBuilder
     private var menuButtons: some View {
         Button {
+            HapticsHandler.notification(item.isConsumed ? .warning : .success)
             Task {
                 await onToggle(item.isConsumed)
                 try? await contentServiceHandler.fetchMealPlan()
@@ -399,6 +434,7 @@ private struct MealContextMenu: ViewModifier {
         Divider()
 
         Button(role: .destructive) {
+            HapticsHandler.notification(.warning)
             Task { await onDelete() }
         } label: {
             Label("Delete", systemImage: "trash")

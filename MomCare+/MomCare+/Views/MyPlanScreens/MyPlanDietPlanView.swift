@@ -1,4 +1,5 @@
 import SwiftUI
+import TipKit
 
 struct MealSection: Identifiable {
     let id: UUID = .init()
@@ -7,6 +8,20 @@ struct MealSection: Identifiable {
 
     var isCompleted: Bool {
         items.allSatisfy(\.isConsumed)
+    }
+}
+
+struct SwipeMealsTip: Tip {
+    var title: Text {
+        Text("Swipe to Act on Meals")
+    }
+
+    var message: Text? {
+        Text("Swipe right on a food item to mark it as consumed, or swipe left to delete it from your plan.")
+    }
+
+    var image: Image? {
+        Image(systemName: "hand.draw")
     }
 }
 
@@ -25,10 +40,18 @@ struct MyPlanDietPlanView: View {
 
             VStack(spacing: 0) {
                 ScrollView(.vertical, showsIndicators: false) {
+                    TipView(swipeTip, arrowEdge: .top)
+                        .padding(.horizontal, 16)
+                        .padding(.top, 8)
+
                     MealTimelineCardView()
                         .padding(.horizontal, 0)
-                        .padding(.top, 8)
+                        .padding(.top, 4)
                         .padding(.bottom, 50)
+                }
+                .refreshable {
+                    HapticsHandler.impact(.medium)
+                    try? await contentServiceHandler.fetchMealPlan()
                 }
             }
             .frame(maxHeight: .infinity)
@@ -42,5 +65,7 @@ struct MyPlanDietPlanView: View {
     // MARK: Private
 
     @EnvironmentObject private var contentServiceHandler: ContentServiceHandler
+
+    private let swipeTip = SwipeMealsTip()
 
 }

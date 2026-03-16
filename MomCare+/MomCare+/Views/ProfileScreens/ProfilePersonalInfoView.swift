@@ -1,4 +1,5 @@
 import SwiftUI
+import TipKit
 
 struct InitialsAvatar: View {
 
@@ -20,6 +21,20 @@ struct InitialsAvatar: View {
                 .font(.title3.weight(.semibold))
                 .foregroundColor(MomCareAccent.primary)
         }
+    }
+}
+
+struct WeightLoggingTip: Tip {
+    var title: Text {
+        Text("Keep Your Weight Up to Date")
+    }
+
+    var message: Text? {
+        Text("Tap 'Edit' then tap Current Weight to log your latest weight. Keeping it current helps personalise your nutrition and exercise plan.")
+    }
+
+    var image: Image? {
+        Image(systemName: "scalemass")
     }
 }
 
@@ -88,6 +103,7 @@ struct ProfilePersonalInfoView: View {
                 pickerRow("Current Weight", value: measurementFormatter.string(from: Measurement(value: Double(authenticationService.userModel?.currentWeight ?? 0), unit: UnitMass.kilograms))) {
                     activeSheet = .currentWeight
                 }
+                .popoverTip(weightLoggingTip, arrowEdge: .bottom)
 
                 pickerRow("Pre Pregnancy Weight", value: measurementFormatter.string(from: Measurement(value: Double(authenticationService.userModel?.prePregnancyWeight ?? 0), unit: UnitMass.kilograms))) {
                     activeSheet = .prePregnancyWeight
@@ -101,6 +117,7 @@ struct ProfilePersonalInfoView: View {
 
             ToolbarItem(placement: .navigationBarTrailing) {
                 Button(isEditing ? "Done" : "Edit") {
+                    HapticsHandler.impact(.light)
                     if reduceMotion {
                         isEditing.toggle()
                     } else {
@@ -224,6 +241,8 @@ struct ProfilePersonalInfoView: View {
     @State private var activeSheet: SheetType?
     @State private var showingAlert = false
     @State private var alertMessage = ""
+
+    private let weightLoggingTip = WeightLoggingTip()
 
     private var measurementFormatter: MeasurementFormatter {
         let formatter = MeasurementFormatter()

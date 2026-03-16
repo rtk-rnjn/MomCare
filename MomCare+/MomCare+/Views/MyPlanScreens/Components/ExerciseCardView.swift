@@ -26,6 +26,7 @@ struct ExerciseCardView: View {
                         .padding(.bottom, 10)
 
                     Button {
+                        HapticsHandler.impact(.medium)
                         startExercisePlayer = true
                     } label: {
                         HStack(spacing: 6) {
@@ -134,9 +135,11 @@ struct ExerciseCardView: View {
                 Task {
                     do {
                         try await updateDuration()
+                        HapticsHandler.notification(completionProgress >= 1 ? .success : .warning)
                     } catch {
                         alertMessage = error.localizedDescription
                         showErrorAlert = true
+                        HapticsHandler.notification(.error)
                     }
                     startExercisePlayer = false
                 }
