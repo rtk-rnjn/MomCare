@@ -3,6 +3,8 @@ import SwiftUI
 
 struct TriTrackEventRow: View {
 
+    // MARK: Internal
+
     let event: EKEvent
 
     @Binding var selectedDate: Date
