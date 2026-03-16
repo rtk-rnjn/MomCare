@@ -107,6 +107,7 @@ private extension ProfileNotificationsView {
                 case .authorized, .provisional:
                     isEnabled = true
                     UserDefaults.standard.set(true, forKey: "notificationsEnabled")
+
                 case .notDetermined:
                     UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound]) { granted, _ in
                         DispatchQueue.main.async {
@@ -117,6 +118,7 @@ private extension ProfileNotificationsView {
                             }
                         }
                     }
+
                 default:
                     isEnabled = false
                     UserDefaults.standard.set(false, forKey: "notificationsEnabled")
@@ -156,7 +158,7 @@ private extension ProfileNotificationsView {
 
         UNUserNotificationCenter.current().add(request) { error in
             if let error {
-                
+
                 DebugLogger.shared.log("Failed to schedule meal reminder: \(error.localizedDescription)", level: .error, category: .error)
             }
         }

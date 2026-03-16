@@ -252,7 +252,7 @@ final class DebugLogger {
             category: category,
             message: message
         )
-        
+
         DispatchQueue.main.async {
             self.onNewEntry?(entry)
         }

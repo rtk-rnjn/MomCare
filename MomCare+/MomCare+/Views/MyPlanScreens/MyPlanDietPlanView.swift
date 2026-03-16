@@ -24,20 +24,16 @@ struct MyPlanDietPlanView: View {
             .containerShape(RoundedRectangle(cornerRadius: 24, style: .continuous))
             .padding(.horizontal, 16)
 
-            
-            ScrollView(.vertical, showsIndicators: false) {
-                MealTimelineCardView()
-                    .padding(.top, 4)
-                    .padding(.bottom, 50)
-            }
-            .refreshable {
-                HapticsHandler.impact(.medium)
-                try? await contentServiceHandler.fetchMealPlan()
-            }
-            .frame(maxHeight: .infinity)
-            .background(Color(.systemBackground))
-            .clipShape(RoundedCorner(radius: 24, corners: [.topLeft, .topRight]))
-            .padding(.horizontal, 16)
+            MealTimelineCardView()
+                .refreshable {
+                    HapticsHandler.impact(.medium)
+                    try? await contentServiceHandler.fetchMealPlan()
+                }
+                .padding(.top, 4)
+                .padding(.bottom, 8)
+                .frame(maxHeight: .infinity)
+                .clipShape(RoundedCorner(radius: 24, corners: [.topLeft, .topRight]))
+                .padding(.horizontal, 16)
         }
         .padding(.top, 8)
     }
@@ -45,5 +41,4 @@ struct MyPlanDietPlanView: View {
     // MARK: Private
 
     @EnvironmentObject private var contentServiceHandler: ContentServiceHandler
-
 }

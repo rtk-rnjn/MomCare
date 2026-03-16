@@ -73,8 +73,8 @@ final class ContentServiceHandler: ObservableObject {
         let writeTypes = Set(writeIdentifiers.compactMap { HKQuantityType.quantityType(forIdentifier: $0) })
 
         try await healthStore.requestAuthorization(toShare: writeTypes, read: readTypes)
-        
-        var status: [HKQuantityTypeIdentifier: HKAuthorizationStatus] = [:]
+
+        var status = [HKQuantityTypeIdentifier: HKAuthorizationStatus]()
         for identifier in readIdentifiers {
             if let type = HKQuantityType.quantityType(forIdentifier: identifier) {
                 status[identifier] = healthStore.authorizationStatus(for: type)

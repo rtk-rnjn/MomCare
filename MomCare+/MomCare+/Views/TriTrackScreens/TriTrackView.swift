@@ -41,6 +41,9 @@ struct TriTrackView: View {
         .navigationDestination(isPresented: $showingAllSymptoms) {
             TriTrackAllSymptomsView()
         }
+        .sheet(isPresented: $controlState.showingTriTrackHelp) {
+            TriTrackRowLegendView()
+        }
         .toolbar {
             ToolbarItem(placement: .topBarLeading) {
                 Button {
@@ -73,6 +76,14 @@ struct TriTrackView: View {
                             showingAllReminders = true
                         } label: {
                             Label("Show all reminders", systemImage: "bell")
+                        }
+
+                        Divider()
+
+                        Button {
+                            controlState.showingTriTrackHelp = true
+                        } label: {
+                            Label("Legend", systemImage: "questionmark.circle")
                         }
                     } label: {
                         Image(systemName: "ellipsis")
@@ -196,12 +207,7 @@ struct TriTrackView: View {
             .padding(.top, 16)
             .accessibilityLabel("TriTrack section")
 
-            ScrollView(.vertical, showsIndicators: false) {
-                tabContent
-                    .padding(.horizontal, 16)
-                    .padding(.top, 16)
-                    .padding(.bottom, 50)
-            }
+            tabContent
         }
         .frame(maxHeight: .infinity)
         .background(Color(.systemBackground))
@@ -212,11 +218,16 @@ struct TriTrackView: View {
     private var tabContent: some View {
         switch controlState.triTrackSegment {
         case .meAndBaby:
-            if let data = trimesterData {
-                PregnancyProgressView(trimesterData: data, pregnancyData: currentProgress)
-            } else {
-                ProgressView()
+            ScrollView(.vertical, showsIndicators: false) {
+                if let data = trimesterData {
+                    PregnancyProgressView(trimesterData: data, pregnancyData: currentProgress)
+                } else {
+                    ProgressView()
+                }
             }
+            .padding(.horizontal, 16)
+            .padding(.top, 16)
+            .padding(.bottom, 50)
 
         case .events:
             TriTrackCalendarItemContentView(selectedDate: $selectedDate)

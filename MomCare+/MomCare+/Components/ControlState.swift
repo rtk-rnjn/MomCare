@@ -130,6 +130,7 @@ final class ControlState: ObservableObject {
     @Published var showingMoodnestPlaylistsView: Bool = false
 
     @Published var error: (any Error)?
+    @Published var showingTriTrackHelp: Bool = false
 
     @Published var showingPopup: Bool = false {
         didSet { UserDefaults.standard.set(showingPopup, forKey: "showingPopup") }

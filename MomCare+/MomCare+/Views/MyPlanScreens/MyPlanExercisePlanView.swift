@@ -1,7 +1,6 @@
 import SwiftUI
 import TipKit
 
-
 struct MyPlanExercisePlanView: View {
 
     // MARK: Internal

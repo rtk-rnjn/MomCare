@@ -22,10 +22,6 @@ struct TriTrackReminderRow: View {
                 completionIndicator
             }
             .padding()
-            .background(
-                RoundedRectangle(cornerRadius: 18, style: .continuous)
-                    .fill(Color(.secondarySystemBackground))
-            )
             .onTapGesture { onTap() }
             .opacity(reminder.isCompleted ? 0.6 : 1)
         }

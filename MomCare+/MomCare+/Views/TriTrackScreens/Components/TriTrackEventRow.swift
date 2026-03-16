@@ -10,9 +10,7 @@ struct TriTrackEventRow: View {
     var body: some View {
 
         TimelineView(.periodic(from: .now, by: 60)) { context in
-
             HStack(spacing: 14) {
-
                 dateCapsule
 
                 appointmentInfo(now: context.date)
@@ -24,10 +22,6 @@ struct TriTrackEventRow: View {
                     .accessibilityHidden(true)
             }
             .padding()
-            .background(
-                RoundedRectangle(cornerRadius: 18, style: .continuous)
-                    .fill(Color(.secondarySystemBackground))
-            )
             .opacity(isPast(now: context.date) ? 0.6 : 1)
             .accessibilityElement(children: .ignore)
             .accessibilityLabel(event.title)

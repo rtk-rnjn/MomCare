@@ -19,12 +19,12 @@ struct ErrorAlertModifier: ViewModifier {
             }
         } message: { error in
             VStack(alignment: .leading, spacing: 6) {
-                
+
                 if let error = error as? (any LocalizedError) {
                     if let reason = error.failureReason {
                         Text(reason)
                     }
-                    
+
                     if let suggestion = error.recoverySuggestion {
                         Text(suggestion)
                             .font(.footnote)

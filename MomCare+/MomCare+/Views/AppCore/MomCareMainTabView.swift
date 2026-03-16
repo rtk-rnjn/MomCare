@@ -115,7 +115,7 @@ struct MomCareMainTabView: View {
             do {
                 _ = try await eventKitHandler.eventStore.requestFullAccessToEvents()
                 _ = try await eventKitHandler.eventStore.requestFullAccessToReminders()
-                
+
                 requestingEventKitAccess = false
             } catch {
                 controlState.error = error

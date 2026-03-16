@@ -2,7 +2,6 @@ import EventKit
 import SwiftUI
 import TipKit
 
-
 struct DashboardEventCardView: View {
 
     // MARK: Internal
