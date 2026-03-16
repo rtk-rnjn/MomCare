@@ -3,6 +3,8 @@ import SwiftUI
 
 struct TriTrackEventRow: View {
 
+    // MARK: Internal
+
     let event: EKEvent
 
     @Binding var selectedDate: Date
@@ -10,9 +12,7 @@ struct TriTrackEventRow: View {
     var body: some View {
 
         TimelineView(.periodic(from: .now, by: 60)) { context in
-
             HStack(spacing: 14) {
-
                 dateCapsule
 
                 appointmentInfo(now: context.date)
@@ -24,10 +24,6 @@ struct TriTrackEventRow: View {
                     .accessibilityHidden(true)
             }
             .padding()
-            .background(
-                RoundedRectangle(cornerRadius: 18, style: .continuous)
-                    .fill(Color(.secondarySystemBackground))
-            )
             .opacity(isPast(now: context.date) ? 0.6 : 1)
             .accessibilityElement(children: .ignore)
             .accessibilityLabel(event.title)
@@ -38,6 +34,11 @@ struct TriTrackEventRow: View {
             .accessibilityAddTraits(.isButton)
         }
     }
+
+    // MARK: Private
+
+    @Environment(\.accessibilityDifferentiateWithoutColor) private var differentiateWithoutColor
+    @Environment(\.accessibilityReduceTransparency) private var reduceTransparency
 }
 
 extension TriTrackEventRow {
@@ -59,6 +60,12 @@ extension TriTrackEventRow {
                         Color(.systemGray6))
         )
         .foregroundColor(isToday ? .white : .primary)
+        .overlay(
+            isToday && differentiateWithoutColor
+            ? RoundedRectangle(cornerRadius: 12)
+                .stroke(Color.primary, lineWidth: 2)
+            : nil
+        )
         .accessibilityHidden(true)
     }
 }
@@ -89,11 +96,15 @@ extension TriTrackEventRow {
                         .foregroundStyle(.secondary)
                         .monospacedDigit()
 
-                    // Time (.) status
-
-                    Text("•")
-                        .font(.caption.weight(.medium))
-                        .foregroundStyle(isPast(now: now) ? .red : .green)
+                    if differentiateWithoutColor {
+                        Image(systemName: isPast(now: now) ? "xmark.circle" : "checkmark.circle")
+                            .font(.caption.weight(.medium))
+                            .foregroundStyle(isPast(now: now) ? .red : .green)
+                    } else {
+                        Text("•")
+                            .font(.caption.weight(.medium))
+                            .foregroundStyle(isPast(now: now) ? .red : .green)
+                    }
 
                     if isPast(now: now) {
                         Text("Ended")

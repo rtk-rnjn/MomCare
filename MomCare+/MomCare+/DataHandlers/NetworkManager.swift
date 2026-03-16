@@ -21,8 +21,15 @@ struct NetworkResponse<T: Codable>: Codable {
     var data: T?
     var statusCode: Int
     var errorMessage: String?
-
     var responseHeaders: [AnyHashable: Any]?
+
+    var localizedError: (any APIError)? {
+        if errorMessage == nil {
+            return nil
+        }
+
+        return APIErrorResolver.error(from: statusCode)
+    }
 
     var success: Bool {
         return (200...299).contains(statusCode) && errorMessage == nil

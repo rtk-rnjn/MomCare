@@ -7,11 +7,12 @@ struct TriTrackAddCalendarItemSheetView: View {
     // MARK: Internal
 
     @Binding var selectedDate: Date
+    @State var selectedSegment: AddMode = .appointment
 
     var body: some View {
         NavigationStack {
             Form {
-                Picker("Type", selection: $mode) {
+                Picker("Type", selection: $selectedSegment) {
                     ForEach(AddMode.allCases, id: \.self) { mode in
                         Text(mode.rawValue)
                     }
@@ -34,7 +35,7 @@ struct TriTrackAddCalendarItemSheetView: View {
                         }
                 }
 
-                switch mode {
+                switch selectedSegment {
                 case .appointment:
                     appointmentSection
                 case .reminder:
@@ -107,8 +108,6 @@ struct TriTrackAddCalendarItemSheetView: View {
 
     @State private var showErrorAlert = false
     @State private var alertMessage: String?
-
-    @State private var mode: AddMode = .appointment
 
     @State private var title = ""
     @State private var notes = ""
@@ -196,7 +195,7 @@ struct TriTrackAddCalendarItemSheetView: View {
     }
 
     private func save() {
-        switch mode {
+        switch selectedSegment {
         case .appointment:
             var alarm: EKAlarm?
             if let offset = selectedAlarmOffset {

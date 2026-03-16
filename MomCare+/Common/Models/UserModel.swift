@@ -29,9 +29,9 @@ struct UserModel: Codable, Sendable {
 
     var phoneNumber: String?
     var dateOfBirthTimestamp: TimeInterval?
-    var height: Double?
-    var prePregnancyWeight: Double?
-    var currentWeight: Double?
+    var height: Int?
+    var prePregnancyWeight: Int?
+    var currentWeight: Int?
     var dueDateTimestamp: TimeInterval?
 
     var foodIntolerances: [Intolerance] = []
@@ -73,5 +73,9 @@ struct UserModel: Codable, Sendable {
         let last = lastName ?? ""
 
         return "\(first) \(last)".trimmingCharacters(in: .whitespaces)
+    }
+
+    func pregnancyProgress(withReferenceDate referenceDate: Date = .init()) -> PregnancyProgress {
+        Utils.progress(fromDueDate: Date(timeIntervalSince1970: dueDateTimestamp ?? 0), today: referenceDate)
     }
 }

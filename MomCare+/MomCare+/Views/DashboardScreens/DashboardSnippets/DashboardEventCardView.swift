@@ -1,5 +1,6 @@
 import EventKit
 import SwiftUI
+import TipKit
 
 struct DashboardEventCardView: View {
 
@@ -24,12 +25,6 @@ struct DashboardEventCardView: View {
                         Text(startDate, format: .relative(presentation: .numeric))
                             .contentTransition(.numericText())
                             .animation(reduceMotion ? nil : .easeInOut, value: startDate)
-
-//                        Text(startDate.formatted(date: .abbreviated, time: .shortened))
-//                            .font(.subheadline)
-//                            .foregroundColor(.secondary)
-//                            .contentTransition(.interpolate)
-//                            .animation(.spring(response: 0.4, dampingFraction: 0.85), value: eventKitHandler.eventStore)
                     }
 
                 } else {

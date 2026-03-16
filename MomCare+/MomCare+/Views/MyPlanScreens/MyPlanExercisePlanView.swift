@@ -1,4 +1,5 @@
 import SwiftUI
+import TipKit
 
 struct MyPlanExercisePlanView: View {
 
@@ -46,6 +47,16 @@ struct MyPlanExercisePlanView: View {
                     .padding(.horizontal, 16)
                     .padding(.top, 16)
                     .padding(.bottom, 50)
+                }
+                .refreshable {
+                    HapticsHandler.impact(.medium)
+                    if let networkResponse = try? await ContentService.shared.generateUserExercises(),
+                       let userExercises = networkResponse.data {
+                        contentServiceHandler.userExercises = userExercises
+                        await contentServiceHandler.fetchTotalUserExercisesDuration()
+                        await contentServiceHandler.fetchTotalUserExercisesCompletionDuration()
+                        await contentServiceHandler.fetchTotalUserExercisesCompleted()
+                    }
                 }
             }
             .frame(maxHeight: .infinity)

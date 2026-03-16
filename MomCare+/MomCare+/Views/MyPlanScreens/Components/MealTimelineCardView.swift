@@ -5,159 +5,90 @@ struct MealTimelineCardView: View {
     // MARK: Internal
 
     var body: some View {
-        VStack(spacing: 0) {
-            HeaderRow(section: MealSection(title: "Breakfast", items: contentServiceHandler.myPlanModel?.breakfast ?? []), hideTopLine: true, hideBottomLine: false, mealType: .breakfast) { consumed in
-                do {
-                    try await contentServiceHandler.markFoodsAs(consumed: !consumed, mealType: .breakfast)
-                } catch {
-                    alertMessage = error.localizedDescription
-                    showErrorAlert = true
-                }
-            }
-
-            ForEach(contentServiceHandler.myPlanModel?.breakfast ?? []) { item in
-                ItemRow(
-                    item: item,
-                    hideTopLine: false,
-                    hideBottomLine: false,
-                    onToggle: { consumed in
-                        do {
-                            try await contentServiceHandler.markFoodAs(consumed: !consumed, in: .breakfast, foodReference: item)
-                        } catch {
-                            alertMessage = error.localizedDescription
-                            showErrorAlert = true
-                        }
-                    },
-                    onDelete: {
-                        do {
-                            try await contentServiceHandler.markFoodAs(consumed: false, in: .breakfast, foodReference: item)
-                            try await contentServiceHandler.removeFoodFromPlan(foodId: item.foodId, mealType: .breakfast)
-                        } catch {
-                            alertMessage = error.localizedDescription
-                            showErrorAlert = true
-                        }
-                    }
-                )
-            }
-
-            HeaderRow(section: MealSection(title: "Lunch", items: contentServiceHandler.myPlanModel?.lunch ?? []), hideTopLine: false, hideBottomLine: false, mealType: .lunch) { consumed in
-                do {
-                    try await contentServiceHandler.markFoodsAs(consumed: !consumed, mealType: .lunch)
-                } catch {
-                    alertMessage = error.localizedDescription
-                    showErrorAlert = true
-                }
-            }
-
-            ForEach(contentServiceHandler.myPlanModel?.lunch ?? []) { item in
-                ItemRow(
-                    item: item,
-                    hideTopLine: false,
-                    hideBottomLine: false,
-                    onToggle: { consumed in
-                        do {
-                            try await contentServiceHandler.markFoodAs(consumed: !consumed, in: .lunch, foodReference: item)
-                        } catch {
-                            alertMessage = error.localizedDescription
-                            showErrorAlert = true
-                        }
-                    },
-                    onDelete: {
-                        do {
-                            try await contentServiceHandler.markFoodAs(consumed: false, in: .lunch, foodReference: item)
-                            try await contentServiceHandler.removeFoodFromPlan(foodId: item.foodId, mealType: .lunch)
-                        } catch {
-                            alertMessage = error.localizedDescription
-                            showErrorAlert = true
-                        }
-                    }
-                )
-            }
-
-            HeaderRow(section: MealSection(title: "Snacks", items: contentServiceHandler.myPlanModel?.snacks ?? []), hideTopLine: false, hideBottomLine: false, mealType: .snacks) { consumed in
-                do {
-                    try await contentServiceHandler.markFoodsAs(consumed: !consumed, mealType: .snacks)
-                } catch {
-                    alertMessage = error.localizedDescription
-                    showErrorAlert = true
-                }
-            }
-
-            ForEach(contentServiceHandler.myPlanModel?.snacks ?? []) { item in
-                ItemRow(
-                    item: item,
-                    hideTopLine: false,
-                    hideBottomLine: false,
-                    onToggle: { consumed in
-                        do {
-                            try await contentServiceHandler.markFoodAs(consumed: !consumed, in: .snacks, foodReference: item)
-                        } catch {
-                            alertMessage = error.localizedDescription
-                            showErrorAlert = true
-                        }
-                    },
-                    onDelete: {
-                        do {
-                            try await contentServiceHandler.markFoodAs(consumed: false, in: .snacks, foodReference: item)
-                            try await contentServiceHandler.removeFoodFromPlan(foodId: item.foodId, mealType: .snacks)
-                        } catch {
-                            alertMessage = error.localizedDescription
-                            showErrorAlert = true
-                        }
-                    }
-                )
-            }
-
-            HeaderRow(section: MealSection(title: "Dinner", items: contentServiceHandler.myPlanModel?.dinner ?? []), hideTopLine: false, hideBottomLine: contentServiceHandler.myPlanModel?.dinner.isEmpty ?? true, mealType: .dinner) { consumed in
-                do {
-                    try await contentServiceHandler.markFoodsAs(consumed: !consumed, mealType: .dinner)
-                } catch {
-                    alertMessage = error.localizedDescription
-                    showErrorAlert = true
-                }
-            }
-
-            ForEach(contentServiceHandler.myPlanModel?.dinner ?? []) { item in
-                ItemRow(
-                    item: item,
-                    hideTopLine: false,
-                    hideBottomLine: false,
-                    onToggle: { consumed in
-                        do {
-                            try await contentServiceHandler.markFoodAs(consumed: !consumed, in: .dinner, foodReference: item)
-                        } catch {
-                            alertMessage = error.localizedDescription
-                            showErrorAlert = true
-                        }
-                    },
-                    onDelete: {
-                        do {
-                            try await contentServiceHandler.markFoodAs(consumed: false, in: .dinner, foodReference: item)
-                            try await contentServiceHandler.removeFoodFromPlan(foodId: item.foodId, mealType: .dinner)
-                        } catch {
-                            alertMessage = error.localizedDescription
-                            showErrorAlert = true
-                        }
-                    }
-                )
-            }
+        List {
+            mealSection(
+                title: "Breakfast",
+                items: contentServiceHandler.myPlanModel?.breakfast ?? [],
+                mealType: .breakfast
+            )
+            mealSection(
+                title: "Lunch",
+                items: contentServiceHandler.myPlanModel?.lunch ?? [],
+                mealType: .lunch
+            )
+            mealSection(
+                title: "Snacks",
+                items: contentServiceHandler.myPlanModel?.snacks ?? [],
+                mealType: .snacks
+            )
+            mealSection(
+                title: "Dinner",
+                items: contentServiceHandler.myPlanModel?.dinner ?? [],
+                mealType: .dinner
+            )
         }
-        .padding(.horizontal, 16)
-        .padding(.bottom, 16)
-        .background(Color(.systemBackground))
-        .alert("Error", isPresented: $showErrorAlert) {
-            Button("OK", role: .cancel) {}
-        } message: {
-            Text(alertMessage ?? "An unexpected error occurred.")
-        }
+        .listStyle(.inset)
+        .listSectionSpacing(0)
+        .listRowSpacing(0)
+        .scrollIndicators(.hidden)
+        .scrollDismissesKeyboard(.immediately)
+//        .toolbarVisibility(.hidden, for: .tabBar)
+        .scrollBounceBehavior(.basedOnSize)
+        .environment(\.defaultMinListRowHeight, 0)
     }
 
     // MARK: Private
 
     @EnvironmentObject private var contentServiceHandler: ContentServiceHandler
-    @State private var showErrorAlert = false
-    @State private var alertMessage: String?
+    @EnvironmentObject private var controlState: ControlState
 
+    @ViewBuilder
+    private func mealSection(title: String, items: [FoodReferenceModel], mealType: MealType) -> some View {
+        Section {
+            HeaderRow(
+                section: MealSection(title: title, items: items),
+                hideTopLine: title == "Breakfast",
+                hideBottomLine: title == "Dinner" && items.isEmpty,
+                mealType: mealType
+            ) { consumed in
+                do {
+                    try await contentServiceHandler.markFoodsAs(consumed: !consumed, mealType: mealType)
+                } catch {
+                    controlState.error = error
+                }
+            }
+            .listRowSeparator(.hidden)
+            .listRowInsets(.top, 0)
+            .listRowInsets(.bottom, 0)
+
+            ForEach(items) { item in
+                ItemRow(
+                    item: item,
+                    hideTopLine: false,
+                    hideBottomLine: item.id == items.last?.id && title == "Dinner",
+                    onToggle: { consumed in
+                        do {
+                            try await contentServiceHandler.markFoodAs(consumed: !consumed, in: mealType, foodReference: item)
+                        } catch {
+                            controlState.error = error
+                        }
+                    },
+                    onDelete: {
+                        do {
+                            try await contentServiceHandler.markFoodAs(consumed: false, in: mealType, foodReference: item)
+                            try await contentServiceHandler.removeFoodFromPlan(foodId: item.foodId, mealType: mealType)
+                        } catch {
+                            controlState.error = error
+                        }
+                    }
+                )
+                .listRowSeparator(.hidden)
+                .listRowInsets(.top, 0)
+                .listRowInsets(.bottom, 0)
+            }
+        }
+        .listSectionSpacing(0)
+    }
 }
 
 private struct HeaderRow: View {
@@ -272,15 +203,48 @@ private struct ItemRow: View {
             Spacer()
         }
         .frame(height: 66)
-        .contentShape(.contextMenuPreview, RoundedRectangle(cornerRadius: 10, style: .continuous))
         .contentShape(Rectangle())
         .modifier(MealContextMenu(item: item, food: food, onToggle: onToggle, onDelete: onDelete))
+        .swipeActions(edge: .leading, allowsFullSwipe: true) {
+            Button {
+                HapticsHandler.notification(item.isConsumed ? .warning : .success)
+                Task {
+                    await onToggle(item.isConsumed)
+                    try? await contentServiceHandler.fetchMealPlan(makeNetworkCall: false)
+                }
+            } label: {
+                Label(
+                    item.isConsumed ? "Undo" : "",
+                    systemImage: item.isConsumed ? "arrow.uturn.backward" : "checkmark"
+                )
+            }
+            .tint(item.isConsumed ? .orange : .green)
+        }
+        .swipeActions(edge: .trailing, allowsFullSwipe: false) {
+            Button(role: .destructive) {
+                HapticsHandler.notification(.warning)
+                Task { await onDelete() }
+            } label: {
+                Label("", systemImage: "trash")
+            }
+        }
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(
             "\(food?.name.capitalized ?? "Food item"), \(item.count) serving, \(food?.calories.formattedOneDecimal ?? "")"
         )
         .accessibilityValue(item.isConsumed ? "consumed" : "not consumed")
-        .accessibilityHint("Long press for more options")
+        .accessibilityHint("Long press for more options.")
+        .accessibilityAction(named: item.isConsumed ? "Undo" : "Consume") {
+            HapticsHandler.notification(item.isConsumed ? .warning : .success)
+            Task {
+                await onToggle(item.isConsumed)
+                try? await contentServiceHandler.fetchMealPlan(makeNetworkCall: false)
+            }
+        }
+        .accessibilityAction(named: "Delete") {
+            HapticsHandler.notification(.warning)
+            Task { await onDelete() }
+        }
         .task {
             food = await item.food
         }
@@ -289,9 +253,7 @@ private struct ItemRow: View {
     // MARK: Private
 
     @EnvironmentObject private var contentServiceHandler: ContentServiceHandler
-
     @State private var food: FoodItemModel?
-
 }
 
 private struct TimelineLine: View {
@@ -385,6 +347,7 @@ private struct MealContextMenu: ViewModifier {
     @ViewBuilder
     private var menuButtons: some View {
         Button {
+            HapticsHandler.notification(item.isConsumed ? .warning : .success)
             Task {
                 await onToggle(item.isConsumed)
                 try? await contentServiceHandler.fetchMealPlan()
@@ -399,6 +362,7 @@ private struct MealContextMenu: ViewModifier {
         Divider()
 
         Button(role: .destructive) {
+            HapticsHandler.notification(.warning)
             Task { await onDelete() }
         } label: {
             Label("Delete", systemImage: "trash")
@@ -418,9 +382,10 @@ private struct NutritionPreview: View {
             ZStack {
                 RoundedRectangle(cornerRadius: 12, style: .continuous)
                     .fill(Color.secondary.opacity(0.12))
-//                Image(systemName: item.imageName)
-//                    .font(.system(size: 32, weight: .regular))
-//                    .foregroundColor(.secondary)
+
+                FoodThumbnail(foodReferenceModel: item)
+                    .font(.system(size: 32, weight: .regular))
+                    .foregroundColor(.secondary)
             }
             .frame(width: 90, height: 90)
 
@@ -488,9 +453,11 @@ struct TimelineCircle: View {
             Circle()
                 .fill(Color(.systemBackground))
                 .frame(width: style.maskSize, height: style.maskSize)
+
             Circle()
                 .stroke(MomCareAccent.primary, lineWidth: style.strokeWidth)
                 .frame(width: style.size, height: style.size)
+
             if isChecked {
                 Circle()
                     .fill(MomCareAccent.primary)

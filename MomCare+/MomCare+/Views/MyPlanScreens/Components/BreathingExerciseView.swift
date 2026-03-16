@@ -7,12 +7,16 @@ struct BreathingExerciseView: View {
     var body: some View {
         NavigationStack {
             ZStack {
-                LinearGradient(
-                    colors: [pastel, Color(hex: "E8F4F8"), Color.white],
-                    startPoint: .top,
-                    endPoint: .bottom
-                )
-                .ignoresSafeArea()
+                if reduceTransparency {
+                    pastel.ignoresSafeArea()
+                } else {
+                    LinearGradient(
+                        colors: [pastel, Color(hex: "E8F4F8"), Color.white],
+                        startPoint: .top,
+                        endPoint: .bottom
+                    )
+                    .ignoresSafeArea()
+                }
 
                 VStack(spacing: 0) {
                     Spacer()
@@ -75,6 +79,7 @@ struct BreathingExerciseView: View {
     @EnvironmentObject private var contentServiceHandler: ContentServiceHandler
     @Environment(\.dismiss) private var dismiss
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @Environment(\.accessibilityReduceTransparency) private var reduceTransparency
 
     @State private var phase: BreathingPhase = .ready
     @State private var phaseCountdown: Int = 3
@@ -256,7 +261,7 @@ struct BreathingExerciseView: View {
             GeometryReader { geo in
                 ZStack(alignment: .leading) {
                     Capsule()
-                        .fill(accent.opacity(0.15))
+                        .fill(reduceTransparency ? Color(.systemGray4) : accent.opacity(0.15))
 
                     Capsule()
                         .fill(

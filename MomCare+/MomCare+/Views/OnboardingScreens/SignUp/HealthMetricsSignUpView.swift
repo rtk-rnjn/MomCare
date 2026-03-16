@@ -33,6 +33,9 @@ struct HealthMetricsSignUpView: View {
             .sheet(item: $activePicker) { picker in
                 pickerSheet(for: picker)
             }
+            .navigationDestination(isPresented: $navigateToThirdStep) {
+                PreferencesSignUpView()
+            }
         }
         .alert("Missing Information", isPresented: $showAlert) {
             Button("OK", role: .cancel) {}
@@ -49,9 +52,9 @@ struct HealthMetricsSignUpView: View {
     @EnvironmentObject private var authenticationService: AuthenticationService
 
     @State private var dateOfBirth: Date = .init()
-    @State private var height: Double?
-    @State private var prePregnancyWeight: Double?
-    @State private var currentWeight: Double?
+    @State private var height: Int?
+    @State private var prePregnancyWeight: Int?
+    @State private var currentWeight: Int?
 
     @State private var selectedCountry: String?
     @State private var selectedState: IndianState?
@@ -116,6 +119,20 @@ struct HealthMetricsSignUpView: View {
         }
     }
 
+    private var locationSection: some View {
+        Section {
+            pickerRow("Country", value: selectedCountry) {
+                activePicker = .country
+            }
+
+            if selectedCountry == "India" {
+                pickerRow("State", value: selectedState?.rawValue) {
+                    activePicker = .state
+                }
+            }
+        }
+    }
+
     private var measurementSection: some View {
         Section {
             pickerRow("Height", value: height.map { "\($0) cm" }) {
@@ -128,20 +145,6 @@ struct HealthMetricsSignUpView: View {
 
             pickerRow("Current Weight", value: currentWeight.map { "\($0) kg" }) {
                 activePicker = .currentWeight
-            }
-        }
-    }
-
-    private var locationSection: some View {
-        Section {
-            pickerRow("Country", value: selectedCountry) {
-                activePicker = .country
-            }
-
-            if selectedCountry == "India" {
-                pickerRow("State", value: selectedState?.rawValue) {
-                    activePicker = .state
-                }
             }
         }
     }
@@ -161,9 +164,6 @@ struct HealthMetricsSignUpView: View {
             .controlSize(.large)
             .padding(.horizontal)
             .padding(.bottom, 20)
-            .navigationDestination(isPresented: $navigateToThirdStep) {
-                PreferencesSignUpView()
-            }
         }
     }
 
@@ -262,4 +262,5 @@ struct HealthMetricsSignUpView: View {
 
         return missing
     }
+
 }

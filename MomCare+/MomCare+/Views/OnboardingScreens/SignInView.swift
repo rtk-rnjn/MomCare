@@ -40,6 +40,9 @@ struct SignInView: View {
             )
             .navigationTitle("Sign In")
             .navigationBarTitleDisplayMode(.large)
+            .navigationDestination(isPresented: $navigateToHealthMetricsSignUp) {
+                HealthMetricsSignUpView()
+            }
         }
     }
 
@@ -62,12 +65,18 @@ struct SignInView: View {
 
         showAlert = false
         controlState.isLoggedIn = true
+
+        if authenticationService.userModel?.dateOfBirth == nil {
+            navigateToHealthMetricsSignUp = true
+        }
     }
 
     // MARK: Private
 
     @EnvironmentObject private var authenticationService: AuthenticationService
     @EnvironmentObject private var controlState: ControlState
+
+    @State private var navigateToHealthMetricsSignUp = false
 
     @State private var email = ""
     @State private var password = ""

@@ -130,10 +130,13 @@ final class AuthenticationService: ObservableObject {
         lastName: FieldType<String> = .unset,
         phoneNumber: FieldType<String> = .unset,
         dateOfBirthTimestamp: FieldType<TimeInterval> = .unset,
-        height: FieldType<Double> = .unset,
-        prePregnancyWeight: FieldType<Double> = .unset,
-        currentWeight: FieldType<Double> = .unset,
+
+        height: FieldType<Int> = .unset,
+        prePregnancyWeight: FieldType<Int> = .unset,
+        currentWeight: FieldType<Int> = .unset,
+
         dueDateTimestamp: FieldType<TimeInterval> = .unset,
+
         foodIntolerances: FieldType<[String]> = .unset,
         dietaryPreferences: FieldType<[String]> = .unset
     ) async throws -> NetworkResponse<ServerMessage> {

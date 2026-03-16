@@ -127,13 +127,12 @@ extension Database {
 
 extension Database {
     func pregnancyProgress() -> PregnancyProgress? {
-        guard let user: UserModel = self[.userModel],
-              let dueDate = user.dueDate
+        guard let user: UserModel = self[.userModel]
         else {
             return nil
         }
 
-        return Utils.progress(fromDueDate: dueDate)
+        return user.pregnancyProgress()
     }
 
 }

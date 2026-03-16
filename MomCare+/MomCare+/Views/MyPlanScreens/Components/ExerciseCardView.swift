@@ -26,6 +26,7 @@ struct ExerciseCardView: View {
                         .padding(.bottom, 10)
 
                     Button {
+                        HapticsHandler.impact(.medium)
                         startExercisePlayer = true
                     } label: {
                         HStack(spacing: 6) {
@@ -62,7 +63,7 @@ struct ExerciseCardView: View {
 
                     ZStack {
                         RoundedRectangle(cornerRadius: 18)
-                            .fill(accentColor.opacity(0.25))
+                            .fill(reduceTransparency ? accentColor : accentColor.opacity(0.25))
 
                         if let uiImage {
                             Image(uiImage: uiImage)
@@ -113,6 +114,7 @@ struct ExerciseCardView: View {
     @State private var avPlayer: AVPlayer?
     @State private var showErrorAlert = false
     @State private var alertMessage: String?
+    @Environment(\.accessibilityReduceTransparency) private var reduceTransparency
 
     private var accentColor: Color {
         Color(hex: "D4A08A")
@@ -134,9 +136,11 @@ struct ExerciseCardView: View {
                 Task {
                     do {
                         try await updateDuration()
+                        HapticsHandler.notification(completionProgress >= 1 ? .success : .warning)
                     } catch {
                         alertMessage = error.localizedDescription
                         showErrorAlert = true
+                        HapticsHandler.notification(.error)
                     }
                     startExercisePlayer = false
                 }

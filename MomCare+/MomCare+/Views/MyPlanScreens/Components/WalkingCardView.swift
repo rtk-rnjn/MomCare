@@ -56,7 +56,7 @@ struct WalkingCardView: View {
             GeometryReader { geo in
                 ZStack(alignment: .leading) {
                     Capsule()
-                        .fill(Color.secondary.opacity(0.15))
+                        .fill(reduceTransparency ? Color(.systemGray4) : Color.secondary.opacity(0.15))
 
                     Capsule()
                         .fill(Color(hex: "4A8A62"))
@@ -92,6 +92,7 @@ struct WalkingCardView: View {
     @State private var progress: Double = 0
     @State private var percentCompleted: Int = 0
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @Environment(\.accessibilityReduceTransparency) private var reduceTransparency
 
     private func updateProgress() {
         progress = Double(contentServiceHandler.currentSteps) / Double(contentServiceHandler.targetSteps)

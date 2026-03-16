@@ -2,6 +2,21 @@ import LNPopupUI
 import SwiftUI
 import Combine
 import EventKit
+import HealthKit
+
+final class RefreshError: LocalizedError {
+    var errorDescription: String? {
+        "Failed to refresh session. Please log in again."
+    }
+
+    var failureReason: String? {
+        "The session could not be refreshed, likely due to an expired token or network issue."
+    }
+
+    var recoverySuggestion: String? {
+        "Please try logging in again to refresh your session and regain access to all features."
+    }
+}
 
 struct MomCareMainTabView: View {
 
@@ -22,9 +37,13 @@ struct MomCareMainTabView: View {
     @EnvironmentObject private var eventKitHandler: EventKitHandler
     @EnvironmentObject private var controlState: ControlState
 
+    @State private var isRefreshing = true
+    @State private var requestingHealthKitAccess = true
+    @State private var requestingEventKitAccess = true
+
     @Environment(\.scenePhase) private var scenePhase
 
-    private let refreshTimer = Timer.publish(every: 300, on: .main, in: .common).autoconnect()
+    private let refreshTimer = Timer.publish(every: 600, on: .main, in: .common).autoconnect()
 
     private func tabViewContent(bottomPadding: CGFloat) -> some View {
         TabView(selection: $controlState.selectedTab) {
@@ -61,10 +80,8 @@ struct MomCareMainTabView: View {
             }
         }
         .tabBarMinimizeBehavior(.onScrollDown)
-        .task {
-            _ = await authenticationService.autoLogin()
-            try? await authenticationService.refresh()
-        }
+        .task { await refreshAccessToken() }
+        .errorAlert(error: $controlState.error)
         .popup(isBarPresented: $controlState.showingPopupBar, isPopupOpen: $controlState.showingPopup) {
             MusicPlayerView()
         }
@@ -74,7 +91,7 @@ struct MomCareMainTabView: View {
         .popupCloseButtonStyle(.chevron)
         .onReceive(refreshTimer) { _ in
             Task {
-                try? await authenticationService.refresh()
+                await refreshAccessToken()
             }
         }
         .onChange(of: scenePhase) { _, phase in
@@ -85,24 +102,43 @@ struct MomCareMainTabView: View {
             }
         }
         .task {
-            await contentServiceHandler.requestAccess()
+            do {
+                _ = try await contentServiceHandler.requestHealthKitAccess()
+                await contentServiceHandler.startStepCountObservation()
 
-            await fetchDailyInsights()
-            try? await contentServiceHandler.fetchMealPlan()
+                requestingHealthKitAccess = false
+            } catch {
+                controlState.error = error
+            }
         }
         .task {
-            _ = try? await eventKitHandler.eventStore.requestFullAccessToEvents()
-            _ = try? await eventKitHandler.eventStore.requestFullAccessToReminders()
-        }
-        .onAppear {
-            try? eventKitHandler.fetchAllEvents()
-        }
-        .task {
-            if let networkResponse = try? await ContentService.shared.generateUserExercises(), let userExercises = networkResponse.data {
-                contentServiceHandler.userExercises = userExercises
+            do {
+                _ = try await eventKitHandler.eventStore.requestFullAccessToEvents()
+                _ = try await eventKitHandler.eventStore.requestFullAccessToReminders()
 
-                await contentServiceHandler.fetchTotalUserExercisesDuration()
-                await contentServiceHandler.fetchTotalUserExercisesCompletionDuration()
+                requestingEventKitAccess = false
+            } catch {
+                controlState.error = error
+            }
+        }
+        .onChange(of: requestingEventKitAccess) {
+            do {
+                try eventKitHandler.fetchAllEvents()
+            } catch {
+                controlState.error = error
+            }
+        }
+        .onChange(of: isRefreshing) {
+            Task {
+                if let networkResponse = try? await ContentService.shared.generateUserExercises(), let userExercises = networkResponse.data {
+                    contentServiceHandler.userExercises = userExercises
+
+                    controlState.error = networkResponse.localizedError
+
+                    await contentServiceHandler.fetchTotalUserExercisesDuration()
+                    await contentServiceHandler.fetchTotalUserExercisesCompletionDuration()
+                    await contentServiceHandler.fetchTotalUserExercisesCompleted()
+                }
             }
         }
         .onChange(of: contentServiceHandler.userExercises) {
@@ -113,9 +149,22 @@ struct MomCareMainTabView: View {
                  await contentServiceHandler.updateWeeklyProgressForToday()
              }
         }
-        .task {
-            await contentServiceHandler.startStepCountObservation()
-            await contentServiceHandler.fetchWeeklyProgress()
+        .onChange(of: isRefreshing) {
+            Task {
+                await contentServiceHandler.fetchWeeklyProgress()
+
+                await fetchDailyInsights()
+                try? await contentServiceHandler.fetchMealPlan()
+            }
+        }
+    }
+
+    private func refreshAccessToken() async {
+        do {
+            try await authenticationService.refresh()
+            isRefreshing = false
+        } catch {
+            controlState.error = RefreshError()
         }
     }
 
@@ -123,6 +172,8 @@ struct MomCareMainTabView: View {
         guard let networkResponse = try? await ContentService.shared.generateDailyInsights() else {
             return
         }
+
+        controlState.error = networkResponse.localizedError
 
         contentServiceHandler.todayFocusText = networkResponse.data?.todaysFocus ?? "Failed to fetch today's focus: \(networkResponse.errorMessage ?? "Unknown error") (\(networkResponse.statusCode))"
         contentServiceHandler.dailyTipText = networkResponse.data?.dailyTip ?? "Failed to fetch today's tip: \(networkResponse.errorMessage ?? "Unknown error") (\(networkResponse.statusCode))"

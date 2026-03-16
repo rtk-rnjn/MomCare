@@ -103,7 +103,7 @@ struct DebugNetworkRequest: Identifiable {
     }
 }
 
-struct DebugLogEntry: Identifiable {
+struct DebugLogEntry: Identifiable, Sendable {
     enum LogLevel: String, CaseIterable {
         case verbose = "VERBOSE"
         case debug = "DEBUG"
@@ -235,17 +235,15 @@ final class DebugLogger {
 
     // MARK: Lifecycle
 
-    private init() {}
+    nonisolated private init() {}
 
     // MARK: Internal
 
-    static let shared: DebugLogger = .init()
+    nonisolated static let shared: DebugLogger = .init()
 
     var onNewEntry: ((DebugLogEntry) -> Void)?
 
-    func log(_ message: String,
-             level: DebugLogEntry.LogLevel = .info,
-             category: DebugLogEntry.LogCategory = .data) {
+    nonisolated func log(_ message: String, level: DebugLogEntry.LogLevel = .info, category: DebugLogEntry.LogCategory = .data) {
         let entry = DebugLogEntry(
             timestamp: Date(),
             level: level,
@@ -253,6 +251,8 @@ final class DebugLogger {
             message: message
         )
 
-        onNewEntry?(entry)
+        DispatchQueue.main.async {
+            self.onNewEntry?(entry)
+        }
     }
 }

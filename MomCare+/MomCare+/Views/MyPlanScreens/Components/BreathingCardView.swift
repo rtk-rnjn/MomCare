@@ -62,7 +62,7 @@ struct BreathingCardView: View {
 
                     ZStack {
                         RoundedRectangle(cornerRadius: 18)
-                            .fill(accentColor.opacity(0.25))
+                            .fill(reduceTransparency ? accentColor : accentColor.opacity(0.25))
 
                         Image(systemName: "lungs.fill")
                             .font(.title)
@@ -91,6 +91,7 @@ struct BreathingCardView: View {
 
     @State private var completionProgress: Double = 0
     @State private var startBreathingPlayer: Bool = false
+    @Environment(\.accessibilityReduceTransparency) private var reduceTransparency
 
     private var accentColor: Color {
         Color(hex: "8BBBD4")

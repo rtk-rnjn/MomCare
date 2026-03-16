@@ -9,28 +9,40 @@ struct TriTrackSymptomsContentView: View {
     @Query var symptoms: [SymptomModel]
 
     var body: some View {
-        VStack(spacing: 16) {
-            if filterSymptoms(for: selectedDate).isEmpty {
-                emptyState
-            } else {
-                VStack(spacing: 12) {
-                    ForEach(filterSymptoms(for: selectedDate)) { symptomModel in
-                        TriTrackSymptomRow(
-                            symptom: symptomModel,
-                            onInfo: {
-                                openDetails(for: symptomModel)
-                            },
-                            onDelete: {
-                                delete(symptomModel)
-                            }
-                        )
-                        .onTapGesture {
+        List {
+            Section {
+                ForEach(filterSymptoms(for: selectedDate)) { symptomModel in
+                    TriTrackSymptomRow(
+                        symptom: symptomModel,
+                        onEdit: {
                             selectedSymptomModel = symptomModel
+                        },
+                        onDelete: {
+                            delete(symptomModel)
+                        },
+                        onViewDetails: {
+                            openDetails(for: symptomModel)
                         }
-                    }
+                    )
+                    .listRowBackground(Color.clear)
+                    .listRowSeparator(.hidden)
+                }
+            } header: {
+                HStack {
+                    Text("Symptoms")
+                        .font(.headline)
+
+                    Spacer()
+
+                    Text(filterSymptoms(for: selectedDate).count, format: .number)
+                        .font(.headline)
+                        .foregroundColor(.secondary)
+                        .contentTransition(reduceMotion ? .identity : .numericText())
+                        .animation(reduceMotion ? nil : .easeInOut, value: filterSymptoms(for: selectedDate).count)
                 }
             }
         }
+        .listStyle(.plain)
         .sheet(isPresented: $controlState.showingAddSymptomSheet) {
             TriTrackAddEditSymptomSheetView(selectedDate: selectedDate)
                 .presentationDetents([.medium, .large])
@@ -62,34 +74,6 @@ struct TriTrackSymptomsContentView: View {
         }
     }
 
-    var emptyState: some View {
-        VStack(spacing: 12) {
-            Image(systemName: "heart.text.square")
-                .font(.largeTitle)
-                .foregroundColor(.secondary)
-                .accessibilityHidden(true)
-            Text("Track Your Symptoms")
-                .font(.headline)
-
-            Text("Log how you're feeling each day to share with your healthcare provider.")
-                .font(.subheadline)
-                .foregroundColor(.secondary)
-                .multilineTextAlignment(.center)
-
-            Button {
-                controlState.showingAddSymptomSheet = true
-            } label: {
-                Label("Log Symptom", systemImage: "plus")
-                    .font(.body.weight(.semibold))
-            }
-            .buttonStyle(.borderedProminent)
-            .tint(Color.CustomColors.mutedRaspberry)
-            .disabled(selectedDate > Date())
-            .accessibilityLabel("Log symptom")
-            .accessibilityHint("Opens a form to log a new symptom for today")
-        }
-    }
-
     func filterSymptoms(for date: Date) -> [SymptomModel] {
         symptoms.filter { Calendar.current.isDate($0.date, inSameDayAs: date) }
     }
@@ -100,8 +84,8 @@ struct TriTrackSymptomsContentView: View {
             let symptom = PregnancySymptoms.allSymptoms.first(where: { $0.id == id })
         else { return }
 
-        selectedSymptom = symptom
         showDetail = true
+        selectedSymptom = symptom
     }
 
     func delete(_ model: SymptomModel) {
@@ -121,6 +105,7 @@ struct TriTrackSymptomsContentView: View {
     @EnvironmentObject private var controlState: ControlState
 
     @Environment(\.modelContext) private var context
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     @State private var selectedSymptom: Symptom?
     @State private var showDetail = false
@@ -131,18 +116,22 @@ struct TriTrackSymptomsContentView: View {
 
 struct TriTrackSymptomRow: View {
 
+    // MARK: Internal
+
     let symptom: SymptomModel
-    var onInfo: () -> Void
+    var onEdit: () -> Void
     var onDelete: () -> Void
+    var onViewDetails: () -> Void
 
     var body: some View {
-        HStack {
+        HStack(spacing: 16) {
             Image(systemName: "heart.text.square")
-                .font(.title3)
+                .font(.largeTitle)
                 .foregroundColor(.secondary)
                 .accessibilityHidden(true)
+                .onTapGesture(perform: onEdit)
 
-            VStack(alignment: .leading, spacing: 4) {
+            VStack(alignment: .leading, spacing: 8) {
                 Text(symptom.title ?? "Untitled Symptom")
                     .font(.headline)
 
@@ -152,28 +141,27 @@ struct TriTrackSymptomRow: View {
                         .foregroundColor(.secondary)
                         .lineLimit(2)
                 }
+
+                Text("Logged on \(symptom.date, formatter: dateFormatter)")
+                    .font(.caption)
+                    .foregroundColor(.secondary)
             }
+            .onTapGesture(perform: onEdit)
 
             Spacer()
 
-            Button(action: onInfo) {
+            Button(action: onViewDetails) {
                 Image(systemName: "chevron.right")
                     .font(.title3)
                     .foregroundColor(.secondary)
             }
             .accessibilityLabel("View details for \(symptom.title ?? "symptom")")
-            .frame(minWidth: 44, minHeight: 44)
         }
-        .padding()
-        .background(
-            RoundedRectangle(cornerRadius: 18)
-                .fill(Color(.systemGray6))
-        )
         .contextMenu {
             Button {
-                onInfo()
+                onEdit()
             } label: {
-                Label("View Details", systemImage: "info.circle")
+                Label("Edit Symptom", systemImage: "pencil")
             }
 
             Divider()
@@ -184,15 +172,37 @@ struct TriTrackSymptomRow: View {
                 Label("Delete", systemImage: "trash")
             }
         }
+        .swipeActions(edge: .trailing, allowsFullSwipe: true) {
+            Button(role: .destructive) {
+                onDelete()
+            } label: {
+                Label("Delete", systemImage: "trash")
+            }
+        }
+        .swipeActions(edge: .leading, allowsFullSwipe: false) {
+            Button {
+                onViewDetails()
+            } label: {
+                Label("Details", systemImage: "info.circle")
+            }
+            .tint(.blue)
+        }
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(symptom.title ?? "Symptom")
         .accessibilityValue(symptom.notes.flatMap { $0.isEmpty ? nil : $0 } ?? "No notes")
         .accessibilityHint("Double tap to view details, long press for more options")
         .accessibilityAddTraits(.isButton)
-        .accessibilityAction(named: "View Details") { onInfo() }
+        .accessibilityAction(named: "View Details") { onViewDetails() }
         .accessibilityAction(named: "Delete") { onDelete() }
     }
 
     // MARK: Private
+
+    private var dateFormatter: DateFormatter {
+        let formatter = DateFormatter()
+        formatter.dateStyle = .medium
+        formatter.timeStyle = .short
+        return formatter
+    }
 
 }

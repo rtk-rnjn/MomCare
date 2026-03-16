@@ -61,7 +61,7 @@ struct WeeklyProgressCardView: View {
                 GeometryReader { geo in
                     ZStack(alignment: .leading) {
                         Capsule()
-                            .fill(Color.secondary.opacity(0.15))
+                            .fill(reduceTransparency ? Color(.systemGray4) : Color.secondary.opacity(0.15))
 
                         Capsule()
                             .fill(Color.CustomColors.mutedRaspberry)
@@ -88,6 +88,7 @@ struct WeeklyProgressCardView: View {
 
     @EnvironmentObject private var contentServiceHandler: ContentServiceHandler
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @Environment(\.accessibilityReduceTransparency) private var reduceTransparency
 
     private var overallProgress: Double {
         guard totalCount > 0 else { return 0 }
@@ -112,7 +113,7 @@ private struct DayRingView: View {
 
             ZStack {
                 Circle()
-                    .stroke(Color.secondary.opacity(0.15), lineWidth: 4)
+                    .stroke(reduceTransparency ? Color(.systemGray4) : Color.secondary.opacity(0.15), lineWidth: 4)
 
                 Circle()
                     .trim(from: 0, to: min(progress, 1.0))
@@ -139,6 +140,7 @@ private struct DayRingView: View {
     // MARK: Private
 
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @Environment(\.accessibilityReduceTransparency) private var reduceTransparency
 }
 
 struct DayProgress: Identifiable {

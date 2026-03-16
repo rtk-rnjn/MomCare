@@ -81,6 +81,21 @@ struct ProfileAccountSecurityView: View {
                     .font(.footnote)
                     .foregroundColor(.secondary)
             }
+
+            Section {
+                HStack {
+                    Text("Apple ID")
+                    Spacer()
+                    Button {
+                        // Handle Apple ID disconnection
+                    } label: {
+                        Text("Disconnect")
+                            .foregroundColor(.red)
+                    }
+                }
+            } header: {
+                Text("Third Party Integration")
+            }
         }
         .listStyle(.insetGrouped)
         .navigationTitle("Account & Security")

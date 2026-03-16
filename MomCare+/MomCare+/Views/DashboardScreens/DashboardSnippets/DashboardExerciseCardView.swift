@@ -137,22 +137,32 @@ struct ActivityRingView: View {
 
             ZStack {
                 Circle()
-                    .stroke(Color.red.opacity(0.15), lineWidth: ringWidth)
+                    .stroke(reduceTransparency ? Color(.systemGray4) : Color.red.opacity(0.15), lineWidth: ringWidth)
                     .frame(width: outer * 2, height: outer * 2)
 
                 Circle()
-                    .stroke(Color.green.opacity(0.15), lineWidth: ringWidth)
+                    .stroke(reduceTransparency ? Color(.systemGray4) : Color.green.opacity(0.15), lineWidth: ringWidth)
                     .frame(width: middle * 2, height: middle * 2)
 
                 Circle()
-                    .stroke(Color.orange.opacity(0.15), lineWidth: ringWidth)
+                    .stroke(reduceTransparency ? Color(.systemGray4) : Color.orange.opacity(0.15), lineWidth: ringWidth)
                     .frame(width: inner * 2, height: inner * 2)
 
-                ring(progress: animatedMove, color: .red, size: outer * 2)
+                ring(progress: animatedMove, color: .red, size: outer * 2, dashPattern: [])
 
-                ring(progress: animatedExercise, color: .green, size: middle * 2)
+                ring(
+                    progress: animatedExercise,
+                    color: .green,
+                    size: middle * 2,
+                    dashPattern: differentiateWithoutColor ? [8, 4] : []
+                )
 
-                ring(progress: animatedStand, color: .orange, size: inner * 2)
+                ring(
+                    progress: animatedStand,
+                    color: .orange,
+                    size: inner * 2,
+                    dashPattern: differentiateWithoutColor ? [4, 4] : []
+                )
             }
             .frame(width: size, height: size)
             .onAppear {
@@ -174,14 +184,16 @@ struct ActivityRingView: View {
     @State private var animatedExercise: Double = 0
     @State private var animatedStand: Double = 0
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @Environment(\.accessibilityDifferentiateWithoutColor) private var differentiateWithoutColor
+    @Environment(\.accessibilityReduceTransparency) private var reduceTransparency
 
     private let ringWidth: CGFloat = 14
     private let spacing: CGFloat = 2
 
-    private func ring(progress: Double, color: Color, size: CGFloat) -> some View {
+    private func ring(progress: Double, color: Color, size: CGFloat, dashPattern: [CGFloat]) -> some View {
         Circle()
             .trim(from: 0, to: clamp(progress))
-            .stroke(color, style: StrokeStyle(lineWidth: ringWidth, lineCap: .round))
+            .stroke(color, style: StrokeStyle(lineWidth: ringWidth, lineCap: .round, dash: dashPattern))
             .rotationEffect(.degrees(-90))
             .frame(width: size, height: size)
     }
