@@ -69,6 +69,9 @@ struct AccessibilityInspectorView: View {
 }
 
 private struct AccessibilityRow: View {
+
+    // MARK: Internal
+
     let label: String
     let isEnabled: Bool
 
@@ -96,6 +99,8 @@ private struct AccessibilityRow: View {
         .accessibilityLabel(label)
         .accessibilityValue(isEnabled ? "On" : "Off")
     }
+
+    // MARK: Private
 
     @Environment(\.accessibilityDifferentiateWithoutColor) private var differentiateWithoutColor
 }

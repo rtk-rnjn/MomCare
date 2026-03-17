@@ -90,8 +90,8 @@ struct BreathingExerciseView: View {
     @State private var isActive = false
     @State private var isPaused = false
     @State private var showCompletion = false
-    @State private var speechSynthesizer = AVSpeechSynthesizer()
-    
+    @State private var speechSynthesizer: AVSpeechSynthesizer = .init()
+
     @State private var dotOffsets: [CGSize] = (0 ..< 6).map { _ in
         CGSize(width: CGFloat.random(in: -20 ... 20), height: CGFloat.random(in: -20 ... 20))
     }
@@ -489,7 +489,7 @@ struct BreathingExerciseView: View {
 
         return Duration.seconds(seconds).formatted(.time(pattern: .minuteSecond))
     }
-    
+
     private func speak(_ text: String) {
         let utterance = AVSpeechUtterance(string: text)
         utterance.voice = AVSpeechSynthesisVoice(identifier: "com.apple.ttsbundle.siri_female_en-IN_compact")
@@ -500,6 +500,7 @@ struct BreathingExerciseView: View {
         speechSynthesizer.stopSpeaking(at: .immediate)
         speechSynthesizer.speak(utterance)
     }
+
     private func setupAudioSession() {
         do {
             let session = AVAudioSession.sharedInstance()
@@ -549,6 +550,7 @@ enum BreathingPhase: String {
         case .done: 0.85
         }
     }
+
     var voiceText: String {
         switch self {
         case .breatheIn:
