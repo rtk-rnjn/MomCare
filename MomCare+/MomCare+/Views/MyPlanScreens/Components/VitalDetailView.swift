@@ -217,7 +217,7 @@ struct VitalDetailView: View {
                         .foregroundColor(kind.color)
                 }
                 .padding(.horizontal, 4)
-                .transition(reduceMotion ? .opacity : unsafe .opacity.combined(with: .scale(scale: 0.95)))
+                .transition(unsafe reduceMotion ? .opacity : .opacity.combined(with: .scale(scale: 0.95)))
                 .accessibilityElement(children: .combine)
                 .accessibilityAddTraits(.updatesFrequently)
             }
