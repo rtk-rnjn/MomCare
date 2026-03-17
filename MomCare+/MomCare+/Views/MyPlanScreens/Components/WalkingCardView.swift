@@ -88,7 +88,7 @@ struct WalkingCardView: View {
         .accessibilityValue(
             contentServiceHandler.currentSteps >= contentServiceHandler.targetSteps
                 ? "Goal completed, \(Int(contentServiceHandler.currentSteps)) steps"
-                : "\(Int(contentServiceHandler.currentSteps)) of \(Int(contentServiceHandler.targetSteps)) steps, \(Int(contentServiceHandler.stepsProgress)) percent"
+                : "\(Int(contentServiceHandler.currentSteps)) of \(Int(contentServiceHandler.targetSteps)) steps, \(Int(contentServiceHandler.stepsProgress * 100)) percent"
         )
         .accessibilityAddTraits(.updatesFrequently)
         .task { updateProgress() }

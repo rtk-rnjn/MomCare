@@ -381,6 +381,7 @@ private struct MealRow: View {
                 .font(.caption)
                 .foregroundColor(.secondary)
                 .frame(width: 20)
+                .accessibilityHidden(true)
 
             Text(mealType.rawValue.capitalized)
                 .font(.caption.weight(.medium))
@@ -393,10 +394,11 @@ private struct MealRow: View {
                     Capsule()
                         .fill(mealType.accentColor)
                         .frame(width: geo.size.width * progress)
-                        .animation(.easeInOut(duration: 0.4), value: progress)
+                        .animation(reduceMotion ? nil : .easeInOut(duration: 0.4), value: progress)
                 }
             }
             .frame(height: 8)
+            .accessibilityHidden(true)
 
             Text("\(consumed)/\(total)")
                 .font(.caption2)
@@ -404,9 +406,14 @@ private struct MealRow: View {
                 .frame(width: 32, alignment: .trailing)
                 .monospacedDigit()
         }
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(mealType.rawValue.capitalized)
+        .accessibilityValue(total == 0 ? "No items" : "\(consumed) of \(total) items consumed")
     }
 
     // MARK: Private
+
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     private var consumed: Int { references.filter(\.isConsumed).count }
     private var total: Int { references.count }

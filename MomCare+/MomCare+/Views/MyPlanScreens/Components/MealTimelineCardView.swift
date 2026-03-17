@@ -384,7 +384,7 @@ private struct NutritionPreview: View {
                     .fill(Color.secondary.opacity(0.12))
 
                 FoodThumbnail(foodReferenceModel: item)
-                    .font(.system(size: 32, weight: .regular))
+                    .font(.largeTitle)
                     .foregroundColor(.secondary)
             }
             .frame(width: 90, height: 90)

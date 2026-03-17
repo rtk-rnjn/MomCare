@@ -77,10 +77,16 @@ private struct AccessibilityRow: View {
             Text(label)
             Spacer()
             HStack(spacing: 4) {
-                Circle()
-                    .fill(isEnabled ? Color.green : Color.secondary.opacity(0.4))
-                    .frame(width: 8, height: 8)
-                    .accessibilityHidden(true)
+                if differentiateWithoutColor {
+                    Image(systemName: isEnabled ? "checkmark.circle" : "circle")
+                        .font(.caption)
+                        .accessibilityHidden(true)
+                } else {
+                    Circle()
+                        .fill(isEnabled ? Color.green : Color.secondary.opacity(0.4))
+                        .frame(width: 8, height: 8)
+                        .accessibilityHidden(true)
+                }
                 Text(isEnabled ? "On" : "Off")
                     .font(.subheadline)
                     .foregroundStyle(isEnabled ? .green : .secondary)
@@ -90,4 +96,6 @@ private struct AccessibilityRow: View {
         .accessibilityLabel(label)
         .accessibilityValue(isEnabled ? "On" : "Off")
     }
+
+    @Environment(\.accessibilityDifferentiateWithoutColor) private var differentiateWithoutColor
 }

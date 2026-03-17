@@ -63,6 +63,7 @@ struct VitalDetailView: View {
 
     @StateObject private var store: VitalHistoryStore = .init()
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @Environment(\.accessibilityDifferentiateWithoutColor) private var differentiateWithoutColor
     @Environment(\.dismiss) private var dismiss
 
     @State private var selectedRange: VitalTimeRange = .week
@@ -98,6 +99,7 @@ struct VitalDetailView: View {
                     .font(.title2)
                     .foregroundColor(kind.color)
             }
+            .accessibilityHidden(true)
 
             VStack(alignment: .leading, spacing: 4) {
                 Text("Today")
@@ -114,7 +116,6 @@ struct VitalDetailView: View {
                         .foregroundStyle(.secondary)
                 }
 
-                // Progress bar
                 GeometryReader { geo in
                     ZStack(alignment: .leading) {
                         Capsule().fill(Color(.systemGray5))
@@ -125,6 +126,7 @@ struct VitalDetailView: View {
                 }
                 .frame(height: 5)
                 .padding(.top, 2)
+                .accessibilityHidden(true)
             }
 
             Spacer()
@@ -149,6 +151,13 @@ struct VitalDetailView: View {
         .overlay(
             RoundedRectangle(cornerRadius: 18, style: .continuous)
                 .stroke(kind.color.opacity(0.15), lineWidth: 1)
+        )
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel("\(kind.rawValue) today")
+        .accessibilityValue(
+            targetValue > 0
+                ? "\(formattedValue(todayValue)) \(kind.unitLabel), target \(formattedValue(targetValue)) \(kind.unitLabel), \(Int(min(todayValue / targetValue, 1.0) * 100)) percent"
+                : "\(formattedValue(todayValue)) \(kind.unitLabel)"
         )
     }
 
@@ -208,7 +217,9 @@ struct VitalDetailView: View {
                         .foregroundColor(kind.color)
                 }
                 .padding(.horizontal, 4)
-                .transition(unsafe .opacity.combined(with: .scale(scale: 0.95)))
+                .transition(reduceMotion ? .opacity : unsafe .opacity.combined(with: .scale(scale: 0.95)))
+                .accessibilityElement(children: .combine)
+                .accessibilityAddTraits(.updatesFrequently)
             }
         }
         .padding(16)
@@ -228,13 +239,21 @@ struct VitalDetailView: View {
                 : kind.color.opacity(0.7)
             )
             .cornerRadius(5)
+            .accessibilityLabel(pt.label)
+            .accessibilityValue(
+                "\(formattedValue(pt.value)) \(kind.unitLabel)\(pt.id == selectedPoint?.id ? ", selected" : "")"
+            )
             .annotation(position: .overlay) {
                 Rectangle()
                     .fill(Color.clear)
                     .contentShape(Rectangle())
                     .onTapGesture {
-                        withAnimation(.spring(response: 0.3, dampingFraction: 0.8)) {
+                        if reduceMotion {
                             selectedPoint = selectedPoint?.id == pt.id ? nil : pt
+                        } else {
+                            withAnimation(.spring(response: 0.3, dampingFraction: 0.8)) {
+                                selectedPoint = selectedPoint?.id == pt.id ? nil : pt
+                            }
                         }
                     }
                     .contextMenu {
@@ -265,13 +284,24 @@ struct VitalDetailView: View {
                     }
             }
 
+            if pt.id == selectedPoint?.id, differentiateWithoutColor {
+                PointMark(
+                    x: .value("Date", pt.label),
+                    y: .value(kind.unitLabel, pt.value)
+                )
+                .symbol(.asterisk)
+                .symbolSize(30)
+                .foregroundStyle(kind.color)
+                .accessibilityHidden(true)
+            }
+
             if targetValue > 0 {
                 RuleMark(y: .value("Target", targetValue))
                     .lineStyle(StrokeStyle(lineWidth: 1.5, dash: [5, 3]))
                     .foregroundStyle(kind.color.opacity(0.4))
                     .annotation(position: .trailing, alignment: .center) {
                         Text("Target")
-                            .font(.system(size: 9, weight: .medium))
+                            .font(.caption2.weight(.medium))
                             .foregroundStyle(kind.color.opacity(0.6))
                     }
             }
@@ -279,7 +309,7 @@ struct VitalDetailView: View {
         .chartXAxis {
             AxisMarks(values: xAxisValues) { _ in
                 AxisValueLabel()
-                    .font(.system(size: 10))
+                    .font(.caption2)
                     .foregroundStyle(Color.secondary)
             }
         }
@@ -290,7 +320,7 @@ struct VitalDetailView: View {
                 AxisValueLabel {
                     if let v = value.as(Double.self) {
                         Text(formattedValue(v))
-                            .font(.system(size: 9))
+                            .font(.caption2)
                             .foregroundStyle(.secondary)
                     }
                 }

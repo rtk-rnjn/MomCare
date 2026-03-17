@@ -68,6 +68,7 @@ struct NutritionGraphRootView: View {
     @EnvironmentObject private var contentServiceHandler: ContentServiceHandler
     @Environment(\.dismiss) private var dismiss
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @Environment(\.accessibilityDifferentiateWithoutColor) private var differentiateWithoutColor
 
     @State private var appeared = false
 
@@ -81,7 +82,8 @@ struct NutritionGraphRootView: View {
             summaryPill(
                 label: "Consumed",
                 value: "\(Int(consumed)) kcal",
-                color: Color(hex: "E3B34B")
+                color: Color(hex: "E3B34B"),
+                icon: "flame.fill"
             )
 
             Divider().frame(height: 36)
@@ -89,7 +91,8 @@ struct NutritionGraphRootView: View {
             summaryPill(
                 label: isOver ? "Over by" : "Remaining",
                 value: "\(Int(isOver ? consumed - target : remaining)) kcal",
-                color: isOver ? .red : Color(hex: "6E8B6F")
+                color: isOver ? .red : Color(hex: "6E8B6F"),
+                icon: isOver ? "exclamationmark.triangle.fill" : "leaf.fill"
             )
 
             Divider().frame(height: 36)
@@ -97,15 +100,27 @@ struct NutritionGraphRootView: View {
             summaryPill(
                 label: "Target",
                 value: "\(Int(target)) kcal",
-                color: Color(.systemGray3)
+                color: Color(.systemGray3),
+                icon: "target"
             )
         }
         .padding(.vertical, 14)
         .background(Color(.secondarySystemBackground), in: RoundedRectangle(cornerRadius: 16, style: .continuous))
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel("Calorie summary")
+        .accessibilityValue(
+            "Consumed \(Int(consumed)) kilocalories. \(isOver ? "Over by" : "Remaining") \(Int(isOver ? consumed - target : remaining)) kilocalories. Target \(Int(target)) kilocalories."
+        )
     }
 
-    private func summaryPill(label: String, value: String, color: Color) -> some View {
+    private func summaryPill(label: String, value: String, color: Color, icon: String) -> some View {
         VStack(spacing: 3) {
+            if differentiateWithoutColor {
+                Image(systemName: icon)
+                    .font(.caption2)
+                    .foregroundStyle(color)
+                    .accessibilityHidden(true)
+            }
             Text(label)
                 .font(.caption2.weight(.semibold))
                 .foregroundStyle(.secondary)
@@ -160,9 +175,10 @@ private struct VitalCardRow: View {
                     .fill(kind.color.opacity(0.14))
                     .frame(width: 44, height: 44)
                 Image(systemName: kind.sfSymbol)
-                    .font(.system(size: 18, weight: .medium))
+                    .font(.title3.weight(.medium))
                     .foregroundColor(kind.color)
             }
+            .accessibilityHidden(true)
 
             // Label + bar
             VStack(alignment: .leading, spacing: 6) {
@@ -188,6 +204,7 @@ private struct VitalCardRow: View {
                     }
                 }
                 .frame(height: 6)
+                .accessibilityHidden(true)
 
                 HStack {
                     Text(progressLabel + " of daily target")
@@ -204,9 +221,19 @@ private struct VitalCardRow: View {
             Image(systemName: "chevron.right")
                 .font(.caption.weight(.semibold))
                 .foregroundStyle(Color(.systemGray3))
+                .accessibilityHidden(true)
         }
         .padding(14)
         .background(Color(.secondarySystemBackground), in: RoundedRectangle(cornerRadius: 16, style: .continuous))
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(kind.rawValue)
+        .accessibilityValue(
+            targetValue > 0
+                ? "\(formattedValue(todayValue)) \(kind.unitLabel), \(progressLabel) of target"
+                : "\(formattedValue(todayValue)) \(kind.unitLabel)"
+        )
+        .accessibilityHint("Double tap to view detailed history")
+        .accessibilityAddTraits(.isButton)
     }
 
     // MARK: Private
@@ -255,6 +282,8 @@ struct MacroChartPreview: View {
                 )
                 .foregroundStyle(bar.color)
                 .cornerRadius(6)
+                .accessibilityLabel(bar.label)
+                .accessibilityValue("\(Int(bar.consumed)) grams consumed, target \(Int(bar.target)) grams")
 
                 RuleMark(
                     xStart: .value("Macro", bar.label),
@@ -265,9 +294,10 @@ struct MacroChartPreview: View {
                 .foregroundStyle(bar.color.opacity(0.45))
                 .annotation(position: .top, alignment: .center) {
                     Text("\(Int(bar.target))g")
-                        .font(.system(size: 9, weight: .medium))
+                        .font(.caption2.weight(.medium))
                         .foregroundStyle(bar.color.opacity(0.7))
                 }
+                .accessibilityHidden(true)
             }
             .chartXAxis {
                 AxisMarks { _ in AxisValueLabel().font(.caption.weight(.medium)) }
