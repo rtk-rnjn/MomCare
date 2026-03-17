@@ -1,4 +1,5 @@
 import SwiftUI
+import AVFoundation
 
 struct BreathingExerciseView: View {
 
@@ -65,6 +66,7 @@ struct BreathingExerciseView: View {
             )
         }
         .onAppear {
+            setupAudioSession()
             startReadyCountdown()
             totalElapsed = contentServiceHandler.fetchBreathingCompletionDuration(for: Date())
         }
@@ -88,7 +90,8 @@ struct BreathingExerciseView: View {
     @State private var isActive = false
     @State private var isPaused = false
     @State private var showCompletion = false
-
+    @State private var speechSynthesizer = AVSpeechSynthesizer()
+    
     @State private var dotOffsets: [CGSize] = (0 ..< 6).map { _ in
         CGSize(width: CGFloat.random(in: -20 ... 20), height: CGFloat.random(in: -20 ... 20))
     }
@@ -352,6 +355,7 @@ struct BreathingExerciseView: View {
 
     private func startReadyCountdown() {
         phase = .ready
+        speak("Are you Ready?")
         phaseCountdown = Int(BreathingPhase.ready.duration)
 
         phaseTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { _ in
@@ -369,6 +373,7 @@ struct BreathingExerciseView: View {
     private func startBreathingCycle() {
         isActive = true
         phase = .breatheIn
+        speak("Breathe in")
         phaseCountdown = Int(BreathingPhase.breatheIn.duration)
         animateCircle(to: BreathingPhase.breatheIn.circleScale, duration: BreathingPhase.breatheIn.duration)
         animateDots()
@@ -389,6 +394,8 @@ struct BreathingExerciseView: View {
                 } else {
                     let nextPhase = phase.next
                     phase = nextPhase
+
+                    speak(nextPhase.voiceText)
                     phaseCountdown = Int(nextPhase.duration)
                     animateCircle(to: nextPhase.circleScale, duration: nextPhase.duration)
                     animateDots()
@@ -401,7 +408,7 @@ struct BreathingExerciseView: View {
         if reduceMotion {
             circleScale = scale
         } else {
-            withAnimation(.bouncy) {
+            withAnimation(.easeInOut(duration: duration)) {
                 circleScale = scale
             }
         }
@@ -458,6 +465,7 @@ struct BreathingExerciseView: View {
 
     private func completeSession() {
         stopAllTimers()
+        speak("Well done. You did Amazing!")
         if reduceMotion {
             phase = .done
             circleScale = BreathingPhase.done.circleScale
@@ -481,6 +489,26 @@ struct BreathingExerciseView: View {
 
         return Duration.seconds(seconds).formatted(.time(pattern: .minuteSecond))
     }
+    
+    private func speak(_ text: String) {
+        let utterance = AVSpeechUtterance(string: text)
+        utterance.voice = AVSpeechSynthesisVoice(identifier: "com.apple.ttsbundle.siri_female_en-IN_compact")
+        utterance.rate = 0.4
+        utterance.pitchMultiplier = 1.0
+        utterance.volume = 1.0
+
+        speechSynthesizer.stopSpeaking(at: .immediate)
+        speechSynthesizer.speak(utterance)
+    }
+    private func setupAudioSession() {
+        do {
+            let session = AVAudioSession.sharedInstance()
+            try session.setCategory(.playback, mode: .default)
+            try session.setActive(true)
+        } catch {
+            print("Audio session setup failed: \(error)")
+        }
+    }
 }
 
 enum BreathingPhase: String {
@@ -497,7 +525,7 @@ enum BreathingPhase: String {
         case .breatheIn: 4.0
         case .hold: 4.0
         case .breatheOut: 6.0
-        case .ready: 3.0
+        case .ready: 5.0
         case .done: 0
         }
     }
@@ -519,6 +547,20 @@ enum BreathingPhase: String {
         case .breatheOut: 0.6
         case .ready: 0.6
         case .done: 0.85
+        }
+    }
+    var voiceText: String {
+        switch self {
+        case .breatheIn:
+            return "Slowly breathe in..."
+        case .hold:
+            return "Hold?"
+        case .breatheOut:
+            return "Now breathe out..."
+        case .ready:
+            return "Get ready..."
+        case .done:
+            return "Well done. Session complete."
         }
     }
 }
