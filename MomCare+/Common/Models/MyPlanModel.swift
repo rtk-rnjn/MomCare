@@ -103,7 +103,6 @@ struct NutritionTotals: Sendable {
     let protein: Double
     let sugar: Double
     let sodium: Double
-
 }
 
 extension NutritionTotals {

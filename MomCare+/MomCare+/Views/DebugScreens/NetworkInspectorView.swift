@@ -76,8 +76,6 @@ struct NetworkInspectorView: View {
     }
 }
 
-// MARK: - Request Row
-
 struct NetworkRequestRow: View {
 
     // MARK: Internal
@@ -143,8 +141,6 @@ struct NetworkRequestRow: View {
         }
     }
 }
-
-// MARK: - Detail View
 
 struct NetworkRequestDetailView: View {
 
@@ -288,8 +284,6 @@ struct NetworkRequestDetailView: View {
         return HTTPURLResponse.localizedString(forStatusCode: code).capitalized
     }
 }
-
-// MARK: - Reusable Sub-components
 
 struct MethodBadge: View {
 

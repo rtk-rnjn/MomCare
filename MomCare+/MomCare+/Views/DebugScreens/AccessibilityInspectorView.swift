@@ -68,8 +68,6 @@ struct AccessibilityInspectorView: View {
     }
 }
 
-// MARK: - Helper Row
-
 private struct AccessibilityRow: View {
     let label: String
     let isEnabled: Bool

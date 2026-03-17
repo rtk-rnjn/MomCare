@@ -1,15 +1,8 @@
 import SwiftUI
 import TipKit
-
-struct MealSection: Identifiable {
-    let id: UUID = .init()
-    let title: String
-    var items: [FoodReferenceModel]
-
-    var isCompleted: Bool {
-        items.allSatisfy(\.isConsumed)
-    }
-}
+import Charts
+import HealthKit
+import Combine
 
 struct MyPlanDietPlanView: View {
 
@@ -23,13 +16,24 @@ struct MyPlanDietPlanView: View {
             )
             .containerShape(RoundedRectangle(cornerRadius: 24, style: .continuous))
             .padding(.horizontal, 16)
+            .contextMenu {
+                Button {
+                    showGraph = true
+                } label: {
+                    Label("Show Pretty Graph", systemImage: "chart.bar.xaxis")
+                }
+            }
+            .fullScreenCover(isPresented: $showGraph) {
+                NutritionGraphRootView()
+                    .environmentObject(contentServiceHandler)
+            }
 
             MealTimelineCardView()
                 .refreshable {
                     HapticsHandler.impact(.medium)
                     try? await contentServiceHandler.fetchMealPlan()
                 }
-                .padding(.top, 4)
+
                 .padding(.bottom, 8)
                 .frame(maxHeight: .infinity)
                 .clipShape(RoundedCorner(radius: 24, corners: [.topLeft, .topRight]))
@@ -39,6 +43,8 @@ struct MyPlanDietPlanView: View {
     }
 
     // MARK: Private
+
+    @State private var showGraph = false
 
     @EnvironmentObject private var contentServiceHandler: ContentServiceHandler
 }

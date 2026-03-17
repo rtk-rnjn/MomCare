@@ -142,7 +142,7 @@ struct TriTrackCalendarItemContentView: View {
     private var eventList: some View {
         ForEach(eventKitHandler.events, id: \.calendarItemIdentifier) { event in
             TriTrackEventRow(event: event, selectedDate: $selectedDate)
-                .listRowSeparator(.hidden, edges: .all)
+                .listRowSeparator(.hidden)
                 .onTapGesture {
                     selectedEvent = EKCalendarItemWrapper(item: event)
                 }
@@ -186,8 +186,6 @@ struct TriTrackCalendarItemContentView: View {
                 }
         }
     }
-
-    // MARK: - Reminder List
 
     private var reminderList: some View {
         ForEach(eventKitHandler.reminders, id: \.calendarItemIdentifier) { reminder in
@@ -284,8 +282,6 @@ struct TriTrackCalendarItemContentView: View {
             showErrorAlert = true
         }
     }
-
-    // MARK: - Deep Links
 
     /// Opens the native Calendar app scrolled to the event's date.
     /// Uses the `calshow://` URL scheme with an interval since reference date.

@@ -28,7 +28,6 @@ struct DataInspectorView: View {
                 }
             }
 
-            // MARK: Cached Files
             Section("Cache Directory (\(cachedFiles.count) files)") {
                 if cachedFiles.isEmpty {
                     Text("Cache is empty")

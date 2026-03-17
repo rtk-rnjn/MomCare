@@ -470,3 +470,13 @@ struct TimelineCircle: View {
         }
     }
 }
+
+struct MealSection: Identifiable {
+    let id: UUID = .init()
+    let title: String
+    var items: [FoodReferenceModel]
+
+    var isCompleted: Bool {
+        items.allSatisfy(\.isConsumed)
+    }
+}

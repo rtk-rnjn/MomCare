@@ -25,9 +25,19 @@ struct WalkingCardView: View {
                         .font(.caption.weight(.semibold))
                         .foregroundColor(Color(hex: "4A8A62"))
                 } else {
-                    Text("\(Int(contentServiceHandler.stepsProgress))%")
-                        .font(.subheadline.weight(.semibold))
-                        .foregroundColor(Color(hex: "4A8A62"))
+                    HStack {
+                        Text(percentCompleted, format: .number.precision(.fractionLength(2)))
+                            .font(.subheadline.weight(.semibold))
+                            .foregroundColor(Color(hex: "4A8A62"))
+                            .contentTransition(reduceMotion ? .identity : .numericText(value: percentCompleted))
+                            .onAppear { percentCompleted = contentServiceHandler.stepsProgress }
+                            .onChange(of: contentServiceHandler.stepsProgress) { _, newValue in percentCompleted = newValue }
+                            .animation(reduceMotion ? nil : .easeInOut(duration: 0.8), value: percentCompleted)
+
+                        Text("%")
+                            .font(.subheadline.weight(.semibold))
+                            .foregroundColor(Color(hex: "4A8A62"))
+                    }
                 }
             }
 
@@ -90,14 +100,13 @@ struct WalkingCardView: View {
 
     @EnvironmentObject private var contentServiceHandler: ContentServiceHandler
     @State private var progress: Double = 0
-    @State private var percentCompleted: Int = 0
+    @State private var percentCompleted: Double = 0
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @Environment(\.accessibilityReduceTransparency) private var reduceTransparency
 
     private func updateProgress() {
         progress = Double(contentServiceHandler.currentSteps) / Double(contentServiceHandler.targetSteps)
-        progress = min(progress, 1)
-        percentCompleted = Int(progress * 100)
+        percentCompleted = progress * 100
     }
 
 }

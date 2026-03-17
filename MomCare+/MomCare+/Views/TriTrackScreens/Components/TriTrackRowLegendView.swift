@@ -18,6 +18,12 @@ struct TriTrackRowLegendView: View {
                     symbolsSection
                     Divider()
                     opacitySection
+                    Divider()
+                    reminderSwipeActionsSection
+                    Divider()
+                    eventSwipActionsSection
+                    Divider()
+                    calendarItemContextMenuSection
                 }
                 .padding(.horizontal, 20)
                 .padding(.vertical, 24)
@@ -95,8 +101,6 @@ struct TriTrackRowLegendView: View {
             }
         }
     }
-
-    // MARK: - Reminder Status Section
 
     private var reminderStatusSection: some View {
         LegendSection(title: "Reminder Status", systemImage: "checklist") {
@@ -212,8 +216,6 @@ struct TriTrackRowLegendView: View {
         }
     }
 
-    // MARK: - Opacity Section
-
     private var opacitySection: some View {
         LegendSection(title: "Row Opacity", systemImage: "circle.lefthalf.filled") {
             LegendCard {
@@ -228,6 +230,77 @@ struct TriTrackRowLegendView: View {
                         badge: OpacityBadge(opacity: 0.6),
                         label: "Passed / Completed",
                         description: "Rows dim to 60% once an event has started or a reminder is marked complete, keeping the list scannable without removing context."
+                    )
+                }
+            }
+        }
+    }
+
+    private var reminderSwipeActionsSection: some View {
+        LegendSection(title: "Swipe Actions", systemImage: "hand.point.right") {
+            LegendCard {
+                VStack(alignment: .leading, spacing: 16) {
+                    LegendRow(
+                        badge: SymbolBadge(systemName: "checkmark.circle.fill", color: .green),
+                        label: "Swipe right to complete",
+                        description: "Swipe an active reminder row to the right to mark it as completed."
+                    )
+                    LegendDivider()
+                    LegendRow(
+                        badge: SymbolBadge(systemName: "arrow.uturn.left.circle.fill", color: .blue),
+                        label: "Swipe left to undo",
+                        description: "Swipe a completed reminder row to the left to mark it as not done."
+                    )
+                }
+            }
+        }
+    }
+
+    private var eventSwipActionsSection: some View {
+        LegendSection(title: "Event Swipe Actions", systemImage: "hand.point.right") {
+            LegendCard {
+                VStack(alignment: .leading, spacing: 16) {
+                    LegendRow(
+                        badge: SymbolBadge(systemName: "xmark.circle.fill", color: .red),
+                        label: "Swipe right to hide past event",
+                        description: "Swipe a past event row to the right to hide it from the calendar view."
+                    )
+                    LegendDivider()
+                    LegendRow(
+                        badge: SymbolBadge(systemName: "arrow.uturn.left.circle.fill", color: .blue),
+                        label: "Swipe left to undo",
+                        description: "Swipe a hidden past event row to the left to make it visible again."
+                    )
+                }
+            }
+        }
+    }
+
+    private var calendarItemContextMenuSection: some View {
+        LegendSection(title: "Quick Actions Menu", systemImage: "ellipsis.circle") {
+            LegendCard {
+                VStack(alignment: .leading, spacing: 16) {
+
+                    LegendRow(
+                        badge: SymbolBadge(systemName: "hand.tap.fill", color: .purple),
+                        label: "Tap and hold an item",
+                        description: "Press and hold a reminder or event to open the quick actions menu."
+                    )
+
+                    LegendDivider()
+
+                    LegendRow(
+                        badge: SymbolBadge(systemName: "list.bullet.rectangle", color: .blue),
+                        label: "Quick actions",
+                        description: "The menu provides shortcuts such as viewing details, marking reminders as complete, opening the item in Calendar or Reminders, or deleting it."
+                    )
+
+                    LegendDivider()
+
+                    LegendRow(
+                        badge: SymbolBadge(systemName: "eye.fill", color: .green),
+                        label: "Preview information",
+                        description: "A preview of the reminder or event appears above the menu so you can quickly check details without opening the full screen."
                     )
                 }
             }
@@ -355,7 +428,7 @@ private struct SymbolBadge: View {
 
     var body: some View {
         Image(systemName: systemName)
-            .font(.title3)
+            .font(.title)
             .foregroundStyle(color)
             .frame(width: 50, height: 50)
     }

@@ -29,7 +29,6 @@ struct NotificationTesterView: View {
                 }
             }
 
-            // MARK: Delay Picker
             Section {
                 HStack {
                     Label("Fire Delay", systemImage: "clock")
@@ -42,7 +41,6 @@ struct NotificationTesterView: View {
                 Text("Configuration")
             }
 
-            // MARK: Trigger Buttons
             Section("Trigger Notifications") {
                 NotifButton(
                     label: "Test Notification",
@@ -66,7 +64,6 @@ struct NotificationTesterView: View {
                 ) { triggerScheduled() }
             }
 
-            // MARK: Pending
             Section {
                 Button {
                     Task { await checkPending() }

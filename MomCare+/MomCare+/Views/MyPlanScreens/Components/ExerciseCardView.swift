@@ -46,7 +46,9 @@ struct ExerciseCardView: View {
                     .accessibilityLabel(completionProgress >= 1 ? "Replay \(exercise?.name ?? "exercise")" : "Start \(exercise?.name ?? "exercise")")
                     .accessibilityIdentifier("startExerciseButton")
                     .fullScreenCover(isPresented: $startExercisePlayer) {
-                        playerView
+                        NavigationStack {
+                            playerView
+                        }
                     }
                 }
 
@@ -125,36 +127,33 @@ struct ExerciseCardView: View {
     }
 
     private var playerView: some View {
-        ZStack(alignment: .topTrailing) {
-            VideoPlayer(player: avPlayer)
-                .ignoresSafeArea()
-                .onAppear { avPlayer?.play() }
-                .accessibilityLabel("Exercise video player")
-
-            Button {
-                avPlayer?.pause()
-                Task {
-                    do {
-                        try await updateDuration()
-                        HapticsHandler.notification(completionProgress >= 1 ? .success : .warning)
-                    } catch {
-                        alertMessage = error.localizedDescription
-                        showErrorAlert = true
-                        HapticsHandler.notification(.error)
+        VideoPlayer(player: avPlayer)
+            .ignoresSafeArea()
+            .onAppear { avPlayer?.play() }
+            .accessibilityLabel("Exercise video player")
+            .navigationTitle(exercise?.name ?? "Exercise")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .cancellationAction) {
+                    Button(role: .cancel) {
+                        avPlayer?.pause()
+                        Task {
+                            do {
+                                try await updateDuration()
+                                HapticsHandler.notification(completionProgress >= 1 ? .success : .warning)
+                            } catch {
+                                alertMessage = error.localizedDescription
+                                showErrorAlert = true
+                                HapticsHandler.notification(.error)
+                            }
+                            startExercisePlayer = false
+                        }
                     }
-                    startExercisePlayer = false
+                    .accessibilityLabel("Close video")
+                    .accessibilityIdentifier("closeVideoButton")
+                    .padding(.top, 20)
                 }
-            } label: {
-                Image(systemName: "xmark.circle.fill")
-                    .resizable()
-                    .frame(width: 30, height: 30)
-                    .foregroundColor(.white)
-                    .padding()
             }
-            .accessibilityLabel("Close video")
-            .accessibilityIdentifier("closeVideoButton")
-            .padding(.top, 20)
-        }
     }
 
     private func loadExercise() async {
