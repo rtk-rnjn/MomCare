@@ -33,11 +33,6 @@ struct VitalDetailView: View {
                         value: appeared
                     )
 
-                if showCalendar {
-                    calendarSection
-                        .transition(.move(edge: .top).combined(with: .opacity))
-                }
-
                 insightCard
                     .opacity(appeared ? 1 : 0)
                     .animation(
@@ -59,13 +54,8 @@ struct VitalDetailView: View {
                 appeared = true
             }
         }
-        .onChange(of: selectedRange) { _, new in
-            if new == .calendar {
-                withAnimation { showCalendar = true }
-            } else {
-                withAnimation { showCalendar = false }
-                Task { await reload() }
-            }
+        .onChange(of: selectedRange) {
+            Task { await reload() }
         }
     }
 
@@ -76,8 +66,6 @@ struct VitalDetailView: View {
     @Environment(\.dismiss) private var dismiss
 
     @State private var selectedRange: VitalTimeRange = .week
-    @State private var calendarRange: ClosedRange<Date>?
-    @State private var showCalendar = false
     @State private var appeared = false
 
     @State private var selectedPoint: DailyDataPoint?
@@ -337,38 +325,6 @@ struct VitalDetailView: View {
         .frame(height: chartHeight)
     }
 
-    private var calendarSection: some View {
-        VStack(alignment: .leading, spacing: 8) {
-            HStack {
-                Text("Pick a date range")
-                    .font(.subheadline.weight(.semibold))
-                Spacer()
-                if calendarRange != nil {
-                    Button("Clear") {
-                        calendarRange = nil
-                    }
-                    .font(.caption)
-                    .foregroundColor(.secondary)
-                }
-            }
-
-            CalendarRangePicker(selectedRange: $calendarRange) { range in
-                Task { await reloadCalendar(range: range) }
-            }
-            .frame(height: 340)
-            .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
-
-            if let range = calendarRange {
-                Text("\(formatDate(range.lowerBound)) – \(formatDate(range.upperBound))")
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
-                    .padding(.top, 2)
-            }
-        }
-        .padding(16)
-        .background(Color(.secondarySystemBackground), in: RoundedRectangle(cornerRadius: 16, style: .continuous))
-    }
-
     private var insightCard: some View {
         HStack(alignment: .top, spacing: 12) {
             Image(systemName: "lightbulb.fill")
@@ -400,7 +356,7 @@ struct VitalDetailView: View {
     }
 
     private func reload() async {
-        await store.load(kind: kind, range: selectedRange, calendarRange: calendarRange)
+        await store.load(kind: kind, range: selectedRange)
     }
 
     private func reloadCalendar(range: ClosedRange<Date>) async {

@@ -6,7 +6,6 @@ enum VitalTimeRange: String, CaseIterable, Identifiable {
     case week = "7D"
     case month = "30D"
     case quarter = "3M"
-    case calendar = "Calendar"
 
     // MARK: Internal
 
@@ -17,7 +16,6 @@ enum VitalTimeRange: String, CaseIterable, Identifiable {
         case .week: return 7
         case .month: return 30
         case .quarter: return 91
-        case .calendar: return 0 // driven by calendarRange
         }
     }
 
@@ -26,7 +24,6 @@ enum VitalTimeRange: String, CaseIterable, Identifiable {
         case .week: return .day
         case .month: return .day
         case .quarter: return .weekOfYear
-        case .calendar: return .day
         }
     }
 }
@@ -227,23 +224,15 @@ final class VitalHistoryStore: ObservableObject {
         points = result
     }
 
-    func load(kind: VitalKind, range: VitalTimeRange, calendarRange: ClosedRange<Date>? = nil) async {
+    func load(kind: VitalKind, range: VitalTimeRange) async {
         let calendar = Calendar.current
         let today = calendar.startOfDay(for: Date())
 
         let start: Date
         let end: Date
 
-        switch range {
-        case .calendar:
-            guard let cr = calendarRange else { return }
-            start = cr.lowerBound
-            end = cr.upperBound
-
-        default:
-            start = calendar.date(byAdding: .day, value: -(range.days - 1), to: today)!
-            end = today
-        }
+        start = calendar.date(byAdding: .day, value: -(range.days - 1), to: today)!
+        end = today
 
         await load(kind: kind, startDate: start, endDate: end, bucketComponent: range.bucketComponent)
     }

@@ -4,8 +4,7 @@ import MediaPlayer
 import SwiftUI
 import UIKit
 
-@MainActor
-final class MusicPlayerHandler: ObservableObject {
+class MusicPlayerHandler: ObservableObject {
 
     // MARK: Lifecycle
 
