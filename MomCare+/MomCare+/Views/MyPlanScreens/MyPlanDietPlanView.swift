@@ -27,6 +27,9 @@ struct MyPlanDietPlanView: View {
                 NutritionGraphRootView()
                     .environmentObject(contentServiceHandler)
             }
+            .fullScreenCover(isPresented: $showWaterLog) {
+                WaterLogView()
+            }
 
             MealTimelineCardView()
                 .refreshable {
@@ -40,11 +43,39 @@ struct MyPlanDietPlanView: View {
                 .padding(.horizontal, 16)
         }
         .padding(.top, 8)
+        .toolbar {
+            ToolbarItem(placement: .confirmationAction) {
+                Menu {
+                    Button {
+                        showWaterLog = true
+                    } label: {
+                        Label("Water Intake Log", systemImage: "drop.fill")
+                    }
+                    
+                    Divider()
+                    
+                    Button {
+                        showHelp = true
+                    } label: {
+                        Label("Legend", systemImage: "questionmark.circle")
+                    }
+
+                } label: {
+                    Image(systemName: "ellipsis")
+                        .accessibilityHidden(true)
+                }
+            }
+        }
+        .sheet(isPresented: $showHelp) {
+            NutritionProgressCardHelpView()
+        }
     }
 
     // MARK: Private
 
     @State private var showGraph = false
+    @State private var showWaterLog = false
+    @State private var showHelp = false
 
     @EnvironmentObject private var contentServiceHandler: ContentServiceHandler
 }

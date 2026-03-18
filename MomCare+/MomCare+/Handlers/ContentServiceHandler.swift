@@ -61,12 +61,12 @@ final class ContentServiceHandler: ObservableObject {
     func requestHealthKitAccess() async throws -> [HKQuantityTypeIdentifier: HKAuthorizationStatus] {
 
         let readIdentifiers: [HKQuantityTypeIdentifier] = [
-            .activeEnergyBurned, .stepCount, .appleExerciseTime, .height, .bodyMass,
+            .activeEnergyBurned, .stepCount, .appleExerciseTime, .height, .bodyMass, .dietaryWater,
             .dietaryEnergyConsumed, .dietaryProtein, .dietaryCarbohydrates, .dietaryFatTotal, .dietarySugar, .dietarySodium
         ]
 
         let writeIdentifiers: [HKQuantityTypeIdentifier] = [
-            .height, .bodyMass,
+            .height, .bodyMass, .dietaryWater,
             .dietaryEnergyConsumed, .dietaryProtein, .dietaryCarbohydrates, .dietaryFatTotal, .dietarySugar, .dietarySodium
         ]
 

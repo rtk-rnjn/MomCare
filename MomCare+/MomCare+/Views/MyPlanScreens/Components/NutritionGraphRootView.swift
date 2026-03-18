@@ -50,7 +50,7 @@ struct NutritionGraphRootView: View {
             .navigationTitle("Nutrition")
             .navigationBarTitleDisplayMode(.large)
             .toolbar {
-                ToolbarItem(placement: .confirmationAction) {
+                ToolbarItem(placement: .cancellationAction) {
                     Button(role: .cancel) { dismiss() }
                         .fontWeight(.semibold)
                 }
