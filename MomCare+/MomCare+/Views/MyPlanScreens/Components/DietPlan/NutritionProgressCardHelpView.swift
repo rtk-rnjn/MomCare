@@ -333,7 +333,7 @@ private struct RingBadge: View {
                 .stroke(color, style: StrokeStyle(lineWidth: 5, lineCap: .round))
                 .rotationEffect(.degrees(-90))
             Text(label)
-                .font(.system(size: 9, weight: .bold))
+                .font(.caption2.weight(.bold))
                 .multilineTextAlignment(.center)
                 .foregroundStyle(.primary)
         }
@@ -349,7 +349,7 @@ private struct MacroBarBadge: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 4) {
             Text(label)
-                .font(.system(size: 8, weight: .semibold))
+                .font(.caption2.weight(.semibold))
                 .foregroundStyle(.secondary)
             GeometryReader { geo in
                 ZStack(alignment: .leading) {
@@ -376,7 +376,7 @@ private struct SwipeDirectionBadge: View {
                 .foregroundStyle(Color(hex: "1B6CA8"))
 
             Text(direction == .up ? "Swipe up" : "Swipe down")
-                .font(.system(size: 8, weight: .medium))
+                .font(.caption2.weight(.medium))
                 .foregroundStyle(.secondary)
         }
         .frame(width: 50, height: 50)
@@ -417,7 +417,7 @@ private struct MacroMicroBadge: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 3) {
             Text(label)
-                .font(.system(size: 8, weight: .semibold))
+                .font(.caption2.weight(.semibold))
                 .foregroundStyle(.secondary)
             GeometryReader { geo in
                 ZStack(alignment: .leading) {
@@ -441,7 +441,7 @@ private struct MealBreakdownBadge: View {
             ForEach(meals, id: \.0) { label, frac, color in
                 HStack(spacing: 4) {
                     Text(label)
-                        .font(.system(size: 7, weight: .bold))
+                        .font(.caption2.weight(.bold))
                         .foregroundStyle(.secondary)
                         .frame(width: 8)
                     GeometryReader { geo in
@@ -481,7 +481,7 @@ private struct ContextMenuPreviewBadge: View {
                         .fill(color)
                         .frame(width: 10, height: 30 * frac)
                     Text(label)
-                        .font(.system(size: 7, weight: .semibold))
+                        .font(.caption2.weight(.semibold))
                         .foregroundStyle(.secondary)
                 }
             }
@@ -520,7 +520,7 @@ private struct RangePillsBadge: View {
         HStack(spacing: 2) {
             ForEach(["7D", "30D", "3M"], id: \.self) { label in
                 Text(label)
-                    .font(.system(size: 7, weight: .semibold))
+                    .font(.caption2.weight(.semibold))
                     .foregroundStyle(label == "7D" ? Color(.systemBackground) : Color.secondary)
                     .padding(.horizontal, 4)
                     .padding(.vertical, 3)
@@ -546,7 +546,7 @@ private struct WaterRingBadge: View {
                 .clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
 
             Text("60%")
-                .font(.system(size: 9, weight: .bold))
+                .font(.caption2.weight(.bold))
                 .foregroundColor(.white)
         }
         .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
@@ -576,7 +576,7 @@ private struct QuickAddBadge: View {
 
     private func quickPill(_ label: String) -> some View {
         Text(label)
-            .font(.system(size: 6, weight: .semibold))
+            .font(.caption2.weight(.semibold))
             .foregroundStyle(Color(hex: "7EDCF5"))
             .padding(.horizontal, 4)
             .padding(.vertical, 2)

@@ -95,7 +95,7 @@ struct MyPlanFoodItemSearchView: View {
         VStack(spacing: 8) {
             Spacer()
             Image(systemName: "magnifyingglass")
-                .font(.system(size: 32, weight: .light))
+                .font(.largeTitle.weight(.light))
                 .foregroundStyle(.tertiary)
             Text("Search to find food")
                 .font(.subheadline)
@@ -175,7 +175,7 @@ struct FoodRowView: View {
 
             VStack(alignment: .leading, spacing: 3) {
                 Text(food.name.capitalized)
-                    .font(.system(.callout, weight: .medium))
+                    .font(.callout.weight(.medium))
                     .foregroundStyle(.primary)
                     .lineLimit(1)
 

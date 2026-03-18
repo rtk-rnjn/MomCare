@@ -325,7 +325,7 @@ private struct DayRingBadge: View {
     var body: some View {
         VStack(spacing: 4) {
             Text("Wed")
-                .font(.system(size: 9, weight: .semibold))
+                .font(.caption2.weight(.semibold))
                 .foregroundColor(isToday ? .black : Color.CustomColors.mutedRaspberry)
 
             ZStack {
@@ -339,7 +339,7 @@ private struct DayRingBadge: View {
 
                 if progress >= 1.0 {
                     Image(systemName: "checkmark")
-                        .font(.system(size: 8, weight: .bold))
+                        .font(.caption2.weight(.bold))
                         .foregroundColor(Color.CustomColors.mutedRaspberry)
                 }
             }
@@ -387,7 +387,7 @@ private struct PercentBadge: View {
 
     var body: some View {
         Text(value)
-            .font(.system(size: 15, weight: .bold, design: .rounded))
+            .font(.body.weight(.bold))
             .foregroundColor(color)
             .frame(width: 50, height: 50)
     }
@@ -400,7 +400,7 @@ private struct LevelBadge: View {
 
     var body: some View {
         Text(label)
-            .font(.system(size: 9, weight: .semibold))
+            .font(.caption2.weight(.semibold))
             .foregroundColor(color)
             .padding(.horizontal, 6)
             .padding(.vertical, 4)
@@ -417,9 +417,9 @@ private struct PlayButtonBadge: View {
     var body: some View {
         HStack(spacing: 3) {
             Image(systemName: "play.fill")
-                .font(.system(size: 8))
+                .font(.caption2)
             Text(label)
-                .font(.system(size: 9, weight: .semibold))
+                .font(.caption2.weight(.semibold))
         }
         .foregroundColor(.white)
         .padding(.horizontal, 8)
@@ -449,18 +449,18 @@ private struct WaterDropBadge: View {
         ZStack {
             // Simplified drop silhouette
             Image(systemName: "drop.fill")
-                .font(.system(size: 30))
+                .font(.largeTitle)
                 .foregroundColor(Color(hex: "6BAED6").opacity(0.25))
 
             Image(systemName: "drop.fill")
-                .font(.system(size: 30))
+                .font(.largeTitle)
                 .foregroundColor(Color(hex: "6BAED6"))
                 .mask(alignment: .bottom) {
                     Rectangle().frame(height: 12)
                 }
 
             Text("60%")
-                .font(.system(size: 7, weight: .bold))
+                .font(.caption2.weight(.bold))
                 .foregroundColor(.white)
                 .offset(y: 4)
         }
@@ -491,7 +491,7 @@ private struct QuickAddWaterBadge: View {
 
     private func miniPill(_ t: String) -> some View {
         Text(t)
-            .font(.system(size: 6, weight: .semibold))
+            .font(.caption2.weight(.semibold))
             .foregroundColor(.white)
             .padding(.horizontal, 4)
             .padding(.vertical, 2)

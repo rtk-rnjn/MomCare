@@ -269,11 +269,11 @@ private struct ExerciseHistoryCard: View {
 
                         if completionPct >= 1.0 {
                             Image(systemName: "checkmark")
-                                .font(.system(size: 9, weight: .bold))
+                                .font(.caption2.weight(.bold))
                                 .foregroundColor(Color(hex: "4A8A62"))
                         } else {
                             Text("\(Int(completionPct * 100))%")
-                                .font(.system(size: 9, weight: .bold))
+                                .font(.caption2.weight(.bold))
                                 .foregroundColor(Color.CustomColors.mutedRaspberry)
                         }
                     }

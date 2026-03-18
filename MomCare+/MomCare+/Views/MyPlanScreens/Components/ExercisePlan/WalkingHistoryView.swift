@@ -98,7 +98,7 @@ struct WalkingHistoryView: View {
 
                 VStack(spacing: 1) {
                     Text("\(Int(progress * 100))%")
-                        .font(.system(size: 15, weight: .bold, design: .rounded))
+                        .font(.body.weight(.bold))
                         .foregroundColor(Color(hex: "4A8A62"))
                         .contentTransition(.numericText())
                 }
@@ -112,7 +112,7 @@ struct WalkingHistoryView: View {
                         ProgressView().scaleEffect(0.7)
                     } else {
                         Text(store.selectedDateSteps.formatted())
-                            .font(.system(size: 36, weight: .heavy, design: .rounded))
+                            .font(.largeTitle.weight(.heavy))
                             .foregroundColor(.primary)
                             .contentTransition(.numericText())
                             .animation(.spring(response: 0.5), value: store.selectedDateSteps)
@@ -234,14 +234,14 @@ struct WalkingHistoryView: View {
                         .foregroundStyle(Color(hex: "4A8A62").opacity(0.45))
                         .annotation(position: .trailing, alignment: .center) {
                             Text("Goal")
-                                .font(.system(size: 9, weight: .semibold))
+                                .font(.caption2.weight(.semibold))
                                 .foregroundStyle(Color(hex: "4A8A62").opacity(0.7))
                         }
                 }
                 .chartXAxis {
                     AxisMarks(values: xAxisValues) { _ in
                         AxisValueLabel()
-                            .font(.system(size: 10))
+                            .font(.caption2)
                             .foregroundStyle(Color.secondary)
                     }
                 }
@@ -253,7 +253,7 @@ struct WalkingHistoryView: View {
                         AxisValueLabel {
                             if let v = val.as(Int.self) {
                                 Text(shortStepLabel(v))
-                                    .font(.system(size: 9))
+                                    .font(.caption2)
                                     .foregroundStyle(.secondary)
                             }
                         }
@@ -327,7 +327,7 @@ struct WalkingHistoryView: View {
                     .fill(color.opacity(0.12))
                     .frame(width: 38, height: 38)
                 Image(systemName: icon)
-                    .font(.system(size: 16, weight: .medium))
+                    .font(.callout.weight(.medium))
                     .foregroundColor(color)
             }
 
