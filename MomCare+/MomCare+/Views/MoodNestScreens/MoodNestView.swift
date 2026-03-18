@@ -36,7 +36,7 @@ struct MoodNestView: View {
                         .accessibilityAddTraits(.updatesFrequently)
 
                     Slider(value: $moodNestViewModel.sliderValue, in: 0 ... 3, step: 1)
-                        // Imagine you can not remove Haptic feedback, is you are using step: Int
+
                         .onChange(of: moodNestViewModel.sliderValue) {
                             if reduceMotion {
                                 moodNestViewModel.updateMood()

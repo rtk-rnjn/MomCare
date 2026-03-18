@@ -151,7 +151,7 @@ struct NetworkRequestDetailView: View {
     var body: some View {
         NavigationStack {
             List {
-                // Overview Section
+
                 Section {
                     HStack(spacing: 16) {
                         MethodBadge(method: request.method, large: true)
@@ -170,7 +170,6 @@ struct NetworkRequestDetailView: View {
                     InspectorSectionHeader("Request", icon: "arrow.up.circle.fill")
                 }
 
-                // Response Section
                 Section {
                     if let code = request.statusCode {
                         LabeledContent("Status") {
@@ -198,7 +197,6 @@ struct NetworkRequestDetailView: View {
                     InspectorSectionHeader("Response", icon: "arrow.down.circle.fill")
                 }
 
-                // Request Body
                 if let body = request.requestBody {
                     Section {
                         BodyPreviewButton(text: body, label: "Inspect Request Body") {
@@ -209,7 +207,6 @@ struct NetworkRequestDetailView: View {
                     }
                 }
 
-                // Response Body
                 if let body = request.responseBody {
                     Section {
                         BodyPreviewButton(text: body, label: "Inspect Response Body") {
@@ -220,7 +217,6 @@ struct NetworkRequestDetailView: View {
                     }
                 }
 
-                // Error
                 if let err = request.error {
                     Section {
                         HStack(alignment: .top, spacing: 8) {

@@ -90,6 +90,8 @@ class FSCalendarContainerView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
+    // MARK: Internal
+
     let calendar: FSCalendar = .init()
 
     // MARK: Private
@@ -193,7 +195,6 @@ class FSCalendarHostingController: UIViewController, FSCalendarDelegate, FSCalen
             calendar.topAnchor.constraint(equalTo: view.topAnchor),
             calendar.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             calendar.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-//            calendar.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             calendarHeightConstraint
         ])
 

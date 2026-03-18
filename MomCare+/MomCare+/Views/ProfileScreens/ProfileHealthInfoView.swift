@@ -44,9 +44,6 @@ struct ProfileHealthInfoView: View {
             }
 
             Section {
-//                pickerRow(title: "Medical Conditions", value: displayCount(conditions)) {
-//                    activeSheet = .conditions
-//                }
 
                 pickerRow(title: "Dietary Preferences", value: displayCount(dietaryPreferences)) {
                     activeSheet = .diet

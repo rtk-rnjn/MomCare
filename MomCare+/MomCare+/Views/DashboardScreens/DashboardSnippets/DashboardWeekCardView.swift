@@ -6,7 +6,7 @@ struct DashboardWeekCardView: View {
 
     var body: some View {
         VStack(spacing: 0) {
-            // Top Content
+
             VStack(alignment: .leading, spacing: 8) {
                 Text("Week \(authenticationService.userModel?.pregnancyProgress.week ?? 0)")
                     .font(.title2)
@@ -22,7 +22,6 @@ struct DashboardWeekCardView: View {
 
             Spacer(minLength: 0)
 
-            // Bottom Bar
             ZStack(alignment: .trailing) {
                 Rectangle()
                     .fill(Color("secondaryAppColor"))

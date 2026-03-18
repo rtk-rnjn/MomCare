@@ -62,7 +62,7 @@ struct LogsConsoleView: View {
                         Label("Clear Logs", systemImage: "trash")
                     }
                     Button {
-                        // Seed demo logs for development preview
+
                         seedDemoLogs()
                     } label: {
                         Label("Seed Demo Logs", systemImage: "wand.and.stars")

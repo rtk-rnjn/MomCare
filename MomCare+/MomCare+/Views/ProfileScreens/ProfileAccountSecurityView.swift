@@ -86,9 +86,7 @@ struct ProfileAccountSecurityView: View {
                 HStack {
                     Text("Apple ID")
                     Spacer()
-                    Button {
-                        // Handle Apple ID disconnection
-                    } label: {
+                    Button {} label: {
                         Text("Disconnect")
                             .foregroundColor(.red)
                     }
@@ -106,7 +104,6 @@ struct ProfileAccountSecurityView: View {
             Text(alertMessage ?? "An unexpected error occurred.")
         }
 
-        // Toolbar Button
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
                 Button(isEditing ? "Done" : "Edit") {

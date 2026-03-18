@@ -3,7 +3,6 @@ import Foundation
 private let baseURLString = "http://13.203.42.179/api"
 
 enum Endpoint: String {
-    // Authentication
 
     case register = "/v1/auth/register"
     case login = "/v1/auth/login"
@@ -20,8 +19,6 @@ enum Endpoint: String {
     case googleLogin = "/v2/auth/ios/google-login"
     case appleLogin = "/v2/auth/ios/apple-login"
 
-    // AI
-
     case generateTips = "/v1/ai/generate/tips"
     case generatePlan = "/v1/ai/generate/plan"
     case generateExercises = "/v1/ai/generate/exercises"
@@ -29,15 +26,11 @@ enum Endpoint: String {
     case searchGeneratedPlan = "/v1/ai/search/plan"
     case searchGeneratedExercises = "/v1/ai/search/exercises"
 
-    // Update
-
     case updateExerciseDuration = "/v1/update/exercise/%@"
     case updateFoodItemConsume = "/v1/update/myplan/%@/%@/%@/consume"
     case updateFoodItemUnconsume = "/v1/update/myplan/%@/%@/%@/unconsume"
     case updateAddFoodItem = "/v1/update/myplan/%@/%@/add/%@"
     case updateRemoveFoodItem = "/v1/update/myplan/%@/%@/remove/%@"
-
-    // Utils
 
     case searchFoodItem = "/v1/utils/search/food"
     case searchSong = "/v1/utils/search/song"
@@ -53,8 +46,6 @@ enum Endpoint: String {
 
     case fetchFood = "/v1/utils/foods/%@"
     case fetchFoodImageUri = "/v1/utils/foods/%@/image"
-
-    // Devices
 
     case apns = "/v2/devices/apns"
 

@@ -2,19 +2,21 @@ import SwiftUI
 import FSCalendar
 
 private extension Color {
-    static let planBg         = Color(red: 0.95, green: 0.96, blue: 0.97)
-    static let planSurface    = Color.white
-    static let planAccent     = Color(red: 0.22, green: 0.53, blue: 0.98)
+    static let planBg: Color = .init(red: 0.95, green: 0.96, blue: 0.97)
+    static let planSurface: Color = .white
+    static let planAccent: Color = .init(red: 0.22, green: 0.53, blue: 0.98)
     static let planAccentSoft = Color(red: 0.22, green: 0.53, blue: 0.98).opacity(0.10)
-    static let planGreen      = Color(red: 0.13, green: 0.75, blue: 0.48)
-    static let planLabel      = Color(red: 0.09, green: 0.09, blue: 0.12)
-    static let planMuted      = Color(red: 0.54, green: 0.54, blue: 0.59)
-    static let planBorder     = Color(red: 0.88, green: 0.88, blue: 0.91)
+    static let planGreen: Color = .init(red: 0.13, green: 0.75, blue: 0.48)
+    static let planLabel: Color = .init(red: 0.09, green: 0.09, blue: 0.12)
+    static let planMuted: Color = .init(red: 0.54, green: 0.54, blue: 0.59)
+    static let planBorder: Color = .init(red: 0.88, green: 0.88, blue: 0.91)
 }
 
 private struct FoodReferenceRow: View {
+
+    // MARK: Internal
+
     let ref: FoodReferenceModel
-    @State private var food: FoodItemModel?
 
     var body: some View {
         HStack(spacing: 12) {
@@ -32,7 +34,6 @@ private struct FoodReferenceRow: View {
                 }
             }
 
-            
             if let foodName = food?.name {
                 Text(foodName.capitalized)
                     .font(.system(size: 14, weight: .medium))
@@ -49,26 +50,23 @@ private struct FoodReferenceRow: View {
             food = await ref.food
         }
     }
+
+    // MARK: Private
+
+    @State private var food: FoodItemModel?
+
 }
 
-// MARK: - Meal Section Card
-
 private struct MealSectionCard: View {
+
+    // MARK: Internal
+
     let meta: MealType
     let items: [FoodReferenceModel]
-    @State private var isExpanded = true
-
-    private var consumedCount: Int { items.filter(\.isConsumed).count }
-    private var progress: CGFloat {
-        guard !items.isEmpty else { return 0 }
-        return CGFloat(consumedCount) / CGFloat(items.count)
-    }
-    private var isComplete: Bool { !items.isEmpty && consumedCount == items.count }
 
     var body: some View {
         VStack(spacing: 0) {
 
-            // Header
             Button {
                 withAnimation(.spring(response: 0.35, dampingFraction: 0.75)) {
                     isExpanded.toggle()
@@ -119,7 +117,6 @@ private struct MealSectionCard: View {
                 .frame(height: 3)
             }
 
-            // Items
             if isExpanded {
                 if items.isEmpty {
                     HStack(spacing: 6) {
@@ -148,22 +145,31 @@ private struct MealSectionCard: View {
         .clipShape(RoundedRectangle(cornerRadius: 18))
         .shadow(color: Color.black.opacity(0.06), radius: 12, y: 4)
     }
+
+    // MARK: Private
+
+    @State private var isExpanded = true
+
+    private var consumedCount: Int { items.filter(\.isConsumed).count }
+    private var progress: CGFloat {
+        guard !items.isEmpty else { return 0 }
+        return CGFloat(consumedCount) / CGFloat(items.count)
+    }
+
+    private var isComplete: Bool { !items.isEmpty && consumedCount == items.count }
+
 }
 
-// MARK: - Root View
-
 struct MyPlanViewHistory: View {
+
+    // MARK: Internal
+
     let plan: MyPlanModel?
-
-    @State private var selectedDate: Date = .init()
-    @State private var isCalendarExpanded = false
-
-    @Environment(\.dismiss) private var dismiss
 
     var body: some View {
         NavigationStack {
             CompactCalendarView(selectedDate: $selectedDate, isExpanded: $isCalendarExpanded)
-            
+
             Group {
                 if let plan {
                     ScrollView(showsIndicators: false) {
@@ -172,12 +178,12 @@ struct MyPlanViewHistory: View {
                             MealSectionCard(meta: .lunch, items: plan.lunch)
                             MealSectionCard(meta: .snacks, items: plan.snacks)
                             MealSectionCard(meta: .dinner, items: plan.dinner)
-                            
+
                         }
                         .padding(.horizontal, 20)
                         .padding(.top, 20)
                         .padding(.bottom, 40)
-                        
+
                     }
                 } else {
                     ProgressView()
@@ -193,7 +199,14 @@ struct MyPlanViewHistory: View {
                 }
             }
         }
-        
-    }
-}
 
+    }
+
+    // MARK: Private
+
+    @State private var selectedDate: Date = .init()
+    @State private var isCalendarExpanded = false
+
+    @Environment(\.dismiss) private var dismiss
+
+}

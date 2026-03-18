@@ -31,7 +31,6 @@ struct WaterLogView: View {
                                 .animation(.spring(response: 0.5), value: store.todayTotal)
                                 .padding(.top, 10)
 
-                            // ── Week strip ────────────────────────────
                             weekStrip
                                 .padding(.top, 20)
                                 .padding(.horizontal, 16)
@@ -44,7 +43,6 @@ struct WaterLogView: View {
                     }
                 }
 
-                // Floating feedback label
                 if let amt = lastAdded {
                     Text("+\(Int(amt))ml")
                         .font(.title2.weight(.bold))
@@ -154,8 +152,6 @@ struct WaterLogView: View {
         return "Start hydrating for a healthy day. 🌷"
     }
 
-    // MARK: Background
-
     private var background: some View {
         ZStack {
             Color(hex: "F5F8FD")
@@ -167,8 +163,6 @@ struct WaterLogView: View {
             .ignoresSafeArea()
         }
     }
-
-    // MARK: Drop section
 
     private var dropSection: some View {
         ZStack {
@@ -189,11 +183,9 @@ struct WaterLogView: View {
         .shadow(color: Color(hex: "5B9BD5").opacity(0.18), radius: 20, x: 0, y: 10)
     }
 
-    // MARK: Week strip
-
     private var weekStrip: some View {
         VStack(spacing: 10) {
-            // Month + navigation
+
             HStack(spacing: 16) {
                 Button {
                     withAnimation(.spring(response: 0.35, dampingFraction: 0.8)) {
@@ -224,7 +216,7 @@ struct WaterLogView: View {
                     Image(systemName: "chevron.right")
                         .font(.caption.weight(.semibold))
                         .foregroundColor(
-                            // Disable future-week navigation
+
                             Calendar.current.isDate(
                                 weekDays(around: selectedDate).last ?? selectedDate,
                                 equalTo: weekDays(around: Date()).last ?? Date(),
@@ -244,7 +236,6 @@ struct WaterLogView: View {
                 )
             }
 
-            // 7-day row
             HStack(spacing: 0) {
                 ForEach(weekDays(around: selectedDate), id: \.self) { day in
                     let isToday = Calendar.current.isDateInToday(day)
@@ -304,8 +295,6 @@ struct WaterLogView: View {
         }
     }
 
-    // MARK: Action panel
-
     private var actionPanel: some View {
         VStack(spacing: 12) {
             HStack(spacing: 10) {
@@ -329,8 +318,6 @@ struct WaterLogView: View {
         }
     }
 
-    // MARK: Quote card
-
     private var quoteCard: some View {
         HStack(alignment: .top, spacing: 10) {
             Image(systemName: "quote.bubble.fill")
@@ -353,8 +340,6 @@ struct WaterLogView: View {
                 .stroke(Color(hex: "924350").opacity(0.1), lineWidth: 1)
         )
     }
-
-    // MARK: Settings sheet
 
     private var settingsSheet: some View {
         NavigationStack {
@@ -404,8 +389,6 @@ struct WaterLogView: View {
         }
     }
 
-    // MARK: Add water + feedback
-
     private func addWater(_ ml: Double) async {
         await store.log(milliliters: ml, at: selectedDate)
         guard !reduceMotion else { return }
@@ -428,8 +411,6 @@ struct WaterLogView: View {
         }
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.9) { lastAdded = nil }
     }
-
-    // MARK: Date helpers
 
     private func weekDays(around date: Date) -> [Date] {
         let cal = Calendar.current

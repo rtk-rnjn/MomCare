@@ -42,8 +42,6 @@ struct NutritionProgressCardHelpView: View {
 
     @Environment(\.dismiss) private var dismiss
 
-    // MARK: Intro
-
     private var intro: some View {
         VStack(alignment: .leading, spacing: 8) {
             Text("The Nutrition Card gives you a live snapshot of today's calories and macros — all from a single glance. This guide explains every visual, gesture, and shortcut available.")
@@ -53,8 +51,6 @@ struct NutritionProgressCardHelpView: View {
         }
         .accessibilityElement(children: .combine)
     }
-
-    // MARK: Progress Ring
 
     private var progressRingSection: some View {
         HelpSection(title: "Calorie Ring", systemImage: "circle.dotted") {
@@ -86,8 +82,6 @@ struct NutritionProgressCardHelpView: View {
             }
         }
     }
-
-    // MARK: Macro Bars
 
     private var macroBarsSection: some View {
         HelpSection(title: "Macro Progress Bars", systemImage: "chart.bar.fill") {
@@ -128,8 +122,6 @@ struct NutritionProgressCardHelpView: View {
         }
     }
 
-    // MARK: Drag Gesture
-
     private var dragGestureSection: some View {
         HelpSection(title: "Swipe to Change View", systemImage: "hand.draw") {
             HelpCard {
@@ -152,8 +144,6 @@ struct NutritionProgressCardHelpView: View {
             }
         }
     }
-
-    // MARK: Expand
 
     private var expandSection: some View {
         HelpSection(title: "Tap to Expand", systemImage: "rectangle.expand.vertical") {
@@ -194,8 +184,6 @@ struct NutritionProgressCardHelpView: View {
         }
     }
 
-    // MARK: Context Menu
-
     private var contextMenuSection: some View {
         HelpSection(title: "Quick Actions Menu", systemImage: "ellipsis.circle") {
             HelpCard {
@@ -226,8 +214,6 @@ struct NutritionProgressCardHelpView: View {
             }
         }
     }
-
-    // MARK: Nutrition Graph
 
     private var nutritionGraphSection: some View {
         HelpSection(title: "Nutrition Graph Screen", systemImage: "chart.bar.xaxis.ascending") {
@@ -268,8 +254,6 @@ struct NutritionProgressCardHelpView: View {
         }
     }
 }
-
-// MARK: - Reusable Section Container
 
 private struct HelpSection<Content: View>: View {
     let title: String
@@ -335,9 +319,6 @@ private struct HelpDivider: View {
     }
 }
 
-// MARK: - Badge Views
-
-// Mini calorie ring
 private struct RingBadge: View {
     var progress: Double
     var label: String
@@ -360,7 +341,6 @@ private struct RingBadge: View {
     }
 }
 
-// Mini macro bar
 private struct MacroBarBadge: View {
     let label: String
     let fraction: Double
@@ -384,7 +364,6 @@ private struct MacroBarBadge: View {
     }
 }
 
-// Swipe direction arrow
 private struct SwipeDirectionBadge: View {
     enum Direction { case up, down }
 
@@ -404,9 +383,8 @@ private struct SwipeDirectionBadge: View {
     }
 }
 
-// Three dots panel indicator
 private struct PanelDotsBadge: View {
-    let active: Int // 0, 1, or 2
+    let active: Int
 
     var body: some View {
         HStack(spacing: 4) {
@@ -420,7 +398,6 @@ private struct PanelDotsBadge: View {
     }
 }
 
-// Symbol badge (reusable)
 private struct SymbolHelpBadge: View {
     let systemName: String
     let color: Color
@@ -433,7 +410,6 @@ private struct SymbolHelpBadge: View {
     }
 }
 
-// Sugar/sodium mini bar
 private struct MacroMicroBadge: View {
     let label: String
     let color: Color
@@ -456,7 +432,6 @@ private struct MacroMicroBadge: View {
     }
 }
 
-// Tiny meal breakdown rows
 private struct MealBreakdownBadge: View {
 
     // MARK: Internal
@@ -494,7 +469,6 @@ private struct MealBreakdownBadge: View {
 
 }
 
-// Context menu preview thumbnail
 private struct ContextMenuPreviewBadge: View {
 
     // MARK: Internal
@@ -525,7 +499,6 @@ private struct ContextMenuPreviewBadge: View {
 
 }
 
-// Vital card icon
 private struct VitalCardBadge: View {
     let icon: String
     let color: Color
@@ -542,7 +515,6 @@ private struct VitalCardBadge: View {
     }
 }
 
-// Range picker pills
 private struct RangePillsBadge: View {
     var body: some View {
         HStack(spacing: 2) {
@@ -560,7 +532,6 @@ private struct RangePillsBadge: View {
     }
 }
 
-// Mini water wave ring
 private struct WaterRingBadge: View {
     var body: some View {
         ZStack {
@@ -568,7 +539,6 @@ private struct WaterRingBadge: View {
                 .fill(Color(hex: "0A1E3D"))
                 .frame(width: 50, height: 50)
 
-            // Simplified wave fill
             RoundedRectangle(cornerRadius: 8, style: .continuous)
                 .fill(Color(hex: "1B6CA8").opacity(0.7))
                 .frame(width: 42, height: 50 * 0.6)
@@ -584,7 +554,6 @@ private struct WaterRingBadge: View {
     }
 }
 
-// Quick-add pills
 private struct QuickAddBadge: View {
 
     // MARK: Internal

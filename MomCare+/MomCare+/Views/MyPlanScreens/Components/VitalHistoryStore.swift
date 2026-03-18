@@ -128,7 +128,7 @@ struct DailyDataPoint: Identifiable {
 @MainActor
 final class VitalHistoryStore: ObservableObject {
 
- // MARK: Internal
+    // MARK: Internal
 
     @Published var points: [DailyDataPoint] = []
     @Published var isLoading = false
@@ -173,7 +173,7 @@ final class VitalHistoryStore: ObservableObject {
         let anchorComponents: DateComponents
         switch bucketComponent {
         case .weekOfYear:
-            // Anchor to start of week (Sunday or Monday depending on locale)
+
             anchorComponents = calendar.dateComponents([.yearForWeekOfYear, .weekOfYear], from: start)
         default:
             anchorComponents = DateComponents(hour: 0, minute: 0, second: 0)

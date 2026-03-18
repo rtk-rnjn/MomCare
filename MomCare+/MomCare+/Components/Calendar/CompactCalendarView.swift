@@ -1,39 +1,28 @@
 import SwiftUI
 
 struct CompactCalendarView: View {
+
+    // MARK: Internal
+
     @Binding var selectedDate: Date
     @Binding var isExpanded: Bool
 
-    @State private var slideOffset: CGFloat = 0
-    @State private var displayedDate: Date = Date()
-    @State private var incomingDate: Date? = nil
-    @State private var incomingDirection: CGFloat = 0
-    @State private var isDraggingHorizontal: Bool? = nil
-
-    @State private var expandProgress: CGFloat = 0 // 0 = collapsed, 1 = expanded
-
-    private let calendar = Calendar.current
-
-    private let alwaysSixWeeks: Bool = true
-    private let showsOutOfMonthDays: Bool = false
-
     var body: some View {
         VStack(spacing: 0) {
-
             header
 
             GeometryReader { geo in
                 let width = geo.size.width
 
                 ZStack(alignment: .top) {
-                    // Week strip — visible when collapsed
+
                     WeekStripView(date: displayedDate, selectedDate: $selectedDate)
                         .offset(x: slideOffset)
                         .frame(width: width)
                         .opacity(Double(1 - expandProgress))
                         .offset(y: -expandProgress * 20)
+                        .gesture(dragGesture(width: width))
 
-                    // Month grid — visible when expanded
                     MonthGridView(
                         date: displayedDate,
                         selectedDate: $selectedDate,
@@ -43,9 +32,9 @@ struct CompactCalendarView: View {
                     .offset(x: slideOffset)
                     .frame(width: width)
                     .opacity(Double(expandProgress))
+                    .gesture(dragGesture(width: width))
                     .offset(y: (1 - expandProgress) * 20)
 
-                    // Incoming slide view (paging)
                     if let incoming = incomingDate {
                         Group {
                             if isExpanded {
@@ -55,8 +44,10 @@ struct CompactCalendarView: View {
                                     showsOutOfMonthDays: showsOutOfMonthDays,
                                     alwaysSixWeeks: alwaysSixWeeks
                                 )
+                                .gesture(dragGesture(width: width))
                             } else {
                                 WeekStripView(date: incoming, selectedDate: $selectedDate)
+                                    .gesture(dragGesture(width: width))
                             }
                         }
                         .offset(x: slideOffset + incomingDirection * width)
@@ -69,7 +60,6 @@ struct CompactCalendarView: View {
             }
             .frame(height: currentHeight)
             .padding(.horizontal, 8)
-            .padding(.bottom, 12)
         }
         .background(Color(.systemBackground))
         .onAppear {
@@ -83,12 +73,35 @@ struct CompactCalendarView: View {
         }
     }
 
-    // MARK: - Header (slides with paging)
+    // MARK: Private
+
+    @State private var slideOffset: CGFloat = 0
+    @State private var displayedDate: Date = .init()
+    @State private var incomingDate: Date?
+    @State private var incomingDirection: CGFloat = 0
+    @State private var isDraggingHorizontal: Bool?
+
+    @State private var expandProgress: CGFloat = 0
+
+    private let calendar: Calendar = .current
+
+    private let alwaysSixWeeks: Bool = true
+    private let showsOutOfMonthDays: Bool = false
+
+    private var compactHeight: CGFloat { 80 }
+
+    private var expandedHeight: CGFloat {
+        (6 * 44) + 40
+    }
+
+    private var expandTravelDistance: CGFloat { 120 }
+
+    private var currentHeight: CGFloat {
+        compactHeight + (expandedHeight - compactHeight) * expandProgress
+    }
 
     private var header: some View {
-        let titleDate = isExpanded ? displayedDate : calendar.startOfWeek(for: displayedDate)
-
-        return HStack {
+        HStack {
             Button {
                 withAnimation(.spring(response: 0.3, dampingFraction: 0.8)) {
                     isExpanded.toggle()
@@ -98,45 +111,52 @@ struct CompactCalendarView: View {
                 HStack(spacing: 6) {
 
                     GeometryReader { g in
-                        let w = g.size.width
+                        let w = max(g.size.width, 1)
+
+                        let raw = min(abs(slideOffset) / w, 1)
+
+                        let t = raw * raw * (3 - 2 * raw)
+
+                        let currentTitleDate = isExpanded
+                            ? displayedDate
+                            : startOfWeek(for: displayedDate)
+
+                        let incomingTitleDate: Date? = incomingDate.map {
+                            isExpanded ? $0 : startOfWeek(for: $0)
+                        }
+
+                        let dir: CGFloat = slideOffset < 0 ? -1 : 1
 
                         ZStack {
-                            Text(titleDate.formatted(.dateTime.month(.wide).year()))
+
+                            Text(currentTitleDate.formatted(.dateTime.month(.wide).year()))
                                 .font(.subheadline)
                                 .foregroundColor(.secondary)
-                                .frame(width: w, alignment: .leading)
-                                .offset(x: slideOffset)
+                                .opacity(1 - t)
+                                .scaleEffect(1 - 0.02 * t, anchor: .leading)
+                                .offset(x: -8 * t * dir)
 
-                            if let incoming = incomingDate {
-                                let incomingTitleDate = isExpanded ? incoming : calendar.startOfWeek(for: incoming)
-
+                            if let incomingTitleDate {
                                 Text(incomingTitleDate.formatted(.dateTime.month(.wide).year()))
                                     .font(.subheadline)
                                     .foregroundColor(.secondary)
-                                    .frame(width: w, alignment: .leading)
-                                    .offset(x: slideOffset + incomingDirection * w)
+                                    .opacity(t)
+                                    .scaleEffect(0.98 + 0.02 * t, anchor: .leading)
+                                    .offset(x: 8 * (1 - t) * dir)
                             }
                         }
+                        .frame(width: w)
                         .clipped()
+                        .animation(.none, value: slideOffset)
                     }
                     .frame(height: 18)
-
-                    Image(systemName: "chevron.down")
-                        .font(.caption2.weight(.semibold))
-                        .foregroundColor(.secondary)
-                        .rotationEffect(.degrees(expandProgress * -180))
-                        .animation(.spring(response: 0.3, dampingFraction: 0.8), value: expandProgress)
                 }
             }
             .buttonStyle(.plain)
-
-            Spacer()
         }
         .padding(.horizontal, 16)
         .padding(.vertical, 8)
     }
-
-    // MARK: - Drag Gesture
 
     private func dragGesture(width: CGFloat) -> some Gesture {
         DragGesture(minimumDistance: 10)
@@ -153,7 +173,7 @@ struct CompactCalendarView: View {
                 }
 
                 if isDraggingHorizontal == true {
-                    // Horizontal paging
+
                     let direction: CGFloat = h < 0 ? -1 : 1
                     if incomingDate == nil {
                         incomingDirection = -direction
@@ -162,7 +182,7 @@ struct CompactCalendarView: View {
                     slideOffset = h
 
                 } else if isDraggingHorizontal == false {
-                    // Vertical expand/collapse progress
+
                     if !isExpanded {
                         let progress = min(max(v / expandTravelDistance, 0), 1)
                         expandProgress = progress
@@ -207,7 +227,6 @@ struct CompactCalendarView: View {
                     }
 
                 } else {
-                    // snap back
                     cancelSlide()
                     withAnimation(.spring(response: 0.3, dampingFraction: 0.8)) {
                         expandProgress = isExpanded ? 1 : 0
@@ -217,22 +236,6 @@ struct CompactCalendarView: View {
                 isDraggingHorizontal = nil
             }
     }
-
-    // MARK: - Heights (FSCalendar-like fixed 6 rows)
-
-    private var compactHeight: CGFloat { 80 }
-
-    private var expandedHeight: CGFloat {
-        (6 * 44) + 40
-    }
-
-    private var expandTravelDistance: CGFloat { 120 }
-
-    private var currentHeight: CGFloat {
-        compactHeight + (expandedHeight - compactHeight) * expandProgress
-    }
-
-    // MARK: - Paging logic
 
     private func adjacentDate(direction: CGFloat) -> Date {
         if isExpanded {
@@ -264,5 +267,11 @@ struct CompactCalendarView: View {
             incomingDate = nil
             incomingDirection = 0
         }
+    }
+
+    private func startOfWeek(for date: Date) -> Date {
+        let weekday = calendar.component(.weekday, from: date)
+        let diff = (weekday - calendar.firstWeekday + 7) % 7
+        return calendar.date(byAdding: .day, value: -diff, to: calendar.startOfDay(for: date)) ?? date
     }
 }

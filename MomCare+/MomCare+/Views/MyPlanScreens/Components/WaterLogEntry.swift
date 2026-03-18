@@ -3,11 +3,6 @@ import HealthKit
 import UserNotifications
 import Combine
 
-// Primary app:  #924350  (rose)
-// Secondary bg: #FAE8E4  (blush)
-// Water fill:   #6BAED6  (soft sky blue)
-// Water tint:   #EAF5FB  (pale sky)
-
 struct WaterLogEntry: Identifiable, Equatable {
     let id: UUID
     let date: Date
@@ -90,7 +85,6 @@ final class WaterStore: ObservableObject {
         do {
             try await healthStore.save(sample)
 
-            // Only add to today's running total if the logged date is today
             let calendar = Calendar.current
             if calendar.isDateInToday(date) {
                 todayTotal += milliliters
@@ -98,7 +92,7 @@ final class WaterStore: ObservableObject {
                     WaterLogEntry(id: sample.uuid, date: date, milliliters: milliliters),
                     at: 0
                 )
-                // Re-sort in case of backdated entry
+
                 todayLogs.sort { $0.date > $1.date }
             }
         } catch {

@@ -107,8 +107,6 @@ final class EventKitHandler: ObservableObject {
         let lastTwoYear = Calendar.current.date(byAdding: .year, value: -2, to: now)!
         let nextTwoYear = Calendar.current.date(byAdding: .year, value: 2, to: now)!
 
-        // Well. We have to limit the range to 4yr, as per the docs.
-
         let predicate = try eventStore.predicateForEvents(withStart: lastTwoYear, end: nextTwoYear, calendars: [createOrGetEventCalendar()])
         let events = eventStore.events(matching: predicate)
         allEvents = events

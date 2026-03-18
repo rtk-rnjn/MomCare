@@ -56,7 +56,7 @@ struct MyPlanDietPlanView: View {
                     } label: {
                         Label("Water Intake Log", systemImage: "drop.fill")
                     }
-                    
+
                     Button {
                         showHistory = true
                     } label: {

@@ -43,7 +43,7 @@ enum DebugSection: String, CaseIterable, Identifiable {
     var id: String { rawValue }
     var title: String { rawValue }
 
-    @ViewBuilder // swiftlint:disable:next cyclomatic_complexity
+    @ViewBuilder
     func destination(store: DebugMenuStore) -> some View {
         switch self {
         case .deviceInfo: DeviceInfoView()

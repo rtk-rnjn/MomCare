@@ -1,7 +1,5 @@
 import SwiftUI
 
-// MARK: - WaterLogListView
-
 struct WaterLogListView: View {
 
     // MARK: Internal
@@ -61,8 +59,6 @@ struct WaterLogListView: View {
     @State private var tipIndex = 0
     @State private var quoteIndex = 0
 
-    // MARK: Summary header
-
     private var summaryHeader: some View {
         HStack(spacing: 0) {
             statPill(icon: "drop.fill", label: "Drank", value: formatMl(store.todayTotal), color: Color(hex: "5B9BD5"))
@@ -89,11 +85,9 @@ struct WaterLogListView: View {
         Divider().frame(height: 36).background(Color(hex: "924350").opacity(0.1))
     }
 
-    // MARK: Tips section
-
     private var tipsSection: some View {
         VStack(spacing: 8) {
-            // Quote
+
             HStack(alignment: .top, spacing: 10) {
                 Image(systemName: "quote.bubble.fill")
                     .foregroundColor(Color(hex: "924350").opacity(0.65))
@@ -110,7 +104,6 @@ struct WaterLogListView: View {
             .background(Color(hex: "FAE8E4").opacity(0.55),
                         in: RoundedRectangle(cornerRadius: 14, style: .continuous))
 
-            // Tip
             let tip = WaterStore.waterTips[tipIndex]
             HStack(alignment: .top, spacing: 10) {
                 Image(systemName: tip.icon)
@@ -130,8 +123,6 @@ struct WaterLogListView: View {
                         in: RoundedRectangle(cornerRadius: 14, style: .continuous))
         }
     }
-
-    // MARK: Log entries
 
     private var logSection: some View {
         VStack(alignment: .leading, spacing: 8) {
@@ -248,8 +239,6 @@ struct WaterLogListView: View {
     }
 }
 
-// MARK: - AddWaterEntrySheet
-
 struct AddWaterEntrySheet: View {
 
     // MARK: Internal
@@ -336,8 +325,6 @@ struct AddWaterEntrySheet: View {
     private let presets: [Double] = [150, 200, 250, 300, 500]
 
 }
-
-// MARK: - EditWaterEntrySheet
 
 struct EditWaterEntrySheet: View {
 

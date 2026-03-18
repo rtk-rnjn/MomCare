@@ -1,5 +1,3 @@
-// CrashSimulatorView.swift
-
 import SwiftUI
 
 struct CrashSimulatorView: View {

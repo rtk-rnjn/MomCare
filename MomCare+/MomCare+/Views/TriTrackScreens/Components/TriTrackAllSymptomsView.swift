@@ -143,7 +143,6 @@ struct SymptomRow: View {
     var body: some View {
         HStack(alignment: .top, spacing: 14) {
 
-            // Dot + line
             VStack(spacing: 0) {
                 Circle()
                     .fill(isPast ? Color.pink.opacity(0.8) : Color.pink)
@@ -157,7 +156,6 @@ struct SymptomRow: View {
 
             VStack(alignment: .leading, spacing: showDetails ? 5 : 0) {
 
-                // Title
                 HStack(spacing: 6) {
                     Text(displayTitle)
                         .font(.headline)
@@ -171,7 +169,6 @@ struct SymptomRow: View {
 
                 if showDetails {
 
-                    // Time
                     HStack(spacing: 6) {
                         Image(systemName: "clock")
                             .font(.caption2)
@@ -181,7 +178,6 @@ struct SymptomRow: View {
                             .foregroundStyle(.secondary)
                     }
 
-                    // Trimester badges
                     if let trimesters = symptom?.trimesters, !trimesters.isEmpty {
                         HStack(spacing: 6) {
                             ForEach(trimesters, id: \.self) { trimester in
@@ -196,7 +192,6 @@ struct SymptomRow: View {
                         }
                     }
 
-                    // User notes
                     if let notes = model.notes, !notes.isEmpty {
                         HStack(alignment: .top, spacing: 5) {
                             Image(systemName: "note.text")

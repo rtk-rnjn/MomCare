@@ -169,7 +169,6 @@ private struct VitalCardRow: View {
     var body: some View {
         HStack(spacing: 14) {
 
-            // Icon
             ZStack {
                 RoundedRectangle(cornerRadius: 10, style: .continuous)
                     .fill(kind.color.opacity(0.14))
@@ -180,7 +179,6 @@ private struct VitalCardRow: View {
             }
             .accessibilityHidden(true)
 
-            // Label + bar
             VStack(alignment: .leading, spacing: 6) {
                 HStack {
                     Text(kind.rawValue)
@@ -217,7 +215,6 @@ private struct VitalCardRow: View {
                 }
             }
 
-            // Chevron
             Image(systemName: "chevron.right")
                 .font(.caption.weight(.semibold))
                 .foregroundStyle(Color(.systemGray3))

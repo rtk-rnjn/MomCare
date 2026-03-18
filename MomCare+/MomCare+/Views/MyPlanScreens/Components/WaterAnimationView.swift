@@ -1,6 +1,5 @@
 import SwiftUI
 
-// FUCKING CHATGPT
 struct WaterDropShape: Shape {
     func path(in rect: CGRect) -> Path {
         let w = rect.width
@@ -99,8 +98,6 @@ struct WaterDropFillView: View {
             seed * 1.618
         )
     }
-
-    // MARK: Wave drawing
 
     private func drawWave(ctx: inout GraphicsContext, size: CGSize, t: Double) {
         let fillY = size.height * (1.0 - animatedProgress)

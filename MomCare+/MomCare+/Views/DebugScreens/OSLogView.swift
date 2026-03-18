@@ -249,9 +249,8 @@ struct LogEntryRow: View {
         Button(action: onTap) {
             VStack(alignment: .leading, spacing: 6) {
 
-                // Top row: level badge + time + category
                 HStack(spacing: 8) {
-                    // Level badge
+
                     HStack(spacing: 3) {
                         Image(systemName: entry.level.icon)
                             .font(.caption2.weight(.semibold))
@@ -270,7 +269,6 @@ struct LogEntryRow: View {
                         .foregroundStyle(.tertiary)
                 }
 
-                // Message
                 Text(entry.message)
                     .font(.footnote)
                     .fontDesign(.monospaced)
@@ -279,7 +277,6 @@ struct LogEntryRow: View {
                     .textSelection(.enabled)
                     .frame(maxWidth: .infinity, alignment: .leading)
 
-                // Expanded details
                 if isExpanded {
                     Divider().padding(.vertical, 2)
 

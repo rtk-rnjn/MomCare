@@ -1,10 +1,12 @@
 import SwiftUI
 
 struct WeekStripView: View {
-    let date: Date
-    @Binding var selectedDate: Date
 
-    private let calendar = Calendar.current
+    // MARK: Internal
+
+    let date: Date
+
+    @Binding var selectedDate: Date
 
     var body: some View {
         HStack(spacing: 0) {
@@ -13,6 +15,10 @@ struct WeekStripView: View {
             }
         }
     }
+
+    // MARK: Private
+
+    private let calendar: Calendar = .current
 
     private var weekDays: [Date] {
         let start = calendar.startOfWeek(for: date)

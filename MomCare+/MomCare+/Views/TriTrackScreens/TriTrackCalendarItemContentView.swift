@@ -283,8 +283,6 @@ struct TriTrackCalendarItemContentView: View {
         }
     }
 
-    /// Opens the native Calendar app scrolled to the event's date.
-    /// Uses the `calshow://` URL scheme with an interval since reference date.
     private func openInCalendarApp(event: EKEvent) {
         let interval = (event.startDate ?? selectedDate).timeIntervalSinceReferenceDate
         if let url = URL(string: "calshow://\(interval)") {
@@ -292,9 +290,6 @@ struct TriTrackCalendarItemContentView: View {
         }
     }
 
-    /// Opens the native Reminders app.
-    /// `x-apple-reminderkit://` launches Reminders; deep-linking to a specific
-    /// reminder is not supported by Apple's public URL scheme.
     private func openInRemindersApp() {
         if let url = URL(string: "x-apple-reminderkit://") {
             openURL(url)

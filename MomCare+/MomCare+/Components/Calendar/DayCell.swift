@@ -1,8 +1,12 @@
 import SwiftUI
 
 struct DayCell: View {
+
+    // MARK: Internal
+
     let date: Date
     @Binding var selectedDate: Date
+
     var showWeekday: Bool = true
 
     var body: some View {
@@ -31,6 +35,8 @@ struct DayCell: View {
         }
         .buttonStyle(.plain)
     }
+
+    // MARK: Private
 
     private var isSelected: Bool {
         Calendar.current.isDate(date, inSameDayAs: selectedDate)

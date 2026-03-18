@@ -163,7 +163,6 @@ struct TimelineRow: View {
     var body: some View {
         HStack(alignment: .top, spacing: 14) {
 
-            // Timeline indicator
             VStack(spacing: 0) {
                 Circle()
                     .fill(event.isAllDay ? eventColor.opacity(0.3) : eventColor)
@@ -179,7 +178,6 @@ struct TimelineRow: View {
 
             VStack(alignment: .leading, spacing: showDetails ? 5 : 0) {
 
-                // Title + calendar color dot
                 HStack(spacing: 6) {
                     Text(event.title ?? "Untitled")
                         .font(.headline)
@@ -193,7 +191,7 @@ struct TimelineRow: View {
                 }
 
                 if showDetails {
-                    // Time row
+
                     HStack(spacing: 6) {
                         Image(systemName: event.isAllDay ? "sun.max" : "clock")
                             .font(.caption2)
@@ -212,7 +210,6 @@ struct TimelineRow: View {
                         }
                     }
 
-                    // Location
                     if let location = event.location, !location.isEmpty {
                         HStack(spacing: 5) {
                             Image(systemName: "mappin.and.ellipse")
@@ -224,7 +221,6 @@ struct TimelineRow: View {
                         }
                     }
 
-                    // Notes
                     if let notes = event.notes, !notes.isEmpty {
                         HStack(alignment: .top, spacing: 5) {
                             Image(systemName: "note.text")
@@ -237,7 +233,6 @@ struct TimelineRow: View {
                         }
                     }
 
-                    // URL
                     if let url = event.url {
                         HStack(spacing: 5) {
                             Image(systemName: "link")
@@ -250,7 +245,6 @@ struct TimelineRow: View {
                         }
                     }
 
-                    // Calendar name
                     Text(event.calendar.title)
                         .font(.caption2)
                         .foregroundStyle(.tertiary)

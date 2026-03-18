@@ -82,7 +82,7 @@ struct VitalDetailView: View {
     }
 
     private var xAxisValues: [String] {
-        // Thin out labels for large ranges to avoid crowding
+
         let all = store.points.map(\.label)
         guard all.count > 14 else { return all }
         let step = all.count / 7
@@ -180,7 +180,6 @@ struct VitalDetailView: View {
     private var chartSection: some View {
         VStack(alignment: .leading, spacing: 12) {
 
-            // Range picker (Segmented)
             Picker("Range", selection: $selectedRange) {
                 ForEach(VitalTimeRange.allCases) { range in
                     Text(range.rawValue).tag(range)
@@ -188,7 +187,6 @@ struct VitalDetailView: View {
             }
             .pickerStyle(.segmented)
 
-            // Chart or loading state
             ZStack {
                 if store.isLoading {
                     ProgressView()
@@ -205,7 +203,6 @@ struct VitalDetailView: View {
             .frame(height: chartHeight)
             .animation(reduceMotion ? nil : .easeInOut(duration: 0.25), value: store.isLoading)
 
-            // Selected bar callout
             if let pt = selectedPoint {
                 HStack {
                     Text(pt.label)

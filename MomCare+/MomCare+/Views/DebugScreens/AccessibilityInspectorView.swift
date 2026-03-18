@@ -1,5 +1,3 @@
-// AccessibilityInspectorView.swift
-
 import SwiftUI
 import UIKit
 import Combine
@@ -37,18 +35,17 @@ struct AccessibilityInspectorView: View {
         .navigationTitle("Accessibility Inspector")
         .navigationBarTitleDisplayMode(.inline)
         .onReceive(timer) { _ in refresh.toggle() }
-        .id(refresh) // forces redraw
+        .id(refresh)
     }
 
     // MARK: Private
 
-    // Refresh every second so toggles in Settings are reflected quickly
     @State private var refresh = false
 
     private let timer = Timer.publish(every: 1.5, on: .main, in: .common).autoconnect()
 
     private var dynamicTypeLabel: String {
-        // Map UIContentSizeCategory to a readable label
+
         let cat = UIApplication.shared.preferredContentSizeCategory
         switch cat {
         case .extraSmall: return "XS"

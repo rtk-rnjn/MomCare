@@ -10,7 +10,7 @@ struct DashboardEventCardView: View {
 
     var body: some View {
         VStack(spacing: 0) {
-            // Top Content
+
             VStack(alignment: .leading, spacing: 6) {
                 if let event = upcomingEvent {
                     Text(event.title)
@@ -40,7 +40,6 @@ struct DashboardEventCardView: View {
 
             Spacer(minLength: 0)
 
-            // Bottom Bar
             ZStack(alignment: .trailing) {
                 Rectangle()
                     .fill(Color("secondaryAppColor"))

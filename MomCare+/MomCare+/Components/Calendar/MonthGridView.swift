@@ -1,11 +1,11 @@
 import SwiftUI
 
 struct MonthGridView: View {
+
+    // MARK: Internal
+
     let date: Date
     @Binding var selectedDate: Date
-
-    private let calendar = Calendar.current
-    private let columns = Array(repeating: GridItem(.flexible(), spacing: 0), count: 7)
 
     var showsOutOfMonthDays: Bool = false
     var alwaysSixWeeks: Bool = true
@@ -34,6 +34,11 @@ struct MonthGridView: View {
             }
         }
     }
+
+    // MARK: Private
+
+    private let calendar: Calendar = .current
+    private let columns: Array = .init(repeating: GridItem(.flexible(), spacing: 0), count: 7)
 
     private var cells: [Date?] {
         calendar.monthGridDays(

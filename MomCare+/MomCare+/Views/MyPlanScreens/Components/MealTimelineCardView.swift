@@ -32,7 +32,7 @@ struct MealTimelineCardView: View {
         .listRowSpacing(0)
         .scrollIndicators(.hidden)
         .scrollDismissesKeyboard(.immediately)
-//        .toolbarVisibility(.hidden, for: .tabBar)
+
         .scrollBounceBehavior(.basedOnSize)
         .environment(\.defaultMinListRowHeight, 0)
     }
