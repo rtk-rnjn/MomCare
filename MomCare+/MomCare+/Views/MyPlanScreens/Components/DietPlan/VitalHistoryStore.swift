@@ -176,7 +176,7 @@ final class VitalHistoryStore: ObservableObject {
         let start = calendar.startOfDay(for: startDate)
         let end = calendar.date(byAdding: .day, value: 1, to: calendar.startOfDay(for: endDate))
         guard let end else {
-            errorMessage = "Could not compute end date."
+            errorMessage = "Failed to calculate end date from \(endDate)."
             return
         }
 
@@ -246,7 +246,7 @@ final class VitalHistoryStore: ObservableObject {
         let today = calendar.startOfDay(for: Date())
 
         guard let start = calendar.date(byAdding: .day, value: -(range.days - 1), to: today) else {
-            errorMessage = "Could not compute date range."
+            errorMessage = "Failed to calculate start date for \(range.days) day range."
             return
         }
         let end = today
