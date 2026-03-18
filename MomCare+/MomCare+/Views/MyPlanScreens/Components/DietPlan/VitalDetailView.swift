@@ -64,7 +64,6 @@ struct VitalDetailView: View {
     @StateObject private var store: VitalHistoryStore = .init()
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @Environment(\.accessibilityDifferentiateWithoutColor) private var differentiateWithoutColor
-    @Environment(\.dismiss) private var dismiss
 
     @State private var selectedRange: VitalTimeRange = .week
     @State private var appeared = false
@@ -386,10 +385,6 @@ struct VitalDetailView: View {
         await store.load(kind: kind, range: selectedRange)
     }
 
-    private func reloadCalendar(range: ClosedRange<Date>) async {
-        await store.load(kind: kind, startDate: range.lowerBound, endDate: range.upperBound)
-    }
-
     private func formattedValue(_ v: Double) -> String {
         if kind == .calories {
             return v.formatted(.number.precision(.fractionLength(0)))
@@ -402,12 +397,5 @@ struct VitalDetailView: View {
         } else {
             return v.formatted(.number.precision(.fractionLength(1)))
         }
-    }
-
-    private func formatDate(_ date: Date) -> String {
-        let fmt = DateFormatter()
-        fmt.dateStyle = .medium
-        fmt.timeStyle = .none
-        return fmt.string(from: date)
     }
 }

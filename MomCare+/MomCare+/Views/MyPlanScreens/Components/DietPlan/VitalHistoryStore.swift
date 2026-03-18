@@ -135,15 +135,27 @@ final class VitalHistoryStore: ObservableObject {
     @Published var errorMessage: String?
 
     nonisolated static func formatLabel(date: Date, component: Calendar.Component) -> String {
-        let fmt = DateFormatter()
         switch component {
         case .weekOfYear:
-            fmt.dateFormat = "MMM d"
+            return weekFormatter.string(from: date)
         default:
-            fmt.dateFormat = "M/d"
+            return dayFormatter.string(from: date)
         }
-        return fmt.string(from: date)
     }
+
+    // MARK: Private
+
+    private nonisolated static let weekFormatter: DateFormatter = {
+        let fmt = DateFormatter()
+        fmt.dateFormat = "MMM d"
+        return fmt
+    }()
+
+    private nonisolated static let dayFormatter: DateFormatter = {
+        let fmt = DateFormatter()
+        fmt.dateFormat = "M/d"
+        return fmt
+    }()
 
     func load(
         kind: VitalKind,
@@ -162,7 +174,11 @@ final class VitalHistoryStore: ObservableObject {
 
         let calendar = Calendar.current
         let start = calendar.startOfDay(for: startDate)
-        let end = calendar.date(byAdding: .day, value: 1, to: calendar.startOfDay(for: endDate))!
+        let end = calendar.date(byAdding: .day, value: 1, to: calendar.startOfDay(for: endDate))
+        guard let end else {
+            errorMessage = "Could not compute end date."
+            return
+        }
 
         let predicate = HKQuery.predicateForSamples(
             withStart: start,
@@ -191,7 +207,7 @@ final class VitalHistoryStore: ObservableObject {
         default: intervalComponents.day = 1
         }
 
-        let result: [DailyDataPoint] = await withCheckedContinuation { continuation in
+        let result: (points: [DailyDataPoint], error: String?) = await withCheckedContinuation { continuation in
             let query = HKStatisticsCollectionQuery(
                 quantityType: quantityType,
                 quantitySamplePredicate: predicate,
@@ -202,7 +218,7 @@ final class VitalHistoryStore: ObservableObject {
 
             query.initialResultsHandler = { _, collection, error in
                 guard error == nil, let collection else {
-                    continuation.resume(returning: [])
+                    continuation.resume(returning: ([], error?.localizedDescription ?? "Unknown error"))
                     return
                 }
 
@@ -215,24 +231,25 @@ final class VitalHistoryStore: ObservableObject {
 
                 }
 
-                continuation.resume(returning: pts)
+                continuation.resume(returning: (pts, nil))
             }
 
             self.healthStore.execute(query)
         }
 
-        points = result
+        errorMessage = result.error
+        points = result.points
     }
 
     func load(kind: VitalKind, range: VitalTimeRange) async {
         let calendar = Calendar.current
         let today = calendar.startOfDay(for: Date())
 
-        let start: Date
-        let end: Date
-
-        start = calendar.date(byAdding: .day, value: -(range.days - 1), to: today)!
-        end = today
+        guard let start = calendar.date(byAdding: .day, value: -(range.days - 1), to: today) else {
+            errorMessage = "Could not compute date range."
+            return
+        }
+        let end = today
 
         await load(kind: kind, startDate: start, endDate: end, bucketComponent: range.bucketComponent)
     }

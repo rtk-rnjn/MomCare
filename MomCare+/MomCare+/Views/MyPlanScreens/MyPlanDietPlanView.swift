@@ -1,8 +1,5 @@
 import SwiftUI
 import TipKit
-import Charts
-import HealthKit
-import Combine
 
 struct MyPlanDietPlanView: View {
 

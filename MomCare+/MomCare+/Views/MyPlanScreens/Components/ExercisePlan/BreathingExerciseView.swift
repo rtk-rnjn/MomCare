@@ -1,5 +1,6 @@
 import SwiftUI
 import AVFoundation
+import OSLog
 
 struct BreathingExerciseView: View {
 
@@ -77,6 +78,8 @@ struct BreathingExerciseView: View {
     }
 
     // MARK: Private
+
+    private let logger = Logger(subsystem: Bundle.main.bundleIdentifier ?? "MomCare", category: "BreathingExercise")
 
     @EnvironmentObject private var contentServiceHandler: ContentServiceHandler
     @Environment(\.dismiss) private var dismiss
@@ -507,7 +510,7 @@ struct BreathingExerciseView: View {
             try session.setCategory(.playback, mode: .default)
             try session.setActive(true)
         } catch {
-            print("Audio session setup failed: \(error)")
+            logger.error("Failed to set audio category: \(error.localizedDescription)")
         }
     }
 }

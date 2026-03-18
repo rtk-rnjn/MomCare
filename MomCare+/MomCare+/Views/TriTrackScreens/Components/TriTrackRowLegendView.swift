@@ -21,7 +21,7 @@ struct TriTrackRowLegendView: View {
                     Divider()
                     reminderSwipeActionsSection
                     Divider()
-                    eventSwipActionsSection
+                    eventSwipeActionsSection
                     Divider()
                     calendarItemContextMenuSection
                 }
@@ -256,7 +256,7 @@ struct TriTrackRowLegendView: View {
         }
     }
 
-    private var eventSwipActionsSection: some View {
+    private var eventSwipeActionsSection: some View {
         LegendSection(title: "Event Swipe Actions", systemImage: "hand.point.right") {
             LegendCard {
                 VStack(alignment: .leading, spacing: 16) {

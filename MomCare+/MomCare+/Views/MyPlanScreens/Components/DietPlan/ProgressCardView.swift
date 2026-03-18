@@ -56,15 +56,11 @@ struct ProgressCardView: View {
 
     @State private var displayMode: CardDisplayMode = .macros
     @State private var isExpanded: Bool = false
-    @State private var dragOffset: CGFloat = 0
     @State private var dragDirection: DragDirection = .up
     @State private var isPressed: Bool = false
 
     private var dragGesture: some Gesture {
         DragGesture(minimumDistance: 12)
-            .onChanged { value in
-                dragOffset = value.translation.height
-            }
             .onEnded(handleDragEnd)
     }
 
@@ -210,7 +206,7 @@ struct ProgressCardView: View {
             let next = (current + 1) % allModes.count
 
             withAnimation(reduceMotion ? nil : .spring(response: 0.35, dampingFraction: 0.8)) {
-                displayMode = CardDisplayMode(rawValue: next)!
+                displayMode = CardDisplayMode(rawValue: next) ?? displayMode
             }
 
         } else if value.translation.height > threshold {
@@ -219,11 +215,9 @@ struct ProgressCardView: View {
             let prev = (current - 1 + allModes.count) % allModes.count
 
             withAnimation(reduceMotion ? nil : .spring(response: 0.35, dampingFraction: 0.8)) {
-                displayMode = CardDisplayMode(rawValue: prev)!
+                displayMode = CardDisplayMode(rawValue: prev) ?? displayMode
             }
         }
-
-        dragOffset = 0
     }
 
     private func toggleExpansion() {
@@ -427,7 +421,7 @@ private struct MealRow: View {
 }
 
 extension MealType: CaseIterable {
-    public static var allCases: [MealType] { [.breakfast, .lunch, .dinner, .snacks] }
+    static var allCases: [MealType] { [.breakfast, .lunch, .dinner, .snacks] }
 
     var iconName: String {
         switch self {

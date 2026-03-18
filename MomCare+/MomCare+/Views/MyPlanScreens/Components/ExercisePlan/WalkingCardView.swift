@@ -30,8 +30,6 @@ struct WalkingCardView: View {
                             .font(.subheadline.weight(.semibold))
                             .foregroundColor(Color(hex: "4A8A62"))
                             .contentTransition(reduceMotion ? .identity : .numericText(value: percentCompleted))
-                            .onAppear { percentCompleted = contentServiceHandler.stepsProgress }
-                            .onChange(of: contentServiceHandler.stepsProgress) { _, newValue in percentCompleted = newValue }
                             .animation(reduceMotion ? nil : .easeInOut(duration: 0.8), value: percentCompleted)
 
                         Text("%")
@@ -105,7 +103,12 @@ struct WalkingCardView: View {
     @Environment(\.accessibilityReduceTransparency) private var reduceTransparency
 
     private func updateProgress() {
-        progress = Double(contentServiceHandler.currentSteps) / Double(contentServiceHandler.targetSteps)
+        guard contentServiceHandler.targetSteps > 0 else {
+            progress = 0
+            percentCompleted = 0
+            return
+        }
+        progress = min(Double(contentServiceHandler.currentSteps) / Double(contentServiceHandler.targetSteps), 1.0)
         percentCompleted = progress * 100
     }
 
