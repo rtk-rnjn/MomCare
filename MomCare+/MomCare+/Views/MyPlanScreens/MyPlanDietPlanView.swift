@@ -30,6 +30,11 @@ struct MyPlanDietPlanView: View {
             .fullScreenCover(isPresented: $showWaterLog) {
                 WaterLogView()
             }
+            .fullScreenCover(isPresented: $showHistory) {
+                if let mealPlan = contentServiceHandler.myPlanModel {
+                    MyPlanViewHistory(plan: mealPlan)
+                }
+            }
 
             MealTimelineCardView()
                 .refreshable {
@@ -52,8 +57,14 @@ struct MyPlanDietPlanView: View {
                         Label("Water Intake Log", systemImage: "drop.fill")
                     }
                     
+                    Button {
+                        showHistory = true
+                    } label: {
+                        Label("Nutrition History", systemImage: "clock.arrow.circlepath")
+                    }
+
                     Divider()
-                    
+
                     Button {
                         showHelp = true
                     } label: {
@@ -76,6 +87,7 @@ struct MyPlanDietPlanView: View {
     @State private var showGraph = false
     @State private var showWaterLog = false
     @State private var showHelp = false
+    @State private var showHistory = false
 
     @EnvironmentObject private var contentServiceHandler: ContentServiceHandler
 }

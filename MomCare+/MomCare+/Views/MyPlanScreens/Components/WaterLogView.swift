@@ -2,39 +2,13 @@ import SwiftUI
 
 struct WaterLogView: View {
 
-    @StateObject private var store = WaterStore()
-    @Environment(\.accessibilityReduceMotion) private var reduceMotion
-    @Environment(\.dismiss) private var dismiss
-
-    @State private var showLogs          = false
-    @State private var showSettings      = false
-    @State private var showCustomInput   = false
-    @State private var customAmountText  = ""
-    @State private var rippleTriggers:  [UUID] = []
-    @State private var splashParticles: [UUID] = []
-    @State private var lastAdded: Double?        = nil
-    @State private var feedbackOffset: CGFloat   = 0
-    @State private var feedbackOpacity: Double   = 0
-    @State private var selectedDate              = Date()
-    @State private var quoteIndex: Int           = 0
-
-    private var motivationalText: String {
-        if store.progress >= 1.0    { return "Amazing! You've hit your goal today. 🌸" }
-        if store.progress >= 0.75   { return "Almost there — just a little more!" }
-        if store.progress >= 0.5    { return "Great progress, keep it up! 💧" }
-        if store.progress >= 0.25   { return "Good start — stay consistent!" }
-        return "Start hydrating for a healthy day. 🌷"
-    }
-
-    private let quickAmounts: [(label: String, ml: Double)] = [
-        ("+150ml", 150), ("+200ml", 200), ("+300ml", 300), ("+500ml", 500)
-    ]
+    // MARK: Internal
 
     var body: some View {
         NavigationStack {
             ZStack {
                 background
-                
+
                 VStack(spacing: 0) {
                     ScrollView(showsIndicators: false) {
                         VStack(spacing: 0) {
@@ -45,18 +19,23 @@ struct WaterLogView: View {
                                 .padding(.top, 6)
                                 .padding(.horizontal, 32)
                                 .animation(.easeInOut(duration: 0.4), value: motivationalText)
-                            
+
                             dropSection
                                 .padding(.top, 10)
                                 .padding(.horizontal, 52)
-                            
+
                             Text("\(Int(store.todayTotal))ml of \(Int(store.dailyTarget))ml")
                                 .font(.subheadline.weight(.medium))
                                 .foregroundStyle(Color(hex: "924350").opacity(0.6))
                                 .contentTransition(.numericText())
                                 .animation(.spring(response: 0.5), value: store.todayTotal)
                                 .padding(.top, 10)
-                            
+
+                            // ── Week strip ────────────────────────────
+                            weekStrip
+                                .padding(.top, 20)
+                                .padding(.horizontal, 16)
+
                             actionPanel
                                 .padding(.top, 18)
                                 .padding(.horizontal, 16)
@@ -64,7 +43,7 @@ struct WaterLogView: View {
                         }
                     }
                 }
-                
+
                 // Floating feedback label
                 if let amt = lastAdded {
                     Text("+\(Int(amt))ml")
@@ -82,21 +61,21 @@ struct WaterLogView: View {
                         dismiss()
                     }
                 }
-                
+
                 ToolbarItemGroup(placement: .topBarTrailing) {
                     Button {
                         showLogs = true
                     } label: {
                         Label("", systemImage: "list.bullet")
                     }
-                    
+
                     Menu {
                         Button {
                             showSettings = true
                         } label: {
                             Label("Settings", systemImage: "gearshape.fill")
                         }
-                        
+
                         Toggle(isOn: Binding(
                             get: { store.notificationsEnabled },
                             set: { v in Task { await store.toggleReminders(v) } }
@@ -143,14 +122,44 @@ struct WaterLogView: View {
         .onChange(of: selectedDate) {
             Task { await store.fetchWater(for: selectedDate) }
         }
-
     }
+
+    // MARK: Private
+
+    @StateObject private var store: WaterStore = .init()
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @Environment(\.dismiss) private var dismiss
+
+    @State private var showLogs = false
+    @State private var showSettings = false
+    @State private var showCustomInput = false
+    @State private var customAmountText = ""
+    @State private var rippleTriggers: [UUID] = []
+    @State private var splashParticles: [UUID] = []
+    @State private var lastAdded: Double?
+    @State private var feedbackOffset: CGFloat = 0
+    @State private var feedbackOpacity: Double = 0
+    @State private var selectedDate: Date = .init()
+    @State private var quoteIndex: Int = 0
+
+    private let quickAmounts: [(label: String, ml: Double)] = [
+        ("+150ml", 150), ("+200ml", 200), ("+300ml", 300), ("+500ml", 500)
+    ]
+
+    private var motivationalText: String {
+        if store.progress >= 1.0 { return "Amazing! You've hit your goal today. 🌸" }
+        if store.progress >= 0.75 { return "Almost there — just a little more!" }
+        if store.progress >= 0.5 { return "Great progress, keep it up! 💧" }
+        if store.progress >= 0.25 { return "Good start — stay consistent!" }
+        return "Start hydrating for a healthy day. 🌷"
+    }
+
+    // MARK: Background
 
     private var background: some View {
         ZStack {
             Color(hex: "F5F8FD")
                 .ignoresSafeArea()
-
             LinearGradient(
                 colors: [Color(hex: "FAE8E4").opacity(0.5), Color(hex: "EAF5FB").opacity(0.6)],
                 startPoint: .top, endPoint: .bottom
@@ -158,6 +167,8 @@ struct WaterLogView: View {
             .ignoresSafeArea()
         }
     }
+
+    // MARK: Drop section
 
     private var dropSection: some View {
         ZStack {
@@ -178,6 +189,123 @@ struct WaterLogView: View {
         .shadow(color: Color(hex: "5B9BD5").opacity(0.18), radius: 20, x: 0, y: 10)
     }
 
+    // MARK: Week strip
+
+    private var weekStrip: some View {
+        VStack(spacing: 10) {
+            // Month + navigation
+            HStack(spacing: 16) {
+                Button {
+                    withAnimation(.spring(response: 0.35, dampingFraction: 0.8)) {
+                        selectedDate = Calendar.current.date(
+                            byAdding: .weekOfYear, value: -1, to: selectedDate
+                        ) ?? selectedDate
+                    }
+                } label: {
+                    Image(systemName: "chevron.left")
+                        .font(.caption.weight(.semibold))
+                        .foregroundColor(Color(hex: "924350"))
+                        .frame(width: 28, height: 28)
+                }
+
+                Text(monthYearString(for: selectedDate))
+                    .font(.subheadline.weight(.bold))
+                    .foregroundColor(Color(hex: "924350"))
+                    .frame(maxWidth: .infinity)
+                    .animation(.easeInOut, value: selectedDate)
+
+                Button {
+                    withAnimation(.spring(response: 0.35, dampingFraction: 0.8)) {
+                        selectedDate = Calendar.current.date(
+                            byAdding: .weekOfYear, value: 1, to: selectedDate
+                        ) ?? selectedDate
+                    }
+                } label: {
+                    Image(systemName: "chevron.right")
+                        .font(.caption.weight(.semibold))
+                        .foregroundColor(
+                            // Disable future-week navigation
+                            Calendar.current.isDate(
+                                weekDays(around: selectedDate).last ?? selectedDate,
+                                equalTo: weekDays(around: Date()).last ?? Date(),
+                                toGranularity: .weekOfYear
+                            )
+                            ? Color(hex: "924350").opacity(0.25)
+                            : Color(hex: "924350")
+                        )
+                        .frame(width: 28, height: 28)
+                }
+                .disabled(
+                    Calendar.current.isDate(
+                        weekDays(around: selectedDate).last ?? selectedDate,
+                        equalTo: weekDays(around: Date()).last ?? Date(),
+                        toGranularity: .weekOfYear
+                    )
+                )
+            }
+
+            // 7-day row
+            HStack(spacing: 0) {
+                ForEach(weekDays(around: selectedDate), id: \.self) { day in
+                    let isToday = Calendar.current.isDateInToday(day)
+                    let isSelected = Calendar.current.isDate(day, inSameDayAs: selectedDate)
+                    let isFuture = day > Date()
+
+                    Button {
+                        guard !isFuture else { return }
+                        withAnimation(.spring(response: 0.3, dampingFraction: 0.75)) {
+                            selectedDate = day
+                        }
+                    } label: {
+                        VStack(spacing: 5) {
+                            Text(dayNumber(day))
+                                .font(.subheadline.weight(isSelected ? .bold : .regular))
+                                .foregroundColor(
+                                    isSelected ? .white
+                                    : isFuture ? Color.primary.opacity(0.25)
+                                    : isToday ? Color(hex: "924350")
+                                    : .primary
+                                )
+
+                            Text(dayName(day))
+                                .font(.caption2.weight(.medium))
+                                .foregroundColor(
+                                    isSelected ? .white.opacity(0.85)
+                                    : isFuture ? Color.secondary.opacity(0.35)
+                                    : .secondary
+                                )
+                        }
+                        .frame(maxWidth: .infinity)
+                        .padding(.vertical, 10)
+                        .background {
+                            if isSelected {
+                                Capsule()
+                                    .fill(Color(hex: "924350"))
+                                    .shadow(
+                                        color: Color(hex: "924350").opacity(0.3),
+                                        radius: 6, x: 0, y: 3
+                                    )
+                            } else if isToday {
+                                Capsule()
+                                    .stroke(Color(hex: "924350").opacity(0.45), lineWidth: 1.5)
+                            }
+                        }
+                    }
+                    .buttonStyle(.plain)
+                    .disabled(isFuture)
+                }
+            }
+            .padding(6)
+            .background(
+                Color.white.opacity(0.75),
+                in: RoundedRectangle(cornerRadius: 20, style: .continuous)
+            )
+            .shadow(color: Color(hex: "924350").opacity(0.06), radius: 8, x: 0, y: 3)
+        }
+    }
+
+    // MARK: Action panel
+
     private var actionPanel: some View {
         VStack(spacing: 12) {
             HStack(spacing: 10) {
@@ -189,10 +317,7 @@ struct WaterLogView: View {
                             .frame(maxWidth: .infinity)
                             .padding(.vertical, 15)
                             .background(
-                                LinearGradient(
-                                    colors: [Color(hex: "7BB8E8"), Color(hex: "5B9BD5")],
-                                    startPoint: .topLeading, endPoint: .bottomTrailing
-                                ),
+                                .cyan,
                                 in: RoundedRectangle(cornerRadius: 16, style: .continuous)
                             )
                             .shadow(color: Color(hex: "5B9BD5").opacity(0.28), radius: 6, x: 0, y: 3)
@@ -219,13 +344,17 @@ struct WaterLogView: View {
                 .lineSpacing(3)
         }
         .padding(14)
-        .background(Color(hex: "FAE8E4").opacity(0.55),
-                    in: RoundedRectangle(cornerRadius: 16, style: .continuous))
+        .background(
+            Color(hex: "FAE8E4").opacity(0.55),
+            in: RoundedRectangle(cornerRadius: 16, style: .continuous)
+        )
         .overlay(
             RoundedRectangle(cornerRadius: 16, style: .continuous)
                 .stroke(Color(hex: "924350").opacity(0.1), lineWidth: 1)
         )
     }
+
+    // MARK: Settings sheet
 
     private var settingsSheet: some View {
         NavigationStack {
@@ -278,8 +407,9 @@ struct WaterLogView: View {
     // MARK: Add water + feedback
 
     private func addWater(_ ml: Double) async {
-        await store.log(milliliters: ml)
+        await store.log(milliliters: ml, at: selectedDate)
         guard !reduceMotion else { return }
+        defer { Task { await store.fetchWater(for: selectedDate) } }
 
         let rid = UUID()
         withAnimation { rippleTriggers.append(rid) }
@@ -289,10 +419,17 @@ struct WaterLogView: View {
         withAnimation { splashParticles.append(pid) }
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.7) { splashParticles.removeAll { $0 == pid } }
 
-        lastAdded = ml; feedbackOffset = 0; feedbackOpacity = 1.0
-        withAnimation(.easeOut(duration: 0.85)) { feedbackOffset = -80; feedbackOpacity = 0 }
+        lastAdded = ml
+        feedbackOffset = 0
+        feedbackOpacity = 1.0
+        withAnimation(.easeOut(duration: 0.85)) {
+            feedbackOffset = -80
+            feedbackOpacity = 0
+        }
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.9) { lastAdded = nil }
     }
+
+    // MARK: Date helpers
 
     private func weekDays(around date: Date) -> [Date] {
         let cal = Calendar.current
@@ -302,17 +439,20 @@ struct WaterLogView: View {
     }
 
     private func dayNumber(_ date: Date) -> String {
-        let fmt = DateFormatter(); fmt.dateFormat = "d"
+        let fmt = DateFormatter()
+        fmt.dateFormat = "d"
         return fmt.string(from: date)
     }
 
     private func dayName(_ date: Date) -> String {
-        let fmt = DateFormatter(); fmt.dateFormat = "EEE"
+        let fmt = DateFormatter()
+        fmt.dateFormat = "EEE"
         return fmt.string(from: date).uppercased()
     }
 
     private func monthYearString(for date: Date) -> String {
-        let fmt = DateFormatter(); fmt.dateFormat = "MMMM yyyy"
+        let fmt = DateFormatter()
+        fmt.dateFormat = "MMMM yyyy"
         return fmt.string(from: date)
     }
 }

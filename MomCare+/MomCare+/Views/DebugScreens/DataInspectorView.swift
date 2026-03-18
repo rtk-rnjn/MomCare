@@ -106,7 +106,10 @@ struct DataInspectorView: View {
               let contents = try? FileManager.default.contentsOfDirectory(
                 at: cacheURL, includingPropertiesForKeys: [.fileSizeKey, .isDirectoryKey],
                 options: .skipsHiddenFiles)
-        else { cachedFiles = []; return }
+        else {
+            cachedFiles = []
+            return
+        }
 
         cachedFiles = contents.compactMap { url -> CachedFileInfo? in
             let attrs = try? url.resourceValues(forKeys: [.fileSizeKey, .isDirectoryKey])

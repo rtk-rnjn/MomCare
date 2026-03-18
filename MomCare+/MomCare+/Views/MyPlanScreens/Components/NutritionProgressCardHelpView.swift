@@ -387,6 +387,7 @@ private struct MacroBarBadge: View {
 // Swipe direction arrow
 private struct SwipeDirectionBadge: View {
     enum Direction { case up, down }
+
     let direction: Direction
 
     var body: some View {
@@ -405,7 +406,7 @@ private struct SwipeDirectionBadge: View {
 
 // Three dots panel indicator
 private struct PanelDotsBadge: View {
-    let active: Int  // 0, 1, or 2
+    let active: Int // 0, 1, or 2
 
     var body: some View {
         HStack(spacing: 4) {
@@ -457,12 +458,8 @@ private struct MacroMicroBadge: View {
 
 // Tiny meal breakdown rows
 private struct MealBreakdownBadge: View {
-    private let meals: [(String, Double, Color)] = [
-        ("B", 1.0, Color(hex: "E3B34B")),
-        ("L", 0.7, Color(hex: "6E8B6F")),
-        ("D", 0.4, Color(hex: "A7C0CD")),
-        ("S", 0.9, Color(hex: "E07B8A"))
-    ]
+
+    // MARK: Internal
 
     var body: some View {
         VStack(spacing: 3) {
@@ -485,15 +482,22 @@ private struct MealBreakdownBadge: View {
         .padding(.horizontal, 4)
         .frame(width: 50, height: 50)
     }
+
+    // MARK: Private
+
+    private let meals: [(String, Double, Color)] = [
+        ("B", 1.0, Color(hex: "E3B34B")),
+        ("L", 0.7, Color(hex: "6E8B6F")),
+        ("D", 0.4, Color(hex: "A7C0CD")),
+        ("S", 0.9, Color(hex: "E07B8A"))
+    ]
+
 }
 
 // Context menu preview thumbnail
 private struct ContextMenuPreviewBadge: View {
-    private let bars: [(String, Double, Color)] = [
-        ("P", 0.65, Color(hex: "A7C0CD")),
-        ("C", 0.4,  Color(hex: "6E8B6F")),
-        ("F", 0.8,  Color(hex: "E3B34B"))
-    ]
+
+    // MARK: Internal
 
     var body: some View {
         HStack(alignment: .bottom, spacing: 5) {
@@ -510,6 +514,15 @@ private struct ContextMenuPreviewBadge: View {
         }
         .frame(width: 50, height: 50)
     }
+
+    // MARK: Private
+
+    private let bars: [(String, Double, Color)] = [
+        ("P", 0.65, Color(hex: "A7C0CD")),
+        ("C", 0.4, Color(hex: "6E8B6F")),
+        ("F", 0.8, Color(hex: "E3B34B"))
+    ]
+
 }
 
 // Vital card icon
@@ -573,6 +586,9 @@ private struct WaterRingBadge: View {
 
 // Quick-add pills
 private struct QuickAddBadge: View {
+
+    // MARK: Internal
+
     var body: some View {
         VStack(spacing: 4) {
             HStack(spacing: 3) {
@@ -586,6 +602,8 @@ private struct QuickAddBadge: View {
         }
         .frame(width: 50, height: 50)
     }
+
+    // MARK: Private
 
     private func quickPill(_ label: String) -> some View {
         Text(label)

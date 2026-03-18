@@ -24,8 +24,8 @@ struct WaterDropShape: Shape {
             center: CGPoint(x: cx, y: circleCY),
             radius: circleR,
             startAngle: .degrees(0),
-            endAngle:   .degrees(0-360),
-            clockwise:  true
+            endAngle: .degrees(0-360),
+            clockwise: true
         )
 
         path.addCurve(
@@ -39,13 +39,11 @@ struct WaterDropShape: Shape {
     }
 }
 
-
 struct WaterDropFillView: View {
 
-    var progress: Double
+    // MARK: Internal
 
-    @State private var animatedProgress: Double = 0
-    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    var progress: Double
 
     var body: some View {
         GeometryReader { geo in
@@ -71,7 +69,7 @@ struct WaterDropFillView: View {
                         .animation(.spring(response: 0.5), value: Int(animatedProgress * 100))
                         .padding(.bottom, geo.size.height * 0.12)
                 }
-            
+
             }
         }
         .onChange(of: progress) { _, new in
@@ -84,6 +82,22 @@ struct WaterDropFillView: View {
                 animatedProgress = progress
             }
         }
+    }
+
+    // MARK: Private
+
+    @State private var animatedProgress: Double = 0
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+
+    private let bubbleSeeds: [(Double, Double, Double, Double, Double)] = (0..<18).map { i in
+        let seed = Double(i)
+        return (
+            fmod(abs(sin(seed * 17.3)), 1.0),
+            Double.random(in: 2.0...5.5),
+            Double.random(in: 3.5...8.5),
+            Double.random(in: 0...9),
+            seed * 1.618
+        )
     }
 
     // MARK: Wave drawing
@@ -109,8 +123,8 @@ struct WaterDropFillView: View {
         var path = Path()
         let steps = Int(size.width / 2) + 2
         for i in 0...steps {
-            let x   = Double(i) * (size.width / Double(steps))
-            let y   = fillY + sin((x / size.width * frequency * .pi * 2) + phase) * amplitude
+            let x = Double(i) * (size.width / Double(steps))
+            let y = fillY + sin((x / size.width * frequency * .pi * 2) + phase) * amplitude
             i == 0 ? path.move(to: .init(x: x, y: y)) : path.addLine(to: .init(x: x, y: y))
         }
         path.addLine(to: .init(x: size.width, y: size.height))
@@ -122,8 +136,8 @@ struct WaterDropFillView: View {
     private func drawShimmer(ctx: inout GraphicsContext, size: CGSize, fillY: Double, t: Double) {
         guard animatedProgress > 0.04 else { return }
         for i in 0..<4 {
-            let seed  = Double(i) * 97.3
-            let x     = (sin(seed) * 0.5 + 0.5) * size.width
+            let seed = Double(i) * 97.3
+            let x = (sin(seed) * 0.5 + 0.5) * size.width
             let baseY = fillY + 16 + (sin(seed * 0.5) * 0.5 + 0.5) * (size.height - fillY - 30)
             let drift = sin(t * 0.45 + seed) * 14
             let alpha = (sin(t * 0.3 + seed * 0.35) * 0.5 + 0.5) * 0.12
@@ -134,31 +148,20 @@ struct WaterDropFillView: View {
         }
     }
 
-    private let bubbleSeeds: [(Double, Double, Double, Double, Double)] = (0..<18).map { i in
-        let seed = Double(i)
-        return (
-            fmod(abs(sin(seed * 17.3)), 1.0),
-            Double.random(in: 2.0...5.5),
-            Double.random(in: 3.5...8.5),
-            Double.random(in: 0...9),
-            seed * 1.618
-        )
-    }
-
     private func drawBubbles(ctx: inout GraphicsContext, size: CGSize, fillY: Double, t: Double) {
         guard animatedProgress > 0.06 else { return }
         for (xFrac, radius, lifespan, birthOff, driftPhase) in bubbleSeeds {
             let elapsed = (t - birthOff).truncatingRemainder(dividingBy: lifespan)
-            let cycleT  = elapsed / lifespan
-            let yRange  = size.height - fillY
-            let rawY    = fillY + yRange * (1.0 - cycleT)
-            let drift   = sin(cycleT * .pi * 2.0 + driftPhase) * 9
-            let x       = xFrac * size.width + drift
-            let alpha   = min(cycleT * 5, 1.0) * max(1.0 - cycleT * 2.8, 0.0) * 0.75
+            let cycleT = elapsed / lifespan
+            let yRange = size.height - fillY
+            let rawY = fillY + yRange * (1.0 - cycleT)
+            let drift = sin(cycleT * .pi * 2.0 + driftPhase) * 9
+            let x = xFrac * size.width + drift
+            let alpha = min(cycleT * 5, 1.0) * max(1.0 - cycleT * 2.8, 0.0) * 0.75
             guard alpha > 0.01 else { continue }
-            let r    = radius
+            let r = radius
             let rect = CGRect(x: x - r, y: rawY - r, width: r * 2, height: r * 2)
-            let ell  = Path(ellipseIn: rect)
+            let ell = Path(ellipseIn: rect)
             ctx.fill(ell, with: .color(Color.white.opacity(alpha * 0.28)))
             ctx.stroke(ell, with: .color(Color.white.opacity(alpha * 0.6)), lineWidth: 0.7)
         }
@@ -166,8 +169,8 @@ struct WaterDropFillView: View {
 }
 
 struct WaterRippleEffect: View {
-    @State private var scale: CGFloat = 0.3
-    @State private var opacity: Double = 0.55
+
+    // MARK: Internal
 
     var body: some View {
         Circle()
@@ -175,18 +178,23 @@ struct WaterRippleEffect: View {
             .scaleEffect(scale)
             .opacity(opacity)
             .onAppear {
-                withAnimation(.easeOut(duration: 0.8)) { scale = 2.0; opacity = 0 }
+                withAnimation(.easeOut(duration: 0.8)) {
+                    scale = 2.0
+                    opacity = 0
+                }
             }
     }
+
+    // MARK: Private
+
+    @State private var scale: CGFloat = 0.3
+    @State private var opacity: Double = 0.55
+
 }
 
 struct SplashParticleView: View {
-    @State private var offsets: [CGSize] = (0..<10).map { i in
-        let angle = Double(i) / 10.0 * .pi * 2
-        return CGSize(width: cos(angle) * Double.random(in: 16...46),
-                      height: -abs(sin(angle)) * Double.random(in: 22...55))
-    }
-    @State private var appeared = false
+
+    // MARK: Internal
 
     var body: some View {
         ZStack {
@@ -199,4 +207,15 @@ struct SplashParticleView: View {
         }
         .onAppear { withAnimation(.easeOut(duration: 0.55)) { appeared = true } }
     }
+
+    // MARK: Private
+
+    @State private var offsets: [CGSize] = (0..<10).map { i in
+        let angle = Double(i) / 10.0 * .pi * 2
+        return CGSize(width: cos(angle) * Double.random(in: 16...46),
+                      height: -abs(sin(angle)) * Double.random(in: 22...55))
+    }
+
+    @State private var appeared = false
+
 }

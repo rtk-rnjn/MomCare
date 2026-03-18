@@ -90,13 +90,6 @@ class FSCalendarContainerView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
-    // MARK: Internal
-
-    override var intrinsicContentSize: CGSize {
-        let height: CGFloat = calendarScope == .week ? 90 : 350
-        return CGSize(width: UIView.noIntrinsicMetric, height: height)
-    }
-
     let calendar: FSCalendar = .init()
 
     // MARK: Private
@@ -200,6 +193,7 @@ class FSCalendarHostingController: UIViewController, FSCalendarDelegate, FSCalen
             calendar.topAnchor.constraint(equalTo: view.topAnchor),
             calendar.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             calendar.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+//            calendar.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             calendarHeightConstraint
         ])
 
@@ -230,74 +224,190 @@ struct FSCalendarController: UIViewControllerRepresentable {
     }
 }
 
+
 struct CompactCalendarView: View {
     @Binding var selectedDate: Date
     @Binding var isExpanded: Bool
 
+    @State private var dragOffset: CGFloat = 0
+    @State private var slideOffset: CGFloat = 0
+    @State private var weekOffset: Int = 0
+    @State private var slideDirection: CGFloat = 0
+
+    private let calendar = Calendar.current
+
     var body: some View {
         VStack(spacing: 0) {
+            // Header
             HStack {
                 Text(selectedDate.formatted(.dateTime.month(.wide).year()))
                     .font(.subheadline)
                     .foregroundColor(.secondary)
-
-                Spacer()
-
-                Button {
-                    withAnimation(.spring(response: 0.3, dampingFraction: 0.8)) {
-                        isExpanded.toggle()
-                    }
-                } label: {
-                    Image(systemName: isExpanded ? "chevron.up" : "chevron.down")
-                        .font(.caption.weight(.semibold))
-                        .foregroundColor(Color.CustomColors.mutedRaspberry)
-                        .padding(6)
-                        .background(Color.CustomColors.mutedRaspberry.opacity(0.1))
-                        .clipShape(Circle())
-                }
             }
             .padding(.horizontal, 16)
             .padding(.vertical, 8)
 
-            WeekStripView(selectedDate: $selectedDate)
-                .padding(.horizontal, 8)
-                .padding(.bottom, 12)
+            ZStack {
+                if isExpanded {
+                    MonthGridView(selectedDate: $selectedDate)
+                        .offset(x: slideOffset)
+                        .transition(.opacity)
+                } else {
+                    WeekStripView(selectedDate: $selectedDate)
+                        .offset(x: slideOffset)
+                        .transition(.opacity)
+                }
+            }
+            .padding(.horizontal, 8)
+            .padding(.bottom, 12)
+            .clipped()
         }
         .background(Color(.systemBackground))
+        .gesture(
+            DragGesture(minimumDistance: 20)
+                .onChanged { value in
+                    let horizontal = value.translation.width
+                    let vertical = value.translation.height
+                    let isHorizontal = abs(horizontal) > abs(vertical)
+
+                    if isHorizontal {
+                        // Live drag tracking
+                        withAnimation(.interactiveSpring()) {
+                            slideOffset = horizontal * 0.6
+                        }
+                    } else {
+                        dragOffset = vertical
+                    }
+                }
+                .onEnded { value in
+                    let threshold: CGFloat = 40
+                    let horizontal = value.translation.width
+                    let vertical = value.translation.height
+                    let isHorizontal = abs(horizontal) > abs(vertical)
+
+                    if isHorizontal {
+                        if horizontal < -threshold {
+                            navigateForward()
+                        } else if horizontal > threshold {
+                            navigateBackward()
+                        } else {
+                            // Snap back
+                            withAnimation(.spring(response: 0.35, dampingFraction: 0.85)) {
+                                slideOffset = 0
+                            }
+                        }
+                    } else {
+                        withAnimation(.spring(response: 0.3, dampingFraction: 0.8)) {
+                            if vertical > threshold && !isExpanded {
+                                isExpanded = true
+                            } else if vertical < -threshold && isExpanded {
+                                isExpanded = false
+                            }
+                        }
+                        dragOffset = 0
+                    }
+                }
+        )
+    }
+
+    private func navigateForward() {
+        let screenWidth = UIScreen.current.bounds.width
+        withAnimation(.spring(response: 0.35, dampingFraction: 0.85)) {
+            slideOffset = -screenWidth
+        }
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
+            slideOffset = screenWidth
+            if isExpanded {
+                selectedDate = calendar.date(byAdding: .month, value: 1, to: selectedDate) ?? selectedDate
+            } else {
+                selectedDate = calendar.date(byAdding: .weekOfYear, value: 1, to: selectedDate) ?? selectedDate
+            }
+            withAnimation(.spring(response: 0.35, dampingFraction: 0.85)) {
+                slideOffset = 0
+            }
+        }
+    }
+
+    private func navigateBackward() {
+        let screenWidth = UIScreen.current.bounds.width
+        withAnimation(.spring(response: 0.35, dampingFraction: 0.85)) {
+            slideOffset = screenWidth
+        }
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
+            slideOffset = -screenWidth
+            if isExpanded {
+                selectedDate = calendar.date(byAdding: .month, value: -1, to: selectedDate) ?? selectedDate
+            } else {
+                selectedDate = calendar.date(byAdding: .weekOfYear, value: -1, to: selectedDate) ?? selectedDate
+            }
+            withAnimation(.spring(response: 0.35, dampingFraction: 0.85)) {
+                slideOffset = 0
+            }
+        }
     }
 }
 
 struct WeekStripView: View {
-
-    // MARK: Internal
-
     @Binding var selectedDate: Date
 
     var body: some View {
         HStack(spacing: 0) {
             ForEach(weekDays, id: \.self) { date in
-                DayCell(date: date, selectedDate: $selectedDate)
+                DayCell(date: date, selectedDate: $selectedDate, showWeekday: true)
             }
         }
     }
 
-    // MARK: Private
-
     private var weekDays: [Date] {
         let calendar = Calendar.current
         let startOfWeek = calendar.dateInterval(of: .weekOfYear, for: selectedDate)?.start ?? selectedDate
-        return (0 ..< 7).compactMap { calendar.date(byAdding: .day, value: $0, to: startOfWeek) }
+        return (0..<7).compactMap { calendar.date(byAdding: .day, value: $0, to: startOfWeek) }
     }
-
 }
 
-struct DayCell: View {
 
-    // MARK: Internal
-
-    let date: Date
-
+struct MonthGridView: View {
     @Binding var selectedDate: Date
+
+    private let calendar = Calendar.current
+    private let columns = Array(repeating: GridItem(.flexible(), spacing: 0), count: 7)
+
+    var body: some View {
+        VStack(spacing: 4) {
+            // Weekday column headers
+            HStack(spacing: 0) {
+                ForEach(calendar.shortWeekdaySymbols, id: \.self) { symbol in
+                    Text(symbol)
+                        .font(.caption.weight(.medium))
+                        .foregroundColor(.secondary)
+                        .frame(maxWidth: .infinity)
+                }
+            }
+            .padding(.bottom, 4)
+
+            // Day grid — no weekday labels inside cells
+            LazyVGrid(columns: columns, spacing: 4) {
+                ForEach(Array(monthDays.enumerated()), id: \.offset) { _, date in
+                    if let date {
+                        DayCell(date: date, selectedDate: $selectedDate, showWeekday: false)
+                    } else {
+                        Color.clear.frame(height: 44)
+                    }
+                }
+            }
+        }
+    }
+
+    private var monthDays: [Date?] {
+        calendar.generateDays(for: selectedDate)
+    }
+}
+
+
+struct DayCell: View {
+    let date: Date
+    @Binding var selectedDate: Date
+    var showWeekday: Bool = true
 
     var body: some View {
         Button {
@@ -305,10 +415,12 @@ struct DayCell: View {
                 selectedDate = date
             }
         } label: {
-            VStack(spacing: 6) {
-                Text(date.formatted(.dateTime.weekday(.short)))
-                    .font(.footnote.weight(.medium))
-                    .foregroundColor(.secondary)
+            VStack(spacing: showWeekday ? 6 : 2) {
+                if showWeekday {
+                    Text(date.formatted(.dateTime.weekday(.short)))
+                        .font(.footnote.weight(.medium))
+                        .foregroundColor(.secondary)
+                }
 
                 Text(date.formatted(.dateTime.day()))
                     .font(.body.weight(isSelected ? .semibold : .regular))
@@ -324,8 +436,6 @@ struct DayCell: View {
         .buttonStyle(.plain)
     }
 
-    // MARK: Private
-
     private var isSelected: Bool {
         Calendar.current.isDate(date, inSameDayAs: selectedDate)
     }
@@ -333,72 +443,26 @@ struct DayCell: View {
     private var isToday: Bool {
         Calendar.current.isDateInToday(date)
     }
-
 }
 
-struct ExpandedCalendarOverlay: View {
-    @Binding var selectedDate: Date
-    @Binding var isExpanded: Bool
 
-    var body: some View {
-        if isExpanded {
-            ZStack {
-                Color.black.opacity(0.3)
-                    .ignoresSafeArea()
-                    .onTapGesture {
-                        withAnimation(.spring(response: 0.3, dampingFraction: 0.8)) {
-                            isExpanded = false
-                        }
-                    }
+extension Calendar {
+    func generateDays(for date: Date) -> [Date?] {
+        guard let monthInterval = self.dateInterval(of: .month, for: date) else { return [] }
 
-                VStack(spacing: 0) {
-                    HStack {
-                        Text(selectedDate.formatted(.dateTime.month(.wide).year()))
-                            .font(.headline)
-                            .foregroundColor(.primary)
+        let firstDay = monthInterval.start
+        let firstWeekday = self.component(.weekday, from: firstDay)
+        let leadingEmpties = (firstWeekday - self.firstWeekday + 7) % 7
 
-                        Spacer()
+        var days: [Date?] = Array(repeating: nil, count: leadingEmpties)
 
-                        Button {
-                            withAnimation(.spring(response: 0.3, dampingFraction: 0.8)) {
-                                isExpanded = false
-                            }
-                        } label: {
-                            Image(systemName: "xmark")
-                                .font(.caption.weight(.semibold))
-                                .foregroundColor(.secondary)
-                                .padding(8)
-                                .background(Color(.secondarySystemFill))
-                                .clipShape(Circle())
-                        }
-                    }
-                    .padding(.horizontal, 16)
-                    .padding(.top, 12)
-                    .padding(.bottom, 8)
-
-                    FSCalendarView(
-                        selectedDate: $selectedDate,
-                        scope: .month
-                    )
-                    .frame(height: 300)
-                }
-                .background(Color(.systemBackground))
-                .cornerRadius(16)
-                .shadow(color: .black.opacity(0.15), radius: 20, y: 10)
-                .padding(.horizontal, 16)
-                .padding(.top, 60)
-                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
-                .onChange(of: selectedDate) {
-                    withAnimation(.spring(response: 0.3, dampingFraction: 0.8)) {
-                        isExpanded = false
-                    }
-                }
-            }
-            .transition(.opacity)
+        var current = firstDay
+        while self.isDate(current, equalTo: firstDay, toGranularity: .month) {
+            days.append(current)
+            guard let next = self.date(byAdding: .day, value: 1, to: current) else { break }
+            current = next
         }
-    }
-}
 
-#Preview {
-    CompactCalendarView(selectedDate: .constant(Date()), isExpanded: .constant(false))
+        return days
+    }
 }

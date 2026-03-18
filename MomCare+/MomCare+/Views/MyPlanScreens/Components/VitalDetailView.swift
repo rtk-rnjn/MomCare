@@ -396,12 +396,12 @@ struct VitalDetailView: View {
     private func formattedValue(_ v: Double) -> String {
         if kind == .calories {
             return v.formatted(.number.precision(.fractionLength(0)))
-            
+
         } else if kind == .sodium {
             return v >= 1000
                 ? v.formatted(.number.precision(.fractionLength(1)))
                 : v.formatted(.number.precision(.fractionLength(0)))
-            
+
         } else {
             return v.formatted(.number.precision(.fractionLength(1)))
         }

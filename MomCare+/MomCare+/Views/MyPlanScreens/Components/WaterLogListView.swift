@@ -4,13 +4,9 @@ import SwiftUI
 
 struct WaterLogListView: View {
 
-    @ObservedObject var store: WaterStore
-    @Environment(\.dismiss) private var dismiss
+    // MARK: Internal
 
-    @State private var editingEntry: WaterLogEntry? = nil
-    @State private var showAddEntry = false
-    @State private var tipIndex   = 0
-    @State private var quoteIndex = 0
+    @ObservedObject var store: WaterStore
 
     var body: some View {
         NavigationStack {
@@ -28,18 +24,14 @@ struct WaterLogListView: View {
             .navigationTitle("Today's Log")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
-                ToolbarItem(placement: .topBarLeading) {
-                    Button("Done") { dismiss() }
-                        .foregroundColor(Color(hex: "924350"))
-                        .fontWeight(.semibold)
+                ToolbarItem(placement: .cancellationAction) {
+                    Button(role: .cancel) { dismiss() }
                 }
                 ToolbarItem(placement: .topBarTrailing) {
                     Button {
                         showAddEntry = true
                     } label: {
-                        Image(systemName: "plus.circle.fill")
-                            .foregroundColor(Color(hex: "924350"))
-                            .font(.title3)
+                        Label("", systemImage: "plus.circle.fill")
                     }
                 }
             }
@@ -54,22 +46,31 @@ struct WaterLogListView: View {
                     .presentationDragIndicator(.visible)
             }
             .onAppear {
-                tipIndex   = Int.random(in: 0..<WaterStore.waterTips.count)
+                tipIndex = Int.random(in: 0..<WaterStore.waterTips.count)
                 quoteIndex = Int.random(in: 0..<WaterStore.waterQuotes.count)
             }
         }
     }
 
+    // MARK: Private
+
+    @Environment(\.dismiss) private var dismiss
+
+    @State private var editingEntry: WaterLogEntry?
+    @State private var showAddEntry = false
+    @State private var tipIndex = 0
+    @State private var quoteIndex = 0
+
     // MARK: Summary header
 
     private var summaryHeader: some View {
         HStack(spacing: 0) {
-            statPill(icon: "drop.fill",            label: "Drank",     value: formatMl(store.todayTotal),   color: Color(hex: "5B9BD5"))
+            statPill(icon: "drop.fill", label: "Drank", value: formatMl(store.todayTotal), color: Color(hex: "5B9BD5"))
             pillDivider
-            statPill(icon: "target",               label: "Goal",      value: formatMl(store.dailyTarget),  color: Color(hex: "924350").opacity(0.65))
+            statPill(icon: "target", label: "Goal", value: formatMl(store.dailyTarget), color: Color(hex: "924350").opacity(0.65))
             pillDivider
             statPill(
-                icon:  store.remaining <= 0 ? "checkmark.circle.fill" : "arrow.up.circle.fill",
+                icon: store.remaining <= 0 ? "checkmark.circle.fill" : "arrow.up.circle.fill",
                 label: store.remaining <= 0 ? "Done! 🌸" : "Left",
                 value: store.remaining <= 0 ? "All good" : formatMl(store.remaining),
                 color: store.remaining <= 0 ? .green : Color(hex: "924350")
@@ -86,20 +87,6 @@ struct WaterLogListView: View {
 
     private var pillDivider: some View {
         Divider().frame(height: 36).background(Color(hex: "924350").opacity(0.1))
-    }
-
-    private func statPill(icon: String, label: String, value: String, color: Color) -> some View {
-        VStack(spacing: 4) {
-            Image(systemName: icon).font(.caption).foregroundColor(color)
-            Text(value)
-                .font(.subheadline.weight(.bold))
-                .foregroundColor(color)
-                .contentTransition(.numericText())
-                .minimumScaleFactor(0.7)
-                .lineLimit(1)
-            Text(label).font(.caption2).foregroundStyle(.secondary)
-        }
-        .frame(maxWidth: .infinity)
     }
 
     // MARK: Tips section
@@ -180,6 +167,38 @@ struct WaterLogListView: View {
         }
     }
 
+    private var emptyState: some View {
+        VStack(spacing: 10) {
+            Image(systemName: "drop.slash")
+                .font(.system(size: 34, weight: .ultraLight))
+                .foregroundStyle(Color(hex: "B8DCF0"))
+            Text("Nothing logged yet")
+                .font(.subheadline)
+                .foregroundStyle(.secondary)
+            Text("Use the quick-add buttons on the main screen\nto start tracking your intake.")
+                .font(.caption)
+                .foregroundStyle(Color(.systemGray3))
+                .multilineTextAlignment(.center)
+        }
+        .frame(maxWidth: .infinity)
+        .padding(36)
+        .background(Color.white, in: RoundedRectangle(cornerRadius: 16, style: .continuous))
+    }
+
+    private func statPill(icon: String, label: String, value: String, color: Color) -> some View {
+        VStack(spacing: 4) {
+            Image(systemName: icon).font(.caption).foregroundColor(color)
+            Text(value)
+                .font(.subheadline.weight(.bold))
+                .foregroundColor(color)
+                .contentTransition(.numericText())
+                .minimumScaleFactor(0.7)
+                .lineLimit(1)
+            Text(label).font(.caption2).foregroundStyle(.secondary)
+        }
+        .frame(maxWidth: .infinity)
+    }
+
     private func logRow(entry: WaterLogEntry) -> some View {
         HStack(spacing: 12) {
             ZStack {
@@ -224,24 +243,6 @@ struct WaterLogListView: View {
         }
     }
 
-    private var emptyState: some View {
-        VStack(spacing: 10) {
-            Image(systemName: "drop.slash")
-                .font(.system(size: 34, weight: .ultraLight))
-                .foregroundStyle(Color(hex: "B8DCF0"))
-            Text("Nothing logged yet")
-                .font(.subheadline)
-                .foregroundStyle(.secondary)
-            Text("Use the quick-add buttons on the main screen\nto start tracking your intake.")
-                .font(.caption)
-                .foregroundStyle(Color(.systemGray3))
-                .multilineTextAlignment(.center)
-        }
-        .frame(maxWidth: .infinity)
-        .padding(36)
-        .background(Color.white, in: RoundedRectangle(cornerRadius: 16, style: .continuous))
-    }
-
     private func formatMl(_ ml: Double) -> String {
         unsafe ml >= 1000 ? String(format: "%.1fL", ml / 1000) : String(format: "%.0fml", ml)
     }
@@ -251,15 +252,9 @@ struct WaterLogListView: View {
 
 struct AddWaterEntrySheet: View {
 
+    // MARK: Internal
+
     @ObservedObject var store: WaterStore
-    @Environment(\.dismiss) private var dismiss
-
-    @State private var amount: Double = 250
-    @State private var selectedDate   = Date()
-    @State private var customText     = ""
-    @FocusState private var focused: Bool
-
-    private let presets: [Double] = [150, 200, 250, 300, 500]
 
     var body: some View {
         NavigationStack {
@@ -269,7 +264,8 @@ struct AddWaterEntrySheet: View {
                         HStack(spacing: 8) {
                             ForEach(presets, id: \.self) { p in
                                 Button {
-                                    amount = p; customText = ""
+                                    amount = p
+                                    customText = ""
                                 } label: {
                                     Text("\(Int(p))ml")
                                         .font(.subheadline.weight(.semibold))
@@ -317,33 +313,49 @@ struct AddWaterEntrySheet: View {
                 }
                 ToolbarItem(placement: .confirmationAction) {
                     Button("Add") {
-                        Task { await store.log(milliliters: amount, at: selectedDate); dismiss() }
+                        Task {
+                            await store.log(milliliters: amount, at: selectedDate)
+                            dismiss()
+                        }
                     }
                     .fontWeight(.semibold).foregroundColor(Color(hex: "924350")).disabled(amount <= 0)
                 }
             }
         }
     }
+
+    // MARK: Private
+
+    @Environment(\.dismiss) private var dismiss
+
+    @State private var amount: Double = 250
+    @State private var selectedDate: Date = .init()
+    @State private var customText = ""
+    @FocusState private var focused: Bool
+
+    private let presets: [Double] = [150, 200, 250, 300, 500]
+
 }
 
 // MARK: - EditWaterEntrySheet
 
 struct EditWaterEntrySheet: View {
 
-    @ObservedObject var store: WaterStore
-    let entry: WaterLogEntry
-    @Environment(\.dismiss) private var dismiss
-
-    @State private var amount: Double
-    @State private var selectedDate: Date
-    @State private var customText: String
+    // MARK: Lifecycle
 
     init(store: WaterStore, entry: WaterLogEntry) {
-        self.store = store; self.entry = entry
-        _amount       = State(initialValue: entry.milliliters)
+        self.store = store
+        self.entry = entry
+        _amount = State(initialValue: entry.milliliters)
         _selectedDate = State(initialValue: entry.date)
-        _customText   = State(initialValue: String(Int(entry.milliliters)))
+        _customText = State(initialValue: String(Int(entry.milliliters)))
     }
+
+    // MARK: Internal
+
+    @ObservedObject var store: WaterStore
+
+    let entry: WaterLogEntry
 
     var body: some View {
         NavigationStack {
@@ -381,4 +393,13 @@ struct EditWaterEntrySheet: View {
             }
         }
     }
+
+    // MARK: Private
+
+    @Environment(\.dismiss) private var dismiss
+
+    @State private var amount: Double
+    @State private var selectedDate: Date
+    @State private var customText: String
+
 }
