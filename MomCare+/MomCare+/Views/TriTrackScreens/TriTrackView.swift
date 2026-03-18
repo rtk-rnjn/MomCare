@@ -22,10 +22,6 @@ struct TriTrackView: View {
                     .padding(.horizontal, 16)
                     .padding(.top, 16)
             }
-
-            if controlState.showingExpandedCalendar {
-                expandedCalendarOverlay
-            }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .ignoresSafeArea(edges: .bottom)
@@ -155,44 +151,7 @@ struct TriTrackView: View {
     }
 
     private var calendarSection: some View {
-        FSCalendarController(
-            selectedDate: $selectedDate,
-            scope: .constant(.week)
-        )
-        .frame(height: 80)
-        .padding(.horizontal, 8)
-        .padding(.bottom, 6)
-        .background(Color(.systemBackground))
-    }
-
-    private var expandedCalendarOverlay: some View {
-        VStack(spacing: 0) {
-            VStack(spacing: 0) {
-                FSCalendarController(
-                    selectedDate: $selectedDate,
-                    scope: .constant(.month)
-                )
-                .frame(height: 350)
-                .padding(.top, 8)
-            }
-            .background(Color(.systemBackground))
-            .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
-            .shadow(color: .black.opacity(0.15), radius: 12, x: 0, y: 4)
-            .padding(.horizontal, 16)
-            .padding(.top, 8)
-
-            Spacer()
-        }
-        .background(
-            Color.black.opacity(0.3)
-                .ignoresSafeArea()
-                .onTapGesture {
-                    withAnimation(.spring(response: 0.3, dampingFraction: 0.8)) {
-                        controlState.showingExpandedCalendar = false
-                    }
-                }
-        )
-        .transition(.opacity)
+        CompactCalendarView(selectedDate: $selectedDate, isExpanded: $controlState.showingExpandedCalendar)
     }
 
     private var contentCard: some View {

@@ -64,6 +64,35 @@ struct MyPlanExercisePlanView: View {
             .clipShape(RoundedCorner(radius: 24, corners: [.topLeft, .topRight]))
             .padding(.horizontal, 16)
         }
+        .toolbar {
+            ToolbarItem(placement: .confirmationAction) {
+                Menu {
+                    Button {
+                        showWaterLog = true
+                    } label: {
+                        Label("Water Intake Log", systemImage: "drop.fill")
+                    }
+
+                    Button {
+                        showHistory = true
+                    } label: {
+                        Label("Exercise History", systemImage: "clock.arrow.circlepath")
+                    }
+
+                    Divider()
+
+                    Button {
+                        showHelp = true
+                    } label: {
+                        Label("Legend", systemImage: "questionmark.circle")
+                    }
+
+                } label: {
+                    Image(systemName: "ellipsis")
+                        .accessibilityHidden(true)
+                }
+            }
+        }
         .padding(.top, 8)
         .overlay {
             if showingExerciseInfo || showingBreathingInfo {
@@ -97,6 +126,10 @@ struct MyPlanExercisePlanView: View {
     @State private var selectedExerciseInfo: UserExerciseModel?
     @State private var showingExerciseInfo = false
     @State private var showingBreathingInfo = false
+    
+    @State private var showHelp = false
+    @State private var showWaterLog = false
+    @State private var showHistory = false
 
     @State private var breathingCompleted: Bool = false
     @State private var walkingCompleted: Bool = false

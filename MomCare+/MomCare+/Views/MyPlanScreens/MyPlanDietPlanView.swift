@@ -60,7 +60,7 @@ struct MyPlanDietPlanView: View {
                     Button {
                         showHistory = true
                     } label: {
-                        Label("Nutrition History", systemImage: "clock.arrow.circlepath")
+                        Label("Meal Plan History", systemImage: "clock.arrow.circlepath")
                     }
 
                     Divider()

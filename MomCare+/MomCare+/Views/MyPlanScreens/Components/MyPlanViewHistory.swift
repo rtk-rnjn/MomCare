@@ -164,12 +164,14 @@ struct MyPlanViewHistory: View {
 
     // MARK: Internal
 
-    let plan: MyPlanModel?
+    @State var plan: MyPlanModel?
+    @State var selectedDate: Date = .init()
+
+    @State private var isLoading = false
 
     var body: some View {
         NavigationStack {
             CompactCalendarView(selectedDate: $selectedDate, isExpanded: $isCalendarExpanded)
-
             Group {
                 if let plan {
                     ScrollView(showsIndicators: false) {
@@ -178,18 +180,22 @@ struct MyPlanViewHistory: View {
                             MealSectionCard(meta: .lunch, items: plan.lunch)
                             MealSectionCard(meta: .snacks, items: plan.snacks)
                             MealSectionCard(meta: .dinner, items: plan.dinner)
-
+                            
                         }
                         .padding(.horizontal, 20)
                         .padding(.top, 20)
                         .padding(.bottom, 40)
-
+                        
                     }
                 } else {
-                    ProgressView()
+                    if isLoading {
+                        ProgressView()
+                    } else {
+                        ContentUnavailableView("No meal plan found for this date.", image: "calendar.badge.exclamationmark", description: Text("Try selecting a different date."))
+                    }
                 }
             }
-            .navigationTitle("Meal Plan")
+            .navigationTitle("Meal Plan History")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
@@ -198,15 +204,26 @@ struct MyPlanViewHistory: View {
                     }
                 }
             }
-        }
+            .onChange(of: selectedDate) {
+                isLoading = true
+                defer { isLoading = false }
 
+                Task {
+                    let startDate = Calendar.current.startOfDay(for: selectedDate)
+                    let endDate = Calendar.current.date(byAdding: .day, value: 1, to: startDate)!
+
+                    let networkResponse = try? await ContentService.shared.fetchMealPlans(from: startDate, to: endDate)
+                    if let mealPlan = networkResponse?.data?.first {
+                        plan = mealPlan
+                    } else {
+                        plan = nil
+                    }
+                }
+            }
+        }
     }
 
-    // MARK: Private
-
-    @State private var selectedDate: Date = .init()
     @State private var isCalendarExpanded = false
-
     @Environment(\.dismiss) private var dismiss
 
 }

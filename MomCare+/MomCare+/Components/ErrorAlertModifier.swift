@@ -14,7 +14,7 @@ struct ErrorAlertModifier: ViewModifier {
             ),
             presenting: error
         ) { _ in
-            Button("OK", role: .cancel) {
+            Button(role: .close) {
                 error = nil
             }
         } message: { error in

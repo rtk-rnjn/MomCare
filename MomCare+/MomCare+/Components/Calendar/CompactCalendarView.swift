@@ -15,25 +15,24 @@ struct CompactCalendarView: View {
                 let width = geo.size.width
 
                 ZStack(alignment: .top) {
-
                     WeekStripView(date: displayedDate, selectedDate: $selectedDate)
                         .offset(x: slideOffset)
-                        .frame(width: width)
                         .opacity(Double(1 - expandProgress))
-                        .offset(y: -expandProgress * 20)
+                        .offset(y: -expandProgress * verticalOffsetAmount)
                         .gesture(dragGesture(width: width))
 
                     MonthGridView(
                         date: displayedDate,
                         selectedDate: $selectedDate,
                         showsOutOfMonthDays: showsOutOfMonthDays,
-                        alwaysSixWeeks: alwaysSixWeeks
+                        alwaysSixWeeks: alwaysSixWeeks,
+                        cellHeight: cellHeight,
+                        headerBottomPadding: monthHeaderBottomPadding
                     )
                     .offset(x: slideOffset)
-                    .frame(width: width)
                     .opacity(Double(expandProgress))
+                    .offset(y: (1 - expandProgress) * verticalOffsetAmount)
                     .gesture(dragGesture(width: width))
-                    .offset(y: (1 - expandProgress) * 20)
 
                     if let incoming = incomingDate {
                         Group {
@@ -42,24 +41,27 @@ struct CompactCalendarView: View {
                                     date: incoming,
                                     selectedDate: $selectedDate,
                                     showsOutOfMonthDays: showsOutOfMonthDays,
-                                    alwaysSixWeeks: alwaysSixWeeks
+                                    alwaysSixWeeks: alwaysSixWeeks,
+                                    cellHeight: cellHeight,
+                                    headerBottomPadding: monthHeaderBottomPadding
                                 )
                                 .gesture(dragGesture(width: width))
+
                             } else {
                                 WeekStripView(date: incoming, selectedDate: $selectedDate)
                                     .gesture(dragGesture(width: width))
+
                             }
                         }
                         .offset(x: slideOffset + incomingDirection * width)
-                        .frame(width: width)
                     }
                 }
                 .clipped()
                 .contentShape(Rectangle())
-                .gesture(dragGesture(width: width))
             }
             .frame(height: currentHeight)
             .padding(.horizontal, 8)
+            .padding(.bottom, 12)
         }
         .background(Color(.systemBackground))
         .onAppear {
@@ -85,13 +87,24 @@ struct CompactCalendarView: View {
 
     private let calendar: Calendar = .current
 
-    private let alwaysSixWeeks: Bool = true
     private let showsOutOfMonthDays: Bool = false
+    private let alwaysSixWeeks: Bool = false
 
-    private var compactHeight: CGFloat { 80 }
+    private let cellHeight: CGFloat = 44
+    private let monthHeaderHeight: CGFloat = 18
+    private let monthHeaderBottomPadding: CGFloat = 8
+    private let verticalOffsetAmount: CGFloat = 20
+
+    private var compactHeight: CGFloat {
+        cellHeight + 8
+    }
 
     private var expandedHeight: CGFloat {
-        (6 * 44) + 40
+        let rows = monthRowCount(for: displayedDate)
+        let grid = CGFloat(rows) * cellHeight
+
+        let headerRowAndPadding = monthHeaderHeight + monthHeaderBottomPadding + 12
+        return headerRowAndPadding + grid
     }
 
     private var expandTravelDistance: CGFloat { 120 }
@@ -114,21 +127,14 @@ struct CompactCalendarView: View {
                         let w = max(g.size.width, 1)
 
                         let raw = min(abs(slideOffset) / w, 1)
-
                         let t = raw * raw * (3 - 2 * raw)
 
-                        let currentTitleDate = isExpanded
-                            ? displayedDate
-                            : startOfWeek(for: displayedDate)
-
-                        let incomingTitleDate: Date? = incomingDate.map {
-                            isExpanded ? $0 : startOfWeek(for: $0)
-                        }
+                        let currentTitleDate = isExpanded ? displayedDate : startOfWeek(for: displayedDate)
+                        let incomingTitleDate: Date? = incomingDate.map { isExpanded ? $0 : startOfWeek(for: $0) }
 
                         let dir: CGFloat = slideOffset < 0 ? -1 : 1
 
-                        ZStack {
-
+                        ZStack(alignment: .leading) {
                             Text(currentTitleDate.formatted(.dateTime.month(.wide).year()))
                                 .font(.subheadline)
                                 .foregroundColor(.secondary)
@@ -145,14 +151,22 @@ struct CompactCalendarView: View {
                                     .offset(x: 8 * (1 - t) * dir)
                             }
                         }
-                        .frame(width: w)
+                        .frame(maxWidth: .infinity, alignment: .leading)
                         .clipped()
                         .animation(.none, value: slideOffset)
                     }
-                    .frame(height: 18)
+                    .frame(height: monthHeaderHeight)
+
+                    Image(systemName: "chevron.down")
+                        .font(.caption2.weight(.semibold))
+                        .foregroundColor(.secondary)
+                        .rotationEffect(.degrees(expandProgress * -180))
+                        .animation(.spring(response: 0.3, dampingFraction: 0.8), value: expandProgress)
                 }
             }
             .buttonStyle(.plain)
+
+            Spacer()
         }
         .padding(.horizontal, 16)
         .padding(.vertical, 8)
@@ -173,7 +187,6 @@ struct CompactCalendarView: View {
                 }
 
                 if isDraggingHorizontal == true {
-
                     let direction: CGFloat = h < 0 ? -1 : 1
                     if incomingDate == nil {
                         incomingDirection = -direction
@@ -182,7 +195,6 @@ struct CompactCalendarView: View {
                     slideOffset = h
 
                 } else if isDraggingHorizontal == false {
-
                     if !isExpanded {
                         let progress = min(max(v / expandTravelDistance, 0), 1)
                         expandProgress = progress
@@ -237,6 +249,15 @@ struct CompactCalendarView: View {
             }
     }
 
+    private func monthRowCount(for month: Date) -> Int {
+        let cells = monthGridDays(
+            for: month,
+            showsOutOfMonthDays: showsOutOfMonthDays,
+            alwaysSixWeeks: alwaysSixWeeks
+        )
+        return max(1, Int(ceil(Double(cells.count) / 7.0)))
+    }
+
     private func adjacentDate(direction: CGFloat) -> Date {
         if isExpanded {
             return calendar.date(byAdding: .month, value: direction > 0 ? 1 : -1, to: displayedDate) ?? displayedDate
@@ -273,5 +294,53 @@ struct CompactCalendarView: View {
         let weekday = calendar.component(.weekday, from: date)
         let diff = (weekday - calendar.firstWeekday + 7) % 7
         return calendar.date(byAdding: .day, value: -diff, to: calendar.startOfDay(for: date)) ?? date
+    }
+
+    private func orderedShortWeekdaySymbols() -> [String] {
+        let symbols = calendar.shortWeekdaySymbols
+        let startIndex = calendar.firstWeekday - 1
+        return Array(symbols[startIndex...] + symbols[..<startIndex])
+    }
+
+    private func monthGridDays(
+        for month: Date,
+        showsOutOfMonthDays: Bool,
+        alwaysSixWeeks: Bool
+    ) -> [Date?] {
+        guard let monthInterval = calendar.dateInterval(of: .month, for: month) else { return [] }
+
+        let firstOfMonth = monthInterval.start
+        let weekdayOfFirst = calendar.component(.weekday, from: firstOfMonth)
+        let leading = (weekdayOfFirst - calendar.firstWeekday + 7) % 7
+        let numberOfDays = calendar.range(of: .day, in: .month, for: month)?.count ?? 0
+
+        if showsOutOfMonthDays {
+            let start = calendar.date(byAdding: .day, value: -leading, to: firstOfMonth) ?? firstOfMonth
+            let total: Int
+            if alwaysSixWeeks {
+                total = 42
+            } else {
+                let raw = leading + numberOfDays
+                let rem = raw % 7
+                total = rem == 0 ? raw : raw + (7 - rem)
+            }
+            return (0..<total).map { i in
+                calendar.date(byAdding: .day, value: i, to: start)
+            }
+        } else {
+            var cells = [Date?]()
+            cells.append(contentsOf: Array(repeating: nil, count: leading))
+            for dayOffset in 0..<numberOfDays {
+                cells.append(calendar.date(byAdding: .day, value: dayOffset, to: firstOfMonth))
+            }
+            let remainder = cells.count % 7
+            if remainder != 0 {
+                cells.append(contentsOf: Array(repeating: nil, count: 7 - remainder))
+            }
+            if alwaysSixWeeks && cells.count < 42 {
+                cells.append(contentsOf: Array(repeating: nil, count: 42 - cells.count))
+            }
+            return cells
+        }
     }
 }

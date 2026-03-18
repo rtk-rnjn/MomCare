@@ -15,7 +15,7 @@ struct DebugMenuView: View {
                 }
             }
             .navigationTitle("Debug Menu")
-            .navigationBarTitleDisplayMode(.large)
+            .navigationBarTitleDisplayMode(.inline)
         }
     }
 

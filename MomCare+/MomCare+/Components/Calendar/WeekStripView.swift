@@ -21,7 +21,9 @@ struct WeekStripView: View {
     private let calendar: Calendar = .current
 
     private var weekDays: [Date] {
-        let start = calendar.startOfWeek(for: date)
+        let weekday = calendar.component(.weekday, from: date)
+        let diff = (weekday - calendar.firstWeekday + 7) % 7
+        let start = calendar.date(byAdding: .day, value: -diff, to: calendar.startOfDay(for: date)) ?? date
         return (0..<7).compactMap { calendar.date(byAdding: .day, value: $0, to: start) }
     }
 }

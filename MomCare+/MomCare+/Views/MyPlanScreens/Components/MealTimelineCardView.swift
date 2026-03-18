@@ -143,8 +143,9 @@ private struct HeaderRow: View {
         .contentShape(Rectangle())
         .sheet(isPresented: $showSearchFoodSheet) {
             MyPlanFoodItemSearchView(mealType: mealType)
-                .presentationDetents([.large])
+                .presentationDetents([.medium, .large])
                 .interactiveDismissDisabled(true)
+                .scrollDismissesKeyboard(.immediately)
         }
     }
 
