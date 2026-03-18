@@ -18,8 +18,8 @@ struct MomCareRootView: View {
 
     // MARK: Private
 
-    @AppStorage(FeatureFlagState.forceDarkMode.rawValue) private var forceDarkMode: Bool = false
-    @AppStorage(FeatureFlagState.forceLightMode.rawValue) private var forceLightMode: Bool = true
+    @AppStorage(FeatureFlagState.forceDarkMode.rawValue, store: UserDefaults(suiteName: "group.MomCare")) private var forceDarkMode: Bool = false
+    @AppStorage(FeatureFlagState.forceLightMode.rawValue, store: UserDefaults(suiteName: "group.MomCare")) private var forceLightMode: Bool = true
 
     @EnvironmentObject private var authenticationService: AuthenticationService
 }

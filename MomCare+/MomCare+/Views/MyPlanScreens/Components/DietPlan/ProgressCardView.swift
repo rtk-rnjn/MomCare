@@ -36,7 +36,7 @@ struct ProgressCardView: View {
         .clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
         .shadow(color: .black.opacity(0.07), radius: 12, x: 0, y: 4)
         .scaleEffect(isPressed ? 0.97 : 1.0)
-        .onTapGesture(perform: toggleExpansion)
+        .onTapGesture(perform: !experimentalFeatures ? toggleExpansion : {})
         .gesture(pressGesture)
         .accessibilityElement(children: .contain)
         .accessibilityHint(isExpanded ? "Double tap to collapse" : "Double tap to expand details")
@@ -48,6 +48,8 @@ struct ProgressCardView: View {
         case up
         case down
     }
+
+    @AppStorage(FeatureFlagState.experimentalFeatures.rawValue, store: UserDefaults(suiteName: "group.MomCare")) private var experimentalFeatures: Bool = false
 
     @EnvironmentObject private var contentServiceHandler: ContentServiceHandler
     @Environment(\.accessibilityReduceMotion) private var reduceMotion

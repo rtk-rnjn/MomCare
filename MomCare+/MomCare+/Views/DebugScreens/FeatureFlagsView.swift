@@ -25,12 +25,6 @@ struct FeatureFlagsView: View {
                     tint: .blue,
                     isOn: $debugLogging
                 )
-                FlagToggle(
-                    label: "UI Debugging Overlays",
-                    icon: "square.dashed",
-                    tint: .orange,
-                    isOn: $uiDebuggingOverlays
-                )
             }
 
             Section("Appearance") {
@@ -67,11 +61,11 @@ struct FeatureFlagsView: View {
 
     // MARK: Private
 
-    @AppStorage(FeatureFlagState.experimentalFeatures.rawValue) private var experimentalFeatures: Bool = false
-    @AppStorage(FeatureFlagState.debugLogging.rawValue) private var debugLogging: Bool = false
-    @AppStorage(FeatureFlagState.uiDebuggingOverlays.rawValue) private var uiDebuggingOverlays: Bool = false
-    @AppStorage(FeatureFlagState.forceDarkMode.rawValue) private var forceDarkMode: Bool = false
-    @AppStorage(FeatureFlagState.forceLightMode.rawValue) private var forceLightMode: Bool = true
+    @AppStorage(FeatureFlagState.experimentalFeatures.rawValue, store: UserDefaults(suiteName: "group.MomCare")) private var experimentalFeatures: Bool = false
+    @AppStorage(FeatureFlagState.debugLogging.rawValue, store: UserDefaults(suiteName: "group.MomCare")) private var debugLogging: Bool = false
+
+    @AppStorage(FeatureFlagState.forceDarkMode.rawValue, store: UserDefaults(suiteName: "group.MomCare")) private var forceDarkMode: Bool = false
+    @AppStorage(FeatureFlagState.forceLightMode.rawValue, store: UserDefaults(suiteName: "group.MomCare")) private var forceLightMode: Bool = true
 
 }
 

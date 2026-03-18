@@ -1,10 +1,12 @@
 import SwiftUI
 
-// MARK: - Main Search View
-
 struct MyPlanFoodItemSearchView: View {
 
+    // MARK: Internal
+
     @State var mealType: MealType
+
+    var isLoading: Bool { task?.state == .running }
 
     var body: some View {
         NavigationStack {
@@ -56,7 +58,17 @@ struct MyPlanFoodItemSearchView: View {
         }
     }
 
-    // MARK: - Subviews
+    // MARK: Private
+
+    @EnvironmentObject private var contentServiceHandler: ContentServiceHandler
+    @Environment(\.dismiss) private var dismiss
+
+    @State private var searchText = ""
+    @State private var foodItems: Set<FoodItemModel> = []
+    @State private var task: URLSessionDataTask?
+    @State private var detailFoodItem: FoodItemModel?
+    @State private var showErrorAlert = false
+    @State private var alertMessage: String?
 
     private var loadingView: some View {
         VStack(spacing: 10) {
@@ -113,20 +125,6 @@ struct MyPlanFoodItemSearchView: View {
         .listStyle(.plain)
     }
 
-    // MARK: - Private
-
-    @EnvironmentObject private var contentServiceHandler: ContentServiceHandler
-    @Environment(\.dismiss) private var dismiss
-
-    @State private var searchText = ""
-    @State private var foodItems: Set<FoodItemModel> = []
-    @State private var task: URLSessionDataTask?
-    @State private var detailFoodItem: FoodItemModel?
-    @State private var showErrorAlert = false
-    @State private var alertMessage: String?
-
-    var isLoading: Bool { task?.state == .running }
-
     private func addFood(_ food: FoodItemModel) {
         Task {
             do {
@@ -154,8 +152,6 @@ struct MyPlanFoodItemSearchView: View {
     }
 }
 
-// MARK: - Food Row
-
 struct FoodRowView: View {
     let food: FoodItemModel
 
@@ -163,7 +159,7 @@ struct FoodRowView: View {
         HStack(spacing: 12) {
             AsyncImage(url: URL(string: food.imageUri ?? "")) { phase in
                 switch phase {
-                case .success(let image):
+                case let .success(image):
                     image.resizable().scaledToFill()
                 default:
                     Color(.secondarySystemFill)
@@ -200,12 +196,11 @@ struct FoodRowView: View {
     }
 }
 
-// MARK: - Nutrition Detail Sheet
-
 struct NutritionDetailSheet: View {
-    let food: FoodItemModel
 
-    @Environment(\.dismiss) private var dismiss
+    // MARK: Internal
+
+    let food: FoodItemModel
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
@@ -214,7 +209,7 @@ struct NutritionDetailSheet: View {
             HStack(spacing: 14) {
                 AsyncImage(url: URL(string: food.imageUri ?? "")) { phase in
                     switch phase {
-                    case .success(let image):
+                    case let .success(image):
                         image.resizable().scaledToFill()
                     default:
                         Color(.secondarySystemFill)
@@ -241,11 +236,11 @@ struct NutritionDetailSheet: View {
             // Nutrition grid
             LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 1) {
                 NutritionCell(label: "Calories", value: "\(Int(food.totalCalories))", unit: "kcal")
-                NutritionCell(label: "Protein",  value: format(food.totalProteinInGrams), unit: "g")
-                NutritionCell(label: "Carbs",    value: format(food.totalCarbsInGrams),   unit: "g")
-                NutritionCell(label: "Fats",     value: format(food.totalFatsInGrams),    unit: "g")
-                NutritionCell(label: "Sugar",    value: format(food.totalSugarInGrams),   unit: "g")
-                NutritionCell(label: "Sodium",   value: format(food.totalSodiumInMiligrams), unit: "mg")
+                NutritionCell(label: "Protein", value: format(food.totalProteinInGrams), unit: "g")
+                NutritionCell(label: "Carbs", value: format(food.totalCarbsInGrams), unit: "g")
+                NutritionCell(label: "Fats", value: format(food.totalFatsInGrams), unit: "g")
+                NutritionCell(label: "Sugar", value: format(food.totalSugarInGrams), unit: "g")
+                NutritionCell(label: "Sodium", value: format(food.totalSodiumInMiligrams), unit: "mg")
             }
             .padding(.horizontal, 20)
             .padding(.top, 16)
@@ -278,12 +273,14 @@ struct NutritionDetailSheet: View {
         }
     }
 
+    // MARK: Private
+
+    @Environment(\.dismiss) private var dismiss
+
     private func format(_ value: Double) -> String {
         unsafe String(format: "%.1f", value)
     }
 }
-
-// MARK: - Nutrition Cell
 
 struct NutritionCell: View {
     let label: String
@@ -309,14 +306,12 @@ struct NutritionCell: View {
     }
 }
 
-// MARK: - FoodType helpers
-
 extension FoodType {
     var displayLabel: String {
         switch self {
-        case .vegetarian:    return "Veg"
+        case .vegetarian: return "Veg"
         case .nonVegetarian: return "Non-Veg"
-        case .vegan:         return "Vegan"
+        case .vegan: return "Vegan"
         }
     }
 }

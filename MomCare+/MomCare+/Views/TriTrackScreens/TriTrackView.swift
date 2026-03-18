@@ -135,8 +135,6 @@ struct TriTrackView: View {
     @EnvironmentObject private var authenticationService: AuthenticationService
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
-    @AppStorage("showDebugOptions", store: UserDefaults(suiteName: "group.MomCare")) private var showDebugOptions: Bool = false
-
     @State private var selectedDate: Date = .init()
     @State private var showingAllEvents: Bool = false
     @State private var showingAllReminders: Bool = false

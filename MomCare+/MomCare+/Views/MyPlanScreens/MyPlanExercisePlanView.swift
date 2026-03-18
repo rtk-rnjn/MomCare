@@ -17,6 +17,11 @@ struct MyPlanExercisePlanView: View {
                 ScrollView(.vertical, showsIndicators: false) {
                     VStack(spacing: 14) {
                         WalkingCardView()
+                            .onTapGesture {
+                                if experimentalFeatures {
+                                    showWalkingHistory = true
+                                }
+                            }
 
                         HStack {
                             Text("Today's Exercises")
@@ -64,22 +69,36 @@ struct MyPlanExercisePlanView: View {
             .clipShape(RoundedCorner(radius: 24, corners: [.topLeft, .topRight]))
             .padding(.horizontal, 16)
         }
+        .sheet(isPresented: $showHelp) {
+            MyPlanExerciseHelpView()
+        }
+        .fullScreenCover(isPresented: $showHistory) {
+            ExerciseHistory(exercises: contentServiceHandler.userExercises)
+        }
+        .fullScreenCover(isPresented: $showWaterLog) {
+            WaterLogView()
+        }
+        .fullScreenCover(isPresented: $showWalkingHistory) {
+            WalkingHistoryView()
+        }
         .toolbar {
             ToolbarItem(placement: .confirmationAction) {
                 Menu {
-                    Button {
-                        showWaterLog = true
-                    } label: {
-                        Label("Water Intake Log", systemImage: "drop.fill")
-                    }
+                    if experimentalFeatures {
+                        Button {
+                            showWaterLog = true
+                        } label: {
+                            Label("Water Intake Log", systemImage: "drop.fill")
+                        }
 
-                    Button {
-                        showHistory = true
-                    } label: {
-                        Label("Exercise History", systemImage: "clock.arrow.circlepath")
-                    }
+                        Button {
+                            showHistory = true
+                        } label: {
+                            Label("Exercise History", systemImage: "clock.arrow.circlepath")
+                        }
 
-                    Divider()
+                        Divider()
+                    }
 
                     Button {
                         showHelp = true
@@ -120,16 +139,19 @@ struct MyPlanExercisePlanView: View {
 
     // MARK: Private
 
+    @AppStorage(FeatureFlagState.experimentalFeatures.rawValue, store: UserDefaults(suiteName: "group.MomCare")) private var experimentalFeatures: Bool = false
+
     @EnvironmentObject private var contentServiceHandler: ContentServiceHandler
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     @State private var selectedExerciseInfo: UserExerciseModel?
     @State private var showingExerciseInfo = false
     @State private var showingBreathingInfo = false
-    
+
     @State private var showHelp = false
     @State private var showWaterLog = false
     @State private var showHistory = false
+    @State private var showWalkingHistory = false
 
     @State private var breathingCompleted: Bool = false
     @State private var walkingCompleted: Bool = false

@@ -32,7 +32,7 @@ struct MyPlanDietPlanView: View {
             }
             .fullScreenCover(isPresented: $showHistory) {
                 if let mealPlan = contentServiceHandler.myPlanModel {
-                    MyPlanViewHistory(plan: mealPlan)
+                    DietPlanHistory(plan: mealPlan)
                 }
             }
 
@@ -51,19 +51,21 @@ struct MyPlanDietPlanView: View {
         .toolbar {
             ToolbarItem(placement: .confirmationAction) {
                 Menu {
-                    Button {
-                        showWaterLog = true
-                    } label: {
-                        Label("Water Intake Log", systemImage: "drop.fill")
-                    }
+                    if experimentalFeatures {
+                        Button {
+                            showWaterLog = true
+                        } label: {
+                            Label("Water Intake Log", systemImage: "drop.fill")
+                        }
 
-                    Button {
-                        showHistory = true
-                    } label: {
-                        Label("Meal Plan History", systemImage: "clock.arrow.circlepath")
-                    }
+                        Button {
+                            showHistory = true
+                        } label: {
+                            Label("Meal Plan History", systemImage: "clock.arrow.circlepath")
+                        }
 
-                    Divider()
+                        Divider()
+                    }
 
                     Button {
                         showHelp = true
@@ -88,6 +90,8 @@ struct MyPlanDietPlanView: View {
     @State private var showWaterLog = false
     @State private var showHelp = false
     @State private var showHistory = false
+
+    @AppStorage(FeatureFlagState.experimentalFeatures.rawValue, store: UserDefaults(suiteName: "group.MomCare")) private var experimentalFeatures: Bool = false
 
     @EnvironmentObject private var contentServiceHandler: ContentServiceHandler
 }

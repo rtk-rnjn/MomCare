@@ -160,14 +160,12 @@ private struct MealSectionCard: View {
 
 }
 
-struct MyPlanViewHistory: View {
+struct DietPlanHistory: View {
 
     // MARK: Internal
 
     @State var plan: MyPlanModel?
     @State var selectedDate: Date = .init()
-
-    @State private var isLoading = false
 
     var body: some View {
         NavigationStack {
@@ -180,12 +178,12 @@ struct MyPlanViewHistory: View {
                             MealSectionCard(meta: .lunch, items: plan.lunch)
                             MealSectionCard(meta: .snacks, items: plan.snacks)
                             MealSectionCard(meta: .dinner, items: plan.dinner)
-                            
+
                         }
                         .padding(.horizontal, 20)
                         .padding(.top, 20)
                         .padding(.bottom, 40)
-                        
+
                     }
                 } else {
                     if isLoading {
@@ -222,6 +220,10 @@ struct MyPlanViewHistory: View {
             }
         }
     }
+
+    // MARK: Private
+
+    @State private var isLoading = false
 
     @State private var isCalendarExpanded = false
     @Environment(\.dismiss) private var dismiss
