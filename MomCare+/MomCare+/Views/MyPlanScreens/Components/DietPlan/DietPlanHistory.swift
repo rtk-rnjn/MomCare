@@ -29,14 +29,14 @@ private struct FoodReferenceRow: View {
                     .frame(width: 30, height: 30)
                 if ref.isConsumed {
                     Image(systemName: "checkmark")
-                        .font(.system(size: 10, weight: .bold))
+                        .font(.caption2.weight(.bold))
                         .foregroundStyle(Color.planGreen)
                 }
             }
 
             if let foodName = food?.name {
                 Text(foodName.capitalized)
-                    .font(.system(size: 14, weight: .medium))
+                    .font(.body.weight(.medium))
                     .foregroundStyle(ref.isConsumed ? Color.planMuted : Color.planLabel)
                     .strikethrough(ref.isConsumed, color: Color.planMuted)
             } else {
@@ -68,20 +68,20 @@ private struct MealSectionCard: View {
         VStack(spacing: 0) {
 
             Button {
-                withAnimation(.spring(response: 0.35, dampingFraction: 0.75)) {
+                withAnimation(reduceMotion ? nil : .spring(response: 0.35, dampingFraction: 0.75)) {
                     isExpanded.toggle()
                 }
             } label: {
                 HStack(spacing: 12) {
 
                     Text(meta.rawValue.capitalized)
-                        .font(.system(size: 15, weight: .semibold))
+                        .font(.body.weight(.semibold))
                         .foregroundStyle(Color.planLabel)
 
                     Spacer()
 
                     Text("\(consumedCount)/\(items.count)")
-                        .font(.system(size: 11, weight: .bold, design: .rounded))
+                        .font(.caption.weight(.bold))
                         .foregroundStyle(isComplete ? Color.planGreen : Color.planMuted)
                         .padding(.horizontal, 9)
                         .padding(.vertical, 4)
@@ -95,15 +95,19 @@ private struct MealSectionCard: View {
                         )
 
                     Image(systemName: "chevron.down")
-                        .font(.system(size: 10, weight: .bold))
+                        .font(.caption2.weight(.bold))
                         .foregroundStyle(Color.planMuted)
                         .rotationEffect(.degrees(isExpanded ? 0 : -90))
-                        .animation(.spring(response: 0.3), value: isExpanded)
+                        .animation(reduceMotion ? nil : .spring(response: 0.3), value: isExpanded)
                 }
                 .padding(.horizontal, 16)
                 .padding(.vertical, 14)
             }
             .buttonStyle(.plain)
+            .accessibilityLabel(meta.rawValue.capitalized)
+            .accessibilityValue("\(consumedCount) of \(items.count) items consumed")
+            .accessibilityHint(isExpanded ? "Double tap to collapse" : "Double tap to expand")
+            .accessibilityAddTraits(.isButton)
 
             if !isExpanded {
                 GeometryReader { geo in
@@ -111,7 +115,7 @@ private struct MealSectionCard: View {
                         Rectangle().fill(Color.planBg).frame(height: 3)
                         Rectangle()
                             .frame(width: geo.size.width * progress, height: 3)
-                            .animation(.easeOut(duration: 0.7), value: progress)
+                            .animation(reduceMotion ? nil : .easeOut(duration: 0.7), value: progress)
                     }
                 }
                 .frame(height: 3)
@@ -121,10 +125,10 @@ private struct MealSectionCard: View {
                 if items.isEmpty {
                     HStack(spacing: 6) {
                         Image(systemName: "fork.knife")
-                            .font(.system(size: 12))
+                            .font(.footnote)
                             .foregroundStyle(Color.planBorder)
                         Text("Nothing planned yet")
-                            .font(.system(size: 13))
+                            .font(.callout)
                             .foregroundStyle(Color.planMuted)
                     }
                     .padding(.vertical, 18)
@@ -149,6 +153,8 @@ private struct MealSectionCard: View {
     // MARK: Private
 
     @State private var isExpanded = true
+
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     private var consumedCount: Int { items.filter(\.isConsumed).count }
     private var progress: CGFloat {

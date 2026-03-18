@@ -57,6 +57,7 @@ struct WalkingHistoryView: View {
 
     @EnvironmentObject private var contentServiceHandler: ContentServiceHandler
     @Environment(\.dismiss) private var dismiss
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     @StateObject private var store: WalkingHistoryStore = .init()
 
@@ -94,7 +95,7 @@ struct WalkingHistoryView: View {
                         style: StrokeStyle(lineWidth: 10, lineCap: .round)
                     )
                     .rotationEffect(.degrees(-90))
-                    .animation(.spring(response: 0.7, dampingFraction: 0.8), value: progress)
+                    .animation(reduceMotion ? nil : .spring(response: 0.7, dampingFraction: 0.8), value: progress)
 
                 VStack(spacing: 1) {
                     Text("\(Int(progress * 100))%")
@@ -115,7 +116,7 @@ struct WalkingHistoryView: View {
                             .font(.largeTitle.weight(.heavy))
                             .foregroundColor(.primary)
                             .contentTransition(.numericText())
-                            .animation(.spring(response: 0.5), value: store.selectedDateSteps)
+                            .animation(reduceMotion ? nil : .spring(response: 0.5), value: store.selectedDateSteps)
                     }
                     Text("steps")
                         .font(.subheadline)
@@ -144,7 +145,7 @@ struct WalkingHistoryView: View {
                         Capsule()
                             .fill(Color(hex: "4A8A62"))
                             .frame(width: geo.size.width * progress)
-                            .animation(.spring(response: 0.7), value: progress)
+                            .animation(reduceMotion ? nil : .spring(response: 0.7), value: progress)
                     }
                 }
                 .frame(height: 6)
@@ -160,6 +161,14 @@ struct WalkingHistoryView: View {
         .background(Color(.secondarySystemGroupedBackground),
                     in: RoundedRectangle(cornerRadius: 20, style: .continuous))
         .shadow(color: Color(hex: "4A8A62").opacity(0.08), radius: 10, x: 0, y: 4)
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(isToday ? "Today's steps" : "Steps on \(formattedDate(selectedDate))")
+        .accessibilityValue(
+            metGoal
+                ? "\(store.selectedDateSteps.formatted()) steps, goal met"
+                : "\(store.selectedDateSteps.formatted()) of \(store.goal.formatted()) steps, \(Int(progress * 100)) percent"
+        )
+        .accessibilityAddTraits(.updatesFrequently)
     }
 
     private var chartSection: some View {
@@ -227,6 +236,10 @@ struct WalkingHistoryView: View {
                               )
                     )
                     .cornerRadius(6)
+                    .accessibilityLabel(barLabel(pt))
+                    .accessibilityValue(
+                        "\(pt.steps.formatted()) steps\(pt.steps >= store.goal ? ", goal met" : "")\(selectedBar?.id == pt.id ? ", selected" : "")"
+                    )
 
                     // Goal rule line
                     RuleMark(y: .value("Goal", store.goal))
@@ -262,7 +275,7 @@ struct WalkingHistoryView: View {
                 .chartScrollableAxes([])
                 .chartXVisibleDomain(length: store.rangePoints.count)
                 .frame(height: 200)
-                .animation(.easeInOut(duration: 0.3), value: store.rangePoints.count)
+                .animation(reduceMotion ? nil : .easeInOut(duration: 0.3), value: store.rangePoints.count)
                 // Tap to select bar
                 .chartOverlay { proxy in
                     GeometryReader { geo in
@@ -272,7 +285,7 @@ struct WalkingHistoryView: View {
                             .onTapGesture { location in
                                 if let label: String = proxy.value(atX: location.x - geo[proxy.plotFrame!].minX),
                                    let match = store.rangePoints.first(where: { barLabel($0) == label }) {
-                                    withAnimation(.spring(response: 0.3)) {
+                                    withAnimation(reduceMotion ? nil : .spring(response: 0.3)) {
                                         selectedBar = selectedBar?.id == match.id ? nil : match
                                     }
                                 }

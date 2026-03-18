@@ -29,7 +29,7 @@ struct WaterLogListView: View {
                     Button {
                         showAddEntry = true
                     } label: {
-                        Label("", systemImage: "plus.circle.fill")
+                        Label("Add Water Entry", systemImage: "plus.circle.fill")
                     }
                 }
             }
@@ -79,6 +79,13 @@ struct WaterLogListView: View {
                 .stroke(Color(hex: "924350").opacity(0.1), lineWidth: 1)
         )
         .shadow(color: Color(hex: "924350").opacity(0.05), radius: 8, x: 0, y: 3)
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel("Water intake summary")
+        .accessibilityValue(
+            store.remaining <= 0
+                ? "Goal met. Drank \(formatMl(store.todayTotal)), goal \(formatMl(store.dailyTarget))"
+                : "Drank \(formatMl(store.todayTotal)), goal \(formatMl(store.dailyTarget)), \(formatMl(store.remaining)) remaining"
+        )
     }
 
     private var pillDivider: some View {
@@ -161,7 +168,7 @@ struct WaterLogListView: View {
     private var emptyState: some View {
         VStack(spacing: 10) {
             Image(systemName: "drop.slash")
-                .font(.system(size: 34, weight: .ultraLight))
+                .font(.largeTitle.weight(.ultraLight))
                 .foregroundStyle(Color(hex: "B8DCF0"))
             Text("Nothing logged yet")
                 .font(.subheadline)
@@ -197,7 +204,7 @@ struct WaterLogListView: View {
                     .fill(Color(hex: "EAF5FB"))
                     .frame(width: 34, height: 34)
                 Image(systemName: "drop.fill")
-                    .font(.system(size: 13))
+                    .font(.footnote)
                     .foregroundColor(Color(hex: "5B9BD5"))
             }
 
@@ -219,6 +226,10 @@ struct WaterLogListView: View {
         .padding(.horizontal, 14)
         .padding(.vertical, 10)
         .contentShape(Rectangle())
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel("\(entry.formattedAmount) at \(entry.formattedDateTime)")
+        .accessibilityHint("Double tap to edit")
+        .accessibilityAddTraits(.isButton)
         .onTapGesture { editingEntry = entry }
         .swipeActions(edge: .trailing, allowsFullSwipe: true) {
             Button(role: .destructive) {

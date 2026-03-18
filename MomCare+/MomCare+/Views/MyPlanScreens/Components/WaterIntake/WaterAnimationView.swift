@@ -65,19 +65,19 @@ struct WaterDropFillView: View {
                         .foregroundColor(.white)
                         .shadow(color: Color(hex: "4A90C4").opacity(0.4), radius: 4, x: 0, y: 2)
                         .contentTransition(.numericText())
-                        .animation(.spring(response: 0.5), value: Int(animatedProgress * 100))
+                        .animation(reduceMotion ? nil : .spring(response: 0.5), value: Int(animatedProgress * 100))
                         .padding(.bottom, geo.size.height * 0.12)
                 }
 
             }
         }
         .onChange(of: progress) { _, new in
-            withAnimation(.spring(response: 1.0, dampingFraction: 0.72)) {
+            withAnimation(reduceMotion ? nil : .spring(response: 1.0, dampingFraction: 0.72)) {
                 animatedProgress = new
             }
         }
         .onAppear {
-            withAnimation(.spring(response: 1.3, dampingFraction: 0.75).delay(0.3)) {
+            withAnimation(reduceMotion ? nil : .spring(response: 1.3, dampingFraction: 0.75).delay(0.3)) {
                 animatedProgress = progress
             }
         }
@@ -175,7 +175,7 @@ struct WaterRippleEffect: View {
             .scaleEffect(scale)
             .opacity(opacity)
             .onAppear {
-                withAnimation(.easeOut(duration: 0.8)) {
+                withAnimation(reduceMotion ? nil : .easeOut(duration: 0.8)) {
                     scale = 2.0
                     opacity = 0
                 }
@@ -186,6 +186,7 @@ struct WaterRippleEffect: View {
 
     @State private var scale: CGFloat = 0.3
     @State private var opacity: Double = 0.55
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
 }
 
@@ -202,7 +203,7 @@ struct SplashParticleView: View {
                     .offset(appeared ? offsets[i] : .zero)
             }
         }
-        .onAppear { withAnimation(.easeOut(duration: 0.55)) { appeared = true } }
+        .onAppear { withAnimation(reduceMotion ? nil : .easeOut(duration: 0.55)) { appeared = true } }
     }
 
     // MARK: Private
@@ -214,5 +215,6 @@ struct SplashParticleView: View {
     }
 
     @State private var appeared = false
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
 }
