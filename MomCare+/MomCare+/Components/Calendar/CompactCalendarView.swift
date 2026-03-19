@@ -70,13 +70,15 @@ struct CompactCalendarView: View {
             expandProgress = isExpanded ? 1 : 0
         }
         .onChange(of: isExpanded) { _, newValue in
-            withAnimation(.spring(response: 0.3, dampingFraction: 0.8)) {
+            withAnimation(reduceMotion ? nil : .spring(response: 0.3, dampingFraction: 0.8)) {
                 expandProgress = newValue ? 1 : 0
             }
         }
     }
 
     // MARK: Private
+
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     @State private var slideOffset: CGFloat = 0
     @State private var displayedDate: Date = .init()
@@ -95,6 +97,11 @@ struct CompactCalendarView: View {
     private let monthHeaderHeight: CGFloat = 18
     private let monthHeaderBottomPadding: CGFloat = 8
     private let verticalOffsetAmount: CGFloat = 20
+
+    private var calendarToggleAccessibilityLabel: String {
+        let monthYear = displayedDate.formatted(.dateTime.month(.wide).year())
+        return isExpanded ? "\(monthYear), expanded" : "\(monthYear), collapsed"
+    }
 
     private var compactHeight: CGFloat {
         cellHeight + 8
@@ -117,7 +124,7 @@ struct CompactCalendarView: View {
     private var header: some View {
         HStack {
             Button {
-                withAnimation(.spring(response: 0.3, dampingFraction: 0.8)) {
+                withAnimation(reduceMotion ? nil : .spring(response: 0.3, dampingFraction: 0.8)) {
                     isExpanded.toggle()
                     expandProgress = isExpanded ? 1 : 0
                 }
@@ -162,10 +169,13 @@ struct CompactCalendarView: View {
                         .font(.caption2.weight(.semibold))
                         .foregroundColor(.secondary)
                         .rotationEffect(.degrees(expandProgress * -180))
-                        .animation(.spring(response: 0.3, dampingFraction: 0.8), value: expandProgress)
+                        .animation(reduceMotion ? nil : .spring(response: 0.3, dampingFraction: 0.8), value: expandProgress)
+                        .accessibilityHidden(true)
                 }
             }
             .buttonStyle(.plain)
+            .accessibilityLabel(calendarToggleAccessibilityLabel)
+            .accessibilityHint(isExpanded ? "Collapses the calendar view" : "Expands the calendar view")
 
             Spacer()
         }
@@ -253,7 +263,7 @@ struct CompactCalendarView: View {
         let shouldExpand = !isExpanded && (expandProgress > 0.4 || velocityY > 400)
         let shouldCollapse = isExpanded && (expandProgress < 0.6 || velocityY < -400)
 
-        withAnimation(.spring(response: 0.3, dampingFraction: 0.8)) {
+        withAnimation(reduceMotion ? nil : .spring(response: 0.3, dampingFraction: 0.8)) {
             if shouldExpand {
                 isExpanded = true
                 expandProgress = 1
@@ -267,7 +277,7 @@ struct CompactCalendarView: View {
     }
 
     private func resetVerticalState() {
-        withAnimation(.spring(response: 0.3, dampingFraction: 0.8)) {
+        withAnimation(reduceMotion ? nil : .spring(response: 0.3, dampingFraction: 0.8)) {
             expandProgress = isExpanded ? 1 : 0
         }
     }
@@ -294,7 +304,7 @@ struct CompactCalendarView: View {
     }
 
     private func commitSlide(direction: CGFloat, width: CGFloat) {
-        withAnimation(.spring(response: 0.28, dampingFraction: 0.82)) {
+        withAnimation(reduceMotion ? nil : .spring(response: 0.28, dampingFraction: 0.82)) {
             slideOffset = direction * width
         }
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.26) {
@@ -308,7 +318,7 @@ struct CompactCalendarView: View {
     }
 
     private func cancelSlide() {
-        withAnimation(.spring(response: 0.32, dampingFraction: 0.88)) {
+        withAnimation(reduceMotion ? nil : .spring(response: 0.32, dampingFraction: 0.88)) {
             slideOffset = 0
         }
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.32) {

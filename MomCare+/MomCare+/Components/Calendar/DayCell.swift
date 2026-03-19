@@ -25,14 +25,27 @@ struct DayCell: View {
 
         }
         .frame(maxWidth: .infinity)
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(accessibilityDateLabel)
+        .accessibilityAddTraits(.isButton)
+        .accessibilityHint("Selects this date")
         .onTapGesture {
-            withAnimation(.easeInOut(duration: 0.2)) {
+            withAnimation(reduceMotion ? nil : .easeInOut(duration: 0.2)) {
                 selectedDate = date
             }
         }
     }
 
     // MARK: Private
+
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+
+    private var accessibilityDateLabel: String {
+        var label = date.formatted(.dateTime.weekday(.wide).month(.wide).day().year())
+        if isSelected { label += ", selected" }
+        if isToday { label += ", today" }
+        return label
+    }
 
     private var isSelected: Bool {
         Calendar.current.isDate(date, inSameDayAs: selectedDate)

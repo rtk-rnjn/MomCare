@@ -23,6 +23,7 @@ struct MonthGridView: View {
                 }
             }
             .padding(.bottom, headerBottomPadding)
+            .accessibilityHidden(true)
 
             LazyVGrid(columns: columns, spacing: 4) {
                 ForEach(Array(cells.enumerated()), id: \.offset) { _, d in
@@ -32,6 +33,7 @@ struct MonthGridView: View {
                             .frame(height: cellHeight)
                     } else {
                         Color.clear.frame(height: cellHeight)
+                            .accessibilityHidden(true)
                     }
                 }
             }
