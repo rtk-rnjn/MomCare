@@ -90,10 +90,9 @@ struct ProfileView: View {
                 try await authenticationService.me()
                 try await authenticationService.fetchCredentials()
             } catch {
-                self.error = error
+                controlState.error = error
             }
         }
-        .errorAlert(error: $error)
         .alert("Sign Out?", isPresented: $showSignOutAlert) {
 
             Button(role: .cancel) {}
@@ -110,9 +109,9 @@ struct ProfileView: View {
     // MARK: Private
 
     @State private var showSignOutAlert = false
-    @State private var error: (any Error)?
 
     @EnvironmentObject private var authenticationService: AuthenticationService
+    @EnvironmentObject private var controlState: ControlState
 
     private var footerView: some View {
 

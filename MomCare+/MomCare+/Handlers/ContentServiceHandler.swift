@@ -10,8 +10,8 @@ final class ContentServiceHandler: ObservableObject {
     @Published var myPlanModel: MyPlanModel?
     @Published var userExercises: [UserExerciseModel] = []
 
-    @Published var fetchingMealPlan: Bool = false
-    @Published var fetchingExercises: Bool = false
+    @Published var isFetchingMealPlan: Bool = false
+    @Published var isFetchingExercises: Bool = false
 
     @Published var currentSteps: Double = 0
     @Published var targetSteps: Double = 4200
@@ -85,7 +85,7 @@ final class ContentServiceHandler: ObservableObject {
         return status
     }
 
-    func fetchTotalUserExercisesDuration() async {
+    private func fetchTotalUserExercisesDuration() async {
         totalUserExercisesDuration = 0
 
         for userExercise in userExercises {
@@ -94,7 +94,7 @@ final class ContentServiceHandler: ObservableObject {
         }
     }
 
-    func fetchTotalUserExercisesCompletionDuration() async {
+    private func fetchTotalUserExercisesCompletionDuration() async {
         totalUserExercisesCompletionDuration = 0
 
         for userExercise in userExercises {
@@ -102,7 +102,7 @@ final class ContentServiceHandler: ObservableObject {
         }
     }
 
-    func fetchTotalUserExercisesCompleted() async {
+    private func fetchTotalUserExercisesCompleted() async {
         totalUserExercisesCompleted = 0
 
         for userExercise in userExercises where await userExercise.isCompleted {
@@ -111,18 +111,23 @@ final class ContentServiceHandler: ObservableObject {
     }
 
     func fetchUserExercises() async throws {
-        fetchingExercises = true
-        defer { fetchingExercises = false }
+        isFetchingExercises = true
+        defer { isFetchingExercises = false }
 
         let networkResponse = try await ContentService.shared.generateUserExercises()
         userExercises = networkResponse.data ?? []
+        
+        await fetchTotalUserExercisesDuration()
+        await fetchTotalUserExercisesCompletionDuration()
+        await fetchTotalUserExercisesCompleted()
+        await fetchWeeklyProgress()
     }
 
     func fetchMealPlan(makeNetworkCall: Bool = true) async throws {
-        defer { fetchingMealPlan = false }
+        defer { isFetchingMealPlan = false }
 
         if makeNetworkCall {
-            fetchingMealPlan = true
+            isFetchingMealPlan = true
             let networkResponse = try await ContentService.shared.generateMealPlan()
 
             myPlanModel = networkResponse.data
@@ -265,9 +270,7 @@ extension ContentServiceHandler {
 
         try await fetchMealPlan()
     }
-}
 
-extension ContentServiceHandler {
     func updateExerciseCompletionDuration(id: String, duration: TimeInterval) async throws {
         let networkResponse = try await ContentService.shared.updateExerciseCompletion(userExerciseId: id, duration: duration)
         if let success = networkResponse.data, success {
@@ -293,9 +296,7 @@ extension ContentServiceHandler {
         database[.breathing(startOfDate)] = duration
         breathingCompletionDuration = duration
     }
-}
 
-extension ContentServiceHandler {
     func fetchBreathingCompletionDuration(for date: Date) -> TimeInterval {
         if date > Date() {
             return 0

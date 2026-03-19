@@ -57,12 +57,12 @@ struct MyPlanExercisePlanView: View {
                 }
                 .refreshable {
                     HapticsHandler.impact(.medium)
-                    if let networkResponse = try? await ContentService.shared.generateUserExercises(),
-                       let userExercises = networkResponse.data {
-                        contentServiceHandler.userExercises = userExercises
-                        await contentServiceHandler.fetchTotalUserExercisesDuration()
-                        await contentServiceHandler.fetchTotalUserExercisesCompletionDuration()
-                        await contentServiceHandler.fetchTotalUserExercisesCompleted()
+                    Task {
+                        do {
+                            try await contentServiceHandler.fetchUserExercises()
+                        } catch {
+                            controlState.error = error
+                        }
                     }
                 }
             }
@@ -145,6 +145,8 @@ struct MyPlanExercisePlanView: View {
     @AppStorage(FeatureFlagState.experimentalFeatures.rawValue, store: UserDefaults(suiteName: "group.MomCare")) private var experimentalFeatures: Bool = false
 
     @EnvironmentObject private var contentServiceHandler: ContentServiceHandler
+    @EnvironmentObject private var controlState: ControlState
+
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     @State private var selectedExerciseInfo: UserExerciseModel?

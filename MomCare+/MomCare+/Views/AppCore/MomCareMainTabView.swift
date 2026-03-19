@@ -41,8 +41,6 @@ struct MomCareMainTabView: View {
     @State private var requestingHealthKitAccess = true
     @State private var requestingEventKitAccess = true
 
-    @Environment(\.scenePhase) private var scenePhase
-
     private let refreshTimer = Timer.publish(every: 600, on: .main, in: .common).autoconnect()
 
     private func tabViewContent(bottomPadding: CGFloat) -> some View {
@@ -89,89 +87,76 @@ struct MomCareMainTabView: View {
         .popupInteractionStyle(.snap)
         .popupBarProgressViewStyle(.bottom)
         .popupCloseButtonStyle(.chevron)
+
+        // Periodic refresh token to keep the session alive
         .onReceive(refreshTimer) { _ in
             Task {
                 await refreshAccessToken()
             }
         }
-        .onChange(of: scenePhase) { _, phase in
-            if phase == .background {
-                Task {
-                    try? await authenticationService.refresh()
-                }
-            }
-        }
+        
+        // HealthKitAccess
         .task {
+            requestingHealthKitAccess = true
+            defer { requestingEventKitAccess = false }
+
             do {
                 _ = try await contentServiceHandler.requestHealthKitAccess()
                 await contentServiceHandler.startStepCountObservation()
 
-                requestingHealthKitAccess = false
             } catch {
                 controlState.error = error
             }
         }
+        
+        // EventKitAccess
         .task {
+            requestingEventKitAccess = true
+            defer { requestingEventKitAccess = false }
+
             do {
-                _ = try await eventKitHandler.eventStore.requestFullAccessToEvents()
+                let eventSuccess = try await eventKitHandler.eventStore.requestFullAccessToEvents()
                 _ = try await eventKitHandler.eventStore.requestFullAccessToReminders()
 
-                requestingEventKitAccess = false
-            } catch {
-                controlState.error = error
-            }
-        }
-        .onChange(of: requestingEventKitAccess) {
-            do {
-                try eventKitHandler.fetchAllEvents()
+                if eventSuccess {
+                    try eventKitHandler.fetchAllEvents()
+                }
+
             } catch {
                 controlState.error = error
             }
         }
         .onChange(of: isRefreshing) {
+            if isRefreshing {
+                return
+            }
+
             Task {
                 do {
                     try await contentServiceHandler.fetchUserExercises()
+                    try await fetchDailyInsights()
+                    try await contentServiceHandler.fetchMealPlan()
 
-                    await contentServiceHandler.fetchTotalUserExercisesDuration()
-                    await contentServiceHandler.fetchTotalUserExercisesCompletionDuration()
-                    await contentServiceHandler.fetchTotalUserExercisesCompleted()
-                } catch {}
-            }
-        }
-        .onChange(of: contentServiceHandler.userExercises) {
-             Task {
-                 await contentServiceHandler.fetchTotalUserExercisesDuration()
-                 await contentServiceHandler.fetchTotalUserExercisesCompletionDuration()
-
-                 await contentServiceHandler.updateWeeklyProgressForToday()
-             }
-        }
-        .onChange(of: isRefreshing) {
-            Task {
-                await contentServiceHandler.fetchWeeklyProgress()
-
-                await fetchDailyInsights()
-                try? await contentServiceHandler.fetchMealPlan()
+                } catch {
+                    controlState.error = error
+                }
             }
         }
     }
 
     private func refreshAccessToken() async {
+        isRefreshing = true
+        defer { isRefreshing = false }
+
         do {
             try await authenticationService.refresh()
-            isRefreshing = false
         } catch {
             controlState.error = RefreshError()
         }
     }
 
-    private func fetchDailyInsights() async {
-        guard let networkResponse = try? await ContentService.shared.generateDailyInsights() else {
-            return
-        }
-
-        controlState.error = networkResponse.localizedError
+    private func fetchDailyInsights() async throws {
+        let networkResponse = try await ContentService.shared.generateDailyInsights()
 
         contentServiceHandler.todayFocusText = networkResponse.data?.todaysFocus ?? "Failed to fetch today's focus: \(networkResponse.errorMessage ?? "Unknown error") (\(networkResponse.statusCode))"
         contentServiceHandler.dailyTipText = networkResponse.data?.dailyTip ?? "Failed to fetch today's tip: \(networkResponse.errorMessage ?? "Unknown error") (\(networkResponse.statusCode))"

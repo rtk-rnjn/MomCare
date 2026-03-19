@@ -65,7 +65,7 @@ struct MealTimelineCardView: View {
             .listRowInsets(.top, 0)
             .listRowInsets(.bottom, 0)
 
-            if contentServiceHandler.fetchingMealPlan {
+            if contentServiceHandler.isFetchingMealPlan {
                 HStack(alignment: .center) {
                     Spacer()
                     ProgressView()
