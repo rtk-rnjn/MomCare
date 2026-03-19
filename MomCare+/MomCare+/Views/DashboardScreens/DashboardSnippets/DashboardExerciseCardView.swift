@@ -11,7 +11,7 @@ struct DashboardExerciseCard: View {
             VStack(alignment: .leading, spacing: 18) {
                 ExerciseRow(color: .red, icon: "figure.walk", value: "\(Int(contentServiceHandler.currentSteps)) Steps")
                 ExerciseRow(color: .green, icon: "timer", value: displaySeconds)
-                ExerciseRow(color: .orange, icon: "flame.fill", value: "\(Int(calories)) Kcal")
+                ExerciseRow(color: .orange, icon: "flame.fill", value: "\(Int(calories)) \(UnitMass.grams.symbol)")
             }
 
             Spacer()

@@ -9,21 +9,25 @@ struct MealTimelineCardView: View {
             mealSection(
                 title: "Breakfast",
                 items: contentServiceHandler.myPlanModel?.breakfast ?? [],
+                originalItems: contentServiceHandler.myPlanModel?.originalBreakfast ?? [],
                 mealType: .breakfast
             )
             mealSection(
                 title: "Lunch",
                 items: contentServiceHandler.myPlanModel?.lunch ?? [],
+                originalItems: contentServiceHandler.myPlanModel?.originalLunch ?? [],
                 mealType: .lunch
             )
             mealSection(
                 title: "Snacks",
                 items: contentServiceHandler.myPlanModel?.snacks ?? [],
+                originalItems: contentServiceHandler.myPlanModel?.originalSnacks ?? [],
                 mealType: .snacks
             )
             mealSection(
                 title: "Dinner",
                 items: contentServiceHandler.myPlanModel?.dinner ?? [],
+                originalItems: contentServiceHandler.myPlanModel?.originalDinner ?? [],
                 mealType: .dinner
             )
         }
@@ -43,7 +47,7 @@ struct MealTimelineCardView: View {
     @EnvironmentObject private var controlState: ControlState
 
     @ViewBuilder
-    private func mealSection(title: String, items: [FoodReferenceModel], mealType: MealType) -> some View {
+    private func mealSection(title: String, items: [FoodReferenceModel], originalItems: [FoodReferenceModel], mealType: MealType) -> some View {
         Section {
             HeaderRow(
                 section: MealSection(title: title, items: items),
@@ -82,6 +86,19 @@ struct MealTimelineCardView: View {
                         }
                     }
                 )
+                .background {
+                    LinearGradient(
+                        colors: [
+                            Color.yellow.opacity(0.05),
+                            Color.yellow.opacity(0.15),
+                            Color.yellow.opacity(0.05)
+                        ],
+                        startPoint: .leading,
+                        endPoint: .trailing
+                    )
+                    .opacity(originalItems.contains(where: { $0.id == item.id }) ? 0 : 1)
+                    .animation(.easeInOut(duration: 0.3), value: originalItems)
+                }
                 .listRowSeparator(.hidden)
                 .listRowInsets(.top, 0)
                 .listRowInsets(.bottom, 0)

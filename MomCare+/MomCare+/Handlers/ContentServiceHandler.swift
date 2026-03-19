@@ -124,6 +124,7 @@ final class ContentServiceHandler: ObservableObject {
         self.nutritionTargetTotals = nutritionTargetTotals
         self.nurtitionConsumedTotals = nurtitionConsumedTotals
         self.originalNutritionTargetTotals = originalNutritionTargetTotals
+
     }
 
     nonisolated func fetchHealthData(

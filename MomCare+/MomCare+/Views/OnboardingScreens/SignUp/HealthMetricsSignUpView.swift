@@ -135,15 +135,15 @@ struct HealthMetricsSignUpView: View {
 
     private var measurementSection: some View {
         Section {
-            pickerRow("Height", value: height.map { "\($0) cm" }) {
+            pickerRow("Height", value: height.map { "\($0) \(UnitLength.centimeters.symbol)" }) {
                 activePicker = .height
             }
 
-            pickerRow("Pre-Pregnancy Weight", value: prePregnancyWeight.map { "\($0) kg" }) {
+            pickerRow("Pre-Pregnancy Weight", value: prePregnancyWeight.map { "\($0) \(UnitMass.kilograms.symbol)" }) {
                 activePicker = .preWeight
             }
 
-            pickerRow("Current Weight", value: currentWeight.map { "\($0) kg" }) {
+            pickerRow("Current Weight", value: currentWeight.map { "\($0) \(UnitMass.kilograms.symbol)" }) {
                 activePicker = .currentWeight
             }
         }

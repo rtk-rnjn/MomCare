@@ -179,7 +179,7 @@ struct FoodRowView: View {
                     .foregroundStyle(.primary)
                     .lineLimit(1)
 
-                Text("\(Int(food.totalCalories)) kcal  ·  \(food.type.displayLabel)  ·  \(food.state.rawValue.capitalized)")
+                Text("\(Int(food.totalCalories)) \(UnitEnergy.kilocalories.symbol)  ·  \(food.type.displayLabel)  ·  \(food.state.rawValue.capitalized)")
                     .font(.caption)
                     .foregroundStyle(.secondary)
             }
@@ -233,14 +233,13 @@ struct NutritionDetailSheet: View {
             Divider()
                 .padding(.horizontal, 20)
 
-            // Nutrition grid
             LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 1) {
-                NutritionCell(label: "Calories", value: "\(Int(food.totalCalories))", unit: "kcal")
-                NutritionCell(label: "Protein", value: format(food.totalProteinInGrams), unit: "g")
-                NutritionCell(label: "Carbs", value: format(food.totalCarbsInGrams), unit: "g")
-                NutritionCell(label: "Fats", value: format(food.totalFatsInGrams), unit: "g")
-                NutritionCell(label: "Sugar", value: format(food.totalSugarInGrams), unit: "g")
-                NutritionCell(label: "Sodium", value: format(food.totalSodiumInMiligrams), unit: "mg")
+                NutritionCell(label: "Calories", value: "\(Int(food.totalCalories))", unit: UnitEnergy.kilocalories.symbol)
+                NutritionCell(label: "Protein", value: format(food.totalProteinInGrams), unit: UnitMass.grams.symbol)
+                NutritionCell(label: "Carbs", value: format(food.totalCarbsInGrams), unit: UnitMass.grams.symbol)
+                NutritionCell(label: "Fats", value: format(food.totalFatsInGrams), unit: UnitMass.grams.symbol)
+                NutritionCell(label: "Sugar", value: format(food.totalSugarInGrams), unit: UnitMass.grams.symbol)
+                NutritionCell(label: "Sodium", value: format(food.totalSodiumInMiligrams), unit: UnitMass.milligrams.symbol)
             }
             .padding(.horizontal, 20)
             .padding(.top, 16)

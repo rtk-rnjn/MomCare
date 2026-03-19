@@ -23,6 +23,8 @@ struct ProgressCardView: View {
     let caloriesConsumed: Double
     let caloriesTarget: Double
 
+    let originalCaloriesTarget: Double // this is server expected target
+
     var body: some View {
         VStack(spacing: 0) {
 
@@ -93,7 +95,8 @@ struct ProgressCardView: View {
             ProgressRingView(
                 progress: calorieProgress,
                 consumed: caloriesConsumed,
-                target: caloriesTarget
+                target: caloriesTarget,
+                original: originalCaloriesTarget,
             )
             .layoutPriority(1)
 
@@ -137,6 +140,7 @@ struct ProgressCardView: View {
                 title: "Protein",
                 consumed: contentServiceHandler.nurtitionConsumedTotals?.proteinMass,
                 target: contentServiceHandler.nutritionTargetTotals?.proteinMass,
+                originalTarget: contentServiceHandler.originalNutritionTargetTotals?.proteinMass,
                 color: Color(hex: "A7C0CD")
             )
 
@@ -144,6 +148,7 @@ struct ProgressCardView: View {
                 title: "Carbs",
                 consumed: contentServiceHandler.nurtitionConsumedTotals?.carbsMass,
                 target: contentServiceHandler.nutritionTargetTotals?.carbsMass,
+                originalTarget: contentServiceHandler.originalNutritionTargetTotals?.carbsMass,
                 color: Color(hex: "6E8B6F")
             )
 
@@ -151,6 +156,7 @@ struct ProgressCardView: View {
                 title: "Fats",
                 consumed: contentServiceHandler.nurtitionConsumedTotals?.fatsMass,
                 target: contentServiceHandler.nutritionTargetTotals?.fatsMass,
+                originalTarget: contentServiceHandler.originalNutritionTargetTotals?.fatsMass,
                 color: Color(hex: "E3B34B")
             )
         }
@@ -162,6 +168,7 @@ struct ProgressCardView: View {
                 title: "Sugar",
                 consumed: contentServiceHandler.nurtitionConsumedTotals?.sugarMass,
                 target: contentServiceHandler.nutritionTargetTotals?.sugarMass,
+                originalTarget: contentServiceHandler.originalNutritionTargetTotals?.sugarMass,
                 color: Color(hex: "E07B8A")
             )
 
@@ -169,6 +176,7 @@ struct ProgressCardView: View {
                 title: "Sodium",
                 consumed: contentServiceHandler.nurtitionConsumedTotals?.sodiumMass,
                 target: contentServiceHandler.nutritionTargetTotals?.sodiumMass,
+                originalTarget: contentServiceHandler.originalNutritionTargetTotals?.sodiumMass,
                 color: Color(hex: "9B8EC4")
             )
         }
@@ -244,13 +252,13 @@ private struct CaloriesSummaryView: View {
                 .font(.caption.weight(.semibold))
                 .foregroundColor(.secondary)
 
-            Text("\(Int(remaining)) kcal")
+            Text("\(Int(remaining)) \(UnitEnergy.kilocalories.symbol)")
                 .font(.title3.weight(.bold))
                 .foregroundColor(isOver ? .red : .primary)
                 .contentTransition(.numericText())
 
             if isOver {
-                Label("Over by \(Int(consumed - target)) kcal", systemImage: "exclamationmark.triangle.fill")
+                Label("Over by \(Int(consumed - target)) \(UnitEnergy.kilocalories.symbol)", systemImage: "exclamationmark.triangle.fill")
                     .font(.caption)
                     .foregroundColor(.red)
             } else {
@@ -288,12 +296,14 @@ private struct ExpandedDetailView: View {
                     title: "Sugar",
                     consumed: contentServiceHandler.nurtitionConsumedTotals?.sugarMass,
                     target: contentServiceHandler.nutritionTargetTotals?.sugarMass,
+                    originalTarget: contentServiceHandler.originalNutritionTargetTotals?.sugarMass,
                     color: Color(hex: "E07B8A")
                 )
                 MacroBarRow(
                     title: "Sodium",
                     consumed: contentServiceHandler.nurtitionConsumedTotals?.sodiumMass,
                     target: contentServiceHandler.nutritionTargetTotals?.sodiumMass,
+                    originalTarget: contentServiceHandler.originalNutritionTargetTotals?.sodiumMass,
                     color: Color(hex: "9B8EC4")
                 )
             }
@@ -449,6 +459,7 @@ struct ProgressRingView: View {
     let progress: Double
     let consumed: Double
     let target: Double
+    let original: Double
 
     var body: some View {
         ZStack {
@@ -478,9 +489,11 @@ struct ProgressRingView: View {
                                 .font(consumed > 999 ? .footnote.weight(.semibold) : .headline)
                                 .contentTransition(.numericText())
                                 .animation(reduceMotion ? nil : .spring(response: 0.4, dampingFraction: 0.7), value: Int(consumed))
+
                             Text("/")
                                 .font(consumed > 999 ? .footnote.weight(.semibold) : .headline)
-                            Text(Int(target), format: .number)
+
+                            Text(Int(original), format: .number)
                                 .font(consumed > 999 ? .footnote.weight(.semibold) : .headline)
                                 .contentTransition(.numericText())
                                 .animation(reduceMotion ? nil : .spring(response: 0.4, dampingFraction: 0.7), value: Int(consumed))
@@ -495,9 +508,17 @@ struct ProgressRingView: View {
                     }
                 }
 
-                Text("Kcal")
-                    .font(.subheadline)
-                    .foregroundColor(.secondary)
+                HStack(spacing: 6) {
+                    Text(UnitEnergy.kilocalories.symbol)
+                        .font(.subheadline)
+                        .foregroundStyle(.secondary)
+
+                    if target != original {
+                        Text("\(target > original ? "+" : "-")\(Int(abs(target - original)))")
+                            .font(.subheadline)
+                            .foregroundStyle(modificationColor)
+                    }
+                }
             }
         }
         .frame(width: 110, height: 110)
@@ -519,6 +540,30 @@ struct ProgressRingView: View {
         guard target > 0 else { return 0 }
         return Int((consumed / target) * 100)
     }
+    
+    private enum TargetModification {
+        case increased, decreased
+        var displaySymbol: String {
+            switch self {
+            case .increased: return "+"
+            case .decreased: return "-"
+            }
+        }
+    }
+    
+    private var targetModification: TargetModification? {
+        if target > original { return .increased }
+        if target < original { return .decreased }
+        return nil
+    }
+
+    private var modificationColor: Color {
+        switch targetModification {
+        case .increased: return .secondary.mix(with: .black, by: 0.2)
+        case .decreased: return .secondary.mix(with: .white, by: 0.35)
+        case .none:      return .secondary
+        }
+    }
 }
 
 struct MacroBarRow: View {
@@ -528,6 +573,7 @@ struct MacroBarRow: View {
     let title: String
     let consumed: Measurement<UnitMass>?
     let target: Measurement<UnitMass>?
+    let originalTarget: Measurement<UnitMass>?
     let color: Color
 
     var body: some View {
@@ -552,7 +598,23 @@ struct MacroBarRow: View {
                             }
                             Text("/")
                             if let target {
-                                Text(target.formattedOneDecimal)
+                                if targetModification != nil {
+                                    HStack {
+                                        Text(originalTarget?.formattedOneDecimal ?? "-")
+                                            .foregroundColor(modificationColor)
+                                        if targetModification == .increased {
+                                            Image(systemName: "arrow.up")
+                                                .font(.caption2.bold())
+                                                .foregroundColor(modificationColor)
+                                        } else if targetModification == .decreased {
+                                            Image(systemName: "arrow.down")
+                                                .font(.caption2.bold())
+                                                .foregroundColor(modificationColor)
+                                        }
+                                    }
+                                } else {
+                                    Text(target.formattedOneDecimal)
+                                }
                             } else {
                                 Text("-")
                             }
@@ -592,9 +654,30 @@ struct MacroBarRow: View {
 
     // MARK: Private
 
+    private enum TargetModification {
+        case increased, decreased
+    }
+
     @State private var showPercentage = false
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @Environment(\.accessibilityReduceTransparency) private var reduceTransparency
+
+    private var targetModification: TargetModification? {
+        guard let target, let originalTarget else { return nil }
+        let targetValue = target.converted(to: originalTarget.unit).value
+        let originalValue = originalTarget.value
+        if targetValue > originalValue { return .increased }
+        if targetValue < originalValue { return .decreased }
+        return nil
+    }
+
+    private var modificationColor: Color {
+        switch targetModification {
+        case .increased: return .secondary.mix(with: .black, by: 0.2)
+        case .decreased: return .secondary.mix(with: .white, by: 0.35)
+        case .none:      return .secondary
+        }
+    }
 
     private var progress: Double {
         guard let consumed, let target else { return 0 }

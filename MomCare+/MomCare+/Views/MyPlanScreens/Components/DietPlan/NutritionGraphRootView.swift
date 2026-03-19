@@ -81,7 +81,7 @@ struct NutritionGraphRootView: View {
         return HStack(spacing: 0) {
             summaryPill(
                 label: "Consumed",
-                value: "\(Int(consumed)) kcal",
+                value: "\(Int(consumed)) \(UnitEnergy.kilocalories.symbol)",
                 color: Color(hex: "E3B34B"),
                 icon: "flame.fill"
             )
@@ -90,7 +90,7 @@ struct NutritionGraphRootView: View {
 
             summaryPill(
                 label: isOver ? "Over by" : "Remaining",
-                value: "\(Int(isOver ? consumed - target : remaining)) kcal",
+                value: "\(Int(isOver ? consumed - target : remaining)) \(UnitEnergy.kilocalories.symbol)",
                 color: isOver ? .red : Color(hex: "6E8B6F"),
                 icon: isOver ? "exclamationmark.triangle.fill" : "leaf.fill"
             )
@@ -99,7 +99,7 @@ struct NutritionGraphRootView: View {
 
             summaryPill(
                 label: "Target",
-                value: "\(Int(target)) kcal",
+                value: "\(Int(target)) \(UnitEnergy.kilocalories.symbol)",
                 color: Color(.systemGray3),
                 icon: "target"
             )
@@ -354,7 +354,8 @@ struct NutritionCardSection: View {
     var body: some View {
         ProgressCardView(
             caloriesConsumed: contentServiceHandler.nurtitionConsumedTotals?.calories ?? 0,
-            caloriesTarget: contentServiceHandler.nutritionTargetTotals?.calories ?? 0
+            caloriesTarget: contentServiceHandler.nutritionTargetTotals?.calories ?? 0,
+            originalCaloriesTarget: contentServiceHandler.originalNutritionTargetTotals?.calories ?? 0
         )
         .containerShape(RoundedRectangle(cornerRadius: 24, style: .continuous))
         .padding(.horizontal, 16)

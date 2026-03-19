@@ -61,9 +61,9 @@ enum VitalKind: String, CaseIterable, Identifiable {
 
     var unitLabel: String {
         switch self {
-        case .calories: return "kcal"
-        case .sodium: return "mg"
-        default: return "g"
+        case .calories: return UnitEnergy.kilocalories.symbol
+        case .sodium: return UnitMass.milligrams.symbol
+        default: return UnitMass.grams.symbol
         }
     }
 

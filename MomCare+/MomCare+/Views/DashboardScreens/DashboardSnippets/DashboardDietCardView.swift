@@ -1,4 +1,5 @@
 import SwiftUI
+import Foundation
 
 struct DashboardDietCardView: View {
 
@@ -20,7 +21,7 @@ struct DashboardDietCardView: View {
                 }
                 .accessibilityHidden(true)
 
-                Text("\(Int(consumed)) / \(Int(goal)) kcal")
+                Text("\(Int(consumed)) / \(Int(goal)) \(UnitEnergy.kilocalories.symbol)")
                     .font(.title3)
                     .fontWeight(.regular)
                     .lineLimit(1)
