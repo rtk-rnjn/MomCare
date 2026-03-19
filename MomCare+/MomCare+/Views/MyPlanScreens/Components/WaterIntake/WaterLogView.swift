@@ -18,7 +18,7 @@ struct WaterLogView: View {
                                 .multilineTextAlignment(.center)
                                 .padding(.top, 6)
                                 .padding(.horizontal, 32)
-                                .animation(.easeInOut(duration: 0.4), value: motivationalText)
+                                .animation(reduceMotion ? nil : .easeInOut(duration: 0.4), value: motivationalText)
 
                             dropSection
                                 .padding(.top, 10)
@@ -28,7 +28,7 @@ struct WaterLogView: View {
                                 .font(.subheadline.weight(.medium))
                                 .foregroundStyle(Color(hex: "924350").opacity(0.6))
                                 .contentTransition(.numericText())
-                                .animation(.spring(response: 0.5), value: store.todayTotal)
+                                .animation(reduceMotion ? nil : .spring(response: 0.5), value: store.todayTotal)
                                 .padding(.top, 10)
 
                             weekStrip
@@ -51,6 +51,7 @@ struct WaterLogView: View {
                         .offset(y: feedbackOffset)
                         .opacity(feedbackOpacity)
                         .allowsHitTesting(false)
+                        .accessibilityHidden(true)
                 }
             }
             .toolbar {
@@ -64,7 +65,7 @@ struct WaterLogView: View {
                     Button {
                         showLogs = true
                     } label: {
-                        Label("", systemImage: "list.bullet")
+                        Label("Today's Log", systemImage: "list.bullet")
                     }
 
                     Menu {
@@ -86,7 +87,7 @@ struct WaterLogView: View {
                         }
 
                     } label: {
-                        Label("", systemImage: "ellipsis")
+                        Label("More options", systemImage: "ellipsis")
                     }
                 }
             }
@@ -126,6 +127,7 @@ struct WaterLogView: View {
 
     @StateObject private var store: WaterStore = .init()
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @Environment(\.accessibilityReduceTransparency) private var reduceTransparency
     @Environment(\.dismiss) private var dismiss
 
     @State private var showLogs = false
@@ -156,11 +158,13 @@ struct WaterLogView: View {
         ZStack {
             Color(hex: "F5F8FD")
                 .ignoresSafeArea()
-            LinearGradient(
-                colors: [Color(hex: "FAE8E4").opacity(0.5), Color(hex: "EAF5FB").opacity(0.6)],
-                startPoint: .top, endPoint: .bottom
-            )
-            .ignoresSafeArea()
+            if !reduceTransparency {
+                LinearGradient(
+                    colors: [Color(hex: "FAE8E4").opacity(0.5), Color(hex: "EAF5FB").opacity(0.6)],
+                    startPoint: .top, endPoint: .bottom
+                )
+                .ignoresSafeArea()
+            }
         }
     }
 
@@ -181,6 +185,9 @@ struct WaterLogView: View {
         }
         .aspectRatio(0.78, contentMode: .fit)
         .shadow(color: Color(hex: "5B9BD5").opacity(0.18), radius: 20, x: 0, y: 10)
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel("Water intake progress")
+        .accessibilityValue("\(Int(store.progress * 100)) percent, \(Int(store.todayTotal)) of \(Int(store.dailyTarget)) millilitres")
     }
 
     private var weekStrip: some View {
@@ -188,7 +195,7 @@ struct WaterLogView: View {
 
             HStack(spacing: 16) {
                 Button {
-                    withAnimation(.spring(response: 0.35, dampingFraction: 0.8)) {
+                    withAnimation(reduceMotion ? nil : .spring(response: 0.35, dampingFraction: 0.8)) {
                         selectedDate = Calendar.current.date(
                             byAdding: .weekOfYear, value: -1, to: selectedDate
                         ) ?? selectedDate
@@ -199,15 +206,16 @@ struct WaterLogView: View {
                         .foregroundColor(Color(hex: "924350"))
                         .frame(width: 28, height: 28)
                 }
+                .accessibilityLabel("Previous week")
 
                 Text(monthYearString(for: selectedDate))
                     .font(.subheadline.weight(.bold))
                     .foregroundColor(Color(hex: "924350"))
                     .frame(maxWidth: .infinity)
-                    .animation(.easeInOut, value: selectedDate)
+                    .animation(reduceMotion ? nil : .easeInOut, value: selectedDate)
 
                 Button {
-                    withAnimation(.spring(response: 0.35, dampingFraction: 0.8)) {
+                    withAnimation(reduceMotion ? nil : .spring(response: 0.35, dampingFraction: 0.8)) {
                         selectedDate = Calendar.current.date(
                             byAdding: .weekOfYear, value: 1, to: selectedDate
                         ) ?? selectedDate
@@ -234,6 +242,7 @@ struct WaterLogView: View {
                         toGranularity: .weekOfYear
                     )
                 )
+                .accessibilityLabel("Next week")
             }
 
             HStack(spacing: 0) {
@@ -244,7 +253,7 @@ struct WaterLogView: View {
 
                     Button {
                         guard !isFuture else { return }
-                        withAnimation(.spring(response: 0.3, dampingFraction: 0.75)) {
+                        withAnimation(reduceMotion ? nil : .spring(response: 0.3, dampingFraction: 0.75)) {
                             selectedDate = day
                         }
                     } label: {
@@ -284,11 +293,13 @@ struct WaterLogView: View {
                     }
                     .buttonStyle(.plain)
                     .disabled(isFuture)
+                    .accessibilityLabel("\(dayName(day)) \(dayNumber(day))\(isToday ? ", today" : "")\(isSelected ? ", selected" : "")")
+                    .accessibilityAddTraits(isSelected ? .isSelected : [])
                 }
             }
             .padding(6)
             .background(
-                Color.white.opacity(0.75),
+                reduceTransparency ? Color.white : Color.white.opacity(0.75),
                 in: RoundedRectangle(cornerRadius: 20, style: .continuous)
             )
             .shadow(color: Color(hex: "924350").opacity(0.06), radius: 8, x: 0, y: 3)
@@ -312,6 +323,7 @@ struct WaterLogView: View {
                             .shadow(color: Color(hex: "5B9BD5").opacity(0.28), radius: 6, x: 0, y: 3)
                     }
                     .buttonStyle(.plain)
+                    .accessibilityLabel("Add \(Int(preset.ml)) millilitres")
                 }
             }
             quoteCard
@@ -323,6 +335,7 @@ struct WaterLogView: View {
             Image(systemName: "quote.bubble.fill")
                 .foregroundColor(Color(hex: "924350").opacity(0.65))
                 .font(.headline)
+                .accessibilityHidden(true)
 
             Text(WaterStore.waterQuotes[quoteIndex])
                 .font(.footnote.italic())
@@ -332,13 +345,14 @@ struct WaterLogView: View {
         }
         .padding(14)
         .background(
-            Color(hex: "FAE8E4").opacity(0.55),
+            reduceTransparency ? Color(hex: "FAE8E4") : Color(hex: "FAE8E4").opacity(0.55),
             in: RoundedRectangle(cornerRadius: 16, style: .continuous)
         )
         .overlay(
             RoundedRectangle(cornerRadius: 16, style: .continuous)
                 .stroke(Color(hex: "924350").opacity(0.1), lineWidth: 1)
         )
+        .accessibilityElement(children: .combine)
     }
 
     private var settingsSheet: some View {
@@ -415,7 +429,7 @@ struct WaterLogView: View {
     private func weekDays(around date: Date) -> [Date] {
         let cal = Calendar.current
         let weekday = cal.component(.weekday, from: date)
-        let startOfWeek = cal.date(byAdding: .day, value: -(weekday - 1), to: date)!
+        guard let startOfWeek = cal.date(byAdding: .day, value: -(weekday - 1), to: date) else { return [] }
         return (0..<7).compactMap { cal.date(byAdding: .day, value: $0, to: startOfWeek) }
     }
 

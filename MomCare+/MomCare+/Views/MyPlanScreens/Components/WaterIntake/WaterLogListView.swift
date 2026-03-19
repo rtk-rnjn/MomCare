@@ -53,6 +53,7 @@ struct WaterLogListView: View {
     // MARK: Private
 
     @Environment(\.dismiss) private var dismiss
+    @Environment(\.accessibilityReduceTransparency) private var reduceTransparency
 
     @State private var editingEntry: WaterLogEntry?
     @State private var showAddEntry = false
@@ -90,6 +91,7 @@ struct WaterLogListView: View {
 
     private var pillDivider: some View {
         Divider().frame(height: 36).background(Color(hex: "924350").opacity(0.1))
+            .accessibilityHidden(true)
     }
 
     private var tipsSection: some View {
@@ -100,6 +102,7 @@ struct WaterLogListView: View {
                     .foregroundColor(Color(hex: "924350").opacity(0.65))
                     .font(.subheadline)
                     .padding(.top, 1)
+                    .accessibilityHidden(true)
                 Text(WaterStore.waterQuotes[quoteIndex])
                     .font(.footnote.italic())
                     .foregroundStyle(Color(hex: "924350").opacity(0.8))
@@ -108,8 +111,10 @@ struct WaterLogListView: View {
             }
             .padding(12)
             .frame(maxWidth: .infinity, alignment: .leading)
-            .background(Color(hex: "FAE8E4").opacity(0.55),
-                        in: RoundedRectangle(cornerRadius: 14, style: .continuous))
+            .background(
+                reduceTransparency ? Color(hex: "FAE8E4") : Color(hex: "FAE8E4").opacity(0.55),
+                in: RoundedRectangle(cornerRadius: 14, style: .continuous))
+            .accessibilityElement(children: .combine)
 
             let tip = WaterStore.waterTips[tipIndex]
             HStack(alignment: .top, spacing: 10) {
@@ -118,6 +123,7 @@ struct WaterLogListView: View {
                     .font(.subheadline)
                     .frame(width: 20)
                     .padding(.top, 1)
+                    .accessibilityHidden(true)
                 Text(tip.tip)
                     .font(.footnote)
                     .foregroundStyle(.secondary)
@@ -128,6 +134,7 @@ struct WaterLogListView: View {
             .frame(maxWidth: .infinity, alignment: .leading)
             .background(Color(hex: "EAF5FB"),
                         in: RoundedRectangle(cornerRadius: 14, style: .continuous))
+            .accessibilityElement(children: .combine)
         }
     }
 
@@ -137,6 +144,7 @@ struct WaterLogListView: View {
                 Text("Entries")
                     .font(.subheadline.weight(.semibold))
                     .foregroundStyle(Color(hex: "924350"))
+                    .accessibilityAddTraits(.isHeader)
                 Spacer()
                 Text("\(store.todayLogs.count) today")
                     .font(.caption)
@@ -170,6 +178,7 @@ struct WaterLogListView: View {
             Image(systemName: "drop.slash")
                 .font(.largeTitle.weight(.ultraLight))
                 .foregroundStyle(Color(hex: "B8DCF0"))
+                .accessibilityHidden(true)
             Text("Nothing logged yet")
                 .font(.subheadline)
                 .foregroundStyle(.secondary)
@@ -181,6 +190,7 @@ struct WaterLogListView: View {
         .frame(maxWidth: .infinity)
         .padding(36)
         .background(Color.white, in: RoundedRectangle(cornerRadius: 16, style: .continuous))
+        .accessibilityElement(children: .combine)
     }
 
     private func statPill(icon: String, label: String, value: String, color: Color) -> some View {
@@ -283,6 +293,8 @@ struct AddWaterEntrySheet: View {
                                                     in: Capsule())
                                 }
                                 .buttonStyle(.plain)
+                                .accessibilityLabel("\(Int(p)) millilitres")
+                                .accessibilityAddTraits(amount == p ? .isSelected : [])
                             }
                         }
                         .padding(.vertical, 4)

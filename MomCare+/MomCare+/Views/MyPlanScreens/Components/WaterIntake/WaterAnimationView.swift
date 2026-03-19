@@ -81,6 +81,7 @@ struct WaterDropFillView: View {
                 animatedProgress = progress
             }
         }
+        .accessibilityHidden(true)
     }
 
     // MARK: Private
@@ -184,6 +185,7 @@ struct WaterRippleEffect: View {
                     opacity = 0
                 }
             }
+            .accessibilityHidden(true)
     }
 
     // MARK: Private
@@ -208,6 +210,7 @@ struct SplashParticleView: View {
             }
         }
         .onAppear { withAnimation(reduceMotion ? nil : .easeOut(duration: 0.55)) { appeared = true } }
+        .accessibilityHidden(true)
     }
 
     // MARK: Private
