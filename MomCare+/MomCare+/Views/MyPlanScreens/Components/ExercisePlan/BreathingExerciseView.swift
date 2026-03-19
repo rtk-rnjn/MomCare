@@ -90,7 +90,6 @@ struct BreathingExerciseView: View {
     @State private var circleScale: CGFloat = 0.6
     @State private var isActive = false
     @State private var isPaused = false
-    @State private var showCompletion = false
     @State private var speechSynthesizer: AVSpeechSynthesizer = .init()
 
     @State private var dotOffsets: [CGSize] = (0 ..< 6).map { _ in
@@ -105,7 +104,6 @@ struct BreathingExerciseView: View {
     private let pastel: Color = .init(hex: "D0E1F0")
     private let accent: Color = .init(hex: "8BBBD4")
     private let darkAccent: Color = .init(hex: "4A7A9B")
-    private let deepBlue: Color = .init(hex: "3A6A8B")
 
     private var totalDuration: Double {
         contentServiceHandler.breathingTargetInSeconds

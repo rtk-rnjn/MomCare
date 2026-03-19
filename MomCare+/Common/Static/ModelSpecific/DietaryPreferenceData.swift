@@ -1,4 +1,4 @@
-public enum DietaryPreference: String, Codable, CaseIterable, Sendable {
+enum DietaryPreference: String, Codable, CaseIterable, Sendable {
     case vegetarian = "veg"
     case nonVegetarian = "non-veg"
     case vegan = "vegan"

@@ -5,10 +5,6 @@ struct PregnancyProgress: Codable {
     let day: Int
     let trimester: String
     let isValid: Bool
-
-    var formatted: String {
-        "Week \(week) • Day \(day) • Trimester \(trimester)"
-    }
 }
 
 private let totalDays = 280

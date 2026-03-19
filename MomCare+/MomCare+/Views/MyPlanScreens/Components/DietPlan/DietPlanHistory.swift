@@ -3,8 +3,6 @@ import SwiftUI
 private extension Color {
     static let planBg: Color = .init(red: 0.95, green: 0.96, blue: 0.97)
     static let planSurface: Color = .white
-    static let planAccent: Color = .init(red: 0.22, green: 0.53, blue: 0.98)
-    static let planAccentSoft = Color(red: 0.22, green: 0.53, blue: 0.98).opacity(0.10)
     static let planGreen: Color = .init(red: 0.13, green: 0.75, blue: 0.48)
     static let planLabel: Color = .init(red: 0.09, green: 0.09, blue: 0.12)
     static let planMuted: Color = .init(red: 0.54, green: 0.54, blue: 0.59)

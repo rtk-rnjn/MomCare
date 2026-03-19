@@ -4,16 +4,6 @@ enum CardDisplayMode: Int, CaseIterable {
     case calories
     case macros
     case micros
-
-    // MARK: Internal
-
-    var label: String {
-        switch self {
-        case .calories: return "Calories"
-        case .macros: return "Macros"
-        case .micros: return "Micros"
-        }
-    }
 }
 
 struct ProgressCardView: View {
@@ -547,15 +537,6 @@ struct ProgressRingView: View {
     private enum TargetModification {
         case increased
         case decreased
-
-        // MARK: Internal
-
-        var displaySymbol: String {
-            switch self {
-            case .increased: return "+"
-            case .decreased: return "-"
-            }
-        }
     }
 
     @State private var showPercentage = false

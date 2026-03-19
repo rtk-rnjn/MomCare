@@ -9,10 +9,6 @@ struct MoodNestSongsView: View {
 
     @State var playlist: PlaylistModel
 
-    var accentColor: Color {
-        Color(red: 139 / 255, green: 69 / 255, blue: 87 / 255)
-    }
-
     var body: some View {
         VStack(spacing: 0) {
             headerSection

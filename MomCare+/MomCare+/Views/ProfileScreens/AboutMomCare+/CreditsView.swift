@@ -154,11 +154,3 @@ struct CreditListCard: View {
         .accessibilityElement(children: .combine)
     }
 }
-
-struct CreditsView_Previews: PreviewProvider {
-    static var previews: some View {
-        NavigationView {
-            CreditsView()
-        }
-    }
-}

@@ -254,10 +254,6 @@ enum PregnancySymptoms {
             sources: "[NHS](https://www.nhs.uk/pregnancy/related-conditions/common-symptoms/vomiting-and-morning-sickness/)"
         )
     ]
-
-    static func getOrFetch(id: Int) -> Symptom? {
-        allSymptoms.first(where: { $0.id == id })
-    }
 }
 
 @Model

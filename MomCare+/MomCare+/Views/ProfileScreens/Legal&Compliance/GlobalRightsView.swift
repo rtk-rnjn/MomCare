@@ -111,11 +111,3 @@ struct GDPRRightView: View {
         }
     }
 }
-
-struct GlobalRightsView_Previews: PreviewProvider {
-    static var previews: some View {
-        NavigationView {
-            GlobalRightsView()
-        }
-    }
-}

@@ -3,15 +3,13 @@ import HealthKit
 import SwiftUI
 import OSLog
 
-private let logger: Logger = .init(subsystem: "com.MomCare.ContentServiceHandler", category: "ObservableObject")
-
 final class ContentServiceHandler: ObservableObject {
 
     // MARK: Internal
 
     @Published var myPlanModel: MyPlanModel?
     @Published var userExercises: [UserExerciseModel] = []
-    
+
     @Published var fetchingMealPlan: Bool = false
     @Published var fetchingExercises: Bool = false
 
@@ -33,7 +31,6 @@ final class ContentServiceHandler: ObservableObject {
 
     @Published var weeklyProgress: [DayProgress] = .init()
 
-    @Published var minutes: Double = 0
     @Published var caloriesBurned: Int = 0
 
     @Published var todayFocusText: String = ""
@@ -112,11 +109,11 @@ final class ContentServiceHandler: ObservableObject {
             totalUserExercisesCompleted += 1
         }
     }
-    
+
     func fetchUserExercises() async throws {
         fetchingExercises = true
         defer { fetchingExercises = false }
-        
+
         let networkResponse = try await ContentService.shared.generateUserExercises()
         userExercises = networkResponse.data ?? []
     }

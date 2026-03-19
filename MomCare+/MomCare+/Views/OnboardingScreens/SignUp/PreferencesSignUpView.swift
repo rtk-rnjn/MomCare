@@ -57,6 +57,8 @@ struct PreferencesSignUpView: View {
 
     @State private var navigateToDashboard = false
 
+    @State private var isLoading: Bool = false
+
     private var dueDateRange: ClosedRange<Date> {
         let calendar = Calendar.current
         let today = calendar.startOfDay(for: Date())
@@ -139,8 +141,6 @@ struct PreferencesSignUpView: View {
             }
         }
     }
-    
-    @State private var isLoading: Bool = false
 
     private var finishButton: some View {
         VStack {

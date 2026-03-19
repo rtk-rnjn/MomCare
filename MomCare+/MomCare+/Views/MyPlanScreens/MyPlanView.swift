@@ -33,6 +33,5 @@ struct MyPlanView: View {
 
     @AppStorage(FeatureFlagState.forceUseLargeTitle.rawValue, store: UserDefaults(suiteName: "group.MomCare")) private var forceUseLargeTitle: Bool = false
 
-    @EnvironmentObject private var contentServiceHandler: ContentServiceHandler
     @EnvironmentObject private var controlState: ControlState
 }

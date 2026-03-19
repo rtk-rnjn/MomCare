@@ -3,7 +3,6 @@ import SwiftUI
 struct SignInView: View {
 
     // MARK: Internal
-    @State private var isLoading: Bool = false
 
     var body: some View {
         NavigationStack {
@@ -94,6 +93,8 @@ struct SignInView: View {
     }
 
     // MARK: Private
+
+    @State private var isLoading: Bool = false
 
     @EnvironmentObject private var authenticationService: AuthenticationService
     @EnvironmentObject private var controlState: ControlState

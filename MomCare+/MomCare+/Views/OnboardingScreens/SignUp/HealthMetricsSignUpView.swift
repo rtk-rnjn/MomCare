@@ -66,6 +66,8 @@ struct HealthMetricsSignUpView: View {
 
     @State private var navigateToThirdStep = false
 
+    @State private var isLoading: Bool = false
+
     private var allowedDOBRange: ClosedRange<Date> {
         let calendar = Calendar.current
         let now = Date()
@@ -153,7 +155,6 @@ struct HealthMetricsSignUpView: View {
         }
     }
 
-    @State private var isLoading: Bool = false
     private var nextButton: some View {
         VStack {
             Button {

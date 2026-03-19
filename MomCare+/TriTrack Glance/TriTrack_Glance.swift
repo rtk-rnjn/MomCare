@@ -107,37 +107,3 @@ struct TriTrack_Glance: Widget {
         .supportedFamilies([.systemSmall, .systemMedium, .systemLarge])
     }
 }
-
-private extension TriTrackEntry {
-    static var preview: TriTrackEntry {
-        TriTrackEntry(
-            date: .now,
-            week: 20,
-            day: 3,
-            trimester: "II",
-            isValid: true,
-            fruitComparison: "banana",
-            fruitImageURL: "https://img.icons8.com/emoji/48/banana-emoji.png",
-            babyHeightCm: 25.6,
-            babyWeightG: 300
-        )
-    }
-}
-
-#Preview("Small", as: .systemSmall) {
-    TriTrack_Glance()
-} timeline: {
-    TriTrackEntry.preview
-}
-
-#Preview("Medium", as: .systemMedium) {
-    TriTrack_Glance()
-} timeline: {
-    TriTrackEntry.preview
-}
-
-#Preview("Large", as: .systemLarge) {
-    TriTrack_Glance()
-} timeline: {
-    TriTrackEntry.preview
-}

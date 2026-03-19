@@ -20,10 +20,6 @@ class LocationManager: NSObject, ObservableObject, CLLocationManagerDelegate {
         manager.requestWhenInUseAuthorization()
     }
 
-    func startUpdating() {
-        manager.startUpdatingLocation()
-    }
-
     func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
         authorizationStatus = manager.authorizationStatus
 

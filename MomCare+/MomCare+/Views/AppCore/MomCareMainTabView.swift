@@ -136,9 +136,7 @@ struct MomCareMainTabView: View {
                     await contentServiceHandler.fetchTotalUserExercisesDuration()
                     await contentServiceHandler.fetchTotalUserExercisesCompletionDuration()
                     await contentServiceHandler.fetchTotalUserExercisesCompleted()
-                } catch {
-                    
-                }
+                } catch {}
             }
         }
         .onChange(of: contentServiceHandler.userExercises) {

@@ -15,21 +15,6 @@ struct TrimesterData: Codable, Equatable {
     var babyTipText: String
     var momTipText: String
 
-    var trimester: String {
-        switch weekNumber {
-        case 1 ... 13:
-            "I"
-        case 14 ... 26:
-            "II"
-        default:
-            "III"
-        }
-    }
-
-    var trimesterFull: String {
-        "Trimester \(trimester)"
-    }
-
     var fruitComparison: String {
         guard let quote else { return "tiny embryo" }
         let prefix = "I'm currently the size of a "

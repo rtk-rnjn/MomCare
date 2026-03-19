@@ -8,7 +8,7 @@ struct DebugMenuView: View {
         NavigationStack {
             List {
                 ForEach(DebugSection.allCases) { section in
-                    NavigationLink(destination: section.destination(store: store)) {
+                    NavigationLink(destination: section.destination()) {
                         Text(section.title)
                             .foregroundStyle(.primary)
                     }
@@ -44,7 +44,7 @@ enum DebugSection: String, CaseIterable, Identifiable {
     var title: String { rawValue }
 
     @ViewBuilder
-    func destination(store: DebugMenuStore) -> some View { // swiftlint:disable:this cyclomatic_complexity
+    func destination() -> some View { // swiftlint:disable:this cyclomatic_complexity
         switch self {
         case .deviceInfo: DeviceInfoView()
         case .accessibility: AccessibilityInspectorView()

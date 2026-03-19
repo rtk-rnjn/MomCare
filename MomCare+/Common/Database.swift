@@ -122,13 +122,6 @@ extension Database {
 }
 
 extension Database {
-    func listFoods() -> [FoodItemModel] {
-        let keys = userDefaults.dictionaryRepresentation().keys.filter { $0.starts(with: "food_") }
-        return keys.compactMap { get($0) as FoodItemModel? }
-    }
-}
-
-extension Database {
     func pregnancyProgress() -> PregnancyProgress? {
         guard let user: UserModel = self[.userModel]
         else {

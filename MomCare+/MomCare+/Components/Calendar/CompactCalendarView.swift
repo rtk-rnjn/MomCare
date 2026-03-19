@@ -333,12 +333,6 @@ struct CompactCalendarView: View {
         return calendar.date(byAdding: .day, value: -diff, to: calendar.startOfDay(for: date)) ?? date
     }
 
-    private func orderedShortWeekdaySymbols() -> [String] {
-        let symbols = calendar.shortWeekdaySymbols
-        let startIndex = calendar.firstWeekday - 1
-        return Array(symbols[startIndex...] + symbols[..<startIndex])
-    }
-
     private func monthGridDays(
         for month: Date,
         showsOutOfMonthDays: Bool,

@@ -102,14 +102,4 @@ struct DashboardDietCardView: View {
         guard goal > 0 else { return 0 }
         return min(consumed / goal, 1)
     }
-
-    private func animate() {
-        if reduceMotion {
-            animatedProgress = progress
-        } else {
-            withAnimation(.easeInOut(duration: 0.8)) {
-                animatedProgress = progress
-            }
-        }
-    }
 }

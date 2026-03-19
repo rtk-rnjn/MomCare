@@ -17,14 +17,6 @@ class SemiCircleAnimationView: UIView {
 
     // MARK: Internal
 
-    var mainScale: CGFloat {
-        if let scale = window?.windowScene?.screen.scale {
-            return scale
-        }
-
-        fatalError()
-    }
-
     override func layoutSubviews() {
         super.layoutSubviews()
 
@@ -42,22 +34,8 @@ class SemiCircleAnimationView: UIView {
         animatePathChange()
     }
 
-    func setCorner(radius: CGFloat) {
-        shapeLayer.cornerRadius = radius
-        layer.cornerRadius = radius
-    }
-
-    func setColor(hex: String) {
-        shapeLayer.fillColor = UIColor(Color(hex: hex)).cgColor
-    }
-
     func setColor(color: CGColor) {
         shapeLayer.fillColor = color
-    }
-
-    func setBorder(color: CGColor, width: CGFloat) {
-        shapeLayer.strokeColor = color
-        shapeLayer.lineWidth = width
     }
 
     // MARK: Private

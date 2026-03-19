@@ -21,36 +21,7 @@ struct EKReminderView: View {
     @State var reminder: EKReminder
     @Binding var selectedDate: Date
 
-    var repeatUnitText: (EKRecurrenceFrequency, Int) -> String = { unit, frequency in
-        let unitString: String
-        switch unit {
-        case .daily: unitString = "day"
-        case .weekly: unitString = "week"
-        case .monthly: unitString = "month"
-        default: unitString = "period"
-        }
-        return frequency == 1 ? unitString : "\(unitString)s"
-    }
-
     var isCompleted: Bool { reminder.isCompleted }
-
-    var priorityTitle: String {
-        switch priority {
-        case 1: return "High"
-        case 5: return "Medium"
-        case 9: return "Low"
-        default: return "None"
-        }
-    }
-
-    var priorityColor: Color {
-        switch priority {
-        case 1: return .red
-        case 5: return .orange
-        case 9: return .yellow
-        default: return .secondary
-        }
-    }
 
     var body: some View {
         NavigationStack {

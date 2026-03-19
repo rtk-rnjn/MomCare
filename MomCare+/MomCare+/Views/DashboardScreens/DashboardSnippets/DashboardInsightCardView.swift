@@ -1,11 +1,12 @@
 import SwiftUI
 
 struct DashboardInsightCardView: View {
+
+    // MARK: Internal
+
     let title: String
     let message: String
     let icon: String
-    
-    @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     var body: some View {
         VStack(spacing: 0) {
@@ -58,4 +59,9 @@ struct DashboardInsightCardView: View {
         .accessibilityValue(message)
         .accessibilityAddTraits(.isHeader)
     }
+
+    // MARK: Private
+
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+
 }

@@ -257,9 +257,3 @@ struct BulletPoint: View {
         .foregroundColor(.primary)
     }
 }
-
-struct TermsOfServiceView_Previews: PreviewProvider {
-    static var previews: some View {
-        TermsOfServiceView()
-    }
-}

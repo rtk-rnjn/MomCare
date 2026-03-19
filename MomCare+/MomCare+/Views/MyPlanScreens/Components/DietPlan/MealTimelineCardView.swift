@@ -64,7 +64,7 @@ struct MealTimelineCardView: View {
             .listRowSeparator(.hidden)
             .listRowInsets(.top, 0)
             .listRowInsets(.bottom, 0)
-            
+
             if contentServiceHandler.fetchingMealPlan {
                 HStack(alignment: .center) {
                     Spacer()
@@ -182,8 +182,6 @@ private struct HeaderRow: View {
     @EnvironmentObject private var contentServiceHandler: ContentServiceHandler
 
     @State private var showSearchFoodSheet = false
-    @State private var selectedFood: FoodItemModel?
-
 }
 
 private struct ItemRow: View {

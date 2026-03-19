@@ -217,7 +217,6 @@ struct ProfilePersonalInfoView: View {
     @Environment(\.accessibilityReduceMotion) private var reduceMotion: Bool
 
     @EnvironmentObject private var authenticationService: AuthenticationService
-    @Environment(\.dismiss) private var dismiss
 
     @State private var isEditing = false
     @State private var showDateOfBirthPicker = false
@@ -242,12 +241,5 @@ struct ProfilePersonalInfoView: View {
         let min = calendar.date(byAdding: .year, value: -45, to: now)!
         let max = calendar.date(byAdding: .year, value: -18, to: now)!
         return min ... max
-    }
-
-    private var allowedDueDateRange: ClosedRange<Date> {
-        let calendar = Calendar.current
-        let now = Date()
-        let max = calendar.date(byAdding: .weekOfYear, value: 40, to: now)!
-        return now ... max
     }
 }
