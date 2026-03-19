@@ -17,8 +17,15 @@ struct SignInView: View {
                     Button {
                         Task { await handleSubmit() }
                     } label: {
-                        Text("Sign In")
-                            .frame(maxWidth: .infinity)
+                        if isLoading {
+                            ProgressView()
+                                .progressViewStyle(.circular)
+                                .tint(.white)
+                                .frame(maxWidth: .infinity)
+                        } else {
+                            Text("Sign In")
+                                .frame(maxWidth: .infinity)
+                        }
                     }
                     .frame(maxWidth: .infinity)
                     .buttonStyle(.borderedProminent)
@@ -52,6 +59,9 @@ struct SignInView: View {
     }
 
     func handleSubmit() async {
+        isLoading = true
+        defer { isLoading = false }
+
         let tokenPairResponse = try? await authenticationService.login(emailAddress: email, password: password)
         let credentialsResponse = try? await authenticationService.fetchCredentials()
 
@@ -83,6 +93,8 @@ struct SignInView: View {
     }
 
     // MARK: Private
+
+    @State private var isLoading: Bool = false
 
     @EnvironmentObject private var authenticationService: AuthenticationService
     @EnvironmentObject private var controlState: ControlState

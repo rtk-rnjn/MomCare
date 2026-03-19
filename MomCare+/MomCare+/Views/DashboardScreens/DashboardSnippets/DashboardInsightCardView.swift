@@ -1,26 +1,22 @@
 import SwiftUI
 
 struct DashboardInsightCardView: View {
+
+    // MARK: Internal
+
     let title: String
     let message: String
     let icon: String
 
     var body: some View {
         VStack(spacing: 0) {
-            VStack(alignment: .leading, spacing: 2) {
+            VStack(alignment: .center, spacing: 2) {
                 Text(message)
-                    .font(.footnote)
+                    .font(.subheadline)
                     .foregroundColor(.secondary)
                     .fontWeight(.semibold)
-                    .multilineTextAlignment(.leading)
-                    .lineLimit(5)
-                    .truncationMode(.tail)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .layoutPriority(1)
-                    .animation(
-                        .spring(response: 0.6, dampingFraction: 0.75),
-                        value: message
-                    )
+                    .contentTransition(reduceMotion ? .identity : .interpolate)
+                    .animation(reduceMotion ? nil : .spring(response: 0.6, dampingFraction: 0.75), value: message)
             }
             .padding(16)
             .frame(height: 135, alignment: .top)
@@ -37,6 +33,8 @@ struct DashboardInsightCardView: View {
                     .minimumScaleFactor(0.9)
                     .padding(.leading, 16)
                     .padding(.bottom, 18)
+                    .contentTransition(reduceMotion ? .identity : .interpolate)
+                    .animation(reduceMotion ? nil : .spring(response: 0.6, dampingFraction: 0.75), value: title)
 
                 ZStack {
                     Circle()
@@ -61,4 +59,9 @@ struct DashboardInsightCardView: View {
         .accessibilityValue(message)
         .accessibilityAddTraits(.isHeader)
     }
+
+    // MARK: Private
+
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+
 }

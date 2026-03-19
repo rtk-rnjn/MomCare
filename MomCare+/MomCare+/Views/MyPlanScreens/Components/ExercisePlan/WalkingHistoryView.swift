@@ -69,11 +69,6 @@ struct WalkingHistoryView: View {
 
     private var chartSubtitle: String = "Daily step count"
 
-    private var monthTitle: String {
-        let fmt = DateFormatter(); fmt.dateFormat = "MMMM yyyy"
-        return fmt.string(from: selectedDate)
-    }
-
     private var xAxisValues: [String] {
         return store.rangePoints.map { barLabel($0) }
     }

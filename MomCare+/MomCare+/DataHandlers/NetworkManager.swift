@@ -38,11 +38,9 @@ struct NetworkResponse<T: Codable>: Codable {
 
 class NetworkManager {
 
-    // MARK: Public
-
-    public static let shared: NetworkManager = .init()
-
     // MARK: Internal
+
+    static let shared: NetworkManager = .init()
 
     private(set) var debugMenuStore: DebugMenuStore?
 

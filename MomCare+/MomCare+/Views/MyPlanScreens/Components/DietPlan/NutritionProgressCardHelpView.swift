@@ -508,21 +508,6 @@ private struct SwipeDirectionBadge: View {
     }
 }
 
-private struct PanelDotsBadge: View {
-    let active: Int
-
-    var body: some View {
-        HStack(spacing: 4) {
-            ForEach(0..<3, id: \.self) { i in
-                Capsule()
-                    .fill(i == active ? Color(hex: "1B6CA8") : Color(.systemGray4))
-                    .frame(width: i == active ? 14 : 5, height: 5)
-            }
-        }
-        .frame(width: 50, height: 50)
-    }
-}
-
 private struct SymbolHelpBadge: View {
     let systemName: String
     let color: Color

@@ -1,4 +1,4 @@
-public enum Intolerance: String, Codable, CaseIterable, Sendable, Hashable {
+enum Intolerance: String, Codable, CaseIterable, Sendable, Hashable {
     case banana
     case beef
     case beans

@@ -125,9 +125,6 @@ struct DashboardView: View {
     @EnvironmentObject private var eventKitHandler: EventKitHandler
 
     @EnvironmentObject private var controlState: ControlState
-    @EnvironmentObject private var authenticationService: AuthenticationService
-
-    @Environment(\.dismiss) private var dismiss
 
     @State private var selectedEvent: EKCalendarItemWrapper?
 }

@@ -12,11 +12,6 @@ struct StepDataPoint: Identifiable {
         return fmt.string(from: date)
     }
 
-    var dayLabel: String {
-        let fmt = DateFormatter()
-        fmt.dateFormat = "M/d"
-        return fmt.string(from: date)
-    }
 }
 
 @MainActor
@@ -36,7 +31,6 @@ final class WalkingHistoryStore: ObservableObject {
     }
 
     var maximum: Int { rangePoints.map(\.steps).max() ?? 0 }
-    var minimum: Int { rangePoints.map(\.steps).min() ?? 0 }
 
     var totalForRange: Int { rangePoints.reduce(0) { $0 + $1.steps } }
 

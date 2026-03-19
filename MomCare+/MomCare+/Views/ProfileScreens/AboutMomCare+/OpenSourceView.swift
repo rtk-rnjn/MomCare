@@ -106,11 +106,3 @@ struct LicenseCardView: View {
         }
     }
 }
-
-struct OpenSourceView_Previews: PreviewProvider {
-    static var previews: some View {
-        NavigationView {
-            OpenSourceView()
-        }
-    }
-}

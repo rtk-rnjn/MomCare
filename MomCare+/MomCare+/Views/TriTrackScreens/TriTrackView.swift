@@ -55,6 +55,18 @@ struct TriTrackView: View {
                 .accessibilityIdentifier("expandCalendarButton")
             }
 
+            ToolbarItem(placement: .topBarLeading) {
+                Button {
+                    selectedDate = Date()
+                } label: {
+                    Image(systemName: "\(Calendar.current.component(.day, from: Date())).calendar")
+                        .font(.body)
+                        .foregroundColor(Color.CustomColors.mutedRaspberry)
+                }
+                .accessibilityLabel(controlState.showingExpandedCalendar ? "Collapse calendar" : "Expand calendar")
+                .accessibilityIdentifier("expandCalendarButton")
+            }
+
             ToolbarItemGroup(placement: .navigationBarTrailing) {
                 switch controlState.triTrackSegment {
                 case .meAndBaby:
@@ -245,7 +257,6 @@ struct PregnancyProgressView: View {
 
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
-    @State private var isScrollEnabled = true
     @State private var showingBabyInfo = false
     @State private var showingMomInfo = false
     @State private var selectedCardPosition: CGRect = .zero
@@ -380,7 +391,6 @@ struct PregnancyProgressView: View {
                     title: "Baby This Week",
                     content: trimesterData.babyTipText,
                     isShowing: $showingBabyInfo,
-                    cardPosition: selectedCardPosition,
                     accentColor: .CustomColors.mutedRaspberry
                 )
 
@@ -418,7 +428,6 @@ struct PregnancyProgressView: View {
                     title: "Mom This Week",
                     content: trimesterData.momTipText,
                     isShowing: $showingMomInfo,
-                    cardPosition: selectedCardPosition,
                     accentColor: .CustomColors.mutedRaspberry
                 )
 
@@ -588,7 +597,6 @@ struct PopupInfoCard: View {
     let content: String
     @Binding var isShowing: Bool
 
-    let cardPosition: CGRect
     let accentColor: Color
 
     var body: some View {

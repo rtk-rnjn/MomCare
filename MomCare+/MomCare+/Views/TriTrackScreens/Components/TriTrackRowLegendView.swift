@@ -44,7 +44,6 @@ struct TriTrackRowLegendView: View {
     // MARK: Private
 
     @Environment(\.dismiss) private var dismiss
-    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
 
     private var intro: some View {
         VStack(alignment: .leading, spacing: 8) {

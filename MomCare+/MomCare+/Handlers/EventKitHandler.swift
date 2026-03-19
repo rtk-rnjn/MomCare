@@ -18,20 +18,6 @@ final class EventKitHandler: ObservableObject {
     @Published var allReminders: [EKReminder] = []
     @Published var eventStore: EKEventStore = .init()
 
-    func startObservingEventStore() {
-        NotificationCenter.default.publisher(for: .EKEventStoreChanged)
-            .debounce(for: .milliseconds(300), scheduler: RunLoop.main)
-            .sink { _ in
-                self.reloadEvents()
-            }
-            .store(in: &cancellables)
-    }
-
-    func reloadEvents() {
-        try? fetchAllEvents()
-        try? fetchAllReminders()
-    }
-
     func getCalendar(with identifierKey: String) -> EKCalendar? {
         if let calendar = eventStore.calendar(withIdentifier: identifierKey) {
             return calendar

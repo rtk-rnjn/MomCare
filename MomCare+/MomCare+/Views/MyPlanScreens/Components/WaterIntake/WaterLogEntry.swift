@@ -8,13 +8,6 @@ struct WaterLogEntry: Identifiable, Equatable {
     let date: Date
     let milliliters: Double
 
-    var formattedTime: String {
-        let fmt = DateFormatter()
-        fmt.timeStyle = .short
-        fmt.dateStyle = .none
-        return fmt.string(from: date)
-    }
-
     var formattedDateTime: String {
         let fmt = DateFormatter()
         fmt.dateStyle = .medium

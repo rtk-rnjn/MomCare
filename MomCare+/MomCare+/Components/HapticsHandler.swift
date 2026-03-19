@@ -13,10 +13,4 @@ enum HapticsHandler {
         generator.prepare()
         generator.notificationOccurred(type)
     }
-
-    static func selection() {
-        let generator = UISelectionFeedbackGenerator()
-        generator.prepare()
-        generator.selectionChanged()
-    }
 }

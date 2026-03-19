@@ -8,21 +8,15 @@ class ContentService {
 
     static let shared: ContentService = .init()
 
-    private(set) var dailyInsights: DailyInsightModel?
-    private(set) var plan: MyPlanModel?
-    private(set) var userExercises: [UserExerciseModel] = []
-
     private(set) var userExercisesByDate: [Date: [UserExerciseModel]] = [:]
     private(set) var mealPlansByDate: [Date: [MyPlanModel]] = [:]
 
     func generateDailyInsights() async throws -> NetworkResponse<DailyInsightModel> {
         if let cachedInsights: DailyInsightModel = await CacheHandler.shared.get(forKey: "dailyInsights") {
-            dailyInsights = cachedInsights
             return NetworkResponse<DailyInsightModel>(data: cachedInsights, statusCode: 200, errorMessage: nil)
         }
 
         let response: NetworkResponse<DailyInsightModel> = try await NetworkManager.shared.get(url: Endpoint.generateTips.urlString, headers: AuthenticationService.authorizationHeaders)
-        dailyInsights = response.data
 
         await CacheHandler.shared.set(response.data as DailyInsightModel?, forKey: "dailyInsights")
         return response
@@ -30,12 +24,10 @@ class ContentService {
 
     func generateMealPlan() async throws -> NetworkResponse<MyPlanModel> {
         if let cachedPlan: MyPlanModel = await CacheHandler.shared.get(forKey: "mealPlan") {
-            plan = cachedPlan
             return NetworkResponse<MyPlanModel>(data: cachedPlan, statusCode: 200, errorMessage: nil)
         }
 
         let response: NetworkResponse<MyPlanModel> = try await NetworkManager.shared.get(url: Endpoint.generatePlan.urlString, headers: AuthenticationService.authorizationHeaders)
-        plan = response.data
 
         await CacheHandler.shared.set(response.data as MyPlanModel?, forKey: "mealPlan")
         return response
@@ -43,12 +35,10 @@ class ContentService {
 
     func generateUserExercises() async throws -> NetworkResponse<[UserExerciseModel]> {
         if let userExercises: [UserExerciseModel] = await CacheHandler.shared.get(forKey: "userExercises") {
-            self.userExercises = userExercises
             return NetworkResponse(data: userExercises, statusCode: 200, errorMessage: nil)
         }
 
         let response: NetworkResponse<[UserExerciseModel]> = try await NetworkManager.shared.get(url: Endpoint.generateExercises.urlString, headers: AuthenticationService.authorizationHeaders)
-        userExercises = response.data ?? []
         await CacheHandler.shared.set(response.data as [UserExerciseModel]?, forKey: "userExercises")
         return response
     }

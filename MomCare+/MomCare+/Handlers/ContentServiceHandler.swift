@@ -3,14 +3,15 @@ import HealthKit
 import SwiftUI
 import OSLog
 
-private let logger: Logger = .init(subsystem: "com.MomCare.ContentServiceHandler", category: "ObservableObject")
-
 final class ContentServiceHandler: ObservableObject {
 
     // MARK: Internal
 
     @Published var myPlanModel: MyPlanModel?
     @Published var userExercises: [UserExerciseModel] = []
+
+    @Published var isFetchingMealPlan: Bool = false
+    @Published var isFetchingExercises: Bool = false
 
     @Published var currentSteps: Double = 0
     @Published var targetSteps: Double = 4200
@@ -30,7 +31,6 @@ final class ContentServiceHandler: ObservableObject {
 
     @Published var weeklyProgress: [DayProgress] = .init()
 
-    @Published var minutes: Double = 0
     @Published var caloriesBurned: Int = 0
 
     @Published var todayFocusText: String = ""
@@ -85,33 +85,24 @@ final class ContentServiceHandler: ObservableObject {
         return status
     }
 
-    func fetchTotalUserExercisesDuration() async {
-        totalUserExercisesDuration = 0
+    func fetchUserExercises() async throws {
+        isFetchingExercises = true
+        defer { isFetchingExercises = false }
 
-        for userExercise in userExercises {
-            let exercise = await userExercise.exerciseModel
-            totalUserExercisesDuration += exercise?.videoDurationSeconds ?? 0
-        }
-    }
+        let networkResponse = try await ContentService.shared.generateUserExercises()
+        userExercises = networkResponse.data ?? []
 
-    func fetchTotalUserExercisesCompletionDuration() async {
-        totalUserExercisesCompletionDuration = 0
-
-        for userExercise in userExercises {
-            totalUserExercisesCompletionDuration += userExercise.videoDurationCompletedSeconds
-        }
-    }
-
-    func fetchTotalUserExercisesCompleted() async {
-        totalUserExercisesCompleted = 0
-
-        for userExercise in userExercises where await userExercise.isCompleted {
-            totalUserExercisesCompleted += 1
-        }
+        await fetchTotalUserExercisesDuration()
+        await fetchTotalUserExercisesCompletionDuration()
+        await fetchTotalUserExercisesCompleted()
+        await fetchWeeklyProgress()
     }
 
     func fetchMealPlan(makeNetworkCall: Bool = true) async throws {
+        defer { isFetchingMealPlan = false }
+
         if makeNetworkCall {
+            isFetchingMealPlan = true
             let networkResponse = try await ContentService.shared.generateMealPlan()
 
             myPlanModel = networkResponse.data
@@ -182,6 +173,31 @@ final class ContentServiceHandler: ObservableObject {
     // MARK: Private
 
     private let database: Database = .init()
+
+    private func fetchTotalUserExercisesDuration() async {
+        totalUserExercisesDuration = 0
+
+        for userExercise in userExercises {
+            let exercise = await userExercise.exerciseModel
+            totalUserExercisesDuration += exercise?.videoDurationSeconds ?? 0
+        }
+    }
+
+    private func fetchTotalUserExercisesCompletionDuration() async {
+        totalUserExercisesCompletionDuration = 0
+
+        for userExercise in userExercises {
+            totalUserExercisesCompletionDuration += userExercise.videoDurationCompletedSeconds
+        }
+    }
+
+    private func fetchTotalUserExercisesCompleted() async {
+        totalUserExercisesCompleted = 0
+
+        for userExercise in userExercises where await userExercise.isCompleted {
+            totalUserExercisesCompleted += 1
+        }
+    }
 
 }
 
@@ -254,13 +270,11 @@ extension ContentServiceHandler {
 
         try await fetchMealPlan()
     }
-}
 
-extension ContentServiceHandler {
     func updateExerciseCompletionDuration(id: String, duration: TimeInterval) async throws {
         let networkResponse = try await ContentService.shared.updateExerciseCompletion(userExerciseId: id, duration: duration)
         if let success = networkResponse.data, success {
-            if let index = userExercises.firstIndex(where: { $0.exerciseId == id }) {
+            if let index = userExercises.firstIndex(where: { $0.id == id }) {
                 await MainActor.run {
                     self.userExercises[index].videoDurationCompletedSeconds = duration
                 }
@@ -282,9 +296,7 @@ extension ContentServiceHandler {
         database[.breathing(startOfDate)] = duration
         breathingCompletionDuration = duration
     }
-}
 
-extension ContentServiceHandler {
     func fetchBreathingCompletionDuration(for date: Date) -> TimeInterval {
         if date > Date() {
             return 0

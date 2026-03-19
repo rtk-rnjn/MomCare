@@ -38,7 +38,6 @@ struct TriTrackEventRow: View {
     // MARK: Private
 
     @Environment(\.accessibilityDifferentiateWithoutColor) private var differentiateWithoutColor
-    @Environment(\.accessibilityReduceTransparency) private var reduceTransparency
 }
 
 extension TriTrackEventRow {

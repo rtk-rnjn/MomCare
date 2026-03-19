@@ -114,15 +114,6 @@ final class ControlState: ObservableObject {
 
     // MARK: Internal
 
-    @Published var showingOnboarding: Bool = false
-    @Published var showingSignIn: Bool = false
-    @Published var showingSignUp: Bool = false
-
-    @Published var showingSearchFoodItemSheet: Bool = false
-    @Published var showingAddFoodItemAlert: Bool = false
-    @Published var showingBreathingSheet: Bool = false
-    @Published var showingExerciseSheet: Bool = false
-
     @Published var showingExpandedCalendar: Bool = false
     @Published var showingAddEventSheet: Bool = false
     @Published var showingAddSymptomSheet: Bool = false

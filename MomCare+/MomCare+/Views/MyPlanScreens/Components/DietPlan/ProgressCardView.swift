@@ -4,16 +4,6 @@ enum CardDisplayMode: Int, CaseIterable {
     case calories
     case macros
     case micros
-
-    // MARK: Internal
-
-    var label: String {
-        switch self {
-        case .calories: return "Calories"
-        case .macros: return "Macros"
-        case .micros: return "Micros"
-        }
-    }
 }
 
 struct ProgressCardView: View {
@@ -38,7 +28,7 @@ struct ProgressCardView: View {
         .clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
         .shadow(color: .black.opacity(0.07), radius: 12, x: 0, y: 4)
         .scaleEffect(isPressed ? 0.97 : 1.0)
-        .onTapGesture(perform: !experimentalFeatures ? toggleExpansion : {})
+        .onTapGesture(perform: experimentalFeatures ? toggleExpansion : {})
         .gesture(pressGesture)
         .accessibilityElement(children: .contain)
         .accessibilityHint(isExpanded ? "Double tap to collapse" : "Double tap to expand details")
@@ -547,15 +537,6 @@ struct ProgressRingView: View {
     private enum TargetModification {
         case increased
         case decreased
-
-        // MARK: Internal
-
-        var displaySymbol: String {
-            switch self {
-            case .increased: return "+"
-            case .decreased: return "-"
-            }
-        }
     }
 
     @State private var showPercentage = false
@@ -669,15 +650,20 @@ struct MacroBarRow: View {
     }
 
     private var progress: Double {
-        guard let consumed, let target else { return 0 }
-        let consumedValue = consumed.converted(to: target.unit).value
-        let targetValue = target.value
+        guard let consumed, let originalTarget else { return 0 }
+        let consumedValue = consumed.converted(to: originalTarget.unit).value
+        let targetValue = originalTarget.value
         guard targetValue > 0 else { return 0 }
         return min(consumedValue / targetValue, 1.0)
     }
 
     private var percentageText: String {
-        "\(Int(progress * 100))%"
+        guard let consumed, let originalTarget else { return "0%" }
+        let consumedValue = consumed.converted(to: originalTarget.unit).value
+        let targetValue = originalTarget.value
+        guard targetValue > 0 else { return "0%" }
+        let progress = consumedValue / targetValue
+        return "\(Int(progress * 100))%"
     }
 
     private var difference: Double {

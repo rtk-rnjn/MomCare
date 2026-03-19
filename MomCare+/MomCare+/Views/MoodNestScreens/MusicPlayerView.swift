@@ -236,10 +236,6 @@ struct MusicPlayerView: View {
 
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
-    private var accentColor: Color {
-        Color(red: 139 / 255, green: 69 / 255, blue: 87 / 255)
-    }
-
 }
 
 struct SystemVolumeSlider: UIViewRepresentable {

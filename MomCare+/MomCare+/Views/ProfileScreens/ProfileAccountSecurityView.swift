@@ -22,7 +22,7 @@ struct ProfileAccountSecurityView: View {
             } header: {
                 Text("Account Information")
             } footer: {
-                Text("Changing your email address will force logout on all devices. You will need to log in again with the new email address.")
+                Text("Your email address is used for account recovery and notifications. Make sure to keep it up to date and secure.")
                     .font(.footnote)
                     .foregroundColor(.secondary)
             }
@@ -79,7 +79,7 @@ struct ProfileAccountSecurityView: View {
             } header: {
                 Text("Security")
             } footer: {
-                Text("Changing your password will force logout on all devices. You will need to log in again with the new password.")
+                Text("Your password must be at least 6 characters long. Make sure to choose a strong password to keep your account secure.")
                     .font(.footnote)
                     .foregroundColor(.secondary)
             }
@@ -92,10 +92,10 @@ struct ProfileAccountSecurityView: View {
                         showAppleConnectSheet = true
                     } label: {
                         if hasAppleIdentifier {
-                            Text("Disconnect")
+                            Text("Connected")
                                 .foregroundColor(.red)
                         } else {
-                            Text("Connected")
+                            Text("Connect")
                                 .foregroundColor(.green)
                         }
                     }
@@ -285,6 +285,8 @@ private extension ProfileAccountSecurityView {
                 TextField("", text: text)
                     .keyboardType(keyboard)
                     .multilineTextAlignment(.trailing)
+                    .autocorrectionDisabled()
+                    .textInputAutocapitalization(.never)
 
             } else {
 

@@ -6,6 +6,18 @@
 	objectVersion = 90;
 	objects = {
 
+/* Begin PBXAggregateTarget section */
+		92978CFD2F6C7053000F312A /* Periphery */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = 92978CFE2F6C7053000F312A /* Build configuration list for PBXAggregateTarget "Periphery" */;
+			buildPhases = (
+				92978D012F6C7062000F312A /* ShellScript */,
+			);
+			name = Periphery;
+			productName = Periphery;
+		};
+/* End PBXAggregateTarget section */
+
 /* Begin PBXBuildFile section */
 		922E93872F41A5D200B7C2EC /* LNPopupUI in Frameworks */ = {isa = PBXBuildFile; productRef = 922E93862F41A5D200B7C2EC /* LNPopupUI */; };
 		922E93882F41A5D200B7C2EC /* LNPopupUI in Embed Frameworks */ = {isa = PBXBuildFile; productRef = 922E93862F41A5D200B7C2EC /* LNPopupUI */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
@@ -233,6 +245,9 @@
 					184B28782F2626090086424A = {
 						CreatedOnToolsVersion = 26.2;
 					};
+					92978CFD2F6C7053000F312A = {
+						CreatedOnToolsVersion = 26.2;
+					};
 					929AA4392F475DCA00B5A347 = {
 						CreatedOnToolsVersion = 26.2;
 					};
@@ -258,6 +273,7 @@
 			targets = (
 				184B28782F2626090086424A /* MomCare */,
 				929AA4392F475DCA00B5A347 /* TriTrack GlanceExtension */,
+				92978CFD2F6C7053000F312A /* Periphery */,
 			);
 		};
 /* End PBXProject section */
@@ -274,6 +290,17 @@
 			);
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		92978D012F6C7062000F312A /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			shellPath = /bin/sh;
+			shellScript = (
+				"/opt/homebrew/bin/periphery scan --project MomCare.xcodeproj --schemes MomCare --format xcode",
+				"",
+			);
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		184B28752F2626090086424A /* Sources */ = {
@@ -455,7 +482,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 15.0;
-				MARKETING_VERSION = 0.18.4;
+				MARKETING_VERSION = 0.19;
 				PRODUCT_BUNDLE_IDENTIFIER = com.Team05.MomCare;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -516,7 +543,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 15.0;
-				MARKETING_VERSION = 0.18.4;
+				MARKETING_VERSION = 0.19;
 				PRODUCT_BUNDLE_IDENTIFIER = com.Team05.MomCare;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -537,6 +564,26 @@
 				SWIFT_VERSION = 6.0;
 				TARGETED_DEVICE_FAMILY = 1;
 				XROS_DEPLOYMENT_TARGET = 26.2;
+			};
+			name = Release;
+		};
+		92978CFF2F6C7053000F312A /* Debug configuration for PBXAggregateTarget "Periphery" */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 73B8W4ZN6V;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		92978D002F6C7053000F312A /* Release configuration for PBXAggregateTarget "Periphery" */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 73B8W4ZN6V;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
 		};
@@ -637,6 +684,14 @@
 			buildConfigurations = (
 				184B28852F26260C0086424A /* Debug configuration for PBXNativeTarget "MomCare" */,
 				184B28862F26260C0086424A /* Release configuration for PBXNativeTarget "MomCare" */,
+			);
+			defaultConfigurationName = Release;
+		};
+		92978CFE2F6C7053000F312A /* Build configuration list for PBXAggregateTarget "Periphery" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				92978CFF2F6C7053000F312A /* Debug configuration for PBXAggregateTarget "Periphery" */,
+				92978D002F6C7053000F312A /* Release configuration for PBXAggregateTarget "Periphery" */,
 			);
 			defaultConfigurationName = Release;
 		};

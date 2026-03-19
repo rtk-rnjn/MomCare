@@ -41,10 +41,6 @@ extension TriTrackReminderRow {
         reminder.dueDateComponents?.date
     }
 
-    var startDate: Date? {
-        reminder.startDateComponents?.date
-    }
-
     var hasRecurrence: Bool {
         !(reminder.recurrenceRules ?? []).isEmpty
     }

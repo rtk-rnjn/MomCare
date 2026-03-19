@@ -66,6 +66,8 @@ struct HealthMetricsSignUpView: View {
 
     @State private var navigateToThirdStep = false
 
+    @State private var isLoading: Bool = false
+
     private var allowedDOBRange: ClosedRange<Date> {
         let calendar = Calendar.current
         let now = Date()
@@ -160,8 +162,15 @@ struct HealthMetricsSignUpView: View {
                     await handleNext()
                 }
             } label: {
-                Text("Next")
-                    .frame(maxWidth: .infinity)
+                if isLoading {
+                    ProgressView()
+                        .progressViewStyle(.circular)
+                        .tint(.white)
+                        .frame(maxWidth: .infinity)
+                } else {
+                    Text("Next")
+                        .frame(maxWidth: .infinity)
+                }
             }
             .buttonStyle(.borderedProminent)
             .tint(MomCareAccent.primary)
@@ -235,6 +244,8 @@ struct HealthMetricsSignUpView: View {
     }
 
     private func handleNext() async {
+        isLoading = true
+        defer { isLoading = false }
         let missingFields = getMissingSelections()
 
         if !missingFields.isEmpty {
