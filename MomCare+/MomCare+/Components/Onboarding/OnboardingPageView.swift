@@ -9,11 +9,13 @@ struct OnboardingPageView: View {
                 .resizable()
                 .scaledToFit()
                 .frame(maxHeight: 400)
+                .accessibilityHidden(true)
 
             Text(page.title)
                 .font(.subheadline)
                 .fontWeight(.semibold)
                 .multilineTextAlignment(.center)
+                .accessibilityAddTraits(.isHeader)
         }
         .padding(.bottom, 22)
     }

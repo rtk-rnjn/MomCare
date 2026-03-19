@@ -25,10 +25,14 @@ struct MultiSelectPickerView<T: Hashable & CaseIterable & RawRepresentable>: Vie
                         if tempSelection.contains(item) {
                             Image(systemName: "checkmark")
                                 .foregroundStyle(.blue)
+                                .accessibilityHidden(true)
                         }
                     }
                 }
                 .tint(.primary)
+                .accessibilityLabel(item.rawValue.capitalized)
+                .accessibilityValue(tempSelection.contains(item) ? "Selected" : "Not selected")
+                .accessibilityHint("Double tap to toggle selection")
             }
             .navigationTitle(title)
             .navigationBarTitleDisplayMode(.inline)

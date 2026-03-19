@@ -16,6 +16,8 @@ struct InfoRow: View {
             Text(value)
                 .foregroundColor(isEditing ? Color("primaryAppColor") : .secondary)
         }
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel("\(title): \(value)")
     }
 }
 
@@ -43,6 +45,10 @@ struct InfoRowDate: View {
             guard isEditing else { return }
             onTap()
         }
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel("\(title): \(formatted)")
+        .accessibilityAddTraits(isEditing ? .isButton : [])
+        .accessibilityHint(isEditing ? "Activates date picker" : "")
     }
 
     // MARK: Private
