@@ -54,6 +54,7 @@ struct WaterLogListView: View {
 
     @Environment(\.dismiss) private var dismiss
     @Environment(\.accessibilityReduceTransparency) private var reduceTransparency
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     @State private var editingEntry: WaterLogEntry?
     @State private var showAddEntry = false

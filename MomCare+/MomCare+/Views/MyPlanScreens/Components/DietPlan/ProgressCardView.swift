@@ -272,10 +272,10 @@ private struct CaloriesSummaryView: View {
 
     // MARK: Private
 
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+
     private var remaining: Double { max(target - consumed, 0) }
     private var isOver: Bool { consumed > target }
-    
-    @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
 }
 
@@ -357,6 +357,9 @@ private struct ExpandedDetailView: View {
 }
 
 private struct CalorieStatPill: View {
+
+    // MARK: Internal
+
     let label: String
     let value: Double
     let color: Color
@@ -377,7 +380,9 @@ private struct CalorieStatPill: View {
         .padding(.vertical, 8)
         .background(color.opacity(0.08), in: RoundedRectangle(cornerRadius: 10, style: .continuous))
     }
-    
+
+    // MARK: Private
+
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
 }
 

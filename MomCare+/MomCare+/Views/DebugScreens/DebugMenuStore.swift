@@ -77,8 +77,8 @@ enum FeatureFlagState: String {
     case debugLogging
     case forceDarkMode
     case forceLightMode
-    case useMockAPIs
-    case uiDebuggingOverlays
+
+    case forceUseLargeTitle
 }
 
 struct DebugNetworkRequest: Identifiable {

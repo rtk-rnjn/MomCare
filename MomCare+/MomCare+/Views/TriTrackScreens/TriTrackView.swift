@@ -26,7 +26,7 @@ struct TriTrackView: View {
         .ignoresSafeArea(edges: .bottom)
         .background(MomCareAccent.secondary.ignoresSafeArea())
         .navigationTitle("TriTrack")
-        .navigationBarTitleDisplayMode(.large)
+        .navigationBarTitleDisplayMode(forceUseLargeTitle ? .large : .inline)
         .navigationDestination(isPresented: $showingAllEvents) {
             TriTrackAllCalendarItemView(selectedDate: $selectedDate)
         }
@@ -129,6 +129,8 @@ struct TriTrackView: View {
     }
 
     // MARK: Private
+
+    @AppStorage(FeatureFlagState.forceUseLargeTitle.rawValue, store: UserDefaults(suiteName: "group.MomCare")) private var forceUseLargeTitle: Bool = false
 
     @EnvironmentObject private var controlState: ControlState
     @EnvironmentObject private var authenticationService: AuthenticationService

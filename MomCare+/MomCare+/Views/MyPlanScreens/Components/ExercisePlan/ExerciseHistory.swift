@@ -137,6 +137,8 @@ private struct ExerciseDaySummaryCard: View {
     @State private var completedCount: Int = 0
     @State private var totalMinutes: Double = 0
 
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+
     private var overallProgress: Double {
         guard !exercises.isEmpty else { return 0 }
         return Double(completedCount) / Double(exercises.count)
@@ -148,8 +150,6 @@ private struct ExerciseDaySummaryCard: View {
         if mins > 0 { return "\(mins)m \(secs)s" }
         return "\(secs)s"
     }
-    
-    @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     private func summaryPill(icon: String, label: String, value: String, color: Color) -> some View {
         VStack(spacing: 4) {

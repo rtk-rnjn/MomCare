@@ -18,6 +18,10 @@ struct AboutMomCareView: View {
                     Text(appVersion)
                         .foregroundStyle(.secondary)
                 }
+                .onLongPressGesture(minimumDuration: 0.5) {
+                    debugOptions.toggle()
+                    HapticsHandler.impact(.medium)
+                }
                 .accessibilityElement(children: .combine)
                 .accessibilityLabel("App version \(appVersion)")
             }
@@ -32,18 +36,20 @@ struct AboutMomCareView: View {
                 }
             }
 
-            Section {
-                NavigationLink(destination: DebugMenuView()) {
-                    Text("Debug Options")
+            if debugOptions {
+                Section {
+                    NavigationLink(destination: DebugMenuView()) {
+                        Text("Debug Options")
+                    }
+                } footer: {
+                    Text("Debug options are intended for developers and testers to diagnose issues. Avoid using them unless you know what you're doing.")
+                        .font(.footnote)
+                        .foregroundColor(.secondary)
                 }
-
-            } footer: {
-                Text("Debug options are intended for developers and testers to diagnose issues. Avoid using them unless you know what you're doing.")
-                    .font(.footnote)
-                    .foregroundColor(.secondary)
+                .transition(.opacity.combined(with: .move(edge: .bottom)))
             }
-
         }
+        .animation(reduceMotion ? nil : .spring(), value: debugOptions)
         .navigationTitle("About MomCare+")
         .navigationBarTitleDisplayMode(.inline)
         .listStyle(.insetGrouped)
@@ -51,6 +57,9 @@ struct AboutMomCareView: View {
 
     // MARK: Private
 
-    private let appVersion: String = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "Failed to fetch app version"
+    @AppStorage("debugOptions", store: UserDefaults(suiteName: "group.MomCare")) private var debugOptions: Bool = false
 
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+
+    private let appVersion: String = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "Failed to fetch app version"
 }
