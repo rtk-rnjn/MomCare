@@ -17,7 +17,6 @@
 		929AA43B2F475DCA00B5A347 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 182465DE2F3DD32000125667 /* WidgetKit.framework */; };
 		929AA43C2F475DCA00B5A347 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 182465E02F3DD32000125667 /* SwiftUI.framework */; };
 		929AA44D2F475DCD00B5A347 /* TriTrack GlanceExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 929AA43A2F475DCA00B5A347 /* TriTrack GlanceExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
-		92B4B1C02F37F7D7004FA6E3 /* FSCalendar in Frameworks */ = {isa = PBXBuildFile; productRef = 184B2D002F2650000086424A /* FSCalendar */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -116,7 +115,6 @@
 				926AE26A2F65E65600F98A99 /* Collections in Frameworks */,
 				926AE26E2F65E65600F98A99 /* DequeModule in Frameworks */,
 				926AE26C2F65E65600F98A99 /* ContainersPreview in Frameworks */,
-				92B4B1C02F37F7D7004FA6E3 /* FSCalendar in Frameworks */,
 				922E93872F41A5D200B7C2EC /* LNPopupUI in Frameworks */,
 			);
 		};
@@ -192,7 +190,6 @@
 			);
 			name = MomCare;
 			packageProductDependencies = (
-				184B2D002F2650000086424A /* FSCalendar */,
 				922E93862F41A5D200B7C2EC /* LNPopupUI */,
 				926AE2652F65E65600F98A99 /* BasicContainers */,
 				926AE2672F65E65600F98A99 /* BitCollections */,
@@ -251,7 +248,6 @@
 			mainGroup = 184B28702F2626090086424A;
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
-				184B2CFF2F2650000086424A /* XCRemoteSwiftPackageReference "FSCalendar" */,
 				92C3EEB02F3EEAD8001C8C9B /* XCRemoteSwiftPackageReference "LNPopupUI" */,
 				926AE2642F65E65600F98A99 /* XCRemoteSwiftPackageReference "swift-collections" */,
 			);
@@ -655,14 +651,6 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		184B2CFF2F2650000086424A /* XCRemoteSwiftPackageReference "FSCalendar" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/WenchaoD/FSCalendar";
-			requirement = {
-				branch = master;
-				kind = branch;
-			};
-		};
 		926AE2642F65E65600F98A99 /* XCRemoteSwiftPackageReference "swift-collections" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/apple/swift-collections.git";
@@ -682,11 +670,6 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		184B2D002F2650000086424A /* FSCalendar */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 184B2CFF2F2650000086424A /* XCRemoteSwiftPackageReference "FSCalendar" */;
-			productName = FSCalendar;
-		};
 		922E93862F41A5D200B7C2EC /* LNPopupUI */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 92C3EEB02F3EEAD8001C8C9B /* XCRemoteSwiftPackageReference "LNPopupUI" */;

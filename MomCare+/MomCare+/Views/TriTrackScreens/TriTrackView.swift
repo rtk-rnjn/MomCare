@@ -1,4 +1,3 @@
-import FSCalendar
 import SwiftUI
 
 extension Color {

@@ -1,5 +1,4 @@
 import SwiftUI
-import FSCalendar
 
 private extension Color {
     static let planBg: Color = .init(red: 0.95, green: 0.96, blue: 0.97)

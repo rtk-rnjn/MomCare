@@ -21,6 +21,7 @@ final class ContentServiceHandler: ObservableObject {
 
     @Published var nurtitionConsumedTotals: NutritionTotals?
     @Published var nutritionTargetTotals: NutritionTotals?
+    @Published var originalNutritionTargetTotals: NutritionTotals?
 
     @Published var totalUserExercisesDuration: Double = 0
     @Published var totalUserExercisesCompletionDuration: Double = 0
@@ -117,12 +118,12 @@ final class ContentServiceHandler: ObservableObject {
         }
 
         let nurtitionConsumedTotals = await myPlanModel?.consumedNutrition()
-        let nutritionTargetTotals = await myPlanModel?.targetNutrition()
-
-        await MainActor.run {
-            self.nutritionTargetTotals = nutritionTargetTotals
-            self.nurtitionConsumedTotals = nurtitionConsumedTotals
-        }
+        let nutritionTargetTotals = await myPlanModel?.targetNutrition(of: .user)
+        let originalNutritionTargetTotals = await myPlanModel?.targetNutrition(of: .server)
+        
+        self.nutritionTargetTotals = nutritionTargetTotals
+        self.nurtitionConsumedTotals = nurtitionConsumedTotals
+        self.originalNutritionTargetTotals = originalNutritionTargetTotals
     }
 
     nonisolated func fetchHealthData(

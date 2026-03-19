@@ -43,6 +43,13 @@ struct MyPlanModel: Codable, Sendable {
         case lunch
         case dinner
         case snacks
+
+        // fucking hell, why i have to do this
+        case originalBreakfast = "original_breakfast"
+        case originalLunch = "original_lunch"
+        case originalDinner = "original_dinner"
+        case originalSnacks = "original_snacks"
+
         case createdAtTimestamp = "created_at_timestamp"
     }
 
@@ -54,6 +61,11 @@ struct MyPlanModel: Codable, Sendable {
     var lunch: [FoodReferenceModel]
     var dinner: [FoodReferenceModel]
     var snacks: [FoodReferenceModel]
+    
+    var originalBreakfast: [FoodReferenceModel] = []
+    var originalLunch: [FoodReferenceModel] = []
+    var originalDinner: [FoodReferenceModel] = []
+    var originalSnacks: [FoodReferenceModel] = []
 
     var createdAtTimestamp: TimeInterval
 
@@ -80,6 +92,10 @@ struct MyPlanModel: Codable, Sendable {
 extension MyPlanModel {
     var allReferences: [FoodReferenceModel] {
         breakfast + lunch + dinner + snacks
+    }
+    
+    var originalReferences: [FoodReferenceModel] {
+        originalBreakfast + originalLunch + originalDinner + originalSnacks
     }
 
     var consumedReferences: [FoodReferenceModel] {
