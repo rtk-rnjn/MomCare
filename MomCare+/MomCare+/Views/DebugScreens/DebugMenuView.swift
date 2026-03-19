@@ -44,7 +44,7 @@ enum DebugSection: String, CaseIterable, Identifiable {
     var title: String { rawValue }
 
     @ViewBuilder
-    func destination(store: DebugMenuStore) -> some View {
+    func destination(store: DebugMenuStore) -> some View { // swiftlint:disable:this cyclomatic_complexity
         switch self {
         case .deviceInfo: DeviceInfoView()
         case .accessibility: AccessibilityInspectorView()

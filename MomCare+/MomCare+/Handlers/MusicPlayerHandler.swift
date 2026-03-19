@@ -192,7 +192,7 @@ final class MusicPlayerHandler: ObservableObject {
             timeObserverToken = nil
         }
 
-        NotificationCenter.default.removeObserver(self)
+        NotificationCenter.default.removeObserver(self) // swiftlint:disable:this notification_center_detachment
 
     }
 
