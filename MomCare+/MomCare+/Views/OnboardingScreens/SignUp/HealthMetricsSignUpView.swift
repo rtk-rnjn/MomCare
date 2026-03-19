@@ -69,8 +69,10 @@ struct HealthMetricsSignUpView: View {
     private var allowedDOBRange: ClosedRange<Date> {
         let calendar = Calendar.current
         let now = Date()
-        let min = calendar.date(byAdding: .year, value: -45, to: now)!
-        let max = calendar.date(byAdding: .year, value: -18, to: now)!
+        guard let min = calendar.date(byAdding: .year, value: -45, to: now),
+              let max = calendar.date(byAdding: .year, value: -18, to: now) else {
+            return now ... now
+        }
         return min ... max
     }
 
@@ -88,6 +90,8 @@ struct HealthMetricsSignUpView: View {
                     )
             }
             .frame(height: 6)
+            .accessibilityLabel("Step 2 of 3, 50% complete")
+            .accessibilityAddTraits(.updatesFrequently)
 
             Text("Answer a few questions to help us create your profile")
                 .font(.subheadline)
@@ -164,6 +168,8 @@ struct HealthMetricsSignUpView: View {
             .controlSize(.large)
             .padding(.horizontal)
             .padding(.bottom, 20)
+            .accessibilityLabel("Next")
+            .accessibilityHint("Proceed to the next step")
         }
     }
 
@@ -184,10 +190,14 @@ struct HealthMetricsSignUpView: View {
 
                 Image(systemName: "chevron.up.chevron.down")
                     .foregroundStyle(MomCareAccent.primary)
+                    .accessibilityHidden(true)
             }
         }
         .tint(.primary)
         .listRowBackground(Color(.secondarySystemBackground))
+        .accessibilityLabel(title)
+        .accessibilityValue(value ?? "None")
+        .accessibilityHint("Tap to select \(title.lowercased())")
     }
 
     @ViewBuilder

@@ -24,6 +24,8 @@ struct SignInView: View {
                     .buttonStyle(.borderedProminent)
                     .tint(MomCareAccent.primary)
                     .controlSize(.large)
+                    .accessibilityLabel("Sign In")
+                    .accessibilityHint("Signs you in to your account")
                 }
                 .alert(alertTitle, isPresented: $showAlert) {
                     Button("OK", role: .cancel) {}
@@ -111,10 +113,14 @@ struct SignInView: View {
             .textInputAutocapitalization(.never)
             .autocorrectionDisabled()
             .listRowBackground(Color(.secondarySystemBackground))
+            .accessibilityLabel("Email address")
+            .accessibilityHint("Enter your email address")
     }
 
     private var passwordField: some View {
         SecureField("Password", text: $password)
             .listRowBackground(Color(.secondarySystemBackground))
+            .accessibilityLabel("Password")
+            .accessibilityHint("Enter your password")
     }
 }
