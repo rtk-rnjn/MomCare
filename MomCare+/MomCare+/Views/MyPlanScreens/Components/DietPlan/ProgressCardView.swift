@@ -85,8 +85,8 @@ struct ProgressCardView: View {
     }
 
     private var calorieProgress: Double {
-        guard caloriesTarget > 0 else { return 0 }
-        return min(caloriesConsumed / caloriesTarget, 1.0)
+        guard originalCaloriesTarget > 0 else { return 0 }
+        return min(caloriesConsumed / originalCaloriesTarget, 1.0)
     }
 
     private var collapsedHeader: some View {
@@ -526,7 +526,7 @@ struct ProgressRingView: View {
                         .foregroundStyle(.secondary)
 
                     if target != original {
-                        Text("\(target > original ? "+" : "-")\(Int(abs(target - original)))")
+                        Text(Int(target - original), format: .number.sign(strategy: .always()))
                             .font(.subheadline)
                             .foregroundStyle(modificationColor)
                     }
@@ -563,8 +563,8 @@ struct ProgressRingView: View {
     @Environment(\.accessibilityReduceTransparency) private var reduceTransparency
 
     private var percentage: Int {
-        guard target > 0 else { return 0 }
-        return Int((consumed / target) * 100)
+        guard original > 0 else { return 0 }
+        return Int((consumed / original) * 100)
     }
 
     private var targetModification: TargetModification? {
@@ -607,37 +607,7 @@ struct MacroBarRow: View {
                             .contentTransition(reduceMotion ? .identity : .numericText())
                             .animation(reduceMotion ? nil : .spring(response: 0.4, dampingFraction: 0.8), value: showPercentage)
                     } else {
-                        HStack(spacing: 4) {
-                            if let consumed {
-                                Text(consumed.formattedOneDecimal)
-                            } else {
-                                Text("-")
-                            }
-                            Text("/")
-                            if let target {
-                                if targetModification != nil {
-                                    HStack {
-                                        Text(originalTarget?.formattedOneDecimal ?? "-")
-                                            .foregroundColor(modificationColor)
-                                        if targetModification == .increased {
-                                            Image(systemName: "arrow.up")
-                                                .font(.caption2.bold())
-                                                .foregroundColor(modificationColor)
-                                        } else if targetModification == .decreased {
-                                            Image(systemName: "arrow.down")
-                                                .font(.caption2.bold())
-                                                .foregroundColor(modificationColor)
-                                        }
-                                    }
-                                } else {
-                                    Text(target.formattedOneDecimal)
-                                }
-                            } else {
-                                Text("-")
-                            }
-                        }
-                        .contentTransition(reduceMotion ? .identity : .numericText())
-                        .animation(reduceMotion ? nil : .spring(response: 0.4, dampingFraction: 0.8), value: showPercentage)
+                        numericView
                     }
                 }
                 .onTapGesture {
@@ -709,4 +679,69 @@ struct MacroBarRow: View {
     private var percentageText: String {
         "\(Int(progress * 100))%"
     }
+
+    private var difference: Double {
+        guard let consumed, let target, let originalTarget else { return 0 }
+
+        let consumedValue = consumed.converted(to: target.unit).value
+        let originalValue = originalTarget.converted(to: target.unit).value
+
+        return consumedValue - originalValue
+    }
+
+    private var numericView: some View {
+        HStack(spacing: 4) {
+            if let consumed {
+                HStack {
+                    Text("\(consumed.formattedOneDecimal)")
+                        .contentTransition(reduceMotion ? .identity : .numericText(value: consumed.value))
+                        .animation(reduceMotion ? nil : .spring(response: 0.4, dampingFraction: 0.8), value: consumed.value)
+
+                    if difference > 0 {
+                        Text("(\(difference, format: .number.sign(strategy: .always())))")
+                            .foregroundColor(.secondary)
+                            .contentTransition(reduceMotion ? .identity : .numericText(value: difference))
+                            .animation(reduceMotion ? nil : .spring(response: 0.4, dampingFraction: 0.8), value: difference)
+                    }
+                }
+                .animation(reduceMotion ? nil : .easeInOut, value: difference > 0)
+            } else {
+                Text("-")
+            }
+
+            Text("/")
+
+            if let target {
+                if let originalTarget, targetModification != nil {
+                    HStack {
+                        Text(originalTarget.formattedOneDecimal)
+                            .foregroundColor(modificationColor)
+
+                        if targetModification == .increased {
+                            Image(systemName: "arrow.up")
+                                .font(.caption2.bold())
+                                .foregroundColor(modificationColor)
+                                .contentTransition(reduceMotion ? .identity : .symbolEffect)
+                                .animation(reduceMotion ? nil : .spring(response: 0.4, dampingFraction: 0.8), value: targetModification)
+
+                        } else if targetModification == .decreased {
+                            Image(systemName: "arrow.down")
+                                .font(.caption2.bold())
+                                .foregroundColor(modificationColor)
+                                .contentTransition(reduceMotion ? .identity : .symbolEffect)
+                                .animation(reduceMotion ? nil : .spring(response: 0.4, dampingFraction: 0.8), value: targetModification)
+                        }
+                    }
+                } else {
+                    Text(target.formattedOneDecimal)
+                        .contentTransition(reduceMotion ? .identity : .numericText(value: target.value))
+                        .animation(reduceMotion ? nil : .spring(response: 0.4, dampingFraction: 0.8), value: target.value)
+                }
+            } else {
+                Text("-")
+            }
+        }
+        .animation(reduceMotion ? nil : .spring(response: 0.4, dampingFraction: 0.8), value: showPercentage)
+    }
+
 }
