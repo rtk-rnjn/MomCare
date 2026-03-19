@@ -79,6 +79,8 @@ struct MyPlanFoodItemSearchView: View {
                 .foregroundStyle(.secondary)
             Spacer()
         }
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel("Searching for food")
     }
 
     private var emptyStateView: some View {
@@ -89,6 +91,8 @@ struct MyPlanFoodItemSearchView: View {
                 .foregroundStyle(.secondary)
             Spacer()
         }
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel("No results for \(searchText)")
     }
 
     private var placeholderView: some View {
@@ -97,11 +101,14 @@ struct MyPlanFoodItemSearchView: View {
             Image(systemName: "magnifyingglass")
                 .font(.largeTitle.weight(.light))
                 .foregroundStyle(.tertiary)
+                .accessibilityHidden(true)
             Text("Search to find food")
                 .font(.subheadline)
                 .foregroundStyle(.secondary)
             Spacer()
         }
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel("Search to find food")
     }
 
     private var foodList: some View {
@@ -189,10 +196,14 @@ struct FoodRowView: View {
             Image(systemName: "chevron.right")
                 .font(.caption2)
                 .foregroundStyle(.tertiary)
+                .accessibilityHidden(true)
         }
         .padding(12)
         .background(Color(.secondarySystemGroupedBackground))
         .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel("\(food.name.capitalized), \(Int(food.totalCalories)) kilocalories, \(food.type.displayLabel)")
+        .accessibilityHint("Double tap to view nutrition details")
     }
 }
 
@@ -229,6 +240,8 @@ struct NutritionDetailSheet: View {
             .padding(.horizontal, 20)
             .padding(.top, 24)
             .padding(.bottom, 20)
+            .accessibilityElement(children: .combine)
+            .accessibilityLabel("\(food.name.capitalized), \(food.type.displayLabel)")
 
             Divider()
                 .padding(.horizontal, 20)
@@ -302,6 +315,8 @@ struct NutritionCell: View {
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(.vertical, 14)
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel("\(label), \(value) \(unit)")
     }
 }
 

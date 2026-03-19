@@ -30,6 +30,8 @@ struct MyPlanExercisePlanView: View {
                             Spacer()
                         }
                         .padding(.horizontal, 4)
+                        .accessibilityElement(children: .combine)
+                        .accessibilityAddTraits(.isHeader)
 
                         BreathingCardView(onInfo: {
                             withAnimation(reduceMotion ? nil : .spring(response: 0.5, dampingFraction: 0.85)) {
@@ -110,6 +112,7 @@ struct MyPlanExercisePlanView: View {
                     Image(systemName: "ellipsis")
                         .accessibilityHidden(true)
                 }
+                .accessibilityLabel("More options")
             }
         }
         .padding(.top, 8)

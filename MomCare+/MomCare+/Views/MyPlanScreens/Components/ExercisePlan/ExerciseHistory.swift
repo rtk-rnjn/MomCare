@@ -73,7 +73,7 @@ struct ExerciseHistory: View {
         defer { isLoading = false }
 
         let startDate = Calendar.current.startOfDay(for: selectedDate)
-        let endDate = Calendar.current.date(byAdding: .day, value: 1, to: startDate)!
+        guard let endDate = Calendar.current.date(byAdding: .day, value: 1, to: startDate) else { return }
 
         let response = try? await ContentService.shared.fetchUserExercises(from: startDate, to: endDate)
 
@@ -127,6 +127,8 @@ private struct ExerciseDaySummaryCard: View {
             RoundedRectangle(cornerRadius: 18, style: .continuous)
                 .stroke(Color(.separator).opacity(0.4), lineWidth: 1)
         )
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel("Day summary: \(completedCount) of \(exercises.count) exercises completed, \(formattedMinutes) total time, \(Int(overallProgress * 100)) percent progress")
         .task { await computeStats() }
     }
 

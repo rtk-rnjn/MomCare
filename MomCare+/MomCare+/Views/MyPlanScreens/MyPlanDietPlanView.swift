@@ -75,6 +75,7 @@ struct MyPlanDietPlanView: View {
                     Image(systemName: "ellipsis")
                         .accessibilityHidden(true)
                 }
+                .accessibilityLabel("More options")
             }
         }
         .sheet(isPresented: $showHelp) {
