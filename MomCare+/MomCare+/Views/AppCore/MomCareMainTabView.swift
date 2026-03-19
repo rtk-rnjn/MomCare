@@ -94,7 +94,7 @@ struct MomCareMainTabView: View {
                 await refreshAccessToken()
             }
         }
-        
+
         // HealthKitAccess
         .task {
             requestingHealthKitAccess = true
@@ -108,7 +108,7 @@ struct MomCareMainTabView: View {
                 controlState.error = error
             }
         }
-        
+
         // EventKitAccess
         .task {
             requestingEventKitAccess = true

@@ -85,38 +85,13 @@ final class ContentServiceHandler: ObservableObject {
         return status
     }
 
-    private func fetchTotalUserExercisesDuration() async {
-        totalUserExercisesDuration = 0
-
-        for userExercise in userExercises {
-            let exercise = await userExercise.exerciseModel
-            totalUserExercisesDuration += exercise?.videoDurationSeconds ?? 0
-        }
-    }
-
-    private func fetchTotalUserExercisesCompletionDuration() async {
-        totalUserExercisesCompletionDuration = 0
-
-        for userExercise in userExercises {
-            totalUserExercisesCompletionDuration += userExercise.videoDurationCompletedSeconds
-        }
-    }
-
-    private func fetchTotalUserExercisesCompleted() async {
-        totalUserExercisesCompleted = 0
-
-        for userExercise in userExercises where await userExercise.isCompleted {
-            totalUserExercisesCompleted += 1
-        }
-    }
-
     func fetchUserExercises() async throws {
         isFetchingExercises = true
         defer { isFetchingExercises = false }
 
         let networkResponse = try await ContentService.shared.generateUserExercises()
         userExercises = networkResponse.data ?? []
-        
+
         await fetchTotalUserExercisesDuration()
         await fetchTotalUserExercisesCompletionDuration()
         await fetchTotalUserExercisesCompleted()
@@ -199,6 +174,31 @@ final class ContentServiceHandler: ObservableObject {
 
     private let database: Database = .init()
 
+    private func fetchTotalUserExercisesDuration() async {
+        totalUserExercisesDuration = 0
+
+        for userExercise in userExercises {
+            let exercise = await userExercise.exerciseModel
+            totalUserExercisesDuration += exercise?.videoDurationSeconds ?? 0
+        }
+    }
+
+    private func fetchTotalUserExercisesCompletionDuration() async {
+        totalUserExercisesCompletionDuration = 0
+
+        for userExercise in userExercises {
+            totalUserExercisesCompletionDuration += userExercise.videoDurationCompletedSeconds
+        }
+    }
+
+    private func fetchTotalUserExercisesCompleted() async {
+        totalUserExercisesCompleted = 0
+
+        for userExercise in userExercises where await userExercise.isCompleted {
+            totalUserExercisesCompleted += 1
+        }
+    }
+
 }
 
 extension ContentServiceHandler {
@@ -274,7 +274,7 @@ extension ContentServiceHandler {
     func updateExerciseCompletionDuration(id: String, duration: TimeInterval) async throws {
         let networkResponse = try await ContentService.shared.updateExerciseCompletion(userExerciseId: id, duration: duration)
         if let success = networkResponse.data, success {
-            if let index = userExercises.firstIndex(where: { $0.exerciseId == id }) {
+            if let index = userExercises.firstIndex(where: { $0.id == id }) {
                 await MainActor.run {
                     self.userExercises[index].videoDurationCompletedSeconds = duration
                 }

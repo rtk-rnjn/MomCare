@@ -147,7 +147,7 @@ struct ExerciseCardView: View {
                                 HapticsHandler.notification(.error)
                             }
                             startExercisePlayer = false
-                            
+
                             await contentServiceHandler.fetchWeeklyProgress()
                         }
                     }

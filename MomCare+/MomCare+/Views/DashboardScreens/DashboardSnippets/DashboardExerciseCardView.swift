@@ -9,7 +9,7 @@ struct DashboardExerciseCard: View {
     var body: some View {
         HStack {
             VStack(alignment: .leading, spacing: 18) {
-                ExerciseRow(color: .red, icon: "figure.walk", value: "\(Int(contentServiceHandler.currentSteps)) Steps")
+                ExerciseRow(color: .red, icon: "figure.walk", value: "\(Int(contentServiceHandler.currentSteps)) steps")
                 ExerciseRow(color: .green, icon: "timer", value: displaySeconds)
                 ExerciseRow(color: .orange, icon: "flame.fill", value: "\(Int(calories)) \(UnitMass.grams.symbol)")
             }
@@ -31,11 +31,6 @@ struct DashboardExerciseCard: View {
         .accessibilityLabel("Exercise activity")
         .accessibilityIdentifier("dashboardExerciseCard")
         .onAppear {
-            displaySeconds = formatSeconds(contentServiceHandler.totalUserExercisesCompletionDuration)
-
-            updateExerciseProgress()
-        }
-        .onChange(of: contentServiceHandler.userExercises) {
             displaySeconds = formatSeconds(contentServiceHandler.totalUserExercisesCompletionDuration)
 
             updateExerciseProgress()

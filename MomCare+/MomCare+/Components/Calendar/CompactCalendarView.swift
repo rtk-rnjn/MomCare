@@ -7,6 +7,8 @@ struct CompactCalendarView: View {
     @Binding var selectedDate: Date
     @Binding var isExpanded: Bool
 
+    @State var displayedDate: Date = .init()
+
     var body: some View {
         VStack(spacing: 0) {
             header
@@ -74,6 +76,9 @@ struct CompactCalendarView: View {
                 expandProgress = newValue ? 1 : 0
             }
         }
+        .onChange(of: selectedDate) { _, newValue in
+            displayedDate = newValue
+        }
     }
 
     // MARK: Private
@@ -81,7 +86,6 @@ struct CompactCalendarView: View {
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     @State private var slideOffset: CGFloat = 0
-    @State private var displayedDate: Date = .init()
     @State private var incomingDate: Date?
     @State private var incomingDirection: CGFloat = 0
     @State private var isDraggingHorizontal: Bool?
@@ -164,13 +168,6 @@ struct CompactCalendarView: View {
                         .animation(.none, value: slideOffset)
                     }
                     .frame(height: monthHeaderHeight)
-
-//                    Image(systemName: "chevron.down")
-//                        .font(.caption2.weight(.semibold))
-//                        .foregroundColor(.secondary)
-//                        .rotationEffect(.degrees(expandProgress * -180))
-//                        .animation(reduceMotion ? nil : .spring(response: 0.3, dampingFraction: 0.8), value: expandProgress)
-//                        .accessibilityHidden(true)
                 }
             }
             .buttonStyle(.plain)

@@ -8,52 +8,14 @@ struct MyPlanExercisePlanView: View {
     var body: some View {
         VStack(spacing: 12) {
             WeeklyProgressCardView(
-                completedCount: contentServiceHandler.totalUserExercisesCompleted + (breathingCompleted ? 1 : 0) + (walkingCompleted ? 1 : 0),
+                completedCount: completedCount,
                 totalCount: contentServiceHandler.userExercises.count + 2
             )
             .padding(.horizontal, 16)
 
             VStack(spacing: 0) {
                 ScrollView(.vertical, showsIndicators: false) {
-                    VStack(spacing: 14) {
-                        WalkingCardView()
-                            .onTapGesture {
-                                if experimentalFeatures {
-                                    showWalkingHistory = true
-                                }
-                            }
-
-                        HStack {
-                            Text("Today's Exercises")
-                                .font(.headline)
-                                .foregroundColor(.primary)
-                            Spacer()
-                        }
-                        .padding(.horizontal, 4)
-                        .accessibilityElement(children: .combine)
-                        .accessibilityAddTraits(.isHeader)
-
-                        BreathingCardView(onInfo: {
-                            withAnimation(reduceMotion ? nil : .spring(response: 0.5, dampingFraction: 0.85)) {
-                                showingBreathingInfo = true
-                            }
-                        })
-
-                        ForEach(contentServiceHandler.userExercises) { exercise in
-                            ExerciseCardView(
-                                userExerciseModel: exercise,
-                                onInfo: {
-                                    selectedExerciseInfo = exercise
-                                    withAnimation(reduceMotion ? nil : .spring(response: 0.5, dampingFraction: 0.85)) {
-                                        showingExerciseInfo = true
-                                    }
-                                }
-                            )
-                        }
-                    }
-                    .padding(.horizontal, 16)
-                    .padding(.top, 16)
-                    .padding(.bottom, 50)
+                    exerciseCardsView
                 }
                 .refreshable {
                     HapticsHandler.impact(.medium)
@@ -133,11 +95,6 @@ struct MyPlanExercisePlanView: View {
         .onChange(of: contentServiceHandler.currentSteps) {
             walkingCompleted = contentServiceHandler.currentSteps >= contentServiceHandler.targetSteps
         }
-        .onChange(of: contentServiceHandler.userExercises) {
-            Task {
-                await contentServiceHandler.fetchTotalUserExercisesCompleted()
-            }
-        }
     }
 
     // MARK: Private
@@ -160,6 +117,49 @@ struct MyPlanExercisePlanView: View {
 
     @State private var breathingCompleted: Bool = false
     @State private var walkingCompleted: Bool = false
+
+    private var completedCount: Int {
+        contentServiceHandler.totalUserExercisesCompleted + (breathingCompleted ? 1 : 0) + (walkingCompleted ? 1 : 0)
+    }
+
+    private var exerciseCardsView: some View {
+        VStack(spacing: 14) {
+            WalkingCardView()
+                .onTapGesture {
+                    if experimentalFeatures {
+                        showWalkingHistory = true
+                    }
+                }
+
+            HStack {
+                Text("Today's Exercises")
+                    .font(.headline)
+                    .foregroundColor(.primary)
+                Spacer()
+            }
+            .padding(.horizontal, 4)
+            .accessibilityElement(children: .combine)
+            .accessibilityAddTraits(.isHeader)
+
+            BreathingCardView {
+                withAnimation(reduceMotion ? nil : .spring(response: 0.5, dampingFraction: 0.85)) {
+                    showingBreathingInfo = true
+                }
+            }
+
+            ForEach(contentServiceHandler.userExercises) { exercise in
+                ExerciseCardView(userExerciseModel: exercise) {
+                    selectedExerciseInfo = exercise
+                    withAnimation(reduceMotion ? nil : .spring(response: 0.5, dampingFraction: 0.85)) {
+                        showingExerciseInfo = true
+                    }
+                }
+            }
+        }
+        .padding(.horizontal, 16)
+        .padding(.top, 16)
+        .padding(.bottom, 50)
+    }
 
     private func exerciseInfoOverlay() -> some View {
         ZStack {
@@ -188,4 +188,5 @@ struct MyPlanExercisePlanView: View {
             }
         }
     }
+
 }

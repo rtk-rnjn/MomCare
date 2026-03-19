@@ -55,6 +55,18 @@ struct TriTrackView: View {
                 .accessibilityIdentifier("expandCalendarButton")
             }
 
+            ToolbarItem(placement: .topBarLeading) {
+                Button {
+                    selectedDate = Date()
+                } label: {
+                    Image(systemName: "\(Calendar.current.component(.day, from: Date())).calendar")
+                        .font(.body)
+                        .foregroundColor(Color.CustomColors.mutedRaspberry)
+                }
+                .accessibilityLabel(controlState.showingExpandedCalendar ? "Collapse calendar" : "Expand calendar")
+                .accessibilityIdentifier("expandCalendarButton")
+            }
+
             ToolbarItemGroup(placement: .navigationBarTrailing) {
                 switch controlState.triTrackSegment {
                 case .meAndBaby:
