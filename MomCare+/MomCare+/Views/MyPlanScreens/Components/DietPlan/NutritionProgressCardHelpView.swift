@@ -80,6 +80,14 @@ struct NutritionProgressCardHelpView: View {
                         label: "Goal reached",
                         description: "When you hit or exceed your calorie target the ring completes and the fill colour shifts to indicate you've met your goal for the day."
                     )
+
+                    HelpDivider()
+
+                    HelpRow(
+                        badge: RingBadge(progress: 1.15, label: "115%", color: Color(hex: "E07B8A")),
+                        label: "Over target",
+                        description: "If you go over your calorie target, the ring remains full but changes to a soft red to show that you have exceeded your goal. The percentage view makes it easy to see how much you've gone over at a glance (in this example, 15% over target)."
+                    )
                 }
             }
         }

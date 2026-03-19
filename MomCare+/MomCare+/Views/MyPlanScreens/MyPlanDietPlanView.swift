@@ -21,18 +21,6 @@ struct MyPlanDietPlanView: View {
                     Label("Show Pretty Graph", systemImage: "chart.bar.xaxis")
                 }
             }
-            .fullScreenCover(isPresented: $showGraph) {
-                NutritionGraphRootView()
-                    .environmentObject(contentServiceHandler)
-            }
-            .fullScreenCover(isPresented: $showWaterLog) {
-                WaterLogView()
-            }
-            .fullScreenCover(isPresented: $showHistory) {
-                if let mealPlan = contentServiceHandler.myPlanModel {
-                    DietPlanHistory(plan: mealPlan)
-                }
-            }
 
             MealTimelineCardView()
                 .refreshable {
@@ -46,6 +34,18 @@ struct MyPlanDietPlanView: View {
                 .padding(.horizontal, 16)
         }
         .padding(.top, 8)
+        .fullScreenCover(isPresented: $showGraph) {
+            NutritionGraphRootView()
+                .environmentObject(contentServiceHandler)
+        }
+        .fullScreenCover(isPresented: $showWaterLog) {
+            WaterLogView()
+        }
+        .fullScreenCover(isPresented: $showHistory) {
+            if let mealPlan = contentServiceHandler.myPlanModel {
+                DietPlanHistory(plan: mealPlan)
+            }
+        }
         .toolbar {
             ToolbarItem(placement: .confirmationAction) {
                 Menu {

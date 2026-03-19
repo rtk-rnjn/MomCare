@@ -129,7 +129,7 @@ struct CompactCalendarView: View {
                     expandProgress = isExpanded ? 1 : 0
                 }
             } label: {
-                HStack(spacing: 6) {
+                HStack(alignment: .center) {
 
                     GeometryReader { g in
                         let w = max(g.size.width, 1)
@@ -142,7 +142,7 @@ struct CompactCalendarView: View {
 
                         let dir: CGFloat = slideOffset < 0 ? -1 : 1
 
-                        ZStack(alignment: .leading) {
+                        ZStack(alignment: .center) {
                             Text(currentTitleDate.formatted(.dateTime.month(.wide).year()))
                                 .font(.subheadline)
                                 .foregroundColor(.secondary)
@@ -159,18 +159,18 @@ struct CompactCalendarView: View {
                                     .offset(x: 8 * (1 - t) * dir)
                             }
                         }
-                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .frame(maxWidth: .infinity, alignment: .center)
                         .clipped()
                         .animation(.none, value: slideOffset)
                     }
                     .frame(height: monthHeaderHeight)
 
-                    Image(systemName: "chevron.down")
-                        .font(.caption2.weight(.semibold))
-                        .foregroundColor(.secondary)
-                        .rotationEffect(.degrees(expandProgress * -180))
-                        .animation(reduceMotion ? nil : .spring(response: 0.3, dampingFraction: 0.8), value: expandProgress)
-                        .accessibilityHidden(true)
+//                    Image(systemName: "chevron.down")
+//                        .font(.caption2.weight(.semibold))
+//                        .foregroundColor(.secondary)
+//                        .rotationEffect(.degrees(expandProgress * -180))
+//                        .animation(reduceMotion ? nil : .spring(response: 0.3, dampingFraction: 0.8), value: expandProgress)
+//                        .accessibilityHidden(true)
                 }
             }
             .buttonStyle(.plain)

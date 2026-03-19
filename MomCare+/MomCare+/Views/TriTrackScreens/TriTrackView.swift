@@ -40,7 +40,7 @@ struct TriTrackView: View {
             TriTrackRowLegendView()
         }
         .toolbar {
-            ToolbarItem(placement: .topBarTrailing) {
+            ToolbarItem(placement: .topBarLeading) {
                 Button {
                     withAnimation(reduceMotion ? nil : .spring(response: 0.3, dampingFraction: 0.8)) {
                         controlState.showingExpandedCalendar.toggle()
@@ -439,11 +439,13 @@ struct ComparisonView: View {
     let trimesterData: TrimesterData
     let imageName: String?
 
+    @ScaledMetric(relativeTo: .title3) var size: CGFloat = 64
+
     var body: some View {
         HStack(spacing: 0) {
             VStack(alignment: .center) {
                 Text(fruitEmoji)
-                    .font(.largeTitle)
+                    .font(.system(size: size)) // exception case. i know we're avoiding .system(size:) font
                     .contentTransition(reduceMotion ? .identity : .interpolate)
                     .animation(reduceMotion ? nil : .interpolatingSpring, value: fruitEmoji)
 
