@@ -17,6 +17,7 @@ struct EyeView: View {
         .frame(width: 130, height: 130)
         .scaleEffect(moodNestViewModel.eyeScale)
         .rotationEffect(rotation)
+        .accessibilityHidden(true)
     }
 }
 
@@ -35,6 +36,7 @@ struct SmileView: View {
             )
             .frame(width: 70, height: 30)
             .rotationEffect(rotation)
+            .accessibilityHidden(true)
     }
 }
 

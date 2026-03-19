@@ -15,5 +15,6 @@ struct MoodFaceView: View {
                 color: moodNestViewModel.faceColor
             )
         }
+        .accessibilityHidden(true)
     }
 }

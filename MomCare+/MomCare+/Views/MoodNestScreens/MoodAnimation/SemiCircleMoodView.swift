@@ -22,6 +22,9 @@ struct SemiCircleMoodView: View {
                 .rotationEffect(.degrees(180))
                 .animation(reduceMotion ? nil : .easeInOut(duration: 0.4), value: moodValue)
         }
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel("Mood indicator")
+        .accessibilityValue("\(Int(moodValue)) out of 10")
         .padding(40)
     }
 
