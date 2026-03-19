@@ -22,7 +22,7 @@ struct InitialsAvatar: View {
                 .foregroundColor(MomCareAccent.primary)
         }
         .accessibilityLabel("Profile picture for \(name)")
-        .accessibilityHidden(initials.isEmpty)
+        .accessibilityHidden(name.isEmpty)
     }
 }
 
