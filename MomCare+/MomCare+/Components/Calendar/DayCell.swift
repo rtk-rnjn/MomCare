@@ -41,7 +41,7 @@ struct DayCell: View {
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     private var accessibilityDateLabel: String {
-        var label = date.formatted(.dateTime.weekday(.wide).month(.wide).day().year())
+        var label = date.formatted(.dateTime.weekday(.wide).month(.wide).day())
         if isSelected { label += ", selected" }
         if isToday { label += ", today" }
         return label

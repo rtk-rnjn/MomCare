@@ -439,7 +439,7 @@ struct ComparisonView: View {
         HStack(spacing: 0) {
             VStack(alignment: .center) {
                 Text(fruitEmoji)
-                    .font(.system(size: 64))
+                    .font(.largeTitle)
                     .contentTransition(reduceMotion ? .identity : .interpolate)
                     .animation(reduceMotion ? nil : .interpolatingSpring, value: fruitEmoji)
 

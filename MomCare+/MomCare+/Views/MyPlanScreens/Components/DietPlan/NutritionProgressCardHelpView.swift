@@ -409,14 +409,14 @@ private struct RingWithDeltaBadge: View {
                     .stroke(MomCareAccent.primary, style: StrokeStyle(lineWidth: 5, lineCap: .round))
                     .rotationEffect(.degrees(-90))
                 Text(label)
-                    .font(.system(size: 8).weight(.bold))
+                    .font(.caption2.weight(.bold))
                     .multilineTextAlignment(.center)
                     .foregroundStyle(.primary)
             }
             .frame(width: 42, height: 42)
 
             Text(deltaLabel)
-                .font(.system(size: 8).weight(.semibold))
+                .font(.caption2.weight(.semibold))
                 .foregroundColor(.secondary)
                 .padding(.horizontal, 3)
                 .padding(.vertical, 1)
@@ -442,7 +442,7 @@ private struct MacroWithArrowBadge: View {
                     .foregroundStyle(.secondary)
                 Spacer()
                 Image(systemName: arrow == "up" ? "arrow.up" : "arrow.down")
-                    .font(.system(size: 8).weight(.bold))
+                    .font(.caption2.weight(.bold))
                     .foregroundStyle(.secondary)
             }
             GeometryReader { geo in
