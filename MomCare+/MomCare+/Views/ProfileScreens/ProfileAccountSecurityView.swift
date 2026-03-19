@@ -1,4 +1,5 @@
 import SwiftUI
+import AuthenticationServices
 
 struct ProfileAccountSecurityView: View {
 
@@ -86,16 +87,48 @@ struct ProfileAccountSecurityView: View {
                 HStack {
                     Text("Apple ID")
                     Spacer()
-                    Button {} label: {
-                        Text("Disconnect")
-                            .foregroundColor(.red)
+                    Button {
+                        showAppleConnectSheet = true
+                    } label: {
+                        if hasAppleIdentifier {
+                            Text("Disconnect")
+                                .foregroundColor(.red)
+                        } else {
+                            Text("Connected")
+                                .foregroundColor(.green)
+                        }
                     }
+                    .disabled(hasAppleIdentifier)
                 }
             } header: {
                 Text("Third Party Integration")
             }
         }
         .listStyle(.insetGrouped)
+        .sheet(isPresented: $showAppleConnectSheet) {
+            NavigationStack {
+                HStack {
+                    SignInWithAppleButton(.signIn) { request in
+                        request.requestedScopes = []
+                    } onCompletion: { result in
+                        Task {
+                            try? await handleAppleSignIn(result)
+                        }
+                    }
+                }
+                .navigationTitle("Connect with Apple")
+                .navigationSubtitle("Secure your account")
+                .toolbar {
+                    ToolbarItem(placement: .cancellationAction) {
+                        Button(role: .cancel) {
+                            showAppleConnectSheet = false
+                        }
+                    }
+                }
+                .presentationDetents([.medium, .fraction(0.25)])
+                .interactiveDismissDisabled()
+            }
+        }
         .navigationTitle("Account & Security")
         .navigationBarTitleDisplayMode(.inline)
         .alert("Error", isPresented: $showAlert) {
@@ -119,9 +152,10 @@ struct ProfileAccountSecurityView: View {
                 .tint(MomCareAccent.primary)
             }
         }
-
         .onAppear {
-            emailAddress = database[.emailAddress] as String? ?? ""
+            let credentials = authenticationService.credentials
+            hasAppleIdentifier = credentials?.appleIdentifier != nil
+            emailAddress = credentials?.emailAddress ?? ""
         }
     }
 
@@ -189,7 +223,29 @@ struct ProfileAccountSecurityView: View {
     @State private var newPassword = ""
     @State private var confirmPassword = ""
 
-    private let database: Database = .init()
+    @State private var hasAppleIdentifier: Bool = false
+    @State private var showAppleConnectSheet: Bool = false
+
+    private func handleAppleSignIn(_ result: Result<ASAuthorization, any Error>) async throws {
+        switch result {
+        case let .success(auth):
+            guard
+                let credential = auth.credential as? ASAuthorizationAppleIDCredential,
+                let tokenData = credential.identityToken,
+                let tokenString = String(data: tokenData, encoding: .utf8)
+            else {
+                alertMessage = "Failed to extract Apple Sign-In token."
+                showAlert = true
+                return
+            }
+
+            _ = try await authenticationService.appleLogin(idToken: tokenString, existingEmailAddress: emailAddress)
+
+        case let .failure(error):
+            alertMessage = "Apple Sign-In failed: \(error.localizedDescription)"
+            showAlert = true
+        }
+    }
 }
 
 struct SecureFieldRow: View {

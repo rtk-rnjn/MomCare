@@ -43,20 +43,24 @@ struct SignInView: View {
             .navigationDestination(isPresented: $navigateToHealthMetricsSignUp) {
                 HealthMetricsSignUpView()
             }
+            .navigationDestination(isPresented: $navigateToOTPVerification) {
+                OTPScreenView()
+            }
         }
     }
 
     func handleSubmit() async {
-        let networkResponse = try? await authenticationService.login(emailAddress: email, password: password)
+        let tokenPairResponse = try? await authenticationService.login(emailAddress: email, password: password)
+        let credentialsResponse = try? await authenticationService.fetchCredentials()
 
-        guard let networkResponse else {
+        guard let tokenPairResponse, let credentialsResponse else {
             alertTitle = "Error"
             alertMessage = "An unexpected error occurred. Please try again later."
             showAlert = true
             return
         }
 
-        if let error = networkResponse.errorMessage {
+        if let error = tokenPairResponse.errorMessage {
             alertTitle = "Sign In Failed"
             alertMessage = error
             showAlert = true
@@ -65,6 +69,11 @@ struct SignInView: View {
 
         showAlert = false
         controlState.isLoggedIn = true
+
+        if let verified = credentialsResponse.data?.verified, !verified {
+            navigateToOTPVerification = true
+            return
+        }
 
         if authenticationService.userModel?.dateOfBirth == nil {
             navigateToHealthMetricsSignUp = true
@@ -77,6 +86,7 @@ struct SignInView: View {
     @EnvironmentObject private var controlState: ControlState
 
     @State private var navigateToHealthMetricsSignUp = false
+    @State private var navigateToOTPVerification = false
 
     @State private var email = ""
     @State private var password = ""

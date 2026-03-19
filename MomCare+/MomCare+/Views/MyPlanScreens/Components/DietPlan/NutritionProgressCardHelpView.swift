@@ -12,6 +12,8 @@ struct NutritionProgressCardHelpView: View {
                     Divider()
                     progressRingSection
                     Divider()
+                    adjustedTargetsSection
+                    Divider()
                     macroBarsSection
                     Divider()
                     dragGestureSection
@@ -77,6 +79,53 @@ struct NutritionProgressCardHelpView: View {
                         badge: RingBadge(progress: 1.0, label: "100%", color: Color(hex: "6E8B6F")),
                         label: "Goal reached",
                         description: "When you hit or exceed your calorie target the ring completes and the fill colour shifts to indicate you've met your goal for the day."
+                    )
+                }
+            }
+        }
+    }
+
+    private var adjustedTargetsSection: some View {
+        HelpSection(title: "Adjusted Targets", systemImage: "slider.horizontal.3") {
+            HelpCard {
+                VStack(alignment: .leading, spacing: 16) {
+
+                    HelpRow(
+                        badge: RingWithDeltaBadge(progress: 0.68, label: "1360\n/2000", deltaLabel: "+200"),
+                        label: "Server-expected vs. adjusted calorie target",
+                        description: "Your server-expected target is the baseline your plan was built around. When your app adjusts this target — for example after logging exercise or a change in plan — the ring still tracks progress against the new target, but the small label beside the unit shows how much it has shifted up (+) or down (−) from the original."
+                    )
+
+                    HelpDivider()
+
+                    HelpRow(
+                        badge: MacroWithArrowBadge(label: "Protein", fraction: 0.55, color: Color(hex: "A7C0CD"), arrow: "up"),
+                        label: "Macro bar — target increased",
+                        description: "When a macro's target has been raised above the server-expected value, an upward arrow appears next to the original target figure. The bar still fills relative to the new (higher) target."
+                    )
+
+                    HelpDivider()
+
+                    HelpRow(
+                        badge: MacroWithArrowBadge(label: "Fats", fraction: 0.75, color: Color(hex: "E3B34B"), arrow: "down"),
+                        label: "Macro bar — target decreased",
+                        description: "A downward arrow means the target has been lowered from the server-expected value. The original figure is shown dimmed next to the arrow so you always know your baseline."
+                    )
+
+                    HelpDivider()
+
+                    HelpRow(
+                        badge: SymbolHelpBadge(systemName: "info.circle", color: .secondary),
+                        label: "Why two targets?",
+                        description: "Your nutrition plan is generated server-side. The app may raise or lower individual targets day-to-day based on activity, trimester stage, or manual adjustments. The original figure is preserved so you can always see what your plan intended versus what you are working toward today."
+                    )
+
+                    HelpDivider()
+
+                    HelpRow(
+                        badge: AddedFoodHighlightBadge(),
+                        label: "Added food highlight",
+                        description: "A soft yellow glow appears behind any food item you added to a meal yourself. Items that were part of your original server-generated plan have no highlight. The glow fades in and out with a smooth animation when items are added or removed."
                     )
                 }
             }
@@ -255,6 +304,8 @@ struct NutritionProgressCardHelpView: View {
     }
 }
 
+// MARK: - Section / Card / Row scaffolding
+
 private struct HelpSection<Content: View>: View {
     let title: String
     let systemImage: String
@@ -319,6 +370,8 @@ private struct HelpDivider: View {
     }
 }
 
+// MARK: - Badges
+
 private struct RingBadge: View {
     var progress: Double
     var label: String
@@ -337,6 +390,70 @@ private struct RingBadge: View {
                 .multilineTextAlignment(.center)
                 .foregroundStyle(.primary)
         }
+        .frame(width: 50, height: 50)
+    }
+}
+
+private struct RingWithDeltaBadge: View {
+    var progress: Double
+    var label: String
+    var deltaLabel: String
+
+    var body: some View {
+        ZStack(alignment: .bottomTrailing) {
+            ZStack {
+                Circle()
+                    .stroke(Color(.systemGray5), lineWidth: 5)
+                Circle()
+                    .trim(from: 0, to: progress)
+                    .stroke(MomCareAccent.primary, style: StrokeStyle(lineWidth: 5, lineCap: .round))
+                    .rotationEffect(.degrees(-90))
+                Text(label)
+                    .font(.system(size: 8).weight(.bold))
+                    .multilineTextAlignment(.center)
+                    .foregroundStyle(.primary)
+            }
+            .frame(width: 42, height: 42)
+
+            Text(deltaLabel)
+                .font(.system(size: 8).weight(.semibold))
+                .foregroundColor(.secondary)
+                .padding(.horizontal, 3)
+                .padding(.vertical, 1)
+                .background(Color(.systemGray5), in: Capsule())
+                .offset(x: 4, y: 4)
+        }
+        .frame(width: 50, height: 50)
+    }
+}
+
+/// Macro bar badge showing an up or down arrow next to the original target value.
+private struct MacroWithArrowBadge: View {
+    let label: String
+    let fraction: Double
+    let color: Color
+    let arrow: String // "up" or "down"
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 4) {
+            HStack(spacing: 2) {
+                Text(label)
+                    .font(.caption2.weight(.semibold))
+                    .foregroundStyle(.secondary)
+                Spacer()
+                Image(systemName: arrow == "up" ? "arrow.up" : "arrow.down")
+                    .font(.system(size: 8).weight(.bold))
+                    .foregroundStyle(.secondary)
+            }
+            GeometryReader { geo in
+                ZStack(alignment: .leading) {
+                    Capsule().fill(Color(.systemGray5))
+                    Capsule().fill(color).frame(width: geo.size.width * fraction)
+                }
+            }
+            .frame(height: 8)
+        }
+        .padding(.horizontal, 4)
         .frame(width: 50, height: 50)
     }
 }
@@ -532,54 +649,43 @@ private struct RangePillsBadge: View {
     }
 }
 
-private struct WaterRingBadge: View {
+private struct AddedFoodHighlightBadge: View {
     var body: some View {
         ZStack {
-            RoundedRectangle(cornerRadius: 10, style: .continuous)
-                .fill(Color(hex: "0A1E3D"))
-                .frame(width: 50, height: 50)
-
             RoundedRectangle(cornerRadius: 8, style: .continuous)
-                .fill(Color(hex: "1B6CA8").opacity(0.7))
-                .frame(width: 42, height: 50 * 0.6)
-                .offset(y: 10)
-                .clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
+                .fill(Color(.systemGray6))
 
-            Text("60%")
-                .font(.caption2.weight(.bold))
-                .foregroundColor(.white)
-        }
-        .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
-        .frame(width: 50, height: 50)
-    }
-}
+            VStack(spacing: 6) {
+                // "Original" row — no highlight
+                RoundedRectangle(cornerRadius: 4, style: .continuous)
+                    .fill(Color(.systemGray5))
+                    .frame(height: 10)
 
-private struct QuickAddBadge: View {
+                // "Added" row — yellow glow
+                ZStack {
+                    LinearGradient(
+                        colors: [
+                            Color.yellow.opacity(0.05),
+                            Color.yellow.opacity(0.25),
+                            Color.yellow.opacity(0.05)
+                        ],
+                        startPoint: .leading,
+                        endPoint: .trailing
+                    )
+                    .clipShape(RoundedRectangle(cornerRadius: 4, style: .continuous))
 
-    // MARK: Internal
+                    RoundedRectangle(cornerRadius: 4, style: .continuous)
+                        .strokeBorder(Color.yellow.opacity(0.35), lineWidth: 0.5)
+                }
+                .frame(height: 10)
 
-    var body: some View {
-        VStack(spacing: 4) {
-            HStack(spacing: 3) {
-                quickPill("+200")
-                quickPill("+300")
+                // "Original" row — no highlight
+                RoundedRectangle(cornerRadius: 4, style: .continuous)
+                    .fill(Color(.systemGray5))
+                    .frame(height: 10)
             }
-            HStack(spacing: 3) {
-                quickPill("+150")
-                quickPill("+500")
-            }
+            .padding(.horizontal, 6)
         }
         .frame(width: 50, height: 50)
-    }
-
-    // MARK: Private
-
-    private func quickPill(_ label: String) -> some View {
-        Text(label)
-            .font(.caption2.weight(.semibold))
-            .foregroundStyle(Color(hex: "7EDCF5"))
-            .padding(.horizontal, 4)
-            .padding(.vertical, 2)
-            .background(Color(hex: "1B6CA8").opacity(0.4), in: RoundedRectangle(cornerRadius: 4, style: .continuous))
     }
 }

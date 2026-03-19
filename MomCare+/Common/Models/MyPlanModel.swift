@@ -61,7 +61,7 @@ struct MyPlanModel: Codable, Sendable {
     var lunch: [FoodReferenceModel]
     var dinner: [FoodReferenceModel]
     var snacks: [FoodReferenceModel]
-    
+
     var originalBreakfast: [FoodReferenceModel] = []
     var originalLunch: [FoodReferenceModel] = []
     var originalDinner: [FoodReferenceModel] = []
@@ -93,7 +93,7 @@ extension MyPlanModel {
     var allReferences: [FoodReferenceModel] {
         breakfast + lunch + dinner + snacks
     }
-    
+
     var originalReferences: [FoodReferenceModel] {
         originalBreakfast + originalLunch + originalDinner + originalSnacks
     }

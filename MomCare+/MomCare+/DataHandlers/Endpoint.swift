@@ -15,8 +15,8 @@ enum Endpoint: String {
     case changePassword = "/v1/auth/change-password"
     case requestOTP = "/v1/auth/request-otp"
     case verifyOTP = "/v1/auth/verify-otp"
+    case credentials = "/v2/auth/credentials"
 
-    case googleLogin = "/v2/auth/ios/google-login"
     case appleLogin = "/v2/auth/ios/apple-login"
 
     case generateTips = "/v1/ai/generate/tips"

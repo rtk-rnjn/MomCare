@@ -85,6 +85,15 @@ struct ProfileView: View {
         .listStyle(.insetGrouped)
         .scrollContentBackground(.hidden)
         .background(Color(.systemGroupedBackground))
+        .task {
+            do {
+                try await authenticationService.me()
+                try await authenticationService.fetchCredentials()
+            } catch {
+                self.error = error
+            }
+        }
+        .errorAlert(error: $error)
         .alert("Sign Out?", isPresented: $showSignOutAlert) {
 
             Button(role: .cancel) {}
@@ -101,6 +110,7 @@ struct ProfileView: View {
     // MARK: Private
 
     @State private var showSignOutAlert = false
+    @State private var error: (any Error)?
 
     @EnvironmentObject private var authenticationService: AuthenticationService
 

@@ -21,6 +21,10 @@ final class AuthenticationService: ObservableObject {
             userModel = userModelData
         }
 
+        if let credentialsData: UserCredential = database[.credentials] {
+            credentials = credentialsData
+        }
+
         if let expiresAtTimestamp: TimeInterval = database[.accessTokenExpiresAtTimestamp], let accessToken: String = KeychainHelper.get(.accessToken) {
             let now = Date.now.timeIntervalSince1970
             hasAccessToken = !accessToken.isEmpty && expiresAtTimestamp > now
@@ -37,6 +41,7 @@ final class AuthenticationService: ObservableObject {
     }
 
     @Published var hasAccessToken: Bool = false
+    @Published var credentials: UserCredential?
 
     @Published var userModel: UserModel? {
         didSet {
@@ -227,13 +232,6 @@ final class AuthenticationService: ObservableObject {
         return networkResponse
     }
 
-    func googleLogin(idToken: String, existingEmailAddress: String? = nil) async throws -> NetworkResponse<TokenPair> {
-        let payloadData = ThirdPartyLogin(idToken: idToken, existingEmailAddress: existingEmailAddress).encodeUsingJSONEncoder()
-        let response: NetworkResponse<TokenPair> = try await NetworkManager.shared.post(url: Endpoint.googleLogin.urlString, body: payloadData)
-
-        return handleSuccess(response, expectedStatusCode: 200, emailAddress: existingEmailAddress)
-    }
-
     func appleLogin(idToken: String, existingEmailAddress: String? = nil) async throws -> NetworkResponse<TokenPair> {
         let payloadData = ThirdPartyLogin(idToken: idToken, existingEmailAddress: existingEmailAddress).encodeUsingJSONEncoder()
         let response: NetworkResponse<TokenPair> = try await NetworkManager.shared.post(url: Endpoint.appleLogin.urlString, body: payloadData)
@@ -252,6 +250,18 @@ final class AuthenticationService: ObservableObject {
             database[.userModel] = userModel
         }
 
+        return response
+    }
+
+    @discardableResult
+    func fetchCredentials() async throws -> NetworkResponse<UserCredential> {
+        let response: NetworkResponse<UserCredential> = try await NetworkManager.shared.get(url: Endpoint.credentials.urlString, headers: AuthenticationService.authorizationHeaders)
+        if response.errorMessage == nil, response.statusCode == 200, let credentials = response.data {
+            await MainActor.run {
+                self.credentials = credentials
+            }
+            database[.credentials] = credentials
+        }
         return response
     }
 
@@ -304,5 +314,4 @@ final class AuthenticationService: ObservableObject {
         let response: NetworkResponse<TokenPair> = try await NetworkManager.shared.post(url: Endpoint.appleLogin.urlString, body: data)
         return handleSuccess(response, expectedStatusCode: 200)
     }
-
 }

@@ -29,6 +29,6 @@ enum LicenseData {
             name: "LNPopupController",
             license: "MIT License",
             urlString: "https://github.com/LeoNatan/LNPopupController"
-        ),
+        )
     ]
 }

@@ -532,6 +532,20 @@ struct ProgressRingView: View {
 
     // MARK: Private
 
+    private enum TargetModification {
+        case increased
+        case decreased
+
+        // MARK: Internal
+
+        var displaySymbol: String {
+            switch self {
+            case .increased: return "+"
+            case .decreased: return "-"
+            }
+        }
+    }
+
     @State private var showPercentage = false
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @Environment(\.accessibilityReduceTransparency) private var reduceTransparency
@@ -540,17 +554,7 @@ struct ProgressRingView: View {
         guard target > 0 else { return 0 }
         return Int((consumed / target) * 100)
     }
-    
-    private enum TargetModification {
-        case increased, decreased
-        var displaySymbol: String {
-            switch self {
-            case .increased: return "+"
-            case .decreased: return "-"
-            }
-        }
-    }
-    
+
     private var targetModification: TargetModification? {
         if target > original { return .increased }
         if target < original { return .decreased }
@@ -561,7 +565,7 @@ struct ProgressRingView: View {
         switch targetModification {
         case .increased: return .secondary.mix(with: .black, by: 0.2)
         case .decreased: return .secondary.mix(with: .white, by: 0.35)
-        case .none:      return .secondary
+        case .none: return .secondary
         }
     }
 }
@@ -655,7 +659,8 @@ struct MacroBarRow: View {
     // MARK: Private
 
     private enum TargetModification {
-        case increased, decreased
+        case increased
+        case decreased
     }
 
     @State private var showPercentage = false
@@ -675,7 +680,7 @@ struct MacroBarRow: View {
         switch targetModification {
         case .increased: return .secondary.mix(with: .black, by: 0.2)
         case .decreased: return .secondary.mix(with: .white, by: 0.35)
-        case .none:      return .secondary
+        case .none: return .secondary
         }
     }
 

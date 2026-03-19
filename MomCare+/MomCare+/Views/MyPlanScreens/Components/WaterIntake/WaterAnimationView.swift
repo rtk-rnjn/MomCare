@@ -122,7 +122,11 @@ struct WaterDropFillView: View {
         for i in 0...steps {
             let x = Double(i) * (size.width / Double(steps))
             let y = fillY + sin((x / size.width * frequency * .pi * 2) + phase) * amplitude
-            i == 0 ? path.move(to: .init(x: x, y: y)) : path.addLine(to: .init(x: x, y: y))
+            if i == 0 {
+                path.move(to: .init(x: x, y: y))
+            } else {
+                path.addLine(to: .init(x: x, y: y))
+            }
         }
         path.addLine(to: .init(x: size.width, y: size.height))
         path.addLine(to: .init(x: 0, y: size.height))

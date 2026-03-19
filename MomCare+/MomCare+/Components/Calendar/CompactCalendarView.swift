@@ -175,79 +175,105 @@ struct CompactCalendarView: View {
 
     private func dragGesture(width: CGFloat) -> some Gesture {
         DragGesture(minimumDistance: 10)
-            .onChanged { value in
-                let h = value.translation.width
-                let v = value.translation.height
+            .onChanged { handleDragChanged($0) }
+            .onEnded { handleDragEnded($0, width: width) }
+    }
 
-                if isDraggingHorizontal == nil {
-                    if abs(h) > abs(v) + 5 {
-                        isDraggingHorizontal = true
-                    } else if abs(v) > abs(h) + 5 {
-                        isDraggingHorizontal = false
-                    }
-                }
+    private func handleDragChanged(_ value: DragGesture.Value) {
+        let h = value.translation.width
+        let v = value.translation.height
 
-                if isDraggingHorizontal == true {
-                    let direction: CGFloat = h < 0 ? -1 : 1
-                    if incomingDate == nil {
-                        incomingDirection = -direction
-                        incomingDate = adjacentDate(direction: -direction)
-                    }
-                    slideOffset = h
+        detectDragDirection(horizontal: h, vertical: v)
 
-                } else if isDraggingHorizontal == false {
-                    if !isExpanded {
-                        let progress = min(max(v / expandTravelDistance, 0), 1)
-                        expandProgress = progress
-                    } else {
-                        let progress = min(max(1 + v / expandTravelDistance, 0), 1)
-                        expandProgress = progress
-                    }
-                }
+        if isDraggingHorizontal == true {
+            handleHorizontalDrag(h)
+        } else if isDraggingHorizontal == false {
+            handleVerticalDrag(v)
+        }
+    }
+
+    private func detectDragDirection(horizontal h: CGFloat, vertical v: CGFloat) {
+        guard isDraggingHorizontal == nil else { return }
+
+        if abs(h) > abs(v) + 5 {
+            isDraggingHorizontal = true
+        } else if abs(v) > abs(h) + 5 {
+            isDraggingHorizontal = false
+        }
+    }
+
+    private func handleHorizontalDrag(_ h: CGFloat) {
+        let direction: CGFloat = h < 0 ? -1 : 1
+
+        if incomingDate == nil {
+            incomingDirection = -direction
+            incomingDate = adjacentDate(direction: -direction)
+        }
+
+        slideOffset = h
+    }
+
+    private func handleVerticalDrag(_ v: CGFloat) {
+        if !isExpanded {
+            expandProgress = clamp(v / expandTravelDistance)
+        } else {
+            expandProgress = clamp(1 + v / expandTravelDistance)
+        }
+    }
+
+    private func handleDragEnded(_ value: DragGesture.Value, width: CGFloat) {
+        let h = value.translation.width
+        let velocityX = value.velocity.width
+        let velocityY = value.velocity.height
+
+        if isDraggingHorizontal == true {
+            finishHorizontalDrag(h: h, velocityX: velocityX, width: width)
+        } else if isDraggingHorizontal == false {
+            finishVerticalDrag(velocityY: velocityY)
+        } else {
+            resetVerticalState()
+            cancelSlide()
+        }
+
+        isDraggingHorizontal = nil
+    }
+
+    private func finishHorizontalDrag(h: CGFloat, velocityX: CGFloat, width: CGFloat) {
+        let direction: CGFloat = h < 0 ? -1 : 1
+        let shouldCommit = abs(h) > 30 || abs(velocityX) > 300
+
+        if shouldCommit {
+            commitSlide(direction: direction, width: width)
+        } else {
+            cancelSlide()
+        }
+    }
+
+    private func finishVerticalDrag(velocityY: CGFloat) {
+        let shouldExpand = !isExpanded && (expandProgress > 0.4 || velocityY > 400)
+        let shouldCollapse = isExpanded && (expandProgress < 0.6 || velocityY < -400)
+
+        withAnimation(.spring(response: 0.3, dampingFraction: 0.8)) {
+            if shouldExpand {
+                isExpanded = true
+                expandProgress = 1
+            } else if shouldCollapse {
+                isExpanded = false
+                expandProgress = 0
+            } else {
+                expandProgress = isExpanded ? 1 : 0
             }
-            .onEnded { value in
-                let h = value.translation.width
-                let velocityX = value.velocity.width
-                let velocityY = value.velocity.height
+        }
+    }
 
-                if isDraggingHorizontal == true {
-                    let direction: CGFloat = h < 0 ? -1 : 1
-                    let shouldCommit = abs(h) > 30 || abs(velocityX) > 300
-                    if shouldCommit {
-                        commitSlide(direction: direction, width: width)
-                    } else {
-                        cancelSlide()
-                    }
+    private func resetVerticalState() {
+        withAnimation(.spring(response: 0.3, dampingFraction: 0.8)) {
+            expandProgress = isExpanded ? 1 : 0
+        }
+    }
 
-                } else if isDraggingHorizontal == false {
-                    let shouldExpand = !isExpanded && (expandProgress > 0.4 || velocityY > 400)
-                    let shouldCollapse = isExpanded && (expandProgress < 0.6 || velocityY < -400)
-
-                    if shouldExpand {
-                        withAnimation(.spring(response: 0.3, dampingFraction: 0.8)) {
-                            isExpanded = true
-                            expandProgress = 1
-                        }
-                    } else if shouldCollapse {
-                        withAnimation(.spring(response: 0.3, dampingFraction: 0.8)) {
-                            isExpanded = false
-                            expandProgress = 0
-                        }
-                    } else {
-                        withAnimation(.spring(response: 0.3, dampingFraction: 0.8)) {
-                            expandProgress = isExpanded ? 1 : 0
-                        }
-                    }
-
-                } else {
-                    cancelSlide()
-                    withAnimation(.spring(response: 0.3, dampingFraction: 0.8)) {
-                        expandProgress = isExpanded ? 1 : 0
-                    }
-                }
-
-                isDraggingHorizontal = nil
-            }
+    private func clamp(_ value: CGFloat) -> CGFloat {
+        min(max(value, 0), 1)
     }
 
     private func monthRowCount(for month: Date) -> Int {

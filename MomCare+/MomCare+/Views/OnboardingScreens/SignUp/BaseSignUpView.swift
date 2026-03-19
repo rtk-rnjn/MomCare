@@ -122,7 +122,7 @@ struct BaseSignUpView: View {
         .padding(.top, 30)
         .padding(.bottom, 20)
         .navigationDestination(isPresented: $navigateToOTP) {
-            OTPScreenView(navigateTo: .extendedSignUp)
+            OTPScreenView()
         }
     }
 
