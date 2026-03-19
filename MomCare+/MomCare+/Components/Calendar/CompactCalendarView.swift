@@ -58,6 +58,7 @@ struct CompactCalendarView: View {
                 }
                 .clipped()
                 .contentShape(Rectangle())
+                .gesture(dragGesture(width: width))
             }
             .frame(height: currentHeight)
             .padding(.horizontal, 8)

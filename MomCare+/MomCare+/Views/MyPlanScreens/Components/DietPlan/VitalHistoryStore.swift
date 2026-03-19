@@ -143,20 +143,6 @@ final class VitalHistoryStore: ObservableObject {
         }
     }
 
-    // MARK: Private
-
-    private nonisolated static let weekFormatter: DateFormatter = {
-        let fmt = DateFormatter()
-        fmt.dateFormat = "MMM d"
-        return fmt
-    }()
-
-    private nonisolated static let dayFormatter: DateFormatter = {
-        let fmt = DateFormatter()
-        fmt.dateFormat = "M/d"
-        return fmt
-    }()
-
     func load(
         kind: VitalKind,
         startDate: Date,
@@ -255,6 +241,18 @@ final class VitalHistoryStore: ObservableObject {
     }
 
     // MARK: Private
+
+    private nonisolated static let weekFormatter: DateFormatter = {
+        let fmt = DateFormatter()
+        fmt.dateFormat = "MMM d"
+        return fmt
+    }()
+
+    private nonisolated static let dayFormatter: DateFormatter = {
+        let fmt = DateFormatter()
+        fmt.dateFormat = "M/d"
+        return fmt
+    }()
 
     private let healthStore: HKHealthStore = .init()
 

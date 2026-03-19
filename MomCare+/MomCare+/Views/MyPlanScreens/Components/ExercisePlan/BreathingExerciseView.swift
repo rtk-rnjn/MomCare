@@ -79,8 +79,6 @@ struct BreathingExerciseView: View {
 
     // MARK: Private
 
-    private let logger = Logger(subsystem: Bundle.main.bundleIdentifier ?? "MomCare", category: "BreathingExercise")
-
     @EnvironmentObject private var contentServiceHandler: ContentServiceHandler
     @Environment(\.dismiss) private var dismiss
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
@@ -101,6 +99,8 @@ struct BreathingExerciseView: View {
 
     @State private var timer: Timer?
     @State private var phaseTimer: Timer?
+
+    private let logger: Logger = .init(subsystem: Bundle.main.bundleIdentifier ?? "MomCare", category: "BreathingExercise")
 
     private let pastel: Color = .init(hex: "D0E1F0")
     private let accent: Color = .init(hex: "8BBBD4")

@@ -23,9 +23,23 @@ struct WaterLogEntry: Identifiable, Equatable {
     }
 
     var formattedAmount: String {
-        unsafe milliliters >= 1000
-            ? String(format: "%.1f L", milliliters / 1000)
-            : String(format: "%.0f ml", milliliters)
+        if milliliters >= 1000 {
+            return Measurement(value: milliliters / 1000, unit: UnitVolume.liters)
+                .formatted(
+                    .measurement(
+                        width: .abbreviated,
+                        numberFormatStyle: .number.precision(.fractionLength(1))
+                    )
+                )
+        } else {
+            return Measurement(value: milliliters, unit: UnitVolume.milliliters)
+                .formatted(
+                    .measurement(
+                        width: .abbreviated,
+                        numberFormatStyle: .number.precision(.fractionLength(0))
+                    )
+                )
+        }
     }
 }
 

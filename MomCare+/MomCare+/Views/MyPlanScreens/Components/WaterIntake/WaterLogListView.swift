@@ -246,7 +246,15 @@ struct WaterLogListView: View {
     }
 
     private func formatMl(_ ml: Double) -> String {
-        unsafe ml >= 1000 ? String(format: "%.1fL", ml / 1000) : String(format: "%.0fml", ml)
+        let measurement = ml >= 1000 ? Measurement(value: ml / 1000, unit: UnitVolume.liters) : Measurement(value: ml, unit: UnitVolume.milliliters)
+
+        return measurement.formatted(.measurement(
+                width: .abbreviated,
+                numberFormatStyle: ml >= 1000
+                    ? .number.precision(.fractionLength(1))
+                    : .number.precision(.fractionLength(0))
+            )
+        )
     }
 }
 

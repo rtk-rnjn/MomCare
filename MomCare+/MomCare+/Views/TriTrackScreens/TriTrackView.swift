@@ -27,7 +27,7 @@ struct TriTrackView: View {
         .ignoresSafeArea(edges: .bottom)
         .background(MomCareAccent.secondary.ignoresSafeArea())
         .navigationTitle("TriTrack")
-        .navigationBarTitleDisplayMode(.inline)
+        .navigationBarTitleDisplayMode(.large)
         .navigationDestination(isPresented: $showingAllEvents) {
             TriTrackAllCalendarItemView(selectedDate: $selectedDate)
         }
@@ -41,7 +41,7 @@ struct TriTrackView: View {
             TriTrackRowLegendView()
         }
         .toolbar {
-            ToolbarItem(placement: .topBarLeading) {
+            ToolbarItem(placement: .topBarTrailing) {
                 Button {
                     withAnimation(reduceMotion ? nil : .spring(response: 0.3, dampingFraction: 0.8)) {
                         controlState.showingExpandedCalendar.toggle()

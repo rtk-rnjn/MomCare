@@ -278,7 +278,7 @@ struct NutritionDetailSheet: View {
     @Environment(\.dismiss) private var dismiss
 
     private func format(_ value: Double) -> String {
-        unsafe String(format: "%.1f", value)
+        value.formatted(.number.precision(.fractionLength(1)))
     }
 }
 
