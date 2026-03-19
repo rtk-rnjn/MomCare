@@ -11,7 +11,7 @@ struct DashboardExerciseCard: View {
             VStack(alignment: .leading, spacing: 18) {
                 ExerciseRow(color: .red, icon: "figure.walk", value: "\(Int(contentServiceHandler.currentSteps)) Steps")
                 ExerciseRow(color: .green, icon: "timer", value: displaySeconds)
-                ExerciseRow(color: .orange, icon: "flame.fill", value: "\(Int(calories)) Kcal")
+                ExerciseRow(color: .orange, icon: "flame.fill", value: "\(Int(calories)) \(UnitMass.grams.symbol)")
             }
 
             Spacer()
@@ -101,7 +101,7 @@ struct ExerciseRow: View {
                 Text(value)
                     .font(.title3)
                     .fontWeight(.regular)
-                    .contentTransition(.numericText())
+                    .contentTransition(reduceMotion ? .identity : .numericText())
                     .animation(reduceMotion ? nil : .spring(response: 0.4, dampingFraction: 0.7), value: value)
             } else {
                 ProgressView()

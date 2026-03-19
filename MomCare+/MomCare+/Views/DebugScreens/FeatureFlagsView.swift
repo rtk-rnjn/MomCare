@@ -12,7 +12,7 @@ struct FeatureFlagsView: View {
                     .foregroundStyle(.secondary)
             }
 
-            Section("Experimental") {
+            Section {
                 FlagToggle(
                     label: "Experimental Features",
                     icon: "flask",
@@ -25,15 +25,16 @@ struct FeatureFlagsView: View {
                     tint: .blue,
                     isOn: $debugLogging
                 )
-                FlagToggle(
-                    label: "UI Debugging Overlays",
-                    icon: "square.dashed",
-                    tint: .orange,
-                    isOn: $uiDebuggingOverlays
-                )
+            } header: {
+                Text("Experimental Flags")
+                    .font(.headline)
+            } footer: {
+                Text("Use with caution. These features may be unstable or cause unexpected behavior.")
+                    .font(.footnote)
+                    .foregroundStyle(.secondary)
             }
 
-            Section("Appearance") {
+            Section {
                 FlagToggle(
                     label: "Force Dark Mode",
                     icon: "moon.fill",
@@ -58,6 +59,29 @@ struct FeatureFlagsView: View {
                         }
                     )
                 )
+            } header: {
+                Text("Appearance Overrides")
+                    .font(.headline)
+            } footer: {
+                Text("Force the app to use a specific color scheme, regardless of system settings.")
+                    .font(.footnote)
+                    .foregroundStyle(.secondary)
+            }
+
+            Section {
+                FlagToggle(
+                    label: "Force Large Titles",
+                    icon: "textformat.size.larger",
+                    tint: .green,
+                    isOn: $forceUseLargeTitle
+                )
+            } header: {
+                Text("UI Tweaks")
+                    .font(.headline)
+            } footer: {
+                Text("Force the app to use large titles in navigation bars.")
+                    .font(.footnote)
+                    .foregroundStyle(.secondary)
             }
 
         }
@@ -67,11 +91,12 @@ struct FeatureFlagsView: View {
 
     // MARK: Private
 
-    @AppStorage(FeatureFlagState.experimentalFeatures.rawValue) private var experimentalFeatures: Bool = false
-    @AppStorage(FeatureFlagState.debugLogging.rawValue) private var debugLogging: Bool = false
-    @AppStorage(FeatureFlagState.uiDebuggingOverlays.rawValue) private var uiDebuggingOverlays: Bool = false
-    @AppStorage(FeatureFlagState.forceDarkMode.rawValue) private var forceDarkMode: Bool = false
-    @AppStorage(FeatureFlagState.forceLightMode.rawValue) private var forceLightMode: Bool = true
+    @AppStorage(FeatureFlagState.experimentalFeatures.rawValue, store: UserDefaults(suiteName: "group.MomCare")) private var experimentalFeatures: Bool = false
+    @AppStorage(FeatureFlagState.debugLogging.rawValue, store: UserDefaults(suiteName: "group.MomCare")) private var debugLogging: Bool = false
+    @AppStorage(FeatureFlagState.forceUseLargeTitle.rawValue, store: UserDefaults(suiteName: "group.MomCare")) private var forceUseLargeTitle: Bool = false
+
+    @AppStorage(FeatureFlagState.forceDarkMode.rawValue, store: UserDefaults(suiteName: "group.MomCare")) private var forceDarkMode: Bool = false
+    @AppStorage(FeatureFlagState.forceLightMode.rawValue, store: UserDefaults(suiteName: "group.MomCare")) private var forceLightMode: Bool = true
 
 }
 

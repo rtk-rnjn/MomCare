@@ -51,6 +51,29 @@ struct LargeWidgetView: View {
         return hasHeight || hasWeight
     }
 
+    private var formattedHeight: String? {
+        guard let heightCm = entry.babyHeightCm, heightCm > 0 else { return nil }
+
+        let height = Measurement(value: heightCm, unit: UnitLength.centimeters)
+
+        return height.formatted(
+            .measurement(
+                width: .abbreviated,
+                usage: .asProvided,
+                numberFormatStyle: .number.precision(.fractionLength(1))
+            )
+        )
+    }
+
+    private var formattedWeight: String? {
+        guard let weightG = entry.babyWeightG, weightG > 0 else { return nil }
+
+        let weight: Measurement<UnitMass> =
+            weightG >= 1000 ? Measurement(value: weightG / 1000, unit: UnitMass.kilograms) : Measurement(value: weightG, unit: UnitMass.grams)
+
+        return weight.formatted(.measurement(width: .abbreviated))
+    }
+
     private var headerSection: some View {
         VStack(alignment: .leading, spacing: 4) {
             Text("Week \(entry.week), Day \(entry.day)")
@@ -91,19 +114,18 @@ struct LargeWidgetView: View {
 
     private var measurementsSection: some View {
         HStack(spacing: 28) {
-            if let heightCm = entry.babyHeightCm, heightCm > 0 {
+
+            if let height = formattedHeight {
                 measurementItem(
                     label: "HEIGHT",
-                    value: unsafe String(format: "%.1f cm", heightCm)
+                    value: height
                 )
             }
 
-            if let weightG = entry.babyWeightG, weightG > 0 {
+            if let weight = formattedWeight {
                 measurementItem(
                     label: "WEIGHT",
-                    value: weightG >= 1000
-                        ? unsafe String(format: "%.2f kg", weightG / 1000)
-                        : unsafe String(format: "%.0f g", weightG)
+                    value: weight
                 )
             }
         }

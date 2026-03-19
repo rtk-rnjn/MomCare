@@ -21,9 +21,6 @@ class AppDelegate: NSObject, UIApplicationDelegate, ObservableObject {
         logger.info("App launched with options: \(launchOptions.debugDescription)")
         UIApplication.shared.registerForRemoteNotifications()
 
-//        MXMetricManager.shared.add(self)
-//        _ = WatchConnector.shared
-
         NetworkManager.shared.setDebugMenuStore(debugMenuStore)
 
         WidgetCenter.shared.reloadAllTimelines()

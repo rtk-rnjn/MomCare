@@ -76,8 +76,6 @@ struct NetworkInspectorView: View {
     }
 }
 
-// MARK: - Request Row
-
 struct NetworkRequestRow: View {
 
     // MARK: Internal
@@ -144,8 +142,6 @@ struct NetworkRequestRow: View {
     }
 }
 
-// MARK: - Detail View
-
 struct NetworkRequestDetailView: View {
 
     // MARK: Internal
@@ -155,7 +151,7 @@ struct NetworkRequestDetailView: View {
     var body: some View {
         NavigationStack {
             List {
-                // Overview Section
+
                 Section {
                     HStack(spacing: 16) {
                         MethodBadge(method: request.method, large: true)
@@ -174,7 +170,6 @@ struct NetworkRequestDetailView: View {
                     InspectorSectionHeader("Request", icon: "arrow.up.circle.fill")
                 }
 
-                // Response Section
                 Section {
                     if let code = request.statusCode {
                         LabeledContent("Status") {
@@ -202,7 +197,6 @@ struct NetworkRequestDetailView: View {
                     InspectorSectionHeader("Response", icon: "arrow.down.circle.fill")
                 }
 
-                // Request Body
                 if let body = request.requestBody {
                     Section {
                         BodyPreviewButton(text: body, label: "Inspect Request Body") {
@@ -213,7 +207,6 @@ struct NetworkRequestDetailView: View {
                     }
                 }
 
-                // Response Body
                 if let body = request.responseBody {
                     Section {
                         BodyPreviewButton(text: body, label: "Inspect Response Body") {
@@ -224,7 +217,6 @@ struct NetworkRequestDetailView: View {
                     }
                 }
 
-                // Error
                 if let err = request.error {
                     Section {
                         HStack(alignment: .top, spacing: 8) {
@@ -289,8 +281,6 @@ struct NetworkRequestDetailView: View {
     }
 }
 
-// MARK: - Reusable Sub-components
-
 struct MethodBadge: View {
 
     // MARK: Internal
@@ -307,12 +297,14 @@ struct MethodBadge: View {
             .background(color.opacity(0.12), in: RoundedRectangle(cornerRadius: 5, style: .continuous))
             .overlay(
                 RoundedRectangle(cornerRadius: 5, style: .continuous)
-                    .strokeBorder(color.opacity(0.25), lineWidth: 0.5)
+                    .strokeBorder(color.opacity(differentiateWithoutColor ? 0.6 : 0.25), lineWidth: differentiateWithoutColor ? 1.5 : 0.5)
             )
             .accessibilityLabel("\(method.uppercased()) method")
     }
 
     // MARK: Private
+
+    @Environment(\.accessibilityDifferentiateWithoutColor) private var differentiateWithoutColor
 
     private var color: Color {
         switch method.uppercased() {
@@ -335,16 +327,29 @@ struct StatusCodeBadge: View {
     let code: Int
 
     var body: some View {
-        Text("\(code)")
-            .font(.caption2.weight(.semibold).monospacedDigit())
-            .foregroundStyle(color)
-            .padding(.horizontal, 4)
-            .padding(.vertical, 1)
-            .background(color.opacity(0.10), in: RoundedRectangle(cornerRadius: 4, style: .continuous))
-            .accessibilityLabel("HTTP status \(code)")
+        HStack(spacing: 3) {
+            if differentiateWithoutColor {
+                Image(systemName: statusSymbol)
+                    .font(.caption2)
+                    .accessibilityHidden(true)
+            }
+            Text("\(code)")
+                .font(.caption2.weight(.semibold).monospacedDigit())
+        }
+        .foregroundStyle(color)
+        .padding(.horizontal, 4)
+        .padding(.vertical, 1)
+        .background(color.opacity(0.10), in: RoundedRectangle(cornerRadius: 4, style: .continuous))
+        .overlay(
+            RoundedRectangle(cornerRadius: 4, style: .continuous)
+                .strokeBorder(color.opacity(differentiateWithoutColor ? 0.4 : 0), lineWidth: 1)
+        )
+        .accessibilityLabel("HTTP status \(code)")
     }
 
     // MARK: Private
+
+    @Environment(\.accessibilityDifferentiateWithoutColor) private var differentiateWithoutColor
 
     private var color: Color {
         switch code {
@@ -353,6 +358,16 @@ struct StatusCodeBadge: View {
         case 400..<500: return .orange
         case 500...: return .red
         default: return .secondary
+        }
+    }
+
+    private var statusSymbol: String {
+        switch code {
+        case 200..<300: return "checkmark.circle"
+        case 300..<400: return "arrow.triangle.2.circlepath"
+        case 400..<500: return "exclamationmark.triangle"
+        case 500...: return "xmark.octagon"
+        default: return "questionmark.circle"
         }
     }
 }

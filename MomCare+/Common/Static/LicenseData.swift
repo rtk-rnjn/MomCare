@@ -29,11 +29,6 @@ enum LicenseData {
             name: "LNPopupController",
             license: "MIT License",
             urlString: "https://github.com/LeoNatan/LNPopupController"
-        ),
-        .init(
-            name: "FSCalendar",
-            license: "MIT License",
-            urlString: "https://github.com/WenchaoD/FSCalendar"
         )
     ]
 }

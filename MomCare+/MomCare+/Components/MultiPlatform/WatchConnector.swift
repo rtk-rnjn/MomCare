@@ -19,9 +19,7 @@ class WatchConnector: NSObject, WCSessionDelegate {
             session = WCSession.default
             session?.delegate = self
 
-            Task {
-//                session?.activate()
-            }
+            Task {}
         }
     }
 
@@ -68,7 +66,7 @@ class WatchConnector: NSObject, WCSessionDelegate {
         func sessionDidDeactivate(_: WCSession) {
             logger.warning("WCSession did deactivate")
         }
-    #endif // os(iOS)
+    #endif
 
     func sessionReachabilityDidChange(_ session: WCSession) {
         logger.debug("Session reachability changed: \(session.isReachable)")

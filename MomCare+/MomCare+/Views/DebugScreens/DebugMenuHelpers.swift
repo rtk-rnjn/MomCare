@@ -16,5 +16,7 @@ struct DebugRow: View {
                 .multilineTextAlignment(.trailing)
                 .textSelection(.enabled)
         }
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel("\(label): \(value)")
     }
 }

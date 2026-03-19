@@ -21,6 +21,8 @@ struct InitialsAvatar: View {
                 .font(.title3.weight(.semibold))
                 .foregroundColor(MomCareAccent.primary)
         }
+        .accessibilityLabel("Profile picture for \(name)")
+        .accessibilityHidden(name.isEmpty)
     }
 }
 
@@ -175,6 +177,7 @@ struct ProfilePersonalInfoView: View {
             InfoRow(title: title, value: value, isEditing: isEditing)
         }
         .buttonStyle(.plain)
+        .accessibilityHint(isEditing ? "Tap to change \(title)" : "")
     }
 
     func makeChanges() async throws {

@@ -1,5 +1,16 @@
 import Foundation
 
+enum AuthenticationProvider: String, Codable, Sendable {
+    case `internal`
+    case apple
+}
+
+enum AccountStatus: String, Codable, Sendable {
+    case active
+    case locked
+    case deleted
+}
+
 struct CredentialsModel: Codable, Sendable {
     enum CodingKeys: String, CodingKey {
         case emailAddress = "email_address"
@@ -128,4 +139,20 @@ struct ExerciseDuration: Codable, Sendable {
     }
 
     var duration: TimeInterval
+}
+
+struct UserCredential: Codable, Sendable {
+    enum CodingKeys: String, CodingKey {
+        case emailAddress = "email_address"
+        case appleIdentifier = "apple_id"
+        case authenticationProviders = "authentication_providers"
+        case accountStatus = "account_status"
+        case verified = "verified_email"
+    }
+
+    var emailAddress: String?
+    var appleIdentifier: String?
+    var authenticationProviders: [AuthenticationProvider] = [.internal]
+    var accountStatus: AccountStatus = .active
+    var verified: Bool = false
 }

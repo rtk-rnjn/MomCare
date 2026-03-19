@@ -32,6 +32,8 @@ struct BaseSignUpView: View {
 
     @EnvironmentObject private var authenticationService: AuthenticationService
 
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+
     @State private var firstName = ""
     @State private var lastName = ""
     @State private var email = ""
@@ -66,10 +68,14 @@ struct BaseSignUpView: View {
             TextField("First Name", text: $firstName)
                 .textInputAutocapitalization(.words)
                 .listRowBackground(Color(.secondarySystemBackground))
+                .accessibilityLabel("First name")
+                .accessibilityHint("Enter your first name")
 
             TextField("Last Name", text: $lastName)
                 .textInputAutocapitalization(.words)
                 .listRowBackground(Color(.secondarySystemBackground))
+                .accessibilityLabel("Last name")
+                .accessibilityHint("Enter your last name")
         }
     }
 
@@ -80,6 +86,8 @@ struct BaseSignUpView: View {
                 .textInputAutocapitalization(.never)
                 .autocorrectionDisabled()
                 .listRowBackground(Color(.secondarySystemBackground))
+                .accessibilityLabel("Email address")
+                .accessibilityHint("Enter your email address")
 
             passwordField(
                 title: "Password",
@@ -103,6 +111,8 @@ struct BaseSignUpView: View {
                     mobileNumber = newValue.filter(\.isNumber)
                 }
                 .listRowBackground(Color(.secondarySystemBackground))
+                .accessibilityLabel("Mobile number")
+                .accessibilityHint("Enter your 10-digit mobile number")
         }
     }
 
@@ -117,12 +127,14 @@ struct BaseSignUpView: View {
             .buttonStyle(.borderedProminent)
             .tint(MomCareAccent.primary)
             .controlSize(.large)
+            .accessibilityLabel("Create account")
+            .accessibilityHint("Creates your new account")
         }
         .padding(.horizontal)
         .padding(.top, 30)
         .padding(.bottom, 20)
         .navigationDestination(isPresented: $navigateToOTP) {
-            OTPScreenView(navigateTo: .extendedSignUp)
+            OTPScreenView()
         }
     }
 
@@ -135,25 +147,34 @@ struct BaseSignUpView: View {
             ZStack {
                 SecureField(title, text: text)
                     .opacity(isVisible.wrappedValue ? 0 : 1)
+                    .accessibilityHidden(isVisible.wrappedValue)
 
                 TextField(title, text: text)
                     .opacity(isVisible.wrappedValue ? 1 : 0)
+                    .accessibilityHidden(!isVisible.wrappedValue)
                     .autocorrectionDisabled(true)
                     .textInputAutocapitalization(.never)
             }
             .focused($isFocused)
-            .animation(.easeInOut(duration: 0.2), value: isVisible.wrappedValue)
+            .animation(reduceMotion ? nil : .easeInOut(duration: 0.2), value: isVisible.wrappedValue)
 
             Button {
-                withAnimation(.easeInOut(duration: 0.2)) {
+                withAnimation(reduceMotion ? nil : .easeInOut(duration: 0.2)) {
                     isVisible.wrappedValue.toggle()
                 }
             } label: {
-                Image(systemName: isVisible.wrappedValue ? "eye.slash" : "eye")
-                    .foregroundStyle(.secondary)
-                    .symbolEffect(.bounce.down, options: .nonRepeating, value: isVisible.wrappedValue)
+                let iconName = isVisible.wrappedValue ? "eye.slash" : "eye"
+                if reduceMotion {
+                    Image(systemName: iconName)
+                        .foregroundStyle(.secondary)
+                } else {
+                    Image(systemName: iconName)
+                        .foregroundStyle(.secondary)
+                        .symbolEffect(.bounce.down, options: .nonRepeating, value: isVisible.wrappedValue)
+                }
             }
             .buttonStyle(.plain)
+            .accessibilityLabel(isVisible.wrappedValue ? "Hide \(title.lowercased())" : "Show \(title.lowercased())")
         }
         .listRowBackground(Color(.secondarySystemBackground))
     }

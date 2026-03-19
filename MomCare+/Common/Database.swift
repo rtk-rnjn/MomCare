@@ -11,6 +11,7 @@ enum ValidDatabaseKeys {
     case food(String)
     case exercise(String)
     case breathing(Date)
+    case credentials
 
     // MARK: Internal
 
@@ -28,6 +29,8 @@ enum ValidDatabaseKeys {
             "exercise_\(id)"
         case let .breathing(date):
             "breathing_\(date.timeIntervalSince1970)"
+        case .credentials:
+            "credentials"
         }
     }
 }

@@ -60,11 +60,9 @@ struct PreferencesSignUpView: View {
     private var dueDateRange: ClosedRange<Date> {
         let calendar = Calendar.current
         let today = calendar.startOfDay(for: Date())
-        let maxDate = calendar.date(
-            byAdding: .weekOfYear,
-            value: 40,
-            to: today
-        )!
+        guard let maxDate = calendar.date(byAdding: .weekOfYear, value: 40, to: today) else {
+            return today ... today
+        }
         return today ... maxDate
     }
 
@@ -82,6 +80,8 @@ struct PreferencesSignUpView: View {
                     )
             }
             .frame(height: 6)
+            .accessibilityLabel("Step 3 of 3, complete")
+            .accessibilityAddTraits(.updatesFrequently)
 
             Text("Enter or calculate your details to help us create a plan curated just for you.")
                 .font(.subheadline)
@@ -155,6 +155,8 @@ struct PreferencesSignUpView: View {
             .controlSize(.large)
             .padding(.horizontal)
             .padding(.bottom, 20)
+            .accessibilityLabel("Finish")
+            .accessibilityHint("Completes profile setup and takes you to the dashboard")
             .navigationDestination(isPresented: $navigateToDashboard) {
                 MomCareMainTabView()
             }
@@ -178,10 +180,14 @@ struct PreferencesSignUpView: View {
 
                 Image(systemName: "chevron.up.chevron.down")
                     .foregroundStyle(MomCareAccent.primary)
+                    .accessibilityHidden(true)
             }
         }
         .tint(.primary)
         .listRowBackground(Color(.secondarySystemBackground))
+        .accessibilityLabel(title)
+        .accessibilityValue(count == 0 ? "None selected" : "\(count) selected")
+        .accessibilityHint("Tap to select \(title.lowercased())")
     }
 
     @ViewBuilder
@@ -214,11 +220,9 @@ struct PreferencesSignUpView: View {
     private func clampDueDateIfNeeded() {
         let calendar = Calendar.current
         let today = calendar.startOfDay(for: Date())
-        let maxDate = calendar.date(
-            byAdding: .weekOfYear,
-            value: 40,
-            to: today
-        )!
+        guard let maxDate = calendar.date(byAdding: .weekOfYear, value: 40, to: today) else {
+            return
+        }
 
         if dueDate < today {
             dueDate = today

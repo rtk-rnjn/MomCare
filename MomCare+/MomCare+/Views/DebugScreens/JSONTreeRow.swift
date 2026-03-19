@@ -34,7 +34,7 @@ struct JSONTreeRow: View {
     @ViewBuilder
     private var rowContent: some View {
         HStack(spacing: 6) {
-            // Indent guides
+
             if depth > 0 {
                 HStack(spacing: 8) {
                     ForEach(0..<depth, id: \.self) { _ in
@@ -71,7 +71,7 @@ struct JSONTreeRow: View {
                     .font(.footnote.monospaced())
                     .textSelection(.enabled)
             } else {
-                // Container badge
+
                 HStack(spacing: 4) {
                     Text(node.typeLabel)
                         .font(.caption2.weight(.semibold).monospaced())
@@ -221,7 +221,7 @@ struct JSONSheetView: View {
                         .padding(.vertical, 8)
                     }
                 } else {
-                    // Fallback: raw text
+
                     ScrollView {
                         Text(raw)
                             .font(.footnote.monospaced())
@@ -233,8 +233,8 @@ struct JSONSheetView: View {
             .navigationTitle(title)
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
-                ToolbarItem(placement: .topBarTrailing) {
-                    Button("Done") { dismiss() }
+                ToolbarItem(placement: .cancellationAction) {
+                    Button(role: .cancel) { dismiss() }
                 }
                 ToolbarItem(placement: .topBarLeading) {
                     Button {

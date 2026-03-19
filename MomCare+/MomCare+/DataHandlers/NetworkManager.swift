@@ -44,7 +44,7 @@ class NetworkManager {
 
     // MARK: Internal
 
-    var debugMenuStore: DebugMenuStore?
+    private(set) var debugMenuStore: DebugMenuStore?
 
     func setDebugMenuStore(_ store: DebugMenuStore) {
         debugMenuStore = store

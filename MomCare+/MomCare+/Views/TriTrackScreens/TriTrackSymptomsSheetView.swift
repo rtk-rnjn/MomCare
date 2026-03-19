@@ -27,6 +27,7 @@ struct TriTrackSymptomsSheetView: View {
                         Text("Other")
                             .foregroundColor(.primary)
                     })
+                    .accessibilityHint("Double tap to log a custom symptom")
                 }
 
                 Section {
@@ -38,6 +39,7 @@ struct TriTrackSymptomsSheetView: View {
                             Text(symptom.name)
                                 .foregroundColor(.primary)
                         })
+                        .accessibilityHint("Double tap to select this symptom")
                     }
                 }
             }

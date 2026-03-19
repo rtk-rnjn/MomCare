@@ -44,9 +44,6 @@ struct ProfileHealthInfoView: View {
             }
 
             Section {
-//                pickerRow(title: "Medical Conditions", value: displayCount(conditions)) {
-//                    activeSheet = .conditions
-//                }
 
                 pickerRow(title: "Dietary Preferences", value: displayCount(dietaryPreferences)) {
                     activeSheet = .diet
@@ -154,6 +151,7 @@ struct ProfileHealthInfoView: View {
             }
         }
         .buttonStyle(.plain)
+        .accessibilityHint(isEditing ? "Tap to change \(title)" : "")
     }
 
     func displayCount<T>(_ set: Set<T>) -> String {

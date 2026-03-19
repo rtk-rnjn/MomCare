@@ -204,7 +204,7 @@ private struct MetricCard: View {
             Text(value, format: .number.precision(.fractionLength(1)))
                 .font(.title2.bold().monospacedDigit())
                 .foregroundStyle(statusColor)
-                .contentTransition(.numericText())
+                .contentTransition(reduceMotion ? .identity : .numericText())
                 .animation(reduceMotion ? nil : .spring(duration: 0.25), value: value)
             Text(unit)
                 .font(.caption)

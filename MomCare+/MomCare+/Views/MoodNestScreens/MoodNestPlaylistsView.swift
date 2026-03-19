@@ -95,6 +95,8 @@ struct MoodNestPlaylistsView: View {
                         PlaylistCard(playlist: playlist)
                     }
                     .buttonStyle(.plain)
+                    .accessibilityLabel(playlist.name)
+                    .accessibilityHint("Opens \(playlist.name) playlist")
                 }
             }
         }

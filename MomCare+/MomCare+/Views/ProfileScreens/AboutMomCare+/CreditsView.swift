@@ -19,6 +19,7 @@ struct CreditsView: View {
                         .font(.title2)
                         .fontWeight(.bold)
                         .foregroundColor(brandPink)
+                        .accessibilityAddTraits(.isHeader)
 
                     LazyVGrid(columns: teamGridColumns, spacing: 20) {
                         ForEach(CreditsData.teamMembers) { member in
@@ -31,6 +32,7 @@ struct CreditsView: View {
                         .fontWeight(.bold)
                         .foregroundColor(brandPink)
                         .padding(.top, 24)
+                        .accessibilityAddTraits(.isHeader)
 
                     VStack(spacing: 16) {
                         ForEach(CreditsData.mentors) { credit in
@@ -43,6 +45,7 @@ struct CreditsView: View {
                         .fontWeight(.bold)
                         .foregroundColor(brandPink)
                         .padding(.top, 24)
+                        .accessibilityAddTraits(.isHeader)
 
                     VStack(spacing: 16) {
                         ForEach(CreditsData.specialThanks) { credit in
@@ -84,6 +87,7 @@ struct TeamMemberCard: View {
                     .aspectRatio(contentMode: .fill)
                     .frame(width: 90, height: 90)
                     .clipShape(Circle())
+                    .accessibilityHidden(true)
             } else {
                 Circle()
                     .fill(imagePlaceholderBackground)
@@ -93,6 +97,7 @@ struct TeamMemberCard: View {
                             .font(.largeTitle)
                             .foregroundColor(imagePlaceholderForeground)
                     )
+                    .accessibilityHidden(true)
             }
 
             VStack(spacing: 2) {
@@ -118,6 +123,8 @@ struct TeamMemberCard: View {
             RoundedRectangle(cornerRadius: 20)
                 .stroke(borderColor, lineWidth: 1)
         )
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel("\(name), \(role)")
     }
 }
 
@@ -144,6 +151,7 @@ struct CreditListCard: View {
             RoundedRectangle(cornerRadius: 16)
                 .stroke(borderColor, lineWidth: 1)
         )
+        .accessibilityElement(children: .combine)
     }
 }
 

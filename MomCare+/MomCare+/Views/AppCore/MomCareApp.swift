@@ -39,6 +39,5 @@ struct MomCareApp: App {
     @StateObject private var musicPlayerHandler: MusicPlayerHandler = .init()
     @StateObject private var eventKitHandler: EventKitHandler = .init()
     @StateObject private var controlState: ControlState = .init()
-//    @StateObject private var debugMenuStore: DebugMenuStore = .init()
 
 }

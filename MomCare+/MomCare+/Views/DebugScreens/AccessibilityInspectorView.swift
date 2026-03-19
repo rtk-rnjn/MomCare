@@ -1,5 +1,3 @@
-// AccessibilityInspectorView.swift
-
 import SwiftUI
 import UIKit
 import Combine
@@ -37,18 +35,17 @@ struct AccessibilityInspectorView: View {
         .navigationTitle("Accessibility Inspector")
         .navigationBarTitleDisplayMode(.inline)
         .onReceive(timer) { _ in refresh.toggle() }
-        .id(refresh) // forces redraw
+        .id(refresh)
     }
 
     // MARK: Private
 
-    // Refresh every second so toggles in Settings are reflected quickly
     @State private var refresh = false
 
     private let timer = Timer.publish(every: 1.5, on: .main, in: .common).autoconnect()
 
     private var dynamicTypeLabel: String {
-        // Map UIContentSizeCategory to a readable label
+
         let cat = UIApplication.shared.preferredContentSizeCategory
         switch cat {
         case .extraSmall: return "XS"
@@ -68,9 +65,10 @@ struct AccessibilityInspectorView: View {
     }
 }
 
-// MARK: - Helper Row
-
 private struct AccessibilityRow: View {
+
+    // MARK: Internal
+
     let label: String
     let isEnabled: Bool
 
@@ -79,10 +77,16 @@ private struct AccessibilityRow: View {
             Text(label)
             Spacer()
             HStack(spacing: 4) {
-                Circle()
-                    .fill(isEnabled ? Color.green : Color.secondary.opacity(0.4))
-                    .frame(width: 8, height: 8)
-                    .accessibilityHidden(true)
+                if differentiateWithoutColor {
+                    Image(systemName: isEnabled ? "checkmark.circle" : "circle")
+                        .font(.caption)
+                        .accessibilityHidden(true)
+                } else {
+                    Circle()
+                        .fill(isEnabled ? Color.green : Color.secondary.opacity(0.4))
+                        .frame(width: 8, height: 8)
+                        .accessibilityHidden(true)
+                }
                 Text(isEnabled ? "On" : "Off")
                     .font(.subheadline)
                     .foregroundStyle(isEnabled ? .green : .secondary)
@@ -92,4 +96,8 @@ private struct AccessibilityRow: View {
         .accessibilityLabel(label)
         .accessibilityValue(isEnabled ? "On" : "Off")
     }
+
+    // MARK: Private
+
+    @Environment(\.accessibilityDifferentiateWithoutColor) private var differentiateWithoutColor
 }

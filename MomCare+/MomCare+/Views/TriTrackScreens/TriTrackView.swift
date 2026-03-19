@@ -1,4 +1,3 @@
-import FSCalendar
 import SwiftUI
 
 extension Color {
@@ -22,16 +21,12 @@ struct TriTrackView: View {
                     .padding(.horizontal, 16)
                     .padding(.top, 16)
             }
-
-            if controlState.showingExpandedCalendar {
-                expandedCalendarOverlay
-            }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .ignoresSafeArea(edges: .bottom)
         .background(MomCareAccent.secondary.ignoresSafeArea())
         .navigationTitle("TriTrack")
-        .navigationBarTitleDisplayMode(.inline)
+        .navigationBarTitleDisplayMode(forceUseLargeTitle ? .large : .inline)
         .navigationDestination(isPresented: $showingAllEvents) {
             TriTrackAllCalendarItemView(selectedDate: $selectedDate)
         }
@@ -45,7 +40,7 @@ struct TriTrackView: View {
             TriTrackRowLegendView()
         }
         .toolbar {
-            ToolbarItem(placement: .topBarLeading) {
+            ToolbarItem(placement: .topBarTrailing) {
                 Button {
                     withAnimation(reduceMotion ? nil : .spring(response: 0.3, dampingFraction: 0.8)) {
                         controlState.showingExpandedCalendar.toggle()
@@ -135,11 +130,11 @@ struct TriTrackView: View {
 
     // MARK: Private
 
+    @AppStorage(FeatureFlagState.forceUseLargeTitle.rawValue, store: UserDefaults(suiteName: "group.MomCare")) private var forceUseLargeTitle: Bool = false
+
     @EnvironmentObject private var controlState: ControlState
     @EnvironmentObject private var authenticationService: AuthenticationService
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
-
-    @AppStorage("showDebugOptions", store: UserDefaults(suiteName: "group.MomCare")) private var showDebugOptions: Bool = false
 
     @State private var selectedDate: Date = .init()
     @State private var showingAllEvents: Bool = false
@@ -155,44 +150,7 @@ struct TriTrackView: View {
     }
 
     private var calendarSection: some View {
-        FSCalendarController(
-            selectedDate: $selectedDate,
-            scope: .constant(.week)
-        )
-        .frame(height: 80)
-        .padding(.horizontal, 8)
-        .padding(.bottom, 6)
-        .background(Color(.systemBackground))
-    }
-
-    private var expandedCalendarOverlay: some View {
-        VStack(spacing: 0) {
-            VStack(spacing: 0) {
-                FSCalendarController(
-                    selectedDate: $selectedDate,
-                    scope: .constant(.month)
-                )
-                .frame(height: 350)
-                .padding(.top, 8)
-            }
-            .background(Color(.systemBackground))
-            .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
-            .shadow(color: .black.opacity(0.15), radius: 12, x: 0, y: 4)
-            .padding(.horizontal, 16)
-            .padding(.top, 8)
-
-            Spacer()
-        }
-        .background(
-            Color.black.opacity(0.3)
-                .ignoresSafeArea()
-                .onTapGesture {
-                    withAnimation(.spring(response: 0.3, dampingFraction: 0.8)) {
-                        controlState.showingExpandedCalendar = false
-                    }
-                }
-        )
-        .transition(.opacity)
+        CompactCalendarView(selectedDate: $selectedDate, isExpanded: $controlState.showingExpandedCalendar)
     }
 
     private var contentCard: some View {
@@ -430,6 +388,7 @@ struct PregnancyProgressView: View {
                 OverlayWindowManager.shared.setContent(popupContent)
                 showingBabyInfo = true
             }
+            .accessibilityAddTraits(.isButton)
 
             CompactInfoCard(
                 title: "Mom This Week",
@@ -468,6 +427,7 @@ struct PregnancyProgressView: View {
                     OverlayWindowManager.shared.setContent(popupContent)
                 }
             }
+            .accessibilityAddTraits(.isButton)
         }
     }
 }
@@ -483,7 +443,7 @@ struct ComparisonView: View {
         HStack(spacing: 0) {
             VStack(alignment: .center) {
                 Text(fruitEmoji)
-                    .font(.system(size: 64))
+                    .font(.largeTitle)
                     .contentTransition(reduceMotion ? .identity : .interpolate)
                     .animation(reduceMotion ? nil : .interpolatingSpring, value: fruitEmoji)
 
@@ -648,12 +608,14 @@ struct PopupInfoCard: View {
                     }
                     .fill(Color(hex: "FBE8E5"))
                     .shadow(color: Color.black.opacity(0.1), radius: 3, x: 0, y: -2)
+                    .accessibilityHidden(true)
 
                     Text(title)
                         .font(.title3)
                         .fontWeight(.bold)
                         .foregroundColor(.CustomColors.mutedRaspberry)
                         .offset(y: envelopeOpen ? 5 : 15)
+                        .accessibilityAddTraits(.isHeader)
                 }
                 .frame(height: 60)
                 .animation(reduceMotion ? nil : .spring(response: 0.5, dampingFraction: 0.7), value: envelopeOpen)
@@ -667,6 +629,7 @@ struct PopupInfoCard: View {
                         }
                     }
                     .padding(.top, 12)
+                    .accessibilityHidden(true)
 
                     ScrollView {
                         Text(content)
@@ -687,6 +650,7 @@ struct PopupInfoCard: View {
                     }
                     .padding(.bottom, 12)
                     .padding(.top, 12)
+                    .accessibilityHidden(true)
 
                     Button(action: closeCard) {
                         Text("Close")
@@ -727,19 +691,19 @@ struct PopupInfoCard: View {
                 return
             }
 
-            withAnimation(.spring(response: 0.4, dampingFraction: 0.7)) {
+            withAnimation(reduceMotion ? nil : .spring(response: 0.4, dampingFraction: 0.7)) {
                 opacity = 1.0
                 scale = 1.0
                 cardOffset = .zero
             }
 
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-                withAnimation(.spring(response: 0.6, dampingFraction: 0.6)) {
+                withAnimation(reduceMotion ? nil : .spring(response: 0.6, dampingFraction: 0.6)) {
                     envelopeOpen = true
                 }
 
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-                    withAnimation(.easeIn(duration: 0.4)) {
+                    withAnimation(reduceMotion ? nil : .easeIn(duration: 0.4)) {
                         isContentVisible = true
                     }
                 }
@@ -770,17 +734,17 @@ struct PopupInfoCard: View {
             return
         }
 
-        withAnimation(.easeOut(duration: 0.2)) {
+        withAnimation(reduceMotion ? nil : .easeOut(duration: 0.2)) {
             isContentVisible = false
         }
 
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-            withAnimation(.spring(response: 0.4, dampingFraction: 0.7)) {
+            withAnimation(reduceMotion ? nil : .spring(response: 0.4, dampingFraction: 0.7)) {
                 envelopeOpen = false
             }
 
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-                withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) {
+                withAnimation(reduceMotion ? nil : .spring(response: 0.3, dampingFraction: 0.7)) {
                     opacity = 0.0
                     scale = 0.8
                     cardOffset = CGSize(width: 0, height: -50)

@@ -1,4 +1,5 @@
 import SwiftUI
+import Foundation
 
 struct DashboardDietCardView: View {
 
@@ -20,12 +21,12 @@ struct DashboardDietCardView: View {
                 }
                 .accessibilityHidden(true)
 
-                Text("\(Int(consumed)) / \(Int(goal)) kcal")
+                Text("\(Int(consumed)) / \(Int(goal)) \(UnitEnergy.kilocalories.symbol)")
                     .font(.title3)
                     .fontWeight(.regular)
                     .lineLimit(1)
                     .minimumScaleFactor(0.8)
-                    .contentTransition(.numericText())
+                    .contentTransition(reduceMotion ? .identity : .numericText())
                     .animation(reduceMotion ? nil : .spring(response: 0.4, dampingFraction: 0.7), value: goal)
             }
 

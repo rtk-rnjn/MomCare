@@ -17,6 +17,8 @@ struct ProfileAccountManagementView: View {
                     } label: {
                         Text("Delete")
                     }
+                    .accessibilityLabel("Delete account")
+                    .accessibilityHint("Permanently deletes your MomCare+ account and all associated data")
                 }
             } footer: {
                 Text("Deleting your account will permanently remove all your data from MomCare+. This action cannot be undone.")

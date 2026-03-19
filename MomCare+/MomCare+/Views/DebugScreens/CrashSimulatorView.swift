@@ -1,5 +1,3 @@
-// CrashSimulatorView.swift
-
 import SwiftUI
 
 struct CrashSimulatorView: View {
@@ -75,7 +73,6 @@ struct CrashSimulatorView: View {
         .navigationTitle("Crash Simulator")
         .navigationBarTitleDisplayMode(.inline)
 
-        // MARK: Confirmation Dialogs
         .confirmationDialog("Force Crash", isPresented: $showCrashConfirm, titleVisibility: .visible) {
             Button("Crash Now", role: .destructive) { fatalError("[DebugMenu] Intentional crash triggered.") }
         } message: {
@@ -133,8 +130,6 @@ struct CrashSimulatorView: View {
         Date().formatted(date: .omitted, time: .standard)
     }
 }
-
-// MARK: - Simulator Row
 
 private struct SimulatorRow: View {
     let label: String

@@ -48,7 +48,7 @@ struct TriTrackAllRemindersView: View {
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button {
-                        withAnimation(.snappy) {
+                        withAnimation(reduceMotion ? nil : .snappy) {
                             showDetails.toggle()
                         }
                     } label: {
@@ -89,6 +89,7 @@ struct TriTrackAllRemindersView: View {
     // MARK: Private
 
     @EnvironmentObject private var eventKitHandler: EventKitHandler
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @State private var showDetails = true
     @State private var selectedReminder: EKCalendarItemWrapper?
     @State private var showErrorAlert = false
@@ -259,7 +260,6 @@ struct ReminderRow: View {
     var body: some View {
         HStack(alignment: .top, spacing: 14) {
 
-            // Status indicator + line
             VStack(spacing: 0) {
                 Button {
                     if reduceMotion {
@@ -289,7 +289,6 @@ struct ReminderRow: View {
 
             VStack(alignment: .leading, spacing: showDetails ? 5 : 0) {
 
-                // Title row
                 HStack(spacing: 6) {
                     Text(reminder.title ?? "Untitled")
                         .font(.headline)
@@ -302,7 +301,6 @@ struct ReminderRow: View {
 
                     Spacer()
 
-                    // Recurrence badges
                     if showDetails {
                         if hasRecurrence {
                             Image(systemName: hasRecurrenceEnd ? "repeat.1" : "repeat")
@@ -324,7 +322,6 @@ struct ReminderRow: View {
 
                 if showDetails {
 
-                    // Time + relative timer
                     if let time = timeLabel, let dueDate = reminder.dueDateComponents?.date {
                         HStack(spacing: 6) {
                             Image(systemName: "clock")
@@ -346,7 +343,6 @@ struct ReminderRow: View {
                         }
                     }
 
-                    // Priority
                     if let priority = priorityLabel {
                         HStack(spacing: 5) {
                             Image(systemName: priorityIcon)
@@ -358,7 +354,6 @@ struct ReminderRow: View {
                         }
                     }
 
-                    // Location
                     if let location = reminder.location, !location.isEmpty {
                         HStack(spacing: 5) {
                             Image(systemName: "mappin.and.ellipse")
@@ -370,7 +365,6 @@ struct ReminderRow: View {
                         }
                     }
 
-                    // Alarm
                     if let alarm = alarmLabel {
                         HStack(spacing: 5) {
                             Image(systemName: "bell")
@@ -382,7 +376,6 @@ struct ReminderRow: View {
                         }
                     }
 
-                    // Notes
                     if let notes = reminder.notes, !notes.isEmpty {
                         HStack(alignment: .top, spacing: 5) {
                             Image(systemName: "note.text")
@@ -395,7 +388,6 @@ struct ReminderRow: View {
                         }
                     }
 
-                    // URL
                     if let url = reminder.url {
                         HStack(spacing: 5) {
                             Image(systemName: "link")

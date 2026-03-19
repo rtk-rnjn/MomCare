@@ -18,6 +18,7 @@ struct OpenSourceView: View {
                             .font(.title2)
                             .fontWeight(.bold)
                             .foregroundColor(brandPink)
+                            .accessibilityAddTraits(.isHeader)
 
                         ForEach(LicenseData.appLicense) { license in
                             LicenseCardView(
@@ -33,6 +34,7 @@ struct OpenSourceView: View {
                             .font(.title2)
                             .fontWeight(.bold)
                             .foregroundColor(brandPink)
+                            .accessibilityAddTraits(.isHeader)
 
                         ForEach(LicenseData.projectReport) { report in
                             LicenseCardView(
@@ -48,6 +50,7 @@ struct OpenSourceView: View {
                             .font(.title2)
                             .fontWeight(.bold)
                             .foregroundColor(brandPink)
+                            .accessibilityAddTraits(.isHeader)
 
                         ForEach(LicenseData.thirdPartyLicenses) { license in
                             LicenseCardView(
@@ -91,12 +94,15 @@ struct LicenseCardView: View {
                     Image(systemName: "arrow.up.right.square")
                         .font(.title3)
                         .foregroundColor(textSecondary.opacity(0.7))
+                        .accessibilityHidden(true)
                 }
                 .padding()
                 .background(.white)
                 .cornerRadius(16)
                 .shadow(color: Color.black.opacity(0.04), radius: 8, x: 0, y: 4)
             }
+            .accessibilityLabel("\(name), \(license)")
+            .accessibilityHint("Opens in browser")
         }
     }
 }

@@ -25,9 +25,17 @@ struct WalkingCardView: View {
                         .font(.caption.weight(.semibold))
                         .foregroundColor(Color(hex: "4A8A62"))
                 } else {
-                    Text("\(Int(contentServiceHandler.stepsProgress))%")
-                        .font(.subheadline.weight(.semibold))
-                        .foregroundColor(Color(hex: "4A8A62"))
+                    HStack {
+                        Text(percentCompleted, format: .number.precision(.fractionLength(2)))
+                            .font(.subheadline.weight(.semibold))
+                            .foregroundColor(Color(hex: "4A8A62"))
+                            .contentTransition(reduceMotion ? .identity : .numericText(value: percentCompleted))
+                            .animation(reduceMotion ? nil : .easeInOut(duration: 0.8), value: percentCompleted)
+
+                        Text("%")
+                            .font(.subheadline.weight(.semibold))
+                            .foregroundColor(Color(hex: "4A8A62"))
+                    }
                 }
             }
 
@@ -78,7 +86,7 @@ struct WalkingCardView: View {
         .accessibilityValue(
             contentServiceHandler.currentSteps >= contentServiceHandler.targetSteps
                 ? "Goal completed, \(Int(contentServiceHandler.currentSteps)) steps"
-                : "\(Int(contentServiceHandler.currentSteps)) of \(Int(contentServiceHandler.targetSteps)) steps, \(Int(contentServiceHandler.stepsProgress)) percent"
+                : "\(Int(contentServiceHandler.currentSteps)) of \(Int(contentServiceHandler.targetSteps)) steps, \(Int(contentServiceHandler.stepsProgress * 100)) percent"
         )
         .accessibilityAddTraits(.updatesFrequently)
         .task { updateProgress() }
@@ -90,14 +98,18 @@ struct WalkingCardView: View {
 
     @EnvironmentObject private var contentServiceHandler: ContentServiceHandler
     @State private var progress: Double = 0
-    @State private var percentCompleted: Int = 0
+    @State private var percentCompleted: Double = 0
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @Environment(\.accessibilityReduceTransparency) private var reduceTransparency
 
     private func updateProgress() {
-        progress = Double(contentServiceHandler.currentSteps) / Double(contentServiceHandler.targetSteps)
-        progress = min(progress, 1)
-        percentCompleted = Int(progress * 100)
+        guard contentServiceHandler.targetSteps > 0 else {
+            progress = 0
+            percentCompleted = 0
+            return
+        }
+        progress = min(Double(contentServiceHandler.currentSteps) / Double(contentServiceHandler.targetSteps), 1.0)
+        percentCompleted = progress * 100
     }
 
 }

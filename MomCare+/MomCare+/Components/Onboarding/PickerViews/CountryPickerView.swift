@@ -16,6 +16,8 @@ struct CountryPickerView: View {
                     Text(country)
                         .foregroundStyle(.primary)
                 }
+                .accessibilityLabel(country)
+                .accessibilityHint("Selects \(country)")
             }
             .tint(.primary)
             .safeAreaInset(edge: .top) {

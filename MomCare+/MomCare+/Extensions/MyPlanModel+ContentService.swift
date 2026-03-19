@@ -1,3 +1,8 @@
+enum MyPlanModelReferenceType {
+    case user
+    case server
+}
+
 extension MyPlanModel {
     func fetchFoods(for references: [FoodReferenceModel]) async -> [FoodItemModel] {
         await withTaskGroup(of: FoodItemModel?.self) { group in
@@ -17,8 +22,8 @@ extension MyPlanModel {
         }
     }
 
-    func targetNutrition() async -> NutritionTotals {
-        let foods = await fetchFoods(for: allReferences)
+    func targetNutrition(of references: MyPlanModelReferenceType = .user) async -> NutritionTotals {
+        let foods = await fetchFoods(for: references == .user ? allReferences : originalReferences)
         return foods.reduce(.zero) { result, food in
             NutritionTotals(
                 calories: result.calories + food.totalCalories,

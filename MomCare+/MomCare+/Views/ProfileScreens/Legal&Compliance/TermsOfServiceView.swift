@@ -17,12 +17,14 @@ struct TermsOfServiceView: View {
                                 .font(.largeTitle.weight(.bold))
                                 .foregroundColor(accentColor)
                         }
+                        .accessibilityHidden(true)
 
                         Text("Good rules create a space where everyone can feel safe and respected.")
                             .font(.title.weight(.semibold))
                             .tracking(-0.5)
                             .multilineTextAlignment(.center)
                             .lineSpacing(0)
+                            .accessibilityAddTraits(.isHeader)
 
                         Text("Clarity is the foundation of trust. Our terms are designed to be clear, so our relationship can be strong.")
                             .font(.subheadline)
@@ -78,9 +80,11 @@ struct LegalSectionView: View {
                     .font(.title2)
                     .foregroundColor(accentColor)
                     .frame(width: 24, alignment: .center)
+                    .accessibilityHidden(true)
 
                 Text(title)
                     .font(.title3.weight(.semibold))
+                    .accessibilityAddTraits(.isHeader)
             }
 
             Text(.init(content.trimmingCharacters(in: .whitespacesAndNewlines)))
@@ -101,8 +105,10 @@ struct EligibilitySectionView: View {
                     .font(.title2)
                     .foregroundColor(accentColor)
                     .frame(width: 24, alignment: .center)
+                    .accessibilityHidden(true)
                 Text("Eligibility – Who Can Use MomCare")
                     .font(.title3.weight(.semibold))
+                    .accessibilityAddTraits(.isHeader)
             }
 
             VStack(alignment: .leading, spacing: 10) {
@@ -129,8 +135,10 @@ struct OverviewOfServicesView: View {
                     .font(.title2)
                     .foregroundColor(accentColor)
                     .frame(width: 24, alignment: .center)
+                    .accessibilityHidden(true)
                 Text("Overview of Services")
                     .font(.title3.weight(.semibold))
+                    .accessibilityAddTraits(.isHeader)
             }
 
             Text("MomCare offers a range of tools designed to enhance your pregnancy journey:")
@@ -159,6 +167,7 @@ struct ServiceDetail: View {
             Text(description)
                 .foregroundColor(.primary)
         }
+        .accessibilityElement(children: .combine)
     }
 }
 
@@ -172,8 +181,10 @@ struct ThirdPartyServicesView: View {
                     .font(.title2)
                     .foregroundColor(accentColor)
                     .frame(width: 24, alignment: .center)
+                    .accessibilityHidden(true)
                 Text("Third-Party Services and Frameworks")
                     .font(.title3.weight(.semibold))
+                    .accessibilityAddTraits(.isHeader)
             }
 
             Text("To deliver a personalized and feature-rich experience, MomCare integrates with a number of third-party services, frameworks, and APIs. These services may handle or process certain types of data to enable app functionality.")
@@ -222,6 +233,7 @@ struct ServiceBulletPoint: View {
         HStack(alignment: .top, spacing: 8) {
             Text("•")
                 .font(.subheadline)
+                .accessibilityHidden(true)
 
             VStack(alignment: .leading) {
                 Text(.init("**\(title)** – \(description)"))
@@ -238,6 +250,7 @@ struct BulletPoint: View {
     var body: some View {
         HStack(alignment: .top, spacing: 8) {
             Text("•")
+                .accessibilityHidden(true)
             Text(.init(text))
         }
         .font(.subheadline)

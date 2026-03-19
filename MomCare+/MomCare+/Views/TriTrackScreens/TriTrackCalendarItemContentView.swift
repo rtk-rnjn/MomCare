@@ -33,6 +33,7 @@ struct TriTrackCalendarItemContentView: View {
                 HStack {
                     Text("Events")
                         .font(.headline)
+                        .accessibilityAddTraits(.isHeader)
 
                     Spacer()
 
@@ -54,6 +55,7 @@ struct TriTrackCalendarItemContentView: View {
                 HStack {
                     Text("Reminders")
                         .font(.headline)
+                        .accessibilityAddTraits(.isHeader)
 
                     Spacer()
 
@@ -134,6 +136,7 @@ struct TriTrackCalendarItemContentView: View {
             Spacer()
             ProgressView()
                 .padding(.vertical, 8)
+                .accessibilityLabel("Loading")
             Spacer()
         }
         .listRowBackground(Color.clear)
@@ -142,7 +145,7 @@ struct TriTrackCalendarItemContentView: View {
     private var eventList: some View {
         ForEach(eventKitHandler.events, id: \.calendarItemIdentifier) { event in
             TriTrackEventRow(event: event, selectedDate: $selectedDate)
-                .listRowSeparator(.hidden, edges: .all)
+                .listRowSeparator(.hidden)
                 .onTapGesture {
                     selectedEvent = EKCalendarItemWrapper(item: event)
                 }
@@ -186,8 +189,6 @@ struct TriTrackCalendarItemContentView: View {
                 }
         }
     }
-
-    // MARK: - Reminder List
 
     private var reminderList: some View {
         ForEach(eventKitHandler.reminders, id: \.calendarItemIdentifier) { reminder in
@@ -285,10 +286,6 @@ struct TriTrackCalendarItemContentView: View {
         }
     }
 
-    // MARK: - Deep Links
-
-    /// Opens the native Calendar app scrolled to the event's date.
-    /// Uses the `calshow://` URL scheme with an interval since reference date.
     private func openInCalendarApp(event: EKEvent) {
         let interval = (event.startDate ?? selectedDate).timeIntervalSinceReferenceDate
         if let url = URL(string: "calshow://\(interval)") {
@@ -296,9 +293,6 @@ struct TriTrackCalendarItemContentView: View {
         }
     }
 
-    /// Opens the native Reminders app.
-    /// `x-apple-reminderkit://` launches Reminders; deep-linking to a specific
-    /// reminder is not supported by Apple's public URL scheme.
     private func openInRemindersApp() {
         if let url = URL(string: "x-apple-reminderkit://") {
             openURL(url)

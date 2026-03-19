@@ -8,12 +8,6 @@ enum DestinationType {
 
 struct OTPScreenView: View {
 
-    // MARK: Lifecycle
-
-    init(navigateTo destination: DestinationType) {
-        self.destination = destination
-    }
-
     // MARK: Internal
 
     var body: some View {
@@ -100,7 +94,7 @@ struct OTPScreenView: View {
     @State private var resendTimer = 0
     @State private var navigate: Bool = false
 
-    @State private var destination: DestinationType
+    @State private var destination: DestinationType?
 
     private let otpLength = 6
     private let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
@@ -164,7 +158,7 @@ struct OTPScreenView: View {
             switch destination {
             case .mainApp:
                 MomCareMainTabView()
-            case .extendedSignUp:
+            default:
                 HealthMetricsSignUpView()
             }
         }

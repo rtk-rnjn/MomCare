@@ -18,7 +18,6 @@ private let sections: [ProfileSection] = [
     ProfileSection(rows: [
         ProfileRow(title: "Personal Information", systemImage: "person.crop.circle", type: .personalInfo),
         ProfileRow(title: "Health Information", systemImage: "heart.text.square", type: .healthInfo)
-///        ProfileRow(title: "Notifications", systemImage: "bell.badge", type: .notifications)
     ]),
 
     ProfileSection(rows: [
@@ -29,10 +28,6 @@ private let sections: [ProfileSection] = [
     ProfileSection(rows: [
         ProfileRow(title: "About MomCare+", systemImage: "info.circle", type: .aboutApp)
     ]),
-
-///    ProfileSection(rows: [
-///        ProfileRow(title: "MomCare+ Watch", systemImage: "applewatch", type: .watch)
-///    ]),
 
     ProfileSection(rows: [
         ProfileRow(title: "Account Management", systemImage: "gearshape", type: .accountManagement)
@@ -90,6 +85,15 @@ struct ProfileView: View {
         .listStyle(.insetGrouped)
         .scrollContentBackground(.hidden)
         .background(Color(.systemGroupedBackground))
+        .task {
+            do {
+                try await authenticationService.me()
+                try await authenticationService.fetchCredentials()
+            } catch {
+                self.error = error
+            }
+        }
+        .errorAlert(error: $error)
         .alert("Sign Out?", isPresented: $showSignOutAlert) {
 
             Button(role: .cancel) {}
@@ -106,6 +110,7 @@ struct ProfileView: View {
     // MARK: Private
 
     @State private var showSignOutAlert = false
+    @State private var error: (any Error)?
 
     @EnvironmentObject private var authenticationService: AuthenticationService
 
@@ -132,6 +137,7 @@ struct ProfileView: View {
 
             Image(systemName: row.systemImage)
                 .foregroundStyle(Color("primaryAppColor"))
+                .accessibilityHidden(true)
 
             Text(row.title)
         }

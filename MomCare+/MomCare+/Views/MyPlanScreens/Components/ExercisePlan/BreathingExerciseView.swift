@@ -1,4 +1,6 @@
 import SwiftUI
+import AVFoundation
+import OSLog
 
 struct BreathingExerciseView: View {
 
@@ -65,6 +67,7 @@ struct BreathingExerciseView: View {
             )
         }
         .onAppear {
+            setupAudioSession()
             startReadyCountdown()
             totalElapsed = contentServiceHandler.fetchBreathingCompletionDuration(for: Date())
         }
@@ -88,6 +91,7 @@ struct BreathingExerciseView: View {
     @State private var isActive = false
     @State private var isPaused = false
     @State private var showCompletion = false
+    @State private var speechSynthesizer: AVSpeechSynthesizer = .init()
 
     @State private var dotOffsets: [CGSize] = (0 ..< 6).map { _ in
         CGSize(width: CGFloat.random(in: -20 ... 20), height: CGFloat.random(in: -20 ... 20))
@@ -95,6 +99,8 @@ struct BreathingExerciseView: View {
 
     @State private var timer: Timer?
     @State private var phaseTimer: Timer?
+
+    private let logger: Logger = .init(subsystem: Bundle.main.bundleIdentifier ?? "MomCare", category: "BreathingExercise")
 
     private let pastel: Color = .init(hex: "D0E1F0")
     private let accent: Color = .init(hex: "8BBBD4")
@@ -244,7 +250,7 @@ struct BreathingExerciseView: View {
                     .fontDesign(.rounded)
                     .foregroundColor(darkAccent.opacity(0.6))
                     .monospacedDigit()
-                    .contentTransition(.numericText())
+                    .contentTransition(reduceMotion ? .identity : .numericText())
                     .animation(reduceMotion ? nil : .easeInOut(duration: 0.2), value: phaseCountdown)
                     .accessibilityLabel("\(phaseCountdown) seconds")
                     .accessibilityAddTraits(.updatesFrequently)
@@ -352,6 +358,7 @@ struct BreathingExerciseView: View {
 
     private func startReadyCountdown() {
         phase = .ready
+        speak("Are you Ready?")
         phaseCountdown = Int(BreathingPhase.ready.duration)
 
         phaseTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { _ in
@@ -369,6 +376,7 @@ struct BreathingExerciseView: View {
     private func startBreathingCycle() {
         isActive = true
         phase = .breatheIn
+        speak("Breathe in")
         phaseCountdown = Int(BreathingPhase.breatheIn.duration)
         animateCircle(to: BreathingPhase.breatheIn.circleScale, duration: BreathingPhase.breatheIn.duration)
         animateDots()
@@ -389,6 +397,8 @@ struct BreathingExerciseView: View {
                 } else {
                     let nextPhase = phase.next
                     phase = nextPhase
+
+                    speak(nextPhase.voiceText)
                     phaseCountdown = Int(nextPhase.duration)
                     animateCircle(to: nextPhase.circleScale, duration: nextPhase.duration)
                     animateDots()
@@ -401,7 +411,7 @@ struct BreathingExerciseView: View {
         if reduceMotion {
             circleScale = scale
         } else {
-            withAnimation(.bouncy) {
+            withAnimation(.easeInOut(duration: duration)) {
                 circleScale = scale
             }
         }
@@ -458,6 +468,7 @@ struct BreathingExerciseView: View {
 
     private func completeSession() {
         stopAllTimers()
+        speak("Well done. You did Amazing!")
         if reduceMotion {
             phase = .done
             circleScale = BreathingPhase.done.circleScale
@@ -481,6 +492,27 @@ struct BreathingExerciseView: View {
 
         return Duration.seconds(seconds).formatted(.time(pattern: .minuteSecond))
     }
+
+    private func speak(_ text: String) {
+        let utterance = AVSpeechUtterance(string: text)
+        utterance.voice = AVSpeechSynthesisVoice(identifier: "com.apple.ttsbundle.siri_female_en-IN_compact")
+        utterance.rate = 0.4
+        utterance.pitchMultiplier = 1.0
+        utterance.volume = 1.0
+
+        speechSynthesizer.stopSpeaking(at: .immediate)
+        speechSynthesizer.speak(utterance)
+    }
+
+    private func setupAudioSession() {
+        do {
+            let session = AVAudioSession.sharedInstance()
+            try session.setCategory(.playback, mode: .default)
+            try session.setActive(true)
+        } catch {
+            logger.error("Failed to set audio category: \(error.localizedDescription)")
+        }
+    }
 }
 
 enum BreathingPhase: String {
@@ -497,7 +529,7 @@ enum BreathingPhase: String {
         case .breatheIn: 4.0
         case .hold: 4.0
         case .breatheOut: 6.0
-        case .ready: 3.0
+        case .ready: 5.0
         case .done: 0
         }
     }
@@ -519,6 +551,21 @@ enum BreathingPhase: String {
         case .breatheOut: 0.6
         case .ready: 0.6
         case .done: 0.85
+        }
+    }
+
+    var voiceText: String {
+        switch self {
+        case .breatheIn:
+            return "Slowly breathe in..."
+        case .hold:
+            return "Hold?"
+        case .breatheOut:
+            return "Now breathe out..."
+        case .ready:
+            return "Get ready..."
+        case .done:
+            return "Well done. Session complete."
         }
     }
 }

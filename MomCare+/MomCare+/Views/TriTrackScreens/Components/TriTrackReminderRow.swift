@@ -236,7 +236,7 @@ extension TriTrackReminderRow {
             .font(.caption.weight(.medium))
             .lineLimit(1)
             .monospacedDigit()
-            .contentTransition(.numericText(countsDown: true))
+            .contentTransition(reduceMotion ? .identity : .numericText(countsDown: true))
             .animation(reduceMotion ? nil : .spring(response: 0.4, dampingFraction: 0.7), value: dueDate)
     }
 }

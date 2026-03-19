@@ -17,6 +17,8 @@ struct MapPickerView: View {
                     }
                 }
                 .ignoresSafeArea()
+                .accessibilityLabel("Map. Tap to select a location")
+                .accessibilityHint("Double tap to place a marker at the tapped location")
                 .onTapGesture { screenPoint in
 
                     if let coordinate = proxy.convert(screenPoint, from: .local) {
@@ -28,7 +30,7 @@ struct MapPickerView: View {
 
                         selectedMapItem = MKMapItem(location: location, address: nil)
 
-                        withAnimation(.easeInOut(duration: 0.3)) {
+                        if reduceMotion {
                             cameraPosition = .region(
                                 MKCoordinateRegion(
                                     center: coordinate,
@@ -38,6 +40,18 @@ struct MapPickerView: View {
                                     )
                                 )
                             )
+                        } else {
+                            withAnimation(.easeInOut(duration: 0.3)) {
+                                cameraPosition = .region(
+                                    MKCoordinateRegion(
+                                        center: coordinate,
+                                        span: MKCoordinateSpan(
+                                            latitudeDelta: 0.01,
+                                            longitudeDelta: 0.01
+                                        )
+                                    )
+                                )
+                            }
                         }
                     }
                 }
@@ -103,6 +117,7 @@ struct MapPickerView: View {
     @FocusState private var isSearchFieldFocused: Bool
 
     @Environment(\.dismiss) private var dismiss
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     @StateObject private var searchService: MapSearchService = .init()
     @StateObject private var locationManager: LocationManager = .init()

@@ -16,6 +16,8 @@ struct StatePickerView: View {
                     Text(state.rawValue.capitalized)
                         .foregroundStyle(.primary)
                 }
+                .accessibilityLabel(state.rawValue.capitalized)
+                .accessibilityHint("Selects \(state.rawValue.capitalized)")
             }
             .tint(.primary)
             .searchable(text: $searchText)

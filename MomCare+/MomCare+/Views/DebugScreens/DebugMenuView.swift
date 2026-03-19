@@ -15,7 +15,7 @@ struct DebugMenuView: View {
                 }
             }
             .navigationTitle("Debug Menu")
-            .navigationBarTitleDisplayMode(.large)
+            .navigationBarTitleDisplayMode(.inline)
         }
     }
 
@@ -43,8 +43,8 @@ enum DebugSection: String, CaseIterable, Identifiable {
     var id: String { rawValue }
     var title: String { rawValue }
 
-    @ViewBuilder // swiftlint:disable:next cyclomatic_complexity
-    func destination(store: DebugMenuStore) -> some View {
+    @ViewBuilder
+    func destination(store: DebugMenuStore) -> some View { // swiftlint:disable:this cyclomatic_complexity
         switch self {
         case .deviceInfo: DeviceInfoView()
         case .accessibility: AccessibilityInspectorView()

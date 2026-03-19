@@ -9,21 +9,25 @@ struct MealTimelineCardView: View {
             mealSection(
                 title: "Breakfast",
                 items: contentServiceHandler.myPlanModel?.breakfast ?? [],
+                originalItems: contentServiceHandler.myPlanModel?.originalBreakfast ?? [],
                 mealType: .breakfast
             )
             mealSection(
                 title: "Lunch",
                 items: contentServiceHandler.myPlanModel?.lunch ?? [],
+                originalItems: contentServiceHandler.myPlanModel?.originalLunch ?? [],
                 mealType: .lunch
             )
             mealSection(
                 title: "Snacks",
                 items: contentServiceHandler.myPlanModel?.snacks ?? [],
+                originalItems: contentServiceHandler.myPlanModel?.originalSnacks ?? [],
                 mealType: .snacks
             )
             mealSection(
                 title: "Dinner",
                 items: contentServiceHandler.myPlanModel?.dinner ?? [],
+                originalItems: contentServiceHandler.myPlanModel?.originalDinner ?? [],
                 mealType: .dinner
             )
         }
@@ -32,7 +36,7 @@ struct MealTimelineCardView: View {
         .listRowSpacing(0)
         .scrollIndicators(.hidden)
         .scrollDismissesKeyboard(.immediately)
-//        .toolbarVisibility(.hidden, for: .tabBar)
+
         .scrollBounceBehavior(.basedOnSize)
         .environment(\.defaultMinListRowHeight, 0)
     }
@@ -43,7 +47,7 @@ struct MealTimelineCardView: View {
     @EnvironmentObject private var controlState: ControlState
 
     @ViewBuilder
-    private func mealSection(title: String, items: [FoodReferenceModel], mealType: MealType) -> some View {
+    private func mealSection(title: String, items: [FoodReferenceModel], originalItems: [FoodReferenceModel], mealType: MealType) -> some View {
         Section {
             HeaderRow(
                 section: MealSection(title: title, items: items),
@@ -82,6 +86,19 @@ struct MealTimelineCardView: View {
                         }
                     }
                 )
+                .background {
+                    LinearGradient(
+                        colors: [
+                            Color.yellow.opacity(0.05),
+                            Color.yellow.opacity(0.15),
+                            Color.yellow.opacity(0.05)
+                        ],
+                        startPoint: .leading,
+                        endPoint: .trailing
+                    )
+                    .opacity(originalItems.contains(where: { $0.id == item.id }) ? 0 : 1)
+                    .animation(.easeInOut(duration: 0.3), value: originalItems)
+                }
                 .listRowSeparator(.hidden)
                 .listRowInsets(.top, 0)
                 .listRowInsets(.bottom, 0)
@@ -143,8 +160,9 @@ private struct HeaderRow: View {
         .contentShape(Rectangle())
         .sheet(isPresented: $showSearchFoodSheet) {
             MyPlanFoodItemSearchView(mealType: mealType)
-                .presentationDetents([.large])
+                .presentationDetents([.medium, .large])
                 .interactiveDismissDisabled(true)
+                .scrollDismissesKeyboard(.immediately)
         }
     }
 
@@ -384,7 +402,7 @@ private struct NutritionPreview: View {
                     .fill(Color.secondary.opacity(0.12))
 
                 FoodThumbnail(foodReferenceModel: item)
-                    .font(.system(size: 32, weight: .regular))
+                    .font(.largeTitle)
                     .foregroundColor(.secondary)
             }
             .frame(width: 90, height: 90)
@@ -468,5 +486,15 @@ struct TimelineCircle: View {
                     .foregroundColor(.white)
             }
         }
+    }
+}
+
+struct MealSection: Identifiable {
+    let id: UUID = .init()
+    let title: String
+    var items: [FoodReferenceModel]
+
+    var isCompleted: Bool {
+        items.allSatisfy(\.isConsumed)
     }
 }
