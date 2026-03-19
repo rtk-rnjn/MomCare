@@ -27,7 +27,7 @@ struct WaterLogView: View {
                             Text("\(Int(store.todayTotal))ml of \(Int(store.dailyTarget))ml")
                                 .font(.subheadline.weight(.medium))
                                 .foregroundStyle(Color(hex: "924350").opacity(0.6))
-                                .contentTransition(.numericText())
+                                .contentTransition(reduceMotion ? .identity : .numericText())
                                 .animation(reduceMotion ? nil : .spring(response: 0.5), value: store.todayTotal)
                                 .padding(.top, 10)
 

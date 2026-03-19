@@ -6,11 +6,11 @@ struct MomCareRootView: View {
 
     var body: some View {
         if let isProfileComplete = authenticationService.userModel?.isProfileComplete, isProfileComplete {
-            MomCareMainTabView()
+            unsafe MomCareMainTabView()
                 .transition(reduceMotion ? .identity : .opacity)
                 .preferredColorScheme(forceDarkMode ? .dark : (forceLightMode ? .light : nil))
         } else {
-            OnboardingView()
+            unsafe OnboardingView()
                 .transition(reduceMotion ? .identity : .opacity)
                 .preferredColorScheme(forceDarkMode ? .dark : (forceLightMode ? .light : nil))
         }

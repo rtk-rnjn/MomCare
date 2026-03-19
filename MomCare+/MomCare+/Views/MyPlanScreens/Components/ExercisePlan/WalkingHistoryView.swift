@@ -101,7 +101,8 @@ struct WalkingHistoryView: View {
                     Text("\(Int(progress * 100))%")
                         .font(.body.weight(.bold))
                         .foregroundColor(Color(hex: "4A8A62"))
-                        .contentTransition(.numericText())
+                        .contentTransition(reduceMotion ? .identity : .numericText())
+                        .animation(reduceMotion ? nil : .spring(response: 0.7), value: progress)
                 }
             }
             .frame(width: 72, height: 72)
@@ -115,7 +116,7 @@ struct WalkingHistoryView: View {
                         Text(store.selectedDateSteps.formatted())
                             .font(.largeTitle.weight(.heavy))
                             .foregroundColor(.primary)
-                            .contentTransition(.numericText())
+                            .contentTransition(reduceMotion ? .identity : .numericText())
                             .animation(reduceMotion ? nil : .spring(response: 0.5), value: store.selectedDateSteps)
                     }
                     Text("steps")
@@ -351,7 +352,8 @@ struct WalkingHistoryView: View {
                 Text(value)
                     .font(.subheadline.weight(.bold))
                     .foregroundColor(.primary)
-                    .contentTransition(.numericText())
+                    .contentTransition(reduceMotion ? .identity : .numericText())
+                    .animation(reduceMotion ? nil : .spring(response: 0.5), value: value)
                 Text(unit)
                     .font(.caption2)
                     .foregroundStyle(Color(.tertiaryLabel))

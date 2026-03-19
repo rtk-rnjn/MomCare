@@ -148,14 +148,20 @@ private struct ExerciseDaySummaryCard: View {
         if mins > 0 { return "\(mins)m \(secs)s" }
         return "\(secs)s"
     }
+    
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     private func summaryPill(icon: String, label: String, value: String, color: Color) -> some View {
         VStack(spacing: 4) {
-            Image(systemName: icon).font(.caption).foregroundColor(color)
+            Image(systemName: icon)
+                .font(.caption)
+                .foregroundColor(color)
             Text(value)
                 .font(.subheadline.weight(.bold))
                 .foregroundColor(color)
-                .contentTransition(.numericText())
+                .contentTransition(reduceMotion ? .identity : .numericText())
+                .animation(reduceMotion ? nil : .spring(response: 0.4, dampingFraction: 0.7), value: value)
+
             Text(label).font(.caption2).foregroundStyle(.secondary)
         }
         .frame(maxWidth: .infinity)

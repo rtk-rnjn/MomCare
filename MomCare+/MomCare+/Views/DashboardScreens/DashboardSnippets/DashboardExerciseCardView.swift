@@ -101,7 +101,7 @@ struct ExerciseRow: View {
                 Text(value)
                     .font(.title3)
                     .fontWeight(.regular)
-                    .contentTransition(.numericText())
+                    .contentTransition(reduceMotion ? .identity : .numericText())
                     .animation(reduceMotion ? nil : .spring(response: 0.4, dampingFraction: 0.7), value: value)
             } else {
                 ProgressView()

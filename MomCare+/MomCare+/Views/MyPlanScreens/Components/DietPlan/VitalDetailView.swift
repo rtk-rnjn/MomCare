@@ -109,7 +109,8 @@ struct VitalDetailView: View {
                 HStack(alignment: .lastTextBaseline, spacing: 4) {
                     Text("\(formattedValue(todayValue))")
                         .font(.title.weight(.bold))
-                        .contentTransition(.numericText())
+                        .contentTransition(reduceMotion ? .identity : .numericText())
+                        .animation(reduceMotion ? nil : .spring(response: 0.4, dampingFraction: 0.7), value: todayValue)
                     Text(kind.unitLabel)
                         .font(.subheadline)
                         .foregroundStyle(.secondary)

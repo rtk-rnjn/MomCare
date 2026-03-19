@@ -199,7 +199,7 @@ struct WaterLogListView: View {
             Text(value)
                 .font(.subheadline.weight(.bold))
                 .foregroundColor(color)
-                .contentTransition(.numericText())
+                .contentTransition(reduceMotion ? .identity : .numericText())
                 .minimumScaleFactor(0.7)
                 .lineLimit(1)
             Text(label).font(.caption2).foregroundStyle(.secondary)

@@ -128,7 +128,8 @@ struct NutritionGraphRootView: View {
             Text(value)
                 .font(.subheadline.weight(.bold))
                 .foregroundColor(color)
-                .contentTransition(.numericText())
+                .contentTransition(reduceMotion ? .identity : .numericText())
+                .animation(reduceMotion ? nil : .spring(response: 0.4, dampingFraction: 0.7), value: value)
         }
         .frame(maxWidth: .infinity)
     }

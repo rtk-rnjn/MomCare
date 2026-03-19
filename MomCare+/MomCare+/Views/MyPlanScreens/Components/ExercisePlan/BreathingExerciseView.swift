@@ -250,7 +250,7 @@ struct BreathingExerciseView: View {
                     .fontDesign(.rounded)
                     .foregroundColor(darkAccent.opacity(0.6))
                     .monospacedDigit()
-                    .contentTransition(.numericText())
+                    .contentTransition(reduceMotion ? .identity : .numericText())
                     .animation(reduceMotion ? nil : .easeInOut(duration: 0.2), value: phaseCountdown)
                     .accessibilityLabel("\(phaseCountdown) seconds")
                     .accessibilityAddTraits(.updatesFrequently)

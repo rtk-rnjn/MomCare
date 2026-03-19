@@ -48,7 +48,7 @@ struct TriTrackAllRemindersView: View {
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button {
-                        withAnimation(.snappy) {
+                        withAnimation(reduceMotion ? nil : .snappy) {
                             showDetails.toggle()
                         }
                     } label: {
@@ -89,6 +89,7 @@ struct TriTrackAllRemindersView: View {
     // MARK: Private
 
     @EnvironmentObject private var eventKitHandler: EventKitHandler
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @State private var showDetails = true
     @State private var selectedReminder: EKCalendarItemWrapper?
     @State private var showErrorAlert = false

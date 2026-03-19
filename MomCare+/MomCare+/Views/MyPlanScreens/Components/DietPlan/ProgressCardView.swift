@@ -255,7 +255,8 @@ private struct CaloriesSummaryView: View {
             Text("\(Int(remaining)) \(UnitEnergy.kilocalories.symbol)")
                 .font(.title3.weight(.bold))
                 .foregroundColor(isOver ? .red : .primary)
-                .contentTransition(.numericText())
+                .contentTransition(reduceMotion ? .identity : .numericText(countsDown: true))
+                .animation(reduceMotion ? nil : .spring(response: 0.4, dampingFraction: 0.7), value: remaining)
 
             if isOver {
                 Label("Over by \(Int(consumed - target)) \(UnitEnergy.kilocalories.symbol)", systemImage: "exclamationmark.triangle.fill")
@@ -273,6 +274,8 @@ private struct CaloriesSummaryView: View {
 
     private var remaining: Double { max(target - consumed, 0) }
     private var isOver: Bool { consumed > target }
+    
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
 }
 
@@ -363,7 +366,9 @@ private struct CalorieStatPill: View {
             Text("\(Int(value))")
                 .font(.subheadline.weight(.semibold))
                 .foregroundColor(color)
-                .contentTransition(.numericText())
+                .contentTransition(reduceMotion ? .identity : .numericText())
+                .animation(reduceMotion ? nil : .spring(response: 0.4, dampingFraction: 0.7), value: value)
+
             Text(label)
                 .font(.caption2)
                 .foregroundColor(.secondary)
@@ -372,6 +377,8 @@ private struct CalorieStatPill: View {
         .padding(.vertical, 8)
         .background(color.opacity(0.08), in: RoundedRectangle(cornerRadius: 10, style: .continuous))
     }
+    
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
 }
 
 private struct MealRow: View {
@@ -479,7 +486,7 @@ struct ProgressRingView: View {
                 Group {
                     if showPercentage {
                         Text("\(percentage)%")
-                            .contentTransition(.numericText())
+                            .contentTransition(reduceMotion ? .identity : .numericText())
                             .transition(.opacity.combined(with: .scale))
                             .animation(reduceMotion ? nil : .spring(response: 0.4, dampingFraction: 0.7), value: percentage)
                             .font(.title2.weight(.bold))
@@ -487,7 +494,7 @@ struct ProgressRingView: View {
                         HStack(spacing: 2) {
                             Text(Int(consumed), format: .number)
                                 .font(consumed > 999 ? .footnote.weight(.semibold) : .headline)
-                                .contentTransition(.numericText())
+                                .contentTransition(reduceMotion ? .identity : .numericText())
                                 .animation(reduceMotion ? nil : .spring(response: 0.4, dampingFraction: 0.7), value: Int(consumed))
 
                             Text("/")
@@ -495,7 +502,7 @@ struct ProgressRingView: View {
 
                             Text(Int(original), format: .number)
                                 .font(consumed > 999 ? .footnote.weight(.semibold) : .headline)
-                                .contentTransition(.numericText())
+                                .contentTransition(reduceMotion ? .identity : .numericText())
                                 .animation(reduceMotion ? nil : .spring(response: 0.4, dampingFraction: 0.7), value: Int(consumed))
                         }
                         .transition(.opacity.combined(with: .scale))
@@ -592,7 +599,8 @@ struct MacroBarRow: View {
                 Group {
                     if showPercentage {
                         Text(percentageText)
-                            .contentTransition(.numericText())
+                            .contentTransition(reduceMotion ? .identity : .numericText())
+                            .animation(reduceMotion ? nil : .spring(response: 0.4, dampingFraction: 0.8), value: showPercentage)
                     } else {
                         HStack(spacing: 4) {
                             if let consumed {
@@ -623,7 +631,8 @@ struct MacroBarRow: View {
                                 Text("-")
                             }
                         }
-                        .contentTransition(.numericText())
+                        .contentTransition(reduceMotion ? .identity : .numericText())
+                        .animation(reduceMotion ? nil : .spring(response: 0.4, dampingFraction: 0.8), value: showPercentage)
                     }
                 }
                 .onTapGesture {

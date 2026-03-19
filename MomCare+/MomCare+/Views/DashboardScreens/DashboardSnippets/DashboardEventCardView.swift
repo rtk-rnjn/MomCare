@@ -18,12 +18,12 @@ struct DashboardEventCardView: View {
                         .fontWeight(.semibold)
                         .lineLimit(2)
                         .minimumScaleFactor(0.9)
-                        .contentTransition(.interpolate)
+                        .contentTransition(reduceMotion ? .identity : .interpolate)
                         .animation(reduceMotion ? nil : .spring(response: 0.4, dampingFraction: 0.85), value: eventKitHandler.eventStore)
 
                     if let startDate = event.startDate {
                         Text(startDate, format: .relative(presentation: .numeric))
-                            .contentTransition(.numericText())
+                            .contentTransition(reduceMotion ? .identity : .numericText())
                             .animation(reduceMotion ? nil : .easeInOut, value: startDate)
                     }
 

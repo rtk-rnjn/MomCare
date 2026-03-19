@@ -39,7 +39,7 @@ struct TriTrackAllSymptomsView: View {
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button {
-                        withAnimation(.snappy) { showDetails.toggle() }
+                        withAnimation(reduceMotion ? nil : .snappy) { showDetails.toggle() }
                     } label: {
                         Label(
                             showDetails ? "Compact" : "Detailed",
@@ -72,6 +72,7 @@ struct TriTrackAllSymptomsView: View {
     @State private var selectedSymptomModel: SymptomModel?
 
     @Query(sort: \SymptomModel.date, order: .forward) private var symptomModels: [SymptomModel]
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @State private var showDetails = true
     @State private var searchText = ""
 

@@ -64,7 +64,7 @@ struct WaterDropFillView: View {
                         .font(.title.weight(.bold))
                         .foregroundColor(.white)
                         .shadow(color: Color(hex: "4A90C4").opacity(0.4), radius: 4, x: 0, y: 2)
-                        .contentTransition(.numericText())
+                        .contentTransition(reduceMotion ? .identity : .numericText())
                         .animation(reduceMotion ? nil : .spring(response: 0.5), value: Int(animatedProgress * 100))
                         .padding(.bottom, geo.size.height * 0.12)
                 }

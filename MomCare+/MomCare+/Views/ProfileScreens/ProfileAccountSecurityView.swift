@@ -36,7 +36,7 @@ struct ProfileAccountSecurityView: View {
                         Spacer()
                         Image(systemName: isChangingPassword ? "chevron.down" : "chevron.right")
                             .foregroundColor(.secondary)
-                            .contentTransition(.symbolEffect)
+                            .contentTransition(reduceMotion ? .identity : .symbolEffect)
                             .animation(
                                 reduceMotion ? nil : .spring(response: 0.25, dampingFraction: 0.8),
                                 value: isChangingPassword

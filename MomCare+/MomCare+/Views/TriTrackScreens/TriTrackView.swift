@@ -689,19 +689,19 @@ struct PopupInfoCard: View {
                 return
             }
 
-            withAnimation(.spring(response: 0.4, dampingFraction: 0.7)) {
+            withAnimation(reduceMotion ? nil : .spring(response: 0.4, dampingFraction: 0.7)) {
                 opacity = 1.0
                 scale = 1.0
                 cardOffset = .zero
             }
 
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-                withAnimation(.spring(response: 0.6, dampingFraction: 0.6)) {
+                withAnimation(reduceMotion ? nil : .spring(response: 0.6, dampingFraction: 0.6)) {
                     envelopeOpen = true
                 }
 
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-                    withAnimation(.easeIn(duration: 0.4)) {
+                    withAnimation(reduceMotion ? nil : .easeIn(duration: 0.4)) {
                         isContentVisible = true
                     }
                 }
@@ -732,17 +732,17 @@ struct PopupInfoCard: View {
             return
         }
 
-        withAnimation(.easeOut(duration: 0.2)) {
+        withAnimation(reduceMotion ? nil : .easeOut(duration: 0.2)) {
             isContentVisible = false
         }
 
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-            withAnimation(.spring(response: 0.4, dampingFraction: 0.7)) {
+            withAnimation(reduceMotion ? nil : .spring(response: 0.4, dampingFraction: 0.7)) {
                 envelopeOpen = false
             }
 
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-                withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) {
+                withAnimation(reduceMotion ? nil : .spring(response: 0.3, dampingFraction: 0.7)) {
                     opacity = 0.0
                     scale = 0.8
                     cardOffset = CGSize(width: 0, height: -50)

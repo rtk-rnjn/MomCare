@@ -26,7 +26,7 @@ struct DashboardDietCardView: View {
                     .fontWeight(.regular)
                     .lineLimit(1)
                     .minimumScaleFactor(0.8)
-                    .contentTransition(.numericText())
+                    .contentTransition(reduceMotion ? .identity : .numericText())
                     .animation(reduceMotion ? nil : .spring(response: 0.4, dampingFraction: 0.7), value: goal)
             }
 

@@ -44,7 +44,7 @@ struct TriTrackAllCalendarItemView: View {
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button {
-                        withAnimation(.snappy) {
+                        withAnimation(reduceMotion ? nil : .snappy) {
                             showDetails.toggle()
                         }
                     } label: {
@@ -85,6 +85,7 @@ struct TriTrackAllCalendarItemView: View {
     // MARK: Private
 
     @EnvironmentObject private var eventKitHandler: EventKitHandler
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @State private var showDetails = true
     @State private var selectedEvent: EKCalendarItemWrapper?
     @State private var showErrorAlert = false
