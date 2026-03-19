@@ -130,14 +130,14 @@ struct MomCareMainTabView: View {
         }
         .onChange(of: isRefreshing) {
             Task {
-                if let networkResponse = try? await ContentService.shared.generateUserExercises(), let userExercises = networkResponse.data {
-                    contentServiceHandler.userExercises = userExercises
-
-                    controlState.error = networkResponse.localizedError
+                do {
+                    try await contentServiceHandler.fetchUserExercises()
 
                     await contentServiceHandler.fetchTotalUserExercisesDuration()
                     await contentServiceHandler.fetchTotalUserExercisesCompletionDuration()
                     await contentServiceHandler.fetchTotalUserExercisesCompleted()
+                } catch {
+                    
                 }
             }
         }

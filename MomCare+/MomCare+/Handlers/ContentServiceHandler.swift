@@ -11,6 +11,9 @@ final class ContentServiceHandler: ObservableObject {
 
     @Published var myPlanModel: MyPlanModel?
     @Published var userExercises: [UserExerciseModel] = []
+    
+    @Published var fetchingMealPlan: Bool = false
+    @Published var fetchingExercises: Bool = false
 
     @Published var currentSteps: Double = 0
     @Published var targetSteps: Double = 4200
@@ -109,9 +112,20 @@ final class ContentServiceHandler: ObservableObject {
             totalUserExercisesCompleted += 1
         }
     }
+    
+    func fetchUserExercises() async throws {
+        fetchingExercises = true
+        defer { fetchingExercises = false }
+        
+        let networkResponse = try await ContentService.shared.generateUserExercises()
+        userExercises = networkResponse.data ?? []
+    }
 
     func fetchMealPlan(makeNetworkCall: Bool = true) async throws {
+        defer { fetchingMealPlan = false }
+
         if makeNetworkCall {
+            fetchingMealPlan = true
             let networkResponse = try await ContentService.shared.generateMealPlan()
 
             myPlanModel = networkResponse.data

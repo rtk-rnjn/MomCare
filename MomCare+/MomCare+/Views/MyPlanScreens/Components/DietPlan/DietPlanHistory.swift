@@ -194,7 +194,11 @@ struct DietPlanHistory: View {
                     if isLoading {
                         ProgressView()
                     } else {
-                        ContentUnavailableView("No meal plan found for this date.", image: "calendar.badge.exclamationmark", description: Text("Try selecting a different date."))
+                        ContentUnavailableView(
+                            "No meal plan found for this date.",
+                            systemImage: "calendar.badge.exclamationmark",
+                            description: Text("Try selecting a different date.")
+                        )
                     }
                 }
             }

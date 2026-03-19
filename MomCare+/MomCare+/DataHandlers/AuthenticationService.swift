@@ -178,8 +178,7 @@ final class AuthenticationService: ObservableObject {
         let payloadData = ChangeEmailAddress(newEmailAddress: newEmailAddress).encodeUsingJSONEncoder()
         let response: NetworkResponse<ServerMessage> = try await NetworkManager.shared.patch(url: Endpoint.changeEmail.urlString, body: payloadData, headers: AuthenticationService.authorizationHeaders)
 
-        if response.errorMessage == nil, response.statusCode == 200, let refreshToken = KeychainHelper.get(.refreshToken) {
-            try await logout(refreshToken: refreshToken)
+        if response.errorMessage == nil, response.statusCode == 200 {
             database[.emailAddress] = newEmailAddress
         }
 
@@ -191,8 +190,7 @@ final class AuthenticationService: ObservableObject {
         let payloadData = ChangePassword(currentPassword: currentPassword, newPassword: newPassword).encodeUsingJSONEncoder()
         let response: NetworkResponse<ServerMessage> = try await NetworkManager.shared.patch(url: Endpoint.changePassword.urlString, body: payloadData, headers: AuthenticationService.authorizationHeaders)
 
-        if response.errorMessage == nil, response.statusCode == 200, let refreshToken = KeychainHelper.get(.refreshToken) {
-            try await logout(refreshToken: refreshToken)
+        if response.errorMessage == nil, response.statusCode == 200 {
             KeychainHelper.set(newPassword, forKey: .password)
         }
 

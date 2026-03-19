@@ -139,6 +139,8 @@ struct PreferencesSignUpView: View {
             }
         }
     }
+    
+    @State private var isLoading: Bool = false
 
     private var finishButton: some View {
         VStack {
@@ -147,8 +149,15 @@ struct PreferencesSignUpView: View {
                     await handleFinish()
                 }
             } label: {
-                Text("Finish")
-                    .frame(maxWidth: .infinity)
+                if isLoading {
+                    ProgressView()
+                        .progressViewStyle(.circular)
+                        .tint(.white)
+                        .frame(maxWidth: .infinity)
+                } else {
+                    Text("Finish")
+                        .frame(maxWidth: .infinity)
+                }
             }
             .buttonStyle(.borderedProminent)
             .tint(MomCareAccent.primary)
@@ -232,6 +241,9 @@ struct PreferencesSignUpView: View {
     }
 
     private func handleFinish() async {
+        isLoading = true
+        defer { isLoading = false }
+
         let today = Calendar.current.startOfDay(for: Date())
         let selectedDate = Calendar.current.startOfDay(for: dueDate)
 

@@ -18,7 +18,7 @@ struct MyPlanDietPlanView: View {
                 Button {
                     showGraph = true
                 } label: {
-                    Label("Show Pretty Graph", systemImage: "chart.bar.xaxis")
+                    Label("View in Graph", systemImage: "chart.bar.xaxis")
                 }
             }
 

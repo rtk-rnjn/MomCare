@@ -64,44 +64,55 @@ struct MealTimelineCardView: View {
             .listRowSeparator(.hidden)
             .listRowInsets(.top, 0)
             .listRowInsets(.bottom, 0)
-
-            ForEach(items) { item in
-                ItemRow(
-                    item: item,
-                    hideTopLine: false,
-                    hideBottomLine: item.id == items.last?.id && title == "Dinner",
-                    onToggle: { consumed in
-                        do {
-                            try await contentServiceHandler.markFoodAs(consumed: !consumed, in: mealType, foodReference: item)
-                        } catch {
-                            controlState.error = error
-                        }
-                    },
-                    onDelete: {
-                        do {
-                            try await contentServiceHandler.markFoodAs(consumed: false, in: mealType, foodReference: item)
-                            try await contentServiceHandler.removeFoodFromPlan(foodId: item.foodId, mealType: mealType)
-                        } catch {
-                            controlState.error = error
-                        }
-                    }
-                )
-                .background {
-                    LinearGradient(
-                        colors: [
-                            Color.yellow.opacity(0.05),
-                            Color.yellow.opacity(0.15),
-                            Color.yellow.opacity(0.05)
-                        ],
-                        startPoint: .leading,
-                        endPoint: .trailing
-                    )
-                    .opacity(originalItems.contains(where: { $0.id == item.id }) ? 0 : 1)
-                    .animation(.easeInOut(duration: 0.3), value: originalItems)
+            
+            if contentServiceHandler.fetchingMealPlan {
+                HStack(alignment: .center) {
+                    Spacer()
+                    ProgressView()
+                    Spacer()
                 }
                 .listRowSeparator(.hidden)
                 .listRowInsets(.top, 0)
                 .listRowInsets(.bottom, 0)
+            } else {
+                ForEach(items) { item in
+                    ItemRow(
+                        item: item,
+                        hideTopLine: false,
+                        hideBottomLine: item.id == items.last?.id && title == "Dinner",
+                        onToggle: { consumed in
+                            do {
+                                try await contentServiceHandler.markFoodAs(consumed: !consumed, in: mealType, foodReference: item)
+                            } catch {
+                                controlState.error = error
+                            }
+                        },
+                        onDelete: {
+                            do {
+                                try await contentServiceHandler.markFoodAs(consumed: false, in: mealType, foodReference: item)
+                                try await contentServiceHandler.removeFoodFromPlan(foodId: item.foodId, mealType: mealType)
+                            } catch {
+                                controlState.error = error
+                            }
+                        }
+                    )
+                    .background {
+                        LinearGradient(
+                            colors: [
+                                Color.yellow.opacity(0.05),
+                                Color.yellow.opacity(0.15),
+                                Color.yellow.opacity(0.05)
+                            ],
+                            startPoint: .leading,
+                            endPoint: .trailing
+                        )
+                        .opacity(originalItems.contains(where: { $0.id == item.id }) ? 0 : 1)
+                        .animation(.easeInOut(duration: 0.3), value: originalItems)
+                    }
+                    .listRowSeparator(.hidden)
+                    .listRowInsets(.top, 0)
+                    .listRowInsets(.bottom, 0)
+                }
             }
         }
         .listSectionSpacing(0)
