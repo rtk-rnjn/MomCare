@@ -151,6 +151,7 @@ struct ProfileHealthInfoView: View {
             }
         }
         .buttonStyle(.plain)
+        .accessibilityHint(isEditing ? "Tap to change \(title)" : "")
     }
 
     func displayCount<T>(_ set: Set<T>) -> String {

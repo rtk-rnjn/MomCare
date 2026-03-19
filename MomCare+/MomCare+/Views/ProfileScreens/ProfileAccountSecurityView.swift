@@ -44,6 +44,7 @@ struct ProfileAccountSecurityView: View {
                     }
                 }
                 .foregroundColor(.primary)
+                .accessibilityHint(isChangingPassword ? "Collapses the password change form" : "Expands the password change form")
 
                 if isChangingPassword {
 
@@ -260,6 +261,7 @@ struct SecureFieldRow: View {
             Spacer()
             SecureField("", text: $text)
                 .multilineTextAlignment(.trailing)
+                .accessibilityLabel(title)
         }
     }
 }

@@ -52,12 +52,14 @@ struct PrivacyPolicyView: View {
                     .font(.largeTitle.weight(.bold))
                     .foregroundColor(accentColor)
             }
+            .accessibilityHidden(true)
 
             Text(PrivacyPolicyText.headerTitle)
                 .font(.title.weight(.semibold))
                 .tracking(-0.5)
                 .multilineTextAlignment(.center)
                 .lineSpacing(0)
+                .accessibilityAddTraits(.isHeader)
 
             Text(PrivacyPolicyText.headerSubtitle)
                 .font(.subheadline)
@@ -73,9 +75,11 @@ struct PrivacyPolicyView: View {
                     .font(.title2)
                     .foregroundColor(accentColor)
                     .frame(width: 24, alignment: .center)
+                    .accessibilityHidden(true)
 
                 Text(PrivacyPolicyText.contactTitle)
                     .font(.title3.weight(.semibold))
+                    .accessibilityAddTraits(.isHeader)
             }
 
             Text(PrivacyPolicyText.contactSubtitle)
@@ -87,6 +91,7 @@ struct PrivacyPolicyView: View {
                 HStack(spacing: 8) {
                     Image(systemName: "envelope.fill")
                         .foregroundColor(accentColor)
+                        .accessibilityHidden(true)
                     Text(PrivacyPolicyText.contactEmail)
                         .font(.subheadline)
                         .foregroundColor(.primary)
@@ -95,6 +100,7 @@ struct PrivacyPolicyView: View {
                 HStack(spacing: 8) {
                     Image(systemName: "globe")
                         .foregroundColor(accentColor)
+                        .accessibilityHidden(true)
                     Text(PrivacyPolicyText.contactWebsite)
                         .font(.subheadline)
                         .foregroundColor(.primary)
@@ -126,9 +132,11 @@ struct PolicySectionView: View {
                     .font(.title2)
                     .foregroundColor(accentColor)
                     .frame(width: 24, alignment: .center)
+                    .accessibilityHidden(true)
 
                 Text(title)
                     .font(.title3.weight(.semibold))
+                    .accessibilityAddTraits(.isHeader)
             }
 
             VStack(alignment: .leading, spacing: 8) {
@@ -167,6 +175,7 @@ struct PrivacyBulletPoint: View {
         HStack(alignment: .top, spacing: 8) {
             Text("•")
                 .font(.subheadline)
+                .accessibilityHidden(true)
             Text(text.dropFirst(1))
                 .font(.subheadline)
                 .foregroundColor(.primary)

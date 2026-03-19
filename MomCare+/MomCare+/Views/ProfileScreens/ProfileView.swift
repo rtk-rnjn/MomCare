@@ -137,6 +137,7 @@ struct ProfileView: View {
 
             Image(systemName: row.systemImage)
                 .foregroundStyle(Color("primaryAppColor"))
+                .accessibilityHidden(true)
 
             Text(row.title)
         }

@@ -16,12 +16,14 @@ struct GlobalRightsView: View {
                             .font(.largeTitle.weight(.bold))
                             .foregroundColor(accentColor)
                     }
+                    .accessibilityHidden(true)
 
                     Text("Your Data, Your Rights, Your Trust")
                         .font(.title.weight(.semibold))
                         .tracking(-0.5)
                         .multilineTextAlignment(.center)
                         .lineSpacing(0)
+                        .accessibilityAddTraits(.isHeader)
 
                     Text("We are committed to safeguarding your privacy. You have the right to control your personal information, and we make it easy for you to do so.")
                         .font(.subheadline)
@@ -52,6 +54,7 @@ struct GlobalRightsView: View {
                         .font(.title3)
                         .fontWeight(.bold)
                         .frame(maxWidth: .infinity, alignment: .center)
+                        .accessibilityAddTraits(.isHeader)
 
                     Text("To exercise any of these rights, please send a clear request to our dedicated privacy team. We will respond to your request in a timely manner, in accordance with applicable law.")
                         .font(.subheadline)
@@ -66,6 +69,7 @@ struct GlobalRightsView: View {
                         .padding(.horizontal, 24)
                         .background(Color.gray.opacity(0.1))
                         .clipShape(Capsule())
+                        .accessibilityLabel("Contact email: privacy@momcare.com")
                 }
                 .padding(.vertical, 24)
             }
@@ -92,10 +96,12 @@ struct GDPRRightView: View {
                 .font(.title2)
                 .foregroundColor(accentColor)
                 .frame(width: 24, alignment: .center)
+                .accessibilityHidden(true)
 
             VStack(alignment: .leading, spacing: 4) {
                 Text(title)
                     .font(.title3.weight(.semibold))
+                    .accessibilityAddTraits(.isHeader)
 
                 Text(description)
                     .font(.subheadline)

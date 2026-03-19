@@ -18,6 +18,8 @@ struct AboutMomCareView: View {
                     Text(appVersion)
                         .foregroundStyle(.secondary)
                 }
+                .accessibilityElement(children: .combine)
+                .accessibilityLabel("App version \(appVersion)")
             }
 
             Section {

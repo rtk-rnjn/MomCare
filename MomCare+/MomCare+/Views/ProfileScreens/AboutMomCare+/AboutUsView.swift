@@ -69,6 +69,7 @@ struct AboutInfoView: View {
         VStack(alignment: .leading, spacing: 16) {
             HStack(spacing: 8) {
                 Image(systemName: iconName).foregroundColor(iconColor)
+                    .accessibilityHidden(true)
                 Text(eyebrowText).foregroundColor(.primary)
                 Spacer()
             }
@@ -86,6 +87,7 @@ struct AboutInfoView: View {
                 .fontWeight(.bold)
                 .foregroundColor(.primary)
                 .textCase(.uppercase)
+                .accessibilityAddTraits(.isHeader)
 
             Text(bodyText)
                 .font(.body)
@@ -106,10 +108,12 @@ struct ValueCardView: View {
                 Circle()
                     .fill(brandPink.opacity(0.1))
                     .frame(width: 40, height: 40)
+                    .accessibilityHidden(true)
 
                 Image(systemName: iconName)
                     .font(.title3)
                     .foregroundColor(brandPink)
+                    .accessibilityHidden(true)
             }
 
             Text(title)
@@ -122,6 +126,7 @@ struct ValueCardView: View {
         .padding(8)
         .background(Color.gray.opacity(0.05))
         .cornerRadius(20)
+        .accessibilityElement(children: .combine)
     }
 }
 
@@ -131,6 +136,7 @@ struct QuoteView: View {
             Image(systemName: "quote.opening")
                 .font(.title.weight(.bold))
                 .foregroundColor(brandPink.opacity(0.5))
+                .accessibilityHidden(true)
 
             Text(AboutUs.quote)
                 .font(.title3)

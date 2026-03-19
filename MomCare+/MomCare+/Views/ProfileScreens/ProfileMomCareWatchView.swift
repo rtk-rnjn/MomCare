@@ -17,12 +17,15 @@ struct ProfileMomCareWatchView: View {
                     Spacer()
                     Text(stateText(connector.session?.activationState ?? .notActivated))
                 }
+                .accessibilityElement(children: .combine)
+                .accessibilityLabel("Activation State: \(stateText(connector.session?.activationState ?? .notActivated))")
             }
 
             Section("Actions") {
                 Button("Ping Watch") {
                     connector.ping()
                 }
+                .accessibilityHint("Sends a ping message to the paired Apple Watch")
             }
         }
         .navigationTitle("Watch Settings")
