@@ -386,6 +386,7 @@ struct PregnancyProgressView: View {
                 OverlayWindowManager.shared.setContent(popupContent)
                 showingBabyInfo = true
             }
+            .accessibilityAddTraits(.isButton)
 
             CompactInfoCard(
                 title: "Mom This Week",
@@ -424,6 +425,7 @@ struct PregnancyProgressView: View {
                     OverlayWindowManager.shared.setContent(popupContent)
                 }
             }
+            .accessibilityAddTraits(.isButton)
         }
     }
 }
@@ -604,12 +606,14 @@ struct PopupInfoCard: View {
                     }
                     .fill(Color(hex: "FBE8E5"))
                     .shadow(color: Color.black.opacity(0.1), radius: 3, x: 0, y: -2)
+                    .accessibilityHidden(true)
 
                     Text(title)
                         .font(.title3)
                         .fontWeight(.bold)
                         .foregroundColor(.CustomColors.mutedRaspberry)
                         .offset(y: envelopeOpen ? 5 : 15)
+                        .accessibilityAddTraits(.isHeader)
                 }
                 .frame(height: 60)
                 .animation(reduceMotion ? nil : .spring(response: 0.5, dampingFraction: 0.7), value: envelopeOpen)
@@ -623,6 +627,7 @@ struct PopupInfoCard: View {
                         }
                     }
                     .padding(.top, 12)
+                    .accessibilityHidden(true)
 
                     ScrollView {
                         Text(content)
@@ -643,6 +648,7 @@ struct PopupInfoCard: View {
                     }
                     .padding(.bottom, 12)
                     .padding(.top, 12)
+                    .accessibilityHidden(true)
 
                     Button(action: closeCard) {
                         Text("Close")

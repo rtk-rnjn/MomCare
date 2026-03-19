@@ -33,6 +33,7 @@ struct TriTrackCalendarItemContentView: View {
                 HStack {
                     Text("Events")
                         .font(.headline)
+                        .accessibilityAddTraits(.isHeader)
 
                     Spacer()
 
@@ -54,6 +55,7 @@ struct TriTrackCalendarItemContentView: View {
                 HStack {
                     Text("Reminders")
                         .font(.headline)
+                        .accessibilityAddTraits(.isHeader)
 
                     Spacer()
 
@@ -134,6 +136,7 @@ struct TriTrackCalendarItemContentView: View {
             Spacer()
             ProgressView()
                 .padding(.vertical, 8)
+                .accessibilityLabel("Loading")
             Spacer()
         }
         .listRowBackground(Color.clear)
