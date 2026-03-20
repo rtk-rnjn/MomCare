@@ -17,7 +17,7 @@ struct DashboardExerciseCard: View {
             VStack(alignment: .leading, spacing: 18) {
                 ExerciseRow(color: .red, icon: "figure.walk", value: "\(stepsToday) steps")
                 ExerciseRow(color: .green, icon: "timer", value: formatSeconds(exerciseDurationToday))
-                ExerciseRow(color: .orange, icon: "flame.fill", value: "\(caloriesBurnedToday) \(UnitMass.grams.symbol)")
+                ExerciseRow(color: .orange, icon: "flame.fill", value: formatCalorie(Double(caloriesBurnedToday)))
             }
 
             Spacer()
@@ -40,19 +40,25 @@ struct DashboardExerciseCard: View {
 
     // MARK: Private
 
-    private func formatSeconds(_ seconds: Double) -> String {
-        let duration = Measurement(value: seconds, unit: UnitDuration.seconds)
+    private func formatCalorie(_ calorie: Double) -> String {
+        let measurement = Measurement(value: calorie, unit: UnitEnergy.kilocalories)
 
-        let totalSeconds = Int(duration.value)
-        let minutes = totalSeconds / 60
-        let remainingSeconds = totalSeconds % 60
+        return measurement.formatted(
+            .measurement(
+                width: .wide,
+                usage: .food,
+                numberFormatStyle: .number.precision(.fractionLength(0))
+            )
+        )
+    }
 
-        if minutes == 0 {
-            return "\(remainingSeconds) sec"
-        }
+    private func formatSeconds(_ seconds: TimeInterval) -> String {
+        let formatter = DateComponentsFormatter()
+        formatter.unitsStyle = .full
+        formatter.allowedUnits = [.minute, .second]
+        formatter.zeroFormattingBehavior = .dropLeading
 
-        return remainingSeconds == 0 ? "\(minutes) min" : "\(minutes) min, \(remainingSeconds) sec"
-
+        return formatter.string(from: seconds) ?? ""
     }
 
 }
@@ -117,33 +123,15 @@ struct ActivityRingView: View {
             let inner = middle - ringWidth - spacing
 
             ZStack {
-                Circle()
-                    .stroke(reduceTransparency ? Color(.systemGray4) : Color.red.opacity(0.15), lineWidth: ringWidth)
+                PercentageRing(ringWidth: ringWidth, percent: stepsGoalProgress * 100, backgroundColor: Color.red.opacity(0.15), foregroundColors: [Color.red.opacity(0.6), .red])
                     .frame(width: outer * 2, height: outer * 2)
 
-                Circle()
-                    .stroke(reduceTransparency ? Color(.systemGray4) : Color.green.opacity(0.15), lineWidth: ringWidth)
+                PercentageRing(ringWidth: ringWidth, percent: exerciseGoalProgress * 100, backgroundColor: Color.green.opacity(0.15), foregroundColors: [Color.green.opacity(0.6), .green])
                     .frame(width: middle * 2, height: middle * 2)
 
-                Circle()
-                    .stroke(reduceTransparency ? Color(.systemGray4) : Color.orange.opacity(0.15), lineWidth: ringWidth)
+                PercentageRing(ringWidth: ringWidth, percent: caloriesGoalProgress * 100, backgroundColor: Color.orange.opacity(0.15), foregroundColors: [Color.orange.opacity(0.6), .orange])
                     .frame(width: inner * 2, height: inner * 2)
 
-                ring(progress: stepsGoalProgress, color: .red, size: outer * 2, dashPattern: [])
-
-                ring(
-                    progress: exerciseGoalProgress,
-                    color: .green,
-                    size: middle * 2,
-                    dashPattern: differentiateWithoutColor ? [8, 4] : []
-                )
-
-                ring(
-                    progress: caloriesGoalProgress,
-                    color: .orange,
-                    size: inner * 2,
-                    dashPattern: differentiateWithoutColor ? [4, 4] : []
-                )
             }
             .frame(width: size, height: size)
             .accessibilityElement(children: .ignore)
@@ -161,17 +149,4 @@ struct ActivityRingView: View {
 
     private let ringWidth: CGFloat = 14
     private let spacing: CGFloat = 2
-
-    private func ring(progress: Double, color: Color, size: CGFloat, dashPattern: [CGFloat]) -> some View {
-        Circle()
-            .trim(from: 0, to: clamp(progress))
-            .stroke(color, style: StrokeStyle(lineWidth: ringWidth, lineCap: .round, dash: dashPattern))
-            .rotationEffect(.degrees(-90))
-            .frame(width: size, height: size)
-            .animation(reduceMotion ? nil : .easeInOut, value: progress)
-    }
-
-    private func clamp(_ value: Double) -> Double {
-        max(0, min(value, 1))
-    }
 }

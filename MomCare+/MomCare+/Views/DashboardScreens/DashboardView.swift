@@ -93,7 +93,7 @@ struct DashboardView: View {
                 exerciseDurationToday: contentServiceHandler.userExercises.totalVideoDurationCompletedSeconds,
                 stepsGoalProgress: contentServiceHandler.stepsToday / contentServiceHandler.stepsGoal,
                 caloriesGoalProgress: 0,
-                exerciseGoalProgress: contentServiceHandler.totalExerciseDuration
+                exerciseGoalProgress: (contentServiceHandler.userExercises.totalVideoDurationCompletedSeconds / contentServiceHandler.totalExerciseDuration).clamped(to: 0...1)
             )
             .padding(.horizontal)
             .onTapGesture {

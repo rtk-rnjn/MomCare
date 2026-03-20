@@ -94,22 +94,10 @@ struct ProgressCardView: View {
         )
     }
 
-    private var calorieProgress: Double {
-        guard let calorieIntake, let recommendedCalorieGoal else { return 0 }
-
-        let intakeValue = calorieIntake.converted(to: recommendedCalorieGoal.unit).value
-        let goalValue = recommendedCalorieGoal.value
-
-        guard goalValue > 0 else { return 0 }
-
-        return min(intakeValue / goalValue, 1.0)
-    }
-
     private var collapsedHeader: some View {
         HStack(alignment: .center, spacing: 20) {
 
             ProgressRingView(
-                progress: calorieProgress,
                 consumed: calorieIntake,
                 target: calorieGoal,
                 original: recommendedCalorieGoal,
@@ -619,24 +607,18 @@ struct ProgressRingView: View {
 
     // MARK: Internal
 
-    let progress: Double
     let consumed: Measurement<UnitEnergy>?
     let target: Measurement<UnitEnergy>?
     let original: Measurement<UnitEnergy>?
 
     var body: some View {
+
         RingLayout(lineWidth: 14) {
             numericPercentageTextView
         }
         .drawingGroup()
         .overlay {
-            Circle()
-                .stroke(reduceTransparency ? Color(.systemGray4) : Color.secondary.opacity(0.2), lineWidth: 14)
-            Circle()
-                .trim(from: 0, to: progress)
-                .stroke(MomCareAccent.primary, style: StrokeStyle(lineWidth: 14, lineCap: .round))
-                .rotationEffect(.degrees(-90))
-                .animation(reduceMotion ? nil : .easeInOut, value: progress)
+            PercentageRing(ringWidth: 14, percent: progress * 100, backgroundColor: MomCareAccent.secondary, foregroundColors: [MomCareAccent.primary.mix(with: .white, by: 0.7), MomCareAccent.primary])
         }
         .fixedSize(horizontal: false, vertical: true)
         .contentShape(Circle())
@@ -661,6 +643,14 @@ struct ProgressRingView: View {
     @State private var showPercentage = false
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @Environment(\.accessibilityReduceTransparency) private var reduceTransparency
+
+    private var progress: Double {
+        guard let consumed, let original else {
+            return 0
+        }
+
+        return consumed.value / original.value
+    }
 
     private var percentage: Int {
         guard let consumed, let original else { return 0 }
