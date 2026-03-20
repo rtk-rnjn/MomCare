@@ -57,7 +57,7 @@ struct AboutMomCareView: View {
 
     // MARK: Private
 
-    @AppStorage("debugOptions", store: UserDefaults(suiteName: "group.MomCare")) private var debugOptions: Bool = false
+    @AppStorage("debugOptions", store: UserDefaults(suiteName: "group.MomCare")) private var debugOptions: Bool = true
 
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
 

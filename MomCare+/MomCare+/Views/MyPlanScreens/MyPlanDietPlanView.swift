@@ -22,6 +22,9 @@ struct MyPlanDietPlanView: View {
                 }
             }
 
+            TipView(dietContextMenuTip)
+                .padding(.horizontal, 16)
+
             MealTimelineCardView()
                 .refreshable {
                     HapticsHandler.impact(.medium)
@@ -89,6 +92,8 @@ struct MyPlanDietPlanView: View {
     @State private var showWaterLog = false
     @State private var showHelp = false
     @State private var showHistory = false
+
+    @State private var dietContextMenuTip: DietContextMenuTip = .init()
 
     @AppStorage(FeatureFlagState.experimentalFeatures.rawValue, store: UserDefaults(suiteName: "group.MomCare")) private var experimentalFeatures: Bool = false
 

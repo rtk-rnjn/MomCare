@@ -244,6 +244,9 @@ final class DebugLogger {
     var onNewEntry: ((DebugLogEntry) -> Void)?
 
     nonisolated func log(_ message: String, level: DebugLogEntry.LogLevel = .info, category: DebugLogEntry.LogCategory = .data) {
+        let isEnabled = UserDefaults(suiteName: "group.MomCare")?.bool(forKey: FeatureFlagState.debugLogging.rawValue) ?? false
+        guard isEnabled else { return }
+
         let entry = DebugLogEntry(
             timestamp: Date(),
             level: level,

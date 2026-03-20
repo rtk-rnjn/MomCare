@@ -1,4 +1,5 @@
 import SwiftUI
+import TipKit
 
 struct WaterLogView: View {
 

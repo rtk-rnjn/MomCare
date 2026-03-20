@@ -41,7 +41,7 @@ struct MomCareMainTabView: View {
     @State private var requestingHealthKitAccess = true
     @State private var requestingEventKitAccess = true
 
-    private let refreshTimer = Timer.publish(every: 600, on: .main, in: .common).autoconnect()
+    private let refreshTimer = Timer.publish(every: 900, on: .main, in: .common).autoconnect()
 
     private func tabViewContent(bottomPadding: CGFloat) -> some View {
         TabView(selection: $controlState.selectedTab) {
@@ -145,21 +145,26 @@ struct MomCareMainTabView: View {
     }
 
     private func refreshAccessToken() async {
+        DebugLogger.shared.log("Refreshing access token", level: .debug, category: .network)
         isRefreshing = true
         defer { isRefreshing = false }
 
         do {
             try await authenticationService.refresh()
+            DebugLogger.shared.log("Access token refreshed successfully", level: .debug, category: .network)
         } catch {
+            DebugLogger.shared.log("Access token refresh failed: \(error.localizedDescription)", level: .error, category: .network)
             controlState.error = RefreshError()
         }
     }
 
     private func fetchDailyInsights() async throws {
+        DebugLogger.shared.log("Fetching daily insights", level: .debug, category: .data)
         let networkResponse = try await ContentService.shared.generateDailyInsights()
 
         contentServiceHandler.todayFocusText = networkResponse.data?.todaysFocus ?? "Failed to fetch today's focus: \(networkResponse.errorMessage ?? "Unknown error") (\(networkResponse.statusCode))"
         contentServiceHandler.dailyTipText = networkResponse.data?.dailyTip ?? "Failed to fetch today's tip: \(networkResponse.errorMessage ?? "Unknown error") (\(networkResponse.statusCode))"
+        DebugLogger.shared.log("Daily insights loaded: focus=\(contentServiceHandler.todayFocusText.prefix(40))", level: .debug, category: .data)
     }
 
 }

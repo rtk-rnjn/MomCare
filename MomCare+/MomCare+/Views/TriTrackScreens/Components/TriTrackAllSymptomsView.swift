@@ -28,7 +28,7 @@ struct TriTrackAllSymptomsView: View {
             .listStyle(.plain)
             .background(Color(.systemGroupedBackground))
             .navigationTitle("Symptom History")
-            .navigationBarTitleDisplayMode(.large)
+            .navigationBarTitleDisplayMode(.inline)
             .navigationDestination(item: $selectedSymptomModel) { item in
                 if let symptom = PregnancySymptoms.allSymptoms.first(where: { $0.id == item.symptomId }) {
                     TriTrackSymptomDetailView(symptom: symptom)
