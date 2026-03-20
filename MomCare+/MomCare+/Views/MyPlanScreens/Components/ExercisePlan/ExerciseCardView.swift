@@ -26,7 +26,7 @@ struct ExerciseCardView: View {
                         .foregroundColor(.secondary)
                         .padding(.bottom, 10)
                         .contentTransition(reduceMotion ? .identity : .numericText())
-                        .animation(reduceMotion ? nil : .spring(response: 0.4, dampingFraction: 0.7), value: completionProgress)
+                        .animation(reduceMotion ? nil : .easeInOut, value: completionProgress)
 
                     Button {
                         HapticsHandler.impact(.medium)
@@ -37,7 +37,7 @@ struct ExerciseCardView: View {
                                 .accessibilityHidden(true)
                             Text(completionProgress >= 1 ? "Replay" : "Start")
                                 .contentTransition(reduceMotion ? .identity : .interpolate)
-                                .animation(reduceMotion ? nil : .spring(response: 0.4, dampingFraction: 0.7), value: completionProgress)
+                                .animation(reduceMotion ? nil : .easeInOut, value: completionProgress)
                                 .accessibilityHidden(true)
 
                         }

@@ -41,7 +41,7 @@ struct NutritionGraphRootView: View {
                             .offset(y: appeared ? 0 : 14)
                             .animation(
                                 reduceMotion ? nil :
-                                    .spring(response: 0.45, dampingFraction: 0.8)
+                                    .easeInOut
                                     .delay(Double(index) * 0.055),
                                 value: appeared
                             )
@@ -61,7 +61,7 @@ struct NutritionGraphRootView: View {
                 }
             }
             .onAppear {
-                withAnimation(reduceMotion ? nil : .spring(response: 0.5, dampingFraction: 0.8).delay(0.1)) {
+                withAnimation(reduceMotion ? nil : .easeInOut) {
                     appeared = true
                 }
             }
@@ -131,7 +131,7 @@ struct NutritionGraphRootView: View {
                 .font(.subheadline.weight(.bold))
                 .foregroundColor(color)
                 .contentTransition(reduceMotion ? .identity : .numericText())
-                .animation(reduceMotion ? nil : .spring(response: 0.4, dampingFraction: 0.7), value: value)
+                .animation(reduceMotion ? nil : .easeInOut, value: value)
         }
         .frame(maxWidth: .infinity)
     }

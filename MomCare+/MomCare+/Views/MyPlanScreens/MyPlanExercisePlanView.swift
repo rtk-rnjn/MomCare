@@ -123,7 +123,7 @@ struct MyPlanExercisePlanView: View {
                 }
 
             BreathingCardView {
-                withAnimation(reduceMotion ? nil : .spring(response: 0.5, dampingFraction: 0.85)) {
+                withAnimation(reduceMotion ? nil : .easeInOut) {
                     showingBreathingInfo = true
                 }
             }
@@ -141,7 +141,7 @@ struct MyPlanExercisePlanView: View {
             ForEach(contentServiceHandler.userExercises) { exercise in
                 ExerciseCardView(userExerciseModel: exercise) {
                     selectedExerciseInfo = exercise
-                    withAnimation(reduceMotion ? nil : .spring(response: 0.5, dampingFraction: 0.85)) {
+                    withAnimation(reduceMotion ? nil : .easeInOut) {
                         showingExerciseInfo = true
                     }
                 } onVideoDismiss: { avPlayer in
@@ -168,7 +168,7 @@ struct MyPlanExercisePlanView: View {
             Color.black.opacity(0.4)
                 .ignoresSafeArea()
                 .onTapGesture {
-                    withAnimation(reduceMotion ? nil : .spring(response: 0.5, dampingFraction: 0.85)) {
+                    withAnimation(reduceMotion ? nil : .easeInOut) {
                         showingExerciseInfo = false
                     }
                 }

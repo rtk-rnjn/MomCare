@@ -72,7 +72,7 @@ struct CompactCalendarView: View {
             expandProgress = isExpanded ? 1 : 0
         }
         .onChange(of: isExpanded) { _, newValue in
-            withAnimation(reduceMotion ? nil : .spring(response: 0.3, dampingFraction: 0.8)) {
+            withAnimation(reduceMotion ? nil : .easeInOut) {
                 expandProgress = newValue ? 1 : 0
             }
         }
@@ -128,7 +128,7 @@ struct CompactCalendarView: View {
     private var header: some View {
         HStack {
             Button {
-                withAnimation(reduceMotion ? nil : .spring(response: 0.3, dampingFraction: 0.8)) {
+                withAnimation(reduceMotion ? nil : .easeInOut) {
                     isExpanded.toggle()
                     expandProgress = isExpanded ? 1 : 0
                 }
@@ -260,7 +260,7 @@ struct CompactCalendarView: View {
         let shouldExpand = !isExpanded && (expandProgress > 0.4 || velocityY > 400)
         let shouldCollapse = isExpanded && (expandProgress < 0.6 || velocityY < -400)
 
-        withAnimation(reduceMotion ? nil : .spring(response: 0.3, dampingFraction: 0.8)) {
+        withAnimation(reduceMotion ? nil : .easeInOut) {
             if shouldExpand {
                 isExpanded = true
                 expandProgress = 1
@@ -274,7 +274,7 @@ struct CompactCalendarView: View {
     }
 
     private func resetVerticalState() {
-        withAnimation(reduceMotion ? nil : .spring(response: 0.3, dampingFraction: 0.8)) {
+        withAnimation(reduceMotion ? nil : .easeInOut) {
             expandProgress = isExpanded ? 1 : 0
         }
     }
@@ -301,7 +301,7 @@ struct CompactCalendarView: View {
     }
 
     private func commitSlide(direction: CGFloat, width: CGFloat) {
-        withAnimation(reduceMotion ? nil : .spring(response: 0.28, dampingFraction: 0.82)) {
+        withAnimation(reduceMotion ? nil : .easeInOut) {
             slideOffset = direction * width
         }
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.26) {
@@ -315,7 +315,7 @@ struct CompactCalendarView: View {
     }
 
     private func cancelSlide() {
-        withAnimation(reduceMotion ? nil : .spring(response: 0.32, dampingFraction: 0.88)) {
+        withAnimation(reduceMotion ? nil : .easeInOut) {
             slideOffset = 0
         }
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.32) {

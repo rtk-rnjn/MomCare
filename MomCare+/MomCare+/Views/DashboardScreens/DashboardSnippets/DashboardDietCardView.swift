@@ -27,7 +27,7 @@ struct DashboardDietCardView: View {
                     .lineLimit(1)
                     .minimumScaleFactor(0.8)
                     .contentTransition(reduceMotion ? .identity : .numericText())
-                    .animation(reduceMotion ? nil : .spring(response: 0.4, dampingFraction: 0.7), value: goal)
+                    .animation(reduceMotion ? nil : .easeInOut, value: goal)
             }
 
             Spacer()
@@ -65,28 +65,13 @@ struct DashboardDietCardView: View {
         .accessibilityHint("Double tap to view diet plan")
         .accessibilityIdentifier("dashboardDietCard")
         .onAppear {
-            guard !hasAnimated else { return }
-            hasAnimated = true
-
-            animatedProgress = 0
-
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.15) {
-                if reduceMotion {
-                    animatedProgress = progress
-                } else {
-                    withAnimation(.easeInOut(duration: 0.9)) {
-                        animatedProgress = progress
-                    }
-                }
+            withAnimation(reduceMotion ? nil : .easeInOut) {
+                animatedProgress = progress
             }
         }
         .onChange(of: progress) { _, newValue in
-            if reduceMotion {
+            withAnimation(reduceMotion ? nil : .easeInOut(duration: 0.9)) {
                 animatedProgress = newValue
-            } else {
-                withAnimation(.easeInOut(duration: 0.9)) {
-                    animatedProgress = newValue
-                }
             }
         }
     }
@@ -94,7 +79,6 @@ struct DashboardDietCardView: View {
     // MARK: Private
 
     @State private var animatedProgress: Double = 0
-    @State private var hasAnimated = false
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @Environment(\.accessibilityReduceTransparency) private var reduceTransparency
 

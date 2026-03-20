@@ -116,7 +116,7 @@ struct WalkingHistoryView: View {
                         .font(.body.weight(.bold))
                         .foregroundColor(Color(hex: "4A8A62"))
                         .contentTransition(reduceMotion ? .identity : .numericText())
-                        .animation(reduceMotion ? nil : .spring(response: 0.7), value: progress)
+                        .animation(reduceMotion ? nil : .easeInOut, value: progress)
                 }
             }
             .frame(width: 72, height: 72)
@@ -157,7 +157,7 @@ struct WalkingHistoryView: View {
                         Capsule()
                             .fill(Color(hex: "4A8A62"))
                             .frame(width: geo.size.width * progress)
-                            .animation(reduceMotion ? nil : .spring(response: 0.7), value: progress)
+                            .animation(reduceMotion ? nil : .easeInOut, value: progress)
                     }
                 }
                 .frame(height: 6)
@@ -274,7 +274,7 @@ struct WalkingHistoryView: View {
                         .onTapGesture { location in
                             if let label: String = proxy.value(atX: location.x - geo[proxy.plotFrame!].minX),
                                let match = rangePoints.first(where: { barLabel($0) == label }) {
-                                withAnimation(reduceMotion ? nil : .spring(response: 0.3)) {
+                                withAnimation(reduceMotion ? nil : .easeInOut) {
                                     selectedBar = selectedBar?.id == match.id ? nil : match
                                 }
                             }
@@ -339,7 +339,7 @@ struct WalkingHistoryView: View {
                     .font(.subheadline.weight(.bold))
                     .foregroundColor(.primary)
                     .contentTransition(reduceMotion ? .identity : .numericText())
-                    .animation(reduceMotion ? nil : .spring(response: 0.5), value: value)
+                    .animation(reduceMotion ? nil : .easeInOut, value: value)
                 Text(unit)
                     .font(.caption2)
                     .foregroundStyle(Color(.tertiaryLabel))

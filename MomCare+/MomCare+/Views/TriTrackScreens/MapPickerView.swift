@@ -30,7 +30,7 @@ struct MapPickerView: View {
 
                         selectedMapItem = MKMapItem(location: location, address: nil)
 
-                        if reduceMotion {
+                        withAnimation(reduceMotion ? nil : .easeInOut(duration: 0.3)) {
                             cameraPosition = .region(
                                 MKCoordinateRegion(
                                     center: coordinate,
@@ -40,18 +40,6 @@ struct MapPickerView: View {
                                     )
                                 )
                             )
-                        } else {
-                            withAnimation(.easeInOut(duration: 0.3)) {
-                                cameraPosition = .region(
-                                    MKCoordinateRegion(
-                                        center: coordinate,
-                                        span: MKCoordinateSpan(
-                                            latitudeDelta: 0.01,
-                                            longitudeDelta: 0.01
-                                        )
-                                    )
-                                )
-                            }
                         }
                     }
                 }

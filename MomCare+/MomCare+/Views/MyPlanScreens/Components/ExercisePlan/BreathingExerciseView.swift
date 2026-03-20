@@ -471,7 +471,7 @@ struct BreathingExerciseView: View {
             phase = .done
             circleScale = BreathingPhase.done.circleScale
         } else {
-            withAnimation(.spring(response: 0.6, dampingFraction: 0.8)) {
+            withAnimation(.easeInOut) {
                 phase = .done
                 circleScale = BreathingPhase.done.circleScale
             }

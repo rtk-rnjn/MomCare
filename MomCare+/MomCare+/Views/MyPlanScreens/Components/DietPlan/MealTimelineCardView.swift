@@ -32,6 +32,9 @@ struct MealTimelineCardView: View {
                 originalItems: plan?.originalDinner ?? [],
                 mealType: .dinner
             )
+            Section {
+                Color.clear.padding(.vertical)
+            }
         }
         .listStyle(.inset)
         .listSectionSpacing(0)
@@ -47,6 +50,8 @@ struct MealTimelineCardView: View {
 
     @EnvironmentObject private var contentServiceHandler: ContentServiceHandler
     @EnvironmentObject private var controlState: ControlState
+
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     @ViewBuilder
     private func mealSection(title: String, items: [FoodReferenceModel], originalItems: [FoodReferenceModel], mealType: MealType) -> some View {
@@ -109,7 +114,7 @@ struct MealTimelineCardView: View {
                             endPoint: .trailing
                         )
                         .opacity(originalItems.contains(where: { $0.id == item.id }) ? 0 : 1)
-                        .animation(.easeInOut(duration: 0.3), value: originalItems)
+                        .animation(reduceMotion ? nil : .easeInOut(duration: 0.3), value: originalItems)
                     }
                     .listRowSeparator(.hidden)
                     .listRowInsets(.top, 0)

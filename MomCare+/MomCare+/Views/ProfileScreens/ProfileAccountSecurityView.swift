@@ -38,7 +38,7 @@ struct ProfileAccountSecurityView: View {
                             .foregroundColor(.secondary)
                             .contentTransition(reduceMotion ? .identity : .symbolEffect)
                             .animation(
-                                reduceMotion ? nil : .spring(response: 0.25, dampingFraction: 0.8),
+                                reduceMotion ? nil : .easeInOut,
                                 value: isChangingPassword
                             )
                     }

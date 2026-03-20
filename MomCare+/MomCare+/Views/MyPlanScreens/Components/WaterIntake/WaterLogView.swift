@@ -29,7 +29,7 @@ struct WaterLogView: View {
                                 .font(.subheadline.weight(.medium))
                                 .foregroundStyle(Color(hex: "924350").opacity(0.6))
                                 .contentTransition(reduceMotion ? .identity : .numericText())
-                                .animation(reduceMotion ? nil : .spring(response: 0.5), value: store.todayTotal)
+                                .animation(reduceMotion ? nil : .easeInOut, value: store.todayTotal)
                                 .padding(.top, 10)
 
                             weekStrip
@@ -196,7 +196,7 @@ struct WaterLogView: View {
 
             HStack(spacing: 16) {
                 Button {
-                    withAnimation(reduceMotion ? nil : .spring(response: 0.35, dampingFraction: 0.8)) {
+                    withAnimation(reduceMotion ? nil : .easeInOut) {
                         selectedDate = Calendar.current.date(
                             byAdding: .weekOfYear, value: -1, to: selectedDate
                         ) ?? selectedDate
@@ -216,7 +216,7 @@ struct WaterLogView: View {
                     .animation(reduceMotion ? nil : .easeInOut, value: selectedDate)
 
                 Button {
-                    withAnimation(reduceMotion ? nil : .spring(response: 0.35, dampingFraction: 0.8)) {
+                    withAnimation(reduceMotion ? nil : .easeInOut) {
                         selectedDate = Calendar.current.date(
                             byAdding: .weekOfYear, value: 1, to: selectedDate
                         ) ?? selectedDate
@@ -254,7 +254,7 @@ struct WaterLogView: View {
 
                     Button {
                         guard !isFuture else { return }
-                        withAnimation(reduceMotion ? nil : .spring(response: 0.3, dampingFraction: 0.75)) {
+                        withAnimation(reduceMotion ? nil : .easeInOut) {
                             selectedDate = day
                         }
                     } label: {

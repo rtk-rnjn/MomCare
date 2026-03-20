@@ -83,7 +83,7 @@ struct ExerciseRow: View {
                     .font(.title3)
                     .fontWeight(.regular)
                     .contentTransition(reduceMotion ? .identity : .numericText())
-                    .animation(reduceMotion ? nil : .spring(response: 0.4, dampingFraction: 0.7), value: value)
+                    .animation(reduceMotion ? nil : .easeInOut, value: value)
             } else {
                 ProgressView()
                     .progressViewStyle(CircularProgressViewStyle(tint: color))
