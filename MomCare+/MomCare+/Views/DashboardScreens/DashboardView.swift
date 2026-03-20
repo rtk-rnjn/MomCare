@@ -130,7 +130,7 @@ struct DashboardView: View {
 
     @State private var selectedEvent: EKCalendarItemWrapper?
 
-    @State private var weekCardTip = WeekCardTip()
+    @State private var weekCardTip: WeekCardTip = .init()
 }
 
 extension View {

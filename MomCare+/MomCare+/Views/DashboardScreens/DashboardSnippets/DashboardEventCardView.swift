@@ -110,6 +110,6 @@ struct DashboardEventCardView: View {
 
     @State private var showEventSheet: Bool = false
 
-    @State private var addEventTip = AddEventTip()
+    @State private var addEventTip: AddEventTip = .init()
 
 }

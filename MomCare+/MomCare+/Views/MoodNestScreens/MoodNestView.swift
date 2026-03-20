@@ -90,5 +90,5 @@ struct MoodNestView: View {
     @EnvironmentObject private var controlState: ControlState
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
-    @State private var moodSliderTip = MoodSliderTip()
+    @State private var moodSliderTip: MoodSliderTip = .init()
 }
