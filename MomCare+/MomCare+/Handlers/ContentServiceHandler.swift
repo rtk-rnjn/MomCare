@@ -207,7 +207,7 @@ final class ContentServiceHandler: ObservableObject {
 
 extension ContentServiceHandler {
     func consumeFoodInHealthKit(_ food: FoodItemModel, consume: Bool) async throws {
-        DebugLogger.shared.log("\(consume ? "Writing" : "Removing") HealthKit nutrition data for \(food.name ?? "unknown food")", level: .debug, category: .data)
+        DebugLogger.shared.log("\(consume ? "Writing" : "Removing") HealthKit nutrition data for \(food.name)", level: .debug, category: .data)
         let multiplier = consume ? 1.0 : -1.0
 
         try await writeHealthData(quantityTypeIdentifier: .dietaryEnergyConsumed, value: food.totalCalories * multiplier, unit: .kilocalorie())
