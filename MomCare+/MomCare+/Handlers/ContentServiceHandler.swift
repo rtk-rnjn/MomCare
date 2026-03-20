@@ -3,6 +3,19 @@ import HealthKit
 import SwiftUI
 import OSLog
 
+struct StepDataPoint: Identifiable {
+    let id: UUID = .init()
+    let date: Date
+    let steps: Int
+
+    var shortLabel: String {
+        let fmt = DateFormatter()
+        fmt.dateFormat = "EEE"
+        return fmt.string(from: date)
+    }
+
+}
+
 final class ContentServiceHandler: ObservableObject {
 
     // MARK: Internal
@@ -15,7 +28,6 @@ final class ContentServiceHandler: ObservableObject {
 
     @Published var stepsToday: Double = 0
     @Published var stepsGoal: Double = 4200
-    @Published var stepsProgress: Double = 0
 
     @Published var breathingTargetInSeconds: Double = 300
     @Published var breathingCompletionDuration: Double = 0
@@ -96,7 +108,7 @@ final class ContentServiceHandler: ObservableObject {
     }
 
     func fetchUserExercisesMeta() async {
-        await fetchWeeklyProgress()
+        await fetchWeeklyExerciseProgress()
         totalUserExercisesCompleted = await userExercises.fetchTotalUserExercisesCompleted()
         totalExerciseDuration = await userExercises.fetchTotalExerciseDuration()
     }
@@ -332,7 +344,7 @@ extension ContentServiceHandler {
         return min(totalCompletedDuration / totalDuration, 1.0)
     }
 
-    func fetchWeeklyProgress() async {
+    func fetchWeeklyExerciseProgress() async {
         let range = Utils.weekRange(containing: Date())
         var temp = [DayProgress]()
 
@@ -346,16 +358,14 @@ extension ContentServiceHandler {
         weeklyProgress = temp
     }
 
-    func updateWeeklyProgressForToday() async {
-        let now = Date()
+    func fetchWeeklyStepsProgress(from date: Date = .init()) async -> [StepDataPoint] {
+        let range = Utils.weekRange(containing: date)
+        var result = [StepDataPoint]()
 
-        let exerciseProgressPercentage: Double = await calculateTotalCompletionPercentage(for: now)
-        let breathingProgressPercentage: Double = fetchBreathingCompletionDuration(for: now) / breathingTargetInSeconds
-
-        let progress = (exerciseProgressPercentage + breathingProgressPercentage) / 2
-
-        if let index = weeklyProgress.firstIndex(where: { Calendar.current.isDate($0.date, inSameDayAs: now) }) {
-            weeklyProgress[index].completionPercentage = progress
+        for date in range {
+            result.append(.init(date: date, steps: await fetchStepCount(for: date)))
         }
+
+        return result
     }
 }

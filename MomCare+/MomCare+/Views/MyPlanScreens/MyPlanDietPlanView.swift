@@ -10,29 +10,29 @@ struct MyPlanDietPlanView: View {
             ProgressCardView(
                 plan: contentServiceHandler.myPlanModel,
 
-                calorieIntake: contentServiceHandler.nutritionIntakeTotals?.calories ?? 0,
-                calorieGoal: contentServiceHandler.nutritionGoalTotals?.calories ?? 0,
-                recommendedCalorieGoal: contentServiceHandler.recommendedNutritionGoalTotals?.calories ?? 0,
+                calorieIntake: contentServiceHandler.nutritionIntakeTotals?.energy,
+                calorieGoal: contentServiceHandler.nutritionGoalTotals?.energy,
+                recommendedCalorieGoal: contentServiceHandler.recommendedNutritionGoalTotals?.energy,
 
-                proteinIntake: contentServiceHandler.nutritionIntakeTotals?.protein ?? 0,
-                proteinGoal: contentServiceHandler.nutritionGoalTotals?.protein ?? 0,
-                recommendedProteinGoal: contentServiceHandler.recommendedNutritionGoalTotals?.protein ?? 0,
+                proteinIntake: contentServiceHandler.nutritionIntakeTotals?.proteinMass,
+                proteinGoal: contentServiceHandler.nutritionGoalTotals?.proteinMass,
+                recommendedProteinGoal: contentServiceHandler.recommendedNutritionGoalTotals?.proteinMass,
 
-                fatIntake: contentServiceHandler.nutritionIntakeTotals?.fats ?? 0,
-                fatGoal: contentServiceHandler.nutritionGoalTotals?.fats ?? 0,
-                recommendedFatGoal: contentServiceHandler.recommendedNutritionGoalTotals?.fats ?? 0,
+                fatIntake: contentServiceHandler.nutritionIntakeTotals?.fatsMass,
+                fatGoal: contentServiceHandler.nutritionGoalTotals?.fatsMass,
+                recommendedFatGoal: contentServiceHandler.recommendedNutritionGoalTotals?.fatsMass,
 
-                carbIntake: contentServiceHandler.nutritionIntakeTotals?.carbs ?? 0,
-                carbGoal: contentServiceHandler.nutritionGoalTotals?.carbs ?? 0,
-                recommendedCarbGoal: contentServiceHandler.recommendedNutritionGoalTotals?.carbs ?? 0,
+                carbIntake: contentServiceHandler.nutritionIntakeTotals?.carbsMass,
+                carbGoal: contentServiceHandler.nutritionGoalTotals?.carbsMass,
+                recommendedCarbGoal: contentServiceHandler.recommendedNutritionGoalTotals?.carbsMass,
 
-                sugarIntake: contentServiceHandler.nutritionIntakeTotals?.sugar ?? 0,
-                sugarGoal: contentServiceHandler.nutritionGoalTotals?.sugar ?? 0,
-                recommendedSugarGoal: contentServiceHandler.recommendedNutritionGoalTotals?.sugar ?? 0,
+                sugarIntake: contentServiceHandler.nutritionIntakeTotals?.sugarMass,
+                sugarGoal: contentServiceHandler.nutritionGoalTotals?.sugarMass,
+                recommendedSugarGoal: contentServiceHandler.recommendedNutritionGoalTotals?.sugarMass,
 
-                sodiumIntake: contentServiceHandler.nutritionIntakeTotals?.sodium ?? 0,
-                sodiumGoal: contentServiceHandler.nutritionGoalTotals?.sodium ?? 0,
-                recommendedSodiumGoal: contentServiceHandler.recommendedNutritionGoalTotals?.sodium ?? 0
+                sodiumIntake: contentServiceHandler.nutritionIntakeTotals?.sodiumMass,
+                sodiumGoal: contentServiceHandler.nutritionGoalTotals?.sodiumMass,
+                recommendedSodiumGoal: contentServiceHandler.recommendedNutritionGoalTotals?.sodiumMass
             )
             .containerShape(RoundedRectangle(cornerRadius: 24, style: .continuous))
             .padding(.horizontal, 16)

@@ -168,6 +168,7 @@ struct ActivityRingView: View {
             .stroke(color, style: StrokeStyle(lineWidth: ringWidth, lineCap: .round, dash: dashPattern))
             .rotationEffect(.degrees(-90))
             .frame(width: size, height: size)
+            .animation(reduceMotion ? nil : .easeInOut, value: progress)
     }
 
     private func clamp(_ value: Double) -> Double {

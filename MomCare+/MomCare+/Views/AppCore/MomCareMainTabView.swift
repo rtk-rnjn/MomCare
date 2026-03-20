@@ -32,7 +32,6 @@ struct MomCareMainTabView: View {
     // MARK: Private
 
     @EnvironmentObject private var authenticationService: AuthenticationService
-    @EnvironmentObject private var musicKitHandler: MusicPlayerHandler
     @EnvironmentObject private var contentServiceHandler: ContentServiceHandler
     @EnvironmentObject private var eventKitHandler: EventKitHandler
     @EnvironmentObject private var controlState: ControlState

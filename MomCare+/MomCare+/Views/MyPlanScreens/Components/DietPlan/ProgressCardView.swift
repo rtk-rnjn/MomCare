@@ -12,29 +12,29 @@ struct ProgressCardView: View {
 
     let plan: MyPlanModel?
 
-    let calorieIntake: Double
-    let calorieGoal: Double
-    let recommendedCalorieGoal: Double
+    let calorieIntake: Measurement<UnitEnergy>?
+    let calorieGoal: Measurement<UnitEnergy>?
+    let recommendedCalorieGoal: Measurement<UnitEnergy>?
 
-    let proteinIntake: Double
-    let proteinGoal: Double
-    let recommendedProteinGoal: Double
+    let proteinIntake: Measurement<UnitMass>?
+    let proteinGoal: Measurement<UnitMass>?
+    let recommendedProteinGoal: Measurement<UnitMass>?
 
-    let fatIntake: Double
-    let fatGoal: Double
-    let recommendedFatGoal: Double
+    let fatIntake: Measurement<UnitMass>?
+    let fatGoal: Measurement<UnitMass>?
+    let recommendedFatGoal: Measurement<UnitMass>?
 
-    let carbIntake: Double
-    let carbGoal: Double
-    let recommendedCarbGoal: Double
+    let carbIntake: Measurement<UnitMass>?
+    let carbGoal: Measurement<UnitMass>?
+    let recommendedCarbGoal: Measurement<UnitMass>?
 
-    let sugarIntake: Double
-    let sugarGoal: Double
-    let recommendedSugarGoal: Double
+    let sugarIntake: Measurement<UnitMass>?
+    let sugarGoal: Measurement<UnitMass>?
+    let recommendedSugarGoal: Measurement<UnitMass>?
 
-    let sodiumIntake: Double
-    let sodiumGoal: Double
-    let recommendedSodiumGoal: Double
+    let sodiumIntake: Measurement<UnitMass>?
+    let sodiumGoal: Measurement<UnitMass>?
+    let recommendedSodiumGoal: Measurement<UnitMass>?
 
     var body: some View {
         VStack(spacing: 0) {
@@ -95,8 +95,14 @@ struct ProgressCardView: View {
     }
 
     private var calorieProgress: Double {
-        guard recommendedCalorieGoal > 0 else { return 0 }
-        return min(calorieIntake / recommendedCalorieGoal, 1.0)
+        guard let calorieIntake, let recommendedCalorieGoal else { return 0 }
+
+        let intakeValue = calorieIntake.converted(to: recommendedCalorieGoal.unit).value
+        let goalValue = recommendedCalorieGoal.value
+
+        guard goalValue > 0 else { return 0 }
+
+        return min(intakeValue / goalValue, 1.0)
     }
 
     private var collapsedHeader: some View {
@@ -259,8 +265,13 @@ private struct CaloriesSummaryView: View {
 
     // MARK: Internal
 
-    let consumed: Double
-    let target: Double
+    let consumed: Measurement<UnitEnergy>?
+    let target: Measurement<UnitEnergy>?
+
+    var difference: Double {
+        guard let consumed, let target else { return 0 }
+        return consumed.converted(to: target.unit).value - target.value
+    }
 
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
@@ -275,11 +286,11 @@ private struct CaloriesSummaryView: View {
                 .animation(reduceMotion ? nil : .spring(response: 0.4, dampingFraction: 0.7), value: remaining)
 
             if isOver {
-                Label("Over by \(Int(consumed - target)) \(UnitEnergy.kilocalories.symbol)", systemImage: "exclamationmark.triangle.fill")
+                Label("Over by \(Int(difference)) \(UnitEnergy.kilocalories.symbol)", systemImage: "exclamationmark.triangle.fill")
                     .font(.caption)
                     .foregroundColor(.red)
             } else {
-                Text("\(Int(consumed)) of \(Int(target)) consumed")
+                Text("\(consumedText) of \(targetText) consumed")
                     .font(.caption)
                     .foregroundColor(.secondary)
             }
@@ -290,24 +301,37 @@ private struct CaloriesSummaryView: View {
 
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
-    private var remaining: Double { max(target - consumed, 0) }
-    private var isOver: Bool { consumed > target }
+    private var consumedText: String {
+        consumed?.formattedOneDecimal ?? "-"
+    }
+
+    private var targetText: String {
+        target?.formattedOneDecimal ?? "-"
+    }
+
+    private var remaining: Double { max(difference, 0) }
+    private var isOver: Bool {
+        guard let consumed, let target else { return false }
+        return consumed.converted(to: target.unit).value > target.value
+    }
 
 }
 
 private struct ExpandedDetailView: View {
 
-    let caloriesConsumed: Double
-    let caloriesTarget: Double
+    // MARK: Internal
+
+    let caloriesConsumed: Measurement<UnitEnergy>?
+    let caloriesTarget: Measurement<UnitEnergy>?
     let plan: MyPlanModel?
 
-    let sugarIntake: Double
-    let sugarGoal: Double
-    let recommendedSugarGoal: Double
+    let sugarIntake: Measurement<UnitMass>?
+    let sugarGoal: Measurement<UnitMass>?
+    let recommendedSugarGoal: Measurement<UnitMass>?
 
-    let sodiumIntake: Double
-    let sodiumGoal: Double
-    let recommendedSodiumGoal: Double
+    let sodiumIntake: Measurement<UnitMass>?
+    let sodiumGoal: Measurement<UnitMass>?
+    let recommendedSodiumGoal: Measurement<UnitMass>?
 
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
@@ -343,12 +367,12 @@ private struct ExpandedDetailView: View {
                     .textCase(.uppercase)
 
                 HStack {
-                    CalorieStatPill(label: "Consumed", value: caloriesConsumed, color: MomCareAccent.primary)
-                    CalorieStatPill(label: "Target", value: caloriesTarget, color: Color(.systemGray3))
+                    CalorieStatPill(label: "Consumed", value: caloriesConsumed?.value ?? 0, color: MomCareAccent.primary)
+                    CalorieStatPill(label: "Target", value: caloriesTarget?.value ?? 0, color: Color(.systemGray3))
                     CalorieStatPill(
-                        label: caloriesConsumed > caloriesTarget ? "Over" : "Left",
-                        value: abs(caloriesTarget - caloriesConsumed),
-                        color: caloriesConsumed > caloriesTarget ? .red : Color(hex: "6E8B6F")
+                        label: isCalorieConsumedGreaterThanTarget ? "Over" : "Left",
+                        value: abs(calorieDifference),
+                        color: isCalorieConsumedGreaterThanTarget ? .red : Color(hex: "6E8B6F")
                     )
                 }
             }
@@ -372,6 +396,24 @@ private struct ExpandedDetailView: View {
             }
         }
     }
+
+    // MARK: Private
+
+    private var calorieDifference: Double {
+        guard let caloriesConsumed, let caloriesTarget else { return 0 }
+
+        let consumedValue = caloriesConsumed.converted(to: caloriesTarget.unit).value
+        let targetValue = caloriesTarget.value
+
+        return consumedValue - targetValue
+    }
+
+    private var isCalorieConsumedGreaterThanTarget: Bool {
+        guard let caloriesConsumed, let caloriesTarget else { return false }
+
+        return caloriesConsumed > caloriesTarget
+    }
+
 }
 
 private struct CalorieStatPill: View {
@@ -384,7 +426,7 @@ private struct CalorieStatPill: View {
 
     var body: some View {
         VStack(spacing: 2) {
-            Text("\(Int(value))")
+            Text(value, format: .number)
                 .font(.subheadline.weight(.semibold))
                 .foregroundColor(color)
                 .contentTransition(reduceMotion ? .identity : .numericText())
@@ -487,9 +529,9 @@ struct ProgressRingView: View {
     // MARK: Internal
 
     let progress: Double
-    let consumed: Double
-    let target: Double
-    let original: Double
+    let consumed: Measurement<UnitEnergy>?
+    let target: Measurement<UnitEnergy>?
+    let original: Measurement<UnitEnergy>?
 
     var body: some View {
         ZStack {
@@ -505,57 +547,17 @@ struct ProgressRingView: View {
                 .rotationEffect(.degrees(-90))
                 .animation(reduceMotion ? nil : .linear(duration: 0.5), value: progress)
 
-            VStack(spacing: 2) {
-                Group {
-                    if showPercentage {
-                        Text("\(percentage)%")
-                            .contentTransition(reduceMotion ? .identity : .numericText())
-                            .transition(.opacity.combined(with: .scale))
-                            .animation(reduceMotion ? nil : .spring(response: 0.4, dampingFraction: 0.7), value: percentage)
-                            .font(.title2.weight(.bold))
-                    } else {
-                        HStack(spacing: 2) {
-                            Text(Int(consumed), format: .number)
-                                .font(consumed > 999 ? .footnote.weight(.semibold) : .headline)
-                                .contentTransition(reduceMotion ? .identity : .numericText())
-                                .animation(reduceMotion ? nil : .spring(response: 0.4, dampingFraction: 0.7), value: Int(consumed))
-
-                            Text("/")
-                                .font(consumed > 999 ? .footnote.weight(.semibold) : .headline)
-
-                            Text(Int(original), format: .number)
-                                .font(consumed > 999 ? .footnote.weight(.semibold) : .headline)
-                                .contentTransition(reduceMotion ? .identity : .numericText())
-                                .animation(reduceMotion ? nil : .spring(response: 0.4, dampingFraction: 0.7), value: Int(consumed))
-                        }
-                        .transition(.opacity.combined(with: .scale))
-                        .font(.headline)
-                    }
-                }
-                .onTapGesture {
-                    withAnimation(reduceMotion ? nil : .spring(response: 0.4, dampingFraction: 0.8)) {
-                        showPercentage.toggle()
-                    }
-                }
-
-                HStack(spacing: 6) {
-                    Text(UnitEnergy.kilocalories.symbol)
-                        .font(.subheadline)
-                        .foregroundStyle(.secondary)
-
-                    if target != original {
-                        Text(Int(target - original), format: .number.sign(strategy: .always()))
-                            .font(.subheadline)
-                            .foregroundStyle(modificationColor)
-                    }
-                }
-            }
+            numericPercentageTextView
         }
         .frame(width: 110, height: 110)
         .contentShape(Rectangle())
         .accessibilityElement(children: .ignore)
         .accessibilityLabel("Calorie intake")
-        .accessibilityValue(showPercentage ? "\(percentage) percent" : "\(Int(consumed)) of \(Int(target)) calories")
+        .accessibilityValue(
+            showPercentage
+            ? "\(percentage)%"
+            : "\(Int(consumed?.converted(to: target?.unit ?? .kilocalories).value ?? 0)) / \(Int(target?.value ?? 0)) calories"
+        )
         .accessibilityHint("Double tap to toggle percentage view")
         .accessibilityAddTraits([.isButton, .updatesFrequently])
     }
@@ -572,11 +574,36 @@ struct ProgressRingView: View {
     @Environment(\.accessibilityReduceTransparency) private var reduceTransparency
 
     private var percentage: Int {
-        guard original > 0 else { return 0 }
-        return Int((consumed / original) * 100)
+        guard let consumed, let original else { return 0 }
+
+        let consumedValue = consumed.converted(to: original.unit).value
+        let originalValue = original.value
+
+        guard originalValue > 0 else { return 0 }
+
+        return Int((consumedValue / originalValue) * 100)
+    }
+
+    private var difference: Double {
+        guard let consumed, let original else { return 0 }
+
+        let consumedValue = consumed.converted(to: original.unit).value
+        let originalValue = original.value
+
+        return consumedValue - originalValue
+    }
+
+    private var isConsumedIsGreaterThanRecommended: Bool {
+        guard let consumed, let original else {
+            return false
+        }
+
+        return consumed > original
     }
 
     private var targetModification: TargetModification? {
+        guard let target, let original else { return nil }
+
         if target > original { return .increased }
         if target < original { return .decreased }
         return nil
@@ -589,6 +616,79 @@ struct ProgressRingView: View {
         case .none: return .secondary
         }
     }
+
+    private var consumedValue: Double? { consumed?.value }
+    private var goalValue: Double? { original?.value }
+
+    private var useCompactFont: Bool {
+        (consumedValue ?? 0) > 999
+    }
+
+    private var valueFont: Font {
+        useCompactFont ? .footnote.weight(.semibold) : .headline
+    }
+
+    private var numericPercentageTextView: some View {
+        VStack(spacing: 2) {
+
+            Group {
+                if showPercentage {
+
+                    Text("\(percentage)%")
+                        .font(.title2.weight(.bold))
+                        .contentTransition(reduceMotion ? .identity : .numericText())
+                        .animation(
+                            reduceMotion ? nil : .spring(response: 0.4, dampingFraction: 0.7),
+                            value: percentage
+                        )
+
+                } else {
+
+                    HStack(spacing: 2) {
+                        animatedNumber(consumedValue)
+                        Text("/").font(valueFont)
+                        animatedNumber(goalValue)
+                    }
+                }
+            }
+            .transition(.opacity.combined(with: .scale))
+            .onTapGesture {
+                withAnimation(reduceMotion ? nil : .spring(response: 0.4, dampingFraction: 0.8)) {
+                    showPercentage.toggle()
+                }
+            }
+
+            HStack(spacing: 6) {
+
+                Text(UnitEnergy.kilocalories.symbol)
+                    .font(.subheadline)
+                    .foregroundStyle(.secondary)
+
+                if isConsumedIsGreaterThanRecommended {
+                    Text(Int(difference), format: .number.sign(strategy: .always()))
+                        .font(.subheadline)
+                        .foregroundStyle(modificationColor)
+                }
+            }
+        }
+    }
+
+    private func animatedNumber(_ value: Double?) -> some View {
+        Group {
+            if let value {
+                Text(value, format: .number)
+            } else {
+                Text("-")
+            }
+        }
+        .font(valueFont)
+        .contentTransition(reduceMotion ? .identity : .numericText())
+        .animation(
+            reduceMotion ? nil : .spring(response: 0.4, dampingFraction: 0.7),
+            value: value
+        )
+    }
+
 }
 
 struct MacroBarRow: View {
@@ -596,9 +696,9 @@ struct MacroBarRow: View {
     // MARK: Internal
 
     let title: String
-    let intake: Double?
-    let goal: Double?
-    let recommendedGoal: Double?
+    let intake: Measurement<UnitMass>?
+    let goal: Measurement<UnitMass>?
+    let recommendedGoal: Measurement<UnitMass>?
     let color: Color
 
     var body: some View {
@@ -635,8 +735,8 @@ struct MacroBarRow: View {
                         .fill(reduceTransparency ? Color(.systemGray4) : Color.secondary.opacity(0.2))
                     Capsule()
                         .fill(color)
-                        .frame(width: geo.size.width * progress)
-                        .animation(reduceMotion ? nil : .easeInOut(duration: 0.4), value: progress)
+                        .frame(width: geo.size.width * min(recommendedProgress, 1.0))
+                        .animation(reduceMotion ? nil : .easeInOut(duration: 0.4), value: recommendedProgress)
                 }
             }
             .frame(height: 14)
@@ -644,7 +744,21 @@ struct MacroBarRow: View {
         .contentShape(Rectangle())
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(title)
-        .accessibilityValue(showPercentage ? percentageText : "\(intake ?? 0) consumed out of \(goal ?? 0) goal")
+        .accessibilityValue(
+            showPercentage
+            ? percentageText
+            : {
+                guard let intake, let goal else {
+                    return "- consumed out of - goal"
+                }
+
+                let intakeValue = intake.converted(to: goal.unit).value
+                let goalValue = goal.value
+                let unit = goal.unit.symbol
+
+                return "\(Int(intakeValue)) \(unit) consumed out of \(Int(goalValue)) \(unit) goal"
+            }()
+        )
         .accessibilityHint("Double tap to toggle percentage view")
         .accessibilityAddTraits([.isButton, .updatesFrequently])
     }
@@ -677,28 +791,37 @@ struct MacroBarRow: View {
         }
     }
 
-    private var progress: Double {
+    private var recommendedProgress: Double {
         guard let intake, let recommendedGoal else { return 0 }
-        guard recommendedGoal > 0 else { return 0 }
-        return min(intake / recommendedGoal, 1.0)
+
+        let intakeValue = intake.converted(to: recommendedGoal.unit).value
+        let goalValue = recommendedGoal.value
+
+        guard goalValue > 0 else { return 0 }
+
+        return intakeValue / goalValue
     }
 
     private var percentageText: String {
-        "\(Int(progress * 100))%"
+        "\(Int(recommendedProgress * 100))%"
     }
 
     private var difference: Double {
         guard let intake, let recommendedGoal else { return 0 }
-        return intake - recommendedGoal
+
+        let intakeValue = intake.converted(to: recommendedGoal.unit).value
+        let goalValue = recommendedGoal.value
+
+        return intakeValue - goalValue
     }
 
     private var numericView: some View {
         HStack(spacing: 4) {
             if let intake {
                 HStack {
-                    Text(intake, format: .number)
-                        .contentTransition(reduceMotion ? .identity : .numericText(value: intake))
-                        .animation(reduceMotion ? nil : .spring(response: 0.4, dampingFraction: 0.8), value: intake)
+                    Text(intake.formattedOneDecimal)
+                        .contentTransition(reduceMotion ? .identity : .numericText(value: intake.value))
+                        .animation(reduceMotion ? nil : .spring(response: 0.4, dampingFraction: 0.8), value: intake.value)
 
                     if difference > 0 {
                         Text("(\(difference, format: .number.sign(strategy: .always())))")
@@ -717,7 +840,7 @@ struct MacroBarRow: View {
             if let goal {
                 if let recommendedGoal, targetModification != nil {
                     HStack {
-                        Text(recommendedGoal, format: .number)
+                        Text(recommendedGoal.formattedOneDecimal)
                             .foregroundColor(modificationColor)
 
                         if targetModification == .increased {
@@ -736,9 +859,9 @@ struct MacroBarRow: View {
                         }
                     }
                 } else {
-                    Text(goal, format: .number)
-                        .contentTransition(reduceMotion ? .identity : .numericText(value: goal))
-                        .animation(reduceMotion ? nil : .spring(response: 0.4, dampingFraction: 0.8), value: goal)
+                    Text(goal.formattedOneDecimal)
+                        .contentTransition(reduceMotion ? .identity : .numericText(value: goal.value))
+                        .animation(reduceMotion ? nil : .spring(response: 0.4, dampingFraction: 0.8), value: goal.value)
                 }
             } else {
                 Text("-")

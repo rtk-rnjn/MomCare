@@ -3,7 +3,15 @@ import Charts
 
 struct WalkingHistoryView: View {
 
+    // MARK: Lifecycle
+
+    init(stepsGoal: Int) {
+        self.stepsGoal = stepsGoal
+    }
+
     // MARK: Internal
+
+    let stepsGoal: Int
 
     var body: some View {
         NavigationStack {
@@ -38,16 +46,15 @@ struct WalkingHistoryView: View {
                     Button(role: .cancel) { dismiss() }
                 }
             }
-            .onChange(of: selectedDate) { _, new in
+            .onChange(of: selectedDate) {
                 Task {
-                    await store.loadDay(date: new, handler: contentServiceHandler)
-                    await store.loadRange(anchor: new, handler: contentServiceHandler)
+                    selectedDateSteps = await contentServiceHandler.fetchStepCount(for: selectedDate)
+                    rangePoints = await contentServiceHandler.fetchWeeklyStepsProgress(from: selectedDate)
                 }
             }
             .task {
-                store.goal = Int(contentServiceHandler.stepsGoal)
-                await store.loadDay(date: selectedDate, handler: contentServiceHandler)
-                await store.loadRange(anchor: selectedDate, handler: contentServiceHandler)
+                selectedDateSteps = await contentServiceHandler.fetchStepCount(for: selectedDate)
+                rangePoints = await contentServiceHandler.fetchWeeklyStepsProgress(from: selectedDate)
             }
         }
     }
@@ -58,9 +65,9 @@ struct WalkingHistoryView: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
-    @StateObject private var store: WalkingHistoryStore = .init()
-
     @State private var selectedDate: Date = .init()
+    @State private var selectedDateSteps: Int = 0
+    @State private var rangePoints: [StepDataPoint] = []
     @State private var isCalendarExpanded = false
     @State private var selectedBar: StepDataPoint?
 
@@ -69,13 +76,26 @@ struct WalkingHistoryView: View {
     private var chartSubtitle: String = "Daily step count"
 
     private var xAxisValues: [String] {
-        return store.rangePoints.map { barLabel($0) }
+        return rangePoints.map { barLabel($0) }
+    }
+
+    private var average: Int {
+        guard !rangePoints.isEmpty else { return 0 }
+        return rangePoints.reduce(0) { $0 + $1.steps } / rangePoints.count
+    }
+
+    private var maximum: Int { rangePoints.map(\.steps).max() ?? 0 }
+
+    private var totalForRange: Int { rangePoints.reduce(0) { $0 + $1.steps } }
+
+    private var goalMetCount: Int {
+        rangePoints.filter { $0.steps >= stepsGoal }.count
     }
 
     private var selectedDayCard: some View {
-        let progress = min(Double(store.selectedDateSteps) / Double(max(store.goal, 1)), 1.0)
+        let progress = min(Double(selectedDateSteps) / Double(max(stepsGoal, 1)), 1.0)
         let isToday = Calendar.current.isDateInToday(selectedDate)
-        let metGoal = store.selectedDateSteps >= store.goal
+        let metGoal = selectedDateSteps >= stepsGoal
 
         return HStack(spacing: 20) {
             // Ring
@@ -104,15 +124,12 @@ struct WalkingHistoryView: View {
             // Numbers
             VStack(alignment: .leading, spacing: 6) {
                 HStack(alignment: .lastTextBaseline, spacing: 4) {
-                    if store.isLoadingDay {
-                        ProgressView().scaleEffect(0.7)
-                    } else {
-                        Text(store.selectedDateSteps.formatted())
-                            .font(.largeTitle.weight(.heavy))
-                            .foregroundColor(.primary)
-                            .contentTransition(reduceMotion ? .identity : .numericText())
-                            .animation(reduceMotion ? nil : .easeInOut, value: store.selectedDateSteps)
-                    }
+                    Text(selectedDateSteps.formatted())
+                        .font(.largeTitle.weight(.heavy))
+                        .foregroundColor(.primary)
+                        .contentTransition(reduceMotion ? .identity : .numericText())
+                        .animation(reduceMotion ? nil : .easeInOut, value: selectedDateSteps)
+
                     Text("steps")
                         .font(.subheadline)
                         .foregroundStyle(.secondary)
@@ -145,7 +162,7 @@ struct WalkingHistoryView: View {
                 }
                 .frame(height: 6)
 
-                Text("Goal: \(store.goal.formatted()) steps")
+                Text("Goal: \(stepsGoal.formatted()) steps")
                     .font(.caption2)
                     .foregroundStyle(Color(.tertiaryLabel))
             }
@@ -153,15 +170,11 @@ struct WalkingHistoryView: View {
             Spacer()
         }
         .padding(18)
-        .background(Color(.secondarySystemGroupedBackground),
-                    in: RoundedRectangle(cornerRadius: 20, style: .continuous))
         .shadow(color: Color(hex: "4A8A62").opacity(0.08), radius: 10, x: 0, y: 4)
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(isToday ? "Today's steps" : "Steps on \(formattedDate(selectedDate))")
         .accessibilityValue(
-            metGoal
-                ? "\(store.selectedDateSteps.formatted()) steps, goal met"
-                : "\(store.selectedDateSteps.formatted()) of \(store.goal.formatted()) steps, \(Int(progress * 100)) percent"
+            metGoal ? "\(selectedDateSteps.formatted()) steps, goal met" : "\(selectedDateSteps.formatted()) of \(stepsGoal.formatted()) steps, \(Int(progress * 100)) percent"
         )
         .accessibilityAddTraits(.updatesFrequently)
     }
@@ -190,7 +203,7 @@ struct WalkingHistoryView: View {
                     Text(bar.steps.formatted() + " steps")
                         .font(.caption.weight(.bold))
                         .foregroundColor(
-                            bar.steps >= store.goal
+                            bar.steps >= stepsGoal
                                 ? Color(hex: "4A8A62")
                                 : Color.CustomColors.mutedRaspberry
                         )
@@ -199,97 +212,78 @@ struct WalkingHistoryView: View {
                 .transition(unsafe .opacity.combined(with: .scale(scale: 0.95)))
             }
 
-            // Chart
-            if store.isLoadingRange {
-                RoundedRectangle(cornerRadius: 12, style: .continuous)
-                    .fill(Color(.systemGray6))
-                    .frame(height: 200)
-                    .overlay { ProgressView() }
-            } else if store.rangePoints.isEmpty {
-                RoundedRectangle(cornerRadius: 12, style: .continuous)
-                    .fill(Color(.systemGray6))
-                    .frame(height: 200)
-                    .overlay {
-                        Text("No data")
-                            .font(.subheadline)
-                            .foregroundStyle(.secondary)
-                    }
-            } else {
-                Chart(store.rangePoints) { pt in
-                    BarMark(
-                        x: .value("Day", barLabel(pt)),
-                        y: .value("Steps", pt.steps),
-                        width: .ratio(0.55)
-                    )
-                    .foregroundStyle(
-                        pt.steps >= store.goal
-                            ? Color(hex: "4A8A62")
-                            : Color.CustomColors.mutedRaspberry.opacity(
-                                selectedBar?.id == pt.id ? 1.0 : 0.75
-                              )
-                    )
-                    .cornerRadius(6)
-                    .accessibilityLabel(barLabel(pt))
-                    .accessibilityValue(
-                        "\(pt.steps.formatted()) steps\(pt.steps >= store.goal ? ", goal met" : "")\(selectedBar?.id == pt.id ? ", selected" : "")"
-                    )
+            Chart(rangePoints) { pt in
+                BarMark(
+                    x: .value("Day", barLabel(pt)),
+                    y: .value("Steps", pt.steps),
+                    width: .ratio(0.55)
+                )
+                .foregroundStyle(
+                    pt.steps >= stepsGoal
+                        ? Color(hex: "4A8A62")
+                        : Color.CustomColors.mutedRaspberry.opacity(
+                            selectedBar?.id == pt.id ? 1.0 : 0.75
+                          )
+                )
+                .cornerRadius(6)
+                .accessibilityLabel(barLabel(pt))
+                .accessibilityValue(
+                    "\(pt.steps.formatted()) steps\(pt.steps >= stepsGoal ? ", goal met" : "")\(selectedBar?.id == pt.id ? ", selected" : "")"
+                )
 
-                    // Goal rule line
-                    RuleMark(y: .value("Goal", store.goal))
-                        .lineStyle(StrokeStyle(lineWidth: 1.2, dash: [5, 3]))
-                        .foregroundStyle(Color(hex: "4A8A62").opacity(0.45))
-                        .annotation(position: .trailing, alignment: .center) {
-                            Text("Goal")
-                                .font(.caption2.weight(.semibold))
-                                .foregroundStyle(Color(hex: "4A8A62").opacity(0.7))
-                        }
-                }
-                .chartXAxis {
-                    AxisMarks(values: xAxisValues) { _ in
-                        AxisValueLabel()
-                            .font(.caption2)
-                            .foregroundStyle(Color.secondary)
+                RuleMark(y: .value("Goal", stepsGoal))
+                    .lineStyle(StrokeStyle(lineWidth: 1.2, dash: [5, 3]))
+                    .foregroundStyle(Color(hex: "4A8A62").opacity(0.45))
+                    .annotation(position: .trailing, alignment: .center) {
+                        Text("Goal")
+                            .font(.caption2.weight(.semibold))
+                            .foregroundStyle(Color(hex: "4A8A62").opacity(0.7))
                     }
+            }
+            .chartXAxis {
+                AxisMarks(values: xAxisValues) { _ in
+                    AxisValueLabel()
+                        .font(.caption2)
+                        .foregroundStyle(Color.secondary)
                 }
-                .chartYAxis {
-                    AxisMarks(position: .leading,
-                              values: .automatic(desiredCount: 4)) { val in
-                        AxisGridLine(stroke: StrokeStyle(lineWidth: 0.4, dash: [4]))
-                            .foregroundStyle(Color(.systemGray4))
-                        AxisValueLabel {
-                            if let v = val.as(Int.self) {
-                                Text(shortStepLabel(v))
-                                    .font(.caption2)
-                                    .foregroundStyle(.secondary)
-                            }
+            }
+            .chartYAxis {
+                AxisMarks(position: .leading,
+                          values: .automatic(desiredCount: 4)) { val in
+                    AxisGridLine(stroke: StrokeStyle(lineWidth: 0.4, dash: [4]))
+                        .foregroundStyle(Color(.systemGray4))
+                    AxisValueLabel {
+                        if let v = val.as(Int.self) {
+                            Text(shortStepLabel(v))
+                                .font(.caption2)
+                                .foregroundStyle(.secondary)
                         }
-                    }
-                }
-                .chartScrollableAxes([])
-                .chartXVisibleDomain(length: store.rangePoints.count)
-                .frame(height: 200)
-                .animation(reduceMotion ? nil : .easeInOut(duration: 0.3), value: store.rangePoints.count)
-                // Tap to select bar
-                .chartOverlay { proxy in
-                    GeometryReader { geo in
-                        Rectangle()
-                            .fill(Color.clear)
-                            .contentShape(Rectangle())
-                            .onTapGesture { location in
-                                if let label: String = proxy.value(atX: location.x - geo[proxy.plotFrame!].minX),
-                                   let match = store.rangePoints.first(where: { barLabel($0) == label }) {
-                                    withAnimation(reduceMotion ? nil : .spring(response: 0.3)) {
-                                        selectedBar = selectedBar?.id == match.id ? nil : match
-                                    }
-                                }
-                            }
                     }
                 }
             }
+            .chartScrollableAxes([])
+            .chartXVisibleDomain(length: rangePoints.count)
+            .frame(height: 200)
+            .animation(reduceMotion ? nil : .easeInOut(duration: 0.3), value: rangePoints.count)
+            // Tap to select bar
+            .chartOverlay { proxy in
+                GeometryReader { geo in
+                    Rectangle()
+                        .fill(Color.clear)
+                        .contentShape(Rectangle())
+                        .onTapGesture { location in
+                            if let label: String = proxy.value(atX: location.x - geo[proxy.plotFrame!].minX),
+                               let match = rangePoints.first(where: { barLabel($0) == label }) {
+                                withAnimation(reduceMotion ? nil : .spring(response: 0.3)) {
+                                    selectedBar = selectedBar?.id == match.id ? nil : match
+                                }
+                            }
+                        }
+                }
+            }
+
         }
         .padding(18)
-        .background(Color(.secondarySystemGroupedBackground),
-                    in: RoundedRectangle(cornerRadius: 20, style: .continuous))
         .shadow(color: Color.black.opacity(0.04), radius: 8, x: 0, y: 3)
     }
 
@@ -298,29 +292,29 @@ struct WalkingHistoryView: View {
             statCard(
                 icon: "chart.bar.fill",
                 label: "Average",
-                value: store.average.formatted(),
+                value: average.formatted(),
                 unit: "steps/day",
                 color: Color(hex: "4A7A9B")
             )
             statCard(
                 icon: "arrow.up.circle.fill",
                 label: "Best day",
-                value: store.maximum.formatted(),
+                value: maximum.formatted(),
                 unit: "steps",
                 color: Color(hex: "4A8A62")
             )
             statCard(
                 icon: "sum",
                 label: "Total",
-                value: store.totalForRange.formatted(),
+                value: totalForRange.formatted(),
                 unit: "steps",
                 color: Color.CustomColors.mutedRaspberry
             )
             statCard(
                 icon: "target",
                 label: "Goal met",
-                value: "\(store.goalMetCount)",
-                unit: "of \(store.rangePoints.count) days",
+                value: "\(goalMetCount)",
+                unit: "of \(rangePoints.count) days",
                 color: Color(hex: "9B6B52")
             )
         }
@@ -354,8 +348,6 @@ struct WalkingHistoryView: View {
             Spacer()
         }
         .padding(14)
-        .background(Color(.secondarySystemGroupedBackground),
-                    in: RoundedRectangle(cornerRadius: 16, style: .continuous))
         .shadow(color: Color.black.opacity(0.03), radius: 6, x: 0, y: 2)
     }
 

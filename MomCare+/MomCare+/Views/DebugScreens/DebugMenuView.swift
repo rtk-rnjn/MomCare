@@ -2,8 +2,6 @@ import SwiftUI
 
 struct DebugMenuView: View {
 
-    // MARK: Internal
-
     var body: some View {
         NavigationStack {
             List {
@@ -18,11 +16,6 @@ struct DebugMenuView: View {
             .navigationBarTitleDisplayMode(.inline)
         }
     }
-
-    // MARK: Private
-
-    @EnvironmentObject private var store: DebugMenuStore
-
 }
 
 enum DebugSection: String, CaseIterable, Identifiable {

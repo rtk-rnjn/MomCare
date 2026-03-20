@@ -20,8 +20,15 @@ struct MyPlanExercisePlanView: View {
                     exerciseCardsView
                 }
                 .refreshable {
-                    HapticsHandler.impact(.medium)
-                    // TODO:
+                    Task {
+                        do {
+                            try await contentServiceHandler.fetchUserExercises()
+                            HapticsHandler.notification(.success)
+                        } catch {
+                            controlState.error = error
+                            HapticsHandler.notification(.error)
+                        }
+                    }
                 }
             }
             .frame(maxHeight: .infinity)
@@ -39,7 +46,7 @@ struct MyPlanExercisePlanView: View {
             WaterLogView()
         }
         .fullScreenCover(isPresented: $showWalkingHistory) {
-            WalkingHistoryView()
+            WalkingHistoryView(stepsGoal: Int(contentServiceHandler.stepsGoal))
         }
         .toolbar {
             ToolbarItem(placement: .confirmationAction) {
@@ -108,7 +115,7 @@ struct MyPlanExercisePlanView: View {
 
     private var exerciseCardsView: some View {
         VStack(spacing: 14) {
-            WalkingCardView()
+            WalkingCardView(stepsToday: contentServiceHandler.stepsToday, stepsGoal: contentServiceHandler.stepsGoal)
                 .onTapGesture {
                     if experimentalFeatures {
                         showWalkingHistory = true
