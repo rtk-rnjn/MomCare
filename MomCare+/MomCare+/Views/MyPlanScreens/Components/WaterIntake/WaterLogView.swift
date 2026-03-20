@@ -143,8 +143,6 @@ struct WaterLogView: View {
     @State private var selectedDate: Date = .init()
     @State private var quoteIndex: Int = 0
 
-    @State private var waterLogQuickAddTip = WaterLogQuickAddTip()
-
     private let quickAmounts: [(label: String, ml: Double)] = [
         ("+150ml", 150), ("+200ml", 200), ("+300ml", 300), ("+500ml", 500)
     ]
@@ -311,8 +309,6 @@ struct WaterLogView: View {
 
     private var actionPanel: some View {
         VStack(spacing: 12) {
-            TipView(waterLogQuickAddTip)
-
             HStack(spacing: 10) {
                 ForEach(quickAmounts, id: \.label) { preset in
                     Button { Task { await addWater(preset.ml) } } label: {

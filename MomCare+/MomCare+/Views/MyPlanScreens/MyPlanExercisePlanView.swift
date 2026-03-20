@@ -118,8 +118,6 @@ struct MyPlanExercisePlanView: View {
     @State private var breathingCompleted: Bool = false
     @State private var walkingCompleted: Bool = false
 
-    @State private var breathingExerciseTip = BreathingExerciseTip()
-
     private var completedCount: Int {
         contentServiceHandler.totalUserExercisesCompleted + (breathingCompleted ? 1 : 0) + (walkingCompleted ? 1 : 0)
     }
@@ -148,7 +146,6 @@ struct MyPlanExercisePlanView: View {
                     showingBreathingInfo = true
                 }
             }
-            .popoverTip(breathingExerciseTip, arrowEdge: .top)
 
             ForEach(contentServiceHandler.userExercises) { exercise in
                 ExerciseCardView(userExerciseModel: exercise) {

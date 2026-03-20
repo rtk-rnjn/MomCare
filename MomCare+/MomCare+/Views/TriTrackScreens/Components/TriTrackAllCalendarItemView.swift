@@ -28,7 +28,7 @@ struct TriTrackAllCalendarItemView: View {
                 }
             }
             .navigationTitle("All Events")
-            .navigationBarTitleDisplayMode(.large)
+            .navigationBarTitleDisplayMode(.inline)
             .sheet(item: $selectedEvent, onDismiss: {
                 fetchEvents()
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {

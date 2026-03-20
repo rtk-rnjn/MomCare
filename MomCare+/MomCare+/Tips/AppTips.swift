@@ -42,20 +42,6 @@ struct DietContextMenuTip: Tip {
     }
 }
 
-struct BreathingExerciseTip: Tip {
-    var title: Text {
-        Text("Guided Breathing")
-    }
-
-    var message: Text? {
-        Text("Tap the breathing card for step-by-step instructions on calming exercises tailored to your trimester.")
-    }
-
-    var image: Image? {
-        Image(systemName: "lungs.fill")
-    }
-}
-
 struct MoodSliderTip: Tip {
     var title: Text {
         Text("Choose Your Mood")
@@ -67,33 +53,5 @@ struct MoodSliderTip: Tip {
 
     var image: Image? {
         Image(systemName: "face.smiling")
-    }
-}
-
-struct PersonalInfoEditTip: Tip {
-    var title: Text {
-        Text("Keep Your Info Current")
-    }
-
-    var message: Text? {
-        Text("Tap 'Edit' to update your measurements. Accurate data ensures the best nutrition and exercise recommendations.")
-    }
-
-    var image: Image? {
-        Image(systemName: "person.crop.circle")
-    }
-}
-
-struct WaterLogQuickAddTip: Tip {
-    var title: Text {
-        Text("Log Water Quickly")
-    }
-
-    var message: Text? {
-        Text("Tap a preset button to log your water intake instantly. Enable reminders from the menu to stay on track.")
-    }
-
-    var image: Image? {
-        Image(systemName: "drop.fill")
     }
 }

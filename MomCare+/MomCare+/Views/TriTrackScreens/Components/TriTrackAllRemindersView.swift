@@ -32,7 +32,7 @@ struct TriTrackAllRemindersView: View {
                 }
             }
             .navigationTitle("All Reminders")
-            .navigationBarTitleDisplayMode(.large)
+            .navigationBarTitleDisplayMode(.inline)
             .sheet(item: $selectedReminder, onDismiss: {
                 fetchReminders()
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
