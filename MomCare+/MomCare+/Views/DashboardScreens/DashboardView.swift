@@ -20,7 +20,7 @@ struct DashboardView: View {
         }
         .refreshable {
             HapticsHandler.impact(.medium)
-            try? await contentServiceHandler.fetchMealPlan()
+            // TODO:
         }
         .background(Color(.secondarySystemGroupedBackground))
         .navigationTitle("ProgressHub")
@@ -29,7 +29,11 @@ struct DashboardView: View {
 
     var weekAndEventSection: some View {
         HStack(spacing: 16) {
-            DashboardWeekCardView()
+            DashboardWeekCardView(
+                week: authenticationService.userModel?.pregnancyProgress.week,
+                day: authenticationService.userModel?.pregnancyProgress.day,
+                trimester: authenticationService.userModel?.pregnancyProgress.trimester
+            )
                 .frame(maxWidth: .infinity)
                 .onTapGesture {
                     controlState.selectedTab = .triTrack
@@ -72,8 +76,8 @@ struct DashboardView: View {
                 .accessibilityAddTraits(.isHeader)
 
             DashboardDietCardView(
-                consumed: contentServiceHandler.nurtitionConsumedTotals?.calories ?? 0,
-                goal: contentServiceHandler.nutritionTargetTotals?.calories ?? 0
+                consumed: contentServiceHandler.nutritionIntakeTotals?.calories ?? 0,
+                goal: contentServiceHandler.nutritionGoalTotals?.calories ?? 0
             )
             .padding(.horizontal)
             .onTapGesture {
@@ -84,7 +88,12 @@ struct DashboardView: View {
             .accessibilityHint("Double tap to view your diet plan")
 
             DashboardExerciseCard(
-                calories: contentServiceHandler.caloriesBurned
+                stepsToday: Int(contentServiceHandler.stepsToday),
+                caloriesBurnedToday: contentServiceHandler.caloriesBurned,
+                exerciseDurationToday: contentServiceHandler.userExercises.totalVideoDurationCompletedSeconds,
+                stepsGoalProgress: contentServiceHandler.stepsToday / contentServiceHandler.stepsGoal,
+                caloriesGoalProgress: 0,
+                exerciseGoalProgress: contentServiceHandler.totalExerciseDuration
             )
             .padding(.horizontal)
             .onTapGesture {
@@ -125,6 +134,7 @@ struct DashboardView: View {
 
     @EnvironmentObject private var contentServiceHandler: ContentServiceHandler
     @EnvironmentObject private var eventKitHandler: EventKitHandler
+    @EnvironmentObject private var authenticationService: AuthenticationService
 
     @EnvironmentObject private var controlState: ControlState
 

@@ -8,9 +8,31 @@ struct MyPlanDietPlanView: View {
     var body: some View {
         VStack(spacing: 12) {
             ProgressCardView(
-                caloriesConsumed: contentServiceHandler.nurtitionConsumedTotals?.calories ?? 0,
-                caloriesTarget: contentServiceHandler.nutritionTargetTotals?.calories ?? 0,
-                originalCaloriesTarget: contentServiceHandler.originalNutritionTargetTotals?.calories ?? 0
+                plan: contentServiceHandler.myPlanModel,
+
+                calorieIntake: contentServiceHandler.nutritionIntakeTotals?.calories ?? 0,
+                calorieGoal: contentServiceHandler.nutritionGoalTotals?.calories ?? 0,
+                recommendedCalorieGoal: contentServiceHandler.recommendedNutritionGoalTotals?.calories ?? 0,
+
+                proteinIntake: contentServiceHandler.nutritionIntakeTotals?.protein ?? 0,
+                proteinGoal: contentServiceHandler.nutritionGoalTotals?.protein ?? 0,
+                recommendedProteinGoal: contentServiceHandler.recommendedNutritionGoalTotals?.protein ?? 0,
+
+                fatIntake: contentServiceHandler.nutritionIntakeTotals?.fats ?? 0,
+                fatGoal: contentServiceHandler.nutritionGoalTotals?.fats ?? 0,
+                recommendedFatGoal: contentServiceHandler.recommendedNutritionGoalTotals?.fats ?? 0,
+
+                carbIntake: contentServiceHandler.nutritionIntakeTotals?.carbs ?? 0,
+                carbGoal: contentServiceHandler.nutritionGoalTotals?.carbs ?? 0,
+                recommendedCarbGoal: contentServiceHandler.recommendedNutritionGoalTotals?.carbs ?? 0,
+
+                sugarIntake: contentServiceHandler.nutritionIntakeTotals?.sugar ?? 0,
+                sugarGoal: contentServiceHandler.nutritionGoalTotals?.sugar ?? 0,
+                recommendedSugarGoal: contentServiceHandler.recommendedNutritionGoalTotals?.sugar ?? 0,
+
+                sodiumIntake: contentServiceHandler.nutritionIntakeTotals?.sodium ?? 0,
+                sodiumGoal: contentServiceHandler.nutritionGoalTotals?.sodium ?? 0,
+                recommendedSodiumGoal: contentServiceHandler.recommendedNutritionGoalTotals?.sodium ?? 0
             )
             .containerShape(RoundedRectangle(cornerRadius: 24, style: .continuous))
             .padding(.horizontal, 16)
@@ -25,7 +47,7 @@ struct MyPlanDietPlanView: View {
             TipView(dietContextMenuTip)
                 .padding(.horizontal, 16)
 
-            MealTimelineCardView()
+            MealTimelineCardView(plan: contentServiceHandler.myPlanModel)
                 .refreshable {
                     HapticsHandler.impact(.medium)
                     try? await contentServiceHandler.fetchMealPlan()
@@ -38,8 +60,12 @@ struct MyPlanDietPlanView: View {
         }
         .padding(.top, 8)
         .fullScreenCover(isPresented: $showGraph) {
-            NutritionGraphRootView()
-                .environmentObject(contentServiceHandler)
+            NutritionGraphRootView(
+                calorieIntake: contentServiceHandler.nutritionIntakeTotals?.calories ?? 0,
+                calorieGoal: contentServiceHandler.recommendedNutritionGoalTotals?.calories ?? 0,
+                nutritionIntakeTotals: contentServiceHandler.nutritionIntakeTotals,
+                nutritionGoalTotals: contentServiceHandler.recommendedNutritionGoalTotals
+            )
         }
         .fullScreenCover(isPresented: $showWaterLog) {
             WaterLogView()

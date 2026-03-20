@@ -31,7 +31,6 @@ struct WalkingHistoryView: View {
                     .padding(.bottom, 40)
                 }
             }
-            .background(Color(.systemGroupedBackground))
             .navigationTitle("Walking History")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
@@ -46,7 +45,7 @@ struct WalkingHistoryView: View {
                 }
             }
             .task {
-                store.goal = Int(contentServiceHandler.targetSteps)
+                store.goal = Int(contentServiceHandler.stepsGoal)
                 await store.loadDay(date: selectedDate, handler: contentServiceHandler)
                 await store.loadRange(anchor: selectedDate, handler: contentServiceHandler)
             }
@@ -90,7 +89,7 @@ struct WalkingHistoryView: View {
                         style: StrokeStyle(lineWidth: 10, lineCap: .round)
                     )
                     .rotationEffect(.degrees(-90))
-                    .animation(reduceMotion ? nil : .spring(response: 0.7, dampingFraction: 0.8), value: progress)
+                    .animation(reduceMotion ? nil : .easeInOut, value: progress)
 
                 VStack(spacing: 1) {
                     Text("\(Int(progress * 100))%")
@@ -112,7 +111,7 @@ struct WalkingHistoryView: View {
                             .font(.largeTitle.weight(.heavy))
                             .foregroundColor(.primary)
                             .contentTransition(reduceMotion ? .identity : .numericText())
-                            .animation(reduceMotion ? nil : .spring(response: 0.5), value: store.selectedDateSteps)
+                            .animation(reduceMotion ? nil : .easeInOut, value: store.selectedDateSteps)
                     }
                     Text("steps")
                         .font(.subheadline)
@@ -170,7 +169,6 @@ struct WalkingHistoryView: View {
     private var chartSection: some View {
         VStack(alignment: .leading, spacing: 14) {
 
-            // Header row
             HStack {
                 VStack(alignment: .leading, spacing: 2) {
                     Text(chartTitle)
@@ -183,7 +181,6 @@ struct WalkingHistoryView: View {
                 Spacer()
             }
 
-            // Selected bar callout
             if let bar = selectedBar {
                 HStack {
                     Text(barCalloutDate(bar.date))

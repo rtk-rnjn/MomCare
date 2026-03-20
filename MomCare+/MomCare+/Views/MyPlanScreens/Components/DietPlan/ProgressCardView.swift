@@ -10,10 +10,31 @@ struct ProgressCardView: View {
 
     // MARK: Internal
 
-    let caloriesConsumed: Double
-    let caloriesTarget: Double
+    let plan: MyPlanModel?
 
-    let originalCaloriesTarget: Double // this is server expected target
+    let calorieIntake: Double
+    let calorieGoal: Double
+    let recommendedCalorieGoal: Double
+
+    let proteinIntake: Double
+    let proteinGoal: Double
+    let recommendedProteinGoal: Double
+
+    let fatIntake: Double
+    let fatGoal: Double
+    let recommendedFatGoal: Double
+
+    let carbIntake: Double
+    let carbGoal: Double
+    let recommendedCarbGoal: Double
+
+    let sugarIntake: Double
+    let sugarGoal: Double
+    let recommendedSugarGoal: Double
+
+    let sodiumIntake: Double
+    let sodiumGoal: Double
+    let recommendedSodiumGoal: Double
 
     var body: some View {
         VStack(spacing: 0) {
@@ -43,7 +64,6 @@ struct ProgressCardView: View {
 
     @AppStorage(FeatureFlagState.experimentalFeatures.rawValue, store: UserDefaults(suiteName: "group.MomCare")) private var experimentalFeatures: Bool = false
 
-    @EnvironmentObject private var contentServiceHandler: ContentServiceHandler
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     @State private var displayMode: CardDisplayMode = .macros
@@ -75,8 +95,8 @@ struct ProgressCardView: View {
     }
 
     private var calorieProgress: Double {
-        guard originalCaloriesTarget > 0 else { return 0 }
-        return min(caloriesConsumed / originalCaloriesTarget, 1.0)
+        guard recommendedCalorieGoal > 0 else { return 0 }
+        return min(calorieIntake / recommendedCalorieGoal, 1.0)
     }
 
     private var collapsedHeader: some View {
@@ -84,9 +104,9 @@ struct ProgressCardView: View {
 
             ProgressRingView(
                 progress: calorieProgress,
-                consumed: caloriesConsumed,
-                target: caloriesTarget,
-                original: originalCaloriesTarget,
+                consumed: calorieIntake,
+                target: calorieGoal,
+                original: recommendedCalorieGoal,
             )
             .layoutPriority(1)
 
@@ -103,8 +123,8 @@ struct ProgressCardView: View {
 
             case .calories:
                 CaloriesSummaryView(
-                    consumed: caloriesConsumed,
-                    target: caloriesTarget
+                    consumed: calorieIntake,
+                    target: calorieGoal
                 )
 
             case .macros:
@@ -128,25 +148,25 @@ struct ProgressCardView: View {
         Group {
             MacroBarRow(
                 title: "Protein",
-                consumed: contentServiceHandler.nurtitionConsumedTotals?.proteinMass,
-                target: contentServiceHandler.nutritionTargetTotals?.proteinMass,
-                originalTarget: contentServiceHandler.originalNutritionTargetTotals?.proteinMass,
+                intake: proteinIntake,
+                goal: proteinGoal,
+                recommendedGoal: recommendedProteinGoal,
                 color: Color(hex: "A7C0CD")
             )
 
             MacroBarRow(
                 title: "Carbs",
-                consumed: contentServiceHandler.nurtitionConsumedTotals?.carbsMass,
-                target: contentServiceHandler.nutritionTargetTotals?.carbsMass,
-                originalTarget: contentServiceHandler.originalNutritionTargetTotals?.carbsMass,
+                intake: carbIntake,
+                goal: carbGoal,
+                recommendedGoal: recommendedCarbGoal,
                 color: Color(hex: "6E8B6F")
             )
 
             MacroBarRow(
                 title: "Fats",
-                consumed: contentServiceHandler.nurtitionConsumedTotals?.fatsMass,
-                target: contentServiceHandler.nutritionTargetTotals?.fatsMass,
-                originalTarget: contentServiceHandler.originalNutritionTargetTotals?.fatsMass,
+                intake: fatIntake,
+                goal: fatGoal,
+                recommendedGoal: recommendedFatGoal,
                 color: Color(hex: "E3B34B")
             )
         }
@@ -156,17 +176,17 @@ struct ProgressCardView: View {
         Group {
             MacroBarRow(
                 title: "Sugar",
-                consumed: contentServiceHandler.nurtitionConsumedTotals?.sugarMass,
-                target: contentServiceHandler.nutritionTargetTotals?.sugarMass,
-                originalTarget: contentServiceHandler.originalNutritionTargetTotals?.sugarMass,
+                intake: sugarIntake,
+                goal: sugarGoal,
+                recommendedGoal: recommendedSugarGoal,
                 color: Color(hex: "E07B8A")
             )
 
             MacroBarRow(
                 title: "Sodium",
-                consumed: contentServiceHandler.nurtitionConsumedTotals?.sodiumMass,
-                target: contentServiceHandler.nutritionTargetTotals?.sodiumMass,
-                originalTarget: contentServiceHandler.originalNutritionTargetTotals?.sodiumMass,
+                intake: sodiumIntake,
+                goal: sodiumGoal,
+                recommendedGoal: recommendedSodiumGoal,
                 color: Color(hex: "9B8EC4")
             )
         }
@@ -178,9 +198,15 @@ struct ProgressCardView: View {
                 .padding(.horizontal, 18)
 
             ExpandedDetailView(
-                caloriesConsumed: caloriesConsumed,
-                caloriesTarget: caloriesTarget,
-                plan: contentServiceHandler.myPlanModel
+                caloriesConsumed: calorieIntake,
+                caloriesTarget: calorieGoal,
+                plan: plan,
+                sugarIntake: sugarIntake,
+                sugarGoal: sugarGoal,
+                recommendedSugarGoal: recommendedSugarGoal,
+                sodiumIntake: sodiumIntake,
+                sodiumGoal: sodiumGoal,
+                recommendedSodiumGoal: recommendedSodiumGoal
             )
             .padding(18)
         }
@@ -271,11 +297,17 @@ private struct CaloriesSummaryView: View {
 
 private struct ExpandedDetailView: View {
 
-    // MARK: Internal
-
     let caloriesConsumed: Double
     let caloriesTarget: Double
     let plan: MyPlanModel?
+
+    let sugarIntake: Double
+    let sugarGoal: Double
+    let recommendedSugarGoal: Double
+
+    let sodiumIntake: Double
+    let sodiumGoal: Double
+    let recommendedSodiumGoal: Double
 
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
@@ -287,16 +319,17 @@ private struct ExpandedDetailView: View {
 
                 MacroBarRow(
                     title: "Sugar",
-                    consumed: contentServiceHandler.nurtitionConsumedTotals?.sugarMass,
-                    target: contentServiceHandler.nutritionTargetTotals?.sugarMass,
-                    originalTarget: contentServiceHandler.originalNutritionTargetTotals?.sugarMass,
+                    intake: sugarIntake,
+                    goal: sugarGoal,
+                    recommendedGoal: recommendedSugarGoal,
                     color: Color(hex: "E07B8A")
                 )
+
                 MacroBarRow(
                     title: "Sodium",
-                    consumed: contentServiceHandler.nurtitionConsumedTotals?.sodiumMass,
-                    target: contentServiceHandler.nutritionTargetTotals?.sodiumMass,
-                    originalTarget: contentServiceHandler.originalNutritionTargetTotals?.sodiumMass,
+                    intake: sodiumIntake,
+                    goal: sodiumGoal,
+                    recommendedGoal: recommendedSodiumGoal,
                     color: Color(hex: "9B8EC4")
                 )
             }
@@ -339,11 +372,6 @@ private struct ExpandedDetailView: View {
             }
         }
     }
-
-    // MARK: Private
-
-    @EnvironmentObject private var contentServiceHandler: ContentServiceHandler
-
 }
 
 private struct CalorieStatPill: View {
@@ -568,9 +596,9 @@ struct MacroBarRow: View {
     // MARK: Internal
 
     let title: String
-    let consumed: Measurement<UnitMass>?
-    let target: Measurement<UnitMass>?
-    let originalTarget: Measurement<UnitMass>?
+    let intake: Double?
+    let goal: Double?
+    let recommendedGoal: Double?
     let color: Color
 
     var body: some View {
@@ -616,7 +644,7 @@ struct MacroBarRow: View {
         .contentShape(Rectangle())
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(title)
-        .accessibilityValue(showPercentage ? percentageText : "\(consumed?.formattedOneDecimal ?? "-") of \(target?.formattedOneDecimal ?? "-")")
+        .accessibilityValue(showPercentage ? percentageText : "\(intake ?? 0) consumed out of \(goal ?? 0) goal")
         .accessibilityHint("Double tap to toggle percentage view")
         .accessibilityAddTraits([.isButton, .updatesFrequently])
     }
@@ -633,11 +661,11 @@ struct MacroBarRow: View {
     @Environment(\.accessibilityReduceTransparency) private var reduceTransparency
 
     private var targetModification: TargetModification? {
-        guard let target, let originalTarget else { return nil }
-        let targetValue = target.converted(to: originalTarget.unit).value
-        let originalValue = originalTarget.value
-        if targetValue > originalValue { return .increased }
-        if targetValue < originalValue { return .decreased }
+        guard let goal, let recommendedGoal else { return nil }
+
+        if goal > recommendedGoal { return .increased }
+        if goal < recommendedGoal { return .decreased }
+
         return nil
     }
 
@@ -650,38 +678,27 @@ struct MacroBarRow: View {
     }
 
     private var progress: Double {
-        guard let consumed, let originalTarget else { return 0 }
-        let consumedValue = consumed.converted(to: originalTarget.unit).value
-        let targetValue = originalTarget.value
-        guard targetValue > 0 else { return 0 }
-        return min(consumedValue / targetValue, 1.0)
+        guard let intake, let recommendedGoal else { return 0 }
+        guard recommendedGoal > 0 else { return 0 }
+        return min(intake / recommendedGoal, 1.0)
     }
 
     private var percentageText: String {
-        guard let consumed, let originalTarget else { return "0%" }
-        let consumedValue = consumed.converted(to: originalTarget.unit).value
-        let targetValue = originalTarget.value
-        guard targetValue > 0 else { return "0%" }
-        let progress = consumedValue / targetValue
-        return "\(Int(progress * 100))%"
+        "\(Int(progress * 100))%"
     }
 
     private var difference: Double {
-        guard let consumed, let target, let originalTarget else { return 0 }
-
-        let consumedValue = consumed.converted(to: target.unit).value
-        let originalValue = originalTarget.converted(to: target.unit).value
-
-        return consumedValue - originalValue
+        guard let intake, let recommendedGoal else { return 0 }
+        return intake - recommendedGoal
     }
 
     private var numericView: some View {
         HStack(spacing: 4) {
-            if let consumed {
+            if let intake {
                 HStack {
-                    Text("\(consumed.formattedOneDecimal)")
-                        .contentTransition(reduceMotion ? .identity : .numericText(value: consumed.value))
-                        .animation(reduceMotion ? nil : .spring(response: 0.4, dampingFraction: 0.8), value: consumed.value)
+                    Text(intake, format: .number)
+                        .contentTransition(reduceMotion ? .identity : .numericText(value: intake))
+                        .animation(reduceMotion ? nil : .spring(response: 0.4, dampingFraction: 0.8), value: intake)
 
                     if difference > 0 {
                         Text("(\(difference, format: .number.sign(strategy: .always())))")
@@ -697,10 +714,10 @@ struct MacroBarRow: View {
 
             Text("/")
 
-            if let target {
-                if let originalTarget, targetModification != nil {
+            if let goal {
+                if let recommendedGoal, targetModification != nil {
                     HStack {
-                        Text(originalTarget.formattedOneDecimal)
+                        Text(recommendedGoal, format: .number)
                             .foregroundColor(modificationColor)
 
                         if targetModification == .increased {
@@ -719,9 +736,9 @@ struct MacroBarRow: View {
                         }
                     }
                 } else {
-                    Text(target.formattedOneDecimal)
-                        .contentTransition(reduceMotion ? .identity : .numericText(value: target.value))
-                        .animation(reduceMotion ? nil : .spring(response: 0.4, dampingFraction: 0.8), value: target.value)
+                    Text(goal, format: .number)
+                        .contentTransition(reduceMotion ? .identity : .numericText(value: goal))
+                        .animation(reduceMotion ? nil : .spring(response: 0.4, dampingFraction: 0.8), value: goal)
                 }
             } else {
                 Text("-")
