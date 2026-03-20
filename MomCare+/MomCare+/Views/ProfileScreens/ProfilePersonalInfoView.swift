@@ -115,6 +115,7 @@ struct ProfilePersonalInfoView: View {
                 }
                 .buttonStyle(.borderedProminent)
                 .tint(MomCareAccent.primary)
+                .popoverTip(personalInfoEditTip, arrowEdge: .top)
             }
         }
         .onChange(of: isEditing) {
@@ -228,6 +229,8 @@ struct ProfilePersonalInfoView: View {
     @State private var activeSheet: SheetType?
     @State private var showingAlert = false
     @State private var alertMessage = ""
+
+    @State private var personalInfoEditTip = PersonalInfoEditTip()
 
     private var measurementFormatter: MeasurementFormatter {
         let formatter = MeasurementFormatter()
