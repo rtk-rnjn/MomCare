@@ -41,7 +41,7 @@ struct MomCareMainTabView: View {
     @State private var requestingHealthKitAccess = true
     @State private var requestingEventKitAccess = true
 
-    private let refreshTimer = Timer.publish(every: 600, on: .main, in: .common).autoconnect()
+    private let refreshTimer = Timer.publish(every: 900, on: .main, in: .common).autoconnect()
 
     private func tabViewContent(bottomPadding: CGFloat) -> some View {
         TabView(selection: $controlState.selectedTab) {
