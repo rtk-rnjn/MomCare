@@ -34,14 +34,17 @@ struct OnboardingView: View {
                         request.requestedScopes = [.fullName, .email]
                     } onCompletion: { result in
                         Task {
-                            try? await handleAppleSignIn(result)
-                            _ = try? await authenticationService.me()
-                            _ = try? await authenticationService.fetchCredentials()
+                            do {
+                                try await handleAppleSignIn(result)
+                                _ = try await authenticationService.me()
+                                _ = try await authenticationService.fetchCredentials()
 
-                            if authenticationService.userModel?.dueDateTimestamp == nil {
-                                navigateToHealthMetricsSignUp = true
+                                if authenticationService.userModel?.dueDateTimestamp == nil {
+                                    navigateToHealthMetricsSignUp = true
+                                }
+                            } catch {
+                                controlState.error = error
                             }
-
                         }
                     }
                     .signInWithAppleButtonStyle(.black)

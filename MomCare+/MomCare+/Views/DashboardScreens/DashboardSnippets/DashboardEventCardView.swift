@@ -90,7 +90,11 @@ struct DashboardEventCardView: View {
         .sheet(
             isPresented: $showEventSheet,
             onDismiss: {
-                try? eventKitHandler.fetchAllEvents()
+                do {
+                    try eventKitHandler.fetchAllEvents()
+                } catch {
+                    controlState.error = error
+                }
             },
             content: {
                 TriTrackAddCalendarItemSheetView(selectedDate: $date)
@@ -106,6 +110,7 @@ struct DashboardEventCardView: View {
     @State private var date: Date = .init()
 
     @EnvironmentObject private var eventKitHandler: EventKitHandler
+    @EnvironmentObject private var controlState: ControlState
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     @State private var showEventSheet: Bool = false

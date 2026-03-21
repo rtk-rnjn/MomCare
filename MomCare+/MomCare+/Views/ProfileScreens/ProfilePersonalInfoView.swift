@@ -66,8 +66,12 @@ struct ProfilePersonalInfoView: View {
                     date: authenticationService.userModel?.dateOfBirth ?? dateOfBirth,
                     isEditing: isEditing
                 ) {
-                    withAnimation {
+                    if reduceMotion {
                         showDateOfBirthPicker.toggle()
+                    } else {
+                        withAnimation {
+                            showDateOfBirthPicker.toggle()
+                        }
                     }
                 }
 

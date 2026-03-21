@@ -43,13 +43,18 @@ struct HealthMetricsSignUpView: View {
             Text(alertMessage)
         }
         .task {
-            _ = try? await authenticationService.refresh()
+            do {
+                _ = try await authenticationService.refresh()
+            } catch {
+                controlState.error = error
+            }
         }
     }
 
     // MARK: Private
 
     @EnvironmentObject private var authenticationService: AuthenticationService
+    @EnvironmentObject private var controlState: ControlState
 
     @State private var dateOfBirth: Date = .init()
     @State private var height: Int?
@@ -262,7 +267,11 @@ struct HealthMetricsSignUpView: View {
         authenticationService.userModel?.prePregnancyWeight = prePregnancyWeight
         authenticationService.userModel?.currentWeight = currentWeight
 
-        _ = try? await authenticationService.update(dateOfBirthTimestamp: .value(dateOfBirth.timeIntervalSince1970), height: .value(height), prePregnancyWeight: .value(prePregnancyWeight), currentWeight: .value(currentWeight))
+        do {
+            _ = try await authenticationService.update(dateOfBirthTimestamp: .value(dateOfBirth.timeIntervalSince1970), height: .value(height), prePregnancyWeight: .value(prePregnancyWeight), currentWeight: .value(currentWeight))
+        } catch {
+            controlState.error = error
+        }
 
         authenticationService.userModel?.dateOfBirthTimestamp = dateOfBirth.timeIntervalSince1970
         navigateToThirdStep = true

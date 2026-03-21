@@ -54,7 +54,7 @@ struct ExerciseHistory: View {
                                 }
                             }
                         }
-                        .animation(.default, value: exercises)
+                        .animation(reduceMotion ? nil : .default, value: exercises)
                         .listStyle(.insetGrouped)
                         .refreshable {
                             await load(for: selectedDate)
@@ -92,6 +92,7 @@ struct ExerciseHistory: View {
     @State private var errorMessage: String?
 
     @Environment(\.dismiss) private var dismiss
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     @MainActor
     private func load(for date: Date) async {

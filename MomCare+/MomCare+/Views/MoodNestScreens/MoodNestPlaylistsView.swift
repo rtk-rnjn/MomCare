@@ -1,4 +1,5 @@
 import SwiftUI
+import TipKit
 import UIKit
 
 struct MoodNestPlaylistsView: View {
@@ -56,6 +57,11 @@ struct MoodNestPlaylistsView: View {
                 uiImage = await heroPlaylist.image
             }
         }
+        .onChange(of: moodResultViewModel.error) {
+            if let error = moodResultViewModel.error {
+                controlState.error = error
+            }
+        }
     }
 
     var captionSection: some View {
@@ -82,6 +88,8 @@ struct MoodNestPlaylistsView: View {
                 .font(.title3.weight(.bold))
                 .foregroundColor(.primary)
                 .accessibilityAddTraits(.isHeader)
+
+            TipView(moodPlaylistTip)
 
             LazyVGrid(
                 columns: [
@@ -190,5 +198,6 @@ struct MoodNestPlaylistsView: View {
     @StateObject private var moodResultViewModel: MoodResultViewModel
     @State private var heroPlaylist: PlaylistModel?
     @State private var uiImage: UIImage?
+    @State private var moodPlaylistTip: MoodPlaylistTip = .init()
 
 }

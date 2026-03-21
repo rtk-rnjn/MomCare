@@ -56,6 +56,7 @@ final class WaterStore: ObservableObject {
     @Published var isLoading = false
     @Published var notificationsEnabled = false
     @Published var reminderIntervalHours: Int = 2
+    @Published var error: (any Error)?
 
     var progress: Double {
         guard dailyTarget > 0 else { return 0 }
@@ -102,9 +103,13 @@ final class WaterStore: ObservableObject {
         ) { [weak self] _, samples, _ in
             guard let self, let sample = samples?.first else { return }
             Task { @MainActor in
-                try? await self.healthStore.delete(sample)
-                self.todayTotal = max(self.todayTotal - entry.milliliters, 0)
-                self.todayLogs.removeAll { $0.id == entry.id }
+                do {
+                    try await self.healthStore.delete(sample)
+                    self.todayTotal = max(self.todayTotal - entry.milliliters, 0)
+                    self.todayLogs.removeAll { $0.id == entry.id }
+                } catch {
+                    self.error = error
+                }
             }
         }
         healthStore.execute(query)

@@ -24,7 +24,11 @@ struct ProfileHealthInfoView: View {
                     date: authenticationService.userModel?.dueDate ?? Date(),
                     isEditing: isEditing
                 ) {
-                    withAnimation { showDueDatePicker.toggle() }
+                    if reduceMotion {
+                        showDueDatePicker.toggle()
+                    } else {
+                        withAnimation { showDueDatePicker.toggle() }
+                    }
                 }
 
                 if showDueDatePicker {
@@ -80,18 +84,22 @@ struct ProfileHealthInfoView: View {
                 return
             }
             Task {
-                if dueDate != authenticationService.userModel?.dueDate {
-                    _ = try? await authenticationService.update(dueDateTimestamp: .value(dueDate.timeIntervalSince1970))
-                    authenticationService.userModel?.dueDateTimestamp = dueDate.timeIntervalSince1970
-                }
+                do {
+                    if dueDate != authenticationService.userModel?.dueDate {
+                        _ = try await authenticationService.update(dueDateTimestamp: .value(dueDate.timeIntervalSince1970))
+                        authenticationService.userModel?.dueDateTimestamp = dueDate.timeIntervalSince1970
+                    }
 
-                if !compare(allergies, with: authenticationService.userModel?.foodIntolerances ?? []) {
-                    _ = try? await authenticationService.update(foodIntolerances: .value(allergies.map { $0.rawValue }))
-                    authenticationService.userModel?.foodIntolerances = Array(allergies)
-                }
-                if !compare(dietaryPreferences, with: authenticationService.userModel?.dietaryPreferences ?? []) {
-                    _ = try? await authenticationService.update(dietaryPreferences: .value(dietaryPreferences.map { $0.rawValue }))
-                    authenticationService.userModel?.dietaryPreferences = Array(dietaryPreferences)
+                    if !compare(allergies, with: authenticationService.userModel?.foodIntolerances ?? []) {
+                        _ = try await authenticationService.update(foodIntolerances: .value(allergies.map { $0.rawValue }))
+                        authenticationService.userModel?.foodIntolerances = Array(allergies)
+                    }
+                    if !compare(dietaryPreferences, with: authenticationService.userModel?.dietaryPreferences ?? []) {
+                        _ = try await authenticationService.update(dietaryPreferences: .value(dietaryPreferences.map { $0.rawValue }))
+                        authenticationService.userModel?.dietaryPreferences = Array(dietaryPreferences)
+                    }
+                } catch {
+                    controlState.error = error
                 }
             }
         }
@@ -164,6 +172,7 @@ struct ProfileHealthInfoView: View {
     @Environment(\.accessibilityReduceMotion) private var reduceMotion: Bool
 
     @EnvironmentObject private var authenticationService: AuthenticationService
+    @EnvironmentObject private var controlState: ControlState
 
     @State private var isEditing = false
 

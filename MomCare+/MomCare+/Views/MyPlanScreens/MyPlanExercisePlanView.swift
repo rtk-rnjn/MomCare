@@ -109,6 +109,10 @@ struct MyPlanExercisePlanView: View {
     @State private var breathingCompleted: Bool = false
     @State private var walkingCompleted: Bool = false
 
+    @State private var breathingExerciseTip: BreathingExerciseTip = .init()
+    @State private var exerciseCardTip: ExerciseCardTip = .init()
+    @State private var walkingGoalTip: WalkingGoalTip = .init()
+
     private var completedCount: Int {
         contentServiceHandler.totalUserExercisesCompleted + (breathingCompleted ? 1 : 0) + (walkingCompleted ? 1 : 0)
     }
@@ -121,12 +125,14 @@ struct MyPlanExercisePlanView: View {
                         showWalkingHistory = true
                     }
                 }
+                .popoverTip(walkingGoalTip, arrowEdge: .top)
 
             BreathingCardView {
                 withAnimation(reduceMotion ? nil : .easeInOut) {
                     showingBreathingInfo = true
                 }
             }
+            .popoverTip(breathingExerciseTip, arrowEdge: .top)
 
             HStack {
                 Text("Today's Exercises")
@@ -137,6 +143,8 @@ struct MyPlanExercisePlanView: View {
             .padding(.horizontal, 4)
             .accessibilityElement(children: .combine)
             .accessibilityAddTraits(.isHeader)
+
+            TipView(exerciseCardTip)
 
             ForEach(contentServiceHandler.userExercises) { exercise in
                 ExerciseCardView(userExerciseModel: exercise) {

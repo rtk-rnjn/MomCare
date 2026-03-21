@@ -16,15 +16,21 @@ class MoodResultViewModel: ObservableObject {
     @Published var songs: [SongModel] = []
     @Published var playlists: [PlaylistModel] = []
     @Published var isLoading: Bool = true
+    @Published var error: (any Error)?
 
     let mood: MoodType
 
     func loadData() async {
         async let captionTask = fetchGeminiCaption()
-        async let songsTask = fetchSongs(for: mood)
 
         caption = await captionTask
-        songs = await songsTask
+
+        do {
+            songs = try await fetchSongs(for: mood)
+        } catch {
+            self.error = error
+        }
+
         playlists = PlaylistModel.from(allSongs: songs)
         isLoading = false
     }
@@ -44,8 +50,8 @@ extension MoodResultViewModel {
         }
     }
 
-    func fetchSongs(for moodType: MoodType) async -> [SongModel] {
-        let networkResponse = try? await ContentService.shared.fetchSongs(for: moodType)
-        return networkResponse?.data ?? []
+    func fetchSongs(for moodType: MoodType) async throws -> [SongModel] {
+        let networkResponse = try await ContentService.shared.fetchSongs(for: moodType)
+        return networkResponse.data ?? []
     }
 }

@@ -50,7 +50,11 @@ struct MyPlanDietPlanView: View {
             MealTimelineCardView(plan: contentServiceHandler.myPlanModel)
                 .refreshable {
                     HapticsHandler.impact(.medium)
-                    try? await contentServiceHandler.fetchMealPlan()
+                    do {
+                        try await contentServiceHandler.fetchMealPlan()
+                    } catch {
+                        controlState.error = error
+                    }
                 }
 
                 .padding(.bottom, 8)
@@ -122,4 +126,5 @@ struct MyPlanDietPlanView: View {
     @AppStorage(FeatureFlagState.experimentalFeatures.rawValue, store: UserDefaults(suiteName: "group.MomCare")) private var experimentalFeatures: Bool = false
 
     @EnvironmentObject private var contentServiceHandler: ContentServiceHandler
+    @EnvironmentObject private var controlState: ControlState
 }
