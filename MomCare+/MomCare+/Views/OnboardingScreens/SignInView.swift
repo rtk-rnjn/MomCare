@@ -1,19 +1,37 @@
 import SwiftUI
 
+struct SignInMissingFieldValue: LocalizedError {
+    var errorDescription: String? {
+        "Missing Field Value"
+    }
+
+    var failureReason: String? {
+        "Please fill in all the fields before submitting the form."
+    }
+
+    var recoverySuggestion: String? {
+        "Make sure to provide both your email address and password."
+    }
+}
+
+
 struct SignInView: View {
 
     // MARK: Internal
 
     var body: some View {
         NavigationStack {
-            VStack(spacing: 0) {
-                signInForm
-                    .safeAreaInset(edge: .top) {
-                        Color.clear
-                            .frame(height: 16)
-                    }
+            signInForm
 
-                VStack {
+            .background(
+                Color(.systemBackground)
+                    .ignoresSafeArea()
+            )
+            .navigationTitle("Sign In")
+            .navigationBarTitleDisplayMode(.large)
+            .errorAlert(error: $controlState.error)
+            .toolbar {
+                ToolbarItem(placement: .bottomBar) {
                     Button {
                         Task { await handleSubmit() }
                     } label: {
@@ -21,7 +39,6 @@ struct SignInView: View {
                             ProgressView()
                                 .progressViewStyle(.circular)
                                 .tint(.white)
-                                .frame(maxWidth: .infinity)
                         } else {
                             Text("Sign In")
                                 .frame(maxWidth: .infinity)
@@ -34,21 +51,7 @@ struct SignInView: View {
                     .accessibilityLabel("Sign In")
                     .accessibilityHint("Signs you in to your account")
                 }
-                .alert(alertTitle, isPresented: $showAlert) {
-                    Button("OK", role: .cancel) {}
-                } message: {
-                    Text(alertMessage)
-                }
-                .padding(.horizontal)
-                .padding(.top, 30)
-                .padding(.bottom, 20)
             }
-            .background(
-                Color(.systemBackground)
-                    .ignoresSafeArea()
-            )
-            .navigationTitle("Sign In")
-            .navigationBarTitleDisplayMode(.large)
             .navigationDestination(isPresented: $navigateToHealthMetricsSignUp) {
                 HealthMetricsSignUpView()
             }
@@ -62,28 +65,22 @@ struct SignInView: View {
         isLoading = true
         defer { isLoading = false }
 
-        let tokenPairResponse = try? await authenticationService.login(emailAddress: email, password: password)
-        let credentialsResponse = try? await authenticationService.fetchCredentials()
-
-        guard let tokenPairResponse, let credentialsResponse else {
-            alertTitle = "Error"
-            alertMessage = "An unexpected error occurred. Please try again later."
-            showAlert = true
+        guard !emailAddress.isEmpty, !password.isEmpty else {
+            controlState.error = SignInMissingFieldValue()
             return
         }
 
-        if let error = tokenPairResponse.errorMessage {
-            alertTitle = "Sign In Failed"
-            alertMessage = error
-            showAlert = true
-            return
-        }
+        do {
+            try await authenticationService.login(emailAddress: emailAddress, password: password)
+            let credentialsResponse = try await authenticationService.fetchCredentials()
 
-        showAlert = false
-        controlState.isLoggedIn = true
+            if let verified = credentialsResponse.data?.verified, !verified {
+                navigateToOTPVerification = true
+                return
+            }
 
-        if let verified = credentialsResponse.data?.verified, !verified {
-            navigateToOTPVerification = true
+        } catch {
+            controlState.error = error
             return
         }
 
@@ -102,11 +99,8 @@ struct SignInView: View {
     @State private var navigateToHealthMetricsSignUp = false
     @State private var navigateToOTPVerification = false
 
-    @State private var email = ""
+    @State private var emailAddress = ""
     @State private var password = ""
-    @State private var alertMessage: String = ""
-    @State private var showAlert: Bool = false
-    @State private var alertTitle: String = ""
 
     @ViewBuilder
     private var signInForm: some View {
@@ -120,7 +114,7 @@ struct SignInView: View {
     }
 
     private var emailField: some View {
-        TextField("Email ID", text: $email)
+        TextField("Email ID", text: $emailAddress)
             .keyboardType(.emailAddress)
             .textInputAutocapitalization(.never)
             .autocorrectionDisabled()

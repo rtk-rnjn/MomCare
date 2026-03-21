@@ -49,7 +49,7 @@ final class AuthenticationService: ObservableObject {
         }
     }
 
-    func handleSuccess<T: TokenContaining>(_ response: NetworkResponse<T>, expectedStatusCode: Int, emailAddress: String? = nil) -> NetworkResponse<T> {
+    private func handleSuccess<T: TokenContaining>(_ response: NetworkResponse<T>, expectedStatusCode: Int) -> NetworkResponse<T> {
         let success = response.errorMessage == nil && response.statusCode == expectedStatusCode && response.data != nil
         guard success, let data = response.data else {
             DebugLogger.shared.log("Auth session persistence skipped: status=\(response.statusCode), error=\(response.errorMessage ?? "none")", level: .warning, category: .network)
@@ -57,8 +57,8 @@ final class AuthenticationService: ObservableObject {
             return response
         }
 
-        DebugLogger.shared.log("Persisting auth session for \(emailAddress ?? "current user")", level: .debug, category: .network)
-        persistSession(accessToken: data.accessToken, refreshToken: data.refreshToken, expiresAtTimestamp: data.expiresAtTimestamp, emailAddress: emailAddress)
+        DebugLogger.shared.log("Persisting auth session for current user", level: .debug, category: .network)
+        persistSession(accessToken: data.accessToken, refreshToken: data.refreshToken, expiresAtTimestamp: data.expiresAtTimestamp)
 
         return response
     }
@@ -69,7 +69,7 @@ final class AuthenticationService: ObservableObject {
         let response: NetworkResponse<RegistrationResponse> = try await NetworkManager.shared.post(url: Endpoint.register.urlString, body: prepareCredentialsData(emailAddress: emailAddress, password: password))
 
         DebugLogger.shared.log("Registration response: status=\(response.statusCode), error=\(response.errorMessage ?? "none")", level: response.success ? .info : .error, category: .network)
-        return handleSuccess(response, expectedStatusCode: 201, emailAddress: emailAddress)
+        return handleSuccess(response, expectedStatusCode: 201)
     }
 
     @discardableResult
@@ -77,30 +77,18 @@ final class AuthenticationService: ObservableObject {
         DebugLogger.shared.log("Logging in user: \(emailAddress)", level: .info, category: .network)
         let networkResponse: NetworkResponse<TokenPair> = try await NetworkManager.shared.post(url: Endpoint.login.urlString, body: prepareCredentialsData(emailAddress: emailAddress, password: password))
 
-        let response = handleSuccess(networkResponse, expectedStatusCode: 200, emailAddress: emailAddress)
+        let response = handleSuccess(networkResponse, expectedStatusCode: 200)
         if response.statusCode == 200 {
             DebugLogger.shared.log("Login successful, fetching user profile", level: .debug, category: .network)
-            _ = try? await me()
+            _ = try await me()
+            _ = try await fetchCredentials()
+
         } else {
             DebugLogger.shared.log("Login failed: status=\(response.statusCode), error=\(response.errorMessage ?? "none")", level: .error, category: .network)
         }
 
         KeychainHelper.set(password, forKey: .password)
         return networkResponse
-    }
-
-    @discardableResult
-    func autoLogin() async -> NetworkResponse<TokenPair>? {
-        let emailAddress: String? = database[.emailAddress]
-        let password: String? = KeychainHelper.get(.password)
-
-        if let emailAddress, let password {
-            DebugLogger.shared.log("Attempting auto-login for \(emailAddress)", level: .debug, category: .network)
-            return try? await login(emailAddress: emailAddress, password: password)
-        }
-
-        DebugLogger.shared.log("Auto-login skipped: no stored credentials", level: .verbose, category: .network)
-        return nil
     }
 
     func refresh(refreshToken: String) async throws -> NetworkResponse<TokenPair> {
@@ -112,12 +100,15 @@ final class AuthenticationService: ObservableObject {
         return handleSuccess(response, expectedStatusCode: 200)
     }
 
-    func refresh() async throws {
+    @discardableResult
+    func refresh() async throws -> NetworkResponse<TokenPair>? {
         if let refreshToken = KeychainHelper.get(.refreshToken) {
-            _ = try await refresh(refreshToken: refreshToken)
+            return try await refresh(refreshToken: refreshToken)
         } else {
             DebugLogger.shared.log("Token refresh skipped: no refresh token stored", level: .warning, category: .network)
         }
+
+        return nil
     }
 
     @discardableResult
@@ -198,7 +189,6 @@ final class AuthenticationService: ObservableObject {
 
         if response.errorMessage == nil, response.statusCode == 200 {
             DebugLogger.shared.log("Email address changed successfully", level: .info, category: .network)
-            database[.emailAddress] = newEmailAddress
         } else {
             DebugLogger.shared.log("Email change failed: status=\(response.statusCode), error=\(response.errorMessage ?? "none")", level: .error, category: .network)
         }
@@ -231,8 +221,8 @@ final class AuthenticationService: ObservableObject {
 
     @discardableResult
     func requestOTP() async throws -> NetworkResponse<ServerMessage> {
-        let emailAddress = database[.emailAddress] ?? ""
-        return try await requestOTP(emailAddress: emailAddress)
+        let credentials: UserCredential? = database[.credentials]
+        return try await requestOTP(emailAddress: credentials?.emailAddress ?? "")
     }
 
     @discardableResult
@@ -244,8 +234,8 @@ final class AuthenticationService: ObservableObject {
 
     @discardableResult
     func verifyOTP(otp: String) async throws -> NetworkResponse<ServerMessage> {
-        let emailAddress = database[.emailAddress] ?? ""
-        return try await verifyOTP(emailAddress: emailAddress, otp: otp)
+        let credentials: UserCredential? = database[.credentials]
+        return try await verifyOTP(emailAddress: credentials?.emailAddress ?? "", otp: otp)
     }
 
     @discardableResult
@@ -266,7 +256,7 @@ final class AuthenticationService: ObservableObject {
         let payloadData = ThirdPartyLogin(idToken: idToken, existingEmailAddress: existingEmailAddress).encodeUsingJSONEncoder()
         let response: NetworkResponse<TokenPair> = try await NetworkManager.shared.post(url: Endpoint.appleLogin.urlString, body: payloadData)
 
-        return handleSuccess(response, expectedStatusCode: 200, emailAddress: existingEmailAddress)
+        return handleSuccess(response, expectedStatusCode: 200)
     }
 
     @discardableResult
@@ -315,20 +305,17 @@ final class AuthenticationService: ObservableObject {
 
     private let database: Database = .init()
 
-    private func persistSession(accessToken: String, refreshToken: String, expiresAtTimestamp: TimeInterval, emailAddress: String? = nil) {
+    private func persistSession(accessToken: String, refreshToken: String, expiresAtTimestamp: TimeInterval) {
         KeychainHelper.set(accessToken, forKey: .accessToken)
         KeychainHelper.set(refreshToken, forKey: .refreshToken)
 
-        if let emailAddress {
-            database[.emailAddress] = emailAddress
-        }
         database[.accessTokenExpiresAtTimestamp] = expiresAtTimestamp
 
         hasAccessToken = KeychainHelper.get(.accessToken)?.isEmpty == false && expiresAtTimestamp > Date.now.timeIntervalSince1970
     }
 
     private func prepareCredentialsData(emailAddress: String, password: String) -> Data? {
-        let credentialsModel = CredentialsModel(emailAddress: emailAddress, password: password)
+        let credentialsModel = LoginCredentials(emailAddress: emailAddress, password: password)
 
         return credentialsModel.encodeUsingJSONEncoder()
     }
@@ -336,10 +323,11 @@ final class AuthenticationService: ObservableObject {
     private func dropCredentials() {
         KeychainHelper.remove(.accessToken)
         KeychainHelper.remove(.refreshToken)
-        database.delete(ValidDatabaseKeys.emailAddress.rawValue)
-        database.delete(ValidDatabaseKeys.accessTokenExpiresAtTimestamp.rawValue)
 
-        userModel?._id = ""
+        database.delete(.accessTokenExpiresAtTimestamp)
+        database.delete(.credentials)
+        database.delete(.userModel)
+
         userModel = nil
     }
 

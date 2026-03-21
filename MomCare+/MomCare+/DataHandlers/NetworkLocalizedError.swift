@@ -154,7 +154,7 @@ final class UnknownAPIError: @preconcurrency APIError {
 
 enum APIErrorResolver {
 
-    static func error(from statusCode: Int) -> any APIError {
+    static func error(from statusCode: Int) -> any LocalizedError {
 
         switch statusCode {
 

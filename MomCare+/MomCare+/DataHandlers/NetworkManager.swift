@@ -23,7 +23,7 @@ struct NetworkResponse<T: Codable>: Codable {
     var errorMessage: String?
     var responseHeaders: [AnyHashable: Any]?
 
-    var localizedError: (any APIError)? {
+    var localizedError: (any LocalizedError)? {
         if errorMessage == nil {
             return nil
         }
@@ -229,27 +229,13 @@ class NetworkManager {
                         try? await Task.sleep(nanoseconds: UInt64(1_000_000_000 * (attempts % 5)))
 
                     default:
-                        return NetworkResponse(
-                            data: nil,
-                            statusCode: -1,
-                            errorMessage: urlError.localizedDescription
-                        )
+                        throw error
                     }
-                } else {
-                    return NetworkResponse(
-                        data: nil,
-                        statusCode: -1,
-                        errorMessage: error.localizedDescription
-                    )
                 }
+
+                throw error
             }
         }
-
-        return NetworkResponse(
-            data: nil,
-            statusCode: -1,
-            errorMessage: "Request failed after multiple attempts due to network issues."
-        )
     }
 
     private func handleRequest<T: Codable>(response: URLResponse, data: Data, url: String) async throws -> NetworkResponse<T> {
@@ -262,12 +248,8 @@ class NetworkManager {
         logger.info("Received response with status code \(httpResponse.statusCode) for request to \(url)")
         DebugLogger.shared.log("Received response with status code \(httpResponse.statusCode) for request to \(url)", level: .info, category: .network)
 
-        if httpResponse.statusCode >= 400 {
-            let maybeData: ServerMessage? = try data.decodeUsingJSONDecoder()
-            logger.error("Decoded response body. Error detail: \(maybeData?.detail ?? "No detail")")
-            DebugLogger.shared.log("Decoded response body. Error detail: \(maybeData?.detail ?? "No detail")", level: .error, category: .network)
-
-            return NetworkResponse(data: nil, statusCode: httpResponse.statusCode, errorMessage: maybeData?.detail ?? "Unknown Error")
+        if httpResponse.statusCode >= 400, let _: HTTPErrorResponse = try? data.decodeUsingJSONDecoder() {
+            throw APIErrorResolver.error(from: httpResponse.statusCode)
         }
 
         let maybeData: T? = try data.decodeUsingJSONDecoder()

@@ -6,7 +6,6 @@ private let appGroup = "group.MomCare"
 
 enum ValidDatabaseKeys {
     case accessTokenExpiresAtTimestamp
-    case emailAddress
     case userModel
     case food(String)
     case exercise(String)
@@ -19,8 +18,6 @@ enum ValidDatabaseKeys {
         switch self {
         case .accessTokenExpiresAtTimestamp:
             "accessTokenExpiresAtTimestamp"
-        case .emailAddress:
-            "emailAddress"
         case .userModel:
             "userModel"
         case let .food(id):

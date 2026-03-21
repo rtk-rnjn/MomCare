@@ -4,18 +4,22 @@ import Combine
 import EventKit
 import HealthKit
 
-final class RefreshError: LocalizedError {
-    var errorDescription: String? {
-        "Failed to refresh session. Please log in again."
-    }
+struct RefreshError: LocalizedError {
+    nonisolated let errorDescription: String = "Failed to refresh session. Please log in again."
+    nonisolated let failureReason: String = "The session could not be refreshed, likely due to an expired token or network issue."
+    nonisolated let recoverySuggestion: String = "Please try logging in again to refresh your session and regain access to all features."
+}
 
-    var failureReason: String? {
-        "The session could not be refreshed, likely due to an expired token or network issue."
-    }
+struct HealthKitError: LocalizedError {
+    nonisolated let errorDescription: String = "HealthKit Access Denied"
+    nonisolated let failureReason: String = "The app does not have permission to access HealthKit data."
+    nonisolated let recoverySuggestion: String = "Please grant HealthKit permissions in your device settings to enable health-related features."
+}
 
-    var recoverySuggestion: String? {
-        "Please try logging in again to refresh your session and regain access to all features."
-    }
+struct EventKitError: LocalizedError {
+    nonisolated let errorDescription: String = "Calendar Access Denied"
+    nonisolated let failureReason: String = "The app does not have permission to access Calendar data."
+    nonisolated let recoverySuggestion: String = "Please grant Calendar permissions in your device settings to enable calendar-related features."
 }
 
 struct MomCareMainTabView: View {
@@ -23,6 +27,7 @@ struct MomCareMainTabView: View {
     // MARK: Internal
 
     @Environment(\.horizontalSizeClass) var sizeClass
+    @Environment(\.openURL) var openURL
 
     var body: some View {
         tabViewContent(bottomPadding: 0)
@@ -37,8 +42,12 @@ struct MomCareMainTabView: View {
     @EnvironmentObject private var controlState: ControlState
 
     @State private var isRefreshing = true
-    @State private var requestingHealthKitAccess = true
-    @State private var requestingEventKitAccess = true
+
+    @State private var eventKitError: (any Error)?
+    @State private var healthKitError: (any Error)?
+    @State private var refreshError: (any Error)?
+
+    @State private var showLoginSheet = false
 
     private let refreshTimer = Timer.publish(every: 900, on: .main, in: .common).autoconnect()
 
@@ -79,6 +88,40 @@ struct MomCareMainTabView: View {
         .tabBarMinimizeBehavior(.onScrollDown)
         .task { await refreshAccessToken() }
         .errorAlert(error: $controlState.error)
+        .errorAlert(error: $eventKitError) { _ in
+            Button("Open Settings") {
+                if let url = URL(string: UIApplication.openSettingsURLString) {
+                    openURL(url)
+                }
+            }
+
+            Button(role: .close) {
+                eventKitError = nil
+            }
+        }
+        .errorAlert(error: $healthKitError) { _ in
+            Button("Open Settings") {
+                if let url = URL(string: UIApplication.openSettingsURLString) {
+                    openURL(url)
+                }
+            }
+
+            Button(role: .close) {
+                healthKitError = nil
+            }
+        }
+        .errorAlert(error: $refreshError) { _ in
+            Button("Log In") {
+                showLoginSheet = true
+            }
+
+            Button("Logout", role: .destructive) {
+                refreshError = nil
+                Task {
+                    await authenticationService.logout()
+                }
+            }
+        }
         .popup(isBarPresented: $controlState.showingPopupBar, isPopupOpen: $controlState.showingPopup) {
             MusicPlayerView()
         }
@@ -86,6 +129,15 @@ struct MomCareMainTabView: View {
         .popupInteractionStyle(.snap)
         .popupBarProgressViewStyle(.bottom)
         .popupCloseButtonStyle(.chevron)
+
+        .sheet(isPresented: $showLoginSheet, onDismiss: {
+            Task { await refreshAccessToken() }
+        }) {
+            ReAuthenticationSheetView()
+                .presentationDetents([.medium, .large])
+                .presentationDragIndicator(.visible)
+                .interactiveDismissDisabled()
+        }
 
         // Periodic refresh token to keep the session alive
         .onReceive(refreshTimer) { _ in
@@ -96,23 +148,17 @@ struct MomCareMainTabView: View {
 
         // HealthKitAccess
         .task {
-            requestingHealthKitAccess = true
-            defer { requestingEventKitAccess = false }
-
             do {
                 _ = try await contentServiceHandler.requestHealthKitAccess()
                 await contentServiceHandler.startStepCountObservation()
 
             } catch {
-                controlState.error = error
+                healthKitError = HealthKitError()
             }
         }
 
         // EventKitAccess
         .task {
-            requestingEventKitAccess = true
-            defer { requestingEventKitAccess = false }
-
             do {
                 let eventSuccess = try await eventKitHandler.eventStore.requestFullAccessToEvents()
                 _ = try await eventKitHandler.eventStore.requestFullAccessToReminders()
@@ -122,7 +168,7 @@ struct MomCareMainTabView: View {
                 }
 
             } catch {
-                controlState.error = error
+                eventKitError = EventKitError()
             }
         }
         .onChange(of: isRefreshing) {
@@ -149,11 +195,14 @@ struct MomCareMainTabView: View {
         defer { isRefreshing = false }
 
         do {
-            try await authenticationService.refresh()
+            let networkResponse = try await authenticationService.refresh()
             DebugLogger.shared.log("Access token refreshed successfully", level: .debug, category: .network)
+            if networkResponse?.errorMessage != nil {
+                refreshError = RefreshError()
+            }
         } catch {
             DebugLogger.shared.log("Access token refresh failed: \(error.localizedDescription)", level: .error, category: .network)
-            controlState.error = RefreshError()
+            refreshError = RefreshError()
         }
     }
 

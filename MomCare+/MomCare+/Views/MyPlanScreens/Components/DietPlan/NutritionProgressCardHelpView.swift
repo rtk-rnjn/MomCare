@@ -107,7 +107,7 @@ struct NutritionProgressCardHelpView: View {
                     HelpDivider()
 
                     HelpRow(
-                        badge: MacroWithArrowBadge(label: "Protein", fraction: 0.55, color: Color(hex: "A7C0CD"), arrow: "up"),
+                        badge: MacroWithArrowBadge(fraction: 0.55, color: Color(hex: "A7C0CD"), arrow: .up),
                         label: "Macro bar — target increased",
                         description: "When a macro's target has been raised above the server-expected value, an upward arrow appears next to the original target figure. The bar still fills relative to the new (higher) target."
                     )
@@ -115,7 +115,7 @@ struct NutritionProgressCardHelpView: View {
                     HelpDivider()
 
                     HelpRow(
-                        badge: MacroWithArrowBadge(label: "Fats", fraction: 0.75, color: Color(hex: "E3B34B"), arrow: "down"),
+                        badge: MacroWithArrowBadge(fraction: 0.75, color: Color(hex: "E3B34B"), arrow: .down),
                         label: "Macro bar — target decreased",
                         description: "A downward arrow means the target has been lowered from the server-expected value. The original figure is shown dimmed next to the arrow so you always know your baseline."
                     )
@@ -437,21 +437,22 @@ private struct RingWithDeltaBadge: View {
 
 /// Macro bar badge showing an up or down arrow next to the original target value.
 private struct MacroWithArrowBadge: View {
-    let label: String
+    enum Direction: String {
+        case up
+        case down
+    }
     let fraction: Double
     let color: Color
-    let arrow: String // "up" or "down"
+    let arrow: Direction
 
     var body: some View {
         VStack(alignment: .leading, spacing: 4) {
             HStack(spacing: 2) {
-                Text(label)
-                    .font(.caption2.weight(.semibold))
-                    .foregroundStyle(.secondary)
                 Spacer()
-                Image(systemName: arrow == "up" ? "arrow.up" : "arrow.down")
+                Image(systemName: "arrow.\(arrow.rawValue)")
                     .font(.caption2.weight(.bold))
                     .foregroundStyle(.secondary)
+                Spacer()
             }
             GeometryReader { geo in
                 ZStack(alignment: .leading) {

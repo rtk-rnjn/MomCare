@@ -61,8 +61,8 @@ struct MyPlanDietPlanView: View {
         .padding(.top, 8)
         .fullScreenCover(isPresented: $showGraph) {
             NutritionGraphRootView(
-                calorieIntake: contentServiceHandler.nutritionIntakeTotals?.calories ?? 0,
-                calorieGoal: contentServiceHandler.recommendedNutritionGoalTotals?.calories ?? 0,
+                calorieIntake: contentServiceHandler.nutritionIntakeTotals?.energy ?? .init(value: 0, unit: .kilocalories),
+                calorieGoal: contentServiceHandler.recommendedNutritionGoalTotals?.energy ?? .init(value: 0, unit: .kilocalories),
                 nutritionIntakeTotals: contentServiceHandler.nutritionIntakeTotals,
                 nutritionGoalTotals: contentServiceHandler.recommendedNutritionGoalTotals
             )

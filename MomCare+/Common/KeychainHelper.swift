@@ -5,6 +5,7 @@ enum ValidKeychainKeys: String {
     case accessToken
     case refreshToken
     case password
+    case appleIdentifier
 }
 
 enum KeychainHelper {

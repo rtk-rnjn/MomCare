@@ -11,7 +11,7 @@ enum AccountStatus: String, Codable, Sendable {
     case deleted
 }
 
-struct CredentialsModel: Codable, Sendable {
+struct LoginCredentials: Codable, Sendable {
     enum CodingKeys: String, CodingKey {
         case emailAddress = "email_address"
         case password
