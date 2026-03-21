@@ -4,32 +4,37 @@ struct MealTimelineCardView: View {
 
     // MARK: Internal
 
+    let plan: MyPlanModel?
+
     var body: some View {
         List {
             mealSection(
                 title: "Breakfast",
-                items: contentServiceHandler.myPlanModel?.breakfast ?? [],
-                originalItems: contentServiceHandler.myPlanModel?.originalBreakfast ?? [],
+                items: plan?.breakfast ?? [],
+                originalItems: plan?.originalBreakfast ?? [],
                 mealType: .breakfast
             )
             mealSection(
                 title: "Lunch",
-                items: contentServiceHandler.myPlanModel?.lunch ?? [],
-                originalItems: contentServiceHandler.myPlanModel?.originalLunch ?? [],
+                items: plan?.lunch ?? [],
+                originalItems: plan?.originalLunch ?? [],
                 mealType: .lunch
             )
             mealSection(
                 title: "Snacks",
-                items: contentServiceHandler.myPlanModel?.snacks ?? [],
-                originalItems: contentServiceHandler.myPlanModel?.originalSnacks ?? [],
+                items: plan?.snacks ?? [],
+                originalItems: plan?.originalSnacks ?? [],
                 mealType: .snacks
             )
             mealSection(
                 title: "Dinner",
-                items: contentServiceHandler.myPlanModel?.dinner ?? [],
-                originalItems: contentServiceHandler.myPlanModel?.originalDinner ?? [],
+                items: plan?.dinner ?? [],
+                originalItems: plan?.originalDinner ?? [],
                 mealType: .dinner
             )
+            Section {
+                Color.clear.padding(.vertical)
+            }
         }
         .listStyle(.inset)
         .listSectionSpacing(0)
@@ -45,6 +50,8 @@ struct MealTimelineCardView: View {
 
     @EnvironmentObject private var contentServiceHandler: ContentServiceHandler
     @EnvironmentObject private var controlState: ControlState
+
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     @ViewBuilder
     private func mealSection(title: String, items: [FoodReferenceModel], originalItems: [FoodReferenceModel], mealType: MealType) -> some View {
@@ -107,7 +114,7 @@ struct MealTimelineCardView: View {
                             endPoint: .trailing
                         )
                         .opacity(originalItems.contains(where: { $0.id == item.id }) ? 0 : 1)
-                        .animation(.easeInOut(duration: 0.3), value: originalItems)
+                        .animation(reduceMotion ? nil : .easeInOut(duration: 0.3), value: originalItems)
                     }
                     .listRowSeparator(.hidden)
                     .listRowInsets(.top, 0)
@@ -140,7 +147,6 @@ private struct HeaderRow: View {
             .onTapGesture {
                 Task {
                     await onToggle(section.isCompleted)
-                    try? await contentServiceHandler.fetchMealPlan(makeNetworkCall: false)
                 }
             }
             .accessibilityLabel(section.isCompleted ? "Mark \(section.title) as not completed" : "Mark \(section.title) as completed")
@@ -179,8 +185,6 @@ private struct HeaderRow: View {
 
     // MARK: Private
 
-    @EnvironmentObject private var contentServiceHandler: ContentServiceHandler
-
     @State private var showSearchFoodSheet = false
 }
 
@@ -205,7 +209,6 @@ private struct ItemRow: View {
             .onTapGesture {
                 Task {
                     await onToggle(item.isConsumed)
-                    try? await contentServiceHandler.fetchMealPlan(makeNetworkCall: false)
                 }
             }
             .accessibilityLabel(item.isConsumed ? "Mark as not consumed" : "Mark as consumed")
@@ -237,7 +240,6 @@ private struct ItemRow: View {
                 HapticsHandler.notification(item.isConsumed ? .warning : .success)
                 Task {
                     await onToggle(item.isConsumed)
-                    try? await contentServiceHandler.fetchMealPlan(makeNetworkCall: false)
                 }
             } label: {
                 Label(
@@ -265,7 +267,6 @@ private struct ItemRow: View {
             HapticsHandler.notification(item.isConsumed ? .warning : .success)
             Task {
                 await onToggle(item.isConsumed)
-                try? await contentServiceHandler.fetchMealPlan(makeNetworkCall: false)
             }
         }
         .accessibilityAction(named: "Delete") {
@@ -279,7 +280,6 @@ private struct ItemRow: View {
 
     // MARK: Private
 
-    @EnvironmentObject private var contentServiceHandler: ContentServiceHandler
     @State private var food: FoodItemModel?
 }
 
@@ -369,15 +369,12 @@ private struct MealContextMenu: ViewModifier {
 
     // MARK: Private
 
-    @EnvironmentObject private var contentServiceHandler: ContentServiceHandler
-
     @ViewBuilder
     private var menuButtons: some View {
         Button {
             HapticsHandler.notification(item.isConsumed ? .warning : .success)
             Task {
                 await onToggle(item.isConsumed)
-                try? await contentServiceHandler.fetchMealPlan()
             }
         } label: {
             Label(

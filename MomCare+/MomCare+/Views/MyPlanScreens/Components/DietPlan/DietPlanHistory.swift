@@ -65,7 +65,7 @@ private struct MealSectionCard: View {
         VStack(spacing: 0) {
 
             Button {
-                withAnimation(reduceMotion ? nil : .spring(response: 0.35, dampingFraction: 0.75)) {
+                withAnimation(reduceMotion ? nil : .easeInOut) {
                     isExpanded.toggle()
                 }
             } label: {
@@ -95,7 +95,7 @@ private struct MealSectionCard: View {
                         .font(.caption2.weight(.bold))
                         .foregroundStyle(Color.planMuted)
                         .rotationEffect(.degrees(isExpanded ? 0 : -90))
-                        .animation(reduceMotion ? nil : .spring(response: 0.3), value: isExpanded)
+                        .animation(reduceMotion ? nil : .easeInOut, value: isExpanded)
                 }
                 .padding(.horizontal, 16)
                 .padding(.vertical, 14)

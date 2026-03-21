@@ -15,13 +15,13 @@ struct VitalDetailView: View {
                 todayHeader
                     .opacity(appeared ? 1 : 0)
                     .offset(y: appeared ? 0 : 10)
-                    .animation(reduceMotion ? nil : .spring(response: 0.45, dampingFraction: 0.8), value: appeared)
+                    .animation(reduceMotion ? nil : .easeInOut, value: appeared)
 
                 descriptionCard
                     .opacity(appeared ? 1 : 0)
                     .offset(y: appeared ? 0 : 10)
                     .animation(
-                        reduceMotion ? nil : .spring(response: 0.45, dampingFraction: 0.8).delay(0.05),
+                        reduceMotion ? nil : .easeInOut.delay(0.05),
                         value: appeared
                     )
 
@@ -29,14 +29,14 @@ struct VitalDetailView: View {
                     .opacity(appeared ? 1 : 0)
                     .offset(y: appeared ? 0 : 10)
                     .animation(
-                        reduceMotion ? nil : .spring(response: 0.5, dampingFraction: 0.8).delay(0.10),
+                        reduceMotion ? nil : .easeInOut.delay(0.10),
                         value: appeared
                     )
 
                 insightCard
                     .opacity(appeared ? 1 : 0)
                     .animation(
-                        reduceMotion ? nil : .spring(response: 0.5, dampingFraction: 0.8).delay(0.15),
+                        reduceMotion ? nil : .easeInOut.delay(0.15),
                         value: appeared
                     )
 
@@ -50,7 +50,7 @@ struct VitalDetailView: View {
         .navigationBarTitleDisplayMode(.large)
         .task {
             await reload()
-            withAnimation(reduceMotion ? nil : .spring(response: 0.5, dampingFraction: 0.8)) {
+            withAnimation(reduceMotion ? nil : .easeInOut) {
                 appeared = true
             }
         }
@@ -110,7 +110,7 @@ struct VitalDetailView: View {
                     Text("\(formattedValue(todayValue))")
                         .font(.title.weight(.bold))
                         .contentTransition(reduceMotion ? .identity : .numericText())
-                        .animation(reduceMotion ? nil : .spring(response: 0.4, dampingFraction: 0.7), value: todayValue)
+                        .animation(reduceMotion ? nil : .easeInOut, value: todayValue)
                     Text(kind.unitLabel)
                         .font(.subheadline)
                         .foregroundStyle(.secondary)
@@ -248,7 +248,7 @@ struct VitalDetailView: View {
                         if reduceMotion {
                             selectedPoint = selectedPoint?.id == pt.id ? nil : pt
                         } else {
-                            withAnimation(.spring(response: 0.3, dampingFraction: 0.8)) {
+                            withAnimation(.easeInOut) {
                                 selectedPoint = selectedPoint?.id == pt.id ? nil : pt
                             }
                         }
@@ -326,7 +326,7 @@ struct VitalDetailView: View {
         .chartScrollableAxes(.horizontal)
         .chartXVisibleDomain(length: visibleDomain)
         .animation(
-            reduceMotion ? nil : .spring(response: 0.5, dampingFraction: 0.8),
+            reduceMotion ? nil : .easeInOut,
             value: appeared
         )
         .animation(

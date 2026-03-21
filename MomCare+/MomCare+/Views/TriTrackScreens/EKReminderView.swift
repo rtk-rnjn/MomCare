@@ -316,12 +316,8 @@ struct EKReminderView: View {
     }
 
     func performAnimated(_ action: () -> Void) {
-        if reduceMotion {
+        withAnimation(reduceMotion ? nil : .easeInOut) {
             action()
-        } else {
-            withAnimation(.interactiveSpring(response: 0.35, dampingFraction: 0.85)) {
-                action()
-            }
         }
     }
 

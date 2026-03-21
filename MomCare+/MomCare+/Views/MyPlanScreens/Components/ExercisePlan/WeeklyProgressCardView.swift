@@ -7,6 +7,8 @@ struct WeeklyProgressCardView: View {
     let completedCount: Int
     let totalCount: Int
 
+    let weeklyProgress: [DayProgress]
+
     var body: some View {
         VStack(spacing: 16) {
             HStack {
@@ -27,7 +29,7 @@ struct WeeklyProgressCardView: View {
             }
 
             HStack(spacing: 0) {
-                ForEach(contentServiceHandler.weeklyProgress) { day in
+                ForEach(weeklyProgress) { day in
                     DayRingView(dayName: day.dayName, progress: day.completionPercentage, date: day.date)
                         .frame(maxWidth: .infinity)
                 }
@@ -86,7 +88,6 @@ struct WeeklyProgressCardView: View {
 
     // MARK: Private
 
-    @EnvironmentObject private var contentServiceHandler: ContentServiceHandler
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @Environment(\.accessibilityReduceTransparency) private var reduceTransparency
 

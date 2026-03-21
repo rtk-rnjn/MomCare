@@ -42,7 +42,7 @@ struct TriTrackView: View {
         .toolbar {
             ToolbarItem(placement: .topBarLeading) {
                 Button {
-                    withAnimation(reduceMotion ? nil : .spring(response: 0.3, dampingFraction: 0.8)) {
+                    withAnimation(reduceMotion ? nil : .easeInOut) {
                         controlState.showingExpandedCalendar.toggle()
                     }
                 } label: {
@@ -273,7 +273,7 @@ struct PregnancyProgressView: View {
                     .padding(.horizontal, 16)
                     .padding(.vertical, 12)
                     .contentTransition(reduceMotion ? .identity : .interpolate)
-                    .animation(reduceMotion ? nil : .interpolatingSpring(), value: quote)
+                    .animation(reduceMotion ? nil : .easeInOut, value: quote)
             }
         }
         .padding(.vertical, 12)
@@ -456,7 +456,7 @@ struct ComparisonView: View {
                 Text(fruitEmoji)
                     .font(.system(size: size)) // exception case. i know we're avoiding .system(size:) font
                     .contentTransition(reduceMotion ? .identity : .interpolate)
-                    .animation(reduceMotion ? nil : .interpolatingSpring, value: fruitEmoji)
+                    .animation(reduceMotion ? nil : .easeInOut, value: fruitEmoji)
 
             }
             .frame(maxWidth: .infinity)
@@ -482,7 +482,7 @@ struct ComparisonView: View {
                         .frame(width: circleSize * 0.7, height: circleSize * 0.7)
                         .clipped()
                         .contentTransition(reduceMotion ? .identity : .symbolEffect)
-                        .animation(reduceMotion ? nil : .interpolatingSpring, value: imageName)
+                        .animation(reduceMotion ? nil : .easeInOut, value: imageName)
                 }
             }
             .frame(maxWidth: .infinity)
@@ -539,7 +539,7 @@ struct CompactInfoCard: View {
                     Text(iconName)
                         .font(.body)
                         .contentTransition(reduceMotion ? .identity : .interpolate)
-                        .animation(reduceMotion ? nil : .interpolatingSpring, value: iconName)
+                        .animation(reduceMotion ? nil : .easeInOut, value: iconName)
                         .accessibilityHidden(true)
 
                 } else {
@@ -547,7 +547,7 @@ struct CompactInfoCard: View {
                         .font(.subheadline)
                         .foregroundColor(accentColor)
                         .contentTransition(reduceMotion ? .identity : .symbolEffect)
-                        .animation(reduceMotion ? nil : .bouncy, value: iconName)
+                        .animation(reduceMotion ? nil : .easeInOut, value: iconName)
                         .accessibilityHidden(true)
                 }
 
@@ -557,7 +557,7 @@ struct CompactInfoCard: View {
                     .lineLimit(1)
                     .accessibilityAddTraits(.isHeader)
                     .contentTransition(reduceMotion ? .identity : .interpolate)
-                    .animation(reduceMotion ? nil : .interpolatingSpring, value: title)
+                    .animation(reduceMotion ? nil : .easeInOut, value: title)
             }
 
             Text(previewText)
@@ -568,7 +568,7 @@ struct CompactInfoCard: View {
                 .multilineTextAlignment(.leading)
                 .padding(.top, 2)
                 .contentTransition(reduceMotion ? .identity : .interpolate)
-                .animation(reduceMotion ? nil : .interpolatingSpring, value: previewText)
+                .animation(reduceMotion ? nil : .easeInOut, value: previewText)
 
         }
         .padding(12)
@@ -628,7 +628,7 @@ struct PopupInfoCard: View {
                         .accessibilityAddTraits(.isHeader)
                 }
                 .frame(height: 60)
-                .animation(reduceMotion ? nil : .spring(response: 0.5, dampingFraction: 0.7), value: envelopeOpen)
+                .animation(reduceMotion ? nil : .easeInOut, value: envelopeOpen)
 
                 VStack(spacing: 0) {
                     HStack(spacing: 4) {
@@ -701,14 +701,14 @@ struct PopupInfoCard: View {
                 return
             }
 
-            withAnimation(reduceMotion ? nil : .spring(response: 0.4, dampingFraction: 0.7)) {
+            withAnimation(reduceMotion ? nil : .easeInOut) {
                 opacity = 1.0
                 scale = 1.0
                 cardOffset = .zero
             }
 
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-                withAnimation(reduceMotion ? nil : .spring(response: 0.6, dampingFraction: 0.6)) {
+                withAnimation(reduceMotion ? nil : .easeInOut) {
                     envelopeOpen = true
                 }
 
@@ -749,12 +749,12 @@ struct PopupInfoCard: View {
         }
 
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-            withAnimation(reduceMotion ? nil : .spring(response: 0.4, dampingFraction: 0.7)) {
+            withAnimation(reduceMotion ? nil : .easeInOut) {
                 envelopeOpen = false
             }
 
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-                withAnimation(reduceMotion ? nil : .spring(response: 0.3, dampingFraction: 0.7)) {
+                withAnimation(reduceMotion ? nil : .easeInOut) {
                     opacity = 0.0
                     scale = 0.8
                     cardOffset = CGSize(width: 0, height: -50)

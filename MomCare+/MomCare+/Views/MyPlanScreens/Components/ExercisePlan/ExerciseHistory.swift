@@ -160,7 +160,7 @@ private struct ExerciseDaySummaryCard: View {
                 .font(.subheadline.weight(.bold))
                 .foregroundColor(color)
                 .contentTransition(reduceMotion ? .identity : .numericText())
-                .animation(reduceMotion ? nil : .spring(response: 0.4, dampingFraction: 0.7), value: value)
+                .animation(reduceMotion ? nil : .easeInOut, value: value)
 
             Text(label).font(.caption2).foregroundStyle(.secondary)
         }
@@ -240,9 +240,7 @@ private struct ExerciseHistoryCard: View {
 
                 Spacer()
 
-                // ── Right column: thumbnail + ring ────────────────────
                 VStack(alignment: .trailing, spacing: 8) {
-                    // Thumbnail
                     ZStack {
                         RoundedRectangle(cornerRadius: 14, style: .continuous)
                             .fill(Color(hex: "F0D5C8"))
@@ -289,7 +287,6 @@ private struct ExerciseHistoryCard: View {
                 }
             }
 
-            // ── Progress bar ──────────────────────────────────────────
             if exercise != nil {
                 GeometryReader { geo in
                     ZStack(alignment: .leading) {
@@ -309,7 +306,6 @@ private struct ExerciseHistoryCard: View {
                 .padding(.top, 14)
             }
 
-            // ── Tags ──────────────────────────────────────────────────
             if let tags = exercise?.tags, !tags.isEmpty {
                 ScrollView(.horizontal, showsIndicators: false) {
                     HStack(spacing: 6) {

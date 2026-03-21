@@ -16,7 +16,7 @@ struct DashboardInsightCardView: View {
                     .foregroundColor(.secondary)
                     .fontWeight(.semibold)
                     .contentTransition(reduceMotion ? .identity : .interpolate)
-                    .animation(reduceMotion ? nil : .spring(response: 0.6, dampingFraction: 0.75), value: message)
+                    .animation(reduceMotion ? nil : .easeInOut, value: message)
             }
             .padding(16)
             .frame(height: 135, alignment: .top)
@@ -34,7 +34,7 @@ struct DashboardInsightCardView: View {
                     .padding(.leading, 16)
                     .padding(.bottom, 18)
                     .contentTransition(reduceMotion ? .identity : .interpolate)
-                    .animation(reduceMotion ? nil : .spring(response: 0.6, dampingFraction: 0.75), value: title)
+                    .animation(reduceMotion ? nil : .easeInOut, value: title)
 
                 ZStack {
                     Circle()

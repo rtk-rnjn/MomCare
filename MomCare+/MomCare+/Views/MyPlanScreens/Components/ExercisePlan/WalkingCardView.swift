@@ -4,6 +4,9 @@ struct WalkingCardView: View {
 
     // MARK: Internal
 
+    let stepsToday: Double
+    let stepsGoal: Double
+
     var body: some View {
         VStack(spacing: 14) {
             HStack {
@@ -20,7 +23,7 @@ struct WalkingCardView: View {
 
                 Spacer()
 
-                if contentServiceHandler.currentSteps >= contentServiceHandler.targetSteps {
+                if stepsToday >= stepsGoal {
                     Label("Done", systemImage: "checkmark.circle.fill")
                         .font(.caption.weight(.semibold))
                         .foregroundColor(Color(hex: "4A8A62"))
@@ -41,7 +44,7 @@ struct WalkingCardView: View {
 
             HStack {
                 VStack(alignment: .leading, spacing: 2) {
-                    Text("\(Int(contentServiceHandler.currentSteps))")
+                    Text("\(Int(stepsToday))")
                         .font(.title2.weight(.bold))
                         .foregroundColor(.primary)
                     Text("Steps")
@@ -52,7 +55,7 @@ struct WalkingCardView: View {
                 Spacer()
 
                 VStack(alignment: .trailing, spacing: 2) {
-                    Text("\(Int(contentServiceHandler.targetSteps))")
+                    Text("\(Int(stepsGoal))")
                         .font(.callout.weight(.semibold))
                         .foregroundColor(.secondary)
                     Text("Goal")
@@ -84,31 +87,30 @@ struct WalkingCardView: View {
         .accessibilityElement(children: .ignore)
         .accessibilityLabel("Walking")
         .accessibilityValue(
-            contentServiceHandler.currentSteps >= contentServiceHandler.targetSteps
-                ? "Goal completed, \(Int(contentServiceHandler.currentSteps)) steps"
-                : "\(Int(contentServiceHandler.currentSteps)) of \(Int(contentServiceHandler.targetSteps)) steps, \(Int(contentServiceHandler.stepsProgress * 100)) percent"
+            stepsToday >= stepsGoal
+                ? "Goal completed, \(Int(stepsToday)) steps"
+                : "\(Int(stepsToday)) of \(Int(stepsGoal)) steps, \(Int(progress * 100)) percent"
         )
         .accessibilityAddTraits(.updatesFrequently)
-        .task { updateProgress() }
-        .onChange(of: contentServiceHandler.currentSteps) { updateProgress() }
-        .onChange(of: contentServiceHandler.targetSteps) { updateProgress() }
+        .onAppear { updateProgress() }
+        .onChange(of: stepsToday) { updateProgress() }
+        .onChange(of: stepsGoal) { updateProgress() }
     }
 
     // MARK: Private
 
-    @EnvironmentObject private var contentServiceHandler: ContentServiceHandler
     @State private var progress: Double = 0
     @State private var percentCompleted: Double = 0
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @Environment(\.accessibilityReduceTransparency) private var reduceTransparency
 
     private func updateProgress() {
-        guard contentServiceHandler.targetSteps > 0 else {
+        guard stepsGoal > 0 else {
             progress = 0
             percentCompleted = 0
             return
         }
-        progress = min(Double(contentServiceHandler.currentSteps) / Double(contentServiceHandler.targetSteps), 1.0)
+        progress = min(Double(stepsToday) / Double(stepsGoal), 1.0)
         percentCompleted = progress * 100
     }
 

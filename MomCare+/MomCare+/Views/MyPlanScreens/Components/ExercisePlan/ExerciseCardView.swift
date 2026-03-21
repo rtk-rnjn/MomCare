@@ -5,8 +5,9 @@ struct ExerciseCardView: View {
 
     // MARK: Internal
 
-    var userExerciseModel: UserExerciseModel?
-    var onInfo: () -> Void = {}
+    let userExerciseModel: UserExerciseModel
+    let onTapInfo: () -> Void
+    let onVideoDismiss: (AVPlayer) async -> Void
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
@@ -24,6 +25,8 @@ struct ExerciseCardView: View {
                         .font(.caption.weight(.medium))
                         .foregroundColor(.secondary)
                         .padding(.bottom, 10)
+                        .contentTransition(reduceMotion ? .identity : .numericText())
+                        .animation(reduceMotion ? nil : .easeInOut, value: completionProgress)
 
                     Button {
                         HapticsHandler.impact(.medium)
@@ -33,6 +36,10 @@ struct ExerciseCardView: View {
                             Image(systemName: "play.fill")
                                 .accessibilityHidden(true)
                             Text(completionProgress >= 1 ? "Replay" : "Start")
+                                .contentTransition(reduceMotion ? .identity : .interpolate)
+                                .animation(reduceMotion ? nil : .easeInOut, value: completionProgress)
+                                .accessibilityHidden(true)
+
                         }
                         .font(.subheadline.weight(.semibold))
                         .foregroundColor(.white)
@@ -54,7 +61,7 @@ struct ExerciseCardView: View {
 
                 Spacer()
                 VStack(alignment: .trailing) {
-                    Button(action: onInfo) {
+                    Button(action: onTapInfo) {
                         Image(systemName: "info.circle.fill")
                             .font(.title3)
                             .foregroundColor(darkAccentColor.opacity(0.5))
@@ -106,8 +113,6 @@ struct ExerciseCardView: View {
 
     @Environment(\.dismiss) private var dismiss
 
-    @EnvironmentObject private var contentServiceHandler: ContentServiceHandler
-
     @State private var exercise: ExerciseModel?
     @State private var exerciseURL: URL?
     @State private var uiImage: UIImage?
@@ -116,7 +121,9 @@ struct ExerciseCardView: View {
     @State private var avPlayer: AVPlayer?
     @State private var showErrorAlert = false
     @State private var alertMessage: String?
+
     @Environment(\.accessibilityReduceTransparency) private var reduceTransparency
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     private var accentColor: Color {
         Color(hex: "D4A08A")
@@ -128,7 +135,6 @@ struct ExerciseCardView: View {
 
     private var playerView: some View {
         VideoPlayer(player: avPlayer)
-            .ignoresSafeArea()
             .onAppear { avPlayer?.play() }
             .accessibilityLabel("Exercise video player")
             .navigationTitle(exercise?.name ?? "Exercise")
@@ -136,19 +142,17 @@ struct ExerciseCardView: View {
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
                     Button(role: .cancel) {
-                        avPlayer?.pause()
-                        Task {
-                            do {
-                                try await updateDuration()
-                                HapticsHandler.notification(completionProgress >= 1 ? .success : .warning)
-                            } catch {
-                                alertMessage = error.localizedDescription
-                                showErrorAlert = true
-                                HapticsHandler.notification(.error)
-                            }
-                            startExercisePlayer = false
+                        defer { startExercisePlayer = false }
+                        guard let avPlayer else {
+                            return
+                        }
 
-                            await contentServiceHandler.fetchWeeklyProgress()
+                        avPlayer.pause()
+
+                        Task {
+                            await onVideoDismiss(avPlayer)
+                            let currentTime = avPlayer.currentTime().seconds
+                            completionProgress = currentTime / (exercise?.videoDurationSeconds ?? 0)
                         }
                     }
                     .accessibilityLabel("Close video")
@@ -159,8 +163,6 @@ struct ExerciseCardView: View {
     }
 
     private func loadExercise() async {
-        guard let userExerciseModel else { return }
-
         exercise = await userExerciseModel.exerciseModel
         exerciseURL = await userExerciseModel.url
 
@@ -168,18 +170,7 @@ struct ExerciseCardView: View {
             avPlayer = AVPlayer(url: url)
         }
 
-        completionProgress = contentServiceHandler.fetchExerciseCompletionDuration(id: userExerciseModel.id) / (exercise?.videoDurationSeconds ?? 1.0)
-
-        completionProgress = min(completionProgress, 1.0)
         uiImage = await exercise?.image
+        completionProgress = await userExerciseModel.completionPercentage
     }
-
-    private func updateDuration() async throws {
-        guard let id = userExerciseModel?.id,
-              let current = avPlayer?.currentTime().seconds else { return }
-
-        try await contentServiceHandler.updateExerciseCompletionDuration(id: id, duration: current)
-        completionProgress = current / (exercise?.videoDurationSeconds ?? 1.0)
-    }
-
 }

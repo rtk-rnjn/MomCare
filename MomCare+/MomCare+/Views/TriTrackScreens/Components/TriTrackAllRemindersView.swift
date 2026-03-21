@@ -262,12 +262,8 @@ struct ReminderRow: View {
 
             VStack(spacing: 0) {
                 Button {
-                    if reduceMotion {
+                    withAnimation(reduceMotion ? nil : .easeInOut) {
                         toggleCompletion()
-                    } else {
-                        withAnimation(.interactiveSpring(response: 0.35, dampingFraction: 0.85)) {
-                            toggleCompletion()
-                        }
                     }
                 } label: {
                     Image(systemName: isCompleted ? "checkmark.circle.fill" : "circle")

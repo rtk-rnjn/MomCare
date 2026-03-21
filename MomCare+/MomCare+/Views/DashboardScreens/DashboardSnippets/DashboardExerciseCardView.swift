@@ -4,22 +4,28 @@ struct DashboardExerciseCard: View {
 
     // MARK: Internal
 
-    let calories: Int
+    let stepsToday: Int
+    let caloriesBurnedToday: Int
+    let exerciseDurationToday: TimeInterval
+
+    let stepsGoalProgress: Double
+    let caloriesGoalProgress: Double
+    let exerciseGoalProgress: Double
 
     var body: some View {
         HStack {
             VStack(alignment: .leading, spacing: 18) {
-                ExerciseRow(color: .red, icon: "figure.walk", value: "\(Int(contentServiceHandler.currentSteps)) steps")
-                ExerciseRow(color: .green, icon: "timer", value: displaySeconds)
-                ExerciseRow(color: .orange, icon: "flame.fill", value: "\(Int(calories)) \(UnitMass.grams.symbol)")
+                ExerciseRow(color: .red, icon: "figure.walk", value: "\(stepsToday) steps")
+                ExerciseRow(color: .green, icon: "timer", value: formatSeconds(exerciseDurationToday))
+                ExerciseRow(color: .orange, icon: "flame.fill", value: formatCalorie(Double(caloriesBurnedToday)))
             }
 
             Spacer()
 
             ActivityRingView(
-                move: contentServiceHandler.stepsProgress,
-                exercise: exerciseProgress,
-                stand: standProgress
+                stepsGoalProgress: stepsGoalProgress,
+                exerciseGoalProgress: exerciseGoalProgress,
+                caloriesGoalProgress: caloriesGoalProgress
             )
             .frame(width: 130, height: 130)
         }
@@ -30,43 +36,29 @@ struct DashboardExerciseCard: View {
         .accessibilityElement(children: .contain)
         .accessibilityLabel("Exercise activity")
         .accessibilityIdentifier("dashboardExerciseCard")
-        .onAppear {
-            displaySeconds = formatSeconds(contentServiceHandler.totalUserExercisesCompletionDuration)
-
-            updateExerciseProgress()
-        }
     }
 
     // MARK: Private
 
-    @State private var displaySeconds: String?
+    private func formatCalorie(_ calorie: Double) -> String {
+        let measurement = Measurement(value: calorie, unit: UnitEnergy.kilocalories)
 
-    @EnvironmentObject private var contentServiceHandler: ContentServiceHandler
-
-    @State private var exerciseProgress: Double = 0
-    @State private var standProgress: Double = 0
-
-    private func formatSeconds(_ seconds: Double) -> String {
-        let duration = Measurement(value: seconds, unit: UnitDuration.seconds)
-
-        let totalSeconds = Int(duration.value)
-        let minutes = totalSeconds / 60
-        let remainingSeconds = totalSeconds % 60
-
-        if minutes == 0 {
-            return "\(remainingSeconds) sec"
-        }
-
-        return remainingSeconds == 0 ? "\(minutes) min" : "\(minutes) min, \(remainingSeconds) sec"
-
+        return measurement.formatted(
+            .measurement(
+                width: .wide,
+                usage: .food,
+                numberFormatStyle: .number.precision(.fractionLength(0))
+            )
+        )
     }
 
-    private func updateExerciseProgress() {
-        if contentServiceHandler.totalUserExercisesDuration > 0 {
-            exerciseProgress = contentServiceHandler.totalUserExercisesCompletionDuration / contentServiceHandler.totalUserExercisesDuration
-        } else {
-            exerciseProgress = 0
-        }
+    private func formatSeconds(_ seconds: TimeInterval) -> String {
+        let formatter = DateComponentsFormatter()
+        formatter.unitsStyle = .full
+        formatter.allowedUnits = [.minute, .second]
+        formatter.zeroFormattingBehavior = .dropLeading
+
+        return formatter.string(from: seconds) ?? ""
     }
 
 }
@@ -97,7 +89,7 @@ struct ExerciseRow: View {
                     .font(.title3)
                     .fontWeight(.regular)
                     .contentTransition(reduceMotion ? .identity : .numericText())
-                    .animation(reduceMotion ? nil : .spring(response: 0.4, dampingFraction: 0.7), value: value)
+                    .animation(reduceMotion ? nil : .easeInOut, value: value)
             } else {
                 ProgressView()
                     .progressViewStyle(CircularProgressViewStyle(tint: color))
@@ -118,9 +110,9 @@ struct ActivityRingView: View {
 
     // MARK: Internal
 
-    let move: Double
-    let exercise: Double
-    let stand: Double
+    let stepsGoalProgress: Double
+    let exerciseGoalProgress: Double
+    let caloriesGoalProgress: Double
 
     var body: some View {
         GeometryReader { geo in
@@ -131,83 +123,30 @@ struct ActivityRingView: View {
             let inner = middle - ringWidth - spacing
 
             ZStack {
-                Circle()
-                    .stroke(reduceTransparency ? Color(.systemGray4) : Color.red.opacity(0.15), lineWidth: ringWidth)
+                PercentageRing(ringWidth: ringWidth, percent: stepsGoalProgress * 100, backgroundColor: Color.red.opacity(0.15), foregroundColors: [Color.red.opacity(0.6), .red])
                     .frame(width: outer * 2, height: outer * 2)
 
-                Circle()
-                    .stroke(reduceTransparency ? Color(.systemGray4) : Color.green.opacity(0.15), lineWidth: ringWidth)
+                PercentageRing(ringWidth: ringWidth, percent: exerciseGoalProgress * 100, backgroundColor: Color.green.opacity(0.15), foregroundColors: [Color.green.opacity(0.6), .green])
                     .frame(width: middle * 2, height: middle * 2)
 
-                Circle()
-                    .stroke(reduceTransparency ? Color(.systemGray4) : Color.orange.opacity(0.15), lineWidth: ringWidth)
+                PercentageRing(ringWidth: ringWidth, percent: caloriesGoalProgress * 100, backgroundColor: Color.orange.opacity(0.15), foregroundColors: [Color.orange.opacity(0.6), .orange])
                     .frame(width: inner * 2, height: inner * 2)
 
-                ring(progress: animatedMove, color: .red, size: outer * 2, dashPattern: [])
-
-                ring(
-                    progress: animatedExercise,
-                    color: .green,
-                    size: middle * 2,
-                    dashPattern: differentiateWithoutColor ? [8, 4] : []
-                )
-
-                ring(
-                    progress: animatedStand,
-                    color: .orange,
-                    size: inner * 2,
-                    dashPattern: differentiateWithoutColor ? [4, 4] : []
-                )
             }
             .frame(width: size, height: size)
-            .onAppear {
-                animateRings()
-            }
-            .onChange(of: move) { animateRings() }
-            .onChange(of: exercise) { animateRings() }
-            .onChange(of: stand) { animateRings() }
             .accessibilityElement(children: .ignore)
             .accessibilityLabel("Activity rings")
-            .accessibilityValue("Move \(Int(move * 100)) percent, Exercise \(Int(exercise * 100)) percent, Stand \(Int(stand * 100)) percent")
+            .accessibilityValue("Steps goal is \(Int(stepsGoalProgress * 100)) percent complete, exercise goal is \(Int(exerciseGoalProgress * 100)) percent complete, and stand goal is \(Int(caloriesGoalProgress * 100)) percent complete.")
             .accessibilityAddTraits(.updatesFrequently)
         }
     }
 
     // MARK: Private
 
-    @State private var animatedMove: Double = 0
-    @State private var animatedExercise: Double = 0
-    @State private var animatedStand: Double = 0
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @Environment(\.accessibilityDifferentiateWithoutColor) private var differentiateWithoutColor
     @Environment(\.accessibilityReduceTransparency) private var reduceTransparency
 
     private let ringWidth: CGFloat = 14
     private let spacing: CGFloat = 2
-
-    private func ring(progress: Double, color: Color, size: CGFloat, dashPattern: [CGFloat]) -> some View {
-        Circle()
-            .trim(from: 0, to: clamp(progress))
-            .stroke(color, style: StrokeStyle(lineWidth: ringWidth, lineCap: .round, dash: dashPattern))
-            .rotationEffect(.degrees(-90))
-            .frame(width: size, height: size)
-    }
-
-    private func animateRings() {
-        if reduceMotion {
-            animatedMove = move
-            animatedExercise = exercise
-            animatedStand = stand
-        } else {
-            withAnimation(.easeInOut(duration: 0.9)) {
-                animatedMove = move
-                animatedExercise = exercise
-                animatedStand = stand
-            }
-        }
-    }
-
-    private func clamp(_ value: Double) -> Double {
-        max(0, min(value, 1))
-    }
 }

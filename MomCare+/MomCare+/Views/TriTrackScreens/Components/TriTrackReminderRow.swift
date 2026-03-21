@@ -233,7 +233,7 @@ extension TriTrackReminderRow {
             .lineLimit(1)
             .monospacedDigit()
             .contentTransition(reduceMotion ? .identity : .numericText(countsDown: true))
-            .animation(reduceMotion ? nil : .spring(response: 0.4, dampingFraction: 0.7), value: dueDate)
+            .animation(reduceMotion ? nil : .easeInOut, value: dueDate)
     }
 }
 
@@ -257,7 +257,7 @@ extension TriTrackReminderRow {
         if reduceMotion {
             try? onToggle()
         } else {
-            withAnimation(.interactiveSpring(response: 0.35, dampingFraction: 0.85)) {
+            withAnimation(.easeInOut) {
                 try? onToggle()
             }
         }

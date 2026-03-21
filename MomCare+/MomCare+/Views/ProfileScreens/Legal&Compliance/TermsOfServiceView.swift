@@ -5,60 +5,59 @@ struct TermsOfServiceView: View {
     // MARK: Internal
 
     var body: some View {
-        GeometryReader { _ in
-            ScrollView {
-                VStack(spacing: 24) {
-                    VStack(spacing: 16) {
-                        ZStack {
-                            RoundedRectangle(cornerRadius: 12, style: .continuous)
-                                .fill(Color(hex: "FFFFFF").opacity(0.12))
-                                .frame(width: 60, height: 60)
-                            Image(systemName: "text.page")
-                                .font(.largeTitle.weight(.bold))
-                                .foregroundColor(accentColor)
-                        }
-                        .accessibilityHidden(true)
 
-                        Text("Good rules create a space where everyone can feel safe and respected.")
-                            .font(.title.weight(.semibold))
-                            .tracking(-0.5)
-                            .multilineTextAlignment(.center)
-                            .lineSpacing(0)
-                            .accessibilityAddTraits(.isHeader)
-
-                        Text("Clarity is the foundation of trust. Our terms are designed to be clear, so our relationship can be strong.")
-                            .font(.subheadline)
-                            .foregroundColor(.primary)
-                            .multilineTextAlignment(.center)
+        ScrollView {
+            VStack(spacing: 24) {
+                VStack(spacing: 16) {
+                    ZStack {
+                        RoundedRectangle(cornerRadius: 12, style: .continuous)
+                            .fill(Color(hex: "FFFFFF").opacity(0.12))
+                            .frame(width: 60, height: 60)
+                        Image(systemName: "text.page")
+                            .font(.largeTitle.weight(.bold))
+                            .foregroundColor(accentColor)
                     }
-                    .padding(.top, 32)
-                    .padding(.bottom, 8)
+                    .accessibilityHidden(true)
+
+                    Text("Good rules create a space where everyone can feel safe and respected.")
+                        .font(.title.weight(.semibold))
+                        .tracking(-0.5)
+                        .multilineTextAlignment(.center)
+                        .lineSpacing(0)
+                        .accessibilityAddTraits(.isHeader)
+
+                    Text("Clarity is the foundation of trust. Our terms are designed to be clear, so our relationship can be strong.")
+                        .font(.subheadline)
+                        .foregroundColor(.primary)
+                        .multilineTextAlignment(.center)
                 }
-                .frame(maxWidth: .infinity)
-                .padding(.vertical, 24)
+                .padding(.top, 32)
+                .padding(.bottom, 8)
+            }
+            .frame(maxWidth: .infinity)
+            .padding(.vertical, 24)
 
-                Divider()
+            Divider()
 
-                ForEach(legalSections) { section in
-                    switch section.type {
-                    case let .standard(icon, title, content):
-                        LegalSectionView(iconName: icon, title: title, content: content, accentColor: accentColor)
-                    case .eligibility:
-                        EligibilitySectionView(accentColor: accentColor)
-                    case .overview:
-                        OverviewOfServicesView(accentColor: accentColor)
-                    case .thirdParty:
-                        ThirdPartyServicesView(accentColor: accentColor)
-                    }
+            ForEach(legalSections) { section in
+                switch section.type {
+                case let .standard(icon, title, content):
+                    LegalSectionView(iconName: icon, title: title, content: content, accentColor: accentColor)
+                case .eligibility:
+                    EligibilitySectionView(accentColor: accentColor)
+                case .overview:
+                    OverviewOfServicesView(accentColor: accentColor)
+                case .thirdParty:
+                    ThirdPartyServicesView(accentColor: accentColor)
+                }
 
-                    if section.id != legalSections.last?.id {
-                        Divider().padding(.vertical, 8)
-                    }
+                if section.id != legalSections.last?.id {
+                    Divider().padding(.vertical, 8)
                 }
             }
-            .padding(.horizontal, 24)
-            .padding(.bottom, 40)
+
         }
+        .padding(.horizontal)
     }
 
     // MARK: Private

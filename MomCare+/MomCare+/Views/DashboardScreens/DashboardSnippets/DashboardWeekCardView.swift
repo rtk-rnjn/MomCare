@@ -2,16 +2,18 @@ import SwiftUI
 
 struct DashboardWeekCardView: View {
 
-    // MARK: Internal
+    let week: Int?
+    let day: Int?
+    let trimester: String?
 
     var body: some View {
         VStack(spacing: 0) {
 
             VStack(alignment: .leading, spacing: 8) {
-                Text("Week \(authenticationService.userModel?.pregnancyProgress.week ?? 0)")
+                Text("Week \(week ?? 0)")
                     .font(.title2)
 
-                Text("Day \(authenticationService.userModel?.pregnancyProgress.day ?? 0)")
+                Text("Day \(day ?? 0)")
                     .font(.title3)
                     .foregroundColor(.secondary)
             }
@@ -28,7 +30,7 @@ struct DashboardWeekCardView: View {
                     .frame(height: 52)
 
                 HStack {
-                    Text("Trimester \(authenticationService.userModel?.pregnancyProgress.trimester ?? "-")")
+                    Text("Trimester \(trimester ?? "-")")
                         .font(.title3.weight(.semibold))
                         .lineLimit(1)
                         .minimumScaleFactor(0.85)
@@ -56,16 +58,9 @@ struct DashboardWeekCardView: View {
         .dashboardCardStyle()
         .accessibilityElement(children: .ignore)
         .accessibilityLabel("Pregnancy progress")
-        .accessibilityValue(
-            "Week \(authenticationService.userModel?.pregnancyProgress.week ?? 0), Day \(authenticationService.userModel?.pregnancyProgress.day ?? 0), Trimester \(authenticationService.userModel?.pregnancyProgress.trimester ?? "unknown")"
-        )
+        .accessibilityValue("Week \(week ?? 0), Day \(day ?? 0), Trimester \(trimester ?? "unknown")")
         .accessibilityAddTraits([.isButton, .updatesFrequently])
         .accessibilityHint("Double tap to view detailed pregnancy progress")
         .accessibilityIdentifier("dashboardWeekCard")
     }
-
-    // MARK: Private
-
-    @EnvironmentObject private var authenticationService: AuthenticationService
-
 }

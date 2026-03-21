@@ -1,5 +1,6 @@
 import SwiftUI
 import TipKit
+import AVFoundation
 
 struct MyPlanExercisePlanView: View {
 
@@ -9,7 +10,8 @@ struct MyPlanExercisePlanView: View {
         VStack(spacing: 12) {
             WeeklyProgressCardView(
                 completedCount: completedCount,
-                totalCount: contentServiceHandler.userExercises.count + 2
+                totalCount: contentServiceHandler.userExercises.count + 2,
+                weeklyProgress: contentServiceHandler.weeklyProgress
             )
             .padding(.horizontal, 16)
 
@@ -18,12 +20,13 @@ struct MyPlanExercisePlanView: View {
                     exerciseCardsView
                 }
                 .refreshable {
-                    HapticsHandler.impact(.medium)
                     Task {
                         do {
                             try await contentServiceHandler.fetchUserExercises()
+                            HapticsHandler.notification(.success)
                         } catch {
                             controlState.error = error
+                            HapticsHandler.notification(.error)
                         }
                     }
                 }
@@ -43,7 +46,7 @@ struct MyPlanExercisePlanView: View {
             WaterLogView()
         }
         .fullScreenCover(isPresented: $showWalkingHistory) {
-            WalkingHistoryView()
+            WalkingHistoryView(stepsGoal: Int(contentServiceHandler.stepsGoal))
         }
         .toolbar {
             ToolbarItem(placement: .confirmationAction) {
@@ -83,18 +86,6 @@ struct MyPlanExercisePlanView: View {
                 exerciseInfoOverlay()
             }
         }
-        .onAppear {
-            _ = contentServiceHandler.fetchBreathingCompletionDuration(for: Date())
-            walkingCompleted = contentServiceHandler.currentSteps >= contentServiceHandler.targetSteps
-            breathingCompleted = contentServiceHandler.breathingCompletionDuration >= contentServiceHandler.breathingTargetInSeconds
-
-        }
-        .onChange(of: contentServiceHandler.breathingCompletionDuration) {
-            breathingCompleted = contentServiceHandler.breathingCompletionDuration >= contentServiceHandler.breathingTargetInSeconds
-        }
-        .onChange(of: contentServiceHandler.currentSteps) {
-            walkingCompleted = contentServiceHandler.currentSteps >= contentServiceHandler.targetSteps
-        }
     }
 
     // MARK: Private
@@ -124,12 +115,18 @@ struct MyPlanExercisePlanView: View {
 
     private var exerciseCardsView: some View {
         VStack(spacing: 14) {
-            WalkingCardView()
+            WalkingCardView(stepsToday: contentServiceHandler.stepsToday, stepsGoal: contentServiceHandler.stepsGoal)
                 .onTapGesture {
                     if experimentalFeatures {
                         showWalkingHistory = true
                     }
                 }
+
+            BreathingCardView {
+                withAnimation(reduceMotion ? nil : .easeInOut) {
+                    showingBreathingInfo = true
+                }
+            }
 
             HStack {
                 Text("Today's Exercises")
@@ -141,17 +138,22 @@ struct MyPlanExercisePlanView: View {
             .accessibilityElement(children: .combine)
             .accessibilityAddTraits(.isHeader)
 
-            BreathingCardView {
-                withAnimation(reduceMotion ? nil : .spring(response: 0.5, dampingFraction: 0.85)) {
-                    showingBreathingInfo = true
-                }
-            }
-
             ForEach(contentServiceHandler.userExercises) { exercise in
                 ExerciseCardView(userExerciseModel: exercise) {
                     selectedExerciseInfo = exercise
-                    withAnimation(reduceMotion ? nil : .spring(response: 0.5, dampingFraction: 0.85)) {
+                    withAnimation(reduceMotion ? nil : .easeInOut) {
                         showingExerciseInfo = true
+                    }
+                } onVideoDismiss: { avPlayer in
+                    let currentTime = avPlayer.currentTime().seconds
+                    do {
+                        if currentTime.isFinite {
+                            try await contentServiceHandler.updateExerciseCompletionDuration(id: exercise.id, duration: currentTime)
+
+                            await contentServiceHandler.fetchUserExercisesMeta()
+                        }
+                    } catch {
+                        controlState.error = error
                     }
                 }
             }
@@ -166,7 +168,7 @@ struct MyPlanExercisePlanView: View {
             Color.black.opacity(0.4)
                 .ignoresSafeArea()
                 .onTapGesture {
-                    withAnimation(reduceMotion ? nil : .spring(response: 0.5, dampingFraction: 0.85)) {
+                    withAnimation(reduceMotion ? nil : .easeInOut) {
                         showingExerciseInfo = false
                     }
                 }

@@ -205,7 +205,7 @@ private struct MetricCard: View {
                 .font(.title2.bold().monospacedDigit())
                 .foregroundStyle(statusColor)
                 .contentTransition(reduceMotion ? .identity : .numericText())
-                .animation(reduceMotion ? nil : .spring(duration: 0.25), value: value)
+                .animation(reduceMotion ? nil : .easeInOut, value: value)
             Text(unit)
                 .font(.caption)
                 .foregroundStyle(.secondary)

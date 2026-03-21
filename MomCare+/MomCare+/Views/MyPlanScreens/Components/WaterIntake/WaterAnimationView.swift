@@ -65,7 +65,7 @@ struct WaterDropFillView: View {
                         .foregroundColor(.white)
                         .shadow(color: Color(hex: "4A90C4").opacity(0.4), radius: 4, x: 0, y: 2)
                         .contentTransition(reduceMotion ? .identity : .numericText())
-                        .animation(reduceMotion ? nil : .spring(response: 0.5), value: Int(animatedProgress * 100))
+                        .animation(reduceMotion ? nil : .easeInOut, value: Int(animatedProgress * 100))
                         .padding(.bottom, geo.size.height * 0.12)
                 }
 
@@ -77,7 +77,7 @@ struct WaterDropFillView: View {
             }
         }
         .onAppear {
-            withAnimation(reduceMotion ? nil : .spring(response: 1.3, dampingFraction: 0.75).delay(0.3)) {
+            withAnimation(reduceMotion ? nil : .easeInOut) {
                 animatedProgress = progress
             }
         }

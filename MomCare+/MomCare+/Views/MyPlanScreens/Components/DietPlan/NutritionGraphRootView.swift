@@ -5,6 +5,12 @@ struct NutritionGraphRootView: View {
 
     // MARK: Internal
 
+    let calorieIntake: Double
+    let calorieGoal: Double
+
+    let nutritionIntakeTotals: NutritionTotals?
+    let nutritionGoalTotals: NutritionTotals?
+
     var body: some View {
         NavigationStack {
             ScrollView(showsIndicators: false) {
@@ -23,7 +29,6 @@ struct NutritionGraphRootView: View {
                                     todayValue: todayValue(for: kind),
                                     targetValue: targetValue(for: kind)
                                 )
-                                .environmentObject(contentServiceHandler)
                             } label: {
                                 VitalCardRow(
                                     kind: kind,
@@ -36,7 +41,7 @@ struct NutritionGraphRootView: View {
                             .offset(y: appeared ? 0 : 14)
                             .animation(
                                 reduceMotion ? nil :
-                                    .spring(response: 0.45, dampingFraction: 0.8)
+                                    .easeInOut
                                     .delay(Double(index) * 0.055),
                                 value: appeared
                             )
@@ -56,7 +61,7 @@ struct NutritionGraphRootView: View {
                 }
             }
             .onAppear {
-                withAnimation(reduceMotion ? nil : .spring(response: 0.5, dampingFraction: 0.8).delay(0.1)) {
+                withAnimation(reduceMotion ? nil : .easeInOut) {
                     appeared = true
                 }
             }
@@ -65,7 +70,6 @@ struct NutritionGraphRootView: View {
 
     // MARK: Private
 
-    @EnvironmentObject private var contentServiceHandler: ContentServiceHandler
     @Environment(\.dismiss) private var dismiss
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @Environment(\.accessibilityDifferentiateWithoutColor) private var differentiateWithoutColor
@@ -73,15 +77,13 @@ struct NutritionGraphRootView: View {
     @State private var appeared = false
 
     private var summaryStrip: some View {
-        let consumed = contentServiceHandler.nurtitionConsumedTotals?.calories ?? 0
-        let target = contentServiceHandler.nutritionTargetTotals?.calories ?? 0
-        let remaining = max(target - consumed, 0)
-        let isOver = consumed > target
+        let remaining = max(calorieGoal - calorieIntake, 0)
+        let isOver = calorieIntake > calorieGoal
 
         return HStack(spacing: 0) {
             summaryPill(
                 label: "Consumed",
-                value: "\(Int(consumed)) \(UnitEnergy.kilocalories.symbol)",
+                value: "\(Int(calorieIntake)) \(UnitEnergy.kilocalories.symbol)",
                 color: Color(hex: "E3B34B"),
                 icon: "flame.fill"
             )
@@ -90,7 +92,7 @@ struct NutritionGraphRootView: View {
 
             summaryPill(
                 label: isOver ? "Over by" : "Remaining",
-                value: "\(Int(isOver ? consumed - target : remaining)) \(UnitEnergy.kilocalories.symbol)",
+                value: "\(Int(isOver ? calorieIntake - calorieGoal : remaining)) \(UnitEnergy.kilocalories.symbol)",
                 color: isOver ? .red : Color(hex: "6E8B6F"),
                 icon: isOver ? "exclamationmark.triangle.fill" : "leaf.fill"
             )
@@ -99,7 +101,7 @@ struct NutritionGraphRootView: View {
 
             summaryPill(
                 label: "Target",
-                value: "\(Int(target)) \(UnitEnergy.kilocalories.symbol)",
+                value: "\(Int(calorieGoal)) \(UnitEnergy.kilocalories.symbol)",
                 color: Color(.systemGray3),
                 icon: "target"
             )
@@ -109,7 +111,7 @@ struct NutritionGraphRootView: View {
         .accessibilityElement(children: .ignore)
         .accessibilityLabel("Calorie summary")
         .accessibilityValue(
-            "Consumed \(Int(consumed)) kilocalories. \(isOver ? "Over by" : "Remaining") \(Int(isOver ? consumed - target : remaining)) kilocalories. Target \(Int(target)) kilocalories."
+            "Consumed \(Int(calorieIntake)) kilocalories. \(isOver ? "Over by" : "Remaining") \(Int(isOver ? calorieIntake - calorieGoal : remaining)) kilocalories. Target \(Int(calorieGoal)) kilocalories."
         )
     }
 
@@ -129,32 +131,30 @@ struct NutritionGraphRootView: View {
                 .font(.subheadline.weight(.bold))
                 .foregroundColor(color)
                 .contentTransition(reduceMotion ? .identity : .numericText())
-                .animation(reduceMotion ? nil : .spring(response: 0.4, dampingFraction: 0.7), value: value)
+                .animation(reduceMotion ? nil : .easeInOut, value: value)
         }
         .frame(maxWidth: .infinity)
     }
 
     private func todayValue(for kind: VitalKind) -> Double {
-        let t = contentServiceHandler.nurtitionConsumedTotals
         switch kind {
-        case .calories: return t?.calories ?? 0
-        case .protein: return t?.protein ?? 0
-        case .carbs: return t?.carbs ?? 0
-        case .fats: return t?.fats ?? 0
-        case .sugar: return t?.sugar ?? 0
-        case .sodium: return t?.sodium ?? 0
+        case .calories: return nutritionIntakeTotals?.calories ?? 0
+        case .protein: return nutritionIntakeTotals?.protein ?? 0
+        case .carbs: return nutritionIntakeTotals?.carbs ?? 0
+        case .fats: return nutritionIntakeTotals?.fats ?? 0
+        case .sugar: return nutritionIntakeTotals?.sugar ?? 0
+        case .sodium: return nutritionIntakeTotals?.sodium ?? 0
         }
     }
 
     private func targetValue(for kind: VitalKind) -> Double {
-        let g = contentServiceHandler.nutritionTargetTotals
         switch kind {
-        case .calories: return g?.calories ?? 0
-        case .protein: return g?.protein ?? 0
-        case .carbs: return g?.carbs ?? 0
-        case .fats: return g?.fats ?? 0
-        case .sugar: return g?.sugar ?? 0
-        case .sodium: return g?.sodium ?? 0
+        case .calories: return nutritionGoalTotals?.calories ?? 0
+        case .protein: return nutritionGoalTotals?.protein ?? 0
+        case .carbs: return nutritionGoalTotals?.carbs ?? 0
+        case .fats: return nutritionGoalTotals?.fats ?? 0
+        case .sugar: return nutritionGoalTotals?.sugar ?? 0
+        case .sodium: return nutritionGoalTotals?.sodium ?? 0
         }
     }
 }

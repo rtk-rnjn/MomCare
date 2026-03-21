@@ -10,10 +10,31 @@ struct ProgressCardView: View {
 
     // MARK: Internal
 
-    let caloriesConsumed: Double
-    let caloriesTarget: Double
+    let plan: MyPlanModel?
 
-    let originalCaloriesTarget: Double // this is server expected target
+    let calorieIntake: Measurement<UnitEnergy>?
+    let calorieGoal: Measurement<UnitEnergy>?
+    let recommendedCalorieGoal: Measurement<UnitEnergy>?
+
+    let proteinIntake: Measurement<UnitMass>?
+    let proteinGoal: Measurement<UnitMass>?
+    let recommendedProteinGoal: Measurement<UnitMass>?
+
+    let fatIntake: Measurement<UnitMass>?
+    let fatGoal: Measurement<UnitMass>?
+    let recommendedFatGoal: Measurement<UnitMass>?
+
+    let carbIntake: Measurement<UnitMass>?
+    let carbGoal: Measurement<UnitMass>?
+    let recommendedCarbGoal: Measurement<UnitMass>?
+
+    let sugarIntake: Measurement<UnitMass>?
+    let sugarGoal: Measurement<UnitMass>?
+    let recommendedSugarGoal: Measurement<UnitMass>?
+
+    let sodiumIntake: Measurement<UnitMass>?
+    let sodiumGoal: Measurement<UnitMass>?
+    let recommendedSodiumGoal: Measurement<UnitMass>?
 
     var body: some View {
         VStack(spacing: 0) {
@@ -43,7 +64,6 @@ struct ProgressCardView: View {
 
     @AppStorage(FeatureFlagState.experimentalFeatures.rawValue, store: UserDefaults(suiteName: "group.MomCare")) private var experimentalFeatures: Bool = false
 
-    @EnvironmentObject private var contentServiceHandler: ContentServiceHandler
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     @State private var displayMode: CardDisplayMode = .macros
@@ -59,7 +79,7 @@ struct ProgressCardView: View {
     private var pressGesture: some Gesture {
         LongPressGesture(minimumDuration: 0)
             .onChanged { pressing in
-                withAnimation(reduceMotion ? nil : .spring(response: 0.3, dampingFraction: 0.7)) {
+                withAnimation(reduceMotion ? nil : .easeInOut) {
                     isPressed = pressing
                 }
             }
@@ -74,21 +94,15 @@ struct ProgressCardView: View {
         )
     }
 
-    private var calorieProgress: Double {
-        guard originalCaloriesTarget > 0 else { return 0 }
-        return min(caloriesConsumed / originalCaloriesTarget, 1.0)
-    }
-
     private var collapsedHeader: some View {
         HStack(alignment: .center, spacing: 20) {
 
             ProgressRingView(
-                progress: calorieProgress,
-                consumed: caloriesConsumed,
-                target: caloriesTarget,
-                original: originalCaloriesTarget,
+                consumed: calorieIntake,
+                target: calorieGoal,
+                original: recommendedCalorieGoal,
             )
-            .layoutPriority(1)
+//            .layoutPriority(1)
 
             modeContent
         }
@@ -103,8 +117,9 @@ struct ProgressCardView: View {
 
             case .calories:
                 CaloriesSummaryView(
-                    consumed: caloriesConsumed,
-                    target: caloriesTarget
+                    intake: calorieIntake,
+                    goal: calorieGoal,
+                    recommended: recommendedCalorieGoal
                 )
 
             case .macros:
@@ -128,25 +143,25 @@ struct ProgressCardView: View {
         Group {
             MacroBarRow(
                 title: "Protein",
-                consumed: contentServiceHandler.nurtitionConsumedTotals?.proteinMass,
-                target: contentServiceHandler.nutritionTargetTotals?.proteinMass,
-                originalTarget: contentServiceHandler.originalNutritionTargetTotals?.proteinMass,
+                intake: proteinIntake,
+                goal: proteinGoal,
+                recommendedGoal: recommendedProteinGoal,
                 color: Color(hex: "A7C0CD")
             )
 
             MacroBarRow(
                 title: "Carbs",
-                consumed: contentServiceHandler.nurtitionConsumedTotals?.carbsMass,
-                target: contentServiceHandler.nutritionTargetTotals?.carbsMass,
-                originalTarget: contentServiceHandler.originalNutritionTargetTotals?.carbsMass,
+                intake: carbIntake,
+                goal: carbGoal,
+                recommendedGoal: recommendedCarbGoal,
                 color: Color(hex: "6E8B6F")
             )
 
             MacroBarRow(
                 title: "Fats",
-                consumed: contentServiceHandler.nurtitionConsumedTotals?.fatsMass,
-                target: contentServiceHandler.nutritionTargetTotals?.fatsMass,
-                originalTarget: contentServiceHandler.originalNutritionTargetTotals?.fatsMass,
+                intake: fatIntake,
+                goal: fatGoal,
+                recommendedGoal: recommendedFatGoal,
                 color: Color(hex: "E3B34B")
             )
         }
@@ -156,17 +171,17 @@ struct ProgressCardView: View {
         Group {
             MacroBarRow(
                 title: "Sugar",
-                consumed: contentServiceHandler.nurtitionConsumedTotals?.sugarMass,
-                target: contentServiceHandler.nutritionTargetTotals?.sugarMass,
-                originalTarget: contentServiceHandler.originalNutritionTargetTotals?.sugarMass,
+                intake: sugarIntake,
+                goal: sugarGoal,
+                recommendedGoal: recommendedSugarGoal,
                 color: Color(hex: "E07B8A")
             )
 
             MacroBarRow(
                 title: "Sodium",
-                consumed: contentServiceHandler.nurtitionConsumedTotals?.sodiumMass,
-                target: contentServiceHandler.nutritionTargetTotals?.sodiumMass,
-                originalTarget: contentServiceHandler.originalNutritionTargetTotals?.sodiumMass,
+                intake: sodiumIntake,
+                goal: sodiumGoal,
+                recommendedGoal: recommendedSodiumGoal,
                 color: Color(hex: "9B8EC4")
             )
         }
@@ -178,9 +193,15 @@ struct ProgressCardView: View {
                 .padding(.horizontal, 18)
 
             ExpandedDetailView(
-                caloriesConsumed: caloriesConsumed,
-                caloriesTarget: caloriesTarget,
-                plan: contentServiceHandler.myPlanModel
+                caloriesConsumed: calorieIntake,
+                caloriesTarget: recommendedCalorieGoal,
+                plan: plan,
+                sugarIntake: sugarIntake,
+                sugarGoal: sugarGoal,
+                recommendedSugarGoal: recommendedSugarGoal,
+                sodiumIntake: sodiumIntake,
+                sodiumGoal: sodiumGoal,
+                recommendedSodiumGoal: recommendedSodiumGoal
             )
             .padding(18)
         }
@@ -194,7 +215,7 @@ struct ProgressCardView: View {
 
     private func handleDragEnd(_ value: DragGesture.Value) {
 
-        let threshold: CGFloat = 30
+        let threshold: CGFloat = 20
         let allModes = CardDisplayMode.allCases
         let current = displayMode.rawValue
 
@@ -203,7 +224,7 @@ struct ProgressCardView: View {
             dragDirection = .up
             let next = (current + 1) % allModes.count
 
-            withAnimation(reduceMotion ? nil : .spring(response: 0.35, dampingFraction: 0.8)) {
+            withAnimation(reduceMotion ? nil : .easeInOut) {
                 displayMode = CardDisplayMode(rawValue: next) ?? displayMode
             }
 
@@ -212,14 +233,14 @@ struct ProgressCardView: View {
             dragDirection = .down
             let prev = (current - 1 + allModes.count) % allModes.count
 
-            withAnimation(reduceMotion ? nil : .spring(response: 0.35, dampingFraction: 0.8)) {
+            withAnimation(reduceMotion ? nil : .easeInOut) {
                 displayMode = CardDisplayMode(rawValue: prev) ?? displayMode
             }
         }
     }
 
     private func toggleExpansion() {
-        withAnimation(reduceMotion ? nil : .spring(response: 0.45, dampingFraction: 0.75)) {
+        withAnimation(reduceMotion ? nil : .easeInOut) {
             isExpanded.toggle()
             if isExpanded {
                 displayMode = .macros
@@ -233,49 +254,142 @@ private struct CaloriesSummaryView: View {
 
     // MARK: Internal
 
-    let consumed: Double
-    let target: Double
+    let intake: Measurement<UnitEnergy>?
+    let goal: Measurement<UnitEnergy>?
+    let recommended: Measurement<UnitEnergy>?
+
+    var difference: Double {
+        guard let intake, let recommended else { return 0 }
+        return intake.converted(to: recommended.unit).value - recommended.value
+    }
 
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
+
             Label("Remaining", systemImage: "flame")
                 .font(.caption.weight(.semibold))
                 .foregroundColor(.secondary)
+                .accessibilityHidden(true)
 
-            Text("\(Int(remaining)) \(UnitEnergy.kilocalories.symbol)")
+            Text(Measurement(value: remaining, unit: UnitEnergy.kilocalories), format: .measurement(width: .wide, usage: .food))
                 .font(.title3.weight(.bold))
                 .foregroundColor(isOver ? .red : .primary)
                 .contentTransition(reduceMotion ? .identity : .numericText(countsDown: true))
-                .animation(reduceMotion ? nil : .spring(response: 0.4, dampingFraction: 0.7), value: remaining)
+                .animation(reduceMotion ? nil : .easeInOut, value: remaining)
+                .accessibilityLabel(isOver ? "Over budget" : "Remaining calories")
+                .accessibilityValue(
+                    Measurement(value: remaining, unit: UnitEnergy.kilocalories)
+                        .formatted(.measurement(width: .wide, usage: .food))
+                )
 
             if isOver {
-                Label("Over by \(Int(consumed - target)) \(UnitEnergy.kilocalories.symbol)", systemImage: "exclamationmark.triangle.fill")
-                    .font(.caption)
-                    .foregroundColor(.red)
+                let overMeasurement = Measurement(value: abs(difference), unit: UnitEnergy.kilocalories)
+
+                Label(
+                    "Over by \(overMeasurement.formatted(.measurement(width: .narrow, usage: .food)))",
+                    systemImage: "exclamationmark.triangle.fill"
+                )
+                .font(.footnote)
+                .foregroundColor(.red)
+                .contentTransition(reduceMotion ? .identity : .numericText(value: overMeasurement.value))
+                .animation(reduceMotion ? nil : .easeInOut, value: overMeasurement.value)
+                .accessibilityLabel(
+                    "Exceeded goal by \(overMeasurement.formatted(.measurement(width: .wide, usage: .food)))"
+                )
             } else {
-                Text("\(Int(consumed)) of \(Int(target)) consumed")
-                    .font(.caption)
-                    .foregroundColor(.secondary)
+                subtitleView
             }
         }
+        .animation(reduceMotion ? nil : .snappy, value: difference)
+        .accessibilityElement(children: .combine)
     }
 
     // MARK: Private
 
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
-    private var remaining: Double { max(target - consumed, 0) }
-    private var isOver: Bool { consumed > target }
+    private var remaining: Double { max(-difference, 0) }
 
+    private var isOver: Bool {
+        guard let intake, let recommended else { return false }
+        return intake.converted(to: recommended.unit).value > recommended.value
+    }
+
+    private var isGoalModified: Bool {
+        guard let goal, let recommended else { return false }
+        return goal != recommended
+    }
+
+    private var consumedText: String {
+        intake?.formattedOneDecimal ?? "-"
+    }
+
+    private var goalText: String {
+        goal?.formattedOneDecimal ?? "-"
+    }
+
+    private var recommendedText: String {
+        recommended?.formattedOneDecimal ?? "-"
+    }
+
+    @ViewBuilder
+    private var subtitleView: some View {
+        if let intake, let recommended, let goal {
+            if isGoalModified {
+                VStack(alignment: .leading, spacing: 8) {
+                    HStack(spacing: 0) {
+                        Text(intake, format: .measurement(width: .wide, usage: .food))
+                            .contentTransition(reduceMotion ? .identity : .numericText(value: intake.value))
+                            .animation(reduceMotion ? nil : .easeInOut, value: intake.value)
+                        Text(" of ")
+                        Text(recommended, format: .measurement(width: .wide, usage: .food))
+                            .foregroundStyle(.secondary)
+                    }
+
+                    HStack(spacing: 0) {
+                        Text("(")
+                        Text(goal, format: .measurement(width: .wide, usage: .food))
+                        Text(")")
+                        Text(" consumed")
+                    }
+                }
+                .font(.caption)
+                .foregroundStyle(.secondary)
+                .accessibilityLabel("\(intake, format: .measurement(width: .wide, usage: .food)) consumed of \(recommended, format: .measurement(width: .wide, usage: .food)) recommended, goal adjusted to \(goal, format: .measurement(width: .wide, usage: .food))")
+
+            } else {
+                Text("\(intake, format: .measurement(width: .abbreviated, usage: .food)) of \(goal, format: .measurement(width: .abbreviated, usage: .food)) consumed")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+                    .contentTransition(reduceMotion ? .identity : .numericText(value: intake.value))
+                    .animation(reduceMotion ? nil : .easeInOut, value: intake.value)
+                    .accessibilityLabel("\(intake, format: .measurement(width: .abbreviated, usage: .food)) of \(goal, format: .measurement(width: .abbreviated, usage: .food)) consumed")
+            }
+
+        } else {
+            Text("No data")
+                .font(.caption)
+                .foregroundStyle(.tertiary)
+                .accessibilityLabel("Calorie data unavailable")
+        }
+    }
 }
 
 private struct ExpandedDetailView: View {
 
     // MARK: Internal
 
-    let caloriesConsumed: Double
-    let caloriesTarget: Double
+    let caloriesConsumed: Measurement<UnitEnergy>?
+    let caloriesTarget: Measurement<UnitEnergy>?
     let plan: MyPlanModel?
+
+    let sugarIntake: Measurement<UnitMass>?
+    let sugarGoal: Measurement<UnitMass>?
+    let recommendedSugarGoal: Measurement<UnitMass>?
+
+    let sodiumIntake: Measurement<UnitMass>?
+    let sodiumGoal: Measurement<UnitMass>?
+    let recommendedSodiumGoal: Measurement<UnitMass>?
 
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
@@ -287,16 +401,17 @@ private struct ExpandedDetailView: View {
 
                 MacroBarRow(
                     title: "Sugar",
-                    consumed: contentServiceHandler.nurtitionConsumedTotals?.sugarMass,
-                    target: contentServiceHandler.nutritionTargetTotals?.sugarMass,
-                    originalTarget: contentServiceHandler.originalNutritionTargetTotals?.sugarMass,
+                    intake: sugarIntake,
+                    goal: sugarGoal,
+                    recommendedGoal: recommendedSugarGoal,
                     color: Color(hex: "E07B8A")
                 )
+
                 MacroBarRow(
                     title: "Sodium",
-                    consumed: contentServiceHandler.nurtitionConsumedTotals?.sodiumMass,
-                    target: contentServiceHandler.nutritionTargetTotals?.sodiumMass,
-                    originalTarget: contentServiceHandler.originalNutritionTargetTotals?.sodiumMass,
+                    intake: sodiumIntake,
+                    goal: sodiumGoal,
+                    recommendedGoal: recommendedSodiumGoal,
                     color: Color(hex: "9B8EC4")
                 )
             }
@@ -310,12 +425,12 @@ private struct ExpandedDetailView: View {
                     .textCase(.uppercase)
 
                 HStack {
-                    CalorieStatPill(label: "Consumed", value: caloriesConsumed, color: MomCareAccent.primary)
-                    CalorieStatPill(label: "Target", value: caloriesTarget, color: Color(.systemGray3))
+                    CalorieStatPill(label: "Consumed", value: caloriesConsumed?.value ?? 0, color: MomCareAccent.primary)
+                    CalorieStatPill(label: "Target", value: caloriesTarget?.value ?? 0, color: Color(.systemGray3))
                     CalorieStatPill(
-                        label: caloriesConsumed > caloriesTarget ? "Over" : "Left",
-                        value: abs(caloriesTarget - caloriesConsumed),
-                        color: caloriesConsumed > caloriesTarget ? .red : Color(hex: "6E8B6F")
+                        label: isCalorieConsumedGreaterThanTarget ? "Over" : "Left",
+                        value: calorieDifference,
+                        color: isCalorieConsumedGreaterThanTarget ? .red : Color(hex: "6E8B6F")
                     )
                 }
             }
@@ -342,7 +457,20 @@ private struct ExpandedDetailView: View {
 
     // MARK: Private
 
-    @EnvironmentObject private var contentServiceHandler: ContentServiceHandler
+    private var calorieDifference: Double {
+        guard let caloriesConsumed, let caloriesTarget else { return 0 }
+
+        let consumedValue = caloriesConsumed.converted(to: caloriesTarget.unit).value
+        let targetValue = caloriesTarget.value
+
+        return consumedValue - targetValue
+    }
+
+    private var isCalorieConsumedGreaterThanTarget: Bool {
+        guard let caloriesConsumed, let caloriesTarget else { return false }
+
+        return caloriesConsumed > caloriesTarget
+    }
 
 }
 
@@ -356,11 +484,11 @@ private struct CalorieStatPill: View {
 
     var body: some View {
         VStack(spacing: 2) {
-            Text("\(Int(value))")
+            Text(value, format: .number)
                 .font(.subheadline.weight(.semibold))
                 .foregroundColor(color)
                 .contentTransition(reduceMotion ? .identity : .numericText())
-                .animation(reduceMotion ? nil : .spring(response: 0.4, dampingFraction: 0.7), value: value)
+                .animation(reduceMotion ? nil : .easeInOut, value: value)
 
             Text(label)
                 .font(.caption2)
@@ -454,80 +582,53 @@ extension MealType: CaseIterable {
     }
 }
 
+struct RingLayout: Layout {
+    let lineWidth: CGFloat
+
+    func sizeThatFits(proposal: ProposedViewSize, subviews: Subviews, cache: inout ()) -> CGSize {
+        guard let content = subviews.first else { return .zero }
+        let contentSize = content.sizeThatFits(.unspecified)
+        let diameter = max(contentSize.width, contentSize.height) + lineWidth * 2
+        return CGSize(width: diameter, height: diameter)
+    }
+
+    func placeSubviews(in bounds: CGRect, proposal: ProposedViewSize, subviews: Subviews, cache: inout ()) {
+        guard let content = subviews.first else { return }
+        let contentSize = content.sizeThatFits(.unspecified)
+        let origin = CGPoint(
+            x: bounds.midX - contentSize.width / 2,
+            y: bounds.midY - contentSize.height / 2
+        )
+        content.place(at: origin, proposal: ProposedViewSize(contentSize))
+    }
+}
+
 struct ProgressRingView: View {
 
     // MARK: Internal
 
-    let progress: Double
-    let consumed: Double
-    let target: Double
-    let original: Double
+    let consumed: Measurement<UnitEnergy>?
+    let target: Measurement<UnitEnergy>?
+    let original: Measurement<UnitEnergy>?
 
     var body: some View {
-        ZStack {
-            Circle()
-                .stroke(reduceTransparency ? Color(.systemGray4) : Color.secondary.opacity(0.2), lineWidth: 14)
 
-            Circle()
-                .trim(from: 0, to: progress)
-                .stroke(
-                    MomCareAccent.primary,
-                    style: StrokeStyle(lineWidth: 14, lineCap: .round)
-                )
-                .rotationEffect(.degrees(-90))
-                .animation(reduceMotion ? nil : .linear(duration: 0.5), value: progress)
-
-            VStack(spacing: 2) {
-                Group {
-                    if showPercentage {
-                        Text("\(percentage)%")
-                            .contentTransition(reduceMotion ? .identity : .numericText())
-                            .transition(.opacity.combined(with: .scale))
-                            .animation(reduceMotion ? nil : .spring(response: 0.4, dampingFraction: 0.7), value: percentage)
-                            .font(.title2.weight(.bold))
-                    } else {
-                        HStack(spacing: 2) {
-                            Text(Int(consumed), format: .number)
-                                .font(consumed > 999 ? .footnote.weight(.semibold) : .headline)
-                                .contentTransition(reduceMotion ? .identity : .numericText())
-                                .animation(reduceMotion ? nil : .spring(response: 0.4, dampingFraction: 0.7), value: Int(consumed))
-
-                            Text("/")
-                                .font(consumed > 999 ? .footnote.weight(.semibold) : .headline)
-
-                            Text(Int(original), format: .number)
-                                .font(consumed > 999 ? .footnote.weight(.semibold) : .headline)
-                                .contentTransition(reduceMotion ? .identity : .numericText())
-                                .animation(reduceMotion ? nil : .spring(response: 0.4, dampingFraction: 0.7), value: Int(consumed))
-                        }
-                        .transition(.opacity.combined(with: .scale))
-                        .font(.headline)
-                    }
-                }
-                .onTapGesture {
-                    withAnimation(reduceMotion ? nil : .spring(response: 0.4, dampingFraction: 0.8)) {
-                        showPercentage.toggle()
-                    }
-                }
-
-                HStack(spacing: 6) {
-                    Text(UnitEnergy.kilocalories.symbol)
-                        .font(.subheadline)
-                        .foregroundStyle(.secondary)
-
-                    if target != original {
-                        Text(Int(target - original), format: .number.sign(strategy: .always()))
-                            .font(.subheadline)
-                            .foregroundStyle(modificationColor)
-                    }
-                }
-            }
+        RingLayout(lineWidth: 14) {
+            numericPercentageTextView
         }
-        .frame(width: 110, height: 110)
-        .contentShape(Rectangle())
+        .drawingGroup()
+        .overlay {
+            PercentageRing(ringWidth: 14, percent: progress * 100, backgroundColor: MomCareAccent.secondary, foregroundColors: [MomCareAccent.primary.mix(with: .white, by: 0.7), MomCareAccent.primary])
+        }
+        .fixedSize(horizontal: false, vertical: true)
+        .contentShape(Circle())
         .accessibilityElement(children: .ignore)
         .accessibilityLabel("Calorie intake")
-        .accessibilityValue(showPercentage ? "\(percentage) percent" : "\(Int(consumed)) of \(Int(target)) calories")
+        .accessibilityValue(
+            showPercentage
+            ? "\(percentage)%"
+            : "\(Int(consumed?.converted(to: target?.unit ?? .kilocalories).value ?? 0)) / \(Int(target?.value ?? 0)) calories"
+        )
         .accessibilityHint("Double tap to toggle percentage view")
         .accessibilityAddTraits([.isButton, .updatesFrequently])
     }
@@ -543,12 +644,33 @@ struct ProgressRingView: View {
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @Environment(\.accessibilityReduceTransparency) private var reduceTransparency
 
+    private var progress: Double {
+        guard let consumed, let original else {
+            return 0
+        }
+
+        return consumed.value / original.value
+    }
+
     private var percentage: Int {
-        guard original > 0 else { return 0 }
-        return Int((consumed / original) * 100)
+        guard let consumed, let original else { return 0 }
+
+        let consumedValue = consumed.converted(to: original.unit).value
+        let originalValue = original.value
+
+        guard originalValue > 0 else { return 0 }
+
+        return Int((consumedValue / originalValue) * 100)
+    }
+
+    private var difference: Double {
+        guard let target, let original else { return 0 }
+        return (target - original).value
     }
 
     private var targetModification: TargetModification? {
+        guard let target, let original else { return nil }
+
         if target > original { return .increased }
         if target < original { return .decreased }
         return nil
@@ -561,6 +683,102 @@ struct ProgressRingView: View {
         case .none: return .secondary
         }
     }
+
+    private var consumedValue: Double? { consumed?.value }
+    private var goalValue: Double? { original?.value }
+
+    private var useCompactFont: Bool {
+        (consumedValue ?? 0) > 999
+    }
+
+    private var valueFont: Font {
+        useCompactFont ? .subheadline.weight(.semibold) : .headline
+    }
+
+    private var numericPercentageTextView: some View {
+        VStack(spacing: 2) {
+            Group {
+                if showPercentage {
+                    ZStack {
+                        Text("\(percentage)%")
+                            .font(.title2.weight(.bold))
+                            .contentTransition(reduceMotion ? .identity : .numericText())
+                            .animation(
+                                reduceMotion ? nil : .easeInOut,
+                                value: percentage
+                            )
+
+                        Text("999%")
+                            .font(.title2.weight(.bold))
+                            .hidden()
+
+                        Text("9,999/9,999")
+                            .font(.headline)
+                            .hidden()
+                    }
+
+                } else {
+                    ZStack {
+                        HStack(spacing: 2) {
+                            animatedNumber(consumedValue)
+                            Text("/").font(valueFont)
+                            animatedNumber(goalValue)
+
+                        }
+
+                        // Thanks chatgpt for this hack,
+                        // this makes the cirlce big enough
+                        Text("999%")
+                            .font(.title2.weight(.bold))
+                            .hidden()
+
+                        Text("9,999/9,999")
+                            .font(.headline)
+                            .hidden()
+                    }
+                }
+            }
+            .transition(.opacity.combined(with: .scale))
+            .onTapGesture {
+                withAnimation(reduceMotion ? nil : .easeInOut) {
+                    showPercentage.toggle()
+                }
+            }
+
+            HStack(spacing: 6) {
+
+                Text(UnitEnergy.kilocalories.symbol)
+                    .font(.subheadline)
+                    .foregroundStyle(.secondary)
+
+                if difference != 0 {
+                    Text(Int(difference), format: .number.sign(strategy: .always()))
+                        .font(.subheadline)
+                        .foregroundStyle(modificationColor)
+                        .contentTransition(reduceMotion ? .identity : .numericText())
+                        .animation(reduceMotion ? nil : .easeInOut, value: difference)
+                }
+            }
+            .animation(reduceMotion ? nil : .easeInOut, value: difference)
+        }
+    }
+
+    private func animatedNumber(_ value: Double?) -> some View {
+        Group {
+            if let value {
+                Text(value, format: .number)
+            } else {
+                Text("-")
+            }
+        }
+        .font(valueFont)
+        .contentTransition(reduceMotion ? .identity : .numericText())
+        .animation(
+            reduceMotion ? nil : .easeInOut,
+            value: value
+        )
+    }
+
 }
 
 struct MacroBarRow: View {
@@ -568,9 +786,9 @@ struct MacroBarRow: View {
     // MARK: Internal
 
     let title: String
-    let consumed: Measurement<UnitMass>?
-    let target: Measurement<UnitMass>?
-    let originalTarget: Measurement<UnitMass>?
+    let intake: Measurement<UnitMass>?
+    let goal: Measurement<UnitMass>?
+    let recommendedGoal: Measurement<UnitMass>?
     let color: Color
 
     var body: some View {
@@ -586,19 +804,19 @@ struct MacroBarRow: View {
                     if showPercentage {
                         Text(percentageText)
                             .contentTransition(reduceMotion ? .identity : .numericText())
-                            .animation(reduceMotion ? nil : .spring(response: 0.4, dampingFraction: 0.8), value: showPercentage)
+                            .animation(reduceMotion ? nil : .easeInOut, value: showPercentage)
                     } else {
                         numericView
                     }
                 }
                 .onTapGesture {
-                    withAnimation(reduceMotion ? nil : .spring(response: 0.4, dampingFraction: 0.8)) {
+                    withAnimation(reduceMotion ? nil : .easeInOut) {
                         showPercentage.toggle()
                     }
                 }
                 .font(.caption)
                 .foregroundColor(.primary)
-                .animation(reduceMotion ? nil : .spring(response: 0.4, dampingFraction: 0.8), value: showPercentage)
+                .animation(reduceMotion ? nil : .easeInOut, value: showPercentage)
             }
 
             GeometryReader { geo in
@@ -607,8 +825,8 @@ struct MacroBarRow: View {
                         .fill(reduceTransparency ? Color(.systemGray4) : Color.secondary.opacity(0.2))
                     Capsule()
                         .fill(color)
-                        .frame(width: geo.size.width * progress)
-                        .animation(reduceMotion ? nil : .easeInOut(duration: 0.4), value: progress)
+                        .frame(width: geo.size.width * min(recommendedProgress, 1.0))
+                        .animation(reduceMotion ? nil : .easeInOut(duration: 0.4), value: recommendedProgress)
                 }
             }
             .frame(height: 14)
@@ -616,7 +834,22 @@ struct MacroBarRow: View {
         .contentShape(Rectangle())
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(title)
-        .accessibilityValue(showPercentage ? percentageText : "\(consumed?.formattedOneDecimal ?? "-") of \(target?.formattedOneDecimal ?? "-")")
+        .accessibilityValue(
+            showPercentage
+            ? percentageText
+            : {
+                guard let intake, let goal else {
+                    return "No intake or goal data"
+                }
+
+                let convertedIntake = intake.converted(to: goal.unit)
+
+                let intakeText = convertedIntake.formatted(.measurement(width: .wide))
+                let goalText = goal.formatted(.measurement(width: .wide))
+
+                return "\(intakeText) consumed out of \(goalText) goal"
+            }()
+        )
         .accessibilityHint("Double tap to toggle percentage view")
         .accessibilityAddTraits([.isButton, .updatesFrequently])
     }
@@ -633,11 +866,11 @@ struct MacroBarRow: View {
     @Environment(\.accessibilityReduceTransparency) private var reduceTransparency
 
     private var targetModification: TargetModification? {
-        guard let target, let originalTarget else { return nil }
-        let targetValue = target.converted(to: originalTarget.unit).value
-        let originalValue = originalTarget.value
-        if targetValue > originalValue { return .increased }
-        if targetValue < originalValue { return .decreased }
+        guard let goal, let recommendedGoal else { return nil }
+
+        if goal > recommendedGoal { return .increased }
+        if goal < recommendedGoal { return .decreased }
+
         return nil
     }
 
@@ -649,45 +882,43 @@ struct MacroBarRow: View {
         }
     }
 
-    private var progress: Double {
-        guard let consumed, let originalTarget else { return 0 }
-        let consumedValue = consumed.converted(to: originalTarget.unit).value
-        let targetValue = originalTarget.value
-        guard targetValue > 0 else { return 0 }
-        return min(consumedValue / targetValue, 1.0)
+    private var recommendedProgress: Double {
+        guard let intake, let recommendedGoal else { return 0 }
+
+        let intakeValue = intake.converted(to: recommendedGoal.unit).value
+        let goalValue = recommendedGoal.value
+
+        guard goalValue > 0 else { return 0 }
+
+        return intakeValue / goalValue
     }
 
     private var percentageText: String {
-        guard let consumed, let originalTarget else { return "0%" }
-        let consumedValue = consumed.converted(to: originalTarget.unit).value
-        let targetValue = originalTarget.value
-        guard targetValue > 0 else { return "0%" }
-        let progress = consumedValue / targetValue
-        return "\(Int(progress * 100))%"
+        "\(Int(recommendedProgress * 100))%"
     }
 
     private var difference: Double {
-        guard let consumed, let target, let originalTarget else { return 0 }
+        guard let intake, let recommendedGoal else { return 0 }
 
-        let consumedValue = consumed.converted(to: target.unit).value
-        let originalValue = originalTarget.converted(to: target.unit).value
+        let intakeValue = intake.converted(to: recommendedGoal.unit).value
+        let goalValue = recommendedGoal.value
 
-        return consumedValue - originalValue
+        return intakeValue - goalValue
     }
 
     private var numericView: some View {
         HStack(spacing: 4) {
-            if let consumed {
+            if let intake {
                 HStack {
-                    Text("\(consumed.formattedOneDecimal)")
-                        .contentTransition(reduceMotion ? .identity : .numericText(value: consumed.value))
-                        .animation(reduceMotion ? nil : .spring(response: 0.4, dampingFraction: 0.8), value: consumed.value)
+                    Text(intake.formattedOneDecimal)
+                        .contentTransition(reduceMotion ? .identity : .numericText(value: intake.value))
+                        .animation(reduceMotion ? nil : .easeInOut, value: intake.value)
 
                     if difference > 0 {
                         Text("(\(difference, format: .number.sign(strategy: .always())))")
                             .foregroundColor(.secondary)
                             .contentTransition(reduceMotion ? .identity : .numericText(value: difference))
-                            .animation(reduceMotion ? nil : .spring(response: 0.4, dampingFraction: 0.8), value: difference)
+                            .animation(reduceMotion ? nil : .easeInOut, value: difference)
                     }
                 }
                 .animation(reduceMotion ? nil : .easeInOut, value: difference > 0)
@@ -697,10 +928,10 @@ struct MacroBarRow: View {
 
             Text("/")
 
-            if let target {
-                if let originalTarget, targetModification != nil {
+            if let goal {
+                if let recommendedGoal, targetModification != nil {
                     HStack {
-                        Text(originalTarget.formattedOneDecimal)
+                        Text(recommendedGoal.formattedOneDecimal)
                             .foregroundColor(modificationColor)
 
                         if targetModification == .increased {
@@ -708,26 +939,26 @@ struct MacroBarRow: View {
                                 .font(.caption2.bold())
                                 .foregroundColor(modificationColor)
                                 .contentTransition(reduceMotion ? .identity : .symbolEffect)
-                                .animation(reduceMotion ? nil : .spring(response: 0.4, dampingFraction: 0.8), value: targetModification)
+                                .animation(reduceMotion ? nil : .easeInOut, value: targetModification)
 
                         } else if targetModification == .decreased {
                             Image(systemName: "arrow.down")
                                 .font(.caption2.bold())
                                 .foregroundColor(modificationColor)
                                 .contentTransition(reduceMotion ? .identity : .symbolEffect)
-                                .animation(reduceMotion ? nil : .spring(response: 0.4, dampingFraction: 0.8), value: targetModification)
+                                .animation(reduceMotion ? nil : .easeInOut, value: targetModification)
                         }
                     }
                 } else {
-                    Text(target.formattedOneDecimal)
-                        .contentTransition(reduceMotion ? .identity : .numericText(value: target.value))
-                        .animation(reduceMotion ? nil : .spring(response: 0.4, dampingFraction: 0.8), value: target.value)
+                    Text(goal.formattedOneDecimal)
+                        .contentTransition(reduceMotion ? .identity : .numericText(value: goal.value))
+                        .animation(reduceMotion ? nil : .easeInOut, value: goal.value)
                 }
             } else {
                 Text("-")
             }
         }
-        .animation(reduceMotion ? nil : .spring(response: 0.4, dampingFraction: 0.8), value: showPercentage)
+        .animation(reduceMotion ? nil : .easeInOut, value: showPercentage)
     }
 
 }

@@ -3,6 +3,19 @@ import HealthKit
 import SwiftUI
 import OSLog
 
+struct StepDataPoint: Identifiable {
+    let id: UUID = .init()
+    let date: Date
+    let steps: Int
+
+    var shortLabel: String {
+        let fmt = DateFormatter()
+        fmt.dateFormat = "EEE"
+        return fmt.string(from: date)
+    }
+
+}
+
 final class ContentServiceHandler: ObservableObject {
 
     // MARK: Internal
@@ -13,21 +26,18 @@ final class ContentServiceHandler: ObservableObject {
     @Published var isFetchingMealPlan: Bool = false
     @Published var isFetchingExercises: Bool = false
 
-    @Published var currentSteps: Double = 0
-    @Published var targetSteps: Double = 4200
-    @Published var stepsProgress: Double = 0
+    @Published var stepsToday: Double = 0
+    @Published var stepsGoal: Double = 4200
 
     @Published var breathingTargetInSeconds: Double = 300
     @Published var breathingCompletionDuration: Double = 0
 
-    @Published var nurtitionConsumedTotals: NutritionTotals?
-    @Published var nutritionTargetTotals: NutritionTotals?
-    @Published var originalNutritionTargetTotals: NutritionTotals?
-
-    @Published var totalUserExercisesDuration: Double = 0
-    @Published var totalUserExercisesCompletionDuration: Double = 0
+    @Published var nutritionIntakeTotals: NutritionTotals?
+    @Published var nutritionGoalTotals: NutritionTotals?
+    @Published var recommendedNutritionGoalTotals: NutritionTotals?
 
     @Published var totalUserExercisesCompleted: Int = 0
+    @Published var totalExerciseDuration: TimeInterval = 0
 
     @Published var weeklyProgress: [DayProgress] = .init()
 
@@ -94,10 +104,23 @@ final class ContentServiceHandler: ObservableObject {
         userExercises = networkResponse.data ?? []
         DebugLogger.shared.log("User exercises loaded: \(userExercises.count) items", level: .debug, category: .data)
 
-        await fetchTotalUserExercisesDuration()
-        await fetchTotalUserExercisesCompletionDuration()
-        await fetchTotalUserExercisesCompleted()
-        await fetchWeeklyProgress()
+        await fetchUserExercisesMeta()
+    }
+
+    func fetchUserExercisesMeta() async {
+        await fetchWeeklyExerciseProgress()
+        totalUserExercisesCompleted = await userExercises.fetchTotalUserExercisesCompleted()
+        totalExerciseDuration = await userExercises.fetchTotalExerciseDuration()
+    }
+
+    func fetchMyPlanMeta() async {
+        let nurtitionConsumedTotals = await myPlanModel?.consumedNutrition()
+        let nutritionTargetTotals = await myPlanModel?.targetNutrition(of: .user)
+        let originalNutritionTargetTotals = await myPlanModel?.targetNutrition(of: .server)
+
+        nutritionGoalTotals = nutritionTargetTotals
+        nutritionIntakeTotals = nurtitionConsumedTotals
+        recommendedNutritionGoalTotals = originalNutritionTargetTotals
     }
 
     func fetchMealPlan(makeNetworkCall: Bool = true) async throws {
@@ -112,14 +135,7 @@ final class ContentServiceHandler: ObservableObject {
             DebugLogger.shared.log("Meal plan loaded: \(myPlanModel != nil ? "success" : "nil")", level: .debug, category: .data)
         }
 
-        let nurtitionConsumedTotals = await myPlanModel?.consumedNutrition()
-        let nutritionTargetTotals = await myPlanModel?.targetNutrition(of: .user)
-        let originalNutritionTargetTotals = await myPlanModel?.targetNutrition(of: .server)
-
-        self.nutritionTargetTotals = nutritionTargetTotals
-        self.nurtitionConsumedTotals = nurtitionConsumedTotals
-        self.originalNutritionTargetTotals = originalNutritionTargetTotals
-
+        await fetchMyPlanMeta()
     }
 
     nonisolated func fetchHealthData(
@@ -168,8 +184,7 @@ final class ContentServiceHandler: ObservableObject {
     nonisolated func fetchTodaySteps() {
         fetchHealthData(quantityTypeIdentifier: .stepCount, unit: .count()) { count in
             DispatchQueue.main.async {
-                self.currentSteps = count
-                self.stepsProgress = min(count / self.targetSteps, 0.9999)
+                self.stepsToday = count
             }
         }
     }
@@ -177,31 +192,6 @@ final class ContentServiceHandler: ObservableObject {
     // MARK: Private
 
     private let database: Database = .init()
-
-    private func fetchTotalUserExercisesDuration() async {
-        totalUserExercisesDuration = 0
-
-        for userExercise in userExercises {
-            let exercise = await userExercise.exerciseModel
-            totalUserExercisesDuration += exercise?.videoDurationSeconds ?? 0
-        }
-    }
-
-    private func fetchTotalUserExercisesCompletionDuration() async {
-        totalUserExercisesCompletionDuration = 0
-
-        for userExercise in userExercises {
-            totalUserExercisesCompletionDuration += userExercise.videoDurationCompletedSeconds
-        }
-    }
-
-    private func fetchTotalUserExercisesCompleted() async {
-        totalUserExercisesCompleted = 0
-
-        for userExercise in userExercises where await userExercise.isCompleted {
-            totalUserExercisesCompleted += 1
-        }
-    }
 
 }
 
@@ -236,28 +226,15 @@ extension ContentServiceHandler {
         if let food = await foodReference.food {
             try await consumeFoodInHealthKit(food, consume: consumed)
         }
+
+        await fetchMyPlanMeta()
     }
 
     func markFoodsAs(consumed: Bool, mealType: MealType) async throws {
         DebugLogger.shared.log("Marking all \(mealType.rawValue) foods as \(consumed ? "consumed" : "unconsumed")", level: .debug, category: .data)
-        switch mealType {
-        case .breakfast:
-            for foodReference in myPlanModel?.breakfast ?? [] {
-                try await markFoodAs(consumed: consumed, in: mealType, foodReference: foodReference)
-            }
 
-        case .lunch:
-            for foodReference in myPlanModel?.lunch ?? [] {
-                try await markFoodAs(consumed: consumed, in: mealType, foodReference: foodReference)
-            }
-
-        case .dinner:
-            for foodReference in myPlanModel?.dinner ?? [] {
-                try await markFoodAs(consumed: consumed, in: mealType, foodReference: foodReference)
-            }
-
-        case .snacks:
-            for foodReference in myPlanModel?.snacks ?? [] {
+        for foodReference in myPlanModel?[mealType] ?? [] {
+            Task {
                 try await markFoodAs(consumed: consumed, in: mealType, foodReference: foodReference)
             }
         }
@@ -294,14 +271,6 @@ extension ContentServiceHandler {
         } else {
             DebugLogger.shared.log("Exercise completion update failed: status=\(networkResponse.statusCode)", level: .warning, category: .data)
         }
-    }
-
-    func fetchExerciseCompletionDuration(id: String) -> TimeInterval {
-        if let index = userExercises.firstIndex(where: { $0.id == id }) {
-            return userExercises[index].videoDurationCompletedSeconds
-        }
-
-        return 0
     }
 
     func updateBreathingCompletionDuration(duration: TimeInterval) {
@@ -375,7 +344,7 @@ extension ContentServiceHandler {
         return min(totalCompletedDuration / totalDuration, 1.0)
     }
 
-    func fetchWeeklyProgress() async {
+    func fetchWeeklyExerciseProgress() async {
         let range = Utils.weekRange(containing: Date())
         var temp = [DayProgress]()
 
@@ -389,16 +358,14 @@ extension ContentServiceHandler {
         weeklyProgress = temp
     }
 
-    func updateWeeklyProgressForToday() async {
-        let now = Date()
+    func fetchWeeklyStepsProgress(from date: Date = .init()) async -> [StepDataPoint] {
+        let range = Utils.weekRange(containing: date)
+        var result = [StepDataPoint]()
 
-        let exerciseProgressPercentage: Double = await calculateTotalCompletionPercentage(for: now)
-        let breathingProgressPercentage: Double = fetchBreathingCompletionDuration(for: now) / breathingTargetInSeconds
-
-        let progress = (exerciseProgressPercentage + breathingProgressPercentage) / 2
-
-        if let index = weeklyProgress.firstIndex(where: { Calendar.current.isDate($0.date, inSameDayAs: now) }) {
-            weeklyProgress[index].completionPercentage = progress
+        for date in range {
+            result.append(.init(date: date, steps: await fetchStepCount(for: date)))
         }
+
+        return result
     }
 }

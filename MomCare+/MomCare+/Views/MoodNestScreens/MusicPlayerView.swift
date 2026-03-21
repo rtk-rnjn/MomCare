@@ -99,7 +99,7 @@ struct MusicPlayerView: View {
                         .foregroundColor(.white)
                         .frame(width: 56, height: 56)
                         .animation(
-                            reduceMotion ? .linear(duration: 0.05) : .spring(response: 0.25),
+                            reduceMotion ? .linear(duration: 0.05) : .easeInOut,
                             value: musicPlayerHandler.player?.timeControlStatus
                         )
                 }

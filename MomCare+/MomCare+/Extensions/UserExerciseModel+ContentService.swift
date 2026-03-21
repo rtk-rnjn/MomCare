@@ -35,3 +35,43 @@ extension UserExerciseModel {
         }
     }
 }
+
+extension [UserExerciseModel] {
+    var totalVideoDurationCompletedSeconds: TimeInterval {
+        reduce(0) { $0 + $1.videoDurationCompletedSeconds }
+    }
+
+    func fetchTotalUserExercisesCompleted() async -> Int {
+        await withTaskGroup(of: Bool.self) { group in
+            for userExercise in self {
+                group.addTask {
+                    await userExercise.isCompleted
+                }
+            }
+
+            var count = 0
+            for await completed in group where completed {
+                count += 1
+            }
+
+            return count
+        }
+    }
+
+    func fetchTotalExerciseDuration() async -> TimeInterval {
+        await withTaskGroup(of: TimeInterval.self) { group in
+            for userExercise in self {
+                group.addTask {
+                    await userExercise.exerciseModel?.videoDurationSeconds ?? 0
+                }
+            }
+
+            var total: TimeInterval = 0
+            for await duration in group {
+                total += duration
+            }
+
+            return total
+        }
+    }
+}
