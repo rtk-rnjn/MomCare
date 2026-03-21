@@ -240,7 +240,7 @@ struct ProgressCardView: View {
     }
 
     private func toggleExpansion() {
-        withAnimation(reduceMotion ? nil : .spring(response: 0.45, dampingFraction: 0.75)) {
+        withAnimation(reduceMotion ? nil : .easeInOut) {
             isExpanded.toggle()
             if isExpanded {
                 displayMode = .macros

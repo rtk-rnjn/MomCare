@@ -112,7 +112,7 @@ struct PercentageRing: View {
     // MARK: Private
 
     private static let shadowColor: Color = .black.opacity(0.1)
-    private static let shadowRadius: CGFloat = 3
+    private static let shadowRadius: CGFloat = 1
     private static let shadowOffsetMultiplier: CGFloat = shadowRadius + 2
 
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
@@ -195,11 +195,11 @@ private struct EndCapShape: Shape {
 
 extension Double {
     func clamped(to range: ClosedRange<Double>) -> Double {
-        if self.isNaN {
+        if isNaN {
             return range.lowerBound
         }
 
-        if self.isInfinite {
+        if isInfinite {
             return range.lowerBound
         }
 
