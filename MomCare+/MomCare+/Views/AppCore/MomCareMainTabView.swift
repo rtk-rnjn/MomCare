@@ -5,21 +5,21 @@ import EventKit
 import HealthKit
 
 struct RefreshError: LocalizedError {
-    nonisolated let errorDescription: String = "Failed to refresh session. Please log in again."
-    nonisolated let failureReason: String = "The session could not be refreshed, likely due to an expired token or network issue."
-    nonisolated let recoverySuggestion: String = "Please try logging in again to refresh your session and regain access to all features."
+    var errorDescription: String? { "Failed to refresh session. Please log in again." }
+    var failureReason: String? { "The session could not be refreshed, likely due to an expired token or network issue." }
+    var recoverySuggestion: String? { "Please try logging in again to refresh your session and regain access to all features." }
 }
 
 struct HealthKitError: LocalizedError {
-    nonisolated let errorDescription: String = "HealthKit Access Denied"
-    nonisolated let failureReason: String = "The app does not have permission to access HealthKit data."
-    nonisolated let recoverySuggestion: String = "Please grant HealthKit permissions in your device settings to enable health-related features."
+    var errorDescription: String? { "HealthKit Access Denied" }
+    var failureReason: String? { "The app does not have permission to access HealthKit data." }
+    var recoverySuggestion: String? { "Please grant HealthKit permissions in your device settings to enable health-related features." }
 }
 
 struct EventKitError: LocalizedError {
-    nonisolated let errorDescription: String = "Calendar Access Denied"
-    nonisolated let failureReason: String = "The app does not have permission to access Calendar data."
-    nonisolated let recoverySuggestion: String = "Please grant Calendar permissions in your device settings to enable calendar-related features."
+    var errorDescription: String? { "Calendar Access Denied" }
+    var failureReason: String? { "The app does not have permission to access Calendar data." }
+    var recoverySuggestion: String? { "Please grant Calendar permissions in your device settings to enable calendar-related features." }
 }
 
 struct MomCareMainTabView: View {
@@ -111,7 +111,7 @@ struct MomCareMainTabView: View {
             }
         }
         .errorAlert(error: $refreshError) { _ in
-            Button("Log In") {
+            Button("Login") {
                 showLoginSheet = true
             }
 

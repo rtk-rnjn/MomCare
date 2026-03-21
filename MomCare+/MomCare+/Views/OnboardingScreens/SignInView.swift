@@ -14,7 +14,6 @@ struct SignInMissingFieldValue: LocalizedError {
     }
 }
 
-
 struct SignInView: View {
 
     // MARK: Internal
@@ -22,6 +21,9 @@ struct SignInView: View {
     var body: some View {
         NavigationStack {
             signInForm
+                .safeAreaInset(edge: .top) {
+                    Color.clear.frame(height: 16)
+                }
 
             .background(
                 Color(.systemBackground)
@@ -29,7 +31,6 @@ struct SignInView: View {
             )
             .navigationTitle("Sign In")
             .navigationBarTitleDisplayMode(.large)
-            .errorAlert(error: $controlState.error)
             .toolbar {
                 ToolbarItem(placement: .bottomBar) {
                     Button {
@@ -108,13 +109,20 @@ struct SignInView: View {
             Section {
                 emailField
                 passwordField
+            } footer: {
+                if !isValidEmail(emailAddress) && !emailAddress.isEmpty {
+                    Text("Please enter a valid email address.")
+                        .foregroundColor(.red)
+                        .accessibilityLabel("Invalid email address")
+                        .accessibilityHint("The email address you entered is not valid. Please correct it before submitting.")
+                }
             }
         }
         .scrollContentBackground(.hidden)
     }
 
     private var emailField: some View {
-        TextField("Email ID", text: $emailAddress)
+        TextField("Email Address", text: $emailAddress)
             .keyboardType(.emailAddress)
             .textInputAutocapitalization(.never)
             .autocorrectionDisabled()
@@ -128,5 +136,11 @@ struct SignInView: View {
             .listRowBackground(Color(.secondarySystemBackground))
             .accessibilityLabel("Password")
             .accessibilityHint("Enter your password")
+    }
+
+    private func isValidEmail(_ email: String) -> Bool {
+        let regex = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}"
+        return NSPredicate(format: "SELF MATCHES %@", regex)
+            .evaluate(with: email)
     }
 }

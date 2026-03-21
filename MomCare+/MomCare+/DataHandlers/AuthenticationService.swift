@@ -49,20 +49,6 @@ final class AuthenticationService: ObservableObject {
         }
     }
 
-    private func handleSuccess<T: TokenContaining>(_ response: NetworkResponse<T>, expectedStatusCode: Int) -> NetworkResponse<T> {
-        let success = response.errorMessage == nil && response.statusCode == expectedStatusCode && response.data != nil
-        guard success, let data = response.data else {
-            DebugLogger.shared.log("Auth session persistence skipped: status=\(response.statusCode), error=\(response.errorMessage ?? "none")", level: .warning, category: .network)
-            hasAccessToken = false
-            return response
-        }
-
-        DebugLogger.shared.log("Persisting auth session for current user", level: .debug, category: .network)
-        persistSession(accessToken: data.accessToken, refreshToken: data.refreshToken, expiresAtTimestamp: data.expiresAtTimestamp)
-
-        return response
-    }
-
     @discardableResult
     func register(emailAddress: String, password: String) async throws -> NetworkResponse<RegistrationResponse> {
         DebugLogger.shared.log("Registering user: \(emailAddress)", level: .info, category: .network)
@@ -80,8 +66,6 @@ final class AuthenticationService: ObservableObject {
         let response = handleSuccess(networkResponse, expectedStatusCode: 200)
         if response.statusCode == 200 {
             DebugLogger.shared.log("Login successful, fetching user profile", level: .debug, category: .network)
-            _ = try await me()
-            _ = try await fetchCredentials()
 
         } else {
             DebugLogger.shared.log("Login failed: status=\(response.statusCode), error=\(response.errorMessage ?? "none")", level: .error, category: .network)
@@ -304,6 +288,20 @@ final class AuthenticationService: ObservableObject {
     // MARK: Private
 
     private let database: Database = .init()
+
+    private func handleSuccess<T: TokenContaining>(_ response: NetworkResponse<T>, expectedStatusCode: Int) -> NetworkResponse<T> {
+        let success = response.errorMessage == nil && response.statusCode == expectedStatusCode && response.data != nil
+        guard success, let data = response.data else {
+            DebugLogger.shared.log("Auth session persistence skipped: status=\(response.statusCode), error=\(response.errorMessage ?? "none")", level: .warning, category: .network)
+            hasAccessToken = false
+            return response
+        }
+
+        DebugLogger.shared.log("Persisting auth session for current user", level: .debug, category: .network)
+        persistSession(accessToken: data.accessToken, refreshToken: data.refreshToken, expiresAtTimestamp: data.expiresAtTimestamp)
+
+        return response
+    }
 
     private func persistSession(accessToken: String, refreshToken: String, expiresAtTimestamp: TimeInterval) {
         KeychainHelper.set(accessToken, forKey: .accessToken)

@@ -7,73 +7,130 @@ struct ReAuthenticationSheetView: View {
 
     var body: some View {
         NavigationStack {
-            ScrollView {
-                VStack(spacing: 0) {
-                    headerSection
-                        .padding(.top, 8)
-                        .padding(.horizontal, 28)
+            Form {
+                Section {
+                    emailField
+                    passwordField
+                } header: {
+                    Text("Client-Server out of sync")
+                } footer: {
+                    VStack(alignment: .leading, spacing: 12) {
+                        Text("Well. This is awkward. For security reasons, we require you to re-authenticate. Please enter your credentials to continue.")
 
-                    Divider()
-                        .padding(.vertical, 24)
-                        .padding(.horizontal, 28)
-
-                    credentialsSection
-                        .padding(.horizontal, 28)
-
-                    dividerWithLabel
-                        .padding(.vertical, 20)
-                        .padding(.horizontal, 28)
-
-                    appleSection
-                        .padding(.horizontal, 28)
-                        .padding(.bottom, 32)
+                        Button("Don't remember your password?") {
+                            showAppleLoginSheet = true
+                        }
+                    }
                 }
             }
+            .scrollContentBackground(.hidden)
             .scrollDismissesKeyboard(.interactively)
-            .navigationTitle("Session Expired")
+            .navigationTitle("Refresh Token Expired")
+            .navigationSubtitle("HTTP 401 Unauthorized")
             .navigationBarTitleDisplayMode(.inline)
+            .sheet(isPresented: $showAppleLoginSheet, onDismiss: {}, content: {
+                NavigationStack {
+                    VStack(spacing: 12) {
+                        VStack(spacing: 12) {
+                            Image(systemName: "person.badge.shield.checkmark.fill")
+                                .font(.largeTitle)
+                                .imageScale(.large)
+                                .foregroundStyle(.primary)
+                                .padding(.bottom, 4)
+                                .accessibilityHidden(true)
+
+                            Text("Continue with Apple")
+                                .font(.title2.weight(.semibold))
+                                .accessibilityAddTraits(.isHeader)
+
+                            Text("If you have an Apple ID linked to your account, you can use it to sign in quickly and securely without needing to enter your password.")
+                                .font(.subheadline)
+                                .foregroundStyle(.secondary)
+                                .multilineTextAlignment(.center)
+                                .fixedSize(horizontal: false, vertical: true)
+
+                        }
+                        .padding(.top, 32)
+                        .padding(.horizontal, 28)
+                        .accessibilityElement(children: .combine)
+                        .accessibilityLabel("If you have an Apple ID linked to your account, you can use it to sign in quickly and securely without needing to enter your password.")
+
+                        VStack(spacing: 12) {
+
+                            SignInWithAppleButton(.continue) { request in
+                                request.requestedScopes = []
+                            } onCompletion: { _ in
+                                Task {}
+                            }
+                            .signInWithAppleButtonStyle(.black)
+                            .frame(height: 50)
+                            .cornerRadius(24)
+                            .accessibilityLabel("Sign in with Apple")
+
+                            Button("Cancel") {
+                                showAppleLoginSheet = false
+                            }
+                            .font(.subheadline)
+                            .foregroundStyle(.secondary)
+                            .padding(.bottom, 8)
+                            .accessibilityHint("Closes this sheet")
+
+                        }
+                        .padding(.horizontal, 28)
+                        .padding(.bottom, 24)
+
+                    }
+                    .navigationBarHidden(true)
+                }
+                .presentationDetents([.medium, .fraction(0.40)])
+                .interactiveDismissDisabled()
+            })
+            .toolbar {
+                ToolbarItem(placement: .cancellationAction) {
+                    Button(role: .cancel) {
+                        dismiss()
+                    }
+                }
+
+                ToolbarItem(placement: .bottomBar) {
+                    Button {
+                        Task {}
+                    } label: {
+                        if isLoading {
+                            ProgressView()
+                                .progressViewStyle(.circular)
+                                .tint(.white)
+                        } else {
+                            Text("Sign In")
+                                .frame(maxWidth: .infinity)
+                        }
+                    }
+                    .frame(maxWidth: .infinity)
+                    .buttonStyle(.borderedProminent)
+                    .tint(MomCareAccent.primary)
+                    .controlSize(.large)
+                    .accessibilityLabel("Sign In")
+                    .accessibilityHint("Signs you in to your account")
+
+                }
+            }
         }
     }
 
     // MARK: Private
 
+    private enum Field { case email, password }
+
+    @Environment(\.dismiss) private var dismiss
+
     @State private var email: String = ""
     @State private var password: String = ""
     @State private var isPasswordVisible: Bool = false
-    @State private var isLoadingEmail: Bool = false
-    @State private var isLoadingApple: Bool = false
-    @State private var errorMessage: String? = nil
+    @State private var isLoading: Bool = false
+
+    @State private var showAppleLoginSheet: Bool = false
 
     @FocusState private var focusedField: Field?
-
-    private enum Field { case email, password }
-
-    // MARK: - Sections
-
-    private var headerSection: some View {
-        VStack(alignment: .leading, spacing: 6) {
-            Label("Client-Server out of sync", systemImage: "lock.rotation")
-                .font(.title2.weight(.semibold))
-                .foregroundStyle(.primary)
-
-            Text("Well this is awkward. Please reauthenticate to continue using the app.")
-                .font(.subheadline)
-                .foregroundStyle(.secondary)
-                .fixedSize(horizontal: false, vertical: true)
-        }
-        .frame(maxWidth: .infinity, alignment: .leading)
-    }
-
-    @ViewBuilder
-    private var signInForm: some View {
-        Form {
-            Section {
-                emailField
-                passwordField
-            }
-        }
-        .scrollContentBackground(.hidden)
-    }
 
     private var emailField: some View {
         TextField("Email ID", text: $email)
@@ -92,74 +149,7 @@ struct ReAuthenticationSheetView: View {
             .accessibilityHint("Enter your password")
     }
 
-    private var credentialsSection: some View {
-        VStack(spacing: 0) {
-            signInForm
-            
-            // Sign in button
-            Button {
-                Task { await submitEmailLogin() }
-            } label: {
-                Group {
-                    if isLoadingEmail {
-                        ProgressView()
-                            .tint(.white)
-                    } else {
-                        Text("Sign In")
-                            .font(.subheadline.weight(.semibold))
-                    }
-                }
-                .frame(maxWidth: .infinity)
-                .frame(height: 50)
-                .background(Color.accentColor,
-                            in: RoundedRectangle(cornerRadius: 12, style: .continuous))
-                .foregroundStyle(.white)
-            }
-            .buttonStyle(.plain)
-            .disabled(email.isEmpty || password.isEmpty || isLoadingEmail || isLoadingApple)
-            .animation(.default, value: isLoadingEmail)
-        }
-        .animation(.default, value: errorMessage)
-    }
+    private func submitEmailLogin() async {}
 
-    private var dividerWithLabel: some View {
-        HStack(spacing: 12) {
-            Rectangle()
-                .fill(Color(.systemGray4))
-                .frame(height: 1)
-            Text("or")
-                .font(.footnote)
-                .foregroundStyle(.secondary)
-            Rectangle()
-                .fill(Color(.systemGray4))
-                .frame(height: 1)
-        }
-    }
-
-    private var appleSection: some View {
-        VStack(spacing: 10) {
-            if isLoadingApple {
-                ProgressView()
-                    .frame(maxWidth: .infinity)
-                    .frame(height: 50)
-            } else {
-                SignInWithAppleButton(.signIn) { request in
-                    request.requestedScopes = []
-                } onCompletion: { result in
-                    Task { await submitAppleLogin(result) }
-                }
-                .frame(height: 50)
-                .cornerRadius(12)
-                .disabled(isLoadingEmail || isLoadingApple)
-            }
-        }
-    }
-
-    private func submitEmailLogin() async {
-
-    }
-
-    private func submitAppleLogin(_ result: Result<ASAuthorization, any Error>) async {
-
-    }
+    private func submitAppleLogin(_ result: Result<ASAuthorization, any Error>) async {}
 }

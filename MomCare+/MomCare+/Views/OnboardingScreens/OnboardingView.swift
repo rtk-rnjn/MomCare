@@ -99,6 +99,7 @@ struct OnboardingView: View {
                 Color("secondaryAppColor")
                     .ignoresSafeArea()
             )
+            .errorAlert(error: $controlState.error)
             .navigationDestination(isPresented: $navigateToHealthMetricsSignUp) {
                 HealthMetricsSignUpView()
             }
@@ -111,6 +112,7 @@ struct OnboardingView: View {
     @State private var navigateToHealthMetricsSignUp = false
 
     @EnvironmentObject private var authenticationService: AuthenticationService
+    @EnvironmentObject private var controlState: ControlState
 
     @State private var currentPage = 0
     @State private var showAlert = false

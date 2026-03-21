@@ -2,8 +2,11 @@ import SwiftUI
 
 struct ErrorAlertModifier<Actions: View>: ViewModifier {
 
+    // MARK: Internal
+
     @Binding var error: (any Error)?
-    let actions: ((any Error) -> Actions)
+
+    let actions: (any Error) -> Actions
 
     func body(content: Content) -> some View {
         content
@@ -17,6 +20,8 @@ struct ErrorAlertModifier<Actions: View>: ViewModifier {
                 Text(alertMessage(for: error))
             }
     }
+
+    // MARK: Private
 
     private var isPresented: Binding<Bool> {
         Binding(
@@ -65,4 +70,3 @@ extension View {
         modifier(ErrorAlertModifier(error: error, actions: actions))
     }
 }
-

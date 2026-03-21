@@ -44,54 +44,26 @@ struct OTPScreenView: View {
                     resendTimer -= 1
                 }
             }
-            .alert(alertTitle, isPresented: $showAlert) {
-                Button("OK", role: .cancel) {}
-            } message: {
-                Text(alertMessage)
-            }
             .task {
-                _ = try? await authenticationService.requestOTP()
+                do {
+                    try await authenticationService.requestOTP()
+                } catch {
+                    controlState.error = error
+                }
             }
         }
-    }
-
-    func handleSubmit() async {
-        let response = try? await authenticationService.verifyOTP(otp: otpString)
-
-        guard response?.statusCode == 200 else {
-            showVerificationError(message: response?.errorMessage)
-            return
-        }
-
-        let networkResponse = try? await authenticationService.me()
-        if networkResponse?.statusCode != 200 {
-            showUnknownError()
-            return
-        }
-        guard let user = authenticationService.userModel else {
-            showUnknownError()
-            return
-        }
-
-        if user.isProfileComplete {
-            destination = .mainApp
-        } else {
-            destination = .extendedSignUp
-        }
-
-        navigate = true
     }
 
     // MARK: Private
 
     @EnvironmentObject private var authenticationService: AuthenticationService
+    @EnvironmentObject private var controlState: ControlState
+
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     @State private var otpString = ""
     @FocusState private var isFieldFocused: Bool
-    @State private var showAlert = false
-    @State private var alertMessage = ""
-    @State private var alertTitle = ""
-    @State private var resendTimer = 0
+    @State private var resendTimer = 60
     @State private var navigate: Bool = false
 
     @State private var destination: DestinationType?
@@ -142,7 +114,13 @@ struct OTPScreenView: View {
 
     private var verifyButton: some View {
         Button {
-            Task { await handleSubmit() }
+            Task {
+                do {
+                    try await handleSubmit()
+                } catch {
+                    controlState.error = error
+                }
+            }
         } label: {
             Text("Verify")
                 .frame(maxWidth: .infinity)
@@ -167,25 +145,17 @@ struct OTPScreenView: View {
     private var resendButton: some View {
         Button {
             Task {
-                if let networkResponse = try? await authenticationService.requestOTP() {
-                    if networkResponse.statusCode == 200 {
-                        resendTimer = 30
-                        alertTitle = "OTP Sent"
-                        showAlert = true
-                    } else if let errorMessage = networkResponse.errorMessage {
-                        resendTimer = 0
-                        alertTitle = "Verification Failed"
-                        alertMessage = errorMessage
-                        showAlert = true
-                    }
+                do {
+                    try await authenticationService.requestOTP()
+                    resendTimer = 60
+                } catch {
+                    controlState.error = error
                 }
             }
         } label: {
-            Text(
-                resendTimer > 0
-                    ? "Resend in \(resendTimer)s"
-                    : "Didn't receive a code?"
-            )
+            Text(resendTimer > 0 ? "Resend in \(resendTimer)s" : "Didn't receive a code?")
+                .contentTransition(reduceMotion ? .identity : .numericText(countsDown: true))
+                .animation(reduceMotion ? nil : .easeInOut, value: resendTimer)
         }
         .foregroundStyle(resendTimer > 0 ? .secondary : Color("primaryAppColor"))
         .disabled(resendTimer > 0)
@@ -195,16 +165,21 @@ struct OTPScreenView: View {
         .accessibilityIdentifier("resendButton")
     }
 
-    private func showVerificationError(message: String?) {
-        alertTitle = "Verification Failed"
-        alertMessage = message ?? "Invalid OTP. Please try again."
-        showAlert = true
-    }
+    private func handleSubmit() async throws {
+        try await authenticationService.verifyOTP(otp: otpString)
+        try await authenticationService.me()
 
-    private func showUnknownError() {
-        alertTitle = "Verification Failed"
-        alertMessage = "An unknown error occurred. Please try again."
-        showAlert = true
+        guard let user = authenticationService.userModel else {
+            return
+        }
+
+        if user.isProfileComplete {
+            destination = .mainApp
+        } else {
+            destination = .extendedSignUp
+        }
+
+        navigate = true
     }
 
     private func sanitizeOTP(_ value: String) {
@@ -242,16 +217,14 @@ struct OTPBox: View {
                 let charIndex = otpString.index(otpString.startIndex, offsetBy: index)
                 Text(String(otpString[charIndex]))
                     .font(.title2.weight(.semibold))
+                    .contentTransition(reduceMotion ? .identity : .numericText())
+                    .animation(reduceMotion ? nil : .easeInOut, value: otpString[charIndex])
             } else if isActive {
                 Rectangle()
                     .fill(MomCareAccent.primary)
                     .frame(width: 2, height: 24)
                     .opacity(showCursor ? 1 : 0)
-                    .animation(
-                        .easeInOut(duration: 0.6)
-                            .repeatForever(autoreverses: true),
-                        value: showCursor
-                    )
+                    .animation(reduceMotion ? nil : .easeInOut(duration: 0.6).repeatForever(autoreverses: true), value: showCursor)
                     .onAppear { showCursor = true }
             }
         }
@@ -259,6 +232,8 @@ struct OTPBox: View {
     }
 
     // MARK: Private
+
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     @State private var showCursor = false
 

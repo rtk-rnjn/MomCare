@@ -441,6 +441,7 @@ private struct MacroWithArrowBadge: View {
         case up
         case down
     }
+
     let fraction: Double
     let color: Color
     let arrow: Direction

@@ -5,22 +5,45 @@ struct MomCareRootView: View {
     // MARK: Internal
 
     var body: some View {
-        if let isProfileComplete = authenticationService.userModel?.isProfileComplete, isProfileComplete {
-            unsafe MomCareMainTabView()
-                .transition(reduceMotion ? .identity : .opacity)
-                .preferredColorScheme(forceDarkMode ? .dark : (forceLightMode ? .light : nil))
+        if isLoggedIn {
+            MomCareMainTabView()
+                .preferredColorScheme(colorScheme)
+
         } else {
-            unsafe OnboardingView()
-                .transition(reduceMotion ? .identity : .opacity)
-                .preferredColorScheme(forceDarkMode ? .dark : (forceLightMode ? .light : nil))
+            OnboardingView()
+                .preferredColorScheme(colorScheme)
         }
     }
 
     // MARK: Private
 
-    @AppStorage(FeatureFlagState.forceDarkMode.rawValue, store: UserDefaults(suiteName: "group.MomCare")) private var forceDarkMode: Bool = false
-    @AppStorage(FeatureFlagState.forceLightMode.rawValue, store: UserDefaults(suiteName: "group.MomCare")) private var forceLightMode: Bool = true
+    @AppStorage(FeatureFlagState.forceDarkMode.rawValue, store: UserDefaults(suiteName: "group.MomCare"))
+    private var forceDarkMode: Bool = false
+
+    @AppStorage(FeatureFlagState.forceLightMode.rawValue, store: UserDefaults(suiteName: "group.MomCare"))
+    private var forceLightMode: Bool = true
 
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @EnvironmentObject private var authenticationService: AuthenticationService
+
+    private var isLoggedIn: Bool {
+        guard let userModel = authenticationService.userModel else {
+            return false
+        }
+
+        return userModel.isProfileComplete
+    }
+
+    private var colorScheme: ColorScheme? {
+        if forceDarkMode {
+            return .dark
+        }
+
+        if forceLightMode {
+            return .light
+        }
+
+        return nil
+    }
+
 }

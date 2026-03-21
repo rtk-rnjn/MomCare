@@ -1,7 +1,6 @@
 import SwiftUI
 import AuthenticationServices
 
-
 struct PasswordFieldsEmptyError: LocalizedError {
 
     var errorDescription: String? {
@@ -110,11 +109,25 @@ struct ProfileAccountSecurityView: View {
     var body: some View {
         List {
             Section {
-                editableRow(
-                    title: "Email Address",
-                    text: $emailAddress,
-                    keyboard: .emailAddress
-                )
+                HStack {
+                    Text("Email Address")
+
+                    Spacer()
+
+                    TextField($emailAddress.wrappedValue.isEmpty ? "Not Set" : $emailAddress.wrappedValue, text: $emailAddress)
+                        .keyboardType(.emailAddress)
+                        .multilineTextAlignment(.trailing)
+                        .autocorrectionDisabled()
+                        .textInputAutocapitalization(.never)
+                        .focused($focusedField, equals: .emailAddressField)
+                        .onChange(of: focusedField) { _, newValue in
+                            if newValue != .emailAddressField {
+                                Task {
+                                    await saveAccountInfo()
+                                }
+                            }
+                        }
+                }
 
             } header: {
                 Text("Account Information")
@@ -183,7 +196,7 @@ struct ProfileAccountSecurityView: View {
                                 .foregroundColor(.red)
                         } else {
                             Text("Connect")
-                                .foregroundColor(.green)
+                                .foregroundColor(.black)
                         }
                     }
                     .disabled(hasAppleIdentifier)
@@ -222,7 +235,7 @@ struct ProfileAccountSecurityView: View {
 
                     VStack(spacing: 12) {
 
-                        SignInWithAppleButton(.signIn) { request in
+                        SignInWithAppleButton(.continue) { request in
                             request.requestedScopes = []
                         } onCompletion: { result in
                             Task { await handleAppleSignIn(result) }
@@ -252,22 +265,6 @@ struct ProfileAccountSecurityView: View {
         }
         .navigationTitle("Account & Security")
         .navigationBarTitleDisplayMode(.inline)
-
-        .toolbar {
-            ToolbarItem(placement: .navigationBarTrailing) {
-                Button(isEditing ? "Done" : "Edit") {
-                    if reduceMotion {
-                        isEditing.toggle()
-                    } else {
-                        withAnimation {
-                            isEditing.toggle()
-                        }
-                    }
-                }
-                .buttonStyle(.borderedProminent)
-                .tint(MomCareAccent.primary)
-            }
-        }
         .onAppear {
             let credentials = authenticationService.credentials
             hasAppleIdentifier = credentials?.appleIdentifier != nil
@@ -313,13 +310,21 @@ struct ProfileAccountSecurityView: View {
 
     // MARK: Private
 
+    private enum Field {
+        case emailAddressField
+        case oldPasswordField
+        case newPasswordField
+        case confirmPasswordField
+    }
+
+    @FocusState private var focusedField: Field?
+
     @State private var emailAddress: String = ""
 
     @EnvironmentObject private var authenticationService: AuthenticationService
     @EnvironmentObject private var controlState: ControlState
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
-    @State private var isEditing = false
     @State private var isChangingPassword = false
 
     @State private var oldPassword = ""
@@ -343,6 +348,7 @@ struct ProfileAccountSecurityView: View {
             } catch {
                 controlState.error = error
             }
+
         case let .failure(error):
             controlState.error = error
         }
@@ -362,37 +368,6 @@ struct SecureFieldRow: View {
             SecureField("", text: $text)
                 .multilineTextAlignment(.trailing)
                 .accessibilityLabel(title)
-        }
-    }
-}
-
-private extension ProfileAccountSecurityView {
-
-    func editableRow(
-        title: String,
-        text: Binding<String>,
-        keyboard: UIKeyboardType
-    ) -> some View {
-
-        HStack {
-
-            Text(title)
-
-            Spacer()
-
-            if isEditing {
-
-                TextField("", text: text)
-                    .keyboardType(keyboard)
-                    .multilineTextAlignment(.trailing)
-                    .autocorrectionDisabled()
-                    .textInputAutocapitalization(.never)
-
-            } else {
-
-                Text(text.wrappedValue.isEmpty ? "Not Set" : text.wrappedValue)
-                    .foregroundColor(.secondary)
-            }
         }
     }
 }
