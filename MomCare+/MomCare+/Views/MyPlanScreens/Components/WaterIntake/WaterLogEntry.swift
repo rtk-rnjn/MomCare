@@ -39,21 +39,6 @@ struct WaterLogEntry: Identifiable, Equatable {
 @MainActor
 final class WaterStore: ObservableObject {
 
-    // MARK: Internal
-
-    static let waterQuotes: [String] = [
-        "Water is the driving force of all nature. — Leonardo da Vinci",
-        "Thousands have lived without love, not one without water. — W. H. Auden",
-        "Water is the mirror of nature.",
-        "Stay hydrated. Your baby thanks you. 🌸",
-        "In pregnancy your blood volume rises 50% — water keeps everything flowing.",
-        "Sipping water through the day eases morning nausea.",
-        "Hydration helps prevent common pregnancy headaches.",
-        "Every cell in your growing baby is mostly water.",
-        "A well-hydrated mama is a glowing mama. ✨",
-        "Drink before you're thirsty — thirst lags behind need."
-    ]
-
     static let waterTips: [(icon: String, tip: String)] = [
         ("drop.fill", "Add a slice of lemon or cucumber to make plain water more appealing."),
         ("clock.fill", "Drink a glass first thing in the morning before breakfast."),

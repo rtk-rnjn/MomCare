@@ -85,8 +85,14 @@ struct SignInView: View {
             return
         }
 
-        if authenticationService.userModel?.dateOfBirth == nil {
-            navigateToHealthMetricsSignUp = true
+        do {
+            try await authenticationService.me()
+
+            if authenticationService.userModel?.dateOfBirth == nil {
+                navigateToHealthMetricsSignUp = true
+            }
+        } catch {
+            controlState.error = error
         }
     }
 

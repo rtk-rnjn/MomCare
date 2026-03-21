@@ -21,7 +21,7 @@ struct DayCell: View {
                 .font(.body.weight(isSelected ? .semibold : .regular))
                 .foregroundColor(isSelected ? .white : (isToday ? Color.CustomColors.mutedRaspberry : .primary))
                 .frame(width: 36, height: 36)
-                .background(Circle().fill(isSelected ? Color.CustomColors.mutedRaspberry : Color.clear))
+                .background(Circle().fill(isSelected ? Color.CustomColors.mutedRaspberry : (isToday ? Color.CustomColors.mutedRaspberry.opacity(0.25) : Color.clear)))
 
         }
         .frame(maxWidth: .infinity)

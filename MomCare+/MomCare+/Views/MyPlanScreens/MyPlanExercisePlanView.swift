@@ -40,7 +40,7 @@ struct MyPlanExercisePlanView: View {
             MyPlanExerciseHelpView()
         }
         .fullScreenCover(isPresented: $showHistory) {
-            ExerciseHistory(exercises: contentServiceHandler.userExercises)
+            ExerciseHistory()
         }
         .fullScreenCover(isPresented: $showWaterLog) {
             WaterLogView()

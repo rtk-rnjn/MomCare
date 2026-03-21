@@ -219,7 +219,7 @@ struct PregnancyProgressView: View {
     var body: some View {
         VStack(spacing: 16) {
             VStack(spacing: 2) {
-                Text(pregnancyData.trimester)
+                Text("Trimester \(pregnancyData.trimester)")
                     .font(.title3)
                     .fontWeight(.semibold)
                     .accessibilityAddTraits(.isHeader)
@@ -362,7 +362,7 @@ struct PregnancyProgressView: View {
             .accessibilityLabel("Baby weight")
             .accessibilityValue(
                 trimesterData.babyWeight.map { w in
-                    w.formatted(.measurement(width: .abbreviated, usage: .personWeight, numberFormatStyle: .number.precision(.fractionLength(2))))
+                    w.formatted(.measurement(width: .wide, usage: .personWeight, numberFormatStyle: .number.precision(.fractionLength(2))))
                 } ?? "Not available"
             )
         }

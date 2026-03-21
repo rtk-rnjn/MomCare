@@ -1,4 +1,5 @@
 import SwiftUI
+import TipKit
 
 struct MealTimelineCardView: View {
 
@@ -6,8 +7,11 @@ struct MealTimelineCardView: View {
 
     let plan: MyPlanModel?
 
+    let foodItemSwipeActionsTip: FoodItemSwipeActionsTip = .init()
+
     var body: some View {
         List {
+            TipView(foodItemSwipeActionsTip)
             mealSection(
                 title: "Breakfast",
                 items: plan?.breakfast ?? [],

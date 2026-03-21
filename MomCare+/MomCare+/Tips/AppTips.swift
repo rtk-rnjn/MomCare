@@ -11,6 +11,7 @@ struct WeekCardTip: Tip {
 
     var image: Image? {
         Image(systemName: "heart.fill")
+            .foregroundStyle(.pink) as? Image
     }
 }
 
@@ -39,6 +40,48 @@ struct DietContextMenuTip: Tip {
 
     var image: Image? {
         Image(systemName: "chart.bar.xaxis")
+    }
+}
+
+struct FoodItemSwipeActionsTip: Tip {
+    var title: Text {
+        Text("Manage Food Log")
+    }
+
+    var message: Text? {
+        Text("Swipe left or right to delete or mark food as consumed, keeping your nutrition log accurate and up-to-date.")
+    }
+
+    var image: Image? {
+        Image(systemName: "hand.draw")
+    }
+}
+
+struct FoodItemContextMenuTip: Tip {
+    var title: Text {
+        Text("Food Details")
+    }
+
+    var message: Text? {
+        Text("Long-press a food item to view detailed nutrition info, edit servings, or add notes about how it made you feel.")
+    }
+
+    var image: Image? {
+        Image(systemName: "hand.tap")
+    }
+}
+
+struct AddFoodButtonTip: Tip {
+    var title: Text {
+        Text("Add Food Entry")
+    }
+
+    var message: Text? {
+        Text("Tap the 'Add Food' button to quickly log meals, snacks, and beverages, helping you track your nutrition throughout pregnancy.")
+    }
+
+    var image: Image? {
+        Image(systemName: "plus.circle")
     }
 }
 

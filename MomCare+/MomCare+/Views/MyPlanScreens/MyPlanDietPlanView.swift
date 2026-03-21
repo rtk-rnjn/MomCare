@@ -71,9 +71,7 @@ struct MyPlanDietPlanView: View {
             WaterLogView()
         }
         .fullScreenCover(isPresented: $showHistory) {
-            if let mealPlan = contentServiceHandler.myPlanModel {
-                DietPlanHistory(plan: mealPlan)
-            }
+            DietPlanHistory()
         }
         .toolbar {
             ToolbarItem(placement: .confirmationAction) {
