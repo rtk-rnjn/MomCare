@@ -15,22 +15,36 @@ struct BaseInfoSheetLayout<HeaderIcon: View>: View {
     @ViewBuilder var headerIcon: HeaderIcon
 
     var body: some View {
-        VStack(spacing: 0) {
-            headerSection
-
-            Divider()
-
-            ScrollView {
+        ZStack(alignment: .topTrailing){
+            VStack(spacing: 0) {
+                headerSection
+                    .padding(.trailing, 16)
+                
+                Divider().padding(.horizontal)
+                
                 VStack(alignment: .leading, spacing: 18) {
                     aboutSection
                     statsSection
                     benefitsSection
                 }
-                .padding(20)
+                .padding(16)
+                .padding(.bottom, 16)
             }
+            .background(Color(.systemBackground))
+            .clipShape(RoundedRectangle(cornerRadius: 24, style: .continuous))
+            
+            
+            Button(action: onClose) {
+                Image(systemName: "xmark")
+                    .font(.subheadline.weight(.semibold))
+                    .foregroundColor(.secondary)
+                    .padding(8)
+                    .background(Circle().fill(Color(.systemGray6)))
+            }
+            .accessibilityLabel("Close")
+            .frame(minWidth: 44, minHeight: 44)
+            .padding()
         }
-        .background(Color(.systemBackground))
-        .clipShape(RoundedRectangle(cornerRadius: 24, style: .continuous))
     }
 }
 
@@ -48,7 +62,7 @@ private extension BaseInfoSheetLayout {
             VStack(alignment: .leading, spacing: 4) {
                 Text(title)
                     .font(.headline)
-
+                    .padding(.vertical, 8)
                 Text(subtitle)
                     .font(.caption.weight(.medium))
                     .foregroundColor(accentColor)
@@ -59,20 +73,9 @@ private extension BaseInfoSheetLayout {
                             .fill(pastelColor)
                     )
             }
-
             Spacer()
-
-            Button(action: onClose) {
-                Image(systemName: "xmark")
-                    .font(.subheadline.weight(.semibold))
-                    .foregroundColor(.secondary)
-                    .padding(8)
-                    .background(Circle().fill(Color(.systemGray6)))
-            }
-            .accessibilityLabel("Close")
-            .frame(minWidth: 44, minHeight: 44)
         }
-        .padding(20)
+        .padding(16)
     }
 
     var aboutSection: some View {
@@ -89,10 +92,12 @@ private extension BaseInfoSheetLayout {
     }
 
     var statsSection: some View {
-        HStack(spacing: 0) {
+        HStack(alignment: .top, spacing: 0) {
+            Spacer()
             StatItem(icon: "clock", value: duration, accentColor: accentColor)
             StatItem(icon: "flame", value: intensity, accentColor: accentColor)
             StatItem(icon: "target", value: target, accentColor: accentColor)
+            Spacer()
         }
     }
 
@@ -111,7 +116,7 @@ private extension BaseInfoSheetLayout {
                     Text(tag)
                         .font(.caption.weight(.medium))
                         .foregroundColor(accentColor)
-                        .padding(.horizontal, 10)
+                        .padding(.horizontal, 8)
                         .padding(.vertical, 6)
                         .frame(maxWidth: .infinity)
                         .background(
@@ -149,6 +154,7 @@ struct ExerciseInfoSheet: View {
                 Image(uiImage: uiImage)
                     .resizable()
                     .scaledToFit()
+                    .frame(width: 120, height: 120)
             } else {
                 Image(systemName: "figure.strengthtraining.traditional")
                     .font(.title2)
@@ -229,7 +235,7 @@ private struct StatItem: View {
                 .font(.caption2.weight(.medium))
                 .foregroundColor(.secondary)
                 .multilineTextAlignment(.center)
-                .lineLimit(2)
+//                .lineLimit(2)
         }
         .frame(maxWidth: .infinity)
         .accessibilityElement(children: .ignore)

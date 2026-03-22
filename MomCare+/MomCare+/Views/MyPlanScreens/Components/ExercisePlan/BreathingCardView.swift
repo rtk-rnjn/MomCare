@@ -7,8 +7,8 @@ struct BreathingCardView: View {
     var onInfo: () -> Void = {}
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 0) {
-            HStack(spacing: 16) {
+        ZStack(alignment: .topTrailing) {
+            HStack(alignment: .bottom, spacing: 16) {
                 VStack(alignment: .leading, spacing: 6) {
                     Text("Beginner")
                         .font(.caption.weight(.medium))
@@ -47,33 +47,32 @@ struct BreathingCardView: View {
                         BreathingExerciseView()
                     }
                 }
+                .padding(16)
 
                 Spacer()
 
-                VStack(alignment: .trailing) {
-                    Button(action: onInfo) {
-                        Image(systemName: "info.circle.fill")
-                            .font(.title3)
-                            .foregroundColor(darkAccentColor.opacity(0.5))
-                    }
-                    .accessibilityLabel("Breathing exercise information")
-                    .accessibilityHint("Shows details about this breathing exercise")
-                    .frame(minWidth: 44, minHeight: 44)
+                ZStack {
+                    RoundedRectangle(cornerRadius: 18)
+                        .fill(reduceTransparency ? accentColor : accentColor.opacity(0.25))
 
-                    ZStack {
-                        RoundedRectangle(cornerRadius: 18)
-                            .fill(reduceTransparency ? accentColor : accentColor.opacity(0.25))
-
-                        Image(systemName: "lungs.fill")
-                            .font(.title)
-                            .foregroundColor(darkAccentColor)
-                    }
-                    .frame(width: 80, height: 80)
-                    .accessibilityHidden(true)
+                    Image(systemName: "lungs.fill")
+                        .font(.title)
+                        .foregroundColor(darkAccentColor)
                 }
+                .frame(width: 80, height: 80)
+                .padding(16)
+                .accessibilityHidden(true)
             }
+
+            Button(action: onInfo) {
+                Image(systemName: "info.circle.fill")
+                    .font(.title3)
+                    .foregroundColor(darkAccentColor.opacity(0.5))
+            }
+            .accessibilityLabel("Breathing exercise information")
+            .accessibilityHint("Shows details about this breathing exercise")
+            .frame(width: 44, height: 44)
         }
-        .padding(18)
         .background(
             RoundedRectangle(cornerRadius: 20)
                 .fill(Color(hex: "D0E1F0"))
@@ -105,5 +104,4 @@ struct BreathingCardView: View {
         completionProgress = contentServiceHandler.fetchBreathingCompletionDuration(for: Date()) / contentServiceHandler.breathingTargetInSeconds
         completionProgress = min(completionProgress, 1.0)
     }
-
 }

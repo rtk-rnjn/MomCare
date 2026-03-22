@@ -10,13 +10,13 @@ struct ExerciseCardView: View {
     let onVideoDismiss: (AVPlayer) async -> Void
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 0) {
-
-            HStack(spacing: 16) {
-                VStack(alignment: .leading, spacing: 6) {
+        ZStack(alignment: .topTrailing) {
+            HStack(alignment: .bottom, spacing: 16) {
+                VStack(alignment: .leading, spacing: 0) {
                     Text(exercise?.level.rawValue ?? "")
                         .font(.caption.weight(.medium))
                         .foregroundColor(.secondary)
+                        .padding(.bottom, 8)
 
                     Text(exercise?.name ?? "Exercise")
                         .font(.title3.weight(.bold))
@@ -24,7 +24,7 @@ struct ExerciseCardView: View {
                     Text("\(Int(completionProgress * 100))% completed")
                         .font(.caption.weight(.medium))
                         .foregroundColor(.secondary)
-                        .padding(.bottom, 10)
+                        .padding(.bottom, 12)
                         .contentTransition(reduceMotion ? .identity : .numericText())
                         .animation(reduceMotion ? nil : .easeInOut, value: completionProgress)
 
@@ -39,7 +39,6 @@ struct ExerciseCardView: View {
                                 .contentTransition(reduceMotion ? .identity : .interpolate)
                                 .animation(reduceMotion ? nil : .easeInOut, value: completionProgress)
                                 .accessibilityHidden(true)
-
                         }
                         .font(.subheadline.weight(.semibold))
                         .foregroundColor(.white)
@@ -58,41 +57,41 @@ struct ExerciseCardView: View {
                         }
                     }
                 }
+                .padding(16)
 
                 Spacer()
-                VStack(alignment: .trailing) {
-                    Button(action: onTapInfo) {
-                        Image(systemName: "info.circle.fill")
-                            .font(.title3)
-                            .foregroundColor(darkAccentColor.opacity(0.5))
-                    }
-                    .accessibilityLabel("Exercise information")
-                    .accessibilityHint("Shows details about this exercise")
-                    .frame(minWidth: 44, minHeight: 44)
+                ZStack {
+                    RoundedRectangle(cornerRadius: 18)
+                        .fill(reduceTransparency ? accentColor : accentColor.opacity(0.25))
 
-                    ZStack {
-                        RoundedRectangle(cornerRadius: 18)
-                            .fill(reduceTransparency ? accentColor : accentColor.opacity(0.25))
-
-                        if let uiImage {
-                            Image(uiImage: uiImage)
-                                .resizable()
-                                .scaledToFill()
-                                .frame(width: 80, height: 80)
-                                .clipped()
-                                .clipShape(RoundedRectangle(cornerRadius: 18))
-                        } else {
-                            Image(systemName: "figure.strengthtraining.traditional")
-                                .font(.title)
-                                .foregroundColor(darkAccentColor)
-                        }
+                    if let uiImage {
+                        Image(uiImage: uiImage)
+                            .resizable()
+                            .scaledToFill()
+                            .frame(width: 80, height: 80)
+                            .clipped()
+                            .clipShape(RoundedRectangle(cornerRadius: 18))
+                    } else {
+                        Image(systemName: "figure.strengthtraining.traditional")
+                            .font(.title)
+                            .foregroundColor(darkAccentColor)
                     }
-                    .frame(width: 80, height: 80)
-                    .accessibilityHidden(true)
                 }
+                .frame(width: 80, height: 80)
+                .padding(16)
+                .accessibilityHidden(true)
             }
+
+            Button(action: onTapInfo) {
+                Image(systemName: "info.circle.fill")
+                    .font(.title3)
+                    .foregroundColor(darkAccentColor.opacity(0.5))
+            }
+            .accessibilityLabel("Exercise information")
+            .accessibilityHint("Shows details about this exercise")
+            .frame(width: 44, height: 44)
+            .padding(.trailing, 8)
         }
-        .padding(18)
         .background(
             RoundedRectangle(cornerRadius: 20)
                 .fill(Color(hex: "F0D5C8"))
@@ -143,9 +142,7 @@ struct ExerciseCardView: View {
                 ToolbarItem(placement: .cancellationAction) {
                     Button(role: .cancel) {
                         defer { startExercisePlayer = false }
-                        guard let avPlayer else {
-                            return
-                        }
+                        guard let avPlayer else { return }
 
                         avPlayer.pause()
 
