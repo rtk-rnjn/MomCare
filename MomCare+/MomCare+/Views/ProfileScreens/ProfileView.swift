@@ -76,7 +76,6 @@ struct ProfileView: View {
                                 rowView(row)
                             }
                             .accessibilityHint("Navigate to \(row.title)")
-                            .popoverTip(row.type == .personalInfo ? profileEditTip : nil, arrowEdge: .trailing)
                         }
                     }
                 }
@@ -111,7 +110,6 @@ struct ProfileView: View {
     // MARK: Private
 
     @State private var showSignOutAlert = false
-    @State private var profileEditTip: ProfileEditTip = .init()
 
     @EnvironmentObject private var authenticationService: AuthenticationService
     @EnvironmentObject private var controlState: ControlState

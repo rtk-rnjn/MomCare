@@ -153,9 +153,6 @@ struct TriTrackView: View {
     @State private var showingAllReminders: Bool = false
     @State private var showingAllSymptoms: Bool = false
 
-    @State private var triTrackAddSymptomTip: TriTrackAddSymptomTip = .init()
-    @State private var triTrackCalendarTip: TriTrackCalendarTip = .init()
-
     private var currentProgress: PregnancyProgress {
         authenticationService.userModel?.pregnancyProgress(withReferenceDate: selectedDate) ?? PregnancyProgress(week: 0, day: 0, trimester: "-", isValid: false)
     }
@@ -205,11 +202,9 @@ struct TriTrackView: View {
 
         case .events:
             TriTrackCalendarItemContentView(selectedDate: $selectedDate)
-                .popoverTip(triTrackCalendarTip, arrowEdge: .top)
 
         case .symptoms:
             TriTrackSymptomsContentView(selectedDate: $selectedDate)
-                .popoverTip(triTrackAddSymptomTip, arrowEdge: .top)
         }
     }
 }

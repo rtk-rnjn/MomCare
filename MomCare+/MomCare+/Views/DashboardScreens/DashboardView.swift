@@ -39,7 +39,6 @@ struct DashboardView: View {
                     controlState.selectedTab = .triTrack
                     controlState.triTrackSegment = .meAndBaby
                 }
-                .popoverTip(weekCardTip, arrowEdge: .top)
 
             if let event = eventKitHandler.onGoingOrMostRecentUpcomingEvent {
                 DashboardEventCardView(upcomingEvent: event)
@@ -139,8 +138,6 @@ struct DashboardView: View {
     @EnvironmentObject private var controlState: ControlState
 
     @State private var selectedEvent: EKCalendarItemWrapper?
-
-    @State private var weekCardTip: WeekCardTip = .init()
 }
 
 extension View {

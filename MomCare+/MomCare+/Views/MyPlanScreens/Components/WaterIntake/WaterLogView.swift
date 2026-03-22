@@ -40,10 +40,6 @@ struct WaterLogView: View {
                                 .padding(.top, 18)
                                 .padding(.horizontal, 16)
                                 .padding(.bottom, 8)
-
-                            TipView(waterLogAddEntryTip)
-                                .padding(.horizontal, 16)
-                                .padding(.bottom, 36)
                         }
                     }
                 }
@@ -125,12 +121,7 @@ struct WaterLogView: View {
         .onChange(of: selectedDate) {
             Task { await store.fetchWater(for: selectedDate) }
         }
-        .onChange(of: store.error) {
-            if let error = store.error {
-                controlState.error = error
-                store.error = nil
-            }
-        }
+        .errorAlert(error: $store.error)
     }
 
     // MARK: Private
@@ -151,7 +142,6 @@ struct WaterLogView: View {
     @State private var feedbackOffset: CGFloat = 0
     @State private var feedbackOpacity: Double = 0
     @State private var selectedDate: Date = .init()
-    @State private var waterLogAddEntryTip: WaterLogAddEntryTip = .init()
 
     private let quickAmounts: [(label: String, ml: Double)] = [
         ("+150ml", 150), ("+200ml", 200), ("+300ml", 300), ("+500ml", 500)

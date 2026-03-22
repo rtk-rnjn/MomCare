@@ -60,7 +60,6 @@ struct WaterLogListView: View {
     @State private var showAddEntry = false
     @State private var tipIndex = 0
     @State private var quoteIndex = 0
-    @State private var waterLogSwipeActionsTip: WaterLogSwipeActionsTip = .init()
 
     private var summaryHeader: some View {
         HStack(spacing: 0) {
@@ -148,8 +147,6 @@ struct WaterLogListView: View {
                     .foregroundStyle(.secondary)
             }
             .padding(.horizontal, 2)
-
-            TipView(waterLogSwipeActionsTip)
 
             if store.todayLogs.isEmpty {
                 emptyState

@@ -54,7 +54,6 @@ struct MoodNestView: View {
                         .accessibilityValue(moodNestViewModel.mood.rawValue)
                         .accessibilityHint("Swipe left or right to change your mood")
                         .accessibilityIdentifier("moodSlider")
-                        .popoverTip(moodSliderTip, arrowEdge: .bottom)
 
                     Button {
                         UIImpactFeedbackGenerator(style: .soft).impactOccurred()
@@ -89,6 +88,4 @@ struct MoodNestView: View {
     @StateObject private var moodNestViewModel: MoodNestViewModel = .init()
     @EnvironmentObject private var controlState: ControlState
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
-
-    @State private var moodSliderTip: MoodSliderTip = .init()
 }

@@ -55,7 +55,6 @@ struct DashboardEventCardView: View {
                     }
                     .padding(.leading, 16)
                     .buttonStyle(.plain)
-                    .popoverTip(addEventTip, arrowEdge: .bottom)
 
                     Spacer()
 
@@ -114,7 +113,5 @@ struct DashboardEventCardView: View {
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     @State private var showEventSheet: Bool = false
-
-    @State private var addEventTip: AddEventTip = .init()
 
 }
