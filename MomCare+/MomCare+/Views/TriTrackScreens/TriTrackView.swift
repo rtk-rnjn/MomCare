@@ -453,10 +453,16 @@ struct ComparisonView: View {
     var body: some View {
         HStack(spacing: 0) {
             VStack(alignment: .center) {
-                Text(fruitEmoji)
-                    .font(.system(size: size)) // exception case. i know we're avoiding .system(size:) font
-                    .contentTransition(reduceMotion ? .identity : .interpolate)
-                    .animation(reduceMotion ? nil : .easeInOut, value: fruitEmoji)
+                let circleSize = min(110, UIScreen.current.bounds.width * 0.28)
+                if let imageName = trimesterData.imageUri {
+                    Image(imageName)
+                        .resizable()
+                        .scaledToFit()
+                        .offset(x: 10)
+                        .frame(width: circleSize * 0.9, height: circleSize * 0.9)
+                        .contentTransition(reduceMotion ? .identity : .opacity)
+                        .animation(reduceMotion ? nil : .easeInOut, value: imageName)
+                }
 
             }
             .frame(maxWidth: .infinity)
@@ -497,27 +503,6 @@ struct ComparisonView: View {
     // MARK: Private
 
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
-
-    private var fruitEmoji: String {
-        let fruit = trimesterData.fruitComparison.lowercased()
-
-        let emojiMap: [String: String] = [
-            "poppy seed": "🫘", "sesame seed": "🫘", "lentil seed": "🫘",
-            "blueberry": "🫐", "raspberry": "🫐", "grape": "🍇",
-            "date": "🫘", "lime": "🍋", "plum": "🍑", "kiwi": "🥝",
-            "peach": "🍑", "pear": "🍐", "avocado": "🥑", "orange": "🍊",
-            "sweet potato": "🍠", "mango": "🥭", "banana": "🍌",
-            "pomegranate": "🫐", "papaya": "🍈", "grapefruit": "🍊",
-            "cantaloupe": "🍈", "cauliflower": "🥬", "lettuce": "🥬",
-            "turnip": "🥔", "eggplant": "🍆", "acorn squash": "🎃",
-            "cabbage": "🥬", "coconut": "🥥", "jicama": "🥔",
-            "pomelo": "🍊", "butternut squash": "🎃", "pineapple": "🍍",
-            "honeydew": "🍈", "small jackfruit": "🍈", "swiss chard": "🥬",
-            "small pumpkin": "🎃", "watermelon": "🍉"
-        ]
-
-        return emojiMap[fruit] ?? "🫘"
-    }
 
 }
 
