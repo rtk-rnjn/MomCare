@@ -1,8 +1,8 @@
 import Foundation
 
-protocol APIError: LocalizedError {}
+protocol APIError: Error, LocalizedError {}
 
-final class BadRequestError: @preconcurrency APIError {
+struct BadRequestError: @preconcurrency APIError {
 
     var errorDescription: String? {
         "Invalid request."
@@ -17,7 +17,7 @@ final class BadRequestError: @preconcurrency APIError {
     }
 }
 
-final class UnauthorizedError: @preconcurrency APIError {
+struct UnauthorizedError: @preconcurrency APIError {
 
     var errorDescription: String? {
         "Authentication failed."
@@ -32,7 +32,7 @@ final class UnauthorizedError: @preconcurrency APIError {
     }
 }
 
-final class ForbiddenError: @preconcurrency APIError {
+struct ForbiddenError: @preconcurrency APIError {
 
     var errorDescription: String? {
         "Access denied."
@@ -47,7 +47,7 @@ final class ForbiddenError: @preconcurrency APIError {
     }
 }
 
-final class NotFoundError: @preconcurrency APIError {
+struct NotFoundError: @preconcurrency APIError {
 
     var errorDescription: String? {
         "Resource not found."
@@ -62,7 +62,7 @@ final class NotFoundError: @preconcurrency APIError {
     }
 }
 
-final class ConflictError: @preconcurrency APIError {
+struct ConflictError: @preconcurrency APIError {
 
     var errorDescription: String? {
         "Conflict occurred."
@@ -77,7 +77,7 @@ final class ConflictError: @preconcurrency APIError {
     }
 }
 
-final class AccountDeletedError: @preconcurrency APIError {
+struct AccountDeletedError: @preconcurrency APIError {
 
     var errorDescription: String? {
         "Account deleted."
@@ -92,7 +92,7 @@ final class AccountDeletedError: @preconcurrency APIError {
     }
 }
 
-final class ValidationError: @preconcurrency APIError {
+struct ValidationError: @preconcurrency APIError {
 
     var errorDescription: String? {
         "Invalid input."
@@ -107,7 +107,7 @@ final class ValidationError: @preconcurrency APIError {
     }
 }
 
-final class AccountLockedError: @preconcurrency APIError {
+struct AccountLockedError: @preconcurrency APIError {
 
     var errorDescription: String? {
         "Account locked."
@@ -122,7 +122,7 @@ final class AccountLockedError: @preconcurrency APIError {
     }
 }
 
-final class NetworkError: @preconcurrency APIError {
+struct NetworkError: @preconcurrency APIError {
 
     var errorDescription: String? {
         "Network connection failed."
@@ -137,7 +137,7 @@ final class NetworkError: @preconcurrency APIError {
     }
 }
 
-final class UnknownAPIError: @preconcurrency APIError {
+struct UnknownAPIError: @preconcurrency APIError {
 
     var errorDescription: String? {
         "Something went wrong."
@@ -154,7 +154,7 @@ final class UnknownAPIError: @preconcurrency APIError {
 
 enum APIErrorResolver {
 
-    static func error(from statusCode: Int) -> any LocalizedError {
+    static func error(from statusCode: Int, with error: HTTPErrorResponse? = nil) -> any LocalizedError {
 
         switch statusCode {
 
@@ -177,7 +177,7 @@ enum APIErrorResolver {
             return AccountDeletedError()
 
         case 422:
-            return ValidationError()
+            return error ?? ValidationError()
 
         case 423:
             return AccountLockedError()

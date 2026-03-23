@@ -156,11 +156,8 @@ private extension ProfileNotificationsView {
         let trigger = UNCalendarNotificationTrigger(dateMatching: components, repeats: true)
         let request = UNNotificationRequest(identifier: NotificationID.mealReminder, content: content, trigger: trigger)
 
-        UNUserNotificationCenter.current().add(request) { error in
-            if let error {
+        UNUserNotificationCenter.current().add(request) { _ in
 
-                DebugLogger.shared.log("Failed to schedule meal reminder: \(error.localizedDescription)", level: .error, category: .error)
-            }
         }
     }
 
@@ -181,10 +178,8 @@ private extension ProfileNotificationsView {
         let trigger = UNCalendarNotificationTrigger(dateMatching: components, repeats: true)
         let request = UNNotificationRequest(identifier: NotificationID.exerciseReminder, content: content, trigger: trigger)
 
-        UNUserNotificationCenter.current().add(request) { error in
-            if let error {
-                DebugLogger.shared.log("Failed to schedule exercise reminder: \(error.localizedDescription)", level: .error, category: .error)
-            }
+        UNUserNotificationCenter.current().add(request) { _ in
+
         }
     }
 

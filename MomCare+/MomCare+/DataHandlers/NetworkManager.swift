@@ -15,24 +15,18 @@ struct NetworkResponse<T: Codable>: Codable {
     enum CodingKeys: String, CodingKey {
         case data
         case statusCode
-        case errorMessage
     }
 
-    var data: T?
+    var data: T
     var statusCode: Int
-    var errorMessage: String?
     var responseHeaders: [AnyHashable: Any]?
 
-    var localizedError: (any LocalizedError)? {
-        if errorMessage == nil {
-            return nil
-        }
-
+    var localizedError: any LocalizedError {
         return APIErrorResolver.error(from: statusCode)
     }
 
     var success: Bool {
-        return (200...299).contains(statusCode) && errorMessage == nil
+        return (200...299).contains(statusCode)
     }
 }
 
@@ -86,13 +80,12 @@ class NetworkManager {
         headers?.forEach { request.setValue($0.value, forHTTPHeaderField: $0.key) }
 
         logger.info("Starting streamed request to \(finalURL.absoluteString) with method \(method.rawValue)")
-        DebugLogger.shared.log("Starting streamed request to \(finalURL.absoluteString) with method \(method.rawValue)", level: .info, category: .network)
 
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
             if let error {
                 DispatchQueue.main.async {
                     logger.error("Error fetching streamed data from \(finalURL.absoluteString): \(error.localizedDescription)")
-                    DebugLogger.shared.log("Error fetching streamed data from \(finalURL.absoluteString): \(error.localizedDescription)", level: .error, category: .network)
+
                 }
                 return
             }
@@ -107,7 +100,7 @@ class NetworkManager {
                 DispatchQueue.main.async {
                     if let jsonData = line.data(using: .utf8), let item: T = try? jsonData.decodeUsingJSONDecoder() {
                         logger.debug("Received streamed item from \(finalURL.absoluteString): \(item, privacy: .public)")
-                        DebugLogger.shared.log("Received streamed item from \(finalURL.absoluteString): \(item)", level: .debug, category: .network)
+
                         onItem?(item)
                     }
                 }
@@ -166,7 +159,6 @@ class NetworkManager {
 
         let url = request.url?.absoluteString ?? "unknown URL"
         logger.info("Performing \(request.httpMethod ?? "UNKNOWN") request to \(url)")
-        DebugLogger.shared.log("Performing \(request.httpMethod ?? "UNKNOWN") request to \(url)", level: .info, category: .network)
 
         var attempts = 5
 
@@ -198,15 +190,11 @@ class NetworkManager {
                 statusCode = (response as? HTTPURLResponse)?.statusCode
                 responseBody = String(data: data, encoding: .utf8)
 
-                let networkResponse: NetworkResponse<T> = try await handleRequest(
+                return try await handleRequest(
                     response: response,
                     data: data,
                     url: url
                 )
-
-                errorMessage = networkResponse.errorMessage
-
-                return networkResponse
             } catch {
 
                 attempts -= 1
@@ -241,18 +229,18 @@ class NetworkManager {
     private func handleRequest<T: Codable>(response: URLResponse, data: Data, url: String) async throws -> NetworkResponse<T> {
         guard let httpResponse = response as? HTTPURLResponse else {
             logger.error("Invalid response for request to \(url)")
-            DebugLogger.shared.log("Invalid response for request to \(url)", level: .error, category: .network)
+
             throw URLError(.badServerResponse)
         }
 
         logger.info("Received response with status code \(httpResponse.statusCode) for request to \(url)")
-        DebugLogger.shared.log("Received response with status code \(httpResponse.statusCode) for request to \(url)", level: .info, category: .network)
 
-        if httpResponse.statusCode >= 400, let _: HTTPErrorResponse = try? data.decodeUsingJSONDecoder() {
-            throw APIErrorResolver.error(from: httpResponse.statusCode)
+        if httpResponse.statusCode >= 400 {
+            let errorResponse: HTTPErrorResponse = try data.decodeUsingJSONDecoder()
+            throw APIErrorResolver.error(from: httpResponse.statusCode, with: errorResponse)
         }
 
-        let maybeData: T? = try data.decodeUsingJSONDecoder()
+        let maybeData: T = try data.decodeUsingJSONDecoder()
         return NetworkResponse(data: maybeData, statusCode: httpResponse.statusCode)
     }
 }

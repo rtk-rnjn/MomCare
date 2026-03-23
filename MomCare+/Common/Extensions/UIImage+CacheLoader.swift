@@ -1,12 +1,13 @@
 import UIKit
 
 extension UIImage {
+    @MainActor
     static func getOrFetch(from urlString: String) async throws -> UIImage {
         guard let url = URL(string: urlString) else {
             throw URLError(.badURL)
         }
 
-        if let cached = Database().image(for: url) {
+        if let cached = Database.shared.image(for: url) {
             return cached
         }
 
@@ -16,7 +17,7 @@ extension UIImage {
             throw URLError(.cannotDecodeContentData)
         }
 
-        Database().storeUIImage(image, for: url)
+        Database.shared.storeUIImage(image, for: url)
 
         return image
     }

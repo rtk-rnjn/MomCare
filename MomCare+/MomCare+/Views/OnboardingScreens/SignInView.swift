@@ -30,6 +30,7 @@ struct SignInView: View {
                     .ignoresSafeArea()
             )
             .navigationTitle("Sign In")
+            .errorAlert(error: $controlState.error)
             .navigationBarTitleDisplayMode(.large)
             .toolbar {
                 ToolbarItem(placement: .bottomBar) {
@@ -75,7 +76,8 @@ struct SignInView: View {
             try await authenticationService.login(emailAddress: emailAddress, password: password)
             let credentialsResponse = try await authenticationService.fetchCredentials()
 
-            if let verified = credentialsResponse.data?.verified, !verified {
+            let verified = credentialsResponse.data.verified
+            if !verified {
                 navigateToOTPVerification = true
                 return
             }

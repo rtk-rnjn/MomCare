@@ -90,7 +90,7 @@ struct TriTrackView: View {
                         Button {
                             controlState.showingTriTrackHelp = true
                         } label: {
-                            Label("Legend", systemImage: "questionmark.circle")
+                            Label("Guide", systemImage: "questionmark.circle")
                         }
                     } label: {
                         Image(systemName: "ellipsis")
@@ -361,8 +361,8 @@ struct PregnancyProgressView: View {
             .accessibilityElement(children: .ignore)
             .accessibilityLabel("Baby weight")
             .accessibilityValue(
-                trimesterData.babyWeight.map { w in
-                    w.formatted(.measurement(width: .wide, usage: .personWeight, numberFormatStyle: .number.precision(.fractionLength(2))))
+                trimesterData.babyWeight.map { weight in
+                    weight.formatted(.measurement(width: .wide, usage: .personWeight, numberFormatStyle: .number.precision(.fractionLength(2))))
                 } ?? "Not available"
             )
         }

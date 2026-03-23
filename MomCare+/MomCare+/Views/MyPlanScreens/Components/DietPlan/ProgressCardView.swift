@@ -10,7 +10,7 @@ struct ProgressCardView: View {
 
     // MARK: Internal
 
-    let plan: MyPlanModel?
+    let plan: MealPlanModel?
 
     let calorieIntake: Measurement<UnitEnergy>?
     let calorieGoal: Measurement<UnitEnergy>?
@@ -381,7 +381,7 @@ private struct ExpandedDetailView: View {
 
     let caloriesConsumed: Measurement<UnitEnergy>?
     let caloriesTarget: Measurement<UnitEnergy>?
-    let plan: MyPlanModel?
+    let plan: MealPlanModel?
 
     let sugarIntake: Measurement<UnitMass>?
     let sugarGoal: Measurement<UnitMass>?

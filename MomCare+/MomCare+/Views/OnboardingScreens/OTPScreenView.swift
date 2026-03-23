@@ -10,6 +10,30 @@ struct OTPScreenView: View {
 
     // MARK: Internal
 
+    let isSheet: Bool = false
+
+    var redactedDisplayEmail: String {
+        guard
+            let email = authenticationService.credentials?.emailAddress,
+            let atIndex = email.firstIndex(of: "@")
+        else {
+            return "your email"
+        }
+
+        let name = email[..<atIndex]
+        let domain = email[atIndex...]
+
+        guard name.count > 4 else {
+            return "\(name.prefix(1))****\(domain)"
+        }
+
+        let prefix = name.prefix(2)
+        let suffix = name.suffix(2)
+        let stars = String(repeating: "*", count: max(4, name.count - 4))
+
+        return "\(prefix)\(stars)\(suffix)\(domain)"
+    }
+
     var body: some View {
         NavigationStack {
             VStack(spacing: 24) {
@@ -20,15 +44,13 @@ struct OTPScreenView: View {
                     .multilineTextAlignment(.center)
                     .padding(.top, 16)
 
-                Text("Enter the code sent to your email address")
+                Text("Enter the code sent to \(redactedDisplayEmail)")
                     .font(.subheadline)
                     .foregroundStyle(.secondary)
                     .multilineTextAlignment(.center)
                     .padding(.horizontal)
 
                 otpInputView
-
-                verifyButton
 
                 resendButton
 
@@ -44,6 +66,11 @@ struct OTPScreenView: View {
                     resendTimer -= 1
                 }
             }
+            .toolbar {
+                ToolbarItem(placement: .bottomBar) {
+                    verifyButton
+                }
+            }
             .task {
                 do {
                     try await authenticationService.requestOTP()
@@ -55,6 +82,8 @@ struct OTPScreenView: View {
     }
 
     // MARK: Private
+
+    @Environment(\.dismiss) private var dismiss
 
     @EnvironmentObject private var authenticationService: AuthenticationService
     @EnvironmentObject private var controlState: ControlState
@@ -125,6 +154,7 @@ struct OTPScreenView: View {
             Text("Verify")
                 .frame(maxWidth: .infinity)
         }
+        .frame(maxWidth: .infinity)
         .buttonStyle(.borderedProminent)
         .tint(MomCareAccent.primary)
         .controlSize(.large)
@@ -186,10 +216,6 @@ struct OTPScreenView: View {
         let filtered = value.filter(\.isNumber)
         let limited = String(filtered.prefix(otpLength))
         otpString = limited
-
-        if limited.count == otpLength {
-            isFieldFocused = false
-        }
     }
 }
 

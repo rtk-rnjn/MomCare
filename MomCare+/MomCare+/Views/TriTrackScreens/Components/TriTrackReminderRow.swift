@@ -257,7 +257,7 @@ extension TriTrackReminderRow {
         if reduceMotion {
             try? onToggle()
         } else {
-            withAnimation(.easeInOut) {
+            withAnimation(reduceMotion ? nil : .easeInOut) {
                 try? onToggle()
             }
         }

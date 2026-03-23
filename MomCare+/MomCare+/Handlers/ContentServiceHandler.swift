@@ -18,10 +18,25 @@ struct StepDataPoint: Identifiable {
 
 final class ContentServiceHandler: ObservableObject {
 
-    // MARK: Internal
+    // MARK: Lifecycle
 
-    @Published var myPlanModel: MyPlanModel?
-    @Published var userExercises: [UserExerciseModel] = []
+    init() {
+        let startOfTheDate = Calendar.current.startOfDay(for: .init())
+
+        myPlanModel = Database.shared[.mealPlan(startOfTheDate)]
+
+        if let userExercises: [UserExerciseModel] = Database.shared[.userExercises(startOfTheDate)] {
+            self.userExercises = userExercises
+        }
+
+        if myPlanModel != nil {
+            Task {
+                await fetchMyPlanMeta()
+            }
+        }
+    }
+
+    // MARK: Internal
 
     @Published var isFetchingMealPlan: Bool = false
     @Published var isFetchingExercises: Bool = false
@@ -47,6 +62,24 @@ final class ContentServiceHandler: ObservableObject {
     @Published var dailyTipText: String = ""
 
     let healthStore: HKHealthStore = .init()
+
+    @Published var myPlanModel: MealPlanModel? {
+        didSet {
+            if let myPlanModel {
+                let startOfTheDate = Calendar.current.startOfDay(for: Date(timeIntervalSince1970: myPlanModel.createdAtTimestamp))
+                Database.shared[.mealPlan(startOfTheDate)] = myPlanModel
+            }
+        }
+    }
+
+    @Published var userExercises: [UserExerciseModel] = [] {
+        didSet {
+            if !userExercises.isEmpty {
+                let startOfTheDate = Calendar.current.startOfDay(for: .init())
+                Database.shared[.userExercises(startOfTheDate)] = userExercises
+            }
+        }
+    }
 
     nonisolated func startStepCountObservation() async {
         guard let stepType = HKQuantityType.quantityType(forIdentifier: .stepCount) else {
@@ -96,13 +129,12 @@ final class ContentServiceHandler: ObservableObject {
     }
 
     func fetchUserExercises() async throws {
-        DebugLogger.shared.log("Fetching user exercises", level: .debug, category: .data)
+
         isFetchingExercises = true
         defer { isFetchingExercises = false }
 
-        let networkResponse = try await ContentService.shared.generateUserExercises()
-        userExercises = networkResponse.data ?? []
-        DebugLogger.shared.log("User exercises loaded: \(userExercises.count) items", level: .debug, category: .data)
+        let networkResponse = try await ContentRepository.shared.generateUserExercises()
+        userExercises = networkResponse.data
 
         await fetchUserExercisesMeta()
     }
@@ -127,12 +159,12 @@ final class ContentServiceHandler: ObservableObject {
         defer { isFetchingMealPlan = false }
 
         if makeNetworkCall {
-            DebugLogger.shared.log("Fetching meal plan from server", level: .debug, category: .data)
+
             isFetchingMealPlan = true
-            let networkResponse = try await ContentService.shared.generateMealPlan()
+            let networkResponse = try await ContentRepository.shared.generateMealPlan()
 
             myPlanModel = networkResponse.data
-            DebugLogger.shared.log("Meal plan loaded: \(myPlanModel != nil ? "success" : "nil")", level: .debug, category: .data)
+
         }
 
         await fetchMyPlanMeta()
@@ -189,15 +221,11 @@ final class ContentServiceHandler: ObservableObject {
         }
     }
 
-    // MARK: Private
-
-    private let database: Database = .init()
-
 }
 
 extension ContentServiceHandler {
     func consumeFoodInHealthKit(_ food: FoodItemModel, consume: Bool) async throws {
-        DebugLogger.shared.log("\(consume ? "Writing" : "Removing") HealthKit nutrition data for \(food.name)", level: .debug, category: .data)
+
         let multiplier = consume ? 1.0 : -1.0
 
         try await writeHealthData(quantityTypeIdentifier: .dietaryEnergyConsumed, value: food.totalCalories * multiplier, unit: .kilocalorie())
@@ -214,15 +242,14 @@ extension ContentServiceHandler {
         }
 
         guard foodReference.isConsumed != consumed else {
-            DebugLogger.shared.log("Skipping food mark: already \(consumed ? "consumed" : "unconsumed")", level: .verbose, category: .data)
+
             return
         }
         if let index = self.myPlanModel?[mealType].firstIndex(where: { $0.foodId == foodReference.foodId }) {
             self.myPlanModel?[mealType][index].toggleConsume()
         }
 
-        DebugLogger.shared.log("Marking food \(foodReference.foodId) as \(consumed ? "consumed" : "unconsumed") in \(mealType.rawValue)", level: .debug, category: .data)
-        _ = try await ContentService.shared.markFoodAs(consumed: consumed, planId: myPlanModel._id, meal: mealType, foodId: foodReference.foodId)
+        _ = try await ContentRepository.shared.markFoodAs(consumed: consumed, planId: myPlanModel._id, meal: mealType, foodId: foodReference.foodId)
         if let food = await foodReference.food {
             try await consumeFoodInHealthKit(food, consume: consumed)
         }
@@ -231,7 +258,6 @@ extension ContentServiceHandler {
     }
 
     func markFoodsAs(consumed: Bool, mealType: MealType) async throws {
-        DebugLogger.shared.log("Marking all \(mealType.rawValue) foods as \(consumed ? "consumed" : "unconsumed")", level: .debug, category: .data)
 
         for foodReference in myPlanModel?[mealType] ?? [] {
             Task {
@@ -243,8 +269,7 @@ extension ContentServiceHandler {
     func addFoodToMyPlan(foodId: String, mealType: MealType) async throws {
         guard let myPlanModel else { return }
 
-        DebugLogger.shared.log("Adding food \(foodId) to \(mealType.rawValue)", level: .debug, category: .data)
-        _ = try await ContentService.shared.addFoodItem(toPlan: myPlanModel._id, meal: mealType, foodId: foodId)
+        _ = try await ContentRepository.shared.addFoodItem(toPlan: myPlanModel._id, meal: mealType, foodId: foodId)
 
         try await fetchMealPlan()
     }
@@ -252,32 +277,27 @@ extension ContentServiceHandler {
     func removeFoodFromPlan(foodId: String, mealType: MealType) async throws {
         guard let myPlanModel else { return }
 
-        DebugLogger.shared.log("Removing food \(foodId) from \(mealType.rawValue)", level: .debug, category: .data)
-        _ = try await ContentService.shared.removeFoodItem(fromPlan: myPlanModel._id, meal: mealType, foodId: foodId)
+        _ = try await ContentRepository.shared.removeFoodItem(fromPlan: myPlanModel._id, meal: mealType, foodId: foodId)
 
         try await fetchMealPlan()
     }
 
     func updateExerciseCompletionDuration(id: String, duration: TimeInterval) async throws {
-        DebugLogger.shared.log("Updating exercise completion: id=\(id), duration=\(duration)s", level: .debug, category: .data)
-        let networkResponse = try await ContentService.shared.updateExerciseCompletion(userExerciseId: id, duration: duration)
-        if let success = networkResponse.data, success {
-            DebugLogger.shared.log("Exercise completion updated successfully", level: .debug, category: .data)
-            if let index = userExercises.firstIndex(where: { $0.id == id }) {
-                await MainActor.run {
-                    self.userExercises[index].videoDurationCompletedSeconds = duration
-                }
+
+        _ = try await ContentRepository.shared.updateExerciseCompletion(userExerciseId: id, duration: duration)
+
+        if let index = userExercises.firstIndex(where: { $0.id == id }) {
+            await MainActor.run {
+                self.userExercises[index].videoDurationCompletedSeconds = duration
             }
-        } else {
-            DebugLogger.shared.log("Exercise completion update failed: status=\(networkResponse.statusCode)", level: .warning, category: .data)
         }
     }
 
     func updateBreathingCompletionDuration(duration: TimeInterval) {
-        DebugLogger.shared.log("Updating breathing completion duration: \(duration)s", level: .debug, category: .data)
+
         let now = Date()
         let startOfDate = Calendar.current.startOfDay(for: now)
-        database[.breathing(startOfDate)] = duration
+        Database.shared[.breathingProgress(startOfDate)] = duration
         breathingCompletionDuration = duration
     }
 
@@ -287,7 +307,7 @@ extension ContentServiceHandler {
         }
 
         let startOfDate = Calendar.current.startOfDay(for: date)
-        let completionDuration: TimeInterval = database[.breathing(startOfDate)] ?? 0
+        let completionDuration: TimeInterval = Database.shared[.breathingProgress(startOfDate)] ?? 0
         breathingCompletionDuration = completionDuration
         return completionDuration
     }
@@ -300,13 +320,7 @@ extension ContentServiceHandler {
             return nil
         }
 
-        if let userExercises = ContentService.shared.findUserExercises(on: date) {
-            DebugLogger.shared.log("Returning \(userExercises.count) cached exercises for \(date)", level: .verbose, category: .data)
-            return userExercises
-        }
-
-        DebugLogger.shared.log("Fetching exercises for \(date) from server", level: .debug, category: .network)
-        let networkResponse = try await ContentService.shared.fetchUserExercises(from: startDate, to: endDate)
+        let networkResponse = try await ContentRepository.shared.fetchUserExercises(from: startDate, to: endDate)
         return networkResponse.data
     }
 

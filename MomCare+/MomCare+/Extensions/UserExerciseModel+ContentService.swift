@@ -3,7 +3,7 @@ import Foundation
 extension UserExerciseModel {
     var exerciseModel: ExerciseModel? {
         get async {
-            guard let networkResponse = try? await ContentService.shared.fetchExercise(id: exerciseId) else {
+            guard let networkResponse = try? await ContentRepository.shared.fetchExercise(id: exerciseId) else {
                 return nil
             }
             return networkResponse.data
@@ -26,9 +26,9 @@ extension UserExerciseModel {
 
     var url: URL? {
         get async {
-            let networkResponse = try? await ContentService.shared.fetchExerciseStreamUri(id: exerciseId)
-            if let networkResponse, let urlString = networkResponse.data?.detail {
-                return URL(string: urlString)
+            let networkResponse = try? await ContentRepository.shared.fetchExerciseStreamUri(id: exerciseId)
+            if let networkResponse {
+                return URL(string: networkResponse.data.detail)
             }
 
             return nil

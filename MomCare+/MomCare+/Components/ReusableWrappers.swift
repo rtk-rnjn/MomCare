@@ -54,9 +54,9 @@ struct InfoRowDate: View {
     // MARK: Private
 
     private var formatted: String {
-        let f = DateFormatter()
-        f.dateStyle = .medium
-        return f.string(from: date)
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateStyle = .medium
+        return dateFormatter.string(from: date)
     }
 
 }

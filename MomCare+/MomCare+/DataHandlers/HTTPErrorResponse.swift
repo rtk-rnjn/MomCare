@@ -30,12 +30,12 @@ enum CodableValue: Codable, Sendable {
         var container = encoder.singleValueContainer()
 
         switch self {
-        case let .int(v): try container.encode(v)
-        case let .double(v): try container.encode(v)
-        case let .bool(v): try container.encode(v)
-        case let .string(v): try container.encode(v)
-        case let .array(v): try container.encode(v)
-        case let .dict(v): try container.encode(v)
+        case let .int(value): try container.encode(value)
+        case let .double(value): try container.encode(value)
+        case let .bool(value): try container.encode(value)
+        case let .string(value): try container.encode(value)
+        case let .array(value): try container.encode(value)
+        case let .dict(value): try container.encode(value)
         case .null: try container.encodeNil()
         }
     }
@@ -53,21 +53,21 @@ extension CodableValue {
     }
 
     var doubleValue: Double? {
-        if case let .double(d) = self { return d }
+        if case let .double(double) = self { return double }
         return nil
     }
 
     var boolValue: Bool? {
-        if case let .bool(b) = self { return b }
+        if case let .bool(bool) = self { return bool }
         return nil
     }
 
     nonisolated var displayString: String {
         switch self {
-        case let .int(v): return "\(v)"
-        case let .double(v): return "\(v)"
-        case let .bool(v): return v ? "true" : "false"
-        case let .string(v): return v
+        case let .int(value): return "\(value)"
+        case let .double(value): return "\(value)"
+        case let .bool(value): return value ? "true" : "false"
+        case let .string(value): return value
         case .array: return "(list)"
         case .dict: return "(object)"
         case .null: return "null"
@@ -236,8 +236,8 @@ struct HTTPErrorResponse: Codable, LocalizedError {
                 guard let last = error.loc.last else { return nil }
                 let field: String
                 switch last {
-                case let .string(s): field = s
-                case let .int(i): field = "item \(i)"
+                case let .string(string): field = string
+                case let .int(int): field = "item \(int)"
                 }
 
                 if let ctx = error.ctx, let expected = ctx["expected"] {

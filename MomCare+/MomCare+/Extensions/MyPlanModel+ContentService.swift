@@ -3,7 +3,7 @@ enum MyPlanModelReferenceType {
     case server
 }
 
-extension MyPlanModel {
+extension MealPlanModel {
     func fetchFoods(for references: [FoodReferenceModel]) async -> [FoodItemModel] {
         await withTaskGroup(of: FoodItemModel?.self) { group in
             for reference in references {

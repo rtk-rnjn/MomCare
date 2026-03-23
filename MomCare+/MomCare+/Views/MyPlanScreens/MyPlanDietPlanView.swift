@@ -96,7 +96,7 @@ struct MyPlanDietPlanView: View {
                     Button {
                         showHelp = true
                     } label: {
-                        Label("Legend", systemImage: "questionmark.circle")
+                        Label("Guide", systemImage: "questionmark.circle")
                     }
 
                 } label: {

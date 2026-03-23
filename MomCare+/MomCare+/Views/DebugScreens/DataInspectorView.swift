@@ -94,11 +94,17 @@ struct DataInspectorView: View {
     }
 
     private func loadUserDefaults() {
-        let dict = UserDefaults.standard.dictionaryRepresentation()
-        udEntries = dict
+        let standardDict = UserDefaults.standard.dictionaryRepresentation()
+        udEntries = standardDict
             .filter { !$0.key.hasPrefix("com.apple") && !$0.key.hasPrefix("NS") }
             .sorted { $0.key < $1.key }
             .map { (key: $0.key, value: "\($0.value)") }
+
+        let groupedDict = UserDefaults(suiteName: "group.MomCare")?.dictionaryRepresentation() ?? [:]
+        udEntries.append(contentsOf: groupedDict
+            .filter { !$0.key.hasPrefix("com.apple") && !$0.key.hasPrefix("NS") }
+            .sorted { $0.key < $1.key }
+            .map { (key: $0.key, value: "\($0.value)") })
     }
 
     private func loadCachedFiles() {

@@ -273,10 +273,7 @@ struct BaseSignUpView: View {
     }
 
     private func communicateWithServer() async throws {
-        let networkResponse = try await authenticationService.register(emailAddress: email, password: password)
-        if let _ = networkResponse.errorMessage {
-            return
-        }
+        try await authenticationService.register(emailAddress: email, password: password)
 
         let nameComponentFormatter = PersonNameComponentsFormatter()
         let nameComponents = nameComponentFormatter.personNameComponents(from: fullName)

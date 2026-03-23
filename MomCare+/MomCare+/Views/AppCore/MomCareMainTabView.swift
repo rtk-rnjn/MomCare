@@ -86,7 +86,9 @@ struct MomCareMainTabView: View {
             }
         }
         .tabBarMinimizeBehavior(.onScrollDown)
-        .task { await refreshAccessToken() }
+        .task {
+            await refreshAccessToken()
+        }
         .errorAlert(error: $controlState.error)
         .errorAlert(error: $eventKitError) { _ in
             Button("Open Settings") {
@@ -190,29 +192,27 @@ struct MomCareMainTabView: View {
     }
 
     private func refreshAccessToken() async {
-        DebugLogger.shared.log("Refreshing access token", level: .debug, category: .network)
         isRefreshing = true
-        defer { isRefreshing = false }
 
         do {
-            let networkResponse = try await authenticationService.refresh()
-            DebugLogger.shared.log("Access token refreshed successfully", level: .debug, category: .network)
-            if networkResponse?.errorMessage != nil {
+            try await authenticationService.refresh()
+            isRefreshing = false
+        } catch {
+            if let error = error as? URLError {
+                controlState.error = error
+            } else {
                 refreshError = RefreshError()
             }
-        } catch {
-            DebugLogger.shared.log("Access token refresh failed: \(error.localizedDescription)", level: .error, category: .network)
-            refreshError = RefreshError()
         }
     }
 
     private func fetchDailyInsights() async throws {
-        DebugLogger.shared.log("Fetching daily insights", level: .debug, category: .data)
-        let networkResponse = try await ContentService.shared.generateDailyInsights()
 
-        contentServiceHandler.todayFocusText = networkResponse.data?.todaysFocus ?? "Failed to fetch today's focus: \(networkResponse.errorMessage ?? "Unknown error") (\(networkResponse.statusCode))"
-        contentServiceHandler.dailyTipText = networkResponse.data?.dailyTip ?? "Failed to fetch today's tip: \(networkResponse.errorMessage ?? "Unknown error") (\(networkResponse.statusCode))"
-        DebugLogger.shared.log("Daily insights loaded: focus=\(contentServiceHandler.todayFocusText.prefix(40))", level: .debug, category: .data)
+        let networkResponse = try await ContentRepository.shared.generateDailyInsights()
+
+        contentServiceHandler.todayFocusText = networkResponse.data.todaysFocus
+        contentServiceHandler.dailyTipText = networkResponse.data.dailyTip
+
     }
 
 }

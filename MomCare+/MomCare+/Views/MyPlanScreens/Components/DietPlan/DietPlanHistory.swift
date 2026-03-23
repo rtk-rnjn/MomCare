@@ -232,7 +232,7 @@ struct DietPlanHistory: View {
 
     // MARK: Private
 
-    @State private var plan: MyPlanModel?
+    @State private var plan: MealPlanModel?
     @State private var selectedDate: Date = .init()
 
     @State private var isLoading = false
@@ -252,8 +252,8 @@ struct DietPlanHistory: View {
         let endDate = date.nextDay
 
         do {
-            let networkResponse = try await ContentService.shared.fetchMealPlans(from: startDate, to: endDate)
-            plan = networkResponse.data?.first
+            let networkResponse = try await ContentRepository.shared.fetchMealPlans(from: startDate, to: endDate)
+            plan = networkResponse.data.first
         } catch {
             plan = nil
             errorMessage = error.localizedDescription

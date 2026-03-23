@@ -16,4 +16,18 @@ actor CacheHandler {
     func invalidate(forKey key: NSString) {
         cache.removeObject(forKey: key)
     }
+
+    subscript<T: Codable>(key: NSString) -> T? {
+        get {
+            get(forKey: key)
+        }
+
+        set {
+            if let newValue {
+                set(newValue, forKey: key)
+            } else {
+                invalidate(forKey: key)
+            }
+        }
+    }
 }

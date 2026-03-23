@@ -101,39 +101,29 @@ struct ProfileAccountSecurityView: View {
 
     // MARK: Internal
 
-    var canSubmit: Bool {
-        !newPassword.isEmpty &&
-        !confirmPassword.isEmpty
-    }
-
     var body: some View {
         List {
-            Section {
-                HStack {
-                    Text("Email Address")
+            if !emailAddress.isEmpty {
+                Section {
+                    HStack {
+                        Text("Email Address")
 
-                    Spacer()
+                        Spacer()
 
-                    TextField($emailAddress.wrappedValue.isEmpty ? "Not Set" : $emailAddress.wrappedValue, text: $emailAddress)
-                        .keyboardType(.emailAddress)
-                        .multilineTextAlignment(.trailing)
-                        .autocorrectionDisabled()
-                        .textInputAutocapitalization(.never)
-                        .focused($focusedField, equals: .emailAddressField)
-                        .onChange(of: focusedField) { _, newValue in
-                            if newValue != .emailAddressField {
-                                Task {
-                                    await saveAccountInfo()
-                                }
-                            }
-                        }
+                        Text(emailAddress)
+                            .keyboardType(.emailAddress)
+                            .multilineTextAlignment(.trailing)
+                            .autocorrectionDisabled()
+                            .textInputAutocapitalization(.never)
+                            .focused($focusedField, equals: .emailAddressField)
+                    }
+
+                } header: {
+                    Text("Account Information")
+                } footer: {
+                    Text("Your email address is used for account recovery and notifications.")
+                        .font(.footnote)
                 }
-
-            } header: {
-                Text("Account Information")
-            } footer: {
-                Text("Your email address is used for account recovery and notifications. Make sure to keep it up to date and secure.")
-                    .font(.footnote)
             }
 
             Section {
@@ -300,14 +290,6 @@ struct ProfileAccountSecurityView: View {
         }
     }
 
-    func saveAccountInfo() async {
-        do {
-            try await authenticationService.changeEmailAddress(newEmailAddress: emailAddress)
-        } catch {
-            controlState.error = error
-        }
-    }
-
     // MARK: Private
 
     private enum Field {
@@ -333,6 +315,11 @@ struct ProfileAccountSecurityView: View {
 
     @State private var hasAppleIdentifier: Bool = false
     @State private var showAppleConnectSheet: Bool = false
+
+    private var canSubmit: Bool {
+        !newPassword.isEmpty &&
+        !confirmPassword.isEmpty
+    }
 
     private func handleAppleSignIn(_ result: Result<ASAuthorization, any Error>) async {
         switch result {

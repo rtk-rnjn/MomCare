@@ -39,6 +39,8 @@ struct WaterLogEntry: Identifiable, Equatable {
 @MainActor
 final class WaterStore: ObservableObject {
 
+    // MARK: Internal
+
     static let waterTips: [(icon: String, tip: String)] = [
         ("drop.fill", "Add a slice of lemon or cucumber to make plain water more appealing."),
         ("clock.fill", "Drink a glass first thing in the morning before breakfast."),

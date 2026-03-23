@@ -5,93 +5,102 @@ import UIKit
 private let appGroup = "group.MomCare"
 
 enum ValidDatabaseKeys {
-    case accessTokenExpiresAtTimestamp
     case userModel
-    case food(String)
-    case exercise(String)
-    case breathing(Date)
+    case foodModel(String)
+    case exerciseModel(String)
+    case songModel(String)
+
+    case breathingProgress(Date)
+
+    case dailyInsight(Date)
+    case mealPlan(Date)
+    case userExercises(Date)
+
     case credentials
+    case tokenPair
+
+    case calendarIdentifier
 
     // MARK: Internal
 
     var rawValue: String {
         switch self {
-        case .accessTokenExpiresAtTimestamp:
-            "accessTokenExpiresAtTimestamp"
         case .userModel:
             "userModel"
-        case let .food(id):
+        case let .foodModel(id):
             "food_\(id)"
-        case let .exercise(id):
+        case let .exerciseModel(id):
             "exercise_\(id)"
-        case let .breathing(date):
+        case let .songModel(id):
+            "song_\(id)"
+        case let .breathingProgress(date):
             "breathing_\(date.timeIntervalSince1970)"
+        case let .dailyInsight(date):
+            "dailyInsight_\(date.timeIntervalSince1970)"
+        case let .mealPlan(date):
+            "mealPlan_\(date.timeIntervalSince1970)"
+        case let .userExercises(date):
+            "userExercises_\(date.timeIntervalSince1970)"
         case .credentials:
             "credentials"
+        case .tokenPair:
+            "tokenPair"
+        case .calendarIdentifier:
+            "calendarIdentifier"
         }
     }
 }
 
-class Database {
+@MainActor
+final class Database {
 
     // MARK: Lifecycle
 
-    init() {
-        userDefaults.register(defaults: ["isFirstLaunch": true])
+    private init() {
         let baseURL = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask).first!
         directory = baseURL.appendingPathComponent("ImageCache", isDirectory: true)
 
         try? FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
+
+        userDefaults = UserDefaults(suiteName: appGroup) ?? .standard
+        userDefaults.register(defaults: ["isFirstLaunch": true])
     }
 
     // MARK: Internal
 
+    static let shared: Database = .init()
+
     subscript<T: Codable>(_ key: ValidDatabaseKeys) -> T? {
         get {
-            get(key.rawValue)
+            guard let data = userDefaults.data(forKey: key.rawValue) else {
+                return nil
+            }
+
+            return try? data.decodeUsingJSONDecoder()
         }
         set {
-            set(newValue, forKey: key.rawValue)
+            if newValue == nil {
+                userDefaults.set(nil, forKey: key.rawValue)
+                return
+            }
+
+            guard let data = newValue.encodeUsingJSONEncoder() else {
+                return
+            }
+
+            userDefaults.set(data, forKey: key.rawValue)
         }
-    }
-
-    func get<T: Codable>(_ key: String) -> T? {
-        guard let data = userDefaults.data(forKey: key) else {
-            return nil
-        }
-
-        return try? data.decodeUsingJSONDecoder()
-    }
-
-    func set(_ value: (some Codable)?, forKey key: String) {
-        if value == nil {
-            userDefaults.set(nil, forKey: key)
-            return
-        }
-
-        guard let data = value.encodeUsingJSONEncoder() else {
-            return
-        }
-
-        userDefaults.set(data, forKey: key)
-    }
-
-    func delete(_ key: String) {
-        userDefaults.removeObject(forKey: key)
-    }
-
-    func delete(_ key: ValidDatabaseKeys) {
-        userDefaults.removeObject(forKey: key.rawValue)
     }
 
     // MARK: Private
 
-    private let userDefaults = UserDefaults(suiteName: appGroup) ?? .standard
+    private let userDefaults: UserDefaults
     private let directory: URL
 
 }
 
 extension Database {
+
     func image(for url: URL) -> UIImage? {
         let key = cacheKey(for: url)
         let fileURL = directory.appendingPathComponent(key)

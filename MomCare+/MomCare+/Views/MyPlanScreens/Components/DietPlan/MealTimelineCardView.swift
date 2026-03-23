@@ -5,7 +5,7 @@ struct MealTimelineCardView: View {
 
     // MARK: Internal
 
-    let plan: MyPlanModel?
+    let plan: MealPlanModel?
 
     var body: some View {
         List {
@@ -107,9 +107,13 @@ struct MealTimelineCardView: View {
                     .background {
                         LinearGradient(
                             colors: [
+                                Color.white,
                                 Color.yellow.opacity(0.05),
+                                Color.yellow.opacity(0.10),
                                 Color.yellow.opacity(0.15),
-                                Color.yellow.opacity(0.05)
+                                Color.yellow.opacity(0.10),
+                                Color.yellow.opacity(0.05),
+                                Color.white
                             ],
                             startPoint: .leading,
                             endPoint: .trailing
@@ -335,8 +339,8 @@ struct FoodThumbnail: View {
         }
         .frame(width: 54, height: 54)
         .task {
-            let networkResponse = try? await ContentService.shared.fetchFoodImage(id: foodReferenceModel.foodId)
-            if let uri = networkResponse?.data?.detail {
+            let networkResponse = try? await ContentRepository.shared.fetchFoodImage(id: foodReferenceModel.foodId)
+            if let uri = networkResponse?.data.detail {
                 uiImage = try? await UIImage.getOrFetch(from: uri)
             }
         }
