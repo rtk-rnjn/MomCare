@@ -1,4 +1,7 @@
 import HealthKit
+import OSLog
+
+private let logger: Logger = .init(subsystem: Bundle.main.bundleIdentifier ?? "MomCare", category: "HealthKit")
 
 extension ContentServiceHandler {
     func requestHealthKitAccess() async throws {
@@ -46,14 +49,16 @@ extension ContentServiceHandler {
 
     nonisolated func startStepCountObservation() async throws {
         guard let stepType = HKQuantityType.quantityType(forIdentifier: .stepCount) else {
-            fatalError()
+            logger.error("Failed to create HKQuantityType for stepCount; skipping observation setup.")
+            return
         }
 
         let now = Date()
         let startOfDate = Calendar.current.startOfDay(for: now)
         let predicate = HKQuery.predicateForSamples(withStart: startOfDate, end: now, options: .strictStartDate)
 
-        let query = HKObserverQuery(sampleType: stepType, predicate: predicate) { _, _, error in
+        let query = HKObserverQuery(sampleType: stepType, predicate: predicate) { _, completionHandler, error in
+            defer { completionHandler() }
             if error != nil {
                 return
             }
