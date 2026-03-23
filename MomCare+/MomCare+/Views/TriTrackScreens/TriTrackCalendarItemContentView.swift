@@ -24,11 +24,7 @@ struct TriTrackCalendarItemContentView: View {
     var body: some View {
         List {
             Section {
-                if isLoading {
-                    loadingRow
-                } else {
-                    eventList
-                }
+                eventList
             } header: {
                 HStack {
                     Text("Events")
@@ -39,18 +35,14 @@ struct TriTrackCalendarItemContentView: View {
 
                     Text(eventKitHandler.events.count, format: .number)
                         .font(.headline)
-                        .foregroundColor(.secondary)
                         .contentTransition(reduceMotion ? .identity : .numericText())
                         .animation(reduceMotion ? nil : .easeInOut, value: eventKitHandler.events.count)
                 }
+                .foregroundStyle(.black)
             }
 
             Section {
-                if isLoading {
-                    loadingRow
-                } else {
-                    reminderList
-                }
+                reminderList
             } header: {
                 HStack {
                     Text("Reminders")
@@ -61,10 +53,10 @@ struct TriTrackCalendarItemContentView: View {
 
                     Text(eventKitHandler.reminders.count, format: .number)
                         .font(.headline)
-                        .foregroundColor(.secondary)
                         .contentTransition(reduceMotion ? .identity : .numericText())
                         .animation(reduceMotion ? nil : .easeInOut, value: eventKitHandler.reminders.count)
                 }
+                .foregroundStyle(.black)
             }
         }
         .listStyle(.plain)
@@ -99,11 +91,6 @@ struct TriTrackCalendarItemContentView: View {
         .refreshable {
             await refreshData()
         }
-        .alert("Error", isPresented: $showErrorAlert) {
-            Button("OK", role: .cancel) {}
-        } message: {
-            Text(alertMessage ?? "An unexpected error occurred.")
-        }
     }
 
     // MARK: Private
@@ -118,20 +105,6 @@ struct TriTrackCalendarItemContentView: View {
 
     @State private var selectedEvent: EKCalendarItemWrapper?
     @State private var selectedReminder: EKCalendarItemWrapper?
-    @State private var showErrorAlert = false
-    @State private var alertMessage: String?
-    @State private var isLoading = true
-
-    private var loadingRow: some View {
-        HStack {
-            Spacer()
-            ProgressView()
-                .padding(.vertical, 8)
-                .accessibilityLabel("Loading")
-            Spacer()
-        }
-        .listRowBackground(Color.clear)
-    }
 
     private var eventList: some View {
         ForEach(eventKitHandler.events, id: \.calendarItemIdentifier) { event in
@@ -175,8 +148,6 @@ struct TriTrackCalendarItemContentView: View {
                     } label: {
                         Label("Delete Event", systemImage: "trash")
                     }
-                } preview: {
-                    TriTrackEventDetailsContextView(event: event)
                 }
         }
     }
@@ -184,7 +155,7 @@ struct TriTrackCalendarItemContentView: View {
     private var reminderList: some View {
         ForEach(eventKitHandler.reminders, id: \.calendarItemIdentifier) { reminder in
             TriTrackReminderRow(reminder: reminder, selectedDate: $selectedDate) {
-                toggleReminder(reminder, for: selectedDate)
+                toggleReminder(reminder, for: .init())
             } onTap: {
                 selectedReminder = EKCalendarItemWrapper(item: reminder)
             }
@@ -236,44 +207,26 @@ struct TriTrackCalendarItemContentView: View {
                 } label: {
                     Label("Delete Reminder", systemImage: "trash")
                 }
-            } preview: {
-                TriTrackReminderDetailsContextView(reminder: reminder)
             }
         }
     }
 
     private func refreshData() async {
-        isLoading = true
-        defer { isLoading = false }
-
         do {
             try eventKitHandler.fetchAppointments(selectedDate: selectedDate)
             try eventKitHandler.fetchReminders(startDate: selectedDate)
+
         } catch {
-            alertMessage = error.localizedDescription
-            showErrorAlert = true
+            controlState.error = error
         }
     }
 
     private func initialLoad() async {
-        isLoading = true
-        defer { isLoading = false }
-
         do {
-            let eventsGranted = try await eventKitHandler.eventStore.requestFullAccessToEvents()
-            if !eventsGranted {
-                alertMessage = "Event access denied. Please enable calendar permissions in Settings."
-                showErrorAlert = true
-            }
-
-            let remindersGranted = try await eventKitHandler.eventStore.requestFullAccessToReminders()
-            if !remindersGranted {
-                alertMessage = "Reminder access denied. Please enable reminders permissions in Settings."
-                showErrorAlert = true
-            }
+            _ = try await eventKitHandler.requestAccess(for: .event)
+            _ = try await eventKitHandler.requestAccess(for: .reminder)
         } catch {
-            alertMessage = error.localizedDescription
-            showErrorAlert = true
+            controlState.error = error
         }
     }
 
@@ -300,17 +253,16 @@ struct TriTrackCalendarItemContentView: View {
         }
     }
 
-    private func toggleReminder(_ reminder: EKReminder, for date: Date) {
+    private func toggleReminder(_ reminder: EKReminder, for date: Date?) {
         do {
             let updatedReminder = try eventKitHandler.markReminder(
                 complete: !reminder.isCompleted,
                 reminder: reminder,
-                date: date
+                date: date ?? .init()
             )
             upsertReminder(updatedReminder)
         } catch {
-            alertMessage = error.localizedDescription
-            showErrorAlert = true
+            controlState.error = error
         }
     }
 
@@ -321,20 +273,18 @@ struct TriTrackCalendarItemContentView: View {
                 $0.calendarItemIdentifier == reminder.calendarItemIdentifier
             }
         } catch {
-            alertMessage = error.localizedDescription
-            showErrorAlert = true
+            controlState.error = error
         }
     }
 
     private func deleteEvent(_ event: EKEvent) {
         do {
-            try eventKitHandler.eventStore.remove(event, span: .thisEvent)
+            try eventKitHandler.deleteEvent(event)
             eventKitHandler.events.removeAll {
                 $0.calendarItemIdentifier == event.calendarItemIdentifier
             }
         } catch {
-            alertMessage = error.localizedDescription
-            showErrorAlert = true
+            controlState.error = error
         }
     }
 }

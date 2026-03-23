@@ -1,6 +1,7 @@
 import CryptoKit
 import Foundation
 import UIKit
+import EventKit
 
 private let appGroup = "group.MomCare"
 
@@ -19,12 +20,12 @@ enum ValidDatabaseKeys {
     case credentials
     case tokenPair
 
-    case calendarIdentifier
+    case calendarIdentifier(EKEntityType)
 
     // MARK: Internal
 
     var rawValue: String {
-        switch self {
+        let value = switch self {
         case .userModel:
             "userModel"
         case let .foodModel(id):
@@ -45,9 +46,18 @@ enum ValidDatabaseKeys {
             "credentials"
         case .tokenPair:
             "tokenPair"
-        case .calendarIdentifier:
-            "calendarIdentifier"
+        case let .calendarIdentifier(ekEntityType):
+            switch ekEntityType {
+            case .event:
+                "calendarIdentifier_event"
+            case .reminder:
+                "calendarIdentifier_reminder"
+            @unknown default:
+                "calendarIdentifier_unknown"
+            }
         }
+
+        return "MomCare_\(value.capitalized)"
     }
 }
 

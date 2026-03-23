@@ -49,7 +49,7 @@ struct OnboardingView: View {
                     }
                     .signInWithAppleButtonStyle(.black)
                     .frame(height: 52)
-                    .cornerRadius(14)
+                    .cornerRadius(24)
                     .padding(.horizontal, 20)
 
                     HStack {
@@ -71,12 +71,12 @@ struct OnboardingView: View {
 
                     NavigationLink(destination: SignInView()) {
                         Text("Continue with Email")
-                            .font(.headline)
+                            .font(.title3)
                             .foregroundColor(.white)
                             .frame(maxWidth: .infinity)
                             .frame(height: 52)
                             .background(MomCareAccent.primary)
-                            .cornerRadius(14)
+                            .cornerRadius(24)
                     }
                     .padding(.horizontal, 20)
                     .accessibilityLabel("Continue with Email")

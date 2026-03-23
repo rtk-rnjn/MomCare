@@ -77,11 +77,6 @@ struct TriTrackAddCalendarItemSheetView: View {
             }
         }
         .presentationDetents([.medium, .large])
-        .alert("Error", isPresented: $showErrorAlert) {
-            Button("OK", role: .cancel) {}
-        } message: {
-            Text(alertMessage ?? "An unexpected error occurred.")
-        }
         .sheet(isPresented: $showMapPicker) {
             MapPickerView(selectedMapItem: $selectedMapItem)
                 .presentationDetents([.medium, .large])
@@ -101,13 +96,12 @@ struct TriTrackAddCalendarItemSheetView: View {
     // MARK: Private
 
     @EnvironmentObject private var eventKitHandler: EventKitHandler
+    @EnvironmentObject private var controlState: ControlState
+
     @Environment(\.dismiss) private var dismiss
     @State private var showConfirmationDialog: Bool = false
 
     @State private var hasData: Bool = false
-
-    @State private var showErrorAlert = false
-    @State private var alertMessage: String?
 
     @State private var title = ""
     @State private var notes = ""
@@ -224,8 +218,7 @@ struct TriTrackAddCalendarItemSheetView: View {
                     alarm: alarm
                 )
             } catch {
-                alertMessage = error.localizedDescription
-                showErrorAlert = true
+                controlState.error = error
                 return
             }
 
@@ -245,8 +238,7 @@ struct TriTrackAddCalendarItemSheetView: View {
                     recurrenceRules: rules
                 )
             } catch {
-                alertMessage = error.localizedDescription
-                showErrorAlert = true
+                controlState.error = error
                 return
             }
         }

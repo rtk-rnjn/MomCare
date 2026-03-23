@@ -123,13 +123,13 @@ struct ActivityRingView: View {
             let inner = middle - ringWidth - spacing
 
             ZStack {
-                PercentageRing(ringWidth: ringWidth, percent: stepsGoalProgress * 100, backgroundColor: Color.red.opacity(0.15), foregroundColors: [Color.red.opacity(0.6), .red])
+                PercentageRing(ringWidth: ringWidth, percent: stepsGoalProgress * 100, backgroundColor: Color.red.opacity(0.15), foregroundColors: [.red])
                     .frame(width: outer * 2, height: outer * 2)
 
-                PercentageRing(ringWidth: ringWidth, percent: exerciseGoalProgress * 100, backgroundColor: Color.green.opacity(0.15), foregroundColors: [Color.green.opacity(0.6), .green])
+                PercentageRing(ringWidth: ringWidth, percent: exerciseGoalProgress * 100, backgroundColor: Color.green.opacity(0.15), foregroundColors: [.green])
                     .frame(width: middle * 2, height: middle * 2)
 
-                PercentageRing(ringWidth: ringWidth, percent: caloriesGoalProgress * 100, backgroundColor: Color.orange.opacity(0.15), foregroundColors: [Color.orange.opacity(0.6), .orange])
+                PercentageRing(ringWidth: ringWidth, percent: caloriesGoalProgress * 100, backgroundColor: Color.orange.opacity(0.15), foregroundColors: [.orange])
                     .frame(width: inner * 2, height: inner * 2)
 
             }

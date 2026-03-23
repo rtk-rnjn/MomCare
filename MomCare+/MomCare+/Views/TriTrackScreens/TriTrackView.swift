@@ -148,7 +148,7 @@ struct TriTrackView: View {
     @EnvironmentObject private var authenticationService: AuthenticationService
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
-    @State private var selectedDate: Date = .init()
+    @State private var selectedDate: Date = Calendar.current.startOfDay(for: .init())
     @State private var showingAllEvents: Bool = false
     @State private var showingAllReminders: Bool = false
     @State private var showingAllSymptoms: Bool = false

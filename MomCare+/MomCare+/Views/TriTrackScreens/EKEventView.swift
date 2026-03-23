@@ -7,11 +7,11 @@ struct EKEventView: UIViewControllerRepresentable {
     @Environment(\.dismiss) var dismiss
 
     func makeUIViewController(context: Context) -> UINavigationController {
-        let eventVC = EKEventViewController()
-        eventVC.event = event
-        eventVC.allowsEditing = true
-        eventVC.delegate = context.coordinator
-        return UINavigationController(rootViewController: eventVC)
+        let eventViewController = EKEventViewController()
+        eventViewController.event = event
+        eventViewController.allowsEditing = true
+        eventViewController.delegate = context.coordinator
+        return UINavigationController(rootViewController: eventViewController)
     }
 
     func updateUIViewController(_: UINavigationController, context _: Context) {}

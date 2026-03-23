@@ -28,7 +28,7 @@ struct ReAuthenticationSheetView: View {
             .navigationTitle("Refresh Token Expired")
             .navigationSubtitle("HTTP 401 Unauthorized")
             .navigationBarTitleDisplayMode(.inline)
-            .sheet(isPresented: $showAppleLoginSheet, onDismiss: {}, content: {
+            .sheet(isPresented: $showAppleLoginSheet) {
                 NavigationStack {
                     VStack(spacing: 12) {
                         VStack(spacing: 12) {
@@ -84,7 +84,15 @@ struct ReAuthenticationSheetView: View {
                 }
                 .presentationDetents([.medium, .fraction(0.40)])
                 .interactiveDismissDisabled()
-            })
+            }
+            .onAppear {
+                email = authenticationService.credentials?.emailAddress ?? ""
+                if email.isEmpty {
+                    focusedField = .email
+                } else {
+                    focusedField = .password
+                }
+            }
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
                     Button(role: .cancel) {
@@ -94,7 +102,14 @@ struct ReAuthenticationSheetView: View {
 
                 ToolbarItem(placement: .bottomBar) {
                     Button {
-                        Task {}
+                        Task {
+                            isLoading = true
+                            defer { isLoading = false }
+
+                            do {
+                                try await submitEmailLogin()
+                            } catch {}
+                        }
                     } label: {
                         if isLoading {
                             ProgressView()
@@ -129,13 +144,15 @@ struct ReAuthenticationSheetView: View {
     @State private var isLoading: Bool = false
 
     @State private var showAppleLoginSheet: Bool = false
+    @EnvironmentObject private var authenticationService: AuthenticationService
 
     @FocusState private var focusedField: Field?
 
     private var emailField: some View {
-        TextField("Email ID", text: $email)
+        TextField("Email Address", text: $email)
             .keyboardType(.emailAddress)
             .textInputAutocapitalization(.never)
+            .focused($focusedField, equals: .email)
             .autocorrectionDisabled()
             .listRowBackground(Color(.secondarySystemBackground))
             .accessibilityLabel("Email address")
@@ -146,10 +163,13 @@ struct ReAuthenticationSheetView: View {
         SecureField("Password", text: $password)
             .listRowBackground(Color(.secondarySystemBackground))
             .accessibilityLabel("Password")
+            .focused($focusedField, equals: .password)
             .accessibilityHint("Enter your password")
     }
 
-    private func submitEmailLogin() async {}
+    private func submitEmailLogin() async throws {
+        try await authenticationService.login(emailAddress: email, password: password)
+    }
 
     private func submitAppleLogin(_ result: Result<ASAuthorization, any Error>) async {}
 }

@@ -10,18 +10,6 @@ struct RefreshError: LocalizedError {
     var recoverySuggestion: String? { "Please try logging in again to refresh your session and regain access to all features." }
 }
 
-struct HealthKitError: LocalizedError {
-    var errorDescription: String? { "HealthKit Access Denied" }
-    var failureReason: String? { "The app does not have permission to access HealthKit data." }
-    var recoverySuggestion: String? { "Please grant HealthKit permissions in your device settings to enable health-related features." }
-}
-
-struct EventKitError: LocalizedError {
-    var errorDescription: String? { "Calendar Access Denied" }
-    var failureReason: String? { "The app does not have permission to access Calendar data." }
-    var recoverySuggestion: String? { "Please grant Calendar permissions in your device settings to enable calendar-related features." }
-}
-
 struct MomCareMainTabView: View {
 
     // MARK: Internal
@@ -43,19 +31,19 @@ struct MomCareMainTabView: View {
 
     @State private var isRefreshing = true
 
-    @State private var eventKitError: (any Error)?
-    @State private var healthKitError: (any Error)?
     @State private var refreshError: (any Error)?
 
     @State private var showLoginSheet = false
 
+    @State private var fetchingDataFromServer = true
+
     private func tabViewContent(bottomPadding: CGFloat) -> some View {
         TabView(selection: $controlState.selectedTab) {
             TabSection {
-                Tab(AppTab.progressHub.title, systemImage: AppTab.progressHub.systemImage, value: AppTab.progressHub) {
+                Tab(AppTab.progress.title, systemImage: AppTab.progress.systemImage, value: AppTab.progress) {
                     NavigationStack { DashboardView() }
                         .safeAreaPadding(bottomPadding)
-                        .tag(AppTab.progressHub)
+                        .tag(AppTab.progress)
                 }
 
                 Tab(AppTab.myPlan.title, systemImage: AppTab.myPlan.systemImage, value: AppTab.myPlan) {
@@ -70,10 +58,10 @@ struct MomCareMainTabView: View {
                         .tag(AppTab.triTrack)
                 }
 
-                Tab(AppTab.moodNest.title, systemImage: AppTab.moodNest.systemImage, value: AppTab.moodNest) {
+                Tab(AppTab.mood.title, systemImage: AppTab.mood.systemImage, value: AppTab.mood) {
                     MoodNestView()
                         .safeAreaPadding(bottomPadding)
-                        .tag(AppTab.moodNest)
+                        .tag(AppTab.mood)
                 }
             }
 
@@ -87,29 +75,8 @@ struct MomCareMainTabView: View {
         .task {
             await refreshAccessToken()
         }
+        .permissionsOnboardingSheet(fetchingData: $fetchingDataFromServer)
         .errorAlert(error: $controlState.error)
-        .errorAlert(error: $eventKitError) { _ in
-            Button("Open Settings") {
-                if let url = URL(string: UIApplication.openSettingsURLString) {
-                    openURL(url)
-                }
-            }
-
-            Button(role: .close) {
-                eventKitError = nil
-            }
-        }
-        .errorAlert(error: $healthKitError) { _ in
-            Button("Open Settings") {
-                if let url = URL(string: UIApplication.openSettingsURLString) {
-                    openURL(url)
-                }
-            }
-
-            Button(role: .close) {
-                healthKitError = nil
-            }
-        }
         .errorAlert(error: $refreshError) { _ in
             Button("Login") {
                 showLoginSheet = true
@@ -139,36 +106,6 @@ struct MomCareMainTabView: View {
                 .interactiveDismissDisabled()
         }
 
-        // HealthKitAccess
-        .task {
-            do {
-                _ = try await contentServiceHandler.requestHealthKitAccess()
-                await contentServiceHandler.startStepCountObservation()
-
-            } catch {
-                healthKitError = HealthKitError()
-            }
-        }
-
-        // EventKitAccess
-        .task {
-            do {
-                let eventSuccess = try await eventKitHandler.eventStore.requestFullAccessToEvents()
-                _ = try await eventKitHandler.eventStore.requestFullAccessToReminders()
-
-                if eventSuccess {
-                    try eventKitHandler.fetchAllEvents()
-                }
-
-            } catch {
-                eventKitError = EventKitError()
-            }
-        }
-        .onChange(of: authenticationService.requiresRefresh) {
-            if authenticationService.requiresRefresh {
-                Task { await refreshAccessToken() }
-            }
-        }
         .onChange(of: isRefreshing) {
             if isRefreshing {
                 return
@@ -176,15 +113,25 @@ struct MomCareMainTabView: View {
 
             Task {
                 do {
+                    fetchingDataFromServer = true
                     try await contentServiceHandler.fetchUserExercises()
                     try await fetchDailyInsights()
                     try await contentServiceHandler.fetchMealPlan()
+                    fetchingDataFromServer = false
 
                 } catch {
                     controlState.error = error
+                    fetchingDataFromServer = false
                 }
             }
         }
+
+        .onChange(of: authenticationService.requiresRefresh) {
+            if authenticationService.requiresRefresh {
+                Task { await refreshAccessToken() }
+            }
+        }
+
     }
 
     private func refreshAccessToken() async {

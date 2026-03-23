@@ -54,6 +54,7 @@ struct ExerciseHistory: View {
                                 }
                             }
                         }
+                        .scrollIndicators(.hidden)
                         .animation(reduceMotion ? nil : .default, value: exercises)
                         .listStyle(.insetGrouped)
                         .refreshable {
@@ -124,22 +125,11 @@ private struct ExerciseDaySummaryRow: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
-            HStack(alignment: .firstTextBaseline) {
-                Label("Summary", systemImage: "chart.bar")
-                    .font(.headline)
-
-                Spacer()
-
-                Text("\(Int(overallProgress * 100))%")
-                    .font(.headline)
-                    .foregroundStyle(overallProgress >= 1 ? .green : .secondary)
-                    .contentTransition(.numericText())
-            }
 
             HStack(spacing: 16) {
-                metric("Completed", value: "\(completedCount)/\(exercises.count)", systemImage: "checkmark.circle.fill", tint: .green)
-                metric("Time", value: formattedDuration, systemImage: "clock.fill", tint: .blue)
-                metric("Progress", value: "\(Int(overallProgress * 100))%", systemImage: "flame.fill", tint: .orange)
+                metric("Completed", value: "\(completedCount)/\(exercises.count)")
+                metric("Time", value: formattedDuration)
+                metric("Progress", value: "\(Int(overallProgress * 100))%")
             }
 
             ProgressView(value: overallProgress) {
@@ -174,11 +164,11 @@ private struct ExerciseDaySummaryRow: View {
         return "\(secs)s"
     }
 
-    private func metric(_ title: String, value: String, systemImage: String, tint: Color) -> some View {
+    private func metric(_ title: String, value: String) -> some View {
         VStack(spacing: 5) {
-            Label(title, systemImage: systemImage)
+            Text(title)
                 .font(.caption)
-                .foregroundStyle(tint)
+
             Text(value)
                 .font(.subheadline.weight(.semibold))
                 .foregroundStyle(.primary)
@@ -196,7 +186,6 @@ private struct ExerciseDaySummaryRow: View {
             duration += ex.videoDurationCompletedSeconds
         }
 
-        // This view runs on main thread by SwiftUI, but be explicit-safe.
         await MainActor.run {
             completedCount = completed
             totalSeconds = duration

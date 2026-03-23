@@ -23,7 +23,7 @@ struct DashboardView: View {
             // TODO:
         }
         .background(Color(.secondarySystemGroupedBackground))
-        .navigationTitle("ProgressHub")
+        .navigationTitle("Progress")
         .navigationBarTitleDisplayMode(.large)
     }
 
@@ -57,7 +57,13 @@ struct DashboardView: View {
                     .frame(maxWidth: .infinity)
             }
         }
-        .sheet(item: $selectedEvent) { eventWrapper in
+        .sheet(item: $selectedEvent) {
+            do {
+                try eventKitHandler.fetchAllEvents()
+            } catch {
+                controlState.error = error
+            }
+        } content: { eventWrapper in
             if let event = eventWrapper.item as? EKEvent {
                 EKEventView(event: event)
             }

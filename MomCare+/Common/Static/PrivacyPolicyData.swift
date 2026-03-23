@@ -23,7 +23,6 @@ enum PrivacyPolicyText {
         • Mood, diet, hydration, symptom & exercise tracking
         • Reminders for scans, checkups, supplements, and self-care
         • Mental wellness tools like guided breathing and MoodNest
-        • TrimesterFlow™ and ProgressHub™ for personalized insights and trend analysis
 
         To provide this experience, we collect certain information that you choose to share. Here's what we collect and why.
         """),

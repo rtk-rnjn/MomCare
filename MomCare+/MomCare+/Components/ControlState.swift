@@ -3,10 +3,10 @@ import SwiftUI
 
 enum AppTab: Int, CaseIterable {
     case onboarding
-    case progressHub
+    case progress
     case myPlan
     case triTrack
-    case moodNest
+    case mood
     case profile
 
     // MARK: Internal
@@ -14,10 +14,10 @@ enum AppTab: Int, CaseIterable {
     var title: String {
         switch self {
         case .onboarding: "MomCare+"
-        case .progressHub: "Progress"
+        case .progress: "Progress"
         case .myPlan: "My Plan"
         case .triTrack: "TriTrack"
-        case .moodNest: "Mood"
+        case .mood: "Mood"
         case .profile: "Profile"
         }
     }
@@ -25,10 +25,10 @@ enum AppTab: Int, CaseIterable {
     var systemImage: String {
         switch self {
         case .onboarding: ""
-        case .progressHub: "trophy.fill"
+        case .progress: "trophy.fill"
         case .myPlan: "list.bullet.clipboard.fill"
         case .triTrack: "calendar"
-        case .moodNest: "face.dashed.fill"
+        case .mood: "face.dashed.fill"
         case .profile: "person.crop.circle"
         }
     }
@@ -139,7 +139,7 @@ final class ControlState: ObservableObject {
         didSet { UserDefaults.standard.set(isLoggedIn, forKey: "isLoggedIn") }
     }
 
-    @Published var selectedTab: AppTab = .progressHub {
+    @Published var selectedTab: AppTab = .progress {
         didSet { UserDefaults.standard.set(selectedTab.rawValue, forKey: "selectedTab") }
     }
 

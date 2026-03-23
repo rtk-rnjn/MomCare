@@ -107,17 +107,16 @@ struct MealTimelineCardView: View {
                     .background {
                         LinearGradient(
                             colors: [
-                                Color.white,
-                                Color.yellow.opacity(0.05),
+                                Color.yellow.opacity(0.01),
                                 Color.yellow.opacity(0.10),
                                 Color.yellow.opacity(0.15),
                                 Color.yellow.opacity(0.10),
-                                Color.yellow.opacity(0.05),
-                                Color.white
+                                Color.yellow.opacity(0.01)
                             ],
                             startPoint: .leading,
                             endPoint: .trailing
                         )
+                        .ignoresSafeArea()
                         .opacity(originalItems.contains(where: { $0.id == item.id }) ? 0 : 1)
                         .animation(reduceMotion ? nil : .easeInOut(duration: 0.3), value: originalItems)
                     }

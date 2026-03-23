@@ -39,15 +39,12 @@ struct ExerciseModel: Codable, Sendable {
     }
 
     var humanReadableDuration: String {
-        let minutes = Int(videoDurationSeconds) / 60
-        let seconds = Int(videoDurationSeconds) % 60
-        if minutes > 0, seconds > 0 {
-            return "\(minutes)m \(seconds)s"
-        } else if minutes > 0 {
-            return "\(minutes) min"
-        } else {
-            return "\(seconds)s"
-        }
+        let formatter = DateComponentsFormatter()
+        formatter.allowedUnits = [.minute, .second]
+        formatter.unitsStyle = .abbreviated
+        formatter.zeroFormattingBehavior = .dropLeading
+
+        return formatter.string(from: videoDurationSeconds) ?? "0s"
     }
 }
 

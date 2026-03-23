@@ -75,19 +75,21 @@ struct MyPlanDietPlanView: View {
             DietPlanHistory()
         }
         .toolbar {
-            ToolbarItem(placement: .confirmationAction) {
+            ToolbarItem(placement: .topBarTrailing) {
+                Button {
+                    showHistory = true
+                } label: {
+                    Image(systemName: "clock.arrow.circlepath")
+                }
+            }
+
+            ToolbarItem(placement: .topBarTrailing) {
                 Menu {
                     if experimentalFeatures {
                         Button {
                             showWaterLog = true
                         } label: {
                             Label("Water Intake Log", systemImage: "drop.fill")
-                        }
-
-                        Button {
-                            showHistory = true
-                        } label: {
-                            Label("Meal Plan History", systemImage: "clock.arrow.circlepath")
                         }
 
                         Divider()

@@ -49,7 +49,7 @@ struct ProgressCardView: View {
         .clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
         .shadow(color: .black.opacity(0.07), radius: 12, x: 0, y: 4)
         .scaleEffect(isPressed ? 0.97 : 1.0)
-        .onTapGesture(perform: experimentalFeatures ? toggleExpansion : {})
+        .onTapGesture(perform: toggleExpansion)
         .gesture(pressGesture)
         .accessibilityElement(children: .contain)
         .accessibilityHint(isExpanded ? "Double tap to collapse" : "Double tap to expand details")
@@ -618,7 +618,7 @@ struct ProgressRingView: View {
         }
         .drawingGroup()
         .overlay {
-            PercentageRing(ringWidth: 14, percent: progress * 100, backgroundColor: MomCareAccent.secondary, foregroundColors: [MomCareAccent.primary.mix(with: .white, by: 0.7), MomCareAccent.primary])
+            PercentageRing(ringWidth: 14, percent: progress * 100, backgroundColor: MomCareAccent.primary.opacity(0.15), foregroundColors: [MomCareAccent.primary])
         }
         .fixedSize(horizontal: false, vertical: true)
         .contentShape(Circle())

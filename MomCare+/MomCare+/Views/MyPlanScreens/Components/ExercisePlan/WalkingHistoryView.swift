@@ -202,33 +202,23 @@ struct WalkingHistoryView: View {
                     Spacer()
                     Text(bar.steps.formatted() + " steps")
                         .font(.caption.weight(.bold))
-                        .foregroundColor(
-                            bar.steps >= stepsGoal
-                                ? Color(hex: "4A8A62")
-                                : Color.CustomColors.mutedRaspberry
-                        )
+                        .foregroundColor(Color(hex: "4A8A62"))
                 }
                 .padding(.horizontal, 4)
                 .transition(unsafe .opacity.combined(with: .scale(scale: 0.95)))
             }
 
-            Chart(rangePoints) { pt in
+            Chart(rangePoints) { stepDataPoint in
                 BarMark(
-                    x: .value("Day", barLabel(pt)),
-                    y: .value("Steps", pt.steps),
+                    x: .value("Day", barLabel(stepDataPoint)),
+                    y: .value("Steps", stepDataPoint.steps),
                     width: .ratio(0.55)
                 )
-                .foregroundStyle(
-                    pt.steps >= stepsGoal
-                        ? Color(hex: "4A8A62")
-                        : Color.CustomColors.mutedRaspberry.opacity(
-                            selectedBar?.id == pt.id ? 1.0 : 0.75
-                          )
-                )
+                .foregroundStyle(Color(hex: "4A8A62"))
                 .cornerRadius(6)
-                .accessibilityLabel(barLabel(pt))
+                .accessibilityLabel(barLabel(stepDataPoint))
                 .accessibilityValue(
-                    "\(pt.steps.formatted()) steps\(pt.steps >= stepsGoal ? ", goal met" : "")\(selectedBar?.id == pt.id ? ", selected" : "")"
+                    "\(stepDataPoint.steps.formatted()) steps\(stepDataPoint.steps >= stepsGoal ? ", goal met" : "")\(selectedBar?.id == stepDataPoint.id ? ", selected" : "")"
                 )
 
                 RuleMark(y: .value("Goal", stepsGoal))
@@ -265,7 +255,6 @@ struct WalkingHistoryView: View {
             .chartXVisibleDomain(length: rangePoints.count)
             .frame(height: 200)
             .animation(reduceMotion ? nil : .easeInOut(duration: 0.3), value: rangePoints.count)
-            // Tap to select bar
             .chartOverlay { proxy in
                 GeometryReader { geo in
                     Rectangle()

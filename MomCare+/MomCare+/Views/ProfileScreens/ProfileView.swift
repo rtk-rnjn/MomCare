@@ -2,6 +2,8 @@ import SwiftUI
 import TipKit
 import UIKit
 
+private let kFirstTime = "momcare_firsttime"
+
 struct ProfileSection: Identifiable {
     var id: UUID = .init()
     let rows: [ProfileRow]
@@ -109,6 +111,8 @@ struct ProfileView: View {
 
     // MARK: Private
 
+    @AppStorage(kFirstTime) private var firstTime: Bool = true
+
     @State private var showSignOutAlert = false
 
     @EnvironmentObject private var authenticationService: AuthenticationService
@@ -174,7 +178,8 @@ struct ProfileView: View {
     private func performSignOut() {
 
         Task {
-             await authenticationService.logout()
+            await authenticationService.logout()
+            firstTime = true
         }
     }
 
