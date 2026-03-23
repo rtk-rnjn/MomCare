@@ -36,12 +36,6 @@ class NetworkManager {
 
     static let shared: NetworkManager = .init()
 
-    private(set) var debugMenuStore: DebugMenuStore?
-
-    func setDebugMenuStore(_ store: DebugMenuStore) {
-        debugMenuStore = store
-    }
-
     func get<T: Codable>(
         url: String,
         queryParameters: [String: any Codable]? = nil,
@@ -163,32 +157,8 @@ class NetworkManager {
         var attempts = 5
 
         while attempts > 0 {
-
-            let startTime = Date()
-
-            var statusCode: Int?
-            var responseBody: String?
-            var errorMessage: String?
-
-            defer {
-                debugMenuStore?.addNetworkRequest(
-                    .init(
-                        method: request.httpMethod ?? "UNKNOWN",
-                        url: url,
-                        statusCode: statusCode,
-                        responseTime: Date().timeIntervalSince(startTime),
-                        requestBody: request.httpBody.flatMap { String(data: $0, encoding: .utf8) },
-                        responseBody: responseBody,
-                        error: errorMessage
-                    )
-                )
-            }
-
             do {
                 let (data, response) = try await URLSession.shared.data(for: request)
-
-                statusCode = (response as? HTTPURLResponse)?.statusCode
-                responseBody = String(data: data, encoding: .utf8)
 
                 return try await handleRequest(
                     response: response,
@@ -196,9 +166,7 @@ class NetworkManager {
                     url: url
                 )
             } catch {
-
                 attempts -= 1
-                errorMessage = error.localizedDescription
 
                 if let urlError = error as? URLError {
 
@@ -207,12 +175,6 @@ class NetworkManager {
                     case .networkConnectionLost, .timedOut, .notConnectedToInternet:
 
                         logger.warning("Network error occurred for request to \(url): \(urlError.localizedDescription). Retrying... (\(5 - attempts) attempts left)")
-
-                        DebugLogger.shared.log(
-                            "Network error occurred for request to \(url): \(urlError.localizedDescription). Retrying... (\(5 - attempts) attempts left)",
-                            level: .warning,
-                            category: .network
-                        )
 
                         try? await Task.sleep(nanoseconds: UInt64(1_000_000_000 * (attempts % 5)))
 

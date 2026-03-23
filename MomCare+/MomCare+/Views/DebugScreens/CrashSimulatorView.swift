@@ -104,11 +104,6 @@ struct CrashSimulatorView: View {
     }
 
     private func simulateAPIFailure() {
-        DebugLogger.shared.log(
-            "SIMULATED: 500 Internal Server Error — GET /api/v1/feed",
-            level: .error,
-            category: .network
-        )
         lastSimulation = "[\(timestamp())] API failure injected into Network Inspector"
     }
 

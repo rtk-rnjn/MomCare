@@ -25,7 +25,6 @@ struct MomCareApp: App {
                 .environmentObject(musicPlayerHandler)
                 .environmentObject(eventKitHandler)
                 .environmentObject(controlState)
-                .environmentObject(appDelegate.debugMenuStore)
                 .modelContainer(for: SymptomModel.self)
         }
     }

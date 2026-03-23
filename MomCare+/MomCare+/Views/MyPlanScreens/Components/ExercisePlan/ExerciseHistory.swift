@@ -12,7 +12,7 @@ struct ExerciseHistory: View {
     var body: some View {
         NavigationStack {
             VStack(spacing: 0) {
-                CompactCalendarView(selectedDate: $selectedDate, isExpanded: $isCalendarExpanded)
+                CompactCalendarView(selectedDate: $selectedDate, isExpanded: $controlState.showingExpandedCalendar)
 
                 Group {
                     if isLoading && exercises == nil {
@@ -76,6 +76,33 @@ struct ExerciseHistory: View {
                 ToolbarItem(placement: .cancellationAction) {
                     Button(role: .close) { dismiss() }
                 }
+
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button {
+                        withAnimation(reduceMotion ? nil : .easeInOut) {
+                            controlState.showingExpandedCalendar.toggle()
+                        }
+                    } label: {
+                        Image(systemName: "calendar")
+                            .font(.body)
+                            .foregroundColor(Color.CustomColors.mutedRaspberry)
+                            .symbolEffect(.bounce, value: controlState.showingExpandedCalendar)
+                    }
+                    .accessibilityLabel(controlState.showingExpandedCalendar ? "Collapse calendar" : "Expand calendar")
+                    .accessibilityIdentifier("expandCalendarButton")
+                }
+
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button {
+                        selectedDate = Date()
+                    } label: {
+                        Image(systemName: "\(Calendar.current.component(.day, from: Date())).calendar")
+                            .font(.body)
+                            .foregroundColor(Color.CustomColors.mutedRaspberry)
+                    }
+                    .accessibilityLabel(controlState.showingExpandedCalendar ? "Collapse calendar" : "Expand calendar")
+                    .accessibilityIdentifier("expandCalendarButton")
+                }
             }
             .task(id: selectedDate.startOfDay) {
                 await load(for: selectedDate)
@@ -88,12 +115,13 @@ struct ExerciseHistory: View {
     @State private var exercises: [UserExerciseModel]?
     @State private var selectedDate: Date = .init()
 
-    @State private var isCalendarExpanded = false
     @State private var isLoading = false
     @State private var errorMessage: String?
 
     @Environment(\.dismiss) private var dismiss
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
+
+    @EnvironmentObject private var controlState: ControlState
 
     @MainActor
     private func load(for date: Date) async {

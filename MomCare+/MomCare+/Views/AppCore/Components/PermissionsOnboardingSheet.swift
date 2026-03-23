@@ -322,6 +322,11 @@ private struct PermissionRow: View {
                     switch permission.type {
                     case .healthKit:
                         _ = try await contentServiceHandler.requestHealthKitAccess()
+                        do {
+                            try await contentServiceHandler.startStepCountObservation()
+                        } catch {
+                            controlState.error = error
+                        }
 
                     case .calendar:
                         let granted = try await eventKitHandler.requestAccess(for: .event)
@@ -390,5 +395,6 @@ private struct PermissionRow: View {
 
     @EnvironmentObject private var contentServiceHandler: ContentServiceHandler
     @EnvironmentObject private var eventKitHandler: EventKitHandler
+    @EnvironmentObject private var controlState: ControlState
 
 }

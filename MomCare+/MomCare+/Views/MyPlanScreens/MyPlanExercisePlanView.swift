@@ -15,19 +15,17 @@ struct MyPlanExercisePlanView: View {
             )
             .padding(.horizontal, 16)
 
-            VStack(spacing: 0) {
-                ScrollView(.vertical, showsIndicators: false) {
-                    exerciseCardsView
-                }
-                .refreshable {
-                    Task {
-                        do {
-                            try await contentServiceHandler.fetchUserExercises()
-                            HapticsHandler.notification(.success)
-                        } catch {
-                            controlState.error = error
-                            HapticsHandler.notification(.error)
-                        }
+            ScrollView(.vertical, showsIndicators: false) {
+                exerciseCardsView
+            }
+            .refreshable {
+                Task {
+                    do {
+                        try await contentServiceHandler.fetchUserExercises()
+                        HapticsHandler.notification(.success)
+                    } catch {
+                        controlState.error = error
+                        HapticsHandler.notification(.error)
                     }
                 }
             }

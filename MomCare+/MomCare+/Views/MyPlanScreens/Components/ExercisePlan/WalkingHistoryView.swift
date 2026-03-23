@@ -20,7 +20,7 @@ struct WalkingHistoryView: View {
 
                     CompactCalendarView(
                         selectedDate: $selectedDate,
-                        isExpanded: $isCalendarExpanded
+                        isExpanded: $controlState.showingExpandedCalendar
                     )
                     .padding(.bottom, 8)
 
@@ -45,6 +45,33 @@ struct WalkingHistoryView: View {
                 ToolbarItem(placement: .cancellationAction) {
                     Button(role: .cancel) { dismiss() }
                 }
+
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button {
+                        withAnimation(reduceMotion ? nil : .easeInOut) {
+                            controlState.showingExpandedCalendar.toggle()
+                        }
+                    } label: {
+                        Image(systemName: "calendar")
+                            .font(.body)
+                            .foregroundColor(Color.CustomColors.mutedRaspberry)
+                            .symbolEffect(.bounce, value: controlState.showingExpandedCalendar)
+                    }
+                    .accessibilityLabel(controlState.showingExpandedCalendar ? "Collapse calendar" : "Expand calendar")
+                    .accessibilityIdentifier("expandCalendarButton")
+                }
+
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button {
+                        selectedDate = Date()
+                    } label: {
+                        Image(systemName: "\(Calendar.current.component(.day, from: Date())).calendar")
+                            .font(.body)
+                            .foregroundColor(Color.CustomColors.mutedRaspberry)
+                    }
+                    .accessibilityLabel(controlState.showingExpandedCalendar ? "Collapse calendar" : "Expand calendar")
+                    .accessibilityIdentifier("expandCalendarButton")
+                }
             }
             .onChange(of: selectedDate) {
                 Task {
@@ -62,13 +89,14 @@ struct WalkingHistoryView: View {
     // MARK: Private
 
     @EnvironmentObject private var contentServiceHandler: ContentServiceHandler
+    @EnvironmentObject private var controlState: ControlState
+
     @Environment(\.dismiss) private var dismiss
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     @State private var selectedDate: Date = .init()
     @State private var selectedDateSteps: Int = 0
     @State private var rangePoints: [StepDataPoint] = []
-    @State private var isCalendarExpanded = false
     @State private var selectedBar: StepDataPoint?
 
     private var chartTitle: String = "This Week"

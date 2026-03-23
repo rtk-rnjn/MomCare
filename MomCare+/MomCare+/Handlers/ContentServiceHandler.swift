@@ -81,7 +81,7 @@ final class ContentServiceHandler: ObservableObject {
         }
     }
 
-    nonisolated func startStepCountObservation() async {
+    nonisolated func startStepCountObservation() async throws {
         guard let stepType = HKQuantityType.quantityType(forIdentifier: .stepCount) else {
             fatalError()
         }
@@ -97,7 +97,7 @@ final class ContentServiceHandler: ObservableObject {
             self.fetchTodaySteps()
         }
         healthStore.execute(query)
-        try? await healthStore.enableBackgroundDelivery(for: stepType, frequency: .immediate)
+        try await healthStore.enableBackgroundDelivery(for: stepType, frequency: .immediate)
 
         fetchTodaySteps()
     }
@@ -369,8 +369,9 @@ extension ContentServiceHandler {
         for date in range {
             let exerciseProgressPercentage: Double = await calculateTotalCompletionPercentage(for: date)
             let breathingProgressPercentage: Double = fetchBreathingCompletionDuration(for: date) / breathingTargetInSeconds
+            let stepsProgressPercentage = Double(await fetchStepCount(for: date)) / stepsGoal
 
-            let progress = (exerciseProgressPercentage + breathingProgressPercentage) / 2
+            let progress = (exerciseProgressPercentage + breathingProgressPercentage + stepsProgressPercentage) / 3
             temp.append(.init(date: date, completionPercentage: progress))
         }
         weeklyProgress = temp
