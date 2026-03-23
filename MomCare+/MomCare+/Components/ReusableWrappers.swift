@@ -22,7 +22,6 @@ struct InfoRow: View {
 }
 
 struct InfoRowDate: View {
-
     // MARK: Internal
 
     let title: String
@@ -42,7 +41,10 @@ struct InfoRowDate: View {
         }
         .contentShape(Rectangle())
         .onTapGesture {
-            guard isEditing else { return }
+            guard isEditing else {
+                return
+            }
+
             onTap()
         }
         .accessibilityElement(children: .combine)
@@ -58,7 +60,6 @@ struct InfoRowDate: View {
         dateFormatter.dateStyle = .medium
         return dateFormatter.string(from: date)
     }
-
 }
 
 struct ProfileEditableTextRow: View {

@@ -1,7 +1,6 @@
 import SwiftUI
 
 struct DebugMenuView: View {
-
     var body: some View {
         NavigationStack {
             List {
@@ -30,8 +29,13 @@ enum DebugSection: String, CaseIterable, Identifiable {
 
     // MARK: Internal
 
-    var id: String { rawValue }
-    var title: String { rawValue }
+    var id: String {
+        rawValue
+    }
+
+    var title: String {
+        rawValue
+    }
 
     @ViewBuilder
     func destination() -> some View {

@@ -1,7 +1,6 @@
 import SwiftUI
 
 struct TriTrackSymptomDetailView: View {
-
     // MARK: Internal
 
     let themeColor: Color = .CustomColors.mutedRaspberry
@@ -22,7 +21,8 @@ struct TriTrackSymptomDetailView: View {
                         ForEach(symptom.trimesters, id: \.self) { trimester in
                             Text(trimester)
                                 .font(.caption.weight(.semibold))
-                                .padding(.horizontal, 10).padding(.vertical, 5)
+                                .padding(.horizontal, 10)
+.padding(.vertical, 5)
                                 .background(Color.black.opacity(0.05))
                                 .foregroundColor(.black.opacity(0.8))
                                 .clipShape(Capsule())
@@ -102,14 +102,19 @@ struct TriTrackSymptomDetailView: View {
 }
 
 struct SymptomSectionView: View {
-    let title: String, iconName: String, color: Color, content: String
+    let title: String
+    let iconName: String
+    let color: Color
+    let content: String
 
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
             HStack(spacing: 10) {
-                Image(systemName: iconName).foregroundColor(color)
+                Image(systemName: iconName)
+.foregroundColor(color)
                     .accessibilityHidden(true)
-                Text(title).foregroundColor(.black)
+                Text(title)
+.foregroundColor(.black)
                     .accessibilityAddTraits(.isHeader)
             }.font(.headline)
 

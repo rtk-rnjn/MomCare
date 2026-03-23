@@ -1,7 +1,6 @@
 import SwiftUI
 
 struct MomCareRootView: View {
-
     // MARK: Internal
 
     var body: some View {
@@ -23,7 +22,6 @@ struct MomCareRootView: View {
     @AppStorage(FeatureFlagState.forceLightMode.rawValue, store: UserDefaults(suiteName: "group.MomCare"))
     private var forceLightMode: Bool = true
 
-    @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @EnvironmentObject private var authenticationService: AuthenticationService
 
     private var isLoggedIn: Bool {
@@ -45,5 +43,4 @@ struct MomCareRootView: View {
 
         return nil
     }
-
 }

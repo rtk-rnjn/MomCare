@@ -1,8 +1,7 @@
-import SwiftUI
 import AuthenticationServices
+import SwiftUI
 
 struct ReAuthenticationSheetView: View {
-
     // MARK: Internal
 
     var body: some View {
@@ -48,7 +47,6 @@ struct ReAuthenticationSheetView: View {
                                 .foregroundStyle(.secondary)
                                 .multilineTextAlignment(.center)
                                 .fixedSize(horizontal: false, vertical: true)
-
                         }
                         .padding(.top, 32)
                         .padding(.horizontal, 28)
@@ -56,7 +54,6 @@ struct ReAuthenticationSheetView: View {
                         .accessibilityLabel("If you have an Apple ID linked to your account, you can use it to sign in quickly and securely without needing to enter your password.")
 
                         VStack(spacing: 12) {
-
                             SignInWithAppleButton(.continue) { request in
                                 request.requestedScopes = []
                             } onCompletion: { _ in
@@ -74,11 +71,9 @@ struct ReAuthenticationSheetView: View {
                             .foregroundStyle(.secondary)
                             .padding(.bottom, 8)
                             .accessibilityHint("Closes this sheet")
-
                         }
                         .padding(.horizontal, 28)
                         .padding(.bottom, 24)
-
                     }
                     .navigationBarHidden(true)
                 }
@@ -126,7 +121,6 @@ struct ReAuthenticationSheetView: View {
                     .controlSize(.large)
                     .accessibilityLabel("Sign In")
                     .accessibilityHint("Signs you in to your account")
-
                 }
             }
         }
@@ -140,7 +134,6 @@ struct ReAuthenticationSheetView: View {
 
     @State private var email: String = ""
     @State private var password: String = ""
-    @State private var isPasswordVisible: Bool = false
     @State private var isLoading: Bool = false
 
     @State private var showAppleLoginSheet: Bool = false
@@ -170,6 +163,4 @@ struct ReAuthenticationSheetView: View {
     private func submitEmailLogin() async throws {
         try await authenticationService.login(emailAddress: email, password: password)
     }
-
-    private func submitAppleLogin(_ result: Result<ASAuthorization, any Error>) async {}
 }

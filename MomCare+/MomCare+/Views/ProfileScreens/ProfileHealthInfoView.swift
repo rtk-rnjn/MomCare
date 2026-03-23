@@ -1,7 +1,6 @@
 import SwiftUI
 
 struct ProfileHealthInfoView: View {
-
     // MARK: Internal
 
     enum SheetType: Identifiable {
@@ -30,6 +29,11 @@ struct ProfileHealthInfoView: View {
                         withAnimation { showDueDatePicker.toggle() }
                     }
                 }
+                .onAppear {
+                    if let dueDate = authenticationService.userModel?.dueDate {
+                        self.dueDate = dueDate
+                    }
+                }
 
                 if showDueDatePicker {
                     DatePicker(
@@ -41,14 +45,13 @@ struct ProfileHealthInfoView: View {
                     .datePickerStyle(.wheel)
                     .labelsHidden()
                 }
-
-                InfoRow(title: "Day", value: "\(pregnancy.day)", isEditing: false)
-                InfoRow(title: "Week", value: "\(pregnancy.week)", isEditing: false)
-                InfoRow(title: "Trimester", value: pregnancy.trimester, isEditing: false)
+            } footer: {
+                Text("This information helps us provide you with more personalized content and recommendations.")
+                    .font(.footnote)
+                    .foregroundColor(.secondary)
             }
 
             Section {
-
                 pickerRow(title: "Dietary Preferences", value: displayCount(dietaryPreferences)) {
                     activeSheet = .diet
                 }
@@ -77,7 +80,9 @@ struct ProfileHealthInfoView: View {
             }
         }
         .onChange(of: isEditing) {
-            if !isEditing { showDueDatePicker = false }
+            if !isEditing {
+                showDueDatePicker = false
+            }
         }
         .onChange(of: isEditing) {
             if isEditing {
@@ -141,7 +146,10 @@ struct ProfileHealthInfoView: View {
         action: @escaping () -> Void
     ) -> some View {
         Button {
-            guard isEditing else { return }
+            guard isEditing else {
+                return
+            }
+
             action()
         } label: {
             HStack {
@@ -163,7 +171,9 @@ struct ProfileHealthInfoView: View {
     }
 
     func displayCount<T>(_ set: Set<T>) -> String {
-        if set.isEmpty { return "None" }
+        if set.isEmpty {
+            return "None"
+        }
         return "\(set.count) Selected"
     }
 
@@ -183,13 +193,6 @@ struct ProfileHealthInfoView: View {
     @State private var dietaryPreferences: Set<DietaryPreference> = []
 
     @State private var activeSheet: SheetType?
-
-    private var pregnancy: PregnancyProgress {
-        if let dueDateTimestamp = authenticationService.userModel?.dueDateTimestamp {
-            return Utils.progress(fromDueDate: Date(timeIntervalSince1970: dueDateTimestamp))
-        }
-        return Utils.progress(fromDueDate: Date())
-    }
 
     private var allowedDueDateRange: ClosedRange<Date> {
         let calendar = Calendar.current

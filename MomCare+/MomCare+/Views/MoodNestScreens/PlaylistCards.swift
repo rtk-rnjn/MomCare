@@ -2,7 +2,6 @@ import SwiftUI
 import UIKit
 
 struct PlaylistCard: View {
-
     // MARK: Internal
 
     let playlist: PlaylistModel
@@ -68,5 +67,4 @@ struct PlaylistCard: View {
 
     @State private var uiImage: UIImage?
     @Environment(\.accessibilityReduceTransparency) private var reduceTransparency
-
 }

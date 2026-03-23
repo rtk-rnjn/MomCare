@@ -1,7 +1,6 @@
 import SwiftUI
 
 struct HealthMetricsSignUpView: View {
-
     // MARK: Internal
 
     enum PickerType: Identifiable {
@@ -80,6 +79,7 @@ struct HealthMetricsSignUpView: View {
               let max = calendar.date(byAdding: .year, value: -18, to: now) else {
             return now ... now
         }
+
         return min ... max
     }
 
@@ -243,6 +243,7 @@ struct HealthMetricsSignUpView: View {
 
         case .country:
             CountryPickerView(selectedCountry: $selectedCountry)
+
         case .state:
             StatePickerView(selectedState: $selectedState)
         }
@@ -280,9 +281,15 @@ struct HealthMetricsSignUpView: View {
     private func getMissingSelections() -> [String] {
         var missing = [String]()
 
-        if height == nil { missing.append("Height") }
-        if prePregnancyWeight == nil { missing.append("Pre-Pregnancy Weight") }
-        if currentWeight == nil { missing.append("Current Weight") }
+        if height == nil {
+            missing.append("Height")
+        }
+        if prePregnancyWeight == nil {
+            missing.append("Pre-Pregnancy Weight")
+        }
+        if currentWeight == nil {
+            missing.append("Current Weight")
+        }
 
         if selectedCountry == nil {
             missing.append("Country")
@@ -292,5 +299,4 @@ struct HealthMetricsSignUpView: View {
 
         return missing
     }
-
 }

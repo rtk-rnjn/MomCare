@@ -11,7 +11,6 @@ enum FeatureFlagState: String {
 }
 
 struct FeatureFlagsView: View {
-
     // MARK: Internal
 
     var body: some View {
@@ -94,7 +93,6 @@ struct FeatureFlagsView: View {
                     .font(.footnote)
                     .foregroundStyle(.secondary)
             }
-
         }
         .navigationTitle("Feature Flags")
         .navigationBarTitleDisplayMode(.inline)
@@ -108,7 +106,6 @@ struct FeatureFlagsView: View {
 
     @AppStorage(FeatureFlagState.forceDarkMode.rawValue, store: UserDefaults(suiteName: "group.MomCare")) private var forceDarkMode: Bool = false
     @AppStorage(FeatureFlagState.forceLightMode.rawValue, store: UserDefaults(suiteName: "group.MomCare")) private var forceLightMode: Bool = true
-
 }
 
 private struct FlagToggle: View {

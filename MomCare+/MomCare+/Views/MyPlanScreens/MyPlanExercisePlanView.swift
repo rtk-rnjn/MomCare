@@ -1,9 +1,8 @@
+import AVFoundation
 import SwiftUI
 import TipKit
-import AVFoundation
 
 struct MyPlanExercisePlanView: View {
-
     // MARK: Internal
 
     var body: some View {
@@ -119,6 +118,9 @@ struct MyPlanExercisePlanView: View {
                 .onTapGesture {
                     showWalkingHistory = true
                 }
+                .onAppear {
+                    contentServiceHandler.fetchTodaySteps()
+                }
 
             BreathingCardView {
                 withAnimation(reduceMotion ? nil : .easeInOut) {
@@ -155,6 +157,8 @@ struct MyPlanExercisePlanView: View {
                     }
                 }
             }
+
+            Color.clear.padding(.bottom, 10)
         }
         .padding(.horizontal, 16)
         .padding(.top, 16)
@@ -163,7 +167,8 @@ struct MyPlanExercisePlanView: View {
 
     private func exerciseInfoOverlay() -> some View {
         ZStack {
-            Color.black.opacity(0.4)
+            Color.black
+.opacity(0.4)
                 .ignoresSafeArea()
                 .onTapGesture {
                     withAnimation(reduceMotion ? nil : .easeInOut) {
@@ -188,5 +193,4 @@ struct MyPlanExercisePlanView: View {
             }
         }
     }
-
 }

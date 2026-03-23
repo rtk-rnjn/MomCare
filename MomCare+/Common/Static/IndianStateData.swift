@@ -42,5 +42,4 @@ enum IndianState: String, Codable, CaseIterable, Identifiable, Hashable {
     var id: String {
         rawValue
     }
-
 }

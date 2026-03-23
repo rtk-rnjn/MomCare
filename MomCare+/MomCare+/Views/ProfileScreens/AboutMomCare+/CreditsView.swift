@@ -8,7 +8,6 @@ private let brandPink: Color = .init(red: 146 / 255, green: 67 / 255, blue: 80 /
 private let borderColor: Color = .init(UIColor.systemGray5)
 
 struct CreditsView: View {
-
     // MARK: Internal
 
     var body: some View {

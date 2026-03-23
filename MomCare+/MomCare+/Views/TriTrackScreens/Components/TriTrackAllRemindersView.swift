@@ -1,8 +1,7 @@
-import SwiftUI
 import EventKit
+import SwiftUI
 
 struct TriTrackAllRemindersView: View {
-
     // MARK: Internal
 
     var body: some View {
@@ -10,11 +9,17 @@ struct TriTrackAllRemindersView: View {
             List {
                 ForEach(Array(groupedReminders.enumerated()), id: \.offset) { index, section in
                     let isToday: Bool = {
-                        guard let date = section.date else { return false }
+                        guard let date = section.date else {
+                            return false
+                        }
+
                         return Calendar.current.isDate(date, inSameDayAs: today)
                     }()
                     let isPast: Bool = {
-                        guard let date = section.date else { return false }
+                        guard let date = section.date else {
+                            return false
+                        }
+
                         return date < today
                     }()
 
@@ -124,10 +129,16 @@ struct TriTrackAllRemindersView: View {
 
     private var todaySectionIndex: Int? {
         groupedReminders.firstIndex(where: {
-            guard let date = $0.date else { return false }
+            guard let date = $0.date else {
+                return false
+            }
+
             return Calendar.current.isDate(date, inSameDayAs: today)
         }) ?? groupedReminders.firstIndex(where: {
-            guard let date = $0.date else { return false }
+            guard let date = $0.date else {
+                return false
+            }
+
             return date >= today
         })
     }
@@ -140,7 +151,6 @@ struct TriTrackAllRemindersView: View {
             showErrorAlert = true
         }
     }
-
 }
 
 enum ReminderRowStatus {
@@ -177,23 +187,23 @@ enum ReminderRowStatus {
 
     var indicatorColor: Color {
         switch self {
-        case .past: return .red
-        case .pastRecurring: return .orange
-        case .today: return Color.CustomColors.mutedRaspberry
-        case .future: return Color(.systemGray4)
-        case .futureRecurring: return .blue
-        case .futureRecurringWithEnd: return .purple
+        case .past: .red
+        case .pastRecurring: .orange
+        case .today: Color.CustomColors.mutedRaspberry
+        case .future: Color(.systemGray4)
+        case .futureRecurring: .blue
+        case .futureRecurringWithEnd: .purple
         }
     }
 
     var labelColor: Color {
         switch self {
-        case .past: return .red
-        case .pastRecurring: return .orange
-        case .today: return Color.CustomColors.mutedRaspberry
-        case .future: return .secondary
-        case .futureRecurring: return .blue
-        case .futureRecurringWithEnd: return .purple
+        case .past: .red
+        case .pastRecurring: .orange
+        case .today: Color.CustomColors.mutedRaspberry
+        case .future: .secondary
+        case .futureRecurring: .blue
+        case .futureRecurringWithEnd: .purple
         }
     }
 }
@@ -234,8 +244,12 @@ struct ReminderSectionHeader: View {
         .padding(.vertical, 2)
         .accessibilityElement(children: .ignore)
         .accessibilityLabel({
-            if isToday { return "Today" }
-            if let date { return date.formatted(Date.FormatStyle().weekday(.wide).day().month(.wide)) }
+            if isToday {
+                return "Today"
+            }
+            if let date {
+                return date.formatted(Date.FormatStyle().weekday(.wide).day().month(.wide))
+            }
             return "No due date"
         }())
         .accessibilityAddTraits(.isHeader)
@@ -243,7 +257,6 @@ struct ReminderSectionHeader: View {
 }
 
 struct ReminderRow: View {
-
     // MARK: Lifecycle
 
     init(reminder: EKReminder, showDetails: Bool) {
@@ -259,7 +272,6 @@ struct ReminderRow: View {
 
     var body: some View {
         HStack(alignment: .top, spacing: 14) {
-
             VStack(spacing: 0) {
                 Button {
                     withAnimation(reduceMotion ? nil : .easeInOut) {
@@ -284,7 +296,6 @@ struct ReminderRow: View {
             .padding(.top, 2)
 
             VStack(alignment: .leading, spacing: showDetails ? 5 : 0) {
-
                 HStack(spacing: 6) {
                     Text(reminder.title ?? "Untitled")
                         .font(.headline)
@@ -317,7 +328,6 @@ struct ReminderRow: View {
                 }
 
                 if showDetails {
-
                     if let time = timeLabel, let dueDate = reminder.dueDateComponents?.date {
                         HStack(spacing: 6) {
                             Image(systemName: "clock")
@@ -410,7 +420,9 @@ struct ReminderRow: View {
     @State private var isCompleted: Bool
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
-    private var status: ReminderRowStatus { ReminderRowStatus(reminder: reminder) }
+    private var status: ReminderRowStatus {
+        ReminderRowStatus(reminder: reminder)
+    }
 
     private var reminderColor: Color {
         Color(reminder.calendar.cgColor ?? UIColor.systemOrange.cgColor)
@@ -418,35 +430,38 @@ struct ReminderRow: View {
 
     private var priorityLabel: String? {
         switch reminder.priority {
-        case 1: return "High"
-        case 5: return "Medium"
-        case 9: return "Low"
-        default: return nil
+        case 1: "High"
+        case 5: "Medium"
+        case 9: "Low"
+        default: nil
         }
     }
 
     private var priorityColor: Color {
         switch reminder.priority {
-        case 1: return .red
-        case 5: return .orange
-        case 9: return .blue
-        default: return .secondary
+        case 1: .red
+        case 5: .orange
+        case 9: .blue
+        default: .secondary
         }
     }
 
     private var priorityIcon: String {
         switch reminder.priority {
-        case 1: return "exclamationmark.3"
-        case 5: return "exclamationmark.2"
-        case 9: return "exclamationmark"
-        default: return ""
+        case 1: "exclamationmark.3"
+        case 5: "exclamationmark.2"
+        case 9: "exclamationmark"
+        default: ""
         }
     }
 
     private var timeLabel: String? {
         guard let comps = reminder.dueDateComponents,
               comps.hour != nil, comps.minute != nil,
-              let date = Calendar.current.date(from: comps) else { return nil }
+              let date = Calendar.current.date(from: comps) else {
+                  return nil
+              }
+
         return date.formatted(date: .omitted, time: .shortened)
     }
 
@@ -459,16 +474,23 @@ struct ReminderRow: View {
     }
 
     private var alarmLabel: String? {
-        guard let alarms = reminder.alarms, !alarms.isEmpty else { return nil }
+        guard let alarms = reminder.alarms, !alarms.isEmpty else {
+            return nil
+        }
+
         let descriptions = alarms.compactMap { alarm -> String? in
             if let absoluteDate = alarm.absoluteDate {
                 return absoluteDate.formatted(date: .abbreviated, time: .shortened)
             } else {
                 let offset = Int(alarm.relativeOffset / 60)
-                if offset == 0 { return "At time of due date" }
+                if offset == 0 {
+                    return "At time of due date"
+                }
                 let absOffset = abs(offset)
                 let sign = offset < 0 ? "Before" : "After"
-                if absOffset < 60 { return "\(absOffset)m \(sign)" }
+                if absOffset < 60 {
+                    return "\(absOffset)m \(sign)"
+                }
                 let hours = absOffset / 60
                 let mins = absOffset % 60
                 return mins == 0 ? "\(hours)h \(sign)" : "\(hours)h \(mins)m \(sign)"
@@ -480,6 +502,5 @@ struct ReminderRow: View {
     private func toggleCompletion() {
         isCompleted.toggle()
         reminder.isCompleted = isCompleted
-
     }
 }

@@ -1,7 +1,7 @@
 enum DietaryPreference: String, Codable, CaseIterable, Sendable {
     case vegetarian = "veg"
     case nonVegetarian = "non-veg"
-    case vegan = "vegan"
+    case vegan
     case pescetarian = "Pescetarian"
     case flexitarian = "Flexitarian"
     case glutenFree = "Gluten-Free"

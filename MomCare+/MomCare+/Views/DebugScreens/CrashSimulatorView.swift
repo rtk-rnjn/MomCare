@@ -1,7 +1,6 @@
 import SwiftUI
 
 struct CrashSimulatorView: View {
-
     // MARK: Internal
 
     var body: some View {
@@ -72,7 +71,6 @@ struct CrashSimulatorView: View {
         }
         .navigationTitle("Crash Simulator")
         .navigationBarTitleDisplayMode(.inline)
-
         .confirmationDialog("Force Crash", isPresented: $showCrashConfirm, titleVisibility: .visible) {
             Button("Crash Now", role: .destructive) { fatalError("[DebugMenu] Intentional crash triggered.") }
         } message: {

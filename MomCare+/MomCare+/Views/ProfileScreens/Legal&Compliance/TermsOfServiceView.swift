@@ -1,11 +1,9 @@
 import SwiftUI
 
 struct TermsOfServiceView: View {
-
     // MARK: Internal
 
     var body: some View {
-
         ScrollView {
             VStack(spacing: 24) {
                 VStack(spacing: 16) {
@@ -55,7 +53,6 @@ struct TermsOfServiceView: View {
                     Divider().padding(.vertical, 8)
                 }
             }
-
         }
         .padding(.horizontal)
     }

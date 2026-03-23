@@ -1,8 +1,7 @@
-import SwiftUI
 import Charts
+import SwiftUI
 
 struct WalkingHistoryView: View {
-
     // MARK: Lifecycle
 
     init(stepsGoal: Int) {
@@ -17,7 +16,6 @@ struct WalkingHistoryView: View {
         NavigationStack {
             ScrollView(showsIndicators: false) {
                 VStack(spacing: 0) {
-
                     CompactCalendarView(
                         selectedDate: $selectedDate,
                         isExpanded: $controlState.showingExpandedCalendar
@@ -33,7 +31,6 @@ struct WalkingHistoryView: View {
 
                         statsGrid
                             .padding(.horizontal, 20)
-
                     }
                     .padding(.top, 8)
                     .padding(.bottom, 40)
@@ -104,17 +101,24 @@ struct WalkingHistoryView: View {
     private var chartSubtitle: String = "Daily step count"
 
     private var xAxisValues: [String] {
-        return rangePoints.map { barLabel($0) }
+        rangePoints.map { barLabel($0) }
     }
 
     private var average: Int {
-        guard !rangePoints.isEmpty else { return 0 }
+        guard !rangePoints.isEmpty else {
+            return 0
+        }
+
         return rangePoints.reduce(0) { $0 + $1.steps } / rangePoints.count
     }
 
-    private var maximum: Int { rangePoints.map(\.steps).max() ?? 0 }
+    private var maximum: Int {
+        rangePoints.map(\.steps).max() ?? 0
+    }
 
-    private var totalForRange: Int { rangePoints.reduce(0) { $0 + $1.steps } }
+    private var totalForRange: Int {
+        rangePoints.reduce(0) { $0 + $1.steps }
+    }
 
     private var goalMetCount: Int {
         rangePoints.filter { $0.steps >= stepsGoal }.count
@@ -209,7 +213,6 @@ struct WalkingHistoryView: View {
 
     private var chartSection: some View {
         VStack(alignment: .leading, spacing: 14) {
-
             HStack {
                 VStack(alignment: .leading, spacing: 2) {
                     Text(chartTitle)
@@ -298,7 +301,6 @@ struct WalkingHistoryView: View {
                         }
                 }
             }
-
         }
         .padding(18)
         .shadow(color: Color.black.opacity(0.04), radius: 8, x: 0, y: 3)

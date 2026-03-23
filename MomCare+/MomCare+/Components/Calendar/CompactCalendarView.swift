@@ -1,7 +1,6 @@
 import SwiftUI
 
 struct CompactCalendarView: View {
-
     // MARK: Internal
 
     @Binding var selectedDate: Date
@@ -52,7 +51,6 @@ struct CompactCalendarView: View {
                             } else {
                                 WeekStripView(date: incoming, selectedDate: $selectedDate)
                                     .gesture(dragGesture(width: width))
-
                             }
                         }
                         .offset(x: slideOffset + incomingDirection * width)
@@ -119,7 +117,9 @@ struct CompactCalendarView: View {
         return headerRowAndPadding + grid
     }
 
-    private var expandTravelDistance: CGFloat { 120 }
+    private var expandTravelDistance: CGFloat {
+        120
+    }
 
     private var currentHeight: CGFloat {
         compactHeight + (expandedHeight - compactHeight) * expandProgress
@@ -134,7 +134,6 @@ struct CompactCalendarView: View {
                 }
             } label: {
                 HStack(alignment: .center) {
-
                     GeometryReader { g in
                         let w = max(g.size.width, 1)
 
@@ -200,7 +199,9 @@ struct CompactCalendarView: View {
     }
 
     private func detectDragDirection(horizontal: CGFloat, vertical: CGFloat) {
-        guard isDraggingHorizontal == nil else { return }
+        guard isDraggingHorizontal == nil else {
+            return
+        }
 
         if abs(horizontal) > abs(vertical) + 5 {
             isDraggingHorizontal = true
@@ -294,9 +295,9 @@ struct CompactCalendarView: View {
 
     private func adjacentDate(direction: CGFloat) -> Date {
         if isExpanded {
-            return calendar.date(byAdding: .month, value: direction > 0 ? 1 : -1, to: displayedDate) ?? displayedDate
+            calendar.date(byAdding: .month, value: direction > 0 ? 1 : -1, to: displayedDate) ?? displayedDate
         } else {
-            return calendar.date(byAdding: .weekOfYear, value: direction > 0 ? 1 : -1, to: displayedDate) ?? displayedDate
+            calendar.date(byAdding: .weekOfYear, value: direction > 0 ? 1 : -1, to: displayedDate) ?? displayedDate
         }
     }
 
@@ -335,7 +336,9 @@ struct CompactCalendarView: View {
         showsOutOfMonthDays: Bool,
         alwaysSixWeeks: Bool
     ) -> [Date?] {
-        guard let monthInterval = calendar.dateInterval(of: .month, for: month) else { return [] }
+        guard let monthInterval = calendar.dateInterval(of: .month, for: month) else {
+            return []
+        }
 
         let firstOfMonth = monthInterval.start
         let weekdayOfFirst = calendar.component(.weekday, from: firstOfMonth)
@@ -365,7 +368,7 @@ struct CompactCalendarView: View {
             if remainder != 0 {
                 cells.append(contentsOf: Array(repeating: nil, count: 7 - remainder))
             }
-            if alwaysSixWeeks && cells.count < 42 {
+            if alwaysSixWeeks, cells.count < 42 {
                 cells.append(contentsOf: Array(repeating: nil, count: 42 - cells.count))
             }
             return cells

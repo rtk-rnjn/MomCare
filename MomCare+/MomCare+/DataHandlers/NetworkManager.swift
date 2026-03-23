@@ -22,16 +22,15 @@ struct NetworkResponse<T: Codable>: Codable {
     var responseHeaders: [AnyHashable: Any]?
 
     var localizedError: any LocalizedError {
-        return APIErrorResolver.error(from: statusCode)
+        APIErrorResolver.error(from: statusCode)
     }
 
     var success: Bool {
-        return (200...299).contains(statusCode)
+        (200...299).contains(statusCode)
     }
 }
 
 class NetworkManager {
-
     // MARK: Internal
 
     static let shared: NetworkManager = .init()
@@ -79,7 +78,6 @@ class NetworkManager {
             if let error {
                 DispatchQueue.main.async {
                     logger.error("Error fetching streamed data from \(finalURL.absoluteString): \(error.localizedDescription)")
-
                 }
                 return
             }
@@ -150,7 +148,6 @@ class NetworkManager {
     }
 
     private func performRequest<T: Codable>(_ request: URLRequest) async throws -> NetworkResponse<T> {
-
         let url = request.url?.absoluteString ?? "unknown URL"
         logger.info("Performing \(request.httpMethod ?? "UNKNOWN") request to \(url)")
 
@@ -169,11 +166,8 @@ class NetworkManager {
                 attempts -= 1
 
                 if let urlError = error as? URLError {
-
                     switch urlError.code {
-
-                    case .networkConnectionLost, .timedOut, .notConnectedToInternet:
-
+                    case .networkConnectionLost, .notConnectedToInternet, .timedOut:
                         logger.warning("Network error occurred for request to \(url): \(urlError.localizedDescription). Retrying... (\(5 - attempts) attempts left)")
 
                         try? await Task.sleep(nanoseconds: UInt64(1_000_000_000 * (attempts % 5)))

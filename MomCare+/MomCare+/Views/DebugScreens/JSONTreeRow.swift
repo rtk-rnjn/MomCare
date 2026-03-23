@@ -1,7 +1,6 @@
 import SwiftUI
 
 struct JSONTreeRow: View {
-
     // MARK: Internal
 
     let key: String?
@@ -31,10 +30,8 @@ struct JSONTreeRow: View {
         }
     }
 
-    @ViewBuilder
     private var rowContent: some View {
         HStack(spacing: 6) {
-
             if depth > 0 {
                 HStack(spacing: 8) {
                     ForEach(0..<depth, id: \.self) { _ in
@@ -71,7 +68,6 @@ struct JSONTreeRow: View {
                     .font(.footnote.monospaced())
                     .textSelection(.enabled)
             } else {
-
                 HStack(spacing: 4) {
                     Text(node.typeLabel)
                         .font(.caption2.weight(.semibold).monospaced())
@@ -143,68 +139,85 @@ indirect enum JSONNode {
     // MARK: Lifecycle
 
     init?(any value: Any) {
-        if value is NSNull { self = .null } else if let b = value as? Bool { self = .bool(b) } else if let n = value as? Double { self = .number(n) } else if let s = value as? String { self = .string(s) } else if let a = value as? [Any] {
+        if value is NSNull {
+            self = .null
+        } else if let b = value as? Bool {
+            self = .bool(b)
+        } else if let n = value as? Double {
+            self = .number(n)
+        } else if let s = value as? String {
+            self = .string(s)
+        } else if let a = value as? [Any] {
             self = .array(a.compactMap { JSONNode(any: $0) })
         } else if let d = value as? [String: Any] {
             let pairs = d.sorted { $0.key < $1.key }.compactMap { k, v -> (String, JSONNode)? in
-                guard let node = JSONNode(any: v) else { return nil }
+                guard let node = JSONNode(any: v) else {
+                    return nil
+                }
+
                 return (k, node)
             }
             self = .object(pairs)
-        } else { return nil }
+        } else {
+            return nil
+        }
     }
 
     // MARK: Internal
 
     var isLeaf: Bool {
         switch self {
-        case let .array(a): return a.isEmpty
-        case let .object(o): return o.isEmpty
-        default: return true
+        case let .array(a): a.isEmpty
+        case let .object(o): o.isEmpty
+        default: true
         }
     }
 
     var typeLabel: String {
         switch self {
-        case .null: return "null"
-        case .bool: return "bool"
-        case .number: return "num"
-        case .string: return "str"
-        case .array: return "arr"
-        case .object: return "obj"
+        case .null: "null"
+        case .bool: "bool"
+        case .number: "num"
+        case .string: "str"
+        case .array: "arr"
+        case .object: "obj"
         }
     }
 
     var leafDisplayValue: String? {
         switch self {
-        case .null: return "null"
-        case let .bool(b): return b ? "true" : "false"
+        case .null: "null"
+
+        case let .bool(b): b ? "true" : "false"
+
         case let .number(n):
-            return n.truncatingRemainder(dividingBy: 1) == 0
+            n.truncatingRemainder(dividingBy: 1) == 0
                 ? String(Int(n)) : String(n)
 
-        case let .string(s): return "\"\(s)\""
-        default: return nil
+        case let .string(s): "\"\(s)\""
+
+        default: nil
         }
     }
 
     var childCount: Int {
         switch self {
-        case let .array(a): return a.count
-        case let .object(o): return o.count
-        default: return 0
+        case let .array(a): a.count
+        case let .object(o): o.count
+        default: 0
         }
     }
 
     static func parse(_ data: Data) -> JSONNode? {
-        guard let obj = try? JSONSerialization.jsonObject(with: data) else { return nil }
+        guard let obj = try? JSONSerialization.jsonObject(with: data) else {
+            return nil
+        }
+
         return JSONNode(any: obj)
     }
-
 }
 
 struct JSONSheetView: View {
-
     // MARK: Internal
 
     let title: String
@@ -221,7 +234,6 @@ struct JSONSheetView: View {
                         .padding(.vertical, 8)
                     }
                 } else {
-
                     ScrollView {
                         Text(raw)
                             .font(.footnote.monospaced())
@@ -255,8 +267,10 @@ struct JSONSheetView: View {
     @Environment(\.dismiss) private var dismiss
 
     private var rootNode: JSONNode? {
-        guard let data = raw.data(using: .utf8) else { return nil }
+        guard let data = raw.data(using: .utf8) else {
+            return nil
+        }
+
         return JSONNode.parse(data)
     }
-
 }

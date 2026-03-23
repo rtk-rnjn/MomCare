@@ -1,9 +1,8 @@
+import Combine
 import SwiftUI
 import UIKit
-import Combine
 
 struct DeviceInfoView: View {
-
     // MARK: Internal
 
     var body: some View {
@@ -67,9 +66,9 @@ struct DeviceInfoView: View {
 
     private var envColor: Color {
         switch environment {
-        case "Development": return .orange
-        case "TestFlight / Staging": return .yellow
-        default: return .green
+        case "Development": .orange
+        case "TestFlight / Staging": .yellow
+        default: .green
         }
     }
 
@@ -99,7 +98,9 @@ struct DeviceInfoView: View {
     private var diskUsage: String {
         guard let attrs = try? FileManager.default.attributesOfFileSystem(forPath: NSHomeDirectory()),
               let total = attrs[.systemSize] as? Int64,
-              let free = attrs[.systemFreeSize] as? Int64 else { return "N/A" }
+              let free = attrs[.systemFreeSize] as? Int64 else {
+                  return "N/A"
+              }
 
         let usedGB = Double(total - free) / 1_000_000_000
 
@@ -108,7 +109,9 @@ struct DeviceInfoView: View {
 
     private var freeDisk: String {
         guard let attrs = try? FileManager.default.attributesOfFileSystem(forPath: NSHomeDirectory()),
-              let free = attrs[.systemFreeSize] as? Int64 else { return "N/A" }
+              let free = attrs[.systemFreeSize] as? Int64 else {
+                  return "N/A"
+              }
 
         let freeSpace = Measurement(value: Double(free), unit: UnitInformationStorage.bytes)
             .converted(to: .gigabytes)

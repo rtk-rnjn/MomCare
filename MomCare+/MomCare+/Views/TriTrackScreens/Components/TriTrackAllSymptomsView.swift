@@ -1,8 +1,7 @@
-import SwiftUI
 import SwiftData
+import SwiftUI
 
 struct TriTrackAllSymptomsView: View {
-
     // MARK: Internal
 
     var body: some View {
@@ -97,7 +96,6 @@ struct TriTrackAllSymptomsView: View {
         grouped.firstIndex { Calendar.current.isDate($0.date, inSameDayAs: today) }
             ?? grouped.firstIndex { $0.date >= today }
     }
-
 }
 
 struct SymptomSectionHeader: View {
@@ -134,7 +132,6 @@ struct SymptomSectionHeader: View {
 }
 
 struct SymptomRow: View {
-
     // MARK: Internal
 
     let model: SymptomModel
@@ -143,7 +140,6 @@ struct SymptomRow: View {
 
     var body: some View {
         HStack(alignment: .top, spacing: 14) {
-
             VStack(spacing: 0) {
                 Circle()
                     .fill(isPast ? Color.pink.opacity(0.8) : Color.pink)
@@ -156,7 +152,6 @@ struct SymptomRow: View {
             .padding(.top, 5)
 
             VStack(alignment: .leading, spacing: showDetails ? 5 : 0) {
-
                 HStack(spacing: 6) {
                     Text(displayTitle)
                         .font(.headline)
@@ -169,7 +164,6 @@ struct SymptomRow: View {
                 }
 
                 if showDetails {
-
                     HStack(spacing: 6) {
                         Image(systemName: "clock")
                             .font(.caption2)
@@ -219,12 +213,14 @@ struct SymptomRow: View {
     // MARK: Private
 
     private var symptom: Symptom? {
-        guard let id = model.symptomId else { return nil }
+        guard let id = model.symptomId else {
+            return nil
+        }
+
         return PregnancySymptoms.allSymptoms.first { $0.id == id }
     }
 
     private var displayTitle: String {
         symptom?.name ?? model.title ?? "Unknown Symptom"
     }
-
 }

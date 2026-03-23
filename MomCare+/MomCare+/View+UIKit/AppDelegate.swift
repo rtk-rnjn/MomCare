@@ -1,12 +1,11 @@
 import BackgroundTasks
-import SwiftUI
 import Combine
 import OSLog
+import SwiftUI
 import UIKit
 import UserNotifications
 import WidgetKit
 
-private let refreshTokenBackgroundTaskIdentifier = "com.MomCare.BackgroundTask.RefreshToken"
 private let logger: Logger = .init(subsystem: "com.MomCare.AppDelegate", category: "AppDelegate")
 
 class AppDelegate: NSObject, UIApplicationDelegate, ObservableObject {
@@ -39,11 +38,12 @@ class AppDelegate: NSObject, UIApplicationDelegate, ObservableObject {
         return config
     }
 
-    func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
+    func application(_: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
         let token = deviceToken.map { unsafe String(format: "%02.2hhx", $0) }.joined()
         guard let data = RegisterDevice(deviceToken: token).encodeUsingJSONEncoder() else {
             return
         }
+
         Task {
             if let authenticationHeaders = AuthenticationService.authorizationHeaders {
                 let _: NetworkResponse<Bool>? = try? await NetworkManager.shared.post(url: Endpoint.apns.urlString, body: data, headers: authenticationHeaders)
@@ -51,10 +51,9 @@ class AppDelegate: NSObject, UIApplicationDelegate, ObservableObject {
         }
     }
 
-    func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: any Error) {
+    func application(_: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: any Error) {
         logger.error("Failed to register for remote notifications: \(error.localizedDescription)")
     }
-
 }
 
 extension AppDelegate: UNUserNotificationCenterDelegate {

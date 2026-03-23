@@ -258,7 +258,6 @@ enum PregnancySymptoms { // swiftlint:disable:this type_body_length
 
 @Model
 class SymptomModel: Identifiable, Equatable, Codable {
-
     // MARK: Lifecycle
 
     init(date: Date, symptomId: Int? = nil, title: String? = nil, notes: String? = nil) {

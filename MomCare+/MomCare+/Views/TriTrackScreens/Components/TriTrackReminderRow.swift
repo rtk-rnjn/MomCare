@@ -1,8 +1,7 @@
-import SwiftUI
 import EventKit
+import SwiftUI
 
 struct TriTrackReminderRow: View {
-
     // MARK: Internal
 
     let reminder: EKReminder
@@ -27,11 +26,9 @@ struct TriTrackReminderRow: View {
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @Environment(\.accessibilityDifferentiateWithoutColor) private var differentiateWithoutColor
     @Environment(\.accessibilityReduceTransparency) private var reduceTransparency
-
 }
 
 extension TriTrackReminderRow {
-
     var dueDate: Date? {
         reminder.dueDateComponents?.date
     }
@@ -46,7 +43,6 @@ extension TriTrackReminderRow {
 }
 
 extension TriTrackReminderRow {
-
     enum ReminderStatus {
         case past
         case pastRecurring
@@ -57,8 +53,9 @@ extension TriTrackReminderRow {
     }
 
     func status(now: Date) -> ReminderStatus {
-
-        guard let dueDate else { return .future }
+        guard let dueDate else {
+            return .future
+        }
 
         let calendar = Calendar.current
 
@@ -67,7 +64,6 @@ extension TriTrackReminderRow {
         }
 
         if dueDate < now {
-
             if hasRecurrence {
                 return .pastRecurring
             }
@@ -76,7 +72,6 @@ extension TriTrackReminderRow {
         }
 
         if hasRecurrence {
-
             if hasRecurrenceEnd {
                 return .futureRecurringWithEnd
             }
@@ -89,64 +84,55 @@ extension TriTrackReminderRow {
 }
 
 extension TriTrackReminderRow {
-
     func backgroundColor(now: Date) -> Color {
-
         switch status(now: now) {
-
         case .past:
-            return reduceTransparency ? Color(.systemGray5) : .red.opacity(0.15)
+            reduceTransparency ? Color(.systemGray5) : .red.opacity(0.15)
 
         case .pastRecurring:
-            return reduceTransparency ? Color(.systemGray5) : .orange.opacity(0.15)
+            reduceTransparency ? Color(.systemGray5) : .orange.opacity(0.15)
 
         case .today:
-            return Color.CustomColors.mutedRaspberry
+            Color.CustomColors.mutedRaspberry
 
         case .future:
-            return Color(.systemGray6)
+            Color(.systemGray6)
 
         case .futureRecurring:
-            return reduceTransparency ? Color(.systemGray5) : .blue.opacity(0.15)
+            reduceTransparency ? Color(.systemGray5) : .blue.opacity(0.15)
 
         case .futureRecurringWithEnd:
-            return reduceTransparency ? Color(.systemGray5) : .purple.opacity(0.15)
+            reduceTransparency ? Color(.systemGray5) : .purple.opacity(0.15)
         }
     }
 
     func foregroundColor(now: Date) -> Color {
-
         switch status(now: now) {
-
         case .past:
-            return .red
+            .red
 
         case .pastRecurring:
-            return .orange
+            .orange
 
         case .today:
-            return .white
+            .white
 
         case .future:
-            return .primary
+            .primary
 
         case .futureRecurring:
-            return .blue
+            .blue
 
         case .futureRecurringWithEnd:
-            return .purple
+            .purple
         }
     }
 }
 
 extension TriTrackReminderRow {
-
     var dateCapsule: some View {
-
         VStack(spacing: 4) {
-
             if let dueDate {
-
                 Text(dueDate.formatted(.dateTime.day()))
                     .font(.headline.weight(.bold))
 
@@ -154,7 +140,6 @@ extension TriTrackReminderRow {
                     .font(.caption)
 
             } else {
-
                 Image(systemName: "calendar")
                     .font(.headline)
             }
@@ -176,20 +161,15 @@ extension TriTrackReminderRow {
 }
 
 extension TriTrackReminderRow {
-
-    func reminderInfo(selectedDate currentDate: Date?) -> some View {
-
+    func reminderInfo(selectedDate _: Date?) -> some View {
         VStack(alignment: .leading, spacing: 4) {
-
             Text(reminder.title)
                 .font(.headline)
                 .lineLimit(1)
                 .strikethrough(reminder.isCompleted)
 
             if let dueDate {
-
                 HStack(spacing: 6) {
-
                     Text(dueDate.formatted(.dateTime.hour().minute()))
                         .font(.subheadline)
 
@@ -219,9 +199,7 @@ extension TriTrackReminderRow {
 }
 
 extension TriTrackReminderRow {
-
     var completionIndicator: some View {
-
         Image(systemName: reminder.isCompleted ? "checkmark.circle.fill" : "circle")
             .foregroundColor(
                 reminder.isCompleted

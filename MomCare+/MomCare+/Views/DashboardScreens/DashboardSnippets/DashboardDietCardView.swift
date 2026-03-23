@@ -1,8 +1,7 @@
-import SwiftUI
 import Foundation
+import SwiftUI
 
 struct DashboardDietCardView: View {
-
     // MARK: Internal
 
     let consumed: Double
@@ -10,7 +9,6 @@ struct DashboardDietCardView: View {
     let recommended: Double
 
     var body: some View {
-
         Group {
             if experimentalUI {
                 experimentedBody
@@ -48,13 +46,19 @@ struct DashboardDietCardView: View {
     @Environment(\.accessibilityReduceTransparency) private var reduceTransparency
 
     private var progress: Double {
-        guard recommended > 0 else { return 0 }
+        guard recommended > 0 else {
+            return 0
+        }
+
         return min(consumed / recommended, 1)
     }
 
     private var differenceText: String {
         let difference = goal - recommended
-        guard difference != 0 else { return "" }
+        guard difference != 0 else {
+            return ""
+        }
+
         return " (\(difference.formatted(.number.sign(strategy: .always()))))"
     }
 

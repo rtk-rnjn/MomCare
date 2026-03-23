@@ -4,7 +4,6 @@ import SwiftUI
 import UIKit
 
 struct MoodNestSongsView: View {
-
     // MARK: Internal
 
     @State var playlist: PlaylistModel
@@ -191,11 +190,9 @@ struct MoodNestSongsView: View {
         }
         return "\(minutes) min"
     }
-
 }
 
 struct PlaylistTrackRow: View {
-
     // MARK: Internal
 
     var accentColor: Color = .init(red: 139 / 255, green: 69 / 255, blue: 87 / 255)
@@ -289,7 +286,6 @@ struct PlaylistTrackRow: View {
     @State private var url: URL?
     @State private var uiImage: UIImage?
 
-    @ViewBuilder
     private var nowPlayingIndicator: some View {
         Image(systemName: musicKitHandler.isPlaying ? "waveform" : "pause.fill")
             .font(.body.weight(.semibold))

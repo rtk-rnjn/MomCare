@@ -39,7 +39,6 @@ struct WaterDropShape: Shape {
 }
 
 struct WaterDropFillView: View {
-
     // MARK: Internal
 
     var progress: Double
@@ -68,7 +67,6 @@ struct WaterDropFillView: View {
                         .animation(reduceMotion ? nil : .easeInOut, value: Int(animatedProgress * 100))
                         .padding(.bottom, geo.size.height * 0.12)
                 }
-
             }
         }
         .onChange(of: progress) { _, new in
@@ -136,7 +134,10 @@ struct WaterDropFillView: View {
     }
 
     private func drawShimmer(ctx: inout GraphicsContext, size: CGSize, fillY: Double, t: Double) {
-        guard animatedProgress > 0.04 else { return }
+        guard animatedProgress > 0.04 else {
+            return
+        }
+
         for i in 0..<4 {
             let seed = Double(i) * 97.3
             let x = (sin(seed) * 0.5 + 0.5) * size.width
@@ -151,7 +152,10 @@ struct WaterDropFillView: View {
     }
 
     private func drawBubbles(ctx: inout GraphicsContext, size: CGSize, fillY: Double, t: Double) {
-        guard animatedProgress > 0.06 else { return }
+        guard animatedProgress > 0.06 else {
+            return
+        }
+
         for (xFrac, radius, lifespan, birthOff, driftPhase) in bubbleSeeds {
             let elapsed = (t - birthOff).truncatingRemainder(dividingBy: lifespan)
             let cycleT = elapsed / lifespan
@@ -160,7 +164,10 @@ struct WaterDropFillView: View {
             let drift = sin(cycleT * .pi * 2.0 + driftPhase) * 9
             let x = xFrac * size.width + drift
             let alpha = min(cycleT * 5, 1.0) * max(1.0 - cycleT * 2.8, 0.0) * 0.75
-            guard alpha > 0.01 else { continue }
+            guard alpha > 0.01 else {
+                continue
+            }
+
             let r = radius
             let rect = CGRect(x: x - r, y: rawY - r, width: r * 2, height: r * 2)
             let ell = Path(ellipseIn: rect)
@@ -171,7 +178,6 @@ struct WaterDropFillView: View {
 }
 
 struct WaterRippleEffect: View {
-
     // MARK: Internal
 
     var body: some View {
@@ -193,11 +199,9 @@ struct WaterRippleEffect: View {
     @State private var scale: CGFloat = 0.3
     @State private var opacity: Double = 0.55
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
-
 }
 
 struct SplashParticleView: View {
-
     // MARK: Internal
 
     var body: some View {
@@ -223,5 +227,4 @@ struct SplashParticleView: View {
 
     @State private var appeared = false
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
-
 }

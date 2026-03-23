@@ -1,7 +1,7 @@
+import Combine
 import Foundation
 import HealthKit
 import UserNotifications
-import Combine
 
 struct WaterLogEntry: Identifiable, Equatable {
     let id: UUID
@@ -17,7 +17,7 @@ struct WaterLogEntry: Identifiable, Equatable {
 
     var formattedAmount: String {
         if milliliters >= 1000 {
-            return Measurement(value: milliliters / 1000, unit: UnitVolume.liters)
+            Measurement(value: milliliters / 1000, unit: UnitVolume.liters)
                 .formatted(
                     .measurement(
                         width: .abbreviated,
@@ -25,7 +25,7 @@ struct WaterLogEntry: Identifiable, Equatable {
                     )
                 )
         } else {
-            return Measurement(value: milliliters, unit: UnitVolume.milliliters)
+            Measurement(value: milliliters, unit: UnitVolume.milliliters)
                 .formatted(
                     .measurement(
                         width: .abbreviated,
@@ -38,7 +38,6 @@ struct WaterLogEntry: Identifiable, Equatable {
 
 @MainActor
 final class WaterStore: ObservableObject {
-
     // MARK: Internal
 
     static let waterTips: [(icon: String, tip: String)] = [
@@ -61,11 +60,16 @@ final class WaterStore: ObservableObject {
     @Published var error: (any Error)?
 
     var progress: Double {
-        guard dailyTarget > 0 else { return 0 }
+        guard dailyTarget > 0 else {
+            return 0
+        }
+
         return min(todayTotal / dailyTarget, 1.0)
     }
 
-    var remaining: Double { max(dailyTarget - todayTotal, 0) }
+    var remaining: Double {
+        max(dailyTarget - todayTotal, 0)
+    }
 
     func setup() async {
         await fetchWater()
@@ -73,7 +77,10 @@ final class WaterStore: ObservableObject {
     }
 
     func log(milliliters: Double, at date: Date = Date()) async {
-        guard milliliters > 0 else { return }
+        guard milliliters > 0 else {
+            return
+        }
+
         let quantity = HKQuantity(unit: .literUnit(with: .milli), doubleValue: milliliters)
         let sample = HKQuantitySample(type: waterType, quantity: quantity, start: date, end: date)
 
@@ -103,7 +110,10 @@ final class WaterStore: ObservableObject {
             limit: 1,
             sortDescriptors: nil
         ) { [weak self] _, samples, _ in
-            guard let self, let sample = samples?.first else { return }
+            guard let self, let sample = samples?.first else {
+                return
+            }
+
             Task { @MainActor in
                 do {
                     try await self.healthStore.delete(sample)
@@ -158,7 +168,9 @@ final class WaterStore: ObservableObject {
             let granted = (try? await UNUserNotificationCenter.current()
                 .requestAuthorization(options: [.alert, .sound, .badge])) ?? false
             notificationsEnabled = granted
-            if granted { await scheduleReminders() }
+            if granted {
+                await scheduleReminders()
+            }
         } else {
             cancelReminders()
             notificationsEnabled = false
@@ -167,7 +179,10 @@ final class WaterStore: ObservableObject {
 
     func scheduleReminders() async {
         cancelReminders()
-        guard notificationsEnabled else { return }
+        guard notificationsEnabled else {
+            return
+        }
+
         let center = UNUserNotificationCenter.current()
         var hour = 7
         while hour <= 22 {

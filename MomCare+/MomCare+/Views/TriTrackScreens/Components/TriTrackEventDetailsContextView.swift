@@ -1,12 +1,11 @@
-import SwiftUI
 import EventKit
+import SwiftUI
 
 struct TriTrackEventDetailsContextView: View {
     let event: EKEvent
 
     var body: some View {
         VStack(alignment: .leading, spacing: 18) {
-
             HStack(alignment: .top, spacing: 14) {
                 Image(systemName: "calendar")
                     .font(.title3.weight(.semibold))

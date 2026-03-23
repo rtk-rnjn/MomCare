@@ -15,7 +15,6 @@ struct SignInMissingFieldValue: LocalizedError {
 }
 
 struct SignInView: View {
-
     // MARK: Internal
 
     var body: some View {
@@ -111,14 +110,13 @@ struct SignInView: View {
     @State private var emailAddress = ""
     @State private var password = ""
 
-    @ViewBuilder
     private var signInForm: some View {
         Form {
             Section {
                 emailField
                 passwordField
             } footer: {
-                if !isValidEmail(emailAddress) && !emailAddress.isEmpty {
+                if !isValidEmail(emailAddress), !emailAddress.isEmpty {
                     Text("Please enter a valid email address.")
                         .foregroundColor(.red)
                         .accessibilityLabel("Invalid email address")

@@ -3,7 +3,6 @@ import SwiftUI
 import TipKit
 
 struct DashboardView: View {
-
     // MARK: Internal
 
     var body: some View {
@@ -105,6 +104,9 @@ struct DashboardView: View {
             .onTapGesture {
                 controlState.selectedTab = .myPlan
                 controlState.myPlanSegment = .exercise
+            }
+            .onAppear {
+                contentServiceHandler.fetchTodaySteps()
             }
             .accessibilityAddTraits(.isButton)
             .accessibilityHint("Double tap to view your exercise plan")

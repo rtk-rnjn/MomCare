@@ -45,7 +45,6 @@ private let sections: [ProfileSection] = [
 ]
 
 struct ProfileView: View {
-
     // MARK: Internal
 
     var body: some View {
@@ -53,9 +52,7 @@ struct ProfileView: View {
             ForEach(sections.indices, id: \.self) { sectionIndex in
                 Section {
                     ForEach(sections[sectionIndex].rows) { row in
-
                         switch row.type {
-
                         case .footerText:
                             footerView
 
@@ -82,7 +79,6 @@ struct ProfileView: View {
                     }
                 }
             }
-
         }
         .navigationTitle("Profile")
         .listStyle(.insetGrouped)
@@ -97,7 +93,6 @@ struct ProfileView: View {
             }
         }
         .alert("Sign Out?", isPresented: $showSignOutAlert) {
-
             Button(role: .cancel) {}
 
             Button("Sign Out", role: .destructive) {
@@ -119,9 +114,7 @@ struct ProfileView: View {
     @EnvironmentObject private var controlState: ControlState
 
     private var footerView: some View {
-
         VStack(spacing: 4) {
-
             Text("Your experience matters to us.")
                 .foregroundStyle(.secondary)
 
@@ -136,9 +129,7 @@ struct ProfileView: View {
     }
 
     private func rowView(_ row: ProfileRow) -> some View {
-
         HStack(spacing: 12) {
-
             Image(systemName: row.systemImage)
                 .foregroundStyle(Color("primaryAppColor"))
                 .accessibilityHidden(true)
@@ -149,11 +140,15 @@ struct ProfileView: View {
 
     @ViewBuilder
     private func destinationView(for type: ProfileRowType) -> some View {
-
         switch type {
-
         case .personalInfo:
-            ProfilePersonalInfoView(name: authenticationService.userModel?.fullName ?? "Not Set", dateOfBirth: authenticationService.userModel?.dateOfBirth ?? .init())
+            ProfilePersonalInfoView(
+                name: authenticationService.userModel?.fullName ?? "Not Set",
+                dateOfBirth: authenticationService.userModel?.dateOfBirth ?? .init(),
+                height: authenticationService.userModel?.height,
+                currentWeight: authenticationService.userModel?.currentWeight,
+                prePregnancyWeight: authenticationService.userModel?.prePregnancyWeight
+            )
 
         case .healthInfo:
             ProfileHealthInfoView()
@@ -176,11 +171,9 @@ struct ProfileView: View {
     }
 
     private func performSignOut() {
-
         Task {
             await authenticationService.logout()
             firstTime = true
         }
     }
-
 }

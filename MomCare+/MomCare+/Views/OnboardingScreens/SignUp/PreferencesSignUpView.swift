@@ -1,7 +1,6 @@
 import SwiftUI
 
 struct PreferencesSignUpView: View {
-
     // MARK: Internal
 
     enum SheetType: Identifiable {
@@ -66,6 +65,7 @@ struct PreferencesSignUpView: View {
         guard let maxDate = calendar.date(byAdding: .weekOfYear, value: 40, to: today) else {
             return today ... today
         }
+
         return today ... maxDate
     }
 

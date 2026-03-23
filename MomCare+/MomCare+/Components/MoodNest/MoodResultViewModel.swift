@@ -3,7 +3,6 @@ import SwiftUI
 
 @MainActor
 class MoodResultViewModel: ObservableObject {
-
     // MARK: Lifecycle
 
     init(mood: MoodType) {

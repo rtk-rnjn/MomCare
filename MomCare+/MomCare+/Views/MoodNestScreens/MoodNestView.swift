@@ -2,13 +2,13 @@ import SwiftUI
 import TipKit
 
 struct MoodNestView: View {
-
     // MARK: Internal
 
     var body: some View {
         NavigationStack {
             ZStack {
-                moodNestViewModel.backgroundColor.ignoresSafeArea()
+                moodNestViewModel.backgroundColor
+.ignoresSafeArea()
                     .accessibilityHidden(true)
 
                 VStack(spacing: 32) {
@@ -37,7 +37,6 @@ struct MoodNestView: View {
                         .accessibilityAddTraits(.updatesFrequently)
 
                     Slider(value: $moodNestViewModel.sliderValue, in: 0 ... 3, step: 1)
-
                         .onChange(of: moodNestViewModel.sliderValue) {
                             if reduceMotion {
                                 moodNestViewModel.updateMood()

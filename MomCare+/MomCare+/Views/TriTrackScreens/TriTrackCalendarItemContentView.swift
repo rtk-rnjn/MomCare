@@ -16,7 +16,6 @@ struct EKCalendarItemWrapper: Identifiable {
 }
 
 struct TriTrackCalendarItemContentView: View {
-
     // MARK: Internal
 
     @Binding var selectedDate: Date
@@ -61,7 +60,6 @@ struct TriTrackCalendarItemContentView: View {
         }
         .listStyle(.plain)
         .background(RoundedRectangle(cornerRadius: 16).fill(Color(.systemBackground)))
-
         .sheet(isPresented: $controlState.showingAddEventSheet) {
             Task { await refreshData() }
         } content: {

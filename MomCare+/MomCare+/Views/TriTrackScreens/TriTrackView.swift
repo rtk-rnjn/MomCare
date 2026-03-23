@@ -7,7 +7,6 @@ extension Color {
 }
 
 struct TriTrackView: View {
-
     // MARK: Internal
 
     @Environment(\.presentationMode) var presentationMode
@@ -71,6 +70,7 @@ struct TriTrackView: View {
                 switch controlState.triTrackSegment {
                 case .meAndBaby:
                     EmptyView()
+
                 case .events:
                     Menu {
                         Button {
@@ -210,7 +210,6 @@ struct TriTrackView: View {
 }
 
 struct PregnancyProgressView: View {
-
     // MARK: Internal
 
     let trimesterData: TrimesterData
@@ -442,7 +441,6 @@ struct PregnancyProgressView: View {
 }
 
 struct ComparisonView: View {
-
     // MARK: Internal
 
     let trimesterData: TrimesterData
@@ -463,7 +461,6 @@ struct ComparisonView: View {
                         .contentTransition(reduceMotion ? .identity : .opacity)
                         .animation(reduceMotion ? nil : .easeInOut, value: imageName)
                 }
-
             }
             .frame(maxWidth: .infinity)
             .accessibilityHidden(true)
@@ -503,11 +500,9 @@ struct ComparisonView: View {
     // MARK: Private
 
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
-
 }
 
 struct CompactInfoCard: View {
-
     // MARK: Internal
 
     let title: String
@@ -554,7 +549,6 @@ struct CompactInfoCard: View {
                 .padding(.top, 2)
                 .contentTransition(reduceMotion ? .identity : .interpolate)
                 .animation(reduceMotion ? nil : .easeInOut, value: previewText)
-
         }
         .padding(12)
         .frame(maxWidth: .infinity)
@@ -575,7 +569,6 @@ struct CompactInfoCard: View {
 }
 
 struct PopupInfoCard: View {
-
     // MARK: Internal
 
     let title: String
@@ -756,13 +749,14 @@ struct PopupInfoCard: View {
 
 @MainActor
 class OverlayWindowManager {
-
     // MARK: Internal
 
     static let shared: OverlayWindowManager = .init()
 
     func showOverlay() {
-        guard overlayWindow == nil else { return }
+        guard overlayWindow == nil else {
+            return
+        }
 
         if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene {
             let overlay = UIWindow(windowScene: windowScene)
@@ -820,11 +814,9 @@ class OverlayWindowManager {
 
     private var overlayWindow: UIWindow?
     private var contentWindow: UIWindow?
-
 }
 
 struct StitchingBorder: View {
-
     // MARK: Internal
 
     let cornerRadius: CGFloat

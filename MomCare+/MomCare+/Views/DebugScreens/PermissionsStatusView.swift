@@ -1,13 +1,12 @@
-import SwiftUI
 import AVFoundation
+import Combine
 import CoreLocation
-import UserNotifications
 import EventKit
 import HealthKit
-import Combine
+import SwiftUI
+import UserNotifications
 
 struct PermissionsStatusView: View {
-
     // MARK: Internal
 
     var body: some View {
@@ -44,7 +43,6 @@ struct PermissionsStatusView: View {
     // MARK: Private
 
     @StateObject private var inspector: PermissionsInspector = .init()
-
 }
 
 enum PermissionStatus {
@@ -58,38 +56,37 @@ enum PermissionStatus {
 
     var label: String {
         switch self {
-        case .authorized: return "Authorized"
-        case .denied: return "Denied"
-        case .restricted: return "Restricted"
-        case .notDetermined: return "Not Asked"
-        case .unknown: return "Unknown"
+        case .authorized: "Authorized"
+        case .denied: "Denied"
+        case .restricted: "Restricted"
+        case .notDetermined: "Not Asked"
+        case .unknown: "Unknown"
         }
     }
 
     var color: Color {
         switch self {
-        case .authorized: return .green
-        case .denied: return .red
-        case .restricted: return .orange
-        case .notDetermined: return .secondary
-        case .unknown: return .gray
+        case .authorized: .green
+        case .denied: .red
+        case .restricted: .orange
+        case .notDetermined: .secondary
+        case .unknown: .gray
         }
     }
 
     var icon: String {
         switch self {
-        case .authorized: return "checkmark.circle.fill"
-        case .denied: return "xmark.circle.fill"
-        case .restricted: return "minus.circle.fill"
-        case .notDetermined: return "questionmark.circle"
-        case .unknown: return "circle.dashed"
+        case .authorized: "checkmark.circle.fill"
+        case .denied: "xmark.circle.fill"
+        case .restricted: "minus.circle.fill"
+        case .notDetermined: "questionmark.circle"
+        case .unknown: "circle.dashed"
         }
     }
 }
 
 @MainActor
 final class PermissionsInspector: ObservableObject {
-
     // MARK: Internal
 
     @Published var camera: PermissionStatus = .unknown
@@ -135,7 +132,7 @@ final class PermissionsInspector: ObservableObject {
     private func notificationStatus() async -> PermissionStatus {
         let settings = await UNUserNotificationCenter.current().notificationSettings()
         switch settings.authorizationStatus {
-        case .authorized, .provisional, .ephemeral: return .authorized
+        case .authorized, .ephemeral, .provisional: return .authorized
         case .denied: return .denied
         case .notDetermined: return .notDetermined
         @unknown default: return .unknown
@@ -163,7 +160,10 @@ final class PermissionsInspector: ObservableObject {
     }
 
     private func healthKitStatus() -> PermissionStatus {
-        guard HKHealthStore.isHealthDataAvailable() else { return .restricted }
+        guard HKHealthStore.isHealthDataAvailable() else {
+            return .restricted
+        }
+
         return .notDetermined
     }
 }

@@ -1,7 +1,6 @@
 import SwiftUI
 
 struct BreathingCardView: View {
-
     // MARK: Internal
 
     var onInfo: () -> Void = {}

@@ -1,8 +1,7 @@
-import SwiftUI
 import AuthenticationServices
+import SwiftUI
 
 struct PasswordFieldsEmptyError: LocalizedError {
-
     var errorDescription: String? {
         NSLocalizedString(
             "Please fill all password fields.",
@@ -26,7 +25,6 @@ struct PasswordFieldsEmptyError: LocalizedError {
 }
 
 struct PasswordMismatchError: LocalizedError {
-
     var errorDescription: String? {
         NSLocalizedString(
             "New passwords do not match.",
@@ -50,7 +48,6 @@ struct PasswordMismatchError: LocalizedError {
 }
 
 struct PasswordTooShortError: LocalizedError {
-
     var errorDescription: String? {
         NSLocalizedString(
             "Password must be at least 6 characters.",
@@ -74,7 +71,6 @@ struct PasswordTooShortError: LocalizedError {
 }
 
 struct TokenParseError: LocalizedError {
-
     var errorDescription: String? {
         NSLocalizedString(
             "Failed to parse Apple Sign-In token.",
@@ -98,7 +94,6 @@ struct TokenParseError: LocalizedError {
 }
 
 struct ProfileAccountSecurityView: View {
-
     // MARK: Internal
 
     var hasAppleIdentifier: Bool {
@@ -149,7 +144,6 @@ struct ProfileAccountSecurityView: View {
                     .accessibilityHint(isChangingPassword ? "Collapses the password change form" : "Expands the password change form")
 
                     if isChangingPassword {
-
                         SecureFieldRow(title: "Old Password", text: $oldPassword)
                         SecureFieldRow(title: "New Password", text: $newPassword)
                         SecureFieldRow(title: "Confirm Password", text: $confirmPassword)
@@ -231,7 +225,6 @@ struct ProfileAccountSecurityView: View {
                             .foregroundStyle(.secondary)
                             .multilineTextAlignment(.center)
                             .fixedSize(horizontal: false, vertical: true)
-
                     }
                     .padding(.top, 32)
                     .padding(.horizontal, 28)
@@ -239,7 +232,6 @@ struct ProfileAccountSecurityView: View {
                     .accessibilityLabel("Connect with Apple. Link your Apple ID to sign in quickly and keep your account secure.")
 
                     VStack(spacing: 12) {
-
                         SignInWithAppleButton(.continue) { request in
                             request.requestedScopes = []
                         } onCompletion: { result in
@@ -257,11 +249,9 @@ struct ProfileAccountSecurityView: View {
                         .foregroundStyle(.secondary)
                         .padding(.bottom, 8)
                         .accessibilityHint("Closes this sheet")
-
                     }
                     .padding(.horizontal, 28)
                     .padding(.bottom, 24)
-
                 }
                 .navigationBarHidden(true)
             }
@@ -283,17 +273,14 @@ struct ProfileAccountSecurityView: View {
     }
 
     func validatePasswordAndSubmit(completion: (() async -> Void)? = nil) {
-
         guard canSubmit else {
             controlState.error = PasswordFieldsEmptyError()
             return
         }
-
         guard newPassword == confirmPassword else {
             controlState.error = PasswordMismatchError()
             return
         }
-
         guard newPassword.count >= 6 else {
             controlState.error = PasswordTooShortError()
             return
@@ -357,7 +344,6 @@ struct ProfileAccountSecurityView: View {
 }
 
 struct SecureFieldRow: View {
-
     let title: String
 
     @Binding var text: String

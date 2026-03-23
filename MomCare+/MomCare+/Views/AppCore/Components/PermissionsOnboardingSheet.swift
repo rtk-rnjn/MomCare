@@ -1,26 +1,50 @@
-import SwiftUI
-import HealthKit
 import EventKit
+import HealthKit
+import SwiftUI
 import UIKit
 
 private let kFirstTime = "momcare_firsttime"
 
 struct HealthKitError: LocalizedError {
-    var errorDescription: String? { "HealthKit Access Denied" }
-    var failureReason: String? { "The app does not have permission to access HealthKit data." }
-    var recoverySuggestion: String? { "Please grant HealthKit permissions in Settings to enable health-related features." }
+    var errorDescription: String? {
+        "HealthKit Access Denied"
+    }
+
+    var failureReason: String? {
+        "The app does not have permission to access HealthKit data."
+    }
+
+    var recoverySuggestion: String? {
+        "Please grant HealthKit permissions in Settings to enable health-related features."
+    }
 }
 
 struct EKEventError: LocalizedError {
-    var errorDescription: String? { "Calendar Access Denied" }
-    var failureReason: String? { "The app does not have permission to access Calendar data." }
-    var recoverySuggestion: String? { "Please grant Calendar permissions in Settings to enable calendar-related features." }
+    var errorDescription: String? {
+        "Calendar Access Denied"
+    }
+
+    var failureReason: String? {
+        "The app does not have permission to access Calendar data."
+    }
+
+    var recoverySuggestion: String? {
+        "Please grant Calendar permissions in Settings to enable calendar-related features."
+    }
 }
 
 struct EKReminderError: LocalizedError {
-    var errorDescription: String? { "Reminder Access Denied" }
-    var failureReason: String? { "The app does not have permission to access Reminder data." }
-    var recoverySuggestion: String? { "Please grant Reminder permissions in Settings to enable reminder-related features." }
+    var errorDescription: String? {
+        "Reminder Access Denied"
+    }
+
+    var failureReason: String? {
+        "The app does not have permission to access Reminder data."
+    }
+
+    var recoverySuggestion: String? {
+        "Please grant Reminder permissions in Settings to enable reminder-related features."
+    }
 }
 
 private struct AppPermission: Identifiable {
@@ -41,7 +65,6 @@ private struct AppPermission: Identifiable {
 }
 
 struct PermissionsOnboardingSheetModifier: ViewModifier {
-
     // MARK: Internal
 
     @Binding var fetchingDataFromServer: Bool
@@ -71,7 +94,6 @@ extension View {
 }
 
 struct PermissionsOnboardingSheet: View {
-
     // MARK: Internal
 
     @Binding var fetchingDataFromServer: Bool
@@ -254,7 +276,6 @@ struct PermissionsOnboardingSheet: View {
 }
 
 private struct PermissionRow: View {
-
     // MARK: Internal
 
     @Binding var permission: AppPermission
@@ -314,7 +335,10 @@ private struct PermissionRow: View {
         .animation(reduceMotion ? nil : .easeInOut(duration: 0.2), value: permission.isRequesting)
         .animation(reduceMotion ? nil : .easeInOut(duration: 0.2), value: permission.isEnabled)
         .onChange(of: permission.isEnabled) { _, newValue in
-            guard newValue, !permission.isRequesting else { return }
+            guard newValue, !permission.isRequesting else {
+                return
+            }
+
             permission.isRequesting = true
 
             Task { @MainActor in
@@ -332,12 +356,16 @@ private struct PermissionRow: View {
                     case .calendar:
                         let granted = try await eventKitHandler.requestAccess(for: .event)
                         permission.isEnabled = granted
-                        if !granted { ekEventError = EKEventError() }
+                        if !granted {
+                            ekEventError = EKEventError()
+                        }
 
                     case .reminders:
                         let granted = try await eventKitHandler.requestAccess(for: .reminder)
                         permission.isEnabled = granted
-                        if !granted { ekReminderError = EKReminderError() }
+                        if !granted {
+                            ekReminderError = EKReminderError()
+                        }
                     }
                 } catch {
                     permission.isEnabled = false
@@ -351,19 +379,25 @@ private struct PermissionRow: View {
         }
         .errorAlert(error: $ekEventError) { _ in
             Button("Open Settings") {
-                if let url = URL(string: UIApplication.openSettingsURLString) { openURL(url) }
+                if let url = URL(string: UIApplication.openSettingsURLString) {
+                    openURL(url)
+                }
             }
             Button("Cancel", role: .cancel) { ekEventError = nil }
         }
         .errorAlert(error: $ekReminderError) { _ in
             Button("Open Settings") {
-                if let url = URL(string: UIApplication.openSettingsURLString) { openURL(url) }
+                if let url = URL(string: UIApplication.openSettingsURLString) {
+                    openURL(url)
+                }
             }
             Button("Cancel", role: .cancel) { ekReminderError = nil }
         }
         .errorAlert(error: $healthKitError) { _ in
             Button("Open Settings") {
-                if let url = URL(string: UIApplication.openSettingsURLString) { openURL(url) }
+                if let url = URL(string: UIApplication.openSettingsURLString) {
+                    openURL(url)
+                }
             }
             Button("Cancel", role: .cancel) { healthKitError = nil }
         }

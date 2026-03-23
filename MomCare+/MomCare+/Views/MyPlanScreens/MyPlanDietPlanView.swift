@@ -2,7 +2,6 @@ import SwiftUI
 import TipKit
 
 struct MyPlanDietPlanView: View {
-
     // MARK: Internal
 
     var body: some View {

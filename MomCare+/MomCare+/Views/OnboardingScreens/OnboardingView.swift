@@ -2,7 +2,6 @@ import AuthenticationServices
 import SwiftUI
 
 struct OnboardingView: View {
-
     // MARK: Internal
 
     var body: some View {
@@ -107,7 +106,6 @@ struct OnboardingView: View {
                 HealthMetricsSignUpView()
             }
         }
-
     }
 
     // MARK: Private

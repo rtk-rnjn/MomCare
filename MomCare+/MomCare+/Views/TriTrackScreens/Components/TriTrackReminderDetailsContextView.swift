@@ -1,15 +1,13 @@
-import SwiftUI
 import EventKit
+import SwiftUI
 
 struct TriTrackReminderDetailsContextView: View {
-
     // MARK: Internal
 
     let reminder: EKReminder
 
     var body: some View {
         VStack(alignment: .leading, spacing: 18) {
-
             HStack(alignment: .top, spacing: 14) {
                 Image(systemName: isCompleted ? "checkmark.circle.fill" : "list.bullet.circle")
                     .font(.title3.weight(.semibold))
@@ -88,10 +86,12 @@ struct TriTrackReminderDetailsContextView: View {
     private var isOverdue: Bool {
         let dueDate = reminder.dueDateComponents?.date
 
-        guard let dueDate else { return false }
+        guard let dueDate else {
+            return false
+        }
+
         return dueDate < Date() && !isCompleted
     }
-
 }
 
 private extension TriTrackReminderDetailsContextView {

@@ -2,7 +2,6 @@ import SwiftData
 import SwiftUI
 
 struct TriTrackAddEditSymptomSheetView: View {
-
     // MARK: Internal
 
     @Environment(\.modelContext) var modelContext
@@ -14,7 +13,6 @@ struct TriTrackAddEditSymptomSheetView: View {
     var body: some View {
         NavigationStack {
             Form {
-
                 Section("Symptom") {
                     Button {
                         showSymptomPicker = true
@@ -163,7 +161,10 @@ struct TriTrackAddEditSymptomSheetView: View {
     }
 
     private func populate() {
-        guard let existingSymptom else { return }
+        guard let existingSymptom else {
+            return
+        }
+
         title = existingSymptom.title ?? ""
         notes = existingSymptom.notes ?? ""
         if let symptomId = existingSymptom.symptomId {

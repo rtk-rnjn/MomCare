@@ -2,7 +2,6 @@ import SwiftUI
 import TipKit
 
 struct WaterLogView: View {
-
     // MARK: Internal
 
     var body: some View {
@@ -111,7 +110,9 @@ struct WaterLogView: View {
         .alert("Custom Amount", isPresented: $showCustomInput) {
             TextField("e.g. 250", text: $customAmountText).keyboardType(.numberPad)
             Button("Add") {
-                if let ml = Double(customAmountText), ml > 0 { Task { await addWater(ml) } }
+                if let ml = Double(customAmountText), ml > 0 {
+                    Task { await addWater(ml) }
+                }
                 customAmountText = ""
             }
             Button("Cancel", role: .cancel) { customAmountText = "" }
@@ -127,7 +128,6 @@ struct WaterLogView: View {
     // MARK: Private
 
     @StateObject private var store: WaterStore = .init()
-    @EnvironmentObject private var controlState: ControlState
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @Environment(\.accessibilityReduceTransparency) private var reduceTransparency
     @Environment(\.dismiss) private var dismiss
@@ -148,10 +148,18 @@ struct WaterLogView: View {
     ]
 
     private var motivationalText: String {
-        if store.progress >= 1.0 { return "Amazing! You've hit your goal today. 🌸" }
-        if store.progress >= 0.75 { return "Almost there — just a little more!" }
-        if store.progress >= 0.5 { return "Great progress, keep it up! 💧" }
-        if store.progress >= 0.25 { return "Good start — stay consistent!" }
+        if store.progress >= 1.0 {
+            return "Amazing! You've hit your goal today. 🌸"
+        }
+        if store.progress >= 0.75 {
+            return "Almost there — just a little more!"
+        }
+        if store.progress >= 0.5 {
+            return "Great progress, keep it up! 💧"
+        }
+        if store.progress >= 0.25 {
+            return "Good start — stay consistent!"
+        }
         return "Start hydrating for a healthy day. 🌷"
     }
 
@@ -193,7 +201,6 @@ struct WaterLogView: View {
 
     private var weekStrip: some View {
         VStack(spacing: 10) {
-
             HStack(spacing: 16) {
                 Button {
                     withAnimation(reduceMotion ? nil : .easeInOut) {
@@ -225,7 +232,6 @@ struct WaterLogView: View {
                     Image(systemName: "chevron.right")
                         .font(.caption.weight(.semibold))
                         .foregroundColor(
-
                             Calendar.current.isDate(
                                 weekDays(around: selectedDate).last ?? selectedDate,
                                 equalTo: weekDays(around: Date()).last ?? Date(),
@@ -253,7 +259,10 @@ struct WaterLogView: View {
                     let isFuture = day > Date()
 
                     Button {
-                        guard !isFuture else { return }
+                        guard !isFuture else {
+                            return
+                        }
+
                         withAnimation(reduceMotion ? nil : .easeInOut) {
                             selectedDate = day
                         }
@@ -380,7 +389,10 @@ struct WaterLogView: View {
 
     private func addWater(_ ml: Double) async {
         await store.log(milliliters: ml, at: selectedDate)
-        guard !reduceMotion else { return }
+        guard !reduceMotion else {
+            return
+        }
+
         defer { Task { await store.fetchWater(for: selectedDate) } }
 
         let rid = UUID()
@@ -404,7 +416,10 @@ struct WaterLogView: View {
     private func weekDays(around date: Date) -> [Date] {
         let cal = Calendar.current
         let weekday = cal.component(.weekday, from: date)
-        guard let startOfWeek = cal.date(byAdding: .day, value: -(weekday - 1), to: date) else { return [] }
+        guard let startOfWeek = cal.date(byAdding: .day, value: -(weekday - 1), to: date) else {
+            return []
+        }
+
         return (0..<7).compactMap { cal.date(byAdding: .day, value: $0, to: startOfWeek) }
     }
 

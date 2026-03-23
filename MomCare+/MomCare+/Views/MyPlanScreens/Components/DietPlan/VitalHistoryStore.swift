@@ -1,6 +1,6 @@
-import SwiftUI
-import HealthKit
 import Combine
+import HealthKit
+import SwiftUI
 
 enum VitalTimeRange: String, CaseIterable, Identifiable {
     case week = "7D"
@@ -9,21 +9,23 @@ enum VitalTimeRange: String, CaseIterable, Identifiable {
 
     // MARK: Internal
 
-    var id: String { rawValue }
+    var id: String {
+        rawValue
+    }
 
     var days: Int {
         switch self {
-        case .week: return 7
-        case .month: return 30
-        case .quarter: return 91
+        case .week: 7
+        case .month: 30
+        case .quarter: 91
         }
     }
 
     var bucketComponent: Calendar.Component {
         switch self {
-        case .week: return .day
-        case .month: return .day
-        case .quarter: return .weekOfYear
+        case .week: .day
+        case .month: .day
+        case .quarter: .weekOfYear
         }
     }
 }
@@ -38,82 +40,84 @@ enum VitalKind: String, CaseIterable, Identifiable {
 
     // MARK: Internal
 
-    var id: String { rawValue }
+    var id: String {
+        rawValue
+    }
 
     var hkIdentifier: HKQuantityTypeIdentifier {
         switch self {
-        case .calories: return .dietaryEnergyConsumed
-        case .protein: return .dietaryProtein
-        case .carbs: return .dietaryCarbohydrates
-        case .fats: return .dietaryFatTotal
-        case .sugar: return .dietarySugar
-        case .sodium: return .dietarySodium
+        case .calories: .dietaryEnergyConsumed
+        case .protein: .dietaryProtein
+        case .carbs: .dietaryCarbohydrates
+        case .fats: .dietaryFatTotal
+        case .sugar: .dietarySugar
+        case .sodium: .dietarySodium
         }
     }
 
     nonisolated var unit: HKUnit {
         switch self {
-        case .calories: return .kilocalorie()
-        case .sodium: return .gramUnit(with: .milli)
-        default: return .gram()
+        case .calories: .kilocalorie()
+        case .sodium: .gramUnit(with: .milli)
+        default: .gram()
         }
     }
 
     var unitLabel: String {
         switch self {
-        case .calories: return UnitEnergy.kilocalories.symbol
-        case .sodium: return UnitMass.milligrams.symbol
-        default: return UnitMass.grams.symbol
+        case .calories: UnitEnergy.kilocalories.symbol
+        case .sodium: UnitMass.milligrams.symbol
+        default: UnitMass.grams.symbol
         }
     }
 
     var color: Color {
         switch self {
-        case .calories: return Color(hex: "E3B34B")
-        case .protein: return Color(hex: "A7C0CD")
-        case .carbs: return Color(hex: "6E8B6F")
-        case .fats: return Color(hex: "F4A460")
-        case .sugar: return Color(hex: "E07B8A")
-        case .sodium: return Color(hex: "9B8EC4")
+        case .calories: Color(hex: "E3B34B")
+        case .protein: Color(hex: "A7C0CD")
+        case .carbs: Color(hex: "6E8B6F")
+        case .fats: Color(hex: "F4A460")
+        case .sugar: Color(hex: "E07B8A")
+        case .sodium: Color(hex: "9B8EC4")
         }
     }
 
     var sfSymbol: String {
         switch self {
-        case .calories: return "flame.fill"
-        case .protein: return "bolt.fill"
-        case .carbs: return "leaf.fill"
-        case .fats: return "drop.fill"
-        case .sugar: return "cube.fill"
-        case .sodium: return "saltshaker.fill"
+        case .calories: "flame.fill"
+        case .protein: "bolt.fill"
+        case .carbs: "leaf.fill"
+        case .fats: "drop.fill"
+        case .sugar: "cube.fill"
+        case .sodium: "saltshaker.fill"
         }
     }
 
     var description: String {
         switch self {
         case .calories:
-            return "Total dietary energy consumed. Balancing intake with your target helps manage weight and energy levels throughout the day."
+            "Total dietary energy consumed. Balancing intake with your target helps manage weight and energy levels throughout the day."
         case .protein:
-            return "Essential for muscle repair and growth. Aim for your daily target to support recovery, especially after exercise."
+            "Essential for muscle repair and growth. Aim for your daily target to support recovery, especially after exercise."
         case .carbs:
-            return "Your body's primary fuel source. Complex carbs provide steady energy; refined ones cause rapid spikes."
+            "Your body's primary fuel source. Complex carbs provide steady energy; refined ones cause rapid spikes."
         case .fats:
-            return "Healthy fats support brain function and hormone production. Focus on unsaturated sources like nuts and avocado."
+            "Healthy fats support brain function and hormone production. Focus on unsaturated sources like nuts and avocado."
         case .sugar:
-            return "Tracks total dietary sugars. High intake is linked to energy crashes and metabolic strain — aim to stay under your target."
+            "Tracks total dietary sugars. High intake is linked to energy crashes and metabolic strain — aim to stay under your target."
         case .sodium:
-            return "Important for fluid balance and nerve function. Excess sodium can raise blood pressure over time."
+            "Important for fluid balance and nerve function. Excess sodium can raise blood pressure over time."
         }
     }
 
     var insight: String {
         switch self {
-        case .calories: return "Consistent daily intake close to your target helps maintain stable energy."
-        case .protein: return "Higher protein days often align with workout days — keep that pattern."
-        case .carbs: return "Look for spikes on weekends — common with social eating."
-        case .fats: return "A gradual downward trend suggests improving food quality choices."
-        case .sugar: return "Reducing sugar in drinks has the biggest single-day impact."
-        case .sodium: return "Most excess sodium comes from processed foods, not added salt."
+        case .calories: "Consistent daily intake close to your target helps maintain stable energy."
+        case .protein: "Higher protein days often align with workout days — keep that pattern."
+        case .carbs: "Look for spikes on weekends — common with social eating."
+        case .fats: "A gradual downward trend suggests improving food quality choices."
+        case .sugar: "Reducing sugar in drinks has the biggest single-day impact."
+        case .sodium: "Most excess sodium comes from processed foods, not added salt."
         }
     }
 }
@@ -127,7 +131,6 @@ struct DailyDataPoint: Identifiable {
 
 @MainActor
 final class VitalHistoryStore: ObservableObject {
-
     // MARK: Internal
 
     @Published var points: [DailyDataPoint] = []
@@ -137,9 +140,9 @@ final class VitalHistoryStore: ObservableObject {
     nonisolated static func formatLabel(date: Date, component: Calendar.Component) -> String {
         switch component {
         case .weekOfYear:
-            return weekFormatter.string(from: date)
+            weekFormatter.string(from: date)
         default:
-            return dayFormatter.string(from: date)
+            dayFormatter.string(from: date)
         }
     }
 
@@ -172,13 +175,11 @@ final class VitalHistoryStore: ObservableObject {
             options: .strictStartDate
         )
 
-        let anchorComponents: DateComponents
-        switch bucketComponent {
+        let anchorComponents: DateComponents = switch bucketComponent {
         case .weekOfYear:
-
-            anchorComponents = calendar.dateComponents([.yearForWeekOfYear, .weekOfYear], from: start)
+            calendar.dateComponents([.yearForWeekOfYear, .weekOfYear], from: start)
         default:
-            anchorComponents = DateComponents(hour: 0, minute: 0, second: 0)
+            DateComponents(hour: 0, minute: 0, second: 0)
         }
 
         let anchorDate = calendar.nextDate(
@@ -214,7 +215,6 @@ final class VitalHistoryStore: ObservableObject {
                     let value = stats.sumQuantity()?.doubleValue(for: kind.unit) ?? 0
                     let label = VitalHistoryStore.formatLabel(date: stats.startDate, component: bucketComponent)
                     pts.append(.init(date: stats.startDate, label: label, value: value))
-
                 }
 
                 continuation.resume(returning: (pts, nil))
@@ -235,6 +235,7 @@ final class VitalHistoryStore: ObservableObject {
             errorMessage = "Failed to calculate start date for \(range.days) day range."
             return
         }
+
         let end = today
 
         await load(kind: kind, startDate: start, endDate: end, bucketComponent: range.bucketComponent)
@@ -255,5 +256,4 @@ final class VitalHistoryStore: ObservableObject {
     }()
 
     private let healthStore: HKHealthStore = .init()
-
 }

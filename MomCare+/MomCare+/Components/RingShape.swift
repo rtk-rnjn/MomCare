@@ -3,12 +3,16 @@ import SwiftUI
 /// https://gist.github.com/frankfka/2517d69da68ef041e3257d5cfd27fe5d
 
 extension Double {
-    nonisolated func toRadians() -> Double { self * Double.pi / 180 }
-    nonisolated func toCGFloat() -> CGFloat { CGFloat(self) }
+    nonisolated func toRadians() -> Double {
+        self * Double.pi / 180
+    }
+
+    nonisolated func toCGFloat() -> CGFloat {
+        CGFloat(self)
+    }
 }
 
 struct RingShape: Shape {
-
     // MARK: Lifecycle
 
     init(percent: Double = 100, startAngle: Double = -90, drawnClockwise: Bool = false) {
@@ -42,11 +46,9 @@ struct RingShape: Shape {
     private var percent: Double
     private var startAngle: Double
     private let drawnClockwise: Bool
-
 }
 
 struct RingCapShape: Shape {
-
     var percent: Double
     var startAngle: Double = -90
 
@@ -68,7 +70,6 @@ struct RingCapShape: Shape {
 }
 
 struct PercentageRing: View {
-
     // MARK: Internal
 
     let ringWidth: CGFloat
@@ -166,7 +167,6 @@ struct PercentageRing: View {
 }
 
 private struct EndCapShape: Shape {
-
     var percent: Double
     var startAngle: Double
     var radius: CGFloat

@@ -129,7 +129,6 @@ private extension BaseInfoSheetLayout {
 }
 
 struct ExerciseInfoSheet: View {
-
     // MARK: Internal
 
     let userExerciseModel: UserExerciseModel?
@@ -174,11 +173,9 @@ struct ExerciseInfoSheet: View {
 
     private let pastelColor: Color = .init(hex: "F0D5C8")
     private let accentColor: Color = .init(hex: "9B6B52")
-
 }
 
 struct BreathingInfoSheet: View {
-
     // MARK: Internal
 
     @Binding var isPresented: Bool
@@ -217,7 +214,6 @@ struct BreathingInfoSheet: View {
 
     private let pastelColor: Color = .init(hex: "D0E1F0")
     private let accentColor: Color = .init(hex: "4A7A9B")
-
 }
 
 private struct StatItem: View {

@@ -38,7 +38,7 @@ struct UserModel: Codable, Sendable {
     var dietaryPreferences: [DietaryPreference] = []
 
     var isProfileComplete: Bool {
-        guard dateOfBirthTimestamp != nil && dueDateTimestamp != nil else {
+        guard dateOfBirthTimestamp != nil, dueDateTimestamp != nil else {
             return false
         }
 

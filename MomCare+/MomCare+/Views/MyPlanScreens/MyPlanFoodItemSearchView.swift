@@ -1,19 +1,20 @@
 import SwiftUI
 
 struct MyPlanFoodItemSearchView: View {
-
     // MARK: Internal
 
     @State var mealType: MealType
 
-    var isLoading: Bool { task?.state == .running }
+    var isLoading: Bool {
+        task?.state == .running
+    }
 
     var body: some View {
         NavigationStack {
             Group {
                 if isLoading {
                     loadingView
-                } else if foodItems.isEmpty && !searchText.isEmpty {
+                } else if foodItems.isEmpty, !searchText.isEmpty {
                     emptyStateView
                 } else if foodItems.isEmpty {
                     placeholderView
@@ -145,7 +146,10 @@ struct MyPlanFoodItemSearchView: View {
     }
 
     private func debounceSearch(query: String) {
-        guard !query.isEmpty else { foodItems = []; return }
+        guard !query.isEmpty else {
+            foodItems = []; return
+        }
+
         task?.cancel()
         foodItems.removeAll()
         task = NetworkManager.shared.fetchStreamedData(
@@ -208,14 +212,12 @@ struct FoodRowView: View {
 }
 
 struct NutritionDetailSheet: View {
-
     // MARK: Internal
 
     let food: FoodItemModel
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
-
             // Header
             HStack(spacing: 14) {
                 AsyncImage(url: URL(string: food.imageUri ?? "")) { phase in
@@ -323,9 +325,9 @@ struct NutritionCell: View {
 extension FoodType {
     var displayLabel: String {
         switch self {
-        case .vegetarian: return "Veg"
-        case .nonVegetarian: return "Non-Veg"
-        case .vegan: return "Vegan"
+        case .vegetarian: "Veg"
+        case .nonVegetarian: "Non-Veg"
+        case .vegan: "Vegan"
         }
     }
 }

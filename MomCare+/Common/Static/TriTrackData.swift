@@ -16,7 +16,10 @@ struct TrimesterData: Codable, Equatable {
     var momTipText: String
 
     var fruitComparison: String {
-        guard let quote else { return "tiny embryo" }
+        guard let quote else {
+            return "tiny embryo"
+        }
+
         let prefix = "I'm currently the size of a "
         if quote.hasPrefix(prefix) {
             return String(quote.dropFirst(prefix.count))
@@ -27,13 +30,19 @@ struct TrimesterData: Codable, Equatable {
 
 extension TrimesterData {
     var babyHeight: Measurement<UnitLength>? {
-        guard let babyHeightInCentimeters else { return nil }
+        guard let babyHeightInCentimeters else {
+            return nil
+        }
+
         return Measurement(value: babyHeightInCentimeters,
                            unit: .centimeters)
     }
 
     var babyWeight: Measurement<UnitMass>? {
-        guard let babyWeightInGrams else { return nil }
+        guard let babyWeightInGrams else {
+            return nil
+        }
+
         return Measurement(value: babyWeightInGrams,
                            unit: .grams)
     }

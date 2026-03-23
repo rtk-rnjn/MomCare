@@ -2,7 +2,6 @@ import SwiftUI
 import WidgetKit
 
 struct LargeWidgetView: View {
-
     // MARK: Internal
 
     let entry: TriTrackEntry
@@ -52,7 +51,9 @@ struct LargeWidgetView: View {
     }
 
     private var formattedHeight: String? {
-        guard let heightCm = entry.babyHeightCm, heightCm > 0 else { return nil }
+        guard let heightCm = entry.babyHeightCm, heightCm > 0 else {
+            return nil
+        }
 
         let height = Measurement(value: heightCm, unit: UnitLength.centimeters)
 
@@ -66,7 +67,9 @@ struct LargeWidgetView: View {
     }
 
     private var formattedWeight: String? {
-        guard let weightG = entry.babyWeightG, weightG > 0 else { return nil }
+        guard let weightG = entry.babyWeightG, weightG > 0 else {
+            return nil
+        }
 
         let weight: Measurement<UnitMass> =
             weightG >= 1000 ? Measurement(value: weightG / 1000, unit: UnitMass.kilograms) : Measurement(value: weightG, unit: UnitMass.grams)
@@ -114,7 +117,6 @@ struct LargeWidgetView: View {
 
     private var measurementsSection: some View {
         HStack(spacing: 28) {
-
             if let height = formattedHeight {
                 measurementItem(
                     label: "HEIGHT",
@@ -170,5 +172,4 @@ struct LargeWidgetView: View {
                 .fontWeight(.semibold)
         }
     }
-
 }

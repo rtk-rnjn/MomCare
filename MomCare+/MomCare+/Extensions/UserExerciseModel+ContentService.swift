@@ -6,14 +6,20 @@ extension UserExerciseModel {
             guard let networkResponse = try? await ContentRepository.shared.getOrFetchExercise(id: exerciseId) else {
                 return nil
             }
+
             return networkResponse.data
         }
     }
 
     var completionPercentage: Double {
         get async {
-            guard let exerciseModel = await exerciseModel else { return 0 }
-            guard exerciseModel.videoDurationSeconds > 0 else { return 0 }
+            guard let exerciseModel = await exerciseModel else {
+                return 0
+            }
+            guard exerciseModel.videoDurationSeconds > 0 else {
+                return 0
+            }
+
             return min(videoDurationCompletedSeconds / exerciseModel.videoDurationSeconds, 1.0)
         }
     }

@@ -4,7 +4,6 @@ import TipKit
 
 @main
 struct MomCareApp: App {
-
     // MARK: Lifecycle
 
     init() {
@@ -36,5 +35,4 @@ struct MomCareApp: App {
     @StateObject private var musicPlayerHandler: MusicPlayerHandler = .init()
     @StateObject private var eventKitHandler: EventKitHandler = .init()
     @StateObject private var controlState: ControlState = .init()
-
 }

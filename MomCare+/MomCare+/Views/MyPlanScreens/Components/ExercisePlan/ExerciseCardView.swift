@@ -2,7 +2,6 @@ import AVKit
 import SwiftUI
 
 struct ExerciseCardView: View {
-
     // MARK: Internal
 
     let userExerciseModel: UserExerciseModel
@@ -142,7 +141,9 @@ struct ExerciseCardView: View {
                 ToolbarItem(placement: .cancellationAction) {
                     Button(role: .cancel) {
                         defer { startExercisePlayer = false }
-                        guard let avPlayer else { return }
+                        guard let avPlayer else {
+                            return
+                        }
 
                         avPlayer.pause()
 

@@ -11,8 +11,12 @@ enum ValidKeychainKeys: String {
 enum KeychainHelper {
     @discardableResult
     static func set(_ value: String?, forKey key: ValidKeychainKeys) -> Bool {
-        guard let value else { return false }
-        guard let data = value.data(using: .utf8) else { return false }
+        guard let value else {
+            return false
+        }
+        guard let data = value.data(using: .utf8) else {
+            return false
+        }
 
         let query: [String: Any] = [
             kSecClass as String: kSecClassGenericPassword,

@@ -1,8 +1,7 @@
-import SwiftUI
 import OSLog
+import SwiftUI
 
 struct AboutMomCareView: View {
-
     // MARK: Internal
 
     var body: some View {

@@ -44,7 +44,9 @@ struct PlaylistModel: Identifiable {
         let grouped = Dictionary(grouping: allSongs) { $0.playlist }
 
         return grouped.compactMap { playlistName, songs in
-            guard let first = songs.first else { return nil }
+            guard let first = songs.first else {
+                return nil
+            }
 
             return PlaylistModel(
                 mood: first.mood,
@@ -54,7 +56,6 @@ struct PlaylistModel: Identifiable {
             )
         }
     }
-
 }
 
 struct SongModel: Codable, Sendable, Identifiable, Equatable, Hashable {

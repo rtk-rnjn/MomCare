@@ -3,35 +3,40 @@ import SwiftUI
 // MARK: - Small helpers
 
 private extension Date {
-    var startOfDay: Date { Calendar.current.startOfDay(for: self) }
-    var nextDay: Date { Calendar.current.date(byAdding: .day, value: 1, to: startOfDay)! }
+    var startOfDay: Date {
+        Calendar.current.startOfDay(for: self)
+    }
+
+    var nextDay: Date {
+        Calendar.current.date(byAdding: .day, value: 1, to: startOfDay)!
+    }
 }
 
 private extension MealType {
     var title: String {
         switch self {
-        case .breakfast: return "Breakfast"
-        case .lunch: return "Lunch"
-        case .snacks: return "Snacks"
-        case .dinner: return "Dinner"
+        case .breakfast: "Breakfast"
+        case .lunch: "Lunch"
+        case .snacks: "Snacks"
+        case .dinner: "Dinner"
         }
     }
 
     var symbolName: String {
         switch self {
-        case .breakfast: return "sunrise"
-        case .lunch: return "sun.max"
-        case .snacks: return "takeoutbag.and.cup.and.straw"
-        case .dinner: return "moon.stars"
+        case .breakfast: "sunrise"
+        case .lunch: "sun.max"
+        case .snacks: "takeoutbag.and.cup.and.straw"
+        case .dinner: "moon.stars"
         }
     }
 
     var tint: Color {
         switch self {
-        case .breakfast: return .orange
-        case .lunch: return .blue
-        case .snacks: return .mint
-        case .dinner: return .purple
+        case .breakfast: .orange
+        case .lunch: .blue
+        case .snacks: .mint
+        case .dinner: .purple
         }
     }
 }
@@ -60,7 +65,6 @@ private struct ProgressPill: View {
 }
 
 private struct FoodReferenceRow: View {
-
     // MARK: Internal
 
     let ref: FoodReferenceModel
@@ -99,7 +103,10 @@ private struct FoodReferenceRow: View {
         .contentShape(Rectangle())
         .task(id: ref.foodId) {
             // Avoid repeatedly hammering if the view refreshes.
-            guard food == nil else { return }
+            guard food == nil else {
+                return
+            }
+
             isLoadingFood = true
             defer { isLoadingFood = false }
             food = await ref.food
@@ -113,13 +120,11 @@ private struct FoodReferenceRow: View {
 
     @State private var food: FoodItemModel?
     @State private var isLoadingFood = false
-
 }
 
 // MARK: - Meal section
 
 private struct FoodReferenceSection: View {
-
     // MARK: Internal
 
     let type: MealType
@@ -161,14 +166,14 @@ private struct FoodReferenceSection: View {
 
     @State private var isExpanded: Bool = true
 
-    private var consumedCount: Int { items.filter(\.isConsumed).count }
-
+    private var consumedCount: Int {
+        items.filter(\.isConsumed).count
+    }
 }
 
 // MARK: - Main screen
 
 struct DietPlanHistory: View {
-
     // MARK: Internal
 
     var body: some View {
@@ -176,7 +181,7 @@ struct DietPlanHistory: View {
             VStack(spacing: 0) {
                 CompactCalendarView(selectedDate: $selectedDate, isExpanded: $controlState.showingExpandedCalendar)
 
-                    if isLoading && plan == nil {
+                    if isLoading, plan == nil {
                         VStack(spacing: 12) {
                             ProgressView()
                             Text("Loading meal plan…")
@@ -215,7 +220,6 @@ struct DietPlanHistory: View {
                             description: Text("Try selecting a different date.")
                         )
                     }
-
             }
             .navigationTitle("Meal Plan History")
             .navigationBarTitleDisplayMode(.inline)

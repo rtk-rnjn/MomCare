@@ -1,14 +1,12 @@
 import SwiftUI
 
 struct DashboardWeekCardView: View {
-
     let week: Int?
     let day: Int?
     let trimester: String?
 
     var body: some View {
         VStack(spacing: 0) {
-
             VStack(alignment: .leading, spacing: 8) {
                 Text("Week \(week ?? 0)")
                     .font(.title2)

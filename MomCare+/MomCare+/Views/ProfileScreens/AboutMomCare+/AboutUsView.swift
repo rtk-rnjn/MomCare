@@ -68,7 +68,8 @@ struct AboutInfoView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
             HStack(spacing: 8) {
-                Image(systemName: iconName).foregroundColor(iconColor)
+                Image(systemName: iconName)
+.foregroundColor(iconColor)
                     .accessibilityHidden(true)
                 Text(eyebrowText).foregroundColor(.primary)
                 Spacer()

@@ -2,7 +2,6 @@ import SwiftData
 import SwiftUI
 
 struct TriTrackSymptomsContentView: View {
-
     // MARK: Internal
 
     @Binding var selectedDate: Date
@@ -82,7 +81,9 @@ struct TriTrackSymptomsContentView: View {
         guard
             let id = model.symptomId,
             let symptom = PregnancySymptoms.allSymptoms.first(where: { $0.id == id })
-        else { return }
+        else {
+            return
+        }
 
         showDetail = true
         selectedSymptom = symptom
@@ -111,11 +112,9 @@ struct TriTrackSymptomsContentView: View {
     @State private var showDetail = false
     @State private var showErrorAlert = false
     @State private var alertMessage: String?
-
 }
 
 struct TriTrackSymptomRow: View {
-
     // MARK: Internal
 
     let symptom: SymptomModel
@@ -204,5 +203,4 @@ struct TriTrackSymptomRow: View {
         formatter.timeStyle = .short
         return formatter
     }
-
 }

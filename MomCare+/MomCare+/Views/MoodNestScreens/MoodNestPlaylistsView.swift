@@ -3,7 +3,6 @@ import TipKit
 import UIKit
 
 struct MoodNestPlaylistsView: View {
-
     // MARK: Lifecycle
 
     init(mood: MoodType) {

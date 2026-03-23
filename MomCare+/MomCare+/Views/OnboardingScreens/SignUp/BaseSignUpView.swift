@@ -73,7 +73,6 @@ struct BaseSignUpMissingFields: LocalizedError {
 }
 
 struct BaseSignUpView: View {
-
     // MARK: Internal
 
     var body: some View {
@@ -181,7 +180,7 @@ struct BaseSignUpView: View {
                         .accessibilityLabel("Email address")
                         .accessibilityHint("Enter your email address")
                 } footer: {
-                    if !email.isEmpty && !isValidEmail(email) && isFocused != .email {
+                    if !email.isEmpty, !isValidEmail(email), isFocused != .email {
                         Text("Please enter a valid email address")
                             .foregroundStyle(.red)
                             .accessibilityLabel("Email error: Please enter a valid email address")
@@ -202,11 +201,11 @@ struct BaseSignUpView: View {
                         type: .confirmPassword
                     )
                 } footer: {
-                    if !password.isEmpty && password.count < 8 && isFocused != .password {
+                    if !password.isEmpty, password.count < 8, isFocused != .password {
                         Text("Password must be at least 8 characters long")
                             .foregroundStyle(.red)
                             .accessibilityLabel("Password error: Password must be at least 8 characters long")
-                    } else if !confirmPassword.isEmpty && confirmPassword != password && isFocused != .confirmPassword {
+                    } else if !confirmPassword.isEmpty, confirmPassword != password, isFocused != .confirmPassword {
                         Text("Passwords do not match")
                             .foregroundStyle(.red)
                             .accessibilityLabel("Password error: Passwords do not match")
@@ -300,15 +299,12 @@ struct BaseSignUpView: View {
         guard isValidEmail(email) else {
             throw BaseSignUpInvalidEmail()
         }
-
         guard password == confirmPassword else {
             throw BaseSignUpPasswordMissmatch()
         }
-
         guard password.count >= 8 else {
             throw BaseSignUpWeakPassword()
         }
-
         guard mobileNumber.count == 10 else {
             throw BaseSignUpMobileNumberInvalid()
         }
@@ -321,10 +317,18 @@ struct BaseSignUpView: View {
     private func getMissingFields() -> [String] {
         var missing = [String]()
 
-        if email.isEmpty { missing.append("Email Address") }
-        if password.isEmpty { missing.append("Password") }
-        if confirmPassword.isEmpty { missing.append("Confirm Password") }
-        if mobileNumber.isEmpty { missing.append("Mobile Number") }
+        if email.isEmpty {
+            missing.append("Email Address")
+        }
+        if password.isEmpty {
+            missing.append("Password")
+        }
+        if confirmPassword.isEmpty {
+            missing.append("Confirm Password")
+        }
+        if mobileNumber.isEmpty {
+            missing.append("Mobile Number")
+        }
 
         return missing
     }
@@ -334,5 +338,4 @@ struct BaseSignUpView: View {
         return NSPredicate(format: "SELF MATCHES %@", regex)
             .evaluate(with: email)
     }
-
 }

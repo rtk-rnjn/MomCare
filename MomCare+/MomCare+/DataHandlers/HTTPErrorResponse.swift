@@ -14,12 +14,24 @@ enum CodableValue: Codable, Sendable {
     init(from decoder: any Decoder) throws {
         let container = try decoder.singleValueContainer()
 
-        if let bool = try? container.decode(Bool.self) { self = .bool(bool); return }
-        if let int = try? container.decode(Int.self) { self = .int(int); return }
-        if let double = try? container.decode(Double.self) { self = .double(double); return }
-        if let string = try? container.decode(String.self) { self = .string(string); return }
-        if let array = try? container.decode([CodableValue].self) { self = .array(array); return }
-        if let dict = try? container.decode([String: CodableValue].self) { self = .dict(dict); return }
+        if let bool = try? container.decode(Bool.self) {
+            self = .bool(bool); return
+        }
+        if let int = try? container.decode(Int.self) {
+            self = .int(int); return
+        }
+        if let double = try? container.decode(Double.self) {
+            self = .double(double); return
+        }
+        if let string = try? container.decode(String.self) {
+            self = .string(string); return
+        }
+        if let array = try? container.decode([CodableValue].self) {
+            self = .array(array); return
+        }
+        if let dict = try? container.decode([String: CodableValue].self) {
+            self = .dict(dict); return
+        }
 
         self = .null
     }
@@ -43,34 +55,42 @@ enum CodableValue: Codable, Sendable {
 
 extension CodableValue {
     var stringValue: String? {
-        if case let .string(s) = self { return s }
+        if case let .string(s) = self {
+            return s
+        }
         return nil
     }
 
     var intValue: Int? {
-        if case let .int(i) = self { return i }
+        if case let .int(i) = self {
+            return i
+        }
         return nil
     }
 
     var doubleValue: Double? {
-        if case let .double(double) = self { return double }
+        if case let .double(double) = self {
+            return double
+        }
         return nil
     }
 
     var boolValue: Bool? {
-        if case let .bool(bool) = self { return bool }
+        if case let .bool(bool) = self {
+            return bool
+        }
         return nil
     }
 
     nonisolated var displayString: String {
         switch self {
-        case let .int(value): return "\(value)"
-        case let .double(value): return "\(value)"
-        case let .bool(value): return value ? "true" : "false"
-        case let .string(value): return value
-        case .array: return "(list)"
-        case .dict: return "(object)"
-        case .null: return "null"
+        case let .int(value): "\(value)"
+        case let .double(value): "\(value)"
+        case let .bool(value): value ? "true" : "false"
+        case let .string(value): value
+        case .array: "(list)"
+        case .dict: "(object)"
+        case .null: "null"
         }
     }
 }
@@ -123,7 +143,6 @@ struct HTTPValidationError: Codable, Sendable {
 }
 
 struct HTTPErrorResponse: Codable, LocalizedError {
-
     enum Detail: Codable {
         case message(String)
         case validation([HTTPValidationError])
@@ -175,13 +194,15 @@ struct HTTPErrorResponse: Codable, LocalizedError {
             return message
 
         case let .validation(errors):
-            guard !errors.isEmpty else { return "Something went wrong with your request." }
+            guard !errors.isEmpty else {
+                return "Something went wrong with your request."
+            }
 
             if errors.count == 1, let error = errors.first {
                 let field = error.loc.last.map {
                     switch $0 {
-                    case let .string(s): return s
-                    case let .int(i): return "item \(i)"
+                    case let .string(s): s
+                    case let .int(i): "item \(i)"
                     }
                 } ?? "A field"
                 return "\(field.capitalized) \(error.msg.lowercased())."
@@ -205,14 +226,20 @@ struct HTTPErrorResponse: Codable, LocalizedError {
 
         case let .validation(errors):
             let fields = errors.compactMap { error -> String? in
-                guard let last = error.loc.last else { return nil }
+                guard let last = error.loc.last else {
+                    return nil
+                }
+
                 switch last {
                 case let .string(s): return s
                 case let .int(i): return "item \(i)"
                 }
             }
 
-            guard !fields.isEmpty else { return "Some required information is missing or incorrect." }
+            guard !fields.isEmpty else {
+                return "Some required information is missing or incorrect."
+            }
+
             let listed = fields.prefix(3).joined(separator: ", ")
             let suffix = fields.count > 3 ? " and \(fields.count - 3) more" : ""
             return "There's a problem with: \(listed)\(suffix)."
@@ -233,11 +260,13 @@ struct HTTPErrorResponse: Codable, LocalizedError {
 
         case let .validation(errors):
             let hints = errors.compactMap { error -> String? in
-                guard let last = error.loc.last else { return nil }
-                let field: String
-                switch last {
-                case let .string(string): field = string
-                case let .int(int): field = "item \(int)"
+                guard let last = error.loc.last else {
+                    return nil
+                }
+
+                let field: String = switch last {
+                case let .string(string): string
+                case let .int(int): "item \(int)"
                 }
 
                 if let ctx = error.ctx, let expected = ctx["expected"] {
@@ -252,5 +281,4 @@ struct HTTPErrorResponse: Codable, LocalizedError {
                 : hints.prefix(2).joined(separator: " ")
         }
     }
-
 }

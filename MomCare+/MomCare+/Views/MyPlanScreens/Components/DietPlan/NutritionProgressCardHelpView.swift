@@ -1,7 +1,6 @@
 import SwiftUI
 
 struct NutritionProgressCardHelpView: View {
-
     // MARK: Internal
 
     var body: some View {
@@ -58,7 +57,6 @@ struct NutritionProgressCardHelpView: View {
         HelpSection(title: "Calorie Ring") {
             HelpCard {
                 VStack(alignment: .leading, spacing: 16) {
-
                     HelpRow(
                         badge: RingBadge(progress: 0.72, label: "1440\n/2000"),
                         label: "Consumed vs. target",
@@ -89,7 +87,6 @@ struct NutritionProgressCardHelpView: View {
         HelpSection(title: "Adjusted Targets") {
             HelpCard {
                 VStack(alignment: .leading, spacing: 16) {
-
                     HelpRow(
                         badge: RingWithDeltaBadge(progress: 0.68, label: "1360\n/2000", deltaLabel: "+200"),
                         label: "Server-expected vs. adjusted calorie target",
@@ -136,7 +133,6 @@ struct NutritionProgressCardHelpView: View {
         HelpSection(title: "Macro Progress Bars") {
             HelpCard {
                 VStack(alignment: .leading, spacing: 16) {
-
                     HelpRow(
                         badge: MacroBarBadge(label: "Protein", fraction: 0.6, color: Color(hex: "A7C0CD")),
                         label: "Protein",
@@ -175,7 +171,6 @@ struct NutritionProgressCardHelpView: View {
         HelpSection(title: "Swipe to Change View") {
             HelpCard {
                 VStack(alignment: .leading, spacing: 16) {
-
                     HelpRow(
                         badge: SwipeDirectionBadge(direction: .up),
                         label: "Swipe up — next panel",
@@ -198,7 +193,6 @@ struct NutritionProgressCardHelpView: View {
         HelpSection(title: "Tap to Expand") {
             HelpCard {
                 VStack(alignment: .leading, spacing: 16) {
-
                     HelpRow(
                         badge: SymbolHelpBadge(systemName: "hand.tap.fill", color: .primary),
                         label: "Tap the card to expand",
@@ -237,7 +231,6 @@ struct NutritionProgressCardHelpView: View {
         HelpSection(title: "Quick Actions Menu") {
             HelpCard {
                 VStack(alignment: .leading, spacing: 16) {
-
                     HelpRow(
                         badge: SymbolHelpBadge(systemName: "hand.tap.fill", color: .purple),
                         label: "Press and hold the card",
@@ -268,7 +261,6 @@ struct NutritionProgressCardHelpView: View {
         HelpSection(title: "Nutrition Graph Screen") {
             HelpCard {
                 VStack(alignment: .leading, spacing: 16) {
-
                     HelpRow(
                         badge: VitalCardBadge(icon: "flame.fill", color: Color(hex: "E3B34B")),
                         label: "One card per vital",
@@ -536,7 +528,6 @@ private struct MacroMicroBadge: View {
 }
 
 private struct MealBreakdownBadge: View {
-
     // MARK: Internal
 
     var body: some View {
@@ -569,11 +560,9 @@ private struct MealBreakdownBadge: View {
         ("D", 0.4, Color(hex: "A7C0CD")),
         ("S", 0.9, Color(hex: "E07B8A"))
     ]
-
 }
 
 private struct ContextMenuPreviewBadge: View {
-
     // MARK: Internal
 
     var body: some View {
@@ -599,7 +588,6 @@ private struct ContextMenuPreviewBadge: View {
         ("C", 0.4, Color(hex: "6E8B6F")),
         ("F", 0.8, Color(hex: "E3B34B"))
     ]
-
 }
 
 private struct VitalCardBadge: View {

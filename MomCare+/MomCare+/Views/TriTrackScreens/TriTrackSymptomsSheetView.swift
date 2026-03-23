@@ -1,7 +1,6 @@
 import SwiftUI
 
 struct TriTrackSymptomsSheetView: View {
-
     // MARK: Internal
 
     let onSelect: (Symptom?) -> Void
@@ -60,5 +59,4 @@ struct TriTrackSymptomsSheetView: View {
     // MARK: Private
 
     @State private var searchText = ""
-
 }

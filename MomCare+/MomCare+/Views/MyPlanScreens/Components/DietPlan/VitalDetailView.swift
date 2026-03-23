@@ -1,8 +1,7 @@
-import SwiftUI
 import Charts
+import SwiftUI
 
 struct VitalDetailView: View {
-
     // MARK: Internal
 
     let kind: VitalKind
@@ -70,7 +69,9 @@ struct VitalDetailView: View {
 
     @State private var selectedPoint: DailyDataPoint?
 
-    private var chartHeight: CGFloat { 220 }
+    private var chartHeight: CGFloat {
+        220
+    }
 
     private var visibleDomain: Int {
         min(store.points.count, 7)
@@ -81,9 +82,11 @@ struct VitalDetailView: View {
     }
 
     private var xAxisValues: [String] {
-
         let all = store.points.map(\.label)
-        guard all.count > 14 else { return all }
+        guard all.count > 14 else {
+            return all
+        }
+
         let step = all.count / 7
         return stride(from: 0, to: all.count, by: step).map { all[$0] }
     }
@@ -179,7 +182,6 @@ struct VitalDetailView: View {
 
     private var chartSection: some View {
         VStack(alignment: .leading, spacing: 12) {
-
             Picker("Range", selection: $selectedRange) {
                 ForEach(VitalTimeRange.allCases) { range in
                     Text(range.rawValue).tag(range)
@@ -388,15 +390,15 @@ struct VitalDetailView: View {
 
     private func formattedValue(_ v: Double) -> String {
         if kind == .calories {
-            return v.formatted(.number.precision(.fractionLength(0)))
+            v.formatted(.number.precision(.fractionLength(0)))
 
         } else if kind == .sodium {
-            return v >= 1000
+            v >= 1000
                 ? v.formatted(.number.precision(.fractionLength(1)))
                 : v.formatted(.number.precision(.fractionLength(0)))
 
         } else {
-            return v.formatted(.number.precision(.fractionLength(1)))
+            v.formatted(.number.precision(.fractionLength(1)))
         }
     }
 }

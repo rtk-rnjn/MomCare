@@ -1,7 +1,6 @@
 import SwiftUI
 
 struct TriTrackRowLegendView: View {
-
     // MARK: Internal
 
     var body: some View {
@@ -279,7 +278,6 @@ struct TriTrackRowLegendView: View {
         LegendSection(title: "Quick Actions Menu", systemImage: "ellipsis.circle") {
             LegendCard {
                 VStack(alignment: .leading, spacing: 16) {
-
                     LegendRow(
                         badge: SymbolBadge(systemName: "hand.tap.fill", color: .purple),
                         label: "Tap and hold an item",

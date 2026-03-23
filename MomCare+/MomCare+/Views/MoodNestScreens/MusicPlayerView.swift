@@ -6,12 +6,10 @@ import SwiftUI
 import UIKit
 
 struct MusicPlayerView: View {
-
     // MARK: Internal
 
     var body: some View {
         VStack(spacing: 0) {
-
             Image(uiImage: musicPlayerHandler.currentSongUIImage ?? UIImage())
                 .resizable()
                 .aspectRatio(contentMode: .fit)
@@ -232,7 +230,6 @@ struct MusicPlayerView: View {
     @State private var uiImage: UIImage?
 
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
-
 }
 
 struct SystemVolumeSlider: UIViewRepresentable {

@@ -15,7 +15,6 @@ struct TriTrackEntry: TimelineEntry {
 
 @MainActor
 struct TriTrackGlanceProvider: TimelineProvider {
-
     // MARK: Internal
 
     func placeholder(in _: Context) -> TriTrackEntry {

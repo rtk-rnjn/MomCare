@@ -1,7 +1,6 @@
 import SwiftUI
 
 struct MonthGridView: View {
-
     // MARK: Internal
 
     let date: Date
@@ -32,7 +31,8 @@ struct MonthGridView: View {
                             .opacity(isInDisplayedMonth(date) ? 1.0 : (showsOutOfMonthDays ? 0.35 : 1.0))
                             .frame(height: cellHeight)
                     } else {
-                        Color.clear.frame(height: cellHeight)
+                        Color.clear
+.frame(height: cellHeight)
                             .accessibilityHidden(true)
                     }
                 }
@@ -50,7 +50,9 @@ struct MonthGridView: View {
     }
 
     private var cells: [Date?] {
-        guard let monthInterval = calendar.dateInterval(of: .month, for: date) else { return [] }
+        guard let monthInterval = calendar.dateInterval(of: .month, for: date) else {
+            return []
+        }
 
         let firstOfMonth = monthInterval.start
         let weekdayOfFirst = calendar.component(.weekday, from: firstOfMonth)
@@ -80,7 +82,7 @@ struct MonthGridView: View {
             if remainder != 0 {
                 out.append(contentsOf: Array(repeating: nil, count: 7 - remainder))
             }
-            if alwaysSixWeeks && out.count < 42 {
+            if alwaysSixWeeks, out.count < 42 {
                 out.append(contentsOf: Array(repeating: nil, count: 42 - out.count))
             }
             return out

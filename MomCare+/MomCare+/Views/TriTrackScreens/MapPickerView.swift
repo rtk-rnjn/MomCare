@@ -1,9 +1,8 @@
-import SwiftUI
-import MapKit
 import Combine
+import MapKit
+import SwiftUI
 
 struct MapPickerView: View {
-
     // MARK: Internal
 
     @Binding var selectedMapItem: MKMapItem?
@@ -20,9 +19,7 @@ struct MapPickerView: View {
                 .accessibilityLabel("Map. Tap to select a location")
                 .accessibilityHint("Double tap to place a marker at the tapped location")
                 .onTapGesture { screenPoint in
-
                     if let coordinate = proxy.convert(screenPoint, from: .local) {
-
                         let location = CLLocation(
                             latitude: coordinate.latitude,
                             longitude: coordinate.longitude
@@ -117,11 +114,9 @@ struct MapPickerView: View {
                 span: MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05)
             )
         )
-
 }
 
 final class MapSearchService: NSObject, ObservableObject {
-
     // MARK: Lifecycle
 
     override init() {
@@ -160,13 +155,11 @@ final class MapSearchService: NSObject, ObservableObject {
 }
 
 extension MapSearchService: MKLocalSearchCompleterDelegate {
-
     func completerDidUpdateResults(_ completer: MKLocalSearchCompleter) {
         Task {
             var items = [MKMapItem]()
 
             for suggestion in completer.results {
-
                 let request = MKLocalSearch.Request()
                 request.naturalLanguageQuery = suggestion.title
 

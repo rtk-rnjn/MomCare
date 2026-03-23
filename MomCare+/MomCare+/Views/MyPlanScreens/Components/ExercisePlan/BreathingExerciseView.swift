@@ -1,9 +1,8 @@
-import SwiftUI
 import AVFoundation
 import OSLog
+import SwiftUI
 
 struct BreathingExerciseView: View {
-
     // MARK: Internal
 
     var body: some View {
@@ -56,7 +55,6 @@ struct BreathingExerciseView: View {
                         .foregroundColor(darkAccent.opacity(0.7))
                         .accessibilityAddTraits(.isHeader)
                 }
-
             }
             .navigationBarTitleDisplayMode(.inline)
             .navigationSubtitle(
@@ -74,7 +72,6 @@ struct BreathingExerciseView: View {
         .onDisappear {
             stopAllTimers()
         }
-
     }
 
     // MARK: Private
@@ -110,7 +107,10 @@ struct BreathingExerciseView: View {
     }
 
     private var progress: Double {
-        guard totalDuration > 0 else { return 0 }
+        guard totalDuration > 0 else {
+            return 0
+        }
+
         return min(totalElapsed / totalDuration, 1.0)
     }
 
@@ -220,6 +220,7 @@ struct BreathingExerciseView: View {
 
         case .ready:
             halfCircleSmile
+
         case .done:
             halfCircleSmile
         }
@@ -381,7 +382,9 @@ struct BreathingExerciseView: View {
 
         timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { _ in
             DispatchQueue.main.async {
-                guard !isPaused else { return }
+                guard !isPaused else {
+                    return
+                }
 
                 totalElapsed += 1.0
 
@@ -440,7 +443,10 @@ struct BreathingExerciseView: View {
     }
 
     private func skipPhase() {
-        guard phase != .done, phase != .ready else { return }
+        guard phase != .done, phase != .ready else {
+            return
+        }
+
         let remaining = Double(phaseCountdown)
         totalElapsed += remaining
 
@@ -486,7 +492,9 @@ struct BreathingExerciseView: View {
     }
 
     private func formatTime(_ seconds: TimeInterval) -> String {
-        guard seconds.isFinite, seconds >= 0 else { return "0:00" }
+        guard seconds.isFinite, seconds >= 0 else {
+            return "0:00"
+        }
 
         return Duration.seconds(seconds).formatted(.time(pattern: .minuteSecond))
     }
@@ -555,15 +563,15 @@ enum BreathingPhase: String {
     var voiceText: String {
         switch self {
         case .breatheIn:
-            return "Slowly breathe in..."
+            "Slowly breathe in..."
         case .hold:
-            return "Hold?"
+            "Hold?"
         case .breatheOut:
-            return "Now breathe out..."
+            "Now breathe out..."
         case .ready:
-            return "Get ready..."
+            "Get ready..."
         case .done:
-            return "Well done. Session complete."
+            "Well done. Session complete."
         }
     }
 }

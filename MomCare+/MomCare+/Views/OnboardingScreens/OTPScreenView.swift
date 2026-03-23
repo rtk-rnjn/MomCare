@@ -7,7 +7,6 @@ enum DestinationType {
 }
 
 struct OTPScreenView: View {
-
     // MARK: Internal
 
     let isSheet: Bool = false
@@ -220,7 +219,6 @@ struct OTPScreenView: View {
 }
 
 struct OTPBox: View {
-
     // MARK: Internal
 
     let index: Int
@@ -262,7 +260,6 @@ struct OTPBox: View {
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     @State private var showCursor = false
-
 }
 
 struct OTPTextFieldStyle: ViewModifier {

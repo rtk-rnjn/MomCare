@@ -2,7 +2,6 @@ import Combine
 import CoreLocation
 
 class LocationManager: NSObject, ObservableObject, CLLocationManagerDelegate {
-
     // MARK: Lifecycle
 
     override init() {
@@ -37,5 +36,4 @@ class LocationManager: NSObject, ObservableObject, CLLocationManagerDelegate {
     // MARK: Private
 
     private let manager: CLLocationManager = .init()
-
 }

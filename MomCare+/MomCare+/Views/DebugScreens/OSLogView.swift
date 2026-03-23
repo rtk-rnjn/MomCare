@@ -1,5 +1,5 @@
-import SwiftUI
 import OSLog
+import SwiftUI
 
 enum LogLevel: String, CaseIterable, Sendable {
     case debug = "Debug"
@@ -13,23 +13,23 @@ enum LogLevel: String, CaseIterable, Sendable {
 
     var color: Color {
         switch self {
-        case .debug: return .secondary
-        case .info: return .blue
-        case .notice: return .teal
-        case .error: return .orange
-        case .fault: return .red
-        case .unknown: return .secondary
+        case .debug: .secondary
+        case .info: .blue
+        case .notice: .teal
+        case .error: .orange
+        case .fault: .red
+        case .unknown: .secondary
         }
     }
 
     var icon: String {
         switch self {
-        case .debug: return "ant"
-        case .info: return "info.circle"
-        case .notice: return "bell"
-        case .error: return "exclamationmark.triangle"
-        case .fault: return "xmark.octagon"
-        case .unknown: return "questionmark.circle"
+        case .debug: "ant"
+        case .info: "info.circle"
+        case .notice: "bell"
+        case .error: "exclamationmark.triangle"
+        case .fault: "xmark.octagon"
+        case .unknown: "questionmark.circle"
         }
     }
 
@@ -43,7 +43,6 @@ enum LogLevel: String, CaseIterable, Sendable {
         default: .unknown
         }
     }
-
 }
 
 struct LogEntry: Identifiable, Sendable {
@@ -64,7 +63,6 @@ struct LogEntry: Identifiable, Sendable {
 }
 
 struct OSLogsView: View {
-
     // MARK: Internal
 
     var body: some View {
@@ -101,7 +99,7 @@ struct OSLogsView: View {
         }
         .onAppear { fetchLogs() }
         .overlay {
-            if !isLoading && filtered.isEmpty {
+            if !isLoading, filtered.isEmpty {
                 ContentUnavailableView(
                     searchText.isEmpty ? "No Logs" : "No Results",
                     systemImage: searchText.isEmpty ? "doc.text" : "magnifyingglass",
@@ -179,7 +177,10 @@ struct OSLogsView: View {
                 let position = store.position(timeIntervalSinceLatestBoot: -300)
                 let raw = try store.getEntries(at: position)
                 fetched = raw.compactMap { entry -> LogEntry? in
-                    guard let log = entry as? OSLogEntryLog else { return nil }
+                    guard let log = entry as? OSLogEntryLog else {
+                        return nil
+                    }
+
                     return LogEntry(
                         date: log.date,
                         osLogLevel: log.level,
@@ -202,7 +203,6 @@ struct OSLogsView: View {
 }
 
 struct FilterChip: View {
-
     // MARK: Internal
 
     let label: String
@@ -214,7 +214,8 @@ struct FilterChip: View {
     var body: some View {
         Button(action: action) {
             HStack(spacing: 4) {
-                Image(systemName: icon).font(.caption2)
+                Image(systemName: icon)
+.font(.caption2)
                     .accessibilityHidden(true)
                 Text(label).font(.caption.weight(.medium))
             }
@@ -237,7 +238,6 @@ struct FilterChip: View {
     // MARK: Private
 
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
-
 }
 
 struct LogEntryRow: View {
@@ -248,9 +248,7 @@ struct LogEntryRow: View {
     var body: some View {
         Button(action: onTap) {
             VStack(alignment: .leading, spacing: 6) {
-
                 HStack(spacing: 8) {
-
                     HStack(spacing: 3) {
                         Image(systemName: entry.level.icon)
                             .font(.caption2.weight(.semibold))

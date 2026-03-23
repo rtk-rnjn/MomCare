@@ -1,7 +1,6 @@
 import SwiftUI
 
 struct MyPlanExerciseHelpView: View {
-
     // MARK: Internal
 
     var body: some View {
@@ -53,7 +52,6 @@ struct MyPlanExerciseHelpView: View {
         LegendSection(title: "Weekly Progress Card") {
             LegendCard {
                 VStack(alignment: .leading, spacing: 16) {
-
                     LegendRow(
                         badge: DayRingBadge(progress: 1.0, isToday: false),
                         label: "Day ring — completed",
@@ -100,7 +98,6 @@ struct MyPlanExerciseHelpView: View {
         LegendSection(title: "Walking Card") {
             LegendCard {
                 VStack(alignment: .leading, spacing: 16) {
-
                     LegendRow(
                         badge: ProgressBarBadge(fraction: 0.45, color: Color(hex: "4A8A62")),
                         label: "Step progress bar",
@@ -131,7 +128,6 @@ struct MyPlanExerciseHelpView: View {
         LegendSection(title: "Breathing Card") {
             LegendCard {
                 VStack(alignment: .leading, spacing: 16) {
-
                     LegendRow(
                         badge: LevelBadge(label: "Beginner", color: Color(hex: "4A7A9B")),
                         label: "Difficulty level",
@@ -170,7 +166,6 @@ struct MyPlanExerciseHelpView: View {
         LegendSection(title: "Exercise Cards") {
             LegendCard {
                 VStack(alignment: .leading, spacing: 16) {
-
                     LegendRow(
                         badge: LevelBadge(label: "Moderate", color: Color(hex: "9B6B52")),
                         label: "Difficulty level",
@@ -217,7 +212,6 @@ struct MyPlanExerciseHelpView: View {
         LegendSection(title: "Completion States") {
             LegendCard {
                 VStack(alignment: .leading, spacing: 16) {
-
                     LegendRow(
                         badge: PercentBadge(value: "100%", color: Color.CustomColors.mutedRaspberry),
                         label: "Fully completed",

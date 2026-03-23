@@ -22,7 +22,6 @@ struct EKEventView: UIViewControllerRepresentable {
 }
 
 class Coordinator: NSObject, EKEventViewDelegate {
-
     // MARK: Lifecycle
 
     init(_ parent: EKEventView) {
