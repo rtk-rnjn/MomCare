@@ -183,12 +183,12 @@ struct ReAuthenticationSheetView: View {
                 }
 
                 _ = try await authenticationService.appleLogin(idToken: tokenString)
+
+                await MainActor.run {
+                    dismiss()
+                }
             } catch {
                 controlState.error = error
-            }
-
-            await MainActor.run {
-                dismiss()
             }
 
         case let .failure(error):
