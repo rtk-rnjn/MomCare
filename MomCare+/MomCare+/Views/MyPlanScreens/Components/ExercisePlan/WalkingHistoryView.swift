@@ -66,8 +66,8 @@ struct WalkingHistoryView: View {
                             .font(.body)
                             .foregroundColor(Color.CustomColors.mutedRaspberry)
                     }
-                    .accessibilityLabel(controlState.showingExpandedCalendar ? "Collapse calendar" : "Expand calendar")
-                    .accessibilityIdentifier("expandCalendarButton")
+                    .accessibilityLabel("Jump to today")
+                    .accessibilityIdentifier("jumpToTodayButton")
                 }
             }
             .onChange(of: selectedDate) {
