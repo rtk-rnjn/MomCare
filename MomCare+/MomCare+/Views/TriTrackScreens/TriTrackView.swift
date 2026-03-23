@@ -90,7 +90,7 @@ struct TriTrackView: View {
                         Button {
                             controlState.showingTriTrackHelp = true
                         } label: {
-                            Label("Legend", systemImage: "questionmark.circle")
+                            Label("Guide", systemImage: "questionmark.circle")
                         }
                     } label: {
                         Image(systemName: "ellipsis")
@@ -148,7 +148,7 @@ struct TriTrackView: View {
     @EnvironmentObject private var authenticationService: AuthenticationService
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
-    @State private var selectedDate: Date = .init()
+    @State private var selectedDate: Date = Calendar.current.startOfDay(for: .init())
     @State private var showingAllEvents: Bool = false
     @State private var showingAllReminders: Bool = false
     @State private var showingAllSymptoms: Bool = false
@@ -219,7 +219,7 @@ struct PregnancyProgressView: View {
     var body: some View {
         VStack(spacing: 16) {
             VStack(spacing: 2) {
-                Text(pregnancyData.trimester)
+                Text("Trimester \(pregnancyData.trimester)")
                     .font(.title3)
                     .fontWeight(.semibold)
                     .accessibilityAddTraits(.isHeader)
@@ -361,8 +361,8 @@ struct PregnancyProgressView: View {
             .accessibilityElement(children: .ignore)
             .accessibilityLabel("Baby weight")
             .accessibilityValue(
-                trimesterData.babyWeight.map { w in
-                    w.formatted(.measurement(width: .abbreviated, usage: .personWeight, numberFormatStyle: .number.precision(.fractionLength(2))))
+                trimesterData.babyWeight.map { weight in
+                    weight.formatted(.measurement(width: .wide, usage: .personWeight, numberFormatStyle: .number.precision(.fractionLength(2))))
                 } ?? "Not available"
             )
         }
@@ -916,7 +916,7 @@ struct StitchingBorder: View {
 
     // MARK: Private
 
-    private func addPreciseCornerStitches(
+    private func addPreciseCornerStitches( // swiftlint:disable:this function_parameter_count
         to path: inout Path,
         center: CGPoint,
         radius: CGFloat,

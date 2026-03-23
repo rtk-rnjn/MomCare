@@ -11,18 +11,15 @@ struct MusicPlayerView: View {
 
     var body: some View {
         VStack(spacing: 0) {
-            Capsule()
-                .fill(Color.white.opacity(0))
-                .frame(width: 36, height: 5)
-                .padding(.top, 10)
-                .padding(.bottom, 30)
 
             Image(uiImage: musicPlayerHandler.currentSongUIImage ?? UIImage())
                 .resizable()
-                .aspectRatio(contentMode: .fill)
-                .frame(width: UIScreen.current.bounds.width - 48, height: UIScreen.current.bounds.width - 48)
-                .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
+                .aspectRatio(contentMode: .fit)
+                .popupTransitionTarget()
+                .clipShape(RoundedRectangle(cornerRadius: 30, style: .continuous))
                 .shadow(color: .black.opacity(0.4), radius: 20, x: 0, y: 10)
+                .padding(.horizontal, 24)
+                .padding(.top, 40)
                 .accessibilityLabel("\(musicPlayerHandler.currentSong?.metadata?.title ?? "Song") album artwork")
 
             Spacer()

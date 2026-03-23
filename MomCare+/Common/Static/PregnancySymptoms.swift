@@ -1,7 +1,7 @@
 import Foundation
 import SwiftData
 
-enum PregnancySymptoms {
+enum PregnancySymptoms { // swiftlint:disable:this type_body_length
     static let allSymptoms: [Symptom] = [
         Symptom(
             id: 1,

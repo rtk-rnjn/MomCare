@@ -55,7 +55,7 @@ struct NutritionProgressCardHelpView: View {
     }
 
     private var progressRingSection: some View {
-        HelpSection(title: "Calorie Ring", systemImage: "circle.dotted") {
+        HelpSection(title: "Calorie Ring") {
             HelpCard {
                 VStack(alignment: .leading, spacing: 16) {
 
@@ -76,17 +76,9 @@ struct NutritionProgressCardHelpView: View {
                     HelpDivider()
 
                     HelpRow(
-                        badge: RingBadge(progress: 1.0, label: "100%", color: Color(hex: "6E8B6F")),
-                        label: "Goal reached",
-                        description: "When you hit or exceed your calorie target the ring completes and the fill colour shifts to indicate you've met your goal for the day."
-                    )
-
-                    HelpDivider()
-
-                    HelpRow(
-                        badge: RingBadge(progress: 1.15, label: "115%", color: Color(hex: "E07B8A")),
+                        badge: RingBadge(progress: 1.15, label: "115%"),
                         label: "Over target",
-                        description: "If you go over your calorie target, the ring remains full but changes to a soft red to show that you have exceeded your goal. The percentage view makes it easy to see how much you've gone over at a glance (in this example, 15% over target)."
+                        description: "If you go over your calorie target, the ring remains full. The percentage view makes it easy to see how much you've gone over at a glance (in this example, 15% over target)."
                     )
                 }
             }
@@ -94,7 +86,7 @@ struct NutritionProgressCardHelpView: View {
     }
 
     private var adjustedTargetsSection: some View {
-        HelpSection(title: "Adjusted Targets", systemImage: "slider.horizontal.3") {
+        HelpSection(title: "Adjusted Targets") {
             HelpCard {
                 VStack(alignment: .leading, spacing: 16) {
 
@@ -107,7 +99,7 @@ struct NutritionProgressCardHelpView: View {
                     HelpDivider()
 
                     HelpRow(
-                        badge: MacroWithArrowBadge(label: "Protein", fraction: 0.55, color: Color(hex: "A7C0CD"), arrow: "up"),
+                        badge: MacroWithArrowBadge(fraction: 0.55, color: Color(hex: "A7C0CD"), arrow: .up),
                         label: "Macro bar — target increased",
                         description: "When a macro's target has been raised above the server-expected value, an upward arrow appears next to the original target figure. The bar still fills relative to the new (higher) target."
                     )
@@ -115,7 +107,7 @@ struct NutritionProgressCardHelpView: View {
                     HelpDivider()
 
                     HelpRow(
-                        badge: MacroWithArrowBadge(label: "Fats", fraction: 0.75, color: Color(hex: "E3B34B"), arrow: "down"),
+                        badge: MacroWithArrowBadge(fraction: 0.75, color: Color(hex: "E3B34B"), arrow: .down),
                         label: "Macro bar — target decreased",
                         description: "A downward arrow means the target has been lowered from the server-expected value. The original figure is shown dimmed next to the arrow so you always know your baseline."
                     )
@@ -125,7 +117,7 @@ struct NutritionProgressCardHelpView: View {
                     HelpRow(
                         badge: SymbolHelpBadge(systemName: "info.circle", color: .secondary),
                         label: "Why two targets?",
-                        description: "Your nutrition plan is generated server-side. The app may raise or lower individual targets day-to-day based on activity, trimester stage, or manual adjustments. The original figure is preserved so you can always see what your plan intended versus what you are working toward today."
+                        description: "Your nutrition plan is generated server-side. You may raise or lower individual targets day-to-day based on activity, trimester stage, or manual adjustments. The original figure is preserved so you can always see what your plan intended versus what you are working toward today."
                     )
 
                     HelpDivider()
@@ -141,7 +133,7 @@ struct NutritionProgressCardHelpView: View {
     }
 
     private var macroBarsSection: some View {
-        HelpSection(title: "Macro Progress Bars", systemImage: "chart.bar.fill") {
+        HelpSection(title: "Macro Progress Bars") {
             HelpCard {
                 VStack(alignment: .leading, spacing: 16) {
 
@@ -180,7 +172,7 @@ struct NutritionProgressCardHelpView: View {
     }
 
     private var dragGestureSection: some View {
-        HelpSection(title: "Swipe to Change View", systemImage: "hand.draw") {
+        HelpSection(title: "Swipe to Change View") {
             HelpCard {
                 VStack(alignment: .leading, spacing: 16) {
 
@@ -203,7 +195,7 @@ struct NutritionProgressCardHelpView: View {
     }
 
     private var expandSection: some View {
-        HelpSection(title: "Tap to Expand", systemImage: "rectangle.expand.vertical") {
+        HelpSection(title: "Tap to Expand") {
             HelpCard {
                 VStack(alignment: .leading, spacing: 16) {
 
@@ -242,7 +234,7 @@ struct NutritionProgressCardHelpView: View {
     }
 
     private var contextMenuSection: some View {
-        HelpSection(title: "Quick Actions Menu", systemImage: "ellipsis.circle") {
+        HelpSection(title: "Quick Actions Menu") {
             HelpCard {
                 VStack(alignment: .leading, spacing: 16) {
 
@@ -273,7 +265,7 @@ struct NutritionProgressCardHelpView: View {
     }
 
     private var nutritionGraphSection: some View {
-        HelpSection(title: "Nutrition Graph Screen", systemImage: "chart.bar.xaxis.ascending") {
+        HelpSection(title: "Nutrition Graph Screen") {
             HelpCard {
                 VStack(alignment: .leading, spacing: 16) {
 
@@ -316,12 +308,11 @@ struct NutritionProgressCardHelpView: View {
 
 private struct HelpSection<Content: View>: View {
     let title: String
-    let systemImage: String
     @ViewBuilder let content: () -> Content
 
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
-            Label(title, systemImage: systemImage)
+            Text(title)
                 .font(.title3.weight(.semibold))
                 .foregroundStyle(.primary)
                 .accessibilityAddTraits(.isHeader)
@@ -437,21 +428,23 @@ private struct RingWithDeltaBadge: View {
 
 /// Macro bar badge showing an up or down arrow next to the original target value.
 private struct MacroWithArrowBadge: View {
-    let label: String
+    enum Direction: String {
+        case up
+        case down
+    }
+
     let fraction: Double
     let color: Color
-    let arrow: String // "up" or "down"
+    let arrow: Direction
 
     var body: some View {
         VStack(alignment: .leading, spacing: 4) {
             HStack(spacing: 2) {
-                Text(label)
-                    .font(.caption2.weight(.semibold))
-                    .foregroundStyle(.secondary)
                 Spacer()
-                Image(systemName: arrow == "up" ? "arrow.up" : "arrow.down")
+                Image(systemName: "arrow.\(arrow.rawValue)")
                     .font(.caption2.weight(.bold))
                     .foregroundStyle(.secondary)
+                Spacer()
             }
             GeometryReader { geo in
                 ZStack(alignment: .leading) {
@@ -570,7 +563,7 @@ private struct MealBreakdownBadge: View {
 
     // MARK: Private
 
-    private let meals: [(String, Double, Color)] = [
+    private let meals: [(String, Double, Color)] = [ // swiftlint:disable:this large_tuple
         ("B", 1.0, Color(hex: "E3B34B")),
         ("L", 0.7, Color(hex: "6E8B6F")),
         ("D", 0.4, Color(hex: "A7C0CD")),
@@ -601,7 +594,7 @@ private struct ContextMenuPreviewBadge: View {
 
     // MARK: Private
 
-    private let bars: [(String, Double, Color)] = [
+    private let bars: [(String, Double, Color)] = [ // swiftlint:disable:this large_tuple
         ("P", 0.65, Color(hex: "A7C0CD")),
         ("C", 0.4, Color(hex: "6E8B6F")),
         ("F", 0.8, Color(hex: "E3B34B"))

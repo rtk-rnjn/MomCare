@@ -92,7 +92,7 @@ struct PercentageRing: View {
                     .fill(lastGradientColor)
                     .frame(width: ringWidth, height: ringWidth)
                     .shadow(
-                        color: reduceTransparency ? .clear : shadowColor,
+                        color: reduceTransparency || percent < 100 ? .clear : shadowColor,
                         radius: shadowRadius,
                         x: endCapShadowOffset.0,
                         y: endCapShadowOffset.1
@@ -111,7 +111,7 @@ struct PercentageRing: View {
 
     // MARK: Private
 
-    private static let shadowColor: Color = .black.opacity(0.1)
+    private static let shadowColor: Color = .black.opacity(0.3)
     private static let shadowRadius: CGFloat = 1
     private static let shadowOffsetMultiplier: CGFloat = shadowRadius + 2
 

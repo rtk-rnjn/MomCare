@@ -1,47 +1,69 @@
 import SwiftUI
 
+private extension Date {
+    var startOfDay: Date { Calendar.current.startOfDay(for: self) }
+    var nextDay: Date { Calendar.current.date(byAdding: .day, value: 1, to: startOfDay)! }
+}
+
 struct ExerciseHistory: View {
 
     // MARK: Internal
 
-    @State var exercises: [UserExerciseModel]?
-    @State var selectedDate: Date = .init()
-
     var body: some View {
         NavigationStack {
-            CompactCalendarView(selectedDate: $selectedDate, isExpanded: $isCalendarExpanded)
+            VStack(spacing: 0) {
+                CompactCalendarView(selectedDate: $selectedDate, isExpanded: $isCalendarExpanded)
 
-            Group {
-                if let exercises {
-                    if exercises.isEmpty {
+                Group {
+                    if isLoading && exercises == nil {
+                        VStack(spacing: 12) {
+                            ProgressView()
+                            Text("Loading exercise history…")
+                                .font(.callout)
+                                .foregroundStyle(.secondary)
+                        }
+                        .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    } else if let errorMessage {
                         ContentUnavailableView(
-                            "No exercises found for this date.",
+                            "Couldn’t load exercises",
+                            systemImage: "wifi.exclamationmark",
+                            description: Text(errorMessage)
+                        )
+                        .overlay(alignment: .bottom) {
+                            Button("Retry") {
+                                Task { await load(for: selectedDate) }
+                            }
+                            .buttonStyle(.borderedProminent)
+                            .padding(.bottom, 24)
+                        }
+                    } else if let exercises, exercises.isEmpty {
+                        ContentUnavailableView(
+                            "No exercises",
                             systemImage: "figure.strengthtraining.traditional",
                             description: Text("Try selecting a different date.")
                         )
-                    } else {
-                        ScrollView(showsIndicators: false) {
-                            VStack(spacing: 14) {
-                                // Summary banner
-                                ExerciseDaySummaryCard(exercises: exercises)
+                    } else if let exercises {
+                        List {
+                            Section {
+                                ExerciseDaySummaryRow(exercises: exercises)
+                            }
 
-                                // One card per exercise
+                            Section("Exercises") {
                                 ForEach(exercises) { userExercise in
-                                    ExerciseHistoryCard(userExercise: userExercise)
+                                    ExerciseHistoryRow(userExercise: userExercise)
                                 }
                             }
-                            .padding(.horizontal, 20)
-                            .padding(.top, 20)
-                            .padding(.bottom, 40)
                         }
-                    }
-                } else {
-                    if isLoading {
-                        ProgressView()
-                            .frame(maxWidth: .infinity, maxHeight: .infinity)
+                        .scrollIndicators(.hidden)
+                        .animation(reduceMotion ? nil : .default, value: exercises)
+                        .listStyle(.insetGrouped)
+                        .refreshable {
+                            await load(for: selectedDate)
+                        }
                     } else {
+                        // exercises == nil, not loading, no error: treat as empty for date
                         ContentUnavailableView(
-                            "No exercises found for this date.",
+                            "No exercises",
                             systemImage: "calendar.badge.exclamationmark",
                             description: Text("Try selecting a different date.")
                         )
@@ -52,117 +74,105 @@ struct ExerciseHistory: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
-                    Button(role: .cancel) { dismiss() }
+                    Button(role: .close) { dismiss() }
                 }
             }
-            .onChange(of: selectedDate) {
-                Task { await load() }
+            .task(id: selectedDate.startOfDay) {
+                await load(for: selectedDate)
             }
-            .task { await load() }
         }
     }
 
     // MARK: Private
 
+    @State private var exercises: [UserExerciseModel]?
+    @State private var selectedDate: Date = .init()
+
     @State private var isCalendarExpanded = false
     @State private var isLoading = false
-    @Environment(\.dismiss) private var dismiss
+    @State private var errorMessage: String?
 
-    private func load() async {
+    @Environment(\.dismiss) private var dismiss
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+
+    @MainActor
+    private func load(for date: Date) async {
         isLoading = true
+        errorMessage = nil
         defer { isLoading = false }
 
-        let startDate = Calendar.current.startOfDay(for: selectedDate)
-        guard let endDate = Calendar.current.date(byAdding: .day, value: 1, to: startDate) else { return }
+        let startDate = date.startOfDay
+        let endDate = date.nextDay
 
-        let response = try? await ContentService.shared.fetchUserExercises(from: startDate, to: endDate)
-
-        if let data = response?.data, !data.isEmpty {
-            exercises = data
-        } else {
+        do {
+            let response = try await ContentRepository.shared.fetchUserExercises(from: startDate, to: endDate)
+            // Keep empty array if the server returns empty; nil means “no response / unknown”
+            exercises = response.data
+        } catch {
             exercises = nil
+            errorMessage = error.localizedDescription
         }
     }
 }
 
-// Shows a quick at-a-glance completion stat for the selected day.
+// MARK: - Summary (native row)
 
-private struct ExerciseDaySummaryCard: View {
+private struct ExerciseDaySummaryRow: View {
 
     // MARK: Internal
 
     let exercises: [UserExerciseModel]
 
     var body: some View {
-        HStack(spacing: 0) {
-            summaryPill(
-                icon: "checkmark.circle.fill",
-                label: "Completed",
-                value: "\(completedCount)/\(exercises.count)",
-                color: Color.CustomColors.mutedRaspberry
-            )
+        VStack(alignment: .leading, spacing: 12) {
 
-            Divider().frame(height: 36)
+            HStack(spacing: 16) {
+                metric("Completed", value: "\(completedCount)/\(exercises.count)")
+                metric("Time", value: formattedDuration)
+                metric("Progress", value: "\(Int(overallProgress * 100))%")
+            }
 
-            summaryPill(
-                icon: "clock.fill",
-                label: "Total time",
-                value: formattedMinutes,
-                color: Color(hex: "9B6B52")
-            )
-
-            Divider().frame(height: 36)
-
-            summaryPill(
-                icon: "flame.fill",
-                label: "Progress",
-                value: "\(Int(overallProgress * 100))%",
-                color: Color(hex: "4A7A9B")
-            )
+            ProgressView(value: overallProgress) {
+                EmptyView()
+            }
+            .tint(overallProgress >= 1 ? .green : .accentColor)
         }
-        .padding(.vertical, 14)
-        .background(Color(.secondarySystemGroupedBackground),
-                    in: RoundedRectangle(cornerRadius: 18, style: .continuous))
-        .overlay(
-            RoundedRectangle(cornerRadius: 18, style: .continuous)
-                .stroke(Color(.separator).opacity(0.4), lineWidth: 1)
-        )
+        .padding(.vertical, 6)
+        .task(id: exercises.map(\.id).joined(separator: "|")) {
+            await computeStats()
+        }
         .accessibilityElement(children: .ignore)
-        .accessibilityLabel("Day summary: \(completedCount) of \(exercises.count) exercises completed, \(formattedMinutes) total time, \(Int(overallProgress * 100)) percent progress")
-        .task { await computeStats() }
+        .accessibilityLabel("Day summary")
+        .accessibilityValue("\(completedCount) of \(exercises.count) exercises completed, \(formattedDuration) total time")
     }
 
     // MARK: Private
 
     @State private var completedCount: Int = 0
-    @State private var totalMinutes: Double = 0
-
-    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @State private var totalSeconds: Double = 0
 
     private var overallProgress: Double {
         guard !exercises.isEmpty else { return 0 }
         return Double(completedCount) / Double(exercises.count)
     }
 
-    private var formattedMinutes: String {
-        let mins = Int(totalMinutes) / 60
-        let secs = Int(totalMinutes) % 60
+    private var formattedDuration: String {
+        let total = Int(totalSeconds)
+        let mins = total / 60
+        let secs = total % 60
         if mins > 0 { return "\(mins)m \(secs)s" }
         return "\(secs)s"
     }
 
-    private func summaryPill(icon: String, label: String, value: String, color: Color) -> some View {
-        VStack(spacing: 4) {
-            Image(systemName: icon)
+    private func metric(_ title: String, value: String) -> some View {
+        VStack(spacing: 5) {
+            Text(title)
                 .font(.caption)
-                .foregroundColor(color)
-            Text(value)
-                .font(.subheadline.weight(.bold))
-                .foregroundColor(color)
-                .contentTransition(reduceMotion ? .identity : .numericText())
-                .animation(reduceMotion ? nil : .easeInOut, value: value)
 
-            Text(label).font(.caption2).foregroundStyle(.secondary)
+            Text(value)
+                .font(.subheadline.weight(.semibold))
+                .foregroundStyle(.primary)
+                .contentTransition(.numericText())
         }
         .frame(maxWidth: .infinity)
     }
@@ -170,200 +180,149 @@ private struct ExerciseDaySummaryCard: View {
     private func computeStats() async {
         var completed = 0
         var duration = 0.0
+
         for ex in exercises {
             if await ex.isCompleted { completed += 1 }
             duration += ex.videoDurationCompletedSeconds
         }
-        completedCount = completed
-        totalMinutes = duration
-    }
 
+        await MainActor.run {
+            completedCount = completed
+            totalSeconds = duration
+        }
+    }
 }
 
-// One card per UserExerciseModel — loads ExerciseModel async.
+// MARK: - Exercise row (native list row)
 
-private struct ExerciseHistoryCard: View {
+private struct ExerciseHistoryRow: View {
 
     // MARK: Internal
 
     let userExercise: UserExerciseModel
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 0) {
-            HStack(spacing: 16) {
+        HStack(alignment: .top, spacing: 12) {
 
-                // ── Text column ───────────────────────────────────────
-                VStack(alignment: .leading, spacing: 6) {
+            // Thumbnail
+            ZStack {
+                RoundedRectangle(cornerRadius: 12, style: .continuous)
+                    .fill(Color.secondary.opacity(0.12))
 
-                    // Level
-                    if let level = exercise?.level {
-                        Text(level.rawValue)
-                            .font(.caption.weight(.medium))
-                            .foregroundColor(.secondary)
-                    } else {
-                        RoundedRectangle(cornerRadius: 4)
-                            .fill(Color(.systemGray5))
-                            .frame(width: 56, height: 12)
-                    }
-
-                    // Name
-                    if let name = exercise?.name {
-                        Text(name)
-                            .font(.title3.weight(.bold))
-                            .foregroundColor(.primary)
-                            .lineLimit(2)
-                    } else {
-                        RoundedRectangle(cornerRadius: 4)
-                            .fill(Color(.systemGray5))
-                            .frame(width: 120, height: 18)
-                    }
-
-                    // Targeted body parts
-                    if let parts = exercise?.targetedBodyParts, !parts.isEmpty {
-                        Text(parts.joined(separator: " · "))
-                            .font(.caption)
-                            .foregroundColor(.secondary)
-                            .lineLimit(1)
-                    }
-
-                    // Duration watched / total
-                    HStack(spacing: 4) {
-                        Image(systemName: "clock")
-                            .font(.caption2)
-                            .foregroundColor(.secondary)
-                        Text(durationLabel)
-                            .font(.caption)
-                            .foregroundColor(.secondary)
-                    }
-                    .padding(.top, 2)
-                }
-
-                Spacer()
-
-                VStack(alignment: .trailing, spacing: 8) {
-                    ZStack {
-                        RoundedRectangle(cornerRadius: 14, style: .continuous)
-                            .fill(Color(hex: "F0D5C8"))
-
-                        if let uiImage {
-                            Image(uiImage: uiImage)
-                                .resizable()
-                                .scaledToFill()
-                                .frame(width: 72, height: 72)
-                                .clipped()
-                                .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
-                        } else {
-                            Image(systemName: "figure.strengthtraining.traditional")
-                                .font(.title2)
-                                .foregroundColor(Color(hex: "9B6B52"))
-                        }
-                    }
-                    .frame(width: 72, height: 72)
-
-                    // Completion ring
-                    ZStack {
-                        Circle()
-                            .stroke(Color.secondary.opacity(0.15), lineWidth: 4)
-                        Circle()
-                            .trim(from: 0, to: completionPct)
-                            .stroke(
-                                completionPct >= 1.0 ? Color(hex: "4A8A62") : Color.CustomColors.mutedRaspberry,
-                                style: StrokeStyle(lineWidth: 4, lineCap: .round)
-                            )
-                            .rotationEffect(.degrees(-90))
-                            .animation(.easeInOut(duration: 0.6), value: completionPct)
-
-                        if completionPct >= 1.0 {
-                            Image(systemName: "checkmark")
-                                .font(.caption2.weight(.bold))
-                                .foregroundColor(Color(hex: "4A8A62"))
-                        } else {
-                            Text("\(Int(completionPct * 100))%")
-                                .font(.caption2.weight(.bold))
-                                .foregroundColor(Color.CustomColors.mutedRaspberry)
-                        }
-                    }
-                    .frame(width: 36, height: 36)
+                if let uiImage {
+                    Image(uiImage: uiImage)
+                        .resizable()
+                        .scaledToFill()
+                        .clipped()
+                } else {
+                    Image(systemName: "figure.strengthtraining.traditional")
+                        .font(.title2)
+                        .foregroundStyle(.secondary)
                 }
             }
+            .frame(width: 56, height: 56)
+            .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
 
-            if exercise != nil {
-                GeometryReader { geo in
-                    ZStack(alignment: .leading) {
-                        Capsule()
-                            .fill(Color.secondary.opacity(0.12))
-                        Capsule()
-                            .fill(
-                                completionPct >= 1.0
-                                    ? Color(hex: "4A8A62")
-                                    : Color.CustomColors.mutedRaspberry
-                            )
-                            .frame(width: geo.size.width * completionPct)
-                            .animation(.easeInOut(duration: 0.6), value: completionPct)
-                    }
-                }
-                .frame(height: 6)
-                .padding(.top, 14)
-            }
+            // Main text
+            VStack(alignment: .leading, spacing: 6) {
+                HStack(spacing: 8) {
+                    Text(exercise?.name ?? "Loading…")
+                        .font(.headline)
+                        .foregroundStyle(exercise == nil ? .secondary : .primary)
+                        .redacted(reason: exercise == nil ? .placeholder : [])
 
-            if let tags = exercise?.tags, !tags.isEmpty {
-                ScrollView(.horizontal, showsIndicators: false) {
-                    HStack(spacing: 6) {
-                        ForEach(tags, id: \.self) { tag in
-                            Text(tag)
-                                .font(.caption2.weight(.medium))
-                                .foregroundColor(Color(hex: "9B6B52"))
-                                .padding(.horizontal, 8)
-                                .padding(.vertical, 3)
-                                .background(
-                                    Color(hex: "F0D5C8"),
-                                    in: Capsule()
-                                )
-                        }
-                    }
+                    Spacer()
+
+                    StatusBadge(completionPct: completionPct)
                 }
-                .padding(.top, 10)
+
+                if let level = exercise?.level.rawValue {
+                    Text(level)
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                }
+
+                if let parts = exercise?.targetedBodyParts, !parts.isEmpty {
+                    Text(parts.joined(separator: " · "))
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                        .lineLimit(1)
+                }
+
+                ProgressView(value: completionPct)
+                    .tint(completionPct >= 1 ? .green : .accentColor)
+
+                Text(durationLabel)
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
             }
         }
-        .padding(18)
-        .background(
-            RoundedRectangle(cornerRadius: 20, style: .continuous)
-                .fill(Color(.secondarySystemGroupedBackground))
-        )
-        .shadow(color: Color(hex: "9B6B52").opacity(0.07), radius: 8, x: 0, y: 4)
-        .task { await loadExercise() }
+        .padding(.vertical, 4)
+        .task(id: userExercise.id) {
+            await loadExercise()
+        }
         .accessibilityElement(children: .ignore)
-        .accessibilityLabel(exercise.map { "\($0.name), \($0.level.rawValue)" } ?? "Exercise")
-        .accessibilityValue(
-            completionPct >= 1.0
-                ? "Completed"
-                : "\(Int(completionPct * 100)) percent completed"
-        )
+        .accessibilityLabel(exercise?.name ?? "Exercise")
+        .accessibilityValue(completionPct >= 1 ? "Completed" : "\(Int(completionPct * 100)) percent completed")
     }
 
     // MARK: Private
 
     @State private var exercise: ExerciseModel?
-    @State private var uiImage: UIImage?
     @State private var completionPct: Double = 0
+    @State private var uiImage: UIImage?
 
     private var durationLabel: String {
-        guard let exercise else {
-            return "\(Int(userExercise.videoDurationCompletedSeconds))s watched"
-        }
         let watched = Int(userExercise.videoDurationCompletedSeconds)
+
+        guard let exercise else {
+            return "\(formattedSeconds(watched)) watched"
+        }
+
         let total = Int(exercise.videoDurationSeconds)
         return "\(formattedSeconds(watched)) of \(formattedSeconds(total))"
     }
 
     private func formattedSeconds(_ s: Int) -> String {
-        let m = s / 60; let sec = s % 60
+        let m = s / 60
+        let sec = s % 60
         return m > 0 ? "\(m)m \(sec)s" : "\(sec)s"
     }
 
     private func loadExercise() async {
-        exercise = await userExercise.exerciseModel
-        completionPct = await userExercise.completionPercentage
-        uiImage = await exercise?.image
+        let model = await userExercise.exerciseModel
+        let pct = await userExercise.completionPercentage
+        let image = await model?.image
+
+        await MainActor.run {
+            exercise = model
+            completionPct = pct
+            uiImage = image
+        }
+    }
+}
+
+private struct StatusBadge: View {
+    let completionPct: Double
+
+    var body: some View {
+        if completionPct >= 1.0 {
+            Label("Done", systemImage: "checkmark")
+                .labelStyle(.titleAndIcon)
+                .font(.caption.weight(.semibold))
+                .foregroundStyle(.green)
+                .padding(.horizontal, 8)
+                .padding(.vertical, 4)
+                .background(.thinMaterial, in: Capsule())
+                .accessibilityHidden(true)
+        } else {
+            Text("\(Int(completionPct * 100))%")
+                .font(.caption.weight(.semibold))
+                .foregroundStyle(.secondary)
+                .padding(.horizontal, 8)
+                .padding(.vertical, 4)
+                .background(.thinMaterial, in: Capsule())
+                .accessibilityHidden(true)
+        }
     }
 }

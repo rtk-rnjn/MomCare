@@ -43,6 +43,7 @@ struct PreferencesSignUpView: View {
     // MARK: Private
 
     @EnvironmentObject private var authenticationService: AuthenticationService
+    @EnvironmentObject private var controlState: ControlState
 
     @State private var dueDate: Date = .init()
 
@@ -259,7 +260,11 @@ struct PreferencesSignUpView: View {
         authenticationService.userModel?.foodIntolerances = Array(self.allergies)
         authenticationService.userModel?.dietaryPreferences = Array(self.dietaryPreferences)
 
-        _ = try? await authenticationService.update(dueDateTimestamp: .value(dueDate.timeIntervalSince1970), foodIntolerances: .value(allergies), dietaryPreferences: .value(dietaryPreferences))
+        do {
+            _ = try await authenticationService.update(dueDateTimestamp: .value(dueDate.timeIntervalSince1970), foodIntolerances: .value(allergies), dietaryPreferences: .value(dietaryPreferences))
+        } catch {
+            controlState.error = error
+        }
 
         authenticationService.userModel?.dueDateTimestamp = dueDate.timeIntervalSince1970
     }

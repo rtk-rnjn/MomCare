@@ -13,6 +13,7 @@ struct TriTrackEntry: TimelineEntry {
     let babyWeightG: Double?
 }
 
+@MainActor
 struct TriTrackGlanceProvider: TimelineProvider {
 
     // MARK: Internal
@@ -43,10 +44,8 @@ struct TriTrackGlanceProvider: TimelineProvider {
 
     // MARK: Private
 
-    private let database: Database = .init()
-
     private func makeEntry() -> TriTrackEntry {
-        guard let progress = database.pregnancyProgress(), progress.isValid else {
+        guard let progress = Database.shared.pregnancyProgress(), progress.isValid else {
             return TriTrackEntry(
                 date: .now,
                 week: 0,

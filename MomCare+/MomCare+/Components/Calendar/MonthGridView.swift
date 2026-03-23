@@ -26,10 +26,10 @@ struct MonthGridView: View {
             .accessibilityHidden(true)
 
             LazyVGrid(columns: columns, spacing: 4) {
-                ForEach(Array(cells.enumerated()), id: \.offset) { _, d in
-                    if let d {
-                        DayCell(date: d, selectedDate: $selectedDate, showWeekday: false)
-                            .opacity(isInDisplayedMonth(d) ? 1.0 : (showsOutOfMonthDays ? 0.35 : 1.0))
+                ForEach(Array(cells.enumerated()), id: \.offset) { _, date in
+                    if let date {
+                        DayCell(date: date, selectedDate: $selectedDate, showWeekday: false)
+                            .opacity(isInDisplayedMonth(date) ? 1.0 : (showsOutOfMonthDays ? 0.35 : 1.0))
                             .frame(height: cellHeight)
                     } else {
                         Color.clear.frame(height: cellHeight)

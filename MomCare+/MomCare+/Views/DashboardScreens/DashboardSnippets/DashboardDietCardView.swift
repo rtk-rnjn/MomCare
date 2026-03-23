@@ -22,8 +22,7 @@ struct DashboardDietCardView: View {
                 .accessibilityHidden(true)
 
                 Text("\(Int(consumed)) / \(Int(goal)) \(UnitEnergy.kilocalories.symbol)")
-                    .font(.title3)
-                    .fontWeight(.regular)
+                    .font(.title3.weight(.regular))
                     .lineLimit(1)
                     .minimumScaleFactor(0.8)
                     .contentTransition(reduceMotion ? .identity : .numericText())
@@ -32,28 +31,10 @@ struct DashboardDietCardView: View {
 
             Spacer()
 
-            VStack(spacing: 6) {
-                Text("\(Int(animatedProgress * 100))%")
-                    .font(.headline)
-                    .fontWeight(.semibold)
-
-                GeometryReader { geo in
-                    ZStack(alignment: .leading) {
-                        Capsule()
-                            .fill(reduceTransparency ? Color(.systemGray4) : Color.gray.opacity(0.2))
-                            .frame(height: 8)
-
-                        Capsule()
-                            .fill(MomCareAccent.primary)
-                            .frame(
-                                width: geo.size.width * max(animatedProgress, 0),
-                                height: 8
-                            )
-                            .animation(reduceMotion ? nil : .easeInOut(duration: 0.9), value: abs(animatedProgress))
-                    }
-                }
-                .frame(width: 120, height: 8)
-            }
+            Label("\(Int(animatedProgress * 100))%", systemImage: "flame")
+                .font(.title3.weight(.regular))
+                .contentTransition(reduceMotion ? .identity : .numericText())
+                .animation(reduceMotion ? nil : .easeInOut, value: animatedProgress)
         }
         .padding(16)
         .background(Color("secondaryAppColor"))

@@ -1,4 +1,5 @@
 import SwiftUI
+import TipKit
 
 struct WaterLogListView: View {
 
@@ -45,7 +46,6 @@ struct WaterLogListView: View {
             }
             .onAppear {
                 tipIndex = Int.random(in: 0..<WaterStore.waterTips.count)
-                quoteIndex = Int.random(in: 0..<WaterStore.waterQuotes.count)
             }
         }
     }
@@ -104,11 +104,6 @@ struct WaterLogListView: View {
                     .font(.subheadline)
                     .padding(.top, 1)
                     .accessibilityHidden(true)
-                Text(WaterStore.waterQuotes[quoteIndex])
-                    .font(.footnote.italic())
-                    .foregroundStyle(Color(hex: "924350").opacity(0.8))
-                    .fixedSize(horizontal: false, vertical: true)
-                    .lineSpacing(3)
             }
             .padding(12)
             .frame(maxWidth: .infinity, alignment: .leading)

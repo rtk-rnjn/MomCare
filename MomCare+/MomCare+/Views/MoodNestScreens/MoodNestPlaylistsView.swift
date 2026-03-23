@@ -1,4 +1,5 @@
 import SwiftUI
+import TipKit
 import UIKit
 
 struct MoodNestPlaylistsView: View {
@@ -56,6 +57,7 @@ struct MoodNestPlaylistsView: View {
                 uiImage = await heroPlaylist.image
             }
         }
+        .errorAlert(error: $moodResultViewModel.error)
     }
 
     var captionSection: some View {
@@ -190,5 +192,4 @@ struct MoodNestPlaylistsView: View {
     @StateObject private var moodResultViewModel: MoodResultViewModel
     @State private var heroPlaylist: PlaylistModel?
     @State private var uiImage: UIImage?
-
 }

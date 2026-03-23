@@ -1,46 +1,72 @@
 import SwiftUI
 
-struct ErrorAlertModifier: ViewModifier {
+struct ErrorAlertModifier<Actions: View>: ViewModifier {
+
+    // MARK: Internal
 
     @Binding var error: (any Error)?
 
+    let actions: (any Error) -> Actions
+
     func body(content: Content) -> some View {
         content
-        .alert(
-            "Error",
-            isPresented: Binding(
-                get: { error != nil },
-                set: { if !$0 { error = nil } }
-            ),
-            presenting: error
-        ) { _ in
-            Button(role: .close) {
-                error = nil
+            .alert(
+                alertTitle,
+                isPresented: isPresented,
+                presenting: error
+            ) { error in
+                actions(error)
+            } message: { error in
+                Text(alertMessage(for: error))
             }
-        } message: { error in
-            VStack(alignment: .leading, spacing: 6) {
+    }
 
-                if let error = error as? (any LocalizedError) {
-                    if let reason = error.failureReason {
-                        Text(reason)
-                    }
+    // MARK: Private
 
-                    if let suggestion = error.recoverySuggestion {
-                        Text(suggestion)
-                            .font(.footnote)
-                            .foregroundStyle(.secondary)
-                    }
-                } else {
-                    Text(error.localizedDescription)
-                }
-            }
+    private var isPresented: Binding<Bool> {
+        Binding(
+            get: { error != nil },
+            set: { if !$0 { error = nil } }
+        )
+    }
+
+    private var alertTitle: String {
+        if let localized = error as? (any LocalizedError),
+           let description = localized.errorDescription {
+            return description
         }
+        return error?.localizedDescription ?? "Error"
+    }
+
+    private func alertMessage(for error: any Error) -> String {
+        if let localized = error as? (any LocalizedError) {
+            let parts = [
+                localized.failureReason,
+                localized.recoverySuggestion
+            ]
+            .compactMap { $0 }
+            .joined(separator: "\n\n")
+
+            return parts.isEmpty ? error.localizedDescription : parts
+        }
+
+        return error.localizedDescription
     }
 }
 
 extension View {
 
     func errorAlert(error: Binding<(any Error)?>) -> some View {
-        modifier(ErrorAlertModifier(error: error))
+        modifier(
+            ErrorAlertModifier(error: error) { _ in
+                Button(role: .close) {
+                    error.wrappedValue = nil
+                }
+            }
+        )
+    }
+
+    func errorAlert<Actions: View>(error: Binding<(any Error)?>, @ViewBuilder actions: @escaping (any Error) -> Actions) -> some View {
+        modifier(ErrorAlertModifier(error: error, actions: actions))
     }
 }

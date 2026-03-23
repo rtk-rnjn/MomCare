@@ -466,6 +466,7 @@
 				INFOPLIST_KEY_NSHealthShareUsageDescription = "This app requires permission to write health data such as completed workouts and nutrition logs to support accurate tracking and progress monitoring.";
 				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "This app requires permission to write health data such as completed workouts and nutrition logs to support accurate tracking and progress monitoring.";
 				INFOPLIST_KEY_NSLocalNetworkUsageDescription = "This app requires access to the local network to securely connect with supported services and integrations.";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "MomCare uses your location to show nearby hospitals, pharmacies, and other care services relevant to your pregnancy.";
 				INFOPLIST_KEY_NSRemindersFullAccessUsageDescription = "This app requires access to Reminders to create medication, hydration, and appointment alerts.";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
@@ -527,6 +528,7 @@
 				INFOPLIST_KEY_NSHealthShareUsageDescription = "This app requires permission to write health data such as completed workouts and nutrition logs to support accurate tracking and progress monitoring.";
 				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "This app requires permission to write health data such as completed workouts and nutrition logs to support accurate tracking and progress monitoring.";
 				INFOPLIST_KEY_NSLocalNetworkUsageDescription = "This app requires access to the local network to securely connect with supported services and integrations.";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "MomCare uses your location to show nearby hospitals, pharmacies, and other care services relevant to your pregnancy.";
 				INFOPLIST_KEY_NSRemindersFullAccessUsageDescription = "This app requires access to Reminders to create medication, hydration, and appointment alerts.";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;

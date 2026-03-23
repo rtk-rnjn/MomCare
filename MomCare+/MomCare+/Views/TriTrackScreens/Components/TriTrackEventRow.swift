@@ -11,33 +11,30 @@ struct TriTrackEventRow: View {
 
     var body: some View {
 
-        TimelineView(.periodic(from: .now, by: 60)) { context in
-            HStack(spacing: 14) {
-                dateCapsule
+        HStack(spacing: 14) {
+            dateCapsule
 
-                appointmentInfo(now: context.date)
+            appointmentInfo()
 
-                Spacer()
-
-                Image(systemName: "chevron.right")
-                    .foregroundColor(.gray.opacity(0.6))
-                    .accessibilityHidden(true)
-            }
-            .padding()
-            .opacity(isPast(now: context.date) ? 0.6 : 1)
-            .accessibilityElement(children: .ignore)
-            .accessibilityLabel(event.title)
-            .accessibilityValue(
-                event.startDate.formatted(.dateTime.weekday().day().month().hour().minute())
-            )
-            .accessibilityHint("Double tap to view event details, long press for more options")
-            .accessibilityAddTraits(.isButton)
+            Spacer()
         }
+        .opacity(isPast(now: selectedDate) ? 0.6 : 1)
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(event.title)
+        .accessibilityValue(event.startDate.formatted(.dateTime.weekday().day().month().hour().minute()))
+        .accessibilityHint("Double tap to view event details, long press for more options")
+        .accessibilityAddTraits(.isButton)
+
     }
 
     // MARK: Private
 
     @Environment(\.accessibilityDifferentiateWithoutColor) private var differentiateWithoutColor
+
+    private var now: Date {
+        .init()
+    }
+
 }
 
 extension TriTrackEventRow {
@@ -71,7 +68,7 @@ extension TriTrackEventRow {
 
 extension TriTrackEventRow {
 
-    func appointmentInfo(now: Date) -> some View {
+    func appointmentInfo() -> some View {
 
         VStack(alignment: .leading, spacing: 4) {
 
@@ -83,18 +80,12 @@ extension TriTrackEventRow {
                 if event.isAllDay {
                     Text("All-day")
                         .font(.subheadline)
-                        .foregroundStyle(.secondary)
                 } else {
                     Text(event.startDate.formatted(.dateTime.hour().minute()))
                         .font(.subheadline)
                 }
 
                 HStack {
-                    Text(event.startDate, style: .relative)
-                        .font(.caption.weight(.medium))
-                        .foregroundStyle(.secondary)
-                        .monospacedDigit()
-
                     if differentiateWithoutColor {
                         Image(systemName: isPast(now: now) ? "xmark.circle" : "checkmark.circle")
                             .font(.caption.weight(.medium))
@@ -113,6 +104,14 @@ extension TriTrackEventRow {
                         Text("Today")
                             .font(.caption.weight(.medium))
                             .foregroundStyle(.green)
+                    } else if event.startDate > now {
+                        Text("Upcoming")
+                            .font(.caption.weight(.medium))
+                            .foregroundStyle(.green)
+                    } else {
+                        Text("Past")
+                            .font(.caption.weight(.medium))
+                            .foregroundStyle(.red)
                     }
                 }
             }
@@ -135,7 +134,7 @@ extension TriTrackEventRow {
         Calendar.current.isDate(event.startDate, inSameDayAs: selectedDate)
     }
 
-    private func isPast(now: Date) -> Bool {
-        event.startDate < now
+    private func isPast(now: Date? = .init()) -> Bool {
+        event.startDate < now ?? self.now
     }
 }

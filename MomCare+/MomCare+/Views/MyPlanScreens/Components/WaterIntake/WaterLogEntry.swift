@@ -41,19 +41,6 @@ final class WaterStore: ObservableObject {
 
     // MARK: Internal
 
-    static let waterQuotes: [String] = [
-        "Water is the driving force of all nature. — Leonardo da Vinci",
-        "Thousands have lived without love, not one without water. — W. H. Auden",
-        "Water is the mirror of nature.",
-        "Stay hydrated. Your baby thanks you. 🌸",
-        "In pregnancy your blood volume rises 50% — water keeps everything flowing.",
-        "Sipping water through the day eases morning nausea.",
-        "Hydration helps prevent common pregnancy headaches.",
-        "Every cell in your growing baby is mostly water.",
-        "A well-hydrated mama is a glowing mama. ✨",
-        "Drink before you're thirsty — thirst lags behind need."
-    ]
-
     static let waterTips: [(icon: String, tip: String)] = [
         ("drop.fill", "Add a slice of lemon or cucumber to make plain water more appealing."),
         ("clock.fill", "Drink a glass first thing in the morning before breakfast."),
@@ -71,6 +58,7 @@ final class WaterStore: ObservableObject {
     @Published var isLoading = false
     @Published var notificationsEnabled = false
     @Published var reminderIntervalHours: Int = 2
+    @Published var error: (any Error)?
 
     var progress: Double {
         guard dailyTarget > 0 else { return 0 }
@@ -117,9 +105,13 @@ final class WaterStore: ObservableObject {
         ) { [weak self] _, samples, _ in
             guard let self, let sample = samples?.first else { return }
             Task { @MainActor in
-                try? await self.healthStore.delete(sample)
-                self.todayTotal = max(self.todayTotal - entry.milliliters, 0)
-                self.todayLogs.removeAll { $0.id == entry.id }
+                do {
+                    try await self.healthStore.delete(sample)
+                    self.todayTotal = max(self.todayTotal - entry.milliliters, 0)
+                    self.todayLogs.removeAll { $0.id == entry.id }
+                } catch {
+                    self.error = error
+                }
             }
         }
         healthStore.execute(query)

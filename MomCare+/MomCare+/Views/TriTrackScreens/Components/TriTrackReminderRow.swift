@@ -12,19 +12,14 @@ struct TriTrackReminderRow: View {
     let onTap: () -> Void
 
     var body: some View {
-
-        TimelineView(.periodic(from: .now, by: 1)) { context in
-
-            HStack(spacing: 14) {
-                dateCapsule
-                reminderInfo(currentDate: context.date)
-                Spacer()
-                completionIndicator
-            }
-            .padding()
-            .onTapGesture { onTap() }
-            .opacity(reminder.isCompleted ? 0.6 : 1)
+        HStack(spacing: 14) {
+            dateCapsule
+            reminderInfo(selectedDate: selectedDate)
+            Spacer()
+            completionIndicator
         }
+        .onTapGesture { onTap() }
+        .opacity(reminder.isCompleted ? 0.6 : 1)
     }
 
     // MARK: Private
@@ -182,7 +177,7 @@ extension TriTrackReminderRow {
 
 extension TriTrackReminderRow {
 
-    func reminderInfo(currentDate: Date) -> some View {
+    func reminderInfo(selectedDate currentDate: Date?) -> some View {
 
         VStack(alignment: .leading, spacing: 4) {
 
@@ -197,8 +192,6 @@ extension TriTrackReminderRow {
 
                     Text(dueDate.formatted(.dateTime.hour().minute()))
                         .font(.subheadline)
-
-                    timerIndicator(dueDate: dueDate, now: currentDate)
 
                     if hasRecurrence {
                         Image(systemName: "repeat")
@@ -227,18 +220,6 @@ extension TriTrackReminderRow {
 
 extension TriTrackReminderRow {
 
-    func timerIndicator(dueDate: Date, now: Date) -> some View {
-        Text(dueDate, style: .relative)
-            .font(.caption.weight(.medium))
-            .lineLimit(1)
-            .monospacedDigit()
-            .contentTransition(reduceMotion ? .identity : .numericText(countsDown: true))
-            .animation(reduceMotion ? nil : .easeInOut, value: dueDate)
-    }
-}
-
-extension TriTrackReminderRow {
-
     var completionIndicator: some View {
 
         Image(systemName: reminder.isCompleted ? "checkmark.circle.fill" : "circle")
@@ -257,7 +238,7 @@ extension TriTrackReminderRow {
         if reduceMotion {
             try? onToggle()
         } else {
-            withAnimation(.easeInOut) {
+            withAnimation(reduceMotion ? nil : .easeInOut) {
                 try? onToggle()
             }
         }

@@ -1,19 +1,39 @@
 import SwiftUI
 
+struct SignInMissingFieldValue: LocalizedError {
+    var errorDescription: String? {
+        "Missing Field Value"
+    }
+
+    var failureReason: String? {
+        "Please fill in all the fields before submitting the form."
+    }
+
+    var recoverySuggestion: String? {
+        "Make sure to provide both your email address and password."
+    }
+}
+
 struct SignInView: View {
 
     // MARK: Internal
 
     var body: some View {
         NavigationStack {
-            VStack(spacing: 0) {
-                signInForm
-                    .safeAreaInset(edge: .top) {
-                        Color.clear
-                            .frame(height: 16)
-                    }
+            signInForm
+                .safeAreaInset(edge: .top) {
+                    Color.clear.frame(height: 16)
+                }
 
-                VStack {
+            .background(
+                Color(.systemBackground)
+                    .ignoresSafeArea()
+            )
+            .navigationTitle("Sign In")
+            .errorAlert(error: $controlState.error)
+            .navigationBarTitleDisplayMode(.large)
+            .toolbar {
+                ToolbarItem(placement: .bottomBar) {
                     Button {
                         Task { await handleSubmit() }
                     } label: {
@@ -21,7 +41,6 @@ struct SignInView: View {
                             ProgressView()
                                 .progressViewStyle(.circular)
                                 .tint(.white)
-                                .frame(maxWidth: .infinity)
                         } else {
                             Text("Sign In")
                                 .frame(maxWidth: .infinity)
@@ -34,21 +53,7 @@ struct SignInView: View {
                     .accessibilityLabel("Sign In")
                     .accessibilityHint("Signs you in to your account")
                 }
-                .alert(alertTitle, isPresented: $showAlert) {
-                    Button("OK", role: .cancel) {}
-                } message: {
-                    Text(alertMessage)
-                }
-                .padding(.horizontal)
-                .padding(.top, 30)
-                .padding(.bottom, 20)
             }
-            .background(
-                Color(.systemBackground)
-                    .ignoresSafeArea()
-            )
-            .navigationTitle("Sign In")
-            .navigationBarTitleDisplayMode(.large)
             .navigationDestination(isPresented: $navigateToHealthMetricsSignUp) {
                 HealthMetricsSignUpView()
             }
@@ -62,33 +67,34 @@ struct SignInView: View {
         isLoading = true
         defer { isLoading = false }
 
-        let tokenPairResponse = try? await authenticationService.login(emailAddress: email, password: password)
-        let credentialsResponse = try? await authenticationService.fetchCredentials()
-
-        guard let tokenPairResponse, let credentialsResponse else {
-            alertTitle = "Error"
-            alertMessage = "An unexpected error occurred. Please try again later."
-            showAlert = true
+        guard !emailAddress.isEmpty, !password.isEmpty else {
+            controlState.error = SignInMissingFieldValue()
             return
         }
 
-        if let error = tokenPairResponse.errorMessage {
-            alertTitle = "Sign In Failed"
-            alertMessage = error
-            showAlert = true
+        do {
+            try await authenticationService.login(emailAddress: emailAddress, password: password)
+            let credentialsResponse = try await authenticationService.fetchCredentials()
+
+            let verified = credentialsResponse.data.verified
+            if !verified {
+                navigateToOTPVerification = true
+                return
+            }
+
+        } catch {
+            controlState.error = error
             return
         }
 
-        showAlert = false
-        controlState.isLoggedIn = true
+        do {
+            try await authenticationService.me()
 
-        if let verified = credentialsResponse.data?.verified, !verified {
-            navigateToOTPVerification = true
-            return
-        }
-
-        if authenticationService.userModel?.dateOfBirth == nil {
-            navigateToHealthMetricsSignUp = true
+            if authenticationService.userModel?.dateOfBirth == nil {
+                navigateToHealthMetricsSignUp = true
+            }
+        } catch {
+            controlState.error = error
         }
     }
 
@@ -102,11 +108,8 @@ struct SignInView: View {
     @State private var navigateToHealthMetricsSignUp = false
     @State private var navigateToOTPVerification = false
 
-    @State private var email = ""
+    @State private var emailAddress = ""
     @State private var password = ""
-    @State private var alertMessage: String = ""
-    @State private var showAlert: Bool = false
-    @State private var alertTitle: String = ""
 
     @ViewBuilder
     private var signInForm: some View {
@@ -114,13 +117,20 @@ struct SignInView: View {
             Section {
                 emailField
                 passwordField
+            } footer: {
+                if !isValidEmail(emailAddress) && !emailAddress.isEmpty {
+                    Text("Please enter a valid email address.")
+                        .foregroundColor(.red)
+                        .accessibilityLabel("Invalid email address")
+                        .accessibilityHint("The email address you entered is not valid. Please correct it before submitting.")
+                }
             }
         }
         .scrollContentBackground(.hidden)
     }
 
     private var emailField: some View {
-        TextField("Email ID", text: $email)
+        TextField("Email Address", text: $emailAddress)
             .keyboardType(.emailAddress)
             .textInputAutocapitalization(.never)
             .autocorrectionDisabled()
@@ -134,5 +144,11 @@ struct SignInView: View {
             .listRowBackground(Color(.secondarySystemBackground))
             .accessibilityLabel("Password")
             .accessibilityHint("Enter your password")
+    }
+
+    private func isValidEmail(_ email: String) -> Bool {
+        let regex = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}"
+        return NSPredicate(format: "SELF MATCHES %@", regex)
+            .evaluate(with: email)
     }
 }

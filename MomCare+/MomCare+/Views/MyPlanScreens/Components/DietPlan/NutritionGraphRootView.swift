@@ -5,8 +5,8 @@ struct NutritionGraphRootView: View {
 
     // MARK: Internal
 
-    let calorieIntake: Double
-    let calorieGoal: Double
+    let calorieIntake: Measurement<UnitEnergy>
+    let calorieGoal: Measurement<UnitEnergy>
 
     let nutritionIntakeTotals: NutritionTotals?
     let nutritionGoalTotals: NutritionTotals?
@@ -51,9 +51,8 @@ struct NutritionGraphRootView: View {
                     .padding(.bottom, 32)
                 }
             }
-            .background(Color(.systemGroupedBackground))
             .navigationTitle("Nutrition")
-            .navigationBarTitleDisplayMode(.large)
+            .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
                     Button(role: .cancel) { dismiss() }
@@ -77,31 +76,31 @@ struct NutritionGraphRootView: View {
     @State private var appeared = false
 
     private var summaryStrip: some View {
-        let remaining = max(calorieGoal - calorieIntake, 0)
+        let remaining = calorieGoal - calorieIntake
         let isOver = calorieIntake > calorieGoal
 
         return HStack(spacing: 0) {
             summaryPill(
                 label: "Consumed",
-                value: "\(Int(calorieIntake)) \(UnitEnergy.kilocalories.symbol)",
+                value: calorieIntake.formatted(.measurement(width: .abbreviated, usage: .food)),
                 color: Color(hex: "E3B34B"),
                 icon: "flame.fill"
             )
 
-            Divider().frame(height: 36)
+            Divider()
 
             summaryPill(
                 label: isOver ? "Over by" : "Remaining",
-                value: "\(Int(isOver ? calorieIntake - calorieGoal : remaining)) \(UnitEnergy.kilocalories.symbol)",
+                value: (isOver ? calorieIntake - calorieGoal : remaining).formatted(.measurement(width: .abbreviated, usage: .food)),
                 color: isOver ? .red : Color(hex: "6E8B6F"),
                 icon: isOver ? "exclamationmark.triangle.fill" : "leaf.fill"
             )
 
-            Divider().frame(height: 36)
+            Divider()
 
             summaryPill(
                 label: "Target",
-                value: "\(Int(calorieGoal)) \(UnitEnergy.kilocalories.symbol)",
+                value: calorieGoal.formatted(.measurement(width: .abbreviated, usage: .food)),
                 color: Color(.systemGray3),
                 icon: "target"
             )
@@ -110,9 +109,14 @@ struct NutritionGraphRootView: View {
         .background(Color(.secondarySystemBackground), in: RoundedRectangle(cornerRadius: 16, style: .continuous))
         .accessibilityElement(children: .ignore)
         .accessibilityLabel("Calorie summary")
-        .accessibilityValue(
-            "Consumed \(Int(calorieIntake)) kilocalories. \(isOver ? "Over by" : "Remaining") \(Int(isOver ? calorieIntake - calorieGoal : remaining)) kilocalories. Target \(Int(calorieGoal)) kilocalories."
-        )
+        .accessibilityValue({
+            let intake = calorieIntake.formatted(.measurement(width: .wide, usage: .food))
+            let goal = calorieGoal.formatted(.measurement(width: .wide, usage: .food))
+            let delta = (isOver ? calorieIntake - calorieGoal : remaining)
+                .formatted(.measurement(width: .wide, usage: .food))
+
+            return "\(intake) consumed. \(isOver ? "Over by" : "Remaining") \(delta). Goal \(goal)."
+        }())
     }
 
     private func summaryPill(label: String, value: String, color: Color, icon: String) -> some View {

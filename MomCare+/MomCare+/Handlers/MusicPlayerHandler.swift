@@ -81,7 +81,7 @@ final class MusicPlayerHandler: ObservableObject {
     }
 
     func preparePlaylistAndPlay(_ playlist: PlaylistModel, startingWith index: Int = 0) {
-        DebugLogger.shared.log("Loading playlist '\(playlist.name)' with \(playlist.songs.count) songs, starting at index \(index)", level: .debug, category: .ui)
+
         self.playlist = playlist.songs
         currentSongIndex = index
         if let song = playlist.songs[safe: index] {
@@ -90,12 +90,12 @@ final class MusicPlayerHandler: ObservableObject {
     }
 
     func skipToNext() {
-        DebugLogger.shared.log("Skipping to next song", level: .verbose, category: .ui)
+
         play(song: adjacentSong(offset: 1))
     }
 
     func skipToPrevious() {
-        DebugLogger.shared.log("Skipping to previous song", level: .verbose, category: .ui)
+
         play(song: adjacentSong(offset: -1))
     }
 
@@ -103,10 +103,10 @@ final class MusicPlayerHandler: ObservableObject {
         guard let player else { return false }
 
         if player.timeControlStatus == .playing {
-            DebugLogger.shared.log("Pausing playback", level: .verbose, category: .ui)
+
             player.pause()
         } else {
-            DebugLogger.shared.log("Resuming playback", level: .verbose, category: .ui)
+
             player.play()
         }
 
@@ -114,7 +114,7 @@ final class MusicPlayerHandler: ObservableObject {
     }
 
     func stop() {
-        DebugLogger.shared.log("Stopping playback", level: .verbose, category: .ui)
+
         player?.pause()
         discardPlayer()
     }
@@ -137,11 +137,9 @@ final class MusicPlayerHandler: ObservableObject {
 
         Task {
             guard let url = await song.url, let image = await song.image else {
-                DebugLogger.shared.log("Failed to load URL or image for song: \(song.songName)", level: .warning, category: .ui)
+
                 return
             }
-
-            DebugLogger.shared.log("Playing song: \(song.songName)", level: .debug, category: .ui)
 
             if discardPrevious {
                 discardPlayer()
@@ -208,7 +206,7 @@ final class MusicPlayerHandler: ObservableObject {
     }
 
     @objc private func playerDidFinishPlaying() {
-        DebugLogger.shared.log("Song finished, advancing to next", level: .verbose, category: .ui)
+
         if let next = adjacentSong(offset: 1) {
             play(song: next, discardPrevious: false)
         }

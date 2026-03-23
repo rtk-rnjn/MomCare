@@ -39,7 +39,7 @@ struct WaterLogView: View {
                             actionPanel
                                 .padding(.top, 18)
                                 .padding(.horizontal, 16)
-                                .padding(.bottom, 36)
+                                .padding(.bottom, 8)
                         }
                     }
                 }
@@ -97,7 +97,6 @@ struct WaterLogView: View {
         }
         .task {
             await store.setup()
-            quoteIndex = Int.random(in: 0..<WaterStore.waterQuotes.count)
         }
         .sheet(isPresented: $showLogs) {
             WaterLogListView(store: store)
@@ -122,11 +121,13 @@ struct WaterLogView: View {
         .onChange(of: selectedDate) {
             Task { await store.fetchWater(for: selectedDate) }
         }
+        .errorAlert(error: $store.error)
     }
 
     // MARK: Private
 
     @StateObject private var store: WaterStore = .init()
+    @EnvironmentObject private var controlState: ControlState
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @Environment(\.accessibilityReduceTransparency) private var reduceTransparency
     @Environment(\.dismiss) private var dismiss
@@ -141,7 +142,6 @@ struct WaterLogView: View {
     @State private var feedbackOffset: CGFloat = 0
     @State private var feedbackOpacity: Double = 0
     @State private var selectedDate: Date = .init()
-    @State private var quoteIndex: Int = 0
 
     private let quickAmounts: [(label: String, ml: Double)] = [
         ("+150ml", 150), ("+200ml", 200), ("+300ml", 300), ("+500ml", 500)
@@ -327,33 +327,7 @@ struct WaterLogView: View {
                     .accessibilityLabel("Add \(Int(preset.ml)) millilitres")
                 }
             }
-            quoteCard
         }
-    }
-
-    private var quoteCard: some View {
-        HStack(alignment: .top, spacing: 10) {
-            Image(systemName: "quote.bubble.fill")
-                .foregroundColor(Color(hex: "924350").opacity(0.65))
-                .font(.headline)
-                .accessibilityHidden(true)
-
-            Text(WaterStore.waterQuotes[quoteIndex])
-                .font(.footnote.italic())
-                .foregroundStyle(Color(hex: "924350").opacity(0.8))
-                .fixedSize(horizontal: false, vertical: true)
-                .lineSpacing(3)
-        }
-        .padding(14)
-        .background(
-            reduceTransparency ? Color(hex: "FAE8E4") : Color(hex: "FAE8E4").opacity(0.55),
-            in: RoundedRectangle(cornerRadius: 16, style: .continuous)
-        )
-        .overlay(
-            RoundedRectangle(cornerRadius: 16, style: .continuous)
-                .stroke(Color(hex: "924350").opacity(0.1), lineWidth: 1)
-        )
-        .accessibilityElement(children: .combine)
     }
 
     private var settingsSheet: some View {

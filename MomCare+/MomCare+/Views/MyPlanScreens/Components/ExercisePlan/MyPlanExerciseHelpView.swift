@@ -50,7 +50,7 @@ struct MyPlanExerciseHelpView: View {
     }
 
     private var weeklyProgressSection: some View {
-        LegendSection(title: "Weekly Progress Card", systemImage: "chart.bar.fill") {
+        LegendSection(title: "Weekly Progress Card") {
             LegendCard {
                 VStack(alignment: .leading, spacing: 16) {
 
@@ -97,7 +97,7 @@ struct MyPlanExerciseHelpView: View {
     }
 
     private var walkingSection: some View {
-        LegendSection(title: "Walking Card", systemImage: "figure.walk") {
+        LegendSection(title: "Walking Card") {
             LegendCard {
                 VStack(alignment: .leading, spacing: 16) {
 
@@ -128,7 +128,7 @@ struct MyPlanExerciseHelpView: View {
     }
 
     private var breathingSection: some View {
-        LegendSection(title: "Breathing Card", systemImage: "lungs.fill") {
+        LegendSection(title: "Breathing Card") {
             LegendCard {
                 VStack(alignment: .leading, spacing: 16) {
 
@@ -167,7 +167,7 @@ struct MyPlanExerciseHelpView: View {
     }
 
     private var exerciseCardSection: some View {
-        LegendSection(title: "Exercise Cards", systemImage: "figure.strengthtraining.traditional") {
+        LegendSection(title: "Exercise Cards") {
             LegendCard {
                 VStack(alignment: .leading, spacing: 16) {
 
@@ -214,7 +214,7 @@ struct MyPlanExerciseHelpView: View {
     }
 
     private var completionSection: some View {
-        LegendSection(title: "Completion States", systemImage: "checkmark.seal.fill") {
+        LegendSection(title: "Completion States") {
             LegendCard {
                 VStack(alignment: .leading, spacing: 16) {
 
@@ -255,12 +255,11 @@ struct MyPlanExerciseHelpView: View {
 
 private struct LegendSection<Content: View>: View {
     let title: String
-    let systemImage: String
     @ViewBuilder let content: () -> Content
 
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
-            Label(title, systemImage: systemImage)
+            Text(title)
                 .font(.title3.weight(.semibold))
                 .foregroundStyle(.primary)
                 .accessibilityAddTraits(.isHeader)
@@ -288,9 +287,9 @@ private struct LegendRow<Badge: View>: View {
     let description: String
 
     var body: some View {
-        HStack(alignment: .top, spacing: 14) {
+        HStack(alignment: .center, spacing: 14) {
             badge
-                .frame(width: 50, height: 50)
+                .frame(width: 70, height: 50)
                 .accessibilityHidden(true)
 
             VStack(alignment: .leading, spacing: 3) {
@@ -349,7 +348,6 @@ private struct DayRingBadge: View {
     }
 }
 
-// Mini progress bar
 private struct ProgressBarBadge: View {
     let fraction: Double
     let color: Color
@@ -367,7 +365,6 @@ private struct ProgressBarBadge: View {
     }
 }
 
-// Symbol icon badge
 private struct SymbolLegendBadge: View {
     let systemName: String
     let color: Color
@@ -380,7 +377,6 @@ private struct SymbolLegendBadge: View {
     }
 }
 
-// Percentage text badge
 private struct PercentBadge: View {
     let value: String
     let color: Color
@@ -389,11 +385,9 @@ private struct PercentBadge: View {
         Text(value)
             .font(.body.weight(.bold))
             .foregroundColor(color)
-            .frame(width: 50, height: 50)
     }
 }
 
-// Difficulty level label
 private struct LevelBadge: View {
     let label: String
     let color: Color
@@ -405,11 +399,9 @@ private struct LevelBadge: View {
             .padding(.horizontal, 6)
             .padding(.vertical, 4)
             .background(color.opacity(0.12), in: RoundedRectangle(cornerRadius: 6, style: .continuous))
-            .frame(width: 50, height: 50)
     }
 }
 
-// Mini play button
 private struct PlayButtonBadge: View {
     let label: String
     let color: Color
@@ -425,11 +417,9 @@ private struct PlayButtonBadge: View {
         .padding(.horizontal, 8)
         .padding(.vertical, 5)
         .background(color, in: RoundedRectangle(cornerRadius: 8, style: .continuous))
-        .frame(width: 50, height: 50)
     }
 }
 
-// Exercise thumbnail placeholder
 private struct ExerciseThumbnailBadge: View {
     var body: some View {
         ZStack {
@@ -439,6 +429,5 @@ private struct ExerciseThumbnailBadge: View {
                 .font(.title3)
                 .foregroundColor(Color(hex: "9B6B52"))
         }
-        .frame(width: 50, height: 50)
     }
 }

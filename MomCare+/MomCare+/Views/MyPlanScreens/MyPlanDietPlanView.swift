@@ -44,13 +44,14 @@ struct MyPlanDietPlanView: View {
                 }
             }
 
-            TipView(dietContextMenuTip)
-                .padding(.horizontal, 16)
-
             MealTimelineCardView(plan: contentServiceHandler.myPlanModel)
                 .refreshable {
                     HapticsHandler.impact(.medium)
-                    try? await contentServiceHandler.fetchMealPlan()
+                    do {
+                        try await contentServiceHandler.fetchMealPlan()
+                    } catch {
+                        controlState.error = error
+                    }
                 }
 
                 .padding(.bottom, 8)
@@ -61,8 +62,8 @@ struct MyPlanDietPlanView: View {
         .padding(.top, 8)
         .fullScreenCover(isPresented: $showGraph) {
             NutritionGraphRootView(
-                calorieIntake: contentServiceHandler.nutritionIntakeTotals?.calories ?? 0,
-                calorieGoal: contentServiceHandler.recommendedNutritionGoalTotals?.calories ?? 0,
+                calorieIntake: contentServiceHandler.nutritionIntakeTotals?.energy ?? .init(value: 0, unit: .kilocalories),
+                calorieGoal: contentServiceHandler.recommendedNutritionGoalTotals?.energy ?? .init(value: 0, unit: .kilocalories),
                 nutritionIntakeTotals: contentServiceHandler.nutritionIntakeTotals,
                 nutritionGoalTotals: contentServiceHandler.recommendedNutritionGoalTotals
             )
@@ -71,12 +72,18 @@ struct MyPlanDietPlanView: View {
             WaterLogView()
         }
         .fullScreenCover(isPresented: $showHistory) {
-            if let mealPlan = contentServiceHandler.myPlanModel {
-                DietPlanHistory(plan: mealPlan)
-            }
+            DietPlanHistory()
         }
         .toolbar {
-            ToolbarItem(placement: .confirmationAction) {
+            ToolbarItem(placement: .topBarTrailing) {
+                Button {
+                    showHistory = true
+                } label: {
+                    Image(systemName: "clock.arrow.circlepath")
+                }
+            }
+
+            ToolbarItem(placement: .topBarTrailing) {
                 Menu {
                     if experimentalFeatures {
                         Button {
@@ -85,19 +92,13 @@ struct MyPlanDietPlanView: View {
                             Label("Water Intake Log", systemImage: "drop.fill")
                         }
 
-                        Button {
-                            showHistory = true
-                        } label: {
-                            Label("Meal Plan History", systemImage: "clock.arrow.circlepath")
-                        }
-
                         Divider()
                     }
 
                     Button {
                         showHelp = true
                     } label: {
-                        Label("Legend", systemImage: "questionmark.circle")
+                        Label("Guide", systemImage: "questionmark.circle")
                     }
 
                 } label: {
@@ -119,9 +120,8 @@ struct MyPlanDietPlanView: View {
     @State private var showHelp = false
     @State private var showHistory = false
 
-    @State private var dietContextMenuTip: DietContextMenuTip = .init()
-
     @AppStorage(FeatureFlagState.experimentalFeatures.rawValue, store: UserDefaults(suiteName: "group.MomCare")) private var experimentalFeatures: Bool = false
 
     @EnvironmentObject private var contentServiceHandler: ContentServiceHandler
+    @EnvironmentObject private var controlState: ControlState
 }

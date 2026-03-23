@@ -33,14 +33,14 @@ struct TriTrackAllRemindersView: View {
             }
             .navigationTitle("All Reminders")
             .navigationBarTitleDisplayMode(.inline)
-            .sheet(item: $selectedReminder, onDismiss: {
+            .sheet(item: $selectedReminder) {
                 fetchReminders()
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
                     if let idx = todaySectionIndex {
                         proxy.scrollTo(idx, anchor: .top)
                     }
                 }
-            }) { itemWrapper in
+            } content: { itemWrapper in
                 if let reminder = itemWrapper.item as? EKReminder {
                     EKReminderView(reminder: reminder, selectedDate: $today)
                 }

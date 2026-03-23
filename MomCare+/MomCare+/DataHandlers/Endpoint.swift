@@ -6,7 +6,7 @@ enum Endpoint: String {
 
     case register = "/v1/auth/register"
     case login = "/v1/auth/login"
-    case me = "/v1/auth/me"
+    case me = "/v1/auth/me" // swiftlint:disable:this identifier_name
     case refresh = "/v1/auth/refresh"
     case logout = "/v1/auth/logout"
     case update = "/v1/auth/update"

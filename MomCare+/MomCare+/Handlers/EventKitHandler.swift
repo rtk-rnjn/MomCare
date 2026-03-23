@@ -16,7 +16,28 @@ final class EventKitHandler: ObservableObject {
 
     @Published var reminders: [EKReminder] = []
     @Published var allReminders: [EKReminder] = []
+
+    @Published var allIncompleteReminders: [EKReminder] = []
+    @Published var allCompletedReminders: [EKReminder] = []
+
     @Published var eventStore: EKEventStore = .init()
+
+    func requestAccess(for type: EKEntityType) async throws -> Bool {
+        switch type {
+        case .reminder:
+            let success = try await eventStore.requestFullAccessToReminders()
+            _ = try createOrGetEventCalendar()
+            return success
+
+        case .event:
+            let success = try await eventStore.requestFullAccessToEvents()
+            _ = try createOrGetReminderCalendar()
+            return success
+
+        @unknown default:
+            return false
+        }
+    }
 
     func getCalendar(with identifierKey: String) -> EKCalendar? {
         if let calendar = eventStore.calendar(withIdentifier: identifierKey) {
@@ -27,50 +48,51 @@ final class EventKitHandler: ObservableObject {
     }
 
     func createOrGetCalendar(identifierKey: String, eventType: EKEntityType, title: String, source calendarSource: EKCalendar?) throws -> EKCalendar {
-        let identifier: String? = database.get(identifierKey)
+        let identifier: String? = Database.shared[.calendarIdentifier(eventType)]
 
         if let identifier, let calendar = getCalendar(with: identifier) {
-            DebugLogger.shared.log("Returning existing calendar: \(title)", level: .verbose, category: .data)
+
             return calendar
         }
 
-        DebugLogger.shared.log("Creating new calendar: \(title)", level: .debug, category: .data)
         let newCalendar = EKCalendar(for: eventType, eventStore: eventStore)
         newCalendar.title = title
         newCalendar.source = calendarSource?.source
 
         try eventStore.saveCalendar(newCalendar, commit: true)
-        database.set(newCalendar.calendarIdentifier, forKey: identifierKey)
+        Database.shared[.calendarIdentifier(eventType)] = newCalendar.calendarIdentifier
 
         return newCalendar
     }
 
     func fetchAppointments(selectedDate: Date) throws {
-        DebugLogger.shared.log("Fetching appointments for \(selectedDate)", level: .debug, category: .data)
+
         let calendar = Calendar.current
         let startDate = calendar.startOfDay(for: selectedDate)
         let endDate = calendar.date(byAdding: .day, value: 1, to: startDate)!
 
         let predicate = try eventStore.predicateForEvents(withStart: startDate, end: endDate, calendars: [createOrGetEventCalendar()])
         events = eventStore.events(matching: predicate)
-        DebugLogger.shared.log("Fetched \(events.count) appointments", level: .debug, category: .data)
+    }
+
+    func deleteEvent(_ event: EKEvent) throws {
+        try eventStore.remove(event, span: .thisEvent, commit: true)
     }
 
     func fetchReminders(startDate: Date) throws {
-        DebugLogger.shared.log("Fetching reminders for \(startDate)", level: .debug, category: .data)
+
         let predicate = try eventStore.predicateForReminders(in: [createOrGetReminderCalendar()])
         eventStore.fetchReminders(matching: predicate) { reminders in
             DispatchQueue.main.async {
                 self.reminders = reminders?.filter { reminder in
                     self.reminderMatchesDate(reminder, date: startDate)
                 } ?? []
-                DebugLogger.shared.log("Fetched \(self.reminders.count) reminders", level: .debug, category: .data)
+
             }
         }
     }
 
     func markReminder(complete: Bool, reminder: EKReminder, date: Date) throws -> EKReminder {
-        DebugLogger.shared.log("Marking reminder '\(reminder.title ?? "unknown")' as \(complete ? "complete" : "incomplete")", level: .debug, category: .data)
         reminder.isCompleted = complete
         reminder.completionDate = complete ? Date() : nil
         try eventStore.save(reminder, commit: true)
@@ -78,29 +100,40 @@ final class EventKitHandler: ObservableObject {
     }
 
     func deleteReminder(_ reminder: EKReminder) throws {
-        DebugLogger.shared.log("Deleting reminder: \(reminder.title ?? "unknown")", level: .debug, category: .data)
         try eventStore.remove(reminder, commit: true)
     }
 
     func updateReminder(_ updatedReminder: EKReminder) throws -> EKReminder {
-        DebugLogger.shared.log("Updating reminder: \(updatedReminder.title ?? "unknown")", level: .debug, category: .data)
         try eventStore.save(updatedReminder, commit: true)
         return updatedReminder
     }
 
     func fetchAllReminders() throws {
-        DebugLogger.shared.log("Fetching all reminders", level: .debug, category: .data)
+
         let predicate = try eventStore.predicateForReminders(in: [createOrGetReminderCalendar()])
         eventStore.fetchReminders(matching: predicate) { reminders in
             DispatchQueue.main.async {
                 self.allReminders = reminders ?? []
-                DebugLogger.shared.log("Fetched all \(self.allReminders.count) reminders", level: .debug, category: .data)
+
+            }
+        }
+    }
+
+    func fetchAllIncompleteReminders() throws {
+        let now = Date()
+        let lastTwoYear = Calendar.current.date(byAdding: .year, value: -2, to: now)!
+        let nextTwoYear = Calendar.current.date(byAdding: .year, value: 2, to: now)!
+
+        let predicate = try eventStore.predicateForIncompleteReminders(withDueDateStarting: lastTwoYear, ending: nextTwoYear, calendars: [createOrGetEventCalendar()])
+        eventStore.fetchReminders(matching: predicate) { reminders in
+            DispatchQueue.main.async {
+                self.allIncompleteReminders = reminders ?? []
             }
         }
     }
 
     func fetchAllEvents() throws {
-        DebugLogger.shared.log("Fetching all events (±2 years)", level: .debug, category: .data)
+
         let now = Date()
         let lastTwoYear = Calendar.current.date(byAdding: .year, value: -2, to: now)!
         let nextTwoYear = Calendar.current.date(byAdding: .year, value: 2, to: now)!
@@ -108,7 +141,7 @@ final class EventKitHandler: ObservableObject {
         let predicate = try eventStore.predicateForEvents(withStart: lastTwoYear, end: nextTwoYear, calendars: [createOrGetEventCalendar()])
         let events = eventStore.events(matching: predicate)
         allEvents = events
-        DebugLogger.shared.log("Fetched \(allEvents.count) total events", level: .debug, category: .data)
+
         onGoingOrMostRecentUpcomingEvent = fetchOnGoingOrMostRecentUpcomingEvent(from: events)
     }
 
@@ -120,8 +153,18 @@ final class EventKitHandler: ObservableObject {
         try createOrGetCalendar(identifierKey: reminderIdentifier, eventType: .reminder, title: "MomCare - TriTrack Reminders", source: eventStore.defaultCalendarForNewReminders())
     }
 
-    func createEvent(title: String, startDate: Date, endDate: Date, isAllDay: Bool = false, notes: String? = nil, recurrenceRules _: [EKRecurrenceRule]? = nil, location: String? = nil, structuredLocaltion: EKStructuredLocation? = nil, alarm: EKAlarm? = nil) throws -> EKEvent {
-        DebugLogger.shared.log("Creating event: '\(title)' from \(startDate) to \(endDate)", level: .debug, category: .data)
+    func createEvent(
+        title: String,
+        startDate: Date,
+        endDate: Date,
+        isAllDay: Bool = false,
+        notes: String? = nil,
+        recurrenceRules: [EKRecurrenceRule]? = nil,
+        location: String? = nil,
+        structuredLocaltion: EKStructuredLocation? = nil,
+        alarm: EKAlarm? = nil
+    ) throws -> EKEvent {
+
         let event = EKEvent(eventStore: eventStore)
 
         event.title = title
@@ -131,6 +174,7 @@ final class EventKitHandler: ObservableObject {
         event.notes = notes
         event.location = location
         event.structuredLocation = structuredLocaltion
+        event.recurrenceRules = recurrenceRules
         event.calendar = try createOrGetEventCalendar()
 
         if let alarm {
@@ -142,9 +186,16 @@ final class EventKitHandler: ObservableObject {
         return event
     }
 
-    func createReminder(title: String, notes: String?, dueDateComponents: DateComponents, recurrenceRules: [EKRecurrenceRule]?, alarms: [EKAlarm]? = nil, priority: EKReminderPriority? = nil) throws {
-        DebugLogger.shared.log("Creating reminder: '\(title)'", level: .debug, category: .data)
+    func createReminder(
+        title: String,
+        notes: String?,
+        dueDateComponents: DateComponents,
+        recurrenceRules: [EKRecurrenceRule]?,
+        alarms: [EKAlarm]? = nil,
+        priority: EKReminderPriority? = nil
+    ) throws {
         let reminder = EKReminder(eventStore: eventStore)
+
         reminder.title = title
         reminder.notes = notes
         reminder.dueDateComponents = dueDateComponents
@@ -165,8 +216,6 @@ final class EventKitHandler: ObservableObject {
     // MARK: Private
 
     private var cancellables: Set<AnyCancellable> = []
-
-    private let database: Database = .init()
 
     private func fetchOnGoingOrMostRecentUpcomingEvent(from events: [EKEvent]) -> EKEvent? {
         let now = Date()

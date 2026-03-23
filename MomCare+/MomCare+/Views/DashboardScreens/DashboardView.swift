@@ -23,7 +23,7 @@ struct DashboardView: View {
             // TODO:
         }
         .background(Color(.secondarySystemGroupedBackground))
-        .navigationTitle("ProgressHub")
+        .navigationTitle("Progress")
         .navigationBarTitleDisplayMode(.large)
     }
 
@@ -39,7 +39,6 @@ struct DashboardView: View {
                     controlState.selectedTab = .triTrack
                     controlState.triTrackSegment = .meAndBaby
                 }
-                .popoverTip(weekCardTip, arrowEdge: .top)
 
             if let event = eventKitHandler.onGoingOrMostRecentUpcomingEvent {
                 DashboardEventCardView(upcomingEvent: event)
@@ -58,7 +57,13 @@ struct DashboardView: View {
                     .frame(maxWidth: .infinity)
             }
         }
-        .sheet(item: $selectedEvent) { eventWrapper in
+        .sheet(item: $selectedEvent) {
+            do {
+                try eventKitHandler.fetchAllEvents()
+            } catch {
+                controlState.error = error
+            }
+        } content: { eventWrapper in
             if let event = eventWrapper.item as? EKEvent {
                 EKEventView(event: event)
             }
@@ -139,8 +144,6 @@ struct DashboardView: View {
     @EnvironmentObject private var controlState: ControlState
 
     @State private var selectedEvent: EKCalendarItemWrapper?
-
-    @State private var weekCardTip: WeekCardTip = .init()
 }
 
 extension View {

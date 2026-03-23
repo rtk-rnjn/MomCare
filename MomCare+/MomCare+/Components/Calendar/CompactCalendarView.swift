@@ -187,54 +187,54 @@ struct CompactCalendarView: View {
     }
 
     private func handleDragChanged(_ value: DragGesture.Value) {
-        let h = value.translation.width
-        let v = value.translation.height
+        let horizontal = value.translation.width
+        let vertical = value.translation.height
 
-        detectDragDirection(horizontal: h, vertical: v)
+        detectDragDirection(horizontal: horizontal, vertical: vertical)
 
         if isDraggingHorizontal == true {
-            handleHorizontalDrag(h)
+            handleHorizontalDrag(horizontal)
         } else if isDraggingHorizontal == false {
-            handleVerticalDrag(v)
+            handleVerticalDrag(vertical)
         }
     }
 
-    private func detectDragDirection(horizontal h: CGFloat, vertical v: CGFloat) {
+    private func detectDragDirection(horizontal: CGFloat, vertical: CGFloat) {
         guard isDraggingHorizontal == nil else { return }
 
-        if abs(h) > abs(v) + 5 {
+        if abs(horizontal) > abs(vertical) + 5 {
             isDraggingHorizontal = true
-        } else if abs(v) > abs(h) + 5 {
+        } else if abs(vertical) > abs(horizontal) + 5 {
             isDraggingHorizontal = false
         }
     }
 
-    private func handleHorizontalDrag(_ h: CGFloat) {
-        let direction: CGFloat = h < 0 ? -1 : 1
+    private func handleHorizontalDrag(_ horizontalValue: CGFloat) {
+        let direction: CGFloat = horizontalValue < 0 ? -1 : 1
 
         if incomingDate == nil {
             incomingDirection = -direction
             incomingDate = adjacentDate(direction: -direction)
         }
 
-        slideOffset = h
+        slideOffset = horizontalValue
     }
 
-    private func handleVerticalDrag(_ v: CGFloat) {
+    private func handleVerticalDrag(_ verticalValue: CGFloat) {
         if !isExpanded {
-            expandProgress = clamp(v / expandTravelDistance)
+            expandProgress = clamp(verticalValue / expandTravelDistance)
         } else {
-            expandProgress = clamp(1 + v / expandTravelDistance)
+            expandProgress = clamp(1 + verticalValue / expandTravelDistance)
         }
     }
 
     private func handleDragEnded(_ value: DragGesture.Value, width: CGFloat) {
-        let h = value.translation.width
+        let horizontalValue = value.translation.width
         let velocityX = value.velocity.width
         let velocityY = value.velocity.height
 
         if isDraggingHorizontal == true {
-            finishHorizontalDrag(h: h, velocityX: velocityX, width: width)
+            finishHorizontalDrag(horizontalValue: horizontalValue, velocityX: velocityX, width: width)
         } else if isDraggingHorizontal == false {
             finishVerticalDrag(velocityY: velocityY)
         } else {
@@ -245,9 +245,9 @@ struct CompactCalendarView: View {
         isDraggingHorizontal = nil
     }
 
-    private func finishHorizontalDrag(h: CGFloat, velocityX: CGFloat, width: CGFloat) {
-        let direction: CGFloat = h < 0 ? -1 : 1
-        let shouldCommit = abs(h) > 30 || abs(velocityX) > 300
+    private func finishHorizontalDrag(horizontalValue: CGFloat, velocityX: CGFloat, width: CGFloat) {
+        let direction: CGFloat = horizontalValue < 0 ? -1 : 1
+        let shouldCommit = abs(horizontalValue) > 30 || abs(velocityX) > 300
 
         if shouldCommit {
             commitSlide(direction: direction, width: width)

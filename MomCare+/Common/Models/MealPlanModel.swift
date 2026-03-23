@@ -35,7 +35,7 @@ struct FoodReferenceModel: Codable, Sendable, Identifiable, Equatable {
     }
 }
 
-struct MyPlanModel: Codable, Sendable {
+struct MealPlanModel: Codable, Sendable {
     enum CodingKeys: String, CodingKey {
         case _id
         case userId = "user_id"
@@ -57,17 +57,17 @@ struct MyPlanModel: Codable, Sendable {
 
     var userId: String
 
-    var breakfast: [FoodReferenceModel]
-    var lunch: [FoodReferenceModel]
-    var dinner: [FoodReferenceModel]
-    var snacks: [FoodReferenceModel]
+    var breakfast: [FoodReferenceModel] = []
+    var lunch: [FoodReferenceModel] = []
+    var dinner: [FoodReferenceModel] = []
+    var snacks: [FoodReferenceModel] = []
 
     var originalBreakfast: [FoodReferenceModel] = []
     var originalLunch: [FoodReferenceModel] = []
     var originalDinner: [FoodReferenceModel] = []
     var originalSnacks: [FoodReferenceModel] = []
 
-    var createdAtTimestamp: TimeInterval
+    var createdAtTimestamp: TimeInterval = Date().timeIntervalSince1970
 
     subscript(_ type: MealType) -> [FoodReferenceModel] {
         get {
@@ -89,7 +89,7 @@ struct MyPlanModel: Codable, Sendable {
     }
 }
 
-extension MyPlanModel {
+extension MealPlanModel {
     var allReferences: [FoodReferenceModel] {
         breakfast + lunch + dinner + snacks
     }

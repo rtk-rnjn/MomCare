@@ -40,7 +40,7 @@ struct MyPlanExercisePlanView: View {
             MyPlanExerciseHelpView()
         }
         .fullScreenCover(isPresented: $showHistory) {
-            ExerciseHistory(exercises: contentServiceHandler.userExercises)
+            ExerciseHistory()
         }
         .fullScreenCover(isPresented: $showWaterLog) {
             WaterLogView()
@@ -49,7 +49,15 @@ struct MyPlanExercisePlanView: View {
             WalkingHistoryView(stepsGoal: Int(contentServiceHandler.stepsGoal))
         }
         .toolbar {
-            ToolbarItem(placement: .confirmationAction) {
+            ToolbarItem(placement: .topBarTrailing) {
+                Button {
+                    showHistory = true
+                } label: {
+                    Image(systemName: "clock.arrow.circlepath")
+                }
+            }
+
+            ToolbarItem(placement: .topBarTrailing) {
                 Menu {
                     if experimentalFeatures {
                         Button {
@@ -58,19 +66,13 @@ struct MyPlanExercisePlanView: View {
                             Label("Water Intake Log", systemImage: "drop.fill")
                         }
 
-                        Button {
-                            showHistory = true
-                        } label: {
-                            Label("Exercise History", systemImage: "clock.arrow.circlepath")
-                        }
-
                         Divider()
                     }
 
                     Button {
                         showHelp = true
                     } label: {
-                        Label("Legend", systemImage: "questionmark.circle")
+                        Label("Guide", systemImage: "questionmark.circle")
                     }
 
                 } label: {
@@ -117,9 +119,7 @@ struct MyPlanExercisePlanView: View {
         VStack(spacing: 14) {
             WalkingCardView(stepsToday: contentServiceHandler.stepsToday, stepsGoal: contentServiceHandler.stepsGoal)
                 .onTapGesture {
-                    if experimentalFeatures {
-                        showWalkingHistory = true
-                    }
+                    showWalkingHistory = true
                 }
 
             BreathingCardView {

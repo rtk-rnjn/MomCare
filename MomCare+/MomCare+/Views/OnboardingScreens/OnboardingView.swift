@@ -34,19 +34,22 @@ struct OnboardingView: View {
                         request.requestedScopes = [.fullName, .email]
                     } onCompletion: { result in
                         Task {
-                            try? await handleAppleSignIn(result)
-                            _ = try? await authenticationService.me()
-                            _ = try? await authenticationService.fetchCredentials()
+                            do {
+                                try await handleAppleSignIn(result)
+                                _ = try await authenticationService.me()
+                                _ = try await authenticationService.fetchCredentials()
 
-                            if authenticationService.userModel?.dueDateTimestamp == nil {
-                                navigateToHealthMetricsSignUp = true
+                                if authenticationService.userModel?.dueDateTimestamp == nil {
+                                    navigateToHealthMetricsSignUp = true
+                                }
+                            } catch {
+                                controlState.error = error
                             }
-
                         }
                     }
                     .signInWithAppleButtonStyle(.black)
                     .frame(height: 52)
-                    .cornerRadius(14)
+                    .cornerRadius(24)
                     .padding(.horizontal, 20)
 
                     HStack {
@@ -68,12 +71,12 @@ struct OnboardingView: View {
 
                     NavigationLink(destination: SignInView()) {
                         Text("Continue with Email")
-                            .font(.headline)
+                            .font(.title3)
                             .foregroundColor(.white)
                             .frame(maxWidth: .infinity)
                             .frame(height: 52)
                             .background(MomCareAccent.primary)
-                            .cornerRadius(14)
+                            .cornerRadius(24)
                     }
                     .padding(.horizontal, 20)
                     .accessibilityLabel("Continue with Email")
@@ -99,6 +102,7 @@ struct OnboardingView: View {
                 Color("secondaryAppColor")
                     .ignoresSafeArea()
             )
+            .errorAlert(error: $controlState.error)
             .navigationDestination(isPresented: $navigateToHealthMetricsSignUp) {
                 HealthMetricsSignUpView()
             }
@@ -111,6 +115,7 @@ struct OnboardingView: View {
     @State private var navigateToHealthMetricsSignUp = false
 
     @EnvironmentObject private var authenticationService: AuthenticationService
+    @EnvironmentObject private var controlState: ControlState
 
     @State private var currentPage = 0
     @State private var showAlert = false

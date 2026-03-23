@@ -362,7 +362,7 @@ struct BreathingExerciseView: View {
         phaseTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { _ in
             DispatchQueue.main.async {
                 if phaseCountdown > 1 {
-                    withAnimation { phaseCountdown -= 1 }
+                    withAnimation(reduceMotion ? nil : .default) { phaseCountdown -= 1 }
                 } else {
                     phaseTimer?.invalidate()
                     startBreathingCycle()
@@ -391,7 +391,7 @@ struct BreathingExerciseView: View {
                 }
 
                 if phaseCountdown > 1 {
-                    withAnimation { phaseCountdown -= 1 }
+                    withAnimation(reduceMotion ? nil : .default) { phaseCountdown -= 1 }
                 } else {
                     let nextPhase = phase.next
                     phase = nextPhase

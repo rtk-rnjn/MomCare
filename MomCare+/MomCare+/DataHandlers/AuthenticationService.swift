@@ -17,18 +17,15 @@ final class AuthenticationService: ObservableObject {
     // MARK: Lifecycle
 
     init() {
-        if let userModelData: UserModel = database[.userModel] {
+        if let userModelData: UserModel = Database.shared[.userModel] {
             userModel = userModelData
         }
 
-        if let credentialsData: UserCredential = database[.credentials] {
+        if let credentialsData: UserCredential = Database.shared[.credentials] {
             credentials = credentialsData
         }
 
-        if let expiresAtTimestamp: TimeInterval = database[.accessTokenExpiresAtTimestamp], let accessToken: String = KeychainHelper.get(.accessToken) {
-            let now = Date.now.timeIntervalSince1970
-            hasAccessToken = !accessToken.isEmpty && expiresAtTimestamp > now
-        }
+        loadTokenPairIfNeeded()
     }
 
     // MARK: Internal
@@ -41,108 +38,92 @@ final class AuthenticationService: ObservableObject {
     }
 
     @Published var hasAccessToken: Bool = false
-    @Published var credentials: UserCredential?
 
-    @Published var userModel: UserModel? {
+    var requiresRefresh: Bool {
+        guard let expiresAtTimestamp = tokenPair?.expiresAtTimestamp else {
+            return true
+        }
+        return expiresAtTimestamp <= Date.now.timeIntervalSince1970
+    }
+
+    @Published var tokenPair: (any TokenContaining & Codable)? {
         didSet {
-            database[.userModel] = userModel
+            switch tokenPair {
+            case let pair as TokenPair:
+                Database.shared[.tokenPair] = pair
+
+            case let response as RegistrationResponse:
+                Database.shared[.tokenPair] = response
+
+            default:
+                break
+            }
         }
     }
 
-    func handleSuccess<T: TokenContaining>(_ response: NetworkResponse<T>, expectedStatusCode: Int, emailAddress: String? = nil) -> NetworkResponse<T> {
-        let success = response.errorMessage == nil && response.statusCode == expectedStatusCode && response.data != nil
-        guard success, let data = response.data else {
-            DebugLogger.shared.log("Auth session persistence skipped: status=\(response.statusCode), error=\(response.errorMessage ?? "none")", level: .warning, category: .network)
-            hasAccessToken = false
-            return response
+    @Published var credentials: UserCredential? {
+        didSet {
+            Database.shared[.credentials] = credentials
         }
+    }
 
-        DebugLogger.shared.log("Persisting auth session for \(emailAddress ?? "current user")", level: .debug, category: .network)
-        persistSession(accessToken: data.accessToken, refreshToken: data.refreshToken, expiresAtTimestamp: data.expiresAtTimestamp, emailAddress: emailAddress)
-
-        return response
+    @Published var userModel: UserModel? {
+        didSet {
+            Database.shared[.userModel] = userModel
+        }
     }
 
     @discardableResult
     func register(emailAddress: String, password: String) async throws -> NetworkResponse<RegistrationResponse> {
-        DebugLogger.shared.log("Registering user: \(emailAddress)", level: .info, category: .network)
         let response: NetworkResponse<RegistrationResponse> = try await NetworkManager.shared.post(url: Endpoint.register.urlString, body: prepareCredentialsData(emailAddress: emailAddress, password: password))
 
-        DebugLogger.shared.log("Registration response: status=\(response.statusCode), error=\(response.errorMessage ?? "none")", level: response.success ? .info : .error, category: .network)
-        return handleSuccess(response, expectedStatusCode: 201, emailAddress: emailAddress)
+        return handleSuccess(response, expectedStatusCode: 201)
     }
 
     @discardableResult
     func login(emailAddress: String, password: String) async throws -> NetworkResponse<TokenPair> {
-        DebugLogger.shared.log("Logging in user: \(emailAddress)", level: .info, category: .network)
         let networkResponse: NetworkResponse<TokenPair> = try await NetworkManager.shared.post(url: Endpoint.login.urlString, body: prepareCredentialsData(emailAddress: emailAddress, password: password))
 
-        let response = handleSuccess(networkResponse, expectedStatusCode: 200, emailAddress: emailAddress)
-        if response.statusCode == 200 {
-            DebugLogger.shared.log("Login successful, fetching user profile", level: .debug, category: .network)
-            _ = try? await me()
-        } else {
-            DebugLogger.shared.log("Login failed: status=\(response.statusCode), error=\(response.errorMessage ?? "none")", level: .error, category: .network)
-        }
+        _ = handleSuccess(networkResponse, expectedStatusCode: 200)
 
         KeychainHelper.set(password, forKey: .password)
         return networkResponse
     }
 
-    @discardableResult
-    func autoLogin() async -> NetworkResponse<TokenPair>? {
-        let emailAddress: String? = database[.emailAddress]
-        let password: String? = KeychainHelper.get(.password)
-
-        if let emailAddress, let password {
-            DebugLogger.shared.log("Attempting auto-login for \(emailAddress)", level: .debug, category: .network)
-            return try? await login(emailAddress: emailAddress, password: password)
-        }
-
-        DebugLogger.shared.log("Auto-login skipped: no stored credentials", level: .verbose, category: .network)
-        return nil
-    }
-
     func refresh(refreshToken: String) async throws -> NetworkResponse<TokenPair> {
-        DebugLogger.shared.log("Refreshing access token", level: .debug, category: .network)
         let refreshTokenData = RefreshToken(refreshToken: refreshToken).encodeUsingJSONEncoder()
         let response: NetworkResponse<TokenPair> = try await NetworkManager.shared.post(url: Endpoint.refresh.urlString, body: refreshTokenData)
 
-        DebugLogger.shared.log("Token refresh response: status=\(response.statusCode)", level: response.success ? .debug : .warning, category: .network)
         return handleSuccess(response, expectedStatusCode: 200)
     }
 
-    func refresh() async throws {
+    @discardableResult
+    func refresh() async throws -> NetworkResponse<TokenPair>? {
         if let refreshToken = KeychainHelper.get(.refreshToken) {
-            _ = try await refresh(refreshToken: refreshToken)
-        } else {
-            DebugLogger.shared.log("Token refresh skipped: no refresh token stored", level: .warning, category: .network)
+            return try await refresh(refreshToken: refreshToken)
         }
+
+        return nil
     }
 
     @discardableResult
     func logout(refreshToken: String) async throws -> NetworkResponse<ServerMessage> {
-        DebugLogger.shared.log("Logging out user", level: .info, category: .network)
         let refreshTokenData = RefreshToken(refreshToken: refreshToken).encodeUsingJSONEncoder()
         let response: NetworkResponse<ServerMessage> = try await NetworkManager.shared.post(url: Endpoint.logout.urlString, body: refreshTokenData)
 
         dropCredentials()
         hasAccessToken = false
 
-        DebugLogger.shared.log("Logout complete: status=\(response.statusCode)", level: .info, category: .network)
         return response
     }
 
     @discardableResult
     func logout() async -> NetworkResponse<ServerMessage>? {
-        DebugLogger.shared.log("Logging out (no token)", level: .info, category: .network)
         if let refreshToken = KeychainHelper.get(.refreshToken) {
             _ = try? await logout(refreshToken: refreshToken)
         }
-        dropCredentials()
-        hasAccessToken = false
-        userModel = nil
 
+        dropCredentials()
         return nil
     }
 
@@ -192,114 +173,75 @@ final class AuthenticationService: ObservableObject {
 
     @discardableResult
     func changeEmailAddress(newEmailAddress: String) async throws -> NetworkResponse<ServerMessage> {
-        DebugLogger.shared.log("Changing email address", level: .info, category: .network)
+
         let payloadData = ChangeEmailAddress(newEmailAddress: newEmailAddress).encodeUsingJSONEncoder()
-        let response: NetworkResponse<ServerMessage> = try await NetworkManager.shared.patch(url: Endpoint.changeEmail.urlString, body: payloadData, headers: AuthenticationService.authorizationHeaders)
-
-        if response.errorMessage == nil, response.statusCode == 200 {
-            DebugLogger.shared.log("Email address changed successfully", level: .info, category: .network)
-            database[.emailAddress] = newEmailAddress
-        } else {
-            DebugLogger.shared.log("Email change failed: status=\(response.statusCode), error=\(response.errorMessage ?? "none")", level: .error, category: .network)
-        }
-
-        return response
+        return try await NetworkManager.shared.patch(url: Endpoint.changeEmail.urlString, body: payloadData, headers: AuthenticationService.authorizationHeaders)
     }
 
     @discardableResult
     func changePassword(currentPassword: String, newPassword: String) async throws -> NetworkResponse<ServerMessage> {
-        DebugLogger.shared.log("Changing password", level: .info, category: .network)
+
         let payloadData = ChangePassword(currentPassword: currentPassword, newPassword: newPassword).encodeUsingJSONEncoder()
-        let response: NetworkResponse<ServerMessage> = try await NetworkManager.shared.patch(url: Endpoint.changePassword.urlString, body: payloadData, headers: AuthenticationService.authorizationHeaders)
-
-        if response.errorMessage == nil, response.statusCode == 200 {
-            DebugLogger.shared.log("Password changed successfully", level: .info, category: .network)
-            KeychainHelper.set(newPassword, forKey: .password)
-        } else {
-            DebugLogger.shared.log("Password change failed: status=\(response.statusCode)", level: .error, category: .network)
-        }
-
-        return response
+        return try await NetworkManager.shared.patch(url: Endpoint.changePassword.urlString, body: payloadData, headers: AuthenticationService.authorizationHeaders)
     }
 
     @discardableResult
     func requestOTP(emailAddress: String) async throws -> NetworkResponse<ServerMessage> {
-        DebugLogger.shared.log("Requesting OTP for \(emailAddress)", level: .info, category: .network)
+
         let payloadData = RequestOTP(emailAddress: emailAddress).encodeUsingJSONEncoder()
         return try await NetworkManager.shared.post(url: Endpoint.requestOTP.urlString, body: payloadData)
     }
 
     @discardableResult
     func requestOTP() async throws -> NetworkResponse<ServerMessage> {
-        let emailAddress = database[.emailAddress] ?? ""
-        return try await requestOTP(emailAddress: emailAddress)
+        let credentials: UserCredential? = Database.shared[.credentials]
+        return try await requestOTP(emailAddress: credentials?.emailAddress ?? "")
     }
 
     @discardableResult
     func verifyOTP(emailAddress: String, otp: String) async throws -> NetworkResponse<ServerMessage> {
-        DebugLogger.shared.log("Verifying OTP for \(emailAddress)", level: .info, category: .network)
+
         let payloadData = VerifyOTP(emailAddress: emailAddress, otp: otp).encodeUsingJSONEncoder()
         return try await NetworkManager.shared.post(url: Endpoint.verifyOTP.urlString, body: payloadData)
     }
 
     @discardableResult
     func verifyOTP(otp: String) async throws -> NetworkResponse<ServerMessage> {
-        let emailAddress = database[.emailAddress] ?? ""
-        return try await verifyOTP(emailAddress: emailAddress, otp: otp)
+        let credentials: UserCredential? = Database.shared[.credentials]
+        return try await verifyOTP(emailAddress: credentials?.emailAddress ?? "", otp: otp)
     }
 
     @discardableResult
     func delete() async throws -> NetworkResponse<Bool> {
-        DebugLogger.shared.log("Deleting account", level: .warning, category: .network)
+
         let networkResponse: NetworkResponse<Bool> = try await NetworkManager.shared.delete(url: Endpoint.delete.urlString, headers: AuthenticationService.authorizationHeaders)
         if networkResponse.success {
-            DebugLogger.shared.log("Account deleted successfully", level: .info, category: .network)
+
             dropCredentials()
-        } else {
-            DebugLogger.shared.log("Account deletion failed: status=\(networkResponse.statusCode)", level: .error, category: .network)
-        }
+        } else {}
         return networkResponse
     }
 
     func appleLogin(idToken: String, existingEmailAddress: String? = nil) async throws -> NetworkResponse<TokenPair> {
-        DebugLogger.shared.log("Attempting Apple login", level: .info, category: .network)
         let payloadData = ThirdPartyLogin(idToken: idToken, existingEmailAddress: existingEmailAddress).encodeUsingJSONEncoder()
         let response: NetworkResponse<TokenPair> = try await NetworkManager.shared.post(url: Endpoint.appleLogin.urlString, body: payloadData)
 
-        return handleSuccess(response, expectedStatusCode: 200, emailAddress: existingEmailAddress)
+        return handleSuccess(response, expectedStatusCode: 200)
     }
 
     @discardableResult
     func me() async throws -> NetworkResponse<UserModel> {
-        DebugLogger.shared.log("Fetching current user profile", level: .debug, category: .network)
         let response: NetworkResponse<UserModel> = try await NetworkManager.shared.get(url: Endpoint.me.urlString, headers: AuthenticationService.authorizationHeaders)
 
-        if response.errorMessage == nil, response.statusCode == 200, let userModel = response.data {
-            DebugLogger.shared.log("User profile fetched: \(userModel._id)", level: .debug, category: .data)
-            await MainActor.run {
-                self.userModel = userModel
-            }
-            database[.userModel] = userModel
-        } else {
-            DebugLogger.shared.log("Failed to fetch user profile: status=\(response.statusCode)", level: .error, category: .network)
-        }
-
+        userModel = response.data
         return response
     }
 
     @discardableResult
     func fetchCredentials() async throws -> NetworkResponse<UserCredential> {
-        DebugLogger.shared.log("Fetching user credentials", level: .debug, category: .network)
         let response: NetworkResponse<UserCredential> = try await NetworkManager.shared.get(url: Endpoint.credentials.urlString, headers: AuthenticationService.authorizationHeaders)
-        if response.errorMessage == nil, response.statusCode == 200, let credentials = response.data {
-            DebugLogger.shared.log("User credentials fetched successfully", level: .debug, category: .data)
-            await MainActor.run {
-                self.credentials = credentials
-            }
-            database[.credentials] = credentials
-        } else {
-            DebugLogger.shared.log("Failed to fetch credentials: status=\(response.statusCode)", level: .error, category: .network)
-        }
+
+        credentials = credentials
         return response
     }
 
@@ -313,33 +255,49 @@ final class AuthenticationService: ObservableObject {
 
     // MARK: Private
 
-    private let database: Database = .init()
+    private func loadTokenPairIfNeeded() {
+        if let pair: TokenPair = Database.shared[.tokenPair] {
+            tokenPair = pair
+        }
 
-    private func persistSession(accessToken: String, refreshToken: String, expiresAtTimestamp: TimeInterval, emailAddress: String? = nil) {
+        if let response: RegistrationResponse = Database.shared[.tokenPair] {
+            tokenPair = response
+        }
+
+        let accessToken = KeychainHelper.get(.accessToken) ?? tokenPair?.accessToken
+        let expiresAtTimestamp = tokenPair?.expiresAtTimestamp ?? 0
+
+        if let accessToken, !accessToken.isEmpty {
+            hasAccessToken = expiresAtTimestamp > Date.now.timeIntervalSince1970
+        } else {
+            hasAccessToken = false
+        }
+    }
+
+    private func handleSuccess<T: TokenContaining>(_ response: NetworkResponse<T>, expectedStatusCode: Int) -> NetworkResponse<T> {
+        let data = response.data
+        persistSession(accessToken: data.accessToken, refreshToken: data.refreshToken, expiresAtTimestamp: data.expiresAtTimestamp)
+
+        tokenPair = data
+        return response
+    }
+
+    private func persistSession(accessToken: String, refreshToken: String, expiresAtTimestamp: TimeInterval) {
         KeychainHelper.set(accessToken, forKey: .accessToken)
         KeychainHelper.set(refreshToken, forKey: .refreshToken)
-
-        if let emailAddress {
-            database[.emailAddress] = emailAddress
-        }
-        database[.accessTokenExpiresAtTimestamp] = expiresAtTimestamp
 
         hasAccessToken = KeychainHelper.get(.accessToken)?.isEmpty == false && expiresAtTimestamp > Date.now.timeIntervalSince1970
     }
 
     private func prepareCredentialsData(emailAddress: String, password: String) -> Data? {
-        let credentialsModel = CredentialsModel(emailAddress: emailAddress, password: password)
-
-        return credentialsModel.encodeUsingJSONEncoder()
+        LoginCredentials(emailAddress: emailAddress, password: password).encodeUsingJSONEncoder()
     }
 
     private func dropCredentials() {
         KeychainHelper.remove(.accessToken)
         KeychainHelper.remove(.refreshToken)
-        database.delete(ValidDatabaseKeys.emailAddress.rawValue)
-        database.delete(ValidDatabaseKeys.accessTokenExpiresAtTimestamp.rawValue)
 
-        userModel?._id = ""
+        hasAccessToken = false
         userModel = nil
     }
 

@@ -10,9 +10,7 @@ struct MomCareApp: App {
     init() {
         do {
             try Tips.configure()
-        } catch {
-            DebugLogger.shared.log("Failed to configure tips: \(error.localizedDescription)", level: .error, category: .ui)
-        }
+        } catch {}
     }
 
     // MARK: Internal

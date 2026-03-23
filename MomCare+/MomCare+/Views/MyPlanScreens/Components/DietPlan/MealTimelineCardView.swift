@@ -1,10 +1,11 @@
 import SwiftUI
+import TipKit
 
 struct MealTimelineCardView: View {
 
     // MARK: Internal
 
-    let plan: MyPlanModel?
+    let plan: MealPlanModel?
 
     var body: some View {
         List {
@@ -106,13 +107,16 @@ struct MealTimelineCardView: View {
                     .background {
                         LinearGradient(
                             colors: [
-                                Color.yellow.opacity(0.05),
+                                Color.yellow.opacity(0.01),
+                                Color.yellow.opacity(0.10),
                                 Color.yellow.opacity(0.15),
-                                Color.yellow.opacity(0.05)
+                                Color.yellow.opacity(0.10),
+                                Color.yellow.opacity(0.01)
                             ],
                             startPoint: .leading,
                             endPoint: .trailing
                         )
+                        .ignoresSafeArea()
                         .opacity(originalItems.contains(where: { $0.id == item.id }) ? 0 : 1)
                         .animation(reduceMotion ? nil : .easeInOut(duration: 0.3), value: originalItems)
                     }
@@ -334,8 +338,8 @@ struct FoodThumbnail: View {
         }
         .frame(width: 54, height: 54)
         .task {
-            let networkResponse = try? await ContentService.shared.fetchFoodImage(id: foodReferenceModel.foodId)
-            if let uri = networkResponse?.data?.detail {
+            let networkResponse = try? await ContentRepository.shared.fetchFoodImage(id: foodReferenceModel.foodId)
+            if let uri = networkResponse?.data.detail {
                 uiImage = try? await UIImage.getOrFetch(from: uri)
             }
         }

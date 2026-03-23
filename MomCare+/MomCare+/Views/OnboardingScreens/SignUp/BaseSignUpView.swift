@@ -1,5 +1,77 @@
 import SwiftUI
 
+struct BaseSignUpInvalidEmail: LocalizedError {
+    var errorDescription: String? {
+        "Invalid email address"
+    }
+
+    var failureReason: String? {
+        "The email address you entered is not valid. Please check the format and try again."
+    }
+
+    var recoverySuggestion: String? {
+        "Make sure your email address includes an '@' symbol and a domain (e.g., 'example.com')."
+    }
+}
+
+struct BaseSignUpPasswordMissmatch: LocalizedError {
+    var errorDescription: String? {
+        "Password mismatch"
+    }
+
+    var failureReason: String? {
+        "The password and confirm password fields do not match. Please ensure both fields contain the same password."
+    }
+
+    var recoverySuggestion: String? {
+        "Re-enter the same password in both fields to proceed."
+    }
+}
+
+struct BaseSignUpWeakPassword: LocalizedError {
+    var errorDescription: String? {
+        "Weak password"
+    }
+
+    var failureReason: String? {
+        "Your password must be at least 8 characters long. Please choose a stronger password to enhance the security of your account."
+    }
+
+    var recoverySuggestion: String? {
+        "Consider using a mix of uppercase letters, lowercase letters, numbers, and special characters to create a stronger password."
+    }
+}
+
+struct BaseSignUpMobileNumberInvalid: LocalizedError {
+    var errorDescription: String? {
+        "Invalid mobile number"
+    }
+
+    var failureReason: String? {
+        "The mobile number you entered is not valid. Please ensure it contains only digits and is the correct length."
+    }
+
+    var recoverySuggestion: String? {
+        "Enter a valid 10-digit mobile number without any spaces or special characters."
+    }
+}
+
+struct BaseSignUpMissingFields: LocalizedError {
+    let fields: [String]
+
+    var errorDescription: String? {
+        "Missing required fields"
+    }
+
+    var failureReason: String? {
+        "Please fill in the following fields: \(fields.joined(separator: ", "))."
+    }
+
+    var recoverySuggestion: String? {
+        "Make sure to complete all required fields before proceeding."
+    }
+}
+
 struct BaseSignUpView: View {
 
     // MARK: Internal
@@ -11,8 +83,6 @@ struct BaseSignUpView: View {
                     .safeAreaInset(edge: .top) {
                         Color.clear.frame(height: 16)
                     }
-
-                createButton
             }
             .background(
                 Color(.systemBackground)
@@ -20,22 +90,62 @@ struct BaseSignUpView: View {
             )
             .navigationTitle("Sign Up")
             .navigationBarTitleDisplayMode(.large)
-            .alert("Invalid Details", isPresented: $showAlert) {
-                Button("OK", role: .cancel) {}
-            } message: {
-                Text(alertMessage)
+            .errorAlert(error: $controlState.error)
+            .navigationDestination(isPresented: $navigateToOTP) {
+                OTPScreenView()
+            }
+            .toolbar {
+                ToolbarItem(placement: .bottomBar) {
+                    Button {
+                        Task {
+                            do {
+                                try await handleCreate()
+                            } catch {
+                                controlState.error = error
+                            }
+                        }
+                    } label: {
+                        if isLoading {
+                            ProgressView()
+                                .progressViewStyle(.circular)
+                                .tint(.white)
+                        } else {
+                            Text("Create")
+                                .frame(maxWidth: .infinity)
+                        }
+                    }
+                    .frame(maxWidth: .infinity)
+                    .buttonStyle(.borderedProminent)
+                    .tint(MomCareAccent.primary)
+                    .controlSize(.large)
+                    .accessibilityLabel("Create account")
+                    .accessibilityHint("Creates your new account")
+                }
             }
         }
     }
 
     // MARK: Private
 
+    private enum Field {
+        case fullName
+        case email
+        case password
+        case confirmPassword
+        case mobileNumber
+    }
+
+    private enum PasswordFieldType: String {
+        case password = "Password"
+        case confirmPassword = "Confirm Password"
+    }
+
     @EnvironmentObject private var authenticationService: AuthenticationService
+    @EnvironmentObject private var controlState: ControlState
 
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
-    @State private var firstName = ""
-    @State private var lastName = ""
+    @State private var fullName = ""
     @State private var email = ""
     @State private var password = ""
     @State private var confirmPassword = ""
@@ -44,118 +154,101 @@ struct BaseSignUpView: View {
     @State private var showPassword = false
     @State private var showConfirmPassword = false
 
-    @State private var showAlert = false
-    @State private var alertMessage = ""
-
     @State private var navigateToOTP = false
     @State private var isLoading = false
 
-    @FocusState private var isFocused: Bool
+    @FocusState private var isFocused: Field?
 
     private var signUpForm: some View {
         Group {
             Form {
-                nameSection
-                credentialsSection
-                mobileSection
+                Section {
+                    TextField("Full Name", text: $fullName)
+                        .textInputAutocapitalization(.words)
+                        .listRowBackground(Color(.secondarySystemBackground))
+                        .focused($isFocused, equals: .fullName)
+                        .accessibilityLabel("Full name")
+                        .accessibilityHint("Enter your full name")
+                }
+
+                Section {
+                    TextField("Email Address", text: $email)
+                        .keyboardType(.emailAddress)
+                        .textInputAutocapitalization(.never)
+                        .autocorrectionDisabled()
+                        .listRowBackground(Color(.secondarySystemBackground))
+                        .focused($isFocused, equals: .email)
+                        .accessibilityLabel("Email address")
+                        .accessibilityHint("Enter your email address")
+                } footer: {
+                    if !email.isEmpty && !isValidEmail(email) && isFocused != .email {
+                        Text("Please enter a valid email address")
+                            .foregroundStyle(.red)
+                            .accessibilityLabel("Email error: Please enter a valid email address")
+                    }
+                }
+                .animation(reduceMotion ? nil : .easeInOut, value: email)
+
+                Section {
+                    passwordField(
+                        text: $password,
+                        isVisible: $showPassword,
+                        type: .password
+                    )
+
+                    passwordField(
+                        text: $confirmPassword,
+                        isVisible: $showConfirmPassword,
+                        type: .confirmPassword
+                    )
+                } footer: {
+                    if !password.isEmpty && password.count < 8 && isFocused != .password {
+                        Text("Password must be at least 8 characters long")
+                            .foregroundStyle(.red)
+                            .accessibilityLabel("Password error: Password must be at least 8 characters long")
+                    } else if !confirmPassword.isEmpty && confirmPassword != password && isFocused != .confirmPassword {
+                        Text("Passwords do not match")
+                            .foregroundStyle(.red)
+                            .accessibilityLabel("Password error: Passwords do not match")
+                    }
+                }
+                .contentTransition(reduceMotion ? .identity : .interpolate)
+                .animation(reduceMotion ? nil : .easeInOut(duration: 0.2), value: password)
+                .animation(reduceMotion ? nil : .easeInOut(duration: 0.2), value: confirmPassword)
+
+                Section {
+                    TextField("Mobile Number", text: $mobileNumber)
+                        .keyboardType(.numberPad)
+                        .onChange(of: mobileNumber) { _, newValue in
+                            mobileNumber = newValue.filter(\.isNumber)
+                        }
+                        .listRowBackground(Color(.secondarySystemBackground))
+                        .accessibilityLabel("Mobile number")
+                        .accessibilityHint("Enter your 10-digit mobile number")
+                }
             }
             .scrollContentBackground(.hidden)
         }
     }
 
-    private var nameSection: some View {
-        Section {
-            TextField("First Name", text: $firstName)
-                .textInputAutocapitalization(.words)
-                .listRowBackground(Color(.secondarySystemBackground))
-                .accessibilityLabel("First name")
-                .accessibilityHint("Enter your first name")
-
-            TextField("Last Name", text: $lastName)
-                .textInputAutocapitalization(.words)
-                .listRowBackground(Color(.secondarySystemBackground))
-                .accessibilityLabel("Last name")
-                .accessibilityHint("Enter your last name")
-        }
-    }
-
-    private var credentialsSection: some View {
-        Section {
-            TextField("Email Address", text: $email)
-                .keyboardType(.emailAddress)
-                .textInputAutocapitalization(.never)
-                .autocorrectionDisabled()
-                .listRowBackground(Color(.secondarySystemBackground))
-                .accessibilityLabel("Email address")
-                .accessibilityHint("Enter your email address")
-
-            passwordField(
-                title: "Password",
-                text: $password,
-                isVisible: $showPassword
-            )
-
-            passwordField(
-                title: "Confirm Password",
-                text: $confirmPassword,
-                isVisible: $showConfirmPassword
-            )
-        }
-    }
-
-    private var mobileSection: some View {
-        Section {
-            TextField("Mobile Number", text: $mobileNumber)
-                .keyboardType(.numberPad)
-                .onChange(of: mobileNumber) { _, newValue in
-                    mobileNumber = newValue.filter(\.isNumber)
-                }
-                .listRowBackground(Color(.secondarySystemBackground))
-                .accessibilityLabel("Mobile number")
-                .accessibilityHint("Enter your 10-digit mobile number")
-        }
-    }
-
-    private var createButton: some View {
-        VStack {
-            Button {
-                Task { await handleCreate() }
-            } label: {
-                Text("Create")
-                    .frame(maxWidth: .infinity)
-            }
-            .buttonStyle(.borderedProminent)
-            .tint(MomCareAccent.primary)
-            .controlSize(.large)
-            .accessibilityLabel("Create account")
-            .accessibilityHint("Creates your new account")
-        }
-        .padding(.horizontal)
-        .padding(.top, 30)
-        .padding(.bottom, 20)
-        .navigationDestination(isPresented: $navigateToOTP) {
-            OTPScreenView()
-        }
-    }
-
     private func passwordField(
-        title: String,
         text: Binding<String>,
-        isVisible: Binding<Bool>
+        isVisible: Binding<Bool>,
+        type: PasswordFieldType
     ) -> some View {
         HStack {
             ZStack {
-                SecureField(title, text: text)
+                SecureField(type.rawValue, text: text)
                     .opacity(isVisible.wrappedValue ? 0 : 1)
                     .accessibilityHidden(isVisible.wrappedValue)
 
-                TextField(title, text: text)
+                TextField(type.rawValue, text: text)
                     .opacity(isVisible.wrappedValue ? 1 : 0)
                     .accessibilityHidden(!isVisible.wrappedValue)
                     .autocorrectionDisabled(true)
                     .textInputAutocapitalization(.never)
             }
-            .focused($isFocused)
+            .focused($isFocused, equals: type == .confirmPassword ? .confirmPassword : .password)
             .animation(reduceMotion ? nil : .easeInOut(duration: 0.2), value: isVisible.wrappedValue)
 
             Button {
@@ -174,57 +267,60 @@ struct BaseSignUpView: View {
                 }
             }
             .buttonStyle(.plain)
-            .accessibilityLabel(isVisible.wrappedValue ? "Hide \(title.lowercased())" : "Show \(title.lowercased())")
+            .accessibilityLabel(isVisible.wrappedValue ? "Hide \(type.rawValue.lowercased())" : "Show \(type.rawValue.lowercased())")
         }
         .listRowBackground(Color(.secondarySystemBackground))
     }
 
-    private func communicateWithServer() async {
-        let networkResponse = try? await authenticationService.register(emailAddress: email, password: password)
-        if let error = networkResponse?.errorMessage {
-            alertMessage = error
-            showAlert = true
-            return
-        }
+    private func communicateWithServer() async throws {
+        try await authenticationService.register(emailAddress: email, password: password)
+
+        let nameComponentFormatter = PersonNameComponentsFormatter()
+        let nameComponents = nameComponentFormatter.personNameComponents(from: fullName)
+        let firstName = nameComponents?.givenName ?? ""
+        let lastName = nameComponents?.familyName ?? ""
 
         authenticationService.userModel?.firstName = firstName
         authenticationService.userModel?.lastName = lastName
         authenticationService.userModel?.phoneNumber = mobileNumber
 
         navigateToOTP = authenticationService.hasAccessToken
-        _ = try? await authenticationService.update(firstName: .value(firstName), lastName: .value(lastName), phoneNumber: .value(mobileNumber))
+        _ = try await authenticationService.update(firstName: .value(firstName), lastName: .value(lastName), phoneNumber: .value(mobileNumber))
     }
 
-    private func handleCreate() async {
+    private func handleCreate() async throws {
+        isLoading = true
+        defer { isLoading = false }
+
         let missingFields = getMissingFields()
         if !missingFields.isEmpty {
-            alertMessage = "\(missingFields.joined(separator: ", ")) are missing."
-            showAlert = true
-            return
+            throw BaseSignUpMissingFields(fields: missingFields)
         }
 
-        if !isValidEmail(email) {
-            alertMessage = "Please enter a valid email address."
-        } else if password.count < 8 {
-            alertMessage = "Password must be at least 8 characters long."
-        } else if password != confirmPassword {
-            alertMessage = "Passwords do not match."
-        } else if mobileNumber.count != 10 {
-            alertMessage = "Mobile number must be exactly 10 digits."
-        } else {
-            isLoading = true
-            await communicateWithServer()
-            return
+        guard isValidEmail(email) else {
+            throw BaseSignUpInvalidEmail()
         }
 
-        showAlert = true
+        guard password == confirmPassword else {
+            throw BaseSignUpPasswordMissmatch()
+        }
+
+        guard password.count >= 8 else {
+            throw BaseSignUpWeakPassword()
+        }
+
+        guard mobileNumber.count == 10 else {
+            throw BaseSignUpMobileNumberInvalid()
+        }
+
+        try await communicateWithServer()
+
+        navigateToOTP = true
     }
 
     private func getMissingFields() -> [String] {
         var missing = [String]()
 
-        if firstName.isEmpty { missing.append("First Name") }
-        if lastName.isEmpty { missing.append("Last Name") }
         if email.isEmpty { missing.append("Email Address") }
         if password.isEmpty { missing.append("Password") }
         if confirmPassword.isEmpty { missing.append("Confirm Password") }
