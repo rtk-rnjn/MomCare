@@ -23,39 +23,24 @@ class ContentRepository {
     }
 
     func generateDailyInsights() async throws -> NetworkResponse<DailyInsightModel> {
-        if let data: DailyInsightModel = Database.shared[.dailyInsight(startOfTheDate)] {
-            return cachedResponse(from: data)
-        }
-
         let networkResponse: NetworkResponse<DailyInsightModel> = try await NetworkManager.shared.get(url: Endpoint.generateTips.urlString, headers: authenticationHeaders)
 
-        Database.shared[.dailyInsight(startOfTheDate)] = networkResponse.data
         return networkResponse
     }
 
     func generateMealPlan() async throws -> NetworkResponse<MealPlanModel> {
-        if let data: MealPlanModel = Database.shared[.mealPlan(startOfTheDate)] {
-            return cachedResponse(from: data)
-        }
-
         let networkResponse: NetworkResponse<MealPlanModel> = try await NetworkManager.shared.get(url: Endpoint.generatePlan.urlString, headers: authenticationHeaders)
 
-        Database.shared[.mealPlan(startOfTheDate(from: networkResponse.data.createdAtTimestamp))] = networkResponse.data
         return networkResponse
     }
 
     func generateUserExercises() async throws -> NetworkResponse<[UserExerciseModel]> {
-        if let data: [UserExerciseModel] = Database.shared[.userExercises(startOfTheDate)] {
-            return cachedResponse(from: data)
-        }
-
         let networkResponse: NetworkResponse<[UserExerciseModel]> = try await NetworkManager.shared.get(url: Endpoint.generateExercises.urlString, headers: authenticationHeaders)
 
-        Database.shared[.userExercises(startOfTheDate)] = networkResponse.data
         return networkResponse
     }
 
-    func fetchExercise(id: String) async throws -> NetworkResponse<ExerciseModel> {
+    func getOrFetchExercise(id: String) async throws -> NetworkResponse<ExerciseModel> {
         if let data: ExerciseModel = Database.shared[.exerciseModel(id)] {
             return cachedResponse(from: data)
         }
@@ -66,7 +51,7 @@ class ContentRepository {
         return networkResponse
     }
 
-    func fetchFoodItem(id: String) async throws -> NetworkResponse<FoodItemModel> {
+    func getOrFetchFoodItem(id: String) async throws -> NetworkResponse<FoodItemModel> {
         if let data: FoodItemModel = Database.shared[.foodModel(id)] {
             return cachedResponse(from: data)
         }

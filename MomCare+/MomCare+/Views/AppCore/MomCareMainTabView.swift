@@ -49,8 +49,6 @@ struct MomCareMainTabView: View {
 
     @State private var showLoginSheet = false
 
-    private let refreshTimer = Timer.publish(every: 900, on: .main, in: .common).autoconnect()
-
     private func tabViewContent(bottomPadding: CGFloat) -> some View {
         TabView(selection: $controlState.selectedTab) {
             TabSection {
@@ -141,13 +139,6 @@ struct MomCareMainTabView: View {
                 .interactiveDismissDisabled()
         }
 
-        // Periodic refresh token to keep the session alive
-        .onReceive(refreshTimer) { _ in
-            Task {
-                await refreshAccessToken()
-            }
-        }
-
         // HealthKitAccess
         .task {
             do {
@@ -171,6 +162,11 @@ struct MomCareMainTabView: View {
 
             } catch {
                 eventKitError = EventKitError()
+            }
+        }
+        .onChange(of: authenticationService.requiresRefresh) {
+            if authenticationService.requiresRefresh {
+                Task { await refreshAccessToken() }
             }
         }
         .onChange(of: isRefreshing) {

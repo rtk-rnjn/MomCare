@@ -155,17 +155,13 @@ final class ContentServiceHandler: ObservableObject {
         recommendedNutritionGoalTotals = originalNutritionTargetTotals
     }
 
-    func fetchMealPlan(makeNetworkCall: Bool = true) async throws {
+    func fetchMealPlan() async throws {
         defer { isFetchingMealPlan = false }
 
-        if makeNetworkCall {
+        isFetchingMealPlan = true
+        let networkResponse = try await ContentRepository.shared.generateMealPlan()
 
-            isFetchingMealPlan = true
-            let networkResponse = try await ContentRepository.shared.generateMealPlan()
-
-            myPlanModel = networkResponse.data
-
-        }
+        myPlanModel = networkResponse.data
 
         await fetchMyPlanMeta()
     }
@@ -242,19 +238,20 @@ extension ContentServiceHandler {
         }
 
         guard foodReference.isConsumed != consumed else {
-
             return
         }
+
         if let index = self.myPlanModel?[mealType].firstIndex(where: { $0.foodId == foodReference.foodId }) {
             self.myPlanModel?[mealType][index].toggleConsume()
         }
 
-        _ = try await ContentRepository.shared.markFoodAs(consumed: consumed, planId: myPlanModel._id, meal: mealType, foodId: foodReference.foodId)
         if let food = await foodReference.food {
             try await consumeFoodInHealthKit(food, consume: consumed)
         }
 
         await fetchMyPlanMeta()
+
+        _ = try await ContentRepository.shared.markFoodAs(consumed: consumed, planId: myPlanModel._id, meal: mealType, foodId: foodReference.foodId)
     }
 
     func markFoodsAs(consumed: Bool, mealType: MealType) async throws {
@@ -271,7 +268,12 @@ extension ContentServiceHandler {
 
         _ = try await ContentRepository.shared.addFoodItem(toPlan: myPlanModel._id, meal: mealType, foodId: foodId)
 
-        try await fetchMealPlan()
+        let foodReference = FoodReferenceModel(foodId: foodId, count: 1)
+        if let index = self.myPlanModel?[mealType].firstIndex(where: { $0.foodId == foodId }) {
+            self.myPlanModel?[mealType][index].count += 1
+        } else {
+            self.myPlanModel?[mealType].append(foodReference)
+        }
     }
 
     func removeFoodFromPlan(foodId: String, mealType: MealType) async throws {
@@ -279,7 +281,9 @@ extension ContentServiceHandler {
 
         _ = try await ContentRepository.shared.removeFoodItem(fromPlan: myPlanModel._id, meal: mealType, foodId: foodId)
 
-        try await fetchMealPlan()
+        if let index = self.myPlanModel?[mealType].firstIndex(where: { $0.foodId == foodId }) {
+            self.myPlanModel?[mealType].remove(at: index)
+        }
     }
 
     func updateExerciseCompletionDuration(id: String, duration: TimeInterval) async throws {
