@@ -1,34 +1,26 @@
 import SwiftUI
 import HealthKit
 import EventKit
+import UIKit
 
 private let kFirstTime = "momcare_firsttime"
 
 struct HealthKitError: LocalizedError {
-
-    var response: [HKQuantityTypeIdentifier: HKAuthorizationStatus] = [:]
-
     var errorDescription: String? { "HealthKit Access Denied" }
-
-    var failureReason: String? {
-        "The app does not have permission to access HealthKit data."
-    }
-
-    var recoverySuggestion: String? {
-        "Please grant HealthKit permissions in your device settings to enable health-related features."
-    }
+    var failureReason: String? { "The app does not have permission to access HealthKit data." }
+    var recoverySuggestion: String? { "Please grant HealthKit permissions in Settings to enable health-related features." }
 }
 
 struct EKEventError: LocalizedError {
     var errorDescription: String? { "Calendar Access Denied" }
     var failureReason: String? { "The app does not have permission to access Calendar data." }
-    var recoverySuggestion: String? { "Please grant Calendar permissions in your device settings to enable calendar-related features." }
+    var recoverySuggestion: String? { "Please grant Calendar permissions in Settings to enable calendar-related features." }
 }
 
 struct EKReminderError: LocalizedError {
     var errorDescription: String? { "Reminder Access Denied" }
     var failureReason: String? { "The app does not have permission to access Reminder data." }
-    var recoverySuggestion: String? { "Please grant Reminder permissions in your device settings to enable reminder-related features." }
+    var recoverySuggestion: String? { "Please grant Reminder permissions in Settings to enable reminder-related features." }
 }
 
 private struct AppPermission: Identifiable {
@@ -44,6 +36,7 @@ private struct AppPermission: Identifiable {
     let title: String
     let reason: String
     var isEnabled: Bool = false
+    var isRequesting: Bool = false
     let type: PermissionType
 }
 
@@ -58,10 +51,13 @@ struct PermissionsOnboardingSheetModifier: ViewModifier {
             .sheet(isPresented: $firstTime) {
                 firstTime = false
             } content: {
-                PermissionsOnboardingSheet(fetchingDataFromServer: $fetchingDataFromServer, firstTime: $firstTime)
-                    .presentationDetents([.large])
-                    .presentationDragIndicator(.hidden)
-                    .interactiveDismissDisabled()
+                PermissionsOnboardingSheet(
+                    fetchingDataFromServer: $fetchingDataFromServer,
+                    firstTime: $firstTime
+                )
+                .presentationDetents([.large])
+                .presentationDragIndicator(.hidden)
+                .interactiveDismissDisabled()
             }
     }
 
@@ -86,14 +82,14 @@ struct PermissionsOnboardingSheet: View {
 
     var body: some View {
         ZStack {
-            Color(MomCareAccent.secondary)
+            (reduceTransparency ? Color(.systemBackground) : Color(MomCareAccent.secondary))
                 .ignoresSafeArea()
 
             VStack(spacing: 0) {
-
                 headerSection
                     .padding(.top, 48)
                     .padding(.horizontal, 28)
+                    .accessibilitySortPriority(3)
 
                 Divider()
                     .padding(.top, 32)
@@ -108,6 +104,7 @@ struct PermissionsOnboardingSheet: View {
                     }
                     .padding(.vertical, 8)
                 }
+                .accessibilitySortPriority(2)
 
                 Divider()
                     .padding(.horizontal, 28)
@@ -116,19 +113,25 @@ struct PermissionsOnboardingSheet: View {
                     .padding(.horizontal, 28)
                     .padding(.bottom, 36)
                     .padding(.top, 20)
+                    .accessibilitySortPriority(1)
             }
         }
         .onAppear {
-            withAnimation(.easeOut(duration: 0.5)) {
+            if reduceMotion {
                 hasAppeared = true
+            } else {
+                withAnimation(.easeOut(duration: 0.45)) {
+                    hasAppeared = true
+                }
             }
         }
     }
 
     // MARK: Private
 
-    @Environment(\.openURL) private var openURL
     @Environment(\.dismiss) private var dismiss
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @Environment(\.accessibilityReduceTransparency) private var reduceTransparency
 
     @State private var permissions: [AppPermission] = [
         AppPermission(
@@ -156,18 +159,31 @@ struct PermissionsOnboardingSheet: View {
 
     @State private var hasAppeared = false
 
+    private var allPermissionsGranted: Bool {
+        permissions.allSatisfy { $0.isEnabled }
+    }
+
+    private var isAnyPermissionRequestInFlight: Bool {
+        permissions.contains { $0.isRequesting }
+    }
+
     private var headerSection: some View {
         VStack(spacing: 0) {
-
             HStack(spacing: 8) {
                 if fetchingDataFromServer {
                     ProgressView()
                         .scaleEffect(0.8)
                         .tint(.secondary)
+                        .accessibilityHidden(true)
+
                     Text("Downloading content from the server ...")
                         .font(.caption)
                         .foregroundStyle(.secondary)
                 } else {
+                    Image(systemName: "checkmark.circle.fill")
+                        .foregroundStyle(.green)
+                        .accessibilityHidden(true)
+
                     Text("Downloading content from the server ... Done!")
                         .font(.caption)
                         .foregroundStyle(.secondary)
@@ -175,14 +191,22 @@ struct PermissionsOnboardingSheet: View {
             }
             .padding(.horizontal, 12)
             .padding(.vertical, 7)
-            .background(.quaternary, in: Capsule())
+            .background(reduceTransparency ? Color(.secondarySystemBackground) : .secondaryApp, in: Capsule())
             .padding(.bottom, 20)
+            .accessibilityElement(children: .combine)
+            .accessibilityLabel(
+                fetchingDataFromServer
+                ? Text("Downloading content from the server")
+                : Text("Downloading content from the server complete")
+            )
 
             Text("While we're getting everything ready —")
-                .font(.system(size: 30, weight: .bold, design: .rounded))
+                .font(.largeTitle.weight(.bold))
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .foregroundStyle(.primary)
                 .lineSpacing(2)
+                .minimumScaleFactor(0.85)
+                .accessibilityAddTraits(.isHeader)
 
             Text("Grant MomCare a few permissions to personalise your meal plan, exercises, and daily insights the moment they're ready.")
                 .frame(maxWidth: .infinity, alignment: .leading)
@@ -193,10 +217,8 @@ struct PermissionsOnboardingSheet: View {
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .opacity(hasAppeared ? 1 : 0)
-        .offset(y: hasAppeared ? 0 : 12)
+        .offset(y: hasAppeared ? 0 : (reduceMotion ? 0 : 12))
     }
-
-    // MARK: - Footer
 
     private var footerSection: some View {
         VStack(spacing: 12) {
@@ -206,22 +228,26 @@ struct PermissionsOnboardingSheet: View {
             } label: {
                 Text("Continue")
                     .font(.headline)
-                    .frame(maxWidth: .infinity)
-                    .padding(.vertical, 16)
+                    .frame(maxWidth: .infinity, minHeight: 44)
+                    .padding(.vertical, 12)
                     .background(MomCareAccent.primary, in: RoundedRectangle(cornerRadius: 24, style: .continuous))
                     .foregroundStyle(.white)
+                    .opacity((allPermissionsGranted && !isAnyPermissionRequestInFlight) ? 1 : 0.6)
             }
             .buttonStyle(.plain)
-            .disabled(!permissions.allSatisfy { $0.isEnabled })
+            .disabled(!allPermissionsGranted || isAnyPermissionRequestInFlight)
+            .accessibilityLabel("Continue")
+            .accessibilityHint("Continues after all permissions are enabled.")
+            .accessibilityAddTraits(.isButton)
 
             Text("You can change these permissions any time in Settings → MomCare+")
                 .font(.caption)
                 .foregroundStyle(.secondary)
                 .multilineTextAlignment(.center)
+                .fixedSize(horizontal: false, vertical: true)
         }
         .opacity(hasAppeared ? 1 : 0)
     }
-
 }
 
 private struct PermissionRow: View {
@@ -235,11 +261,13 @@ private struct PermissionRow: View {
             HStack(spacing: 14) {
                 ZStack {
                     RoundedRectangle(cornerRadius: 10, style: .continuous)
-                        .fill(permission.iconColor.opacity(0.12))
+                        .fill(permission.iconColor.opacity(reduceTransparency ? 0.24 : 0.12))
                         .frame(width: 44, height: 44)
+
                     Image(systemName: permission.icon)
                         .font(.system(size: 18, weight: .medium))
                         .foregroundStyle(permission.iconColor)
+                        .accessibilityHidden(true)
                 }
 
                 VStack(alignment: .leading, spacing: 2) {
@@ -252,58 +280,79 @@ private struct PermissionRow: View {
                         .foregroundStyle(.secondary)
                         .fixedSize(horizontal: false, vertical: true)
                         .padding(.top, 4)
-                        .transition(.opacity.combined(with: .move(edge: .top)))
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .contentShape(Rectangle())
 
-                // Toggle
-                Toggle("", isOn: $permission.isEnabled)
-                    .labelsHidden()
-                    .tint(permission.iconColor)
-                    .disabled(permission.isEnabled)
+                if permission.isRequesting {
+                    ProgressView()
+                        .controlSize(.small)
+                        .frame(minWidth: 51, minHeight: 31)
+                        .accessibilityLabel("Requesting \(permission.title) permission")
+                } else {
+                    Toggle("", isOn: $permission.isEnabled)
+                        .labelsHidden()
+                        .tint(permission.iconColor)
+                        .disabled(permission.isEnabled || permission.isRequesting)
+                        .accessibilityLabel(Text(permission.title))
+                        .accessibilityValue(Text(permission.isEnabled ? "Enabled" : "Not enabled"))
+                        .accessibilityHint(Text("Double tap to grant access for \(permission.title)."))
+                }
             }
             .padding(.vertical, 16)
             .padding(.horizontal, 8)
+            .contentShape(Rectangle())
+            .accessibilityElement(children: .combine)
 
             Divider()
                 .padding(.leading, 66)
         }
-        .onChange(of: permission.isEnabled) { _, _ in
-            Task {
-                switch permission.type {
-                case .healthKit:
-                    do {
+        .animation(reduceMotion ? nil : .easeInOut(duration: 0.2), value: permission.isRequesting)
+        .animation(reduceMotion ? nil : .easeInOut(duration: 0.2), value: permission.isEnabled)
+        .onChange(of: permission.isEnabled) { _, newValue in
+            guard newValue else { return }
+            guard !permission.isRequesting else { return }
+
+            permission.isRequesting = true
+
+            Task { @MainActor in
+                defer { permission.isRequesting = false }
+
+                do {
+                    switch permission.type {
+                    case .healthKit:
                         _ = try await contentServiceHandler.requestHealthKitAccess()
-                    } catch {
-                        healthKitError = HealthKitError()
-                    }
 
-                case .calendar:
-                    do {
-                        permission.isEnabled = try await eventKitHandler.requestAccess(for: .event)
-                    } catch {
-                        ekEventError = EKEventError()
-                    }
+                    case .calendar:
+                        let granted = try await eventKitHandler.requestAccess(for: .event)
+                        permission.isEnabled = granted
+                        if !granted { ekEventError = EKEventError() }
 
-                case .reminders:
-                    do {
-                        permission.isEnabled = try await eventKitHandler.requestAccess(for: .reminder)
-                    } catch {
-                        ekReminderError = EKReminderError()
+                    case .reminders:
+                        let granted = try await eventKitHandler.requestAccess(for: .reminder)
+                        permission.isEnabled = granted
+                        if !granted { ekReminderError = EKReminderError() }
+                    }
+                } catch {
+                    permission.isEnabled = false
+                    switch permission.type {
+                    case .healthKit:
+                        healthKitError = error
+                    case .calendar:
+                        ekEventError = error
+                    case .reminders:
+                        ekReminderError = error
                     }
                 }
             }
         }
-
         .errorAlert(error: $ekEventError) { _ in
             Button("Open Settings") {
                 if let url = URL(string: UIApplication.openSettingsURLString) {
                     openURL(url)
                 }
             }
-
-            Button(role: .close) {
+            Button("Cancel", role: .cancel) {
                 ekEventError = nil
             }
         }
@@ -313,9 +362,8 @@ private struct PermissionRow: View {
                     openURL(url)
                 }
             }
-
-            Button(role: .close) {
-                ekEventError = nil
+            Button("Cancel", role: .cancel) {
+                ekReminderError = nil
             }
         }
         .errorAlert(error: $healthKitError) { _ in
@@ -324,8 +372,7 @@ private struct PermissionRow: View {
                     openURL(url)
                 }
             }
-
-            Button(role: .close) {
+            Button("Cancel", role: .cancel) {
                 healthKitError = nil
             }
         }
@@ -334,6 +381,8 @@ private struct PermissionRow: View {
     // MARK: Private
 
     @Environment(\.openURL) private var openURL
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @Environment(\.accessibilityReduceTransparency) private var reduceTransparency
 
     @State private var ekEventError: (any Error)?
     @State private var ekReminderError: (any Error)?
@@ -341,7 +390,5 @@ private struct PermissionRow: View {
 
     @EnvironmentObject private var contentServiceHandler: ContentServiceHandler
     @EnvironmentObject private var eventKitHandler: EventKitHandler
-
-    @State private var isExpanded = true
 
 }

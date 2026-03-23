@@ -93,7 +93,7 @@ struct MomCareMainTabView: View {
             MusicPlayerView()
         }
         .popupBarStyle(.floating)
-        .popupInteractionStyle(.snap)
+        .popupInteractionStyle(.drag)
         .popupBarProgressViewStyle(.bottom)
         .popupCloseButtonStyle(.chevron)
 

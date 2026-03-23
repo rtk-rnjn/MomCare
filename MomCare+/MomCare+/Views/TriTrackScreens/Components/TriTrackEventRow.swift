@@ -7,10 +7,6 @@ struct TriTrackEventRow: View {
 
     let event: EKEvent
 
-    private var now: Date {
-        .init()
-    }
-
     @Binding var selectedDate: Date
 
     var body: some View {
@@ -34,6 +30,11 @@ struct TriTrackEventRow: View {
     // MARK: Private
 
     @Environment(\.accessibilityDifferentiateWithoutColor) private var differentiateWithoutColor
+
+    private var now: Date {
+        .init()
+    }
+
 }
 
 extension TriTrackEventRow {

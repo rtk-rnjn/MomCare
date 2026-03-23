@@ -15,13 +15,13 @@ struct BaseInfoSheetLayout<HeaderIcon: View>: View {
     @ViewBuilder var headerIcon: HeaderIcon
 
     var body: some View {
-        ZStack(alignment: .topTrailing){
+        ZStack(alignment: .topTrailing) {
             VStack(spacing: 0) {
                 headerSection
                     .padding(.trailing, 16)
-                
+
                 Divider().padding(.horizontal)
-                
+
                 VStack(alignment: .leading, spacing: 18) {
                     aboutSection
                     statsSection
@@ -32,8 +32,7 @@ struct BaseInfoSheetLayout<HeaderIcon: View>: View {
             }
             .background(Color(.systemBackground))
             .clipShape(RoundedRectangle(cornerRadius: 24, style: .continuous))
-            
-            
+
             Button(action: onClose) {
                 Image(systemName: "xmark")
                     .font(.subheadline.weight(.semibold))
