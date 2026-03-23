@@ -82,7 +82,7 @@ enum TriTrackData {
         .init(
             weekNumber: 4,
             quote: "I'm currently the size of a poppy seed",
-            imageUri: "https://img.icons8.com/material-two-tone/24/lentil.png",
+            imageUri: "poppy-seed",
             babyImageUri: "Month1",
             babyHeightInCentimeters: 0.2,
             babyWeightInGrams: 0.002,
@@ -96,7 +96,7 @@ enum TriTrackData {
         .init(
             weekNumber: 5,
             quote: "I'm currently the size of a sesame seed",
-            imageUri: "https://img.icons8.com/plumpy/48/black-sesame-seeds.png",
+            imageUri: "sesame-seed",
             babyImageUri: "Month1",
             babyHeightInCentimeters: 0.3,
             babyWeightInGrams: 0.004,
@@ -110,7 +110,7 @@ enum TriTrackData {
         .init(
             weekNumber: 6,
             quote: "I'm currently the size of a lentil seed",
-            imageUri: "https://img.icons8.com/plasticine/100/lentil.png",
+            imageUri: "lentil-seed",
             babyImageUri: "Month1",
             babyHeightInCentimeters: 0.5,
             babyWeightInGrams: 0.01,
@@ -124,7 +124,7 @@ enum TriTrackData {
         .init(
             weekNumber: 7,
             quote: "I'm currently the size of a blueberry",
-            imageUri: "https://img.icons8.com/color/48/blueberry.png",
+            imageUri: "blueberry",
             babyImageUri: "Month1",
             babyHeightInCentimeters: 1.0,
             babyWeightInGrams: 0.02,
@@ -138,7 +138,7 @@ enum TriTrackData {
         .init(
             weekNumber: 8,
             quote: "I'm currently the size of a raspberry",
-            imageUri: "https://img.icons8.com/arcade/64/raspberry.png",
+            imageUri: "raspberry",
             babyImageUri: "Month2",
             babyHeightInCentimeters: 1.6,
             babyWeightInGrams: 1,
@@ -152,7 +152,7 @@ enum TriTrackData {
         .init(
             weekNumber: 9,
             quote: "I'm currently the size of a grape",
-            imageUri: "https://img.icons8.com/external-line-colors-royyan-wijaya/64/external-eat-heiyo-food-collections-line-colors-royyan-wijaya-16.png",
+            imageUri: "grape",
             babyImageUri: "Month2",
             babyHeightInCentimeters: 2.3,
             babyWeightInGrams: 2,
@@ -166,7 +166,7 @@ enum TriTrackData {
         .init(
             weekNumber: 10,
             quote: "I'm currently the size of a date",
-            imageUri: "https://img.icons8.com/color/48/date-fruit.png",
+            imageUri: "dates",
             babyImageUri: "Month2",
             babyHeightInCentimeters: 3.1,
             babyWeightInGrams: 4,
@@ -180,7 +180,7 @@ enum TriTrackData {
         .init(
             weekNumber: 11,
             quote: "I'm currently the size of a lime",
-            imageUri: "https://img.icons8.com/color/96/lime.png",
+            imageUri: "lime",
             babyImageUri: "Month2",
             babyHeightInCentimeters: 4.1,
             babyWeightInGrams: 7,
@@ -194,7 +194,7 @@ enum TriTrackData {
         .init(
             weekNumber: 12,
             quote: "I'm currently the size of a plum",
-            imageUri: "https://img.icons8.com/cotton/64/plum--v1.png",
+            imageUri: "plum",
             babyImageUri: "Month3",
             babyHeightInCentimeters: 5.4,
             babyWeightInGrams: 14,
@@ -208,7 +208,7 @@ enum TriTrackData {
         .init(
             weekNumber: 13,
             quote: "I'm currently the size of a kiwi",
-            imageUri: "https://img.icons8.com/external-smashingstocks-flat-smashing-stocks/66/external-Kiwi-fruit-smashingstocks-flat-smashing-stocks.png",
+            imageUri: "kiwi",
             babyImageUri: "Month3",
             babyHeightInCentimeters: 7.4,
             babyWeightInGrams: 23,
@@ -222,7 +222,7 @@ enum TriTrackData {
         .init(
             weekNumber: 14,
             quote: "I'm currently the size of a peach",
-            imageUri: "https://img.icons8.com/external-icongeek26-linear-colour-icongeek26/64/external-peach-fruits-icongeek26-linear-colour-icongeek26.png",
+            imageUri: "peach",
             babyImageUri: "Month3",
             babyHeightInCentimeters: 8.7,
             babyWeightInGrams: 43,
@@ -236,7 +236,7 @@ enum TriTrackData {
         .init(
             weekNumber: 15,
             quote: "I'm currently the size of a pear",
-            imageUri: "https://img.icons8.com/cotton/64/pear--v1.png",
+            imageUri: "pear",
             babyImageUri: "Month3",
             babyHeightInCentimeters: 10.1,
             babyWeightInGrams: 70,
@@ -250,7 +250,7 @@ enum TriTrackData {
         .init(
             weekNumber: 16,
             quote: "I'm currently the size of an avocado",
-            imageUri: "https://img.icons8.com/external-justicon-flat-justicon/64/external-avocado-healthy-food-and-vegan-justicon-flat-justicon.png",
+            imageUri: "avocado",
             babyImageUri: "Month4",
             babyHeightInCentimeters: 11.6,
             babyWeightInGrams: 100,
@@ -264,7 +264,7 @@ enum TriTrackData {
         .init(
             weekNumber: 17,
             quote: "I'm currently the size of an orange",
-            imageUri: "https://img.icons8.com/cotton/64/orange--v2.png",
+            imageUri: "orange",
             babyImageUri: "Month4",
             babyHeightInCentimeters: 13.0,
             babyWeightInGrams: 140,
@@ -278,7 +278,7 @@ enum TriTrackData {
         .init(
             weekNumber: 18,
             quote: "I'm currently the size of a sweet potato",
-            imageUri: "https://img.icons8.com/external-goofy-color-kerismaker/96/external-Sweet-Potato-vegetable-goofy-color-kerismaker.png",
+            imageUri: "sweet-potato",
             babyImageUri: "Month4",
             babyHeightInCentimeters: 14.2,
             babyWeightInGrams: 190,
@@ -292,7 +292,7 @@ enum TriTrackData {
         .init(
             weekNumber: 19,
             quote: "I'm currently the size of a mango",
-            imageUri: "https://img.icons8.com/external-vitaliy-gorbachev-flat-vitaly-gorbachev/58/external-mango-fruit-vitaliy-gorbachev-flat-vitaly-gorbachev.png",
+            imageUri: "mango",
             babyImageUri: "Month4",
             babyHeightInCentimeters: 15.3,
             babyWeightInGrams: 240,
@@ -306,7 +306,7 @@ enum TriTrackData {
         .init(
             weekNumber: 20,
             quote: "I'm currently the size of a banana",
-            imageUri: "https://img.icons8.com/cotton/64/banana.png",
+            imageUri: "banana",
             babyImageUri: "Month5",
             babyHeightInCentimeters: 16.4,
             babyWeightInGrams: 300,
@@ -320,7 +320,7 @@ enum TriTrackData {
         .init(
             weekNumber: 21,
             quote: "I'm currently the size of a pomegranate",
-            imageUri: "https://img.icons8.com/external-febrian-hidayat-outline-color-febrian-hidayat/64/external-Pomegranate-fruits-febrian-hidayat-outline-color-febrian-hidayat.png",
+            imageUri: "pomegranate",
             babyImageUri: "Month5",
             babyHeightInCentimeters: 26.7,
             babyWeightInGrams: 360,
@@ -334,7 +334,7 @@ enum TriTrackData {
         .init(
             weekNumber: 22,
             quote: "I'm currently the size of a papaya",
-            imageUri: "https://img.icons8.com/external-icongeek26-flat-icongeek26/64/external-papaya-fruits-icongeek26-flat-icongeek26.png",
+            imageUri: "papaya",
             babyImageUri: "Month5",
             babyHeightInCentimeters: 27.8,
             babyWeightInGrams: 430,
@@ -348,7 +348,7 @@ enum TriTrackData {
         .init(
             weekNumber: 23,
             quote: "I'm currently the size of a grapefruit",
-            imageUri: "https://img.icons8.com/external-smashingstocks-flat-smashing-stocks/66/external-Grapefruit-fruit-smashingstocks-flat-smashing-stocks.png",
+            imageUri: "grapefruit",
             babyImageUri: "Month5",
             babyHeightInCentimeters: 28.9,
             babyWeightInGrams: 501,
@@ -362,7 +362,7 @@ enum TriTrackData {
         .init(
             weekNumber: 24,
             quote: "I'm currently the size of a cantaloupe",
-            imageUri: "https://img.icons8.com/external-icongeek26-flat-icongeek26/64/external-cantaloupe-fruits-icongeek26-flat-icongeek26.png",
+            imageUri: "cantaloupe",
             babyImageUri: "Month6",
             babyHeightInCentimeters: 30.0,
             babyWeightInGrams: 600,
@@ -376,7 +376,7 @@ enum TriTrackData {
         .init(
             weekNumber: 25,
             quote: "I'm currently the size of a cauliflower",
-            imageUri: "https://img.icons8.com/external-flat-andi-nur-abdillah/64/external-cauliflower-vegetable-and-fruit-flat-flat-andi-nur-abdillah.png",
+            imageUri: "cauliflower",
             babyImageUri: "Month6",
             babyHeightInCentimeters: 34.6,
             babyWeightInGrams: 660,
@@ -390,7 +390,7 @@ enum TriTrackData {
         .init(
             weekNumber: 26,
             quote: "I'm currently the size of a lettuce",
-            imageUri: "https://img.icons8.com/external-ddara-lineal-color-ddara/64/external-lettuce-vegetables-ddara-lineal-color-ddara.png",
+            imageUri: "lettuce",
             babyImageUri: "Month6",
             babyHeightInCentimeters: 35.6,
             babyWeightInGrams: 760,
@@ -404,7 +404,7 @@ enum TriTrackData {
         .init(
             weekNumber: 27,
             quote: "I'm currently the size of a turnip",
-            imageUri: "https://img.icons8.com/external-goofy-color-kerismaker/96/external-Turnip-vegetable-goofy-color-kerismaker.png",
+            imageUri: "turnip",
             babyImageUri: "Month6",
             babyHeightInCentimeters: 36.6,
             babyWeightInGrams: 875,
@@ -418,7 +418,7 @@ enum TriTrackData {
         .init(
             weekNumber: 28,
             quote: "I'm currently the size of an Eggplant",
-            imageUri: "https://img.icons8.com/external-icongeek26-flat-icongeek26/64/external-eggplant-vegan-icongeek26-flat-icongeek26.png",
+            imageUri: "eggplant",
             babyImageUri: "Month7",
             babyHeightInCentimeters: 37.6,
             babyWeightInGrams: 1005,
@@ -432,7 +432,7 @@ enum TriTrackData {
         .init(
             weekNumber: 29,
             quote: "I'm currently the size of an acorn squash",
-            imageUri: "https://img.icons8.com/plasticine/100/squash.png",
+            imageUri: "acorn-squash",
             babyImageUri: "Month7",
             babyHeightInCentimeters: 38.6,
             babyWeightInGrams: 1153,
@@ -446,7 +446,7 @@ enum TriTrackData {
         .init(
             weekNumber: 30,
             quote: "I'm currently the size of a cabbage",
-            imageUri: "https://img.icons8.com/external-smashingstocks-flat-smashing-stocks/66/external-Cabbage-vegetables-smashingstocks-flat-smashing-stocks-2.png",
+            imageUri: "cabbage",
             babyImageUri: "Month7",
             babyHeightInCentimeters: 39.9,
             babyWeightInGrams: 1319,
@@ -460,7 +460,7 @@ enum TriTrackData {
         .init(
             weekNumber: 31,
             quote: "I'm currently the size of a coconut",
-            imageUri: "https://img.icons8.com/external-goofy-color-kerismaker/96/external-Coconut-fruit-goofy-color-kerismaker.png",
+            imageUri: "coconut",
             babyImageUri: "Month7",
             babyHeightInCentimeters: 41.1,
             babyWeightInGrams: 1502,
@@ -474,7 +474,7 @@ enum TriTrackData {
         .init(
             weekNumber: 32,
             quote: "I'm currently the size of a jicama",
-            imageUri: "https://img.icons8.com/cotton/64/potato--v1.png",
+            imageUri: "jicama",
             babyImageUri: "Month8",
             babyHeightInCentimeters: 42.4,
             babyWeightInGrams: 1702,
@@ -488,7 +488,7 @@ enum TriTrackData {
         .init(
             weekNumber: 33,
             quote: "I'm currently the size of a pomelo",
-            imageUri: "https://img.icons8.com/external-febrian-hidayat-flat-febrian-hidayat/64/external-Pomelo-fruits-febrian-hidayat-flat-febrian-hidayat.png",
+            imageUri: "pomelo",
             babyImageUri: "Month8",
             babyHeightInCentimeters: 43.7,
             babyWeightInGrams: 1918,
@@ -502,7 +502,7 @@ enum TriTrackData {
         .init(
             weekNumber: 34,
             quote: "I'm currently the size of a butternut squash",
-            imageUri: "https://img.icons8.com/external-icongeek26-flat-icongeek26/64/external-butternut-squash-fruits-and-vegetables-icongeek26-flat-icongeek26.png",
+            imageUri: "butternut-squash",
             babyImageUri: "Month8",
             babyHeightInCentimeters: 45.0,
             babyWeightInGrams: 2146,
@@ -516,7 +516,7 @@ enum TriTrackData {
         .init(
             weekNumber: 35,
             quote: "I'm currently the size of a pineapple",
-            imageUri: "https://img.icons8.com/external-smashingstocks-flat-smashing-stocks/66/external-Pineapple-food-smashingstocks-flat-smashing-stocks.png",
+            imageUri: "pineapple",
             babyImageUri: "Month8",
             babyHeightInCentimeters: 46.2,
             babyWeightInGrams: 2383,
@@ -530,7 +530,7 @@ enum TriTrackData {
         .init(
             weekNumber: 36,
             quote: "I'm currently the size of a honeydew",
-            imageUri: "https://img.icons8.com/external-others-iconmarket/64/external-cantaloupe-fruit-and-veggies-others-iconmarket-2.png",
+            imageUri: "honeydew",
             babyImageUri: "Month9",
             babyHeightInCentimeters: 47.4,
             babyWeightInGrams: 2622,
@@ -544,7 +544,7 @@ enum TriTrackData {
         .init(
             weekNumber: 37,
             quote: "I'm currently the size of a small jackfruit",
-            imageUri: "https://img.icons8.com/external-icongeek26-flat-icongeek26/64/external-jackfruit-fruits-and-vegetables-icongeek26-flat-icongeek26.png",
+            imageUri: "small-jackfruit",
             babyImageUri: "Month9",
             babyHeightInCentimeters: 48.6,
             babyWeightInGrams: 2859,
@@ -558,7 +558,7 @@ enum TriTrackData {
         .init(
             weekNumber: 38,
             quote: "I'm currently the size of a Swiss chard",
-            imageUri: "https://img.icons8.com/external-goofy-flat-kerismaker/96/external-Chard-vegetable-goofy-flat-kerismaker.png",
+            imageUri: "swiss-chard",
             babyImageUri: "Month9",
             babyHeightInCentimeters: 49.8,
             babyWeightInGrams: 3083,
@@ -572,7 +572,7 @@ enum TriTrackData {
         .init(
             weekNumber: 39,
             quote: "I'm currently the size of a small pumpkin",
-            imageUri: "https://img.icons8.com/external-flaticons-flat-flat-icons/64/external-pumpkin-gardening-flaticons-flat-flat-icons.png",
+            imageUri: "small-pumpkin",
             babyImageUri: "Month9",
             babyHeightInCentimeters: 50.7,
             babyWeightInGrams: 3288,
@@ -586,7 +586,7 @@ enum TriTrackData {
         .init(
             weekNumber: 40,
             quote: "I'm currently the size of a watermelon",
-            imageUri: "https://img.icons8.com/external-flat-gradient-andi-nur-abdillah/64/external-watermelon-vegetable-and-fruit-flat-gradient-flat-gradient-andi-nur-abdillah.png",
+            imageUri: "watermelon",
             babyImageUri: "Month9",
             babyHeightInCentimeters: 51.2,
             babyWeightInGrams: 3462,

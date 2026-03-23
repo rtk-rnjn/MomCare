@@ -493,7 +493,7 @@ struct BreathingExerciseView: View {
 
     private func speak(_ text: String) {
         let utterance = AVSpeechUtterance(string: text)
-        utterance.voice = AVSpeechSynthesisVoice(identifier: "com.apple.ttsbundle.siri_female_en-IN_compact")
+        utterance.voice = AVSpeechSynthesisVoice(identifier: "com.apple.ttsbundle.Samantha-compact")
         utterance.rate = 0.4
         utterance.pitchMultiplier = 1.0
         utterance.volume = 1.0
