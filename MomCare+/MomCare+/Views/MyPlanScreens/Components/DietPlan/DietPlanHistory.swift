@@ -251,8 +251,8 @@ struct DietPlanHistory: View {
                             .font(.body)
                             .foregroundColor(Color.CustomColors.mutedRaspberry)
                     }
-                    .accessibilityLabel(controlState.showingExpandedCalendar ? "Collapse calendar" : "Expand calendar")
-                    .accessibilityIdentifier("expandCalendarButton")
+                    .accessibilityLabel("Jump to today")
+                    .accessibilityIdentifier("jumpToTodayButton")
                 }
             }
             .task(id: selectedDate.startOfDay) {

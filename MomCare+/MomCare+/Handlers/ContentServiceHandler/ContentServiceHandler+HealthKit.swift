@@ -49,7 +49,7 @@ extension ContentServiceHandler {
 
     nonisolated func startStepCountObservation() async throws {
         guard let stepType = HKQuantityType.quantityType(forIdentifier: .stepCount) else {
-            logger.error("Failed to create HKQuantityType for stepCount; skipping observation setup.")
+            await logger.error("Failed to create HKQuantityType for stepCount; skipping observation setup.")
             return
         }
 
