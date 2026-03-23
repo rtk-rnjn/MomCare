@@ -931,7 +931,7 @@ struct StitchingBorder: View {
 
     // MARK: Private
 
-    private func addPreciseCornerStitches(
+    private func addPreciseCornerStitches( // swiftlint:disable:this function_parameter_count
         to path: inout Path,
         center: CGPoint,
         radius: CGFloat,

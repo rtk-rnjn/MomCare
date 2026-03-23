@@ -49,9 +49,9 @@ struct TriTrackSymptomsContentView: View {
                 .scrollDismissesKeyboard(.immediately)
                 .interactiveDismissDisabled(true)
         }
-        .sheet(item: $selectedSymptomModel, onDismiss: {
+        .sheet(item: $selectedSymptomModel) {
             selectedSymptomModel = nil
-        }) { symptomModel in
+        } content: { symptomModel in
             TriTrackAddEditSymptomSheetView(selectedDate: selectedDate, existingSymptom: symptomModel)
                 .presentationDetents([.medium, .large])
                 .scrollDismissesKeyboard(.immediately)

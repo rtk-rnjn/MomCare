@@ -267,7 +267,7 @@ struct VitalDetailView: View {
 
                         if targetValue > 0 {
                             let pct = Int((pt.value / targetValue) * 100)
-                            Button(action: {}) {
+                            Button {} label: {
                                 Label("\(pct)% of daily target", systemImage: "target")
                             }
                             .disabled(true)

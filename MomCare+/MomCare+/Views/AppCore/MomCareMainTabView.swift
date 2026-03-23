@@ -130,9 +130,9 @@ struct MomCareMainTabView: View {
         .popupBarProgressViewStyle(.bottom)
         .popupCloseButtonStyle(.chevron)
 
-        .sheet(isPresented: $showLoginSheet, onDismiss: {
+        .sheet(isPresented: $showLoginSheet) {
             Task { await refreshAccessToken() }
-        }) {
+        } content: {
             ReAuthenticationSheetView()
                 .presentationDetents([.medium, .large])
                 .presentationDragIndicator(.visible)

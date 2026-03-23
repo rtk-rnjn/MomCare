@@ -68,43 +68,34 @@ struct TriTrackCalendarItemContentView: View {
             }
         }
         .listStyle(.plain)
-        .background(
-            RoundedRectangle(cornerRadius: 16)
-                .fill(Color(.systemBackground))
-        )
-        .sheet(
-            isPresented: $controlState.showingAddEventSheet,
-            onDismiss: { Task { await refreshData() } }
-        ) {
+        .background(RoundedRectangle(cornerRadius: 16).fill(Color(.systemBackground)))
+
+        .sheet(isPresented: $controlState.showingAddEventSheet) {
+            Task { await refreshData() }
+        } content: {
             TriTrackAddCalendarItemSheetView(selectedDate: $selectedDate, selectedSegment: addMode)
                 .scrollDismissesKeyboard(.immediately)
         }
-        .sheet(
-            item: $selectedEvent,
-            onDismiss: { Task { await refreshData() } }
-        ) { itemWrapper in
+
+        .sheet(item: $selectedEvent) {
+            Task { await refreshData() }
+        } content: { itemWrapper in
             if let event = itemWrapper.item as? EKEvent {
                 EKEventView(event: event)
             }
         }
-        .sheet(
-            item: $selectedReminder,
-            onDismiss: { Task { await refreshData() } }
-        ) { wrapper in
+
+        .sheet(item: $selectedReminder) {
+            Task { await refreshData() }
+        } content: { wrapper in
             if let reminder = wrapper.item as? EKReminder {
                 EKReminderView(reminder: reminder, selectedDate: $selectedDate)
                     .interactiveDismissDisabled(true)
             }
         }
-        .task {
-            await initialLoad()
-        }
-        .onChange(of: selectedDate) {
-            Task { await refreshData() }
-        }
-        .onAppear {
-            Task { await refreshData() }
-        }
+        .task { await initialLoad() }
+        .onChange(of: selectedDate) { Task { await refreshData() } }
+        .onAppear { Task { await refreshData() } }
         .refreshable {
             await refreshData()
         }

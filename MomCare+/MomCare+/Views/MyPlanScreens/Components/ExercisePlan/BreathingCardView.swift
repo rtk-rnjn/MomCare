@@ -41,9 +41,9 @@ struct BreathingCardView: View {
                     }
                     .accessibilityLabel(completionProgress >= 1 ? "Replay breathing exercise" : "Start breathing exercise")
                     .accessibilityIdentifier("startBreathingButton")
-                    .fullScreenCover(isPresented: $startBreathingPlayer, onDismiss: {
+                    .fullScreenCover(isPresented: $startBreathingPlayer) {
                         updateProgress()
-                    }) {
+                    } content: {
                         BreathingExerciseView()
                     }
                 }

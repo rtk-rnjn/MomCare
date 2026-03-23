@@ -572,7 +572,7 @@ private struct MealBreakdownBadge: View {
 
     // MARK: Private
 
-    private let meals: [(String, Double, Color)] = [
+    private let meals: [(String, Double, Color)] = [ // swiftlint:disable:this large_tuple
         ("B", 1.0, Color(hex: "E3B34B")),
         ("L", 0.7, Color(hex: "6E8B6F")),
         ("D", 0.4, Color(hex: "A7C0CD")),
@@ -603,7 +603,7 @@ private struct ContextMenuPreviewBadge: View {
 
     // MARK: Private
 
-    private let bars: [(String, Double, Color)] = [
+    private let bars: [(String, Double, Color)] = [ // swiftlint:disable:this large_tuple
         ("P", 0.65, Color(hex: "A7C0CD")),
         ("C", 0.4, Color(hex: "6E8B6F")),
         ("F", 0.8, Color(hex: "E3B34B"))

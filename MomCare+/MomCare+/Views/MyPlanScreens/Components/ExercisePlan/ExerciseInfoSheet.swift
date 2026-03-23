@@ -143,8 +143,9 @@ struct ExerciseInfoSheet: View {
             tags: exercise?.tags ?? [],
             pastelColor: pastelColor,
             accentColor: accentColor,
-            onClose: { isPresented = false }
         ) {
+            isPresented = false
+        } headerIcon: {
             if let uiImage {
                 Image(uiImage: uiImage)
                     .resizable()
@@ -187,9 +188,10 @@ struct BreathingInfoSheet: View {
             target: "Lungs",
             tags: tags,
             pastelColor: pastelColor,
-            accentColor: accentColor,
-            onClose: { isPresented = false }
+            accentColor: accentColor
         ) {
+            isPresented = false
+        } headerIcon: {
             Image(systemName: "lungs.fill")
                 .font(.title2)
                 .foregroundColor(accentColor)

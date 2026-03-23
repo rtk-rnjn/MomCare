@@ -28,24 +28,6 @@ final class AuthenticationService: ObservableObject {
         loadTokenPairIfNeeded()
     }
 
-    private func loadTokenPairIfNeeded() {
-        if let pair: TokenPair = Database.shared[.tokenPair] {
-            tokenPair = pair
-        }
-
-        if let response: RegistrationResponse = Database.shared[.tokenPair] {
-            tokenPair = response
-        }
-
-        let accessToken = KeychainHelper.get(.accessToken) ?? tokenPair?.accessToken
-        let expiresAtTimestamp = tokenPair?.expiresAtTimestamp ?? 0
-
-        if let accessToken, !accessToken.isEmpty {
-            hasAccessToken = expiresAtTimestamp > Date.now.timeIntervalSince1970
-        } else {
-            hasAccessToken = false
-        }
-    }
     // MARK: Internal
 
     static var authorizationHeaders: [String: String]? {
@@ -55,6 +37,8 @@ final class AuthenticationService: ObservableObject {
         return ["Authorization": "Bearer \(accessToken)"]
     }
 
+    @Published var hasAccessToken: Bool = false
+
     var requiresRefresh: Bool {
         guard let expiresAtTimestamp = tokenPair?.expiresAtTimestamp else {
             return true
@@ -62,7 +46,6 @@ final class AuthenticationService: ObservableObject {
         return expiresAtTimestamp <= Date.now.timeIntervalSince1970
     }
 
-    @Published var hasAccessToken: Bool = false
     @Published var tokenPair: (any TokenContaining & Codable)? {
         didSet {
             switch tokenPair {
@@ -272,11 +255,30 @@ final class AuthenticationService: ObservableObject {
 
     // MARK: Private
 
+    private func loadTokenPairIfNeeded() {
+        if let pair: TokenPair = Database.shared[.tokenPair] {
+            tokenPair = pair
+        }
+
+        if let response: RegistrationResponse = Database.shared[.tokenPair] {
+            tokenPair = response
+        }
+
+        let accessToken = KeychainHelper.get(.accessToken) ?? tokenPair?.accessToken
+        let expiresAtTimestamp = tokenPair?.expiresAtTimestamp ?? 0
+
+        if let accessToken, !accessToken.isEmpty {
+            hasAccessToken = expiresAtTimestamp > Date.now.timeIntervalSince1970
+        } else {
+            hasAccessToken = false
+        }
+    }
+
     private func handleSuccess<T: TokenContaining>(_ response: NetworkResponse<T>, expectedStatusCode: Int) -> NetworkResponse<T> {
         let data = response.data
         persistSession(accessToken: data.accessToken, refreshToken: data.refreshToken, expiresAtTimestamp: data.expiresAtTimestamp)
 
-        self.tokenPair = data
+        tokenPair = data
         return response
     }
 

@@ -23,21 +23,15 @@ class ContentRepository {
     }
 
     func generateDailyInsights() async throws -> NetworkResponse<DailyInsightModel> {
-        let networkResponse: NetworkResponse<DailyInsightModel> = try await NetworkManager.shared.get(url: Endpoint.generateTips.urlString, headers: authenticationHeaders)
-
-        return networkResponse
+        return try await NetworkManager.shared.get(url: Endpoint.generateTips.urlString, headers: authenticationHeaders)
     }
 
     func generateMealPlan() async throws -> NetworkResponse<MealPlanModel> {
-        let networkResponse: NetworkResponse<MealPlanModel> = try await NetworkManager.shared.get(url: Endpoint.generatePlan.urlString, headers: authenticationHeaders)
-
-        return networkResponse
+        return try await NetworkManager.shared.get(url: Endpoint.generatePlan.urlString, headers: authenticationHeaders)
     }
 
     func generateUserExercises() async throws -> NetworkResponse<[UserExerciseModel]> {
-        let networkResponse: NetworkResponse<[UserExerciseModel]> = try await NetworkManager.shared.get(url: Endpoint.generateExercises.urlString, headers: authenticationHeaders)
-
-        return networkResponse
+        return try await NetworkManager.shared.get(url: Endpoint.generateExercises.urlString, headers: authenticationHeaders)
     }
 
     func getOrFetchExercise(id: String) async throws -> NetworkResponse<ExerciseModel> {

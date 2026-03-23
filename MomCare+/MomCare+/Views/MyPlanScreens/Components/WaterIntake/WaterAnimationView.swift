@@ -89,7 +89,7 @@ struct WaterDropFillView: View {
     @State private var animatedProgress: Double = 0
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
-    private let bubbleSeeds: [(Double, Double, Double, Double, Double)] = (0..<18).map { i in
+    private let bubbleSeeds: [(Double, Double, Double, Double, Double)] = (0..<18).map { i in // swiftlint:disable:this large_tuple
         let seed = Double(i)
         return (
             fmod(abs(sin(seed * 17.3)), 1.0),

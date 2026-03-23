@@ -29,14 +29,14 @@ struct TriTrackAllCalendarItemView: View {
             }
             .navigationTitle("All Events")
             .navigationBarTitleDisplayMode(.inline)
-            .sheet(item: $selectedEvent, onDismiss: {
+            .sheet(item: $selectedEvent) {
                 fetchEvents()
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
                     if let idx = todaySectionIndex {
                         proxy.scrollTo(idx, anchor: .top)
                     }
                 }
-            }) { itemWrapper in
+            } content: { itemWrapper in
                 if let event = itemWrapper.item as? EKEvent {
                     EKEventView(event: event)
                 }
