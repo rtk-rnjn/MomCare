@@ -7,6 +7,7 @@ struct DashboardDietCardView: View {
 
     let consumed: Double
     let goal: Double
+    let recommended: Double
 
     var body: some View {
         HStack {
@@ -21,7 +22,7 @@ struct DashboardDietCardView: View {
                 }
                 .accessibilityHidden(true)
 
-                Text("\(Int(consumed)) / \(Int(goal)) \(UnitEnergy.kilocalories.symbol)")
+                Text("\(Int(consumed)) / \(Int(recommended))\(differenceText) \(UnitEnergy.kilocalories.symbol)")
                     .font(.title3.weight(.regular))
                     .lineLimit(1)
                     .minimumScaleFactor(0.8)
@@ -31,10 +32,28 @@ struct DashboardDietCardView: View {
 
             Spacer()
 
-            Label("\(Int(animatedProgress * 100))%", systemImage: "flame")
-                .font(.title3.weight(.regular))
-                .contentTransition(reduceMotion ? .identity : .numericText())
-                .animation(reduceMotion ? nil : .easeInOut, value: animatedProgress)
+            VStack(spacing: 6) {
+                Text("\(Int(animatedProgress * 100))%")
+                    .font(.headline)
+                    .fontWeight(.semibold)
+
+                GeometryReader { geo in
+                    ZStack(alignment: .leading) {
+                        Capsule()
+                            .fill(reduceTransparency ? Color(.systemGray4) : Color.gray.opacity(0.2))
+                            .frame(height: 8)
+
+                        Capsule()
+                            .fill(MomCareAccent.primary)
+                            .frame(
+                                width: geo.size.width * max(animatedProgress, 0),
+                                height: 8
+                            )
+                            .animation(reduceMotion ? nil : .easeInOut(duration: 0.9), value: abs(animatedProgress))
+                    }
+                }
+                .frame(width: 120, height: 8)
+            }
         }
         .padding(16)
         .background(Color("secondaryAppColor"))
@@ -64,7 +83,16 @@ struct DashboardDietCardView: View {
     @Environment(\.accessibilityReduceTransparency) private var reduceTransparency
 
     private var progress: Double {
-        guard goal > 0 else { return 0 }
-        return min(consumed / goal, 1)
+        guard recommended > 0 else { return 0 }
+        return min(consumed / recommended, 1)
+    }
+
+    private var differenceText: String {
+        let difference = consumed - recommended
+        if difference == 0 {
+            return ""
+        }
+
+        return difference.formatted(.number.sign(strategy: .always()))
     }
 }

@@ -82,7 +82,8 @@ struct DashboardView: View {
 
             DashboardDietCardView(
                 consumed: contentServiceHandler.nutritionIntakeTotals?.calories ?? 0,
-                goal: contentServiceHandler.nutritionGoalTotals?.calories ?? 0
+                goal: contentServiceHandler.nutritionGoalTotals?.calories ?? 0,
+                recommended: contentServiceHandler.recommendedNutritionGoalTotals?.calories ?? 0
             )
             .padding(.horizontal)
             .onTapGesture {
