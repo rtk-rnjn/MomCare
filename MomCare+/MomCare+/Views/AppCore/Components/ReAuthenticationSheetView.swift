@@ -56,8 +56,10 @@ struct ReAuthenticationSheetView: View {
                         VStack(spacing: 12) {
                             SignInWithAppleButton(.continue) { request in
                                 request.requestedScopes = []
-                            } onCompletion: { _ in
-                                Task {}
+                            } onCompletion: { result in
+                                Task {
+                                    await handleAppleLogin(result)
+                                }
                             }
                             .signInWithAppleButtonStyle(.black)
                             .frame(height: 50)
@@ -103,7 +105,12 @@ struct ReAuthenticationSheetView: View {
 
                             do {
                                 try await submitEmailLogin()
-                            } catch {}
+                                await MainActor.run {
+                                    dismiss()
+                                }
+                            } catch {
+                                controlState.error = error
+                            }
                         }
                     } label: {
                         if isLoading {
@@ -138,6 +145,7 @@ struct ReAuthenticationSheetView: View {
 
     @State private var showAppleLoginSheet: Bool = false
     @EnvironmentObject private var authenticationService: AuthenticationService
+    @EnvironmentObject private var controlState: ControlState
 
     @FocusState private var focusedField: Field?
 
@@ -162,5 +170,29 @@ struct ReAuthenticationSheetView: View {
 
     private func submitEmailLogin() async throws {
         try await authenticationService.login(emailAddress: email, password: password)
+    }
+
+    private func handleAppleLogin(_ result: Result<ASAuthorization, any Error>) async {
+        switch result {
+        case let .success(auth):
+            do {
+                guard let credential = auth.credential as? ASAuthorizationAppleIDCredential,
+                      let tokenData = credential.identityToken,
+                      let tokenString = String(data: tokenData, encoding: .utf8) else {
+                    throw TokenParseError()
+                }
+
+                _ = try await authenticationService.appleLogin(idToken: tokenString)
+            } catch {
+                controlState.error = error
+            }
+
+            await MainActor.run {
+                dismiss()
+            }
+
+        case let .failure(error):
+            controlState.error = error
+        }
     }
 }

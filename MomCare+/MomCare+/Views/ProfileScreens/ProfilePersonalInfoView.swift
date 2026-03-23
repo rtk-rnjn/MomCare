@@ -1,30 +1,6 @@
 import SwiftUI
 import TipKit
 
-struct InitialsAvatar: View {
-    let name: String
-
-    var initials: String {
-        let parts = name.split(separator: " ")
-        let first = parts.first?.prefix(1) ?? ""
-        let last = parts.dropFirst().first?.prefix(1) ?? ""
-        return (first + last).uppercased()
-    }
-
-    var body: some View {
-        ZStack {
-            Circle()
-                .fill(MomCareAccent.primary.opacity(0.2))
-
-            Text(initials)
-                .font(.title3.weight(.semibold))
-                .foregroundColor(MomCareAccent.primary)
-        }
-        .accessibilityLabel("Profile picture for \(name)")
-        .accessibilityHidden(name.isEmpty)
-    }
-}
-
 struct ProfilePersonalInfoView: View {
     // MARK: Internal
 
@@ -49,17 +25,6 @@ struct ProfilePersonalInfoView: View {
 
     var body: some View {
         List {
-            Section {
-                HStack {
-                    Spacer()
-                    InitialsAvatar(name: name)
-                        .frame(width: 80, height: 80)
-                        .foregroundColor(MomCareAccent.primary)
-                    Spacer()
-                }
-                .listRowBackground(Color.clear)
-            }
-
             Section {
                 ProfileEditableTextRow(title: "Full name", text: $name, isEditing: isEditing, displayText: name)
 
@@ -87,6 +52,8 @@ struct ProfilePersonalInfoView: View {
                     .datePickerStyle(.wheel)
                     .labelsHidden()
                 }
+            } header: {
+                Text("Basic Information")
             }
 
             Section {
@@ -101,6 +68,11 @@ struct ProfilePersonalInfoView: View {
                 pickerRow("Pre Pregnancy Weight", value: measurementFormatter.string(from: Measurement(value: Double(prePregnancyWeight ?? 0), unit: UnitMass.kilograms))) {
                     activeSheet = .prePregnancyWeight
                 }
+            } header: {
+                Text("Measurements")
+            } footer: {
+                Text("This information will help us provide you with personalized insights and recommendations throughout your pregnancy journey.")
+                    .font(.footnote)
             }
         }
         .listStyle(.insetGrouped)
