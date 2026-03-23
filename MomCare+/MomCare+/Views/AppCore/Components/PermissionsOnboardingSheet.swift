@@ -49,8 +49,6 @@ struct PermissionsOnboardingSheetModifier: ViewModifier {
     func body(content: Content) -> some View {
         content
             .sheet(isPresented: $firstTime) {
-                firstTime = false
-            } content: {
                 PermissionsOnboardingSheet(
                     fetchingDataFromServer: $fetchingDataFromServer,
                     firstTime: $firstTime
@@ -64,7 +62,6 @@ struct PermissionsOnboardingSheetModifier: ViewModifier {
     // MARK: Private
 
     @AppStorage(kFirstTime) private var firstTime: Bool = true
-
 }
 
 extension View {
@@ -81,49 +78,42 @@ struct PermissionsOnboardingSheet: View {
     @Binding var firstTime: Bool
 
     var body: some View {
-        ZStack {
+        ZStack(alignment: .bottom) {
             (reduceTransparency ? Color(.systemBackground) : Color(MomCareAccent.secondary))
                 .ignoresSafeArea()
 
-            VStack(spacing: 0) {
-                headerSection
-                    .padding(.top, 48)
-                    .padding(.horizontal, 28)
-                    .accessibilitySortPriority(3)
+            ScrollView {
+                VStack(spacing: 0) {
+                    serverStatusPill
+                        .padding(.top, 36)
+                        .padding(.horizontal, 24)
 
-                Divider()
-                    .padding(.top, 32)
-                    .padding(.horizontal, 28)
+                    heroHeader
+                        .padding(.top, 24)
+                        .padding(.horizontal, 24)
+                        .accessibilitySortPriority(2)
 
-                ScrollView {
-                    VStack(spacing: 0) {
+                    VStack(spacing: 12) {
                         ForEach($permissions) { $permission in
                             PermissionRow(permission: $permission)
-                                .padding(.horizontal, 20)
                         }
                     }
-                    .padding(.vertical, 8)
-                }
-                .accessibilitySortPriority(2)
-
-                Divider()
-                    .padding(.horizontal, 28)
-
-                footerSection
-                    .padding(.horizontal, 28)
-                    .padding(.bottom, 36)
-                    .padding(.top, 20)
+                    .padding(.top, 28)
+                    .padding(.horizontal, 20)
                     .accessibilitySortPriority(1)
-            }
-        }
-        .onAppear {
-            if reduceMotion {
-                hasAppeared = true
-            } else {
-                withAnimation(.easeOut(duration: 0.45)) {
-                    hasAppeared = true
+
+                    Text("You can change these permissions anytime from the Settings tab.")
+                        .font(.footnote)
+                        .foregroundStyle(.tertiary)
+                        .multilineTextAlignment(.center)
+                        .padding(.horizontal, 32)
+                        .padding(.top, 20)
+
+                    Spacer().frame(height: 100)
                 }
             }
+
+            continueButton
         }
     }
 
@@ -157,8 +147,6 @@ struct PermissionsOnboardingSheet: View {
         )
     ]
 
-    @State private var hasAppeared = false
-
     private var allPermissionsGranted: Bool {
         permissions.allSatisfy { $0.isEnabled }
     }
@@ -167,86 +155,101 @@ struct PermissionsOnboardingSheet: View {
         permissions.contains { $0.isRequesting }
     }
 
-    private var headerSection: some View {
-        VStack(spacing: 0) {
-            HStack(spacing: 8) {
-                if fetchingDataFromServer {
-                    ProgressView()
-                        .scaleEffect(0.8)
-                        .tint(.secondary)
-                        .accessibilityHidden(true)
+    // MARK: Subviews
 
-                    Text("Downloading content from the server ...")
-                        .font(.caption)
-                        .foregroundStyle(.secondary)
-                } else {
-                    Image(systemName: "checkmark.circle.fill")
-                        .foregroundStyle(.green)
-                        .accessibilityHidden(true)
-
-                    Text("Downloading content from the server ... Done!")
-                        .font(.caption)
-                        .foregroundStyle(.secondary)
-                }
+    private var serverStatusPill: some View {
+        HStack(spacing: 8) {
+            if fetchingDataFromServer {
+                ProgressView()
+                    .scaleEffect(0.75)
+                    .tint(.secondary)
+                    .accessibilityHidden(true)
+                Text("Downloading content…")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+            } else {
+                Image(systemName: "checkmark.circle.fill")
+                    .foregroundStyle(.green)
+                    .accessibilityHidden(true)
+                Text("Content ready!")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
             }
-            .padding(.horizontal, 12)
-            .padding(.vertical, 7)
-            .background(reduceTransparency ? Color(.secondarySystemBackground) : .secondaryApp, in: Capsule())
-            .padding(.bottom, 20)
-            .accessibilityElement(children: .combine)
-            .accessibilityLabel(
-                fetchingDataFromServer
-                ? Text("Downloading content from the server")
-                : Text("Downloading content from the server complete")
-            )
+        }
+        .padding(.horizontal, 14)
+        .padding(.vertical, 8)
+        .background(
+            reduceTransparency
+                ? Color(.secondarySystemBackground)
+                : Color(.secondarySystemBackground).opacity(0.7),
+            in: Capsule()
+        )
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel(
+            fetchingDataFromServer
+                ? "Downloading content from the server"
+                : "Content downloaded and ready"
+        )
+    }
 
-            Text("While we're getting everything ready —")
+    private var heroHeader: some View {
+        VStack(alignment: .leading, spacing: 10) {
+            Text("While we're getting\neverything ready —")
                 .font(.largeTitle.weight(.bold))
-                .frame(maxWidth: .infinity, alignment: .leading)
                 .foregroundStyle(.primary)
                 .lineSpacing(2)
                 .minimumScaleFactor(0.85)
+                .fixedSize(horizontal: false, vertical: true)
                 .accessibilityAddTraits(.isHeader)
 
             Text("Grant MomCare a few permissions to personalise your meal plan, exercises, and daily insights the moment they're ready.")
-                .frame(maxWidth: .infinity, alignment: .leading)
                 .font(.subheadline)
                 .foregroundStyle(.secondary)
-                .padding(.top, 10)
                 .fixedSize(horizontal: false, vertical: true)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
-        .opacity(hasAppeared ? 1 : 0)
-        .offset(y: hasAppeared ? 0 : (reduceMotion ? 0 : 12))
     }
 
-    private var footerSection: some View {
-        VStack(spacing: 12) {
+    private var continueButton: some View {
+        VStack(spacing: 0) {
+            LinearGradient(
+                colors: [
+                    Color(reduceTransparency ? .secondary : MomCareAccent.secondary).opacity(0),
+                    Color(reduceTransparency ? .secondary : MomCareAccent.secondary)
+                ],
+                startPoint: .top,
+                endPoint: .bottom
+            )
+            .frame(height: 32)
+            .allowsHitTesting(false)
+
             Button {
                 firstTime = false
                 dismiss()
             } label: {
                 Text("Continue")
                     .font(.headline)
-                    .frame(maxWidth: .infinity, minHeight: 44)
-                    .padding(.vertical, 12)
-                    .background(MomCareAccent.primary, in: RoundedRectangle(cornerRadius: 24, style: .continuous))
                     .foregroundStyle(.white)
-                    .opacity((allPermissionsGranted && !isAnyPermissionRequestInFlight) ? 1 : 0.6)
+                    .frame(maxWidth: .infinity)
+                    .padding(.vertical, 16)
+                    .background(
+                        MomCareAccent.primary.opacity(
+                            (allPermissionsGranted && !isAnyPermissionRequestInFlight) ? 1 : 0.35
+                        ),
+                        in: RoundedRectangle(cornerRadius: 24, style: .continuous)
+                    )
             }
+            .padding(.horizontal, 20)
+            .padding(.bottom, 32)
             .buttonStyle(.plain)
             .disabled(!allPermissionsGranted || isAnyPermissionRequestInFlight)
             .accessibilityLabel("Continue")
             .accessibilityHint("Continues after all permissions are enabled.")
-            .accessibilityAddTraits(.isButton)
-
-            Text("You can change these permissions any time in Settings → MomCare+")
-                .font(.caption)
-                .foregroundStyle(.secondary)
-                .multilineTextAlignment(.center)
-                .fixedSize(horizontal: false, vertical: true)
+            .background(
+                Color(reduceTransparency ? .secondary : MomCareAccent.secondary)
+            )
         }
-        .opacity(hasAppeared ? 1 : 0)
     }
 }
 
@@ -257,67 +260,65 @@ private struct PermissionRow: View {
     @Binding var permission: AppPermission
 
     var body: some View {
-        VStack(spacing: 0) {
-            HStack(spacing: 14) {
-                ZStack {
-                    RoundedRectangle(cornerRadius: 10, style: .continuous)
-                        .fill(permission.iconColor.opacity(reduceTransparency ? 0.24 : 0.12))
-                        .frame(width: 44, height: 44)
+        HStack(alignment: .top, spacing: 16) {
+            // Icon
+            ZStack {
+                RoundedRectangle(cornerRadius: 12, style: .continuous)
+                    .fill(permission.iconColor.opacity(reduceTransparency ? 0.24 : 0.12))
+                    .frame(width: 48, height: 48)
 
-                    Image(systemName: permission.icon)
-                        .font(.system(size: 18, weight: .medium))
-                        .foregroundStyle(permission.iconColor)
-                        .accessibilityHidden(true)
-                }
+                Image(systemName: permission.icon)
+                    .font(.body.weight(.medium))
+                    .foregroundStyle(permission.iconColor)
+                    .accessibilityHidden(true)
+            }
 
-                VStack(alignment: .leading, spacing: 2) {
-                    Text(permission.title)
-                        .font(.system(.body, design: .rounded, weight: .semibold))
-                        .foregroundStyle(.primary)
+            VStack(alignment: .leading, spacing: 3) {
+                Text(permission.title)
+                    .font(.body.weight(.semibold))
+                    .foregroundStyle(.primary)
 
-                    Text(permission.reason)
-                        .font(.subheadline)
-                        .foregroundStyle(.secondary)
-                        .fixedSize(horizontal: false, vertical: true)
-                        .padding(.top, 4)
-                }
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .contentShape(Rectangle())
+                Text(permission.reason)
+                    .font(.subheadline)
+                    .foregroundStyle(.secondary)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
 
+            Group {
                 if permission.isRequesting {
                     ProgressView()
                         .controlSize(.small)
-                        .frame(minWidth: 51, minHeight: 31)
+                        .frame(width: 51, height: 31)
                         .accessibilityLabel("Requesting \(permission.title) permission")
                 } else {
                     Toggle("", isOn: $permission.isEnabled)
                         .labelsHidden()
                         .tint(permission.iconColor)
                         .disabled(permission.isEnabled || permission.isRequesting)
-                        .accessibilityLabel(Text(permission.title))
-                        .accessibilityValue(Text(permission.isEnabled ? "Enabled" : "Not enabled"))
-                        .accessibilityHint(Text("Double tap to grant access for \(permission.title)."))
+                        .accessibilityLabel(permission.title)
+                        .accessibilityValue(permission.isEnabled ? "Enabled" : "Not enabled")
+                        .accessibilityHint("Double tap to grant access for \(permission.title).")
                 }
             }
-            .padding(.vertical, 16)
-            .padding(.horizontal, 8)
-            .contentShape(Rectangle())
-            .accessibilityElement(children: .combine)
-
-            Divider()
-                .padding(.leading, 66)
+            .padding(.top, 8)
         }
+        .padding(16)
+        .background(
+            reduceTransparency
+                ? Color(.secondarySystemBackground)
+                : Color(.systemBackground).opacity(0.6),
+            in: RoundedRectangle(cornerRadius: 18, style: .continuous)
+        )
+        .accessibilityElement(children: .combine)
         .animation(reduceMotion ? nil : .easeInOut(duration: 0.2), value: permission.isRequesting)
         .animation(reduceMotion ? nil : .easeInOut(duration: 0.2), value: permission.isEnabled)
         .onChange(of: permission.isEnabled) { _, newValue in
-            guard newValue else { return }
-            guard !permission.isRequesting else { return }
-
+            guard newValue, !permission.isRequesting else { return }
             permission.isRequesting = true
 
             Task { @MainActor in
                 defer { permission.isRequesting = false }
-
                 do {
                     switch permission.type {
                     case .healthKit:
@@ -341,45 +342,30 @@ private struct PermissionRow: View {
                 } catch {
                     permission.isEnabled = false
                     switch permission.type {
-                    case .healthKit:
-                        healthKitError = error
-                    case .calendar:
-                        ekEventError = error
-                    case .reminders:
-                        ekReminderError = error
+                    case .healthKit: healthKitError = error
+                    case .calendar: ekEventError = error
+                    case .reminders: ekReminderError = error
                     }
                 }
             }
         }
         .errorAlert(error: $ekEventError) { _ in
             Button("Open Settings") {
-                if let url = URL(string: UIApplication.openSettingsURLString) {
-                    openURL(url)
-                }
+                if let url = URL(string: UIApplication.openSettingsURLString) { openURL(url) }
             }
-            Button("Cancel", role: .cancel) {
-                ekEventError = nil
-            }
+            Button("Cancel", role: .cancel) { ekEventError = nil }
         }
         .errorAlert(error: $ekReminderError) { _ in
             Button("Open Settings") {
-                if let url = URL(string: UIApplication.openSettingsURLString) {
-                    openURL(url)
-                }
+                if let url = URL(string: UIApplication.openSettingsURLString) { openURL(url) }
             }
-            Button("Cancel", role: .cancel) {
-                ekReminderError = nil
-            }
+            Button("Cancel", role: .cancel) { ekReminderError = nil }
         }
         .errorAlert(error: $healthKitError) { _ in
             Button("Open Settings") {
-                if let url = URL(string: UIApplication.openSettingsURLString) {
-                    openURL(url)
-                }
+                if let url = URL(string: UIApplication.openSettingsURLString) { openURL(url) }
             }
-            Button("Cancel", role: .cancel) {
-                healthKitError = nil
-            }
+            Button("Cancel", role: .cancel) { healthKitError = nil }
         }
     }
 
@@ -396,5 +382,4 @@ private struct PermissionRow: View {
     @EnvironmentObject private var contentServiceHandler: ContentServiceHandler
     @EnvironmentObject private var eventKitHandler: EventKitHandler
     @EnvironmentObject private var controlState: ControlState
-
 }

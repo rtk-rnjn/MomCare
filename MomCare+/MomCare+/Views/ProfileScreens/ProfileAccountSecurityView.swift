@@ -101,9 +101,13 @@ struct ProfileAccountSecurityView: View {
 
     // MARK: Internal
 
+    var hasAppleIdentifier: Bool {
+        authenticationService.credentials?.appleIdentifier != nil
+    }
+
     var body: some View {
         List {
-            if !emailAddress.isEmpty {
+            if !emailAddress.isEmpty || !hasAppleIdentifier {
                 Section {
                     HStack {
                         Text("Email Address")
@@ -124,56 +128,67 @@ struct ProfileAccountSecurityView: View {
                     Text("Your email address is used for account recovery and notifications.")
                         .font(.footnote)
                 }
-            }
 
-            Section {
-                Button {
-                    toggleChangePassword()
-                } label: {
-                    HStack {
-                        Text("Change Password")
-                        Spacer()
-                        Image(systemName: isChangingPassword ? "chevron.down" : "chevron.right")
-                            .foregroundColor(.secondary)
-                            .contentTransition(reduceMotion ? .identity : .symbolEffect)
-                            .animation(
-                                reduceMotion ? nil : .easeInOut,
-                                value: isChangingPassword
-                            )
-                    }
-                }
-                .foregroundColor(.primary)
-                .accessibilityHint(isChangingPassword ? "Collapses the password change form" : "Expands the password change form")
-
-                if isChangingPassword {
-
-                    SecureFieldRow(title: "Old Password", text: $oldPassword)
-                    SecureFieldRow(title: "New Password", text: $newPassword)
-                    SecureFieldRow(title: "Confirm Password", text: $confirmPassword)
-
-                    Button("Change") {
-                        validatePasswordAndSubmit {
-                            do {
-                                _ = try await authenticationService.changePassword(
-                                    currentPassword: oldPassword,
-                                    newPassword: newPassword
+                Section {
+                    Button {
+                        toggleChangePassword()
+                    } label: {
+                        HStack {
+                            Text("Change Password")
+                            Spacer()
+                            Image(systemName: isChangingPassword ? "chevron.down" : "chevron.right")
+                                .foregroundColor(.secondary)
+                                .contentTransition(reduceMotion ? .identity : .symbolEffect)
+                                .animation(
+                                    reduceMotion ? nil : .easeInOut,
+                                    value: isChangingPassword
                                 )
-                            } catch {
-                                controlState.error = error
-                            }
                         }
                     }
-                    .frame(maxWidth: .infinity)
-                    .foregroundColor(canSubmit ? Color("primaryAppColor") : .secondary)
-                    .disabled(!canSubmit)
-                }
-            } header: {
-                Text("Security")
-            } footer: {
-                Text("Your password must be at least 6 characters long. Make sure to choose a strong password to keep your account secure.")
-                    .font(.footnote)
-            }
+                    .foregroundColor(.primary)
+                    .accessibilityHint(isChangingPassword ? "Collapses the password change form" : "Expands the password change form")
 
+                    if isChangingPassword {
+
+                        SecureFieldRow(title: "Old Password", text: $oldPassword)
+                        SecureFieldRow(title: "New Password", text: $newPassword)
+                        SecureFieldRow(title: "Confirm Password", text: $confirmPassword)
+
+                        Button("Change") {
+                            validatePasswordAndSubmit {
+                                do {
+                                    _ = try await authenticationService.changePassword(
+                                        currentPassword: oldPassword,
+                                        newPassword: newPassword
+                                    )
+                                } catch {
+                                    controlState.error = error
+                                }
+                            }
+                        }
+                        .frame(maxWidth: .infinity)
+                        .foregroundColor(canSubmit ? Color("primaryAppColor") : .secondary)
+                        .disabled(!canSubmit)
+                    }
+                } header: {
+                    Text("Security")
+                } footer: {
+                    Text("Your password must be at least 6 characters long. Make sure to choose a strong password to keep your account secure.")
+                        .font(.footnote)
+                }
+            } else {
+                Section {
+                    if hasAppleIdentifier {
+                        Text("This account is connected with Apple Sign-In.")
+                            .foregroundStyle(.secondary)
+                    } else {
+                        Text("No email address associated with this account.")
+                            .foregroundStyle(.secondary)
+                    }
+                } header: {
+                    Text("Account Information")
+                }
+            }
             Section {
                 HStack {
                     Text("Apple ID")
@@ -257,7 +272,6 @@ struct ProfileAccountSecurityView: View {
         .navigationBarTitleDisplayMode(.inline)
         .onAppear {
             let credentials = authenticationService.credentials
-            hasAppleIdentifier = credentials?.appleIdentifier != nil
             emailAddress = credentials?.emailAddress ?? ""
         }
     }
@@ -313,7 +327,6 @@ struct ProfileAccountSecurityView: View {
     @State private var newPassword = ""
     @State private var confirmPassword = ""
 
-    @State private var hasAppleIdentifier: Bool = false
     @State private var showAppleConnectSheet: Bool = false
 
     private var canSubmit: Bool {
@@ -335,6 +348,7 @@ struct ProfileAccountSecurityView: View {
             } catch {
                 controlState.error = error
             }
+            showAppleConnectSheet = false
 
         case let .failure(error):
             controlState.error = error

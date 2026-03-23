@@ -77,6 +77,7 @@ final class AuthenticationService: ObservableObject {
     func register(emailAddress: String, password: String) async throws -> NetworkResponse<RegistrationResponse> {
         let response: NetworkResponse<RegistrationResponse> = try await NetworkManager.shared.post(url: Endpoint.register.urlString, body: prepareCredentialsData(emailAddress: emailAddress, password: password))
 
+        try await fetchCredentials()
         return handleSuccess(response, expectedStatusCode: 201)
     }
 
@@ -87,6 +88,8 @@ final class AuthenticationService: ObservableObject {
         _ = handleSuccess(networkResponse, expectedStatusCode: 200)
 
         KeychainHelper.set(password, forKey: .password)
+        try await fetchCredentials()
+
         return networkResponse
     }
 
@@ -94,6 +97,7 @@ final class AuthenticationService: ObservableObject {
         let refreshTokenData = RefreshToken(refreshToken: refreshToken).encodeUsingJSONEncoder()
         let response: NetworkResponse<TokenPair> = try await NetworkManager.shared.post(url: Endpoint.refresh.urlString, body: refreshTokenData)
 
+        try await fetchCredentials()
         return handleSuccess(response, expectedStatusCode: 200)
     }
 
@@ -226,6 +230,7 @@ final class AuthenticationService: ObservableObject {
         let payloadData = ThirdPartyLogin(idToken: idToken, existingEmailAddress: existingEmailAddress).encodeUsingJSONEncoder()
         let response: NetworkResponse<TokenPair> = try await NetworkManager.shared.post(url: Endpoint.appleLogin.urlString, body: payloadData)
 
+        try await fetchCredentials()
         return handleSuccess(response, expectedStatusCode: 200)
     }
 
@@ -241,7 +246,7 @@ final class AuthenticationService: ObservableObject {
     func fetchCredentials() async throws -> NetworkResponse<UserCredential> {
         let response: NetworkResponse<UserCredential> = try await NetworkManager.shared.get(url: Endpoint.credentials.urlString, headers: AuthenticationService.authorizationHeaders)
 
-        credentials = credentials
+        credentials = response.data
         return response
     }
 
@@ -308,6 +313,8 @@ final class AuthenticationService: ObservableObject {
         }
 
         let response: NetworkResponse<TokenPair> = try await NetworkManager.shared.post(url: Endpoint.appleLogin.urlString, body: data)
+
+        try await fetchCredentials()
         return handleSuccess(response, expectedStatusCode: 200)
     }
 }
