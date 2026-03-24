@@ -28,7 +28,6 @@ struct ExerciseCardView: View {
                         .animation(reduceMotion ? nil : .easeInOut, value: completionProgress)
 
                     Button {
-                        HapticsHandler.impact(.medium)
                         startExercisePlayer = true
                     } label: {
                         HStack(spacing: 6) {

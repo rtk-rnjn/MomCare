@@ -21,10 +21,8 @@ struct MyPlanExercisePlanView: View {
                 Task {
                     do {
                         try await contentServiceHandler.fetchUserExercises()
-                        HapticsHandler.notification(.success)
                     } catch {
                         controlState.error = error
-                        HapticsHandler.notification(.error)
                     }
                 }
             }

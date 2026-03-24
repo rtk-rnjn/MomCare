@@ -24,7 +24,6 @@ struct ValuePickerSheet<UnitType: Dimension>: View {
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
                     Button(role: .cancel) {
-                        HapticsHandler.impact(.light)
                         dismiss()
                     }
                     .keyboardShortcut(.cancelAction)
@@ -32,7 +31,6 @@ struct ValuePickerSheet<UnitType: Dimension>: View {
 
                 ToolbarItem(placement: .confirmationAction) {
                     Button(role: .confirm) {
-                        HapticsHandler.notification(.success)
                         selection = tempSelection
                         dismiss()
                     }

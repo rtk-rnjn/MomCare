@@ -236,7 +236,6 @@ private struct ItemRow: View {
         .modifier(MealContextMenu(item: item, food: food, onToggle: onToggle, onDelete: onDelete))
         .swipeActions(edge: .leading, allowsFullSwipe: true) {
             Button {
-                HapticsHandler.notification(item.isConsumed ? .warning : .success)
                 Task {
                     await onToggle(item.isConsumed)
                 }
@@ -250,7 +249,6 @@ private struct ItemRow: View {
         }
         .swipeActions(edge: .trailing, allowsFullSwipe: false) {
             Button(role: .destructive) {
-                HapticsHandler.notification(.warning)
                 Task { await onDelete() }
             } label: {
                 Label("", systemImage: "trash")
@@ -263,13 +261,11 @@ private struct ItemRow: View {
         .accessibilityValue(item.isConsumed ? "consumed" : "not consumed")
         .accessibilityHint("Long press for more options.")
         .accessibilityAction(named: item.isConsumed ? "Undo" : "Consume") {
-            HapticsHandler.notification(item.isConsumed ? .warning : .success)
             Task {
                 await onToggle(item.isConsumed)
             }
         }
         .accessibilityAction(named: "Delete") {
-            HapticsHandler.notification(.warning)
             Task { await onDelete() }
         }
         .task {
@@ -368,7 +364,6 @@ private struct MealContextMenu: ViewModifier {
     @ViewBuilder
     private var menuButtons: some View {
         Button {
-            HapticsHandler.notification(item.isConsumed ? .warning : .success)
             Task {
                 await onToggle(item.isConsumed)
             }
@@ -382,7 +377,6 @@ private struct MealContextMenu: ViewModifier {
         Divider()
 
         Button(role: .destructive) {
-            HapticsHandler.notification(.warning)
             Task { await onDelete() }
         } label: {
             Label("Delete", systemImage: "trash")

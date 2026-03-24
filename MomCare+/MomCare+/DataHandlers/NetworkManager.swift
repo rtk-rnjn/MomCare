@@ -174,11 +174,21 @@ class NetworkManager {
 
                             try? await Task.sleep(nanoseconds: UInt64(1_000_000_000 * (attempts % 5)))
 
+                            await MainActor.run {
+                                HapticsHandler.notification(.warning)
+                            }
+
                         default:
+                            await MainActor.run {
+                                HapticsHandler.notification(.error)
+                            }
                             throw error
                         }
                     }
 
+                    await MainActor.run {
+                        HapticsHandler.notification(.error)
+                    }
                     throw error
                 }
             }

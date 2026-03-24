@@ -82,7 +82,6 @@ struct ProfilePersonalInfoView: View {
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
                 Button(isEditing ? "Done" : "Edit") {
-                    HapticsHandler.impact(.light)
                     if reduceMotion {
                         isEditing.toggle()
                     } else {

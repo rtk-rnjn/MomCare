@@ -45,7 +45,6 @@ struct MyPlanDietPlanView: View {
 
             MealTimelineCardView(plan: contentServiceHandler.myPlanModel)
                 .refreshable {
-                    HapticsHandler.impact(.medium)
                     do {
                         try await contentServiceHandler.fetchMealPlan()
                     } catch {
