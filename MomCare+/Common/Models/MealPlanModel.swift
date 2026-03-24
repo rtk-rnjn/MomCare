@@ -32,7 +32,6 @@ extension MealType: CaseIterable {
     }
 }
 
-
 struct FoodReferenceModel: Codable, Sendable, Identifiable, Equatable {
     enum CodingKeys: String, CodingKey {
         case foodId = "food_id"

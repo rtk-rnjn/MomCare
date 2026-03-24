@@ -1,6 +1,5 @@
 import SwiftUI
 
-
 struct ExerciseHistory: View {
     // MARK: Internal
 

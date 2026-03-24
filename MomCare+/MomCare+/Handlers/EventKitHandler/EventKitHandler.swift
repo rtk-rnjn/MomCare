@@ -16,7 +16,7 @@ enum CalendarConfiguration {
 
 @MainActor
 final class EventKitHandler: ObservableObject {
-
+    // MARK: Internal
 
     @Published var events: [EKEvent] = []
     @Published var allEvents: [EKEvent] = []
@@ -28,7 +28,6 @@ final class EventKitHandler: ObservableObject {
     @Published var allCompletedReminders: [EKReminder] = []
 
     @Published var eventStore: EKEventStore = .init()
-
 
     func requestAccess(for type: EKEntityType) async throws -> Bool {
         switch type {
@@ -46,7 +45,6 @@ final class EventKitHandler: ObservableObject {
             return false
         }
     }
-
 
     func getCalendar(with identifier: String) -> EKCalendar? {
         eventStore.calendar(withIdentifier: identifier)
@@ -70,7 +68,6 @@ final class EventKitHandler: ObservableObject {
         )
     }
 
-
     func twoYearDateRange() -> (start: Date, end: Date) {
         let now = Date()
         let start = Calendar.current.date(byAdding: .year, value: -2, to: now) ?? now
@@ -78,10 +75,11 @@ final class EventKitHandler: ObservableObject {
         return (start, end)
     }
 
+    // MARK: Private
 
     private func createOrGetCalendar(
         entityType: EKEntityType,
-        identifierKey: String,
+        identifierKey _: String,
         title: String,
         defaultSource: EKCalendar?
     ) throws -> EKCalendar {

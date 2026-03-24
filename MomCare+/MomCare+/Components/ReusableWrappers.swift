@@ -1,7 +1,6 @@
 import SwiftUI
 import UIKit
 
-
 struct InfoRowDate: View {
     // MARK: Internal
 

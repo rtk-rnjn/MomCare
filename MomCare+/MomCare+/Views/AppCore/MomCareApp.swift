@@ -12,9 +12,7 @@ struct MomCareApp: App {
             #if DEBUG
             try? Tips.resetDatastore()
             #endif // DEBUG
-        } catch {
-
-        }
+        } catch {}
     }
 
     // MARK: Internal

@@ -1,8 +1,6 @@
 import EventKit
 
-
 extension EventKitHandler {
-
     func fetchAppointments(selectedDate: Date) throws {
         let calendar = Calendar.current
         let startDate = calendar.startOfDay(for: selectedDate)

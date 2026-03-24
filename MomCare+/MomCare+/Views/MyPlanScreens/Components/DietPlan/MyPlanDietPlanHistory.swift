@@ -1,6 +1,5 @@
 import SwiftUI
 
-
 struct MyPlanDietPlanHistory: View {
     // MARK: Internal
 
@@ -121,7 +120,6 @@ struct MyPlanDietPlanHistory: View {
     }
 }
 
-
 private struct ProgressPill: View {
     let consumed: Int
     let total: Int
@@ -202,7 +200,6 @@ private struct FoodReferenceRow: View {
     @State private var food: FoodItemModel?
     @State private var isLoadingFood = false
 }
-
 
 private struct FoodReferenceSection: View {
     // MARK: Internal

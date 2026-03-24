@@ -434,7 +434,6 @@ private struct NutritionPreview: View {
     }
 }
 
-
 private enum CircleStyle {
     case header
     case item
@@ -459,8 +458,6 @@ private enum CircleStyle {
 }
 
 private struct TimelineCircle: View {
-
-
     let isChecked: Bool
     var style: CircleStyle = .header
 

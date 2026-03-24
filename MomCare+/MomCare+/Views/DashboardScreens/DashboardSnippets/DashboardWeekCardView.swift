@@ -1,10 +1,7 @@
 import SwiftUI
 import TipKit
 
-
-
 struct DashboardWeekCardView: View {
-
     let week: Int?
     let day: Int?
     let trimester: String?

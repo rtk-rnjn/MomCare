@@ -1,5 +1,5 @@
-import SwiftUI
 import Charts
+import SwiftUI
 import TipKit
 
 struct MyPlanDietPlanView: View {
@@ -124,7 +124,6 @@ struct MyPlanDietPlanView: View {
     @EnvironmentObject private var contentServiceHandler: ContentServiceHandler
     @EnvironmentObject private var controlState: ControlState
 }
-
 
 private struct NutritionGraphRootView: View {
     // MARK: Internal
@@ -783,4 +782,3 @@ private struct VitalDetailView: View {
         }
     }
 }
-

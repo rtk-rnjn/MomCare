@@ -3,12 +3,6 @@ import SwiftUI
 struct MyPlanDietPlanProgressCardView: View {
     // MARK: Internal
 
-    private enum CardDisplayMode: Int, CaseIterable {
-        case calories
-        case macros
-        case micros
-    }
-
     let plan: MealPlanModel?
 
     let calorieIntake: Measurement<UnitEnergy>?
@@ -54,6 +48,12 @@ struct MyPlanDietPlanProgressCardView: View {
     }
 
     // MARK: Private
+
+    private enum CardDisplayMode: Int, CaseIterable {
+        case calories
+        case macros
+        case micros
+    }
 
     private enum DragDirection {
         case up

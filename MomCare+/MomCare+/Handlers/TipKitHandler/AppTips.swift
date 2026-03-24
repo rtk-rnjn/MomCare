@@ -47,7 +47,7 @@ enum MomCareTips {
         }
 
         struct HeaderRowAddTip: Tip {
-            static let dismissedEvent = Event(id: "headerRowAddTipDismissed")
+            static let dismissedEvent: Event = .init(id: "headerRowAddTipDismissed")
 
             var title: Text {
                 Text("Add Food Items")
@@ -59,7 +59,6 @@ enum MomCareTips {
         }
 
         struct ItemRowSlideTip: Tip {
-
             var title: Text {
                 Text("Mark as Consumed or Delete")
             }
@@ -75,9 +74,8 @@ enum MomCareTips {
             }
 
             var rules: [Rule] {
-                #Rule(HeaderRowAddTip.dismissedEvent) { $0.donations.count > 0 }
+                #Rule(HeaderRowAddTip.dismissedEvent) { !$0.donations.isEmpty }
             }
         }
-
     }
 }
