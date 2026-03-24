@@ -110,18 +110,23 @@ struct ProfileAccountSecurityView: View {
                         Spacer()
 
                         Text(emailAddress)
-                            .keyboardType(.emailAddress)
+                            .lineLimit(1)
                             .multilineTextAlignment(.trailing)
                             .autocorrectionDisabled()
-                            .textInputAutocapitalization(.never)
-                            .focused($focusedField, equals: .emailAddressField)
+                            .minimumScaleFactor(0.8)
+                            .truncationMode(.middle)
                     }
 
                 } header: {
                     Text("Account Information")
                 } footer: {
-                    Text("Your email address is used for account recovery and notifications.")
-                        .font(.footnote)
+                    if !hasAppleIdentifier {
+                        Text("Your email address is used for account recovery and notifications.")
+                            .font(.footnote)
+                    } else {
+                        Text("This account is connected with Apple Sign-In. Email address is not required.")
+                            .font(.footnote)
+                    }
                 }
 
                 Section {
@@ -204,6 +209,7 @@ struct ProfileAccountSecurityView: View {
                 Text("Third Party Integration")
             }
         }
+        .scrollDismissesKeyboard(.interactively)
         .listStyle(.insetGrouped)
         .sheet(isPresented: $showAppleConnectSheet) {
             NavigationStack {
@@ -299,8 +305,6 @@ struct ProfileAccountSecurityView: View {
         case newPasswordField
         case confirmPasswordField
     }
-
-    @FocusState private var focusedField: Field?
 
     @State private var emailAddress: String = ""
 

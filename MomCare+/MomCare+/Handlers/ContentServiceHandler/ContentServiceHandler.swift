@@ -31,7 +31,6 @@ final class ContentServiceHandler: ObservableObject {
     @Published var stepsGoal: Double = 4200
 
     @Published var breathingTargetInSeconds: Double = 300
-    @Published var breathingCompletionDuration: Double = 0
 
     @Published var nutritionIntakeTotals: NutritionTotals?
     @Published var nutritionGoalTotals: NutritionTotals?

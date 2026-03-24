@@ -105,11 +105,16 @@ struct MyPlanExercisePlanView: View {
     @State private var showHistory = false
     @State private var showWalkingHistory = false
 
-    @State private var breathingCompleted: Bool = false
     @State private var walkingCompleted: Bool = false
 
     private var completedCount: Int {
         contentServiceHandler.totalUserExercisesCompleted + (breathingCompleted ? 1 : 0) + (walkingCompleted ? 1 : 0)
+    }
+
+    private var breathingCompleted: Bool {
+        let durationCompleted = contentServiceHandler.fetchBreathingCompletionDuration(for: .init())
+        let totalDuration = contentServiceHandler.breathingTargetInSeconds
+        return durationCompleted >= totalDuration
     }
 
     private var exerciseCardsView: some View {
@@ -168,7 +173,7 @@ struct MyPlanExercisePlanView: View {
     private func exerciseInfoOverlay() -> some View {
         ZStack {
             Color.black
-.opacity(0.4)
+                .opacity(0.4)
                 .ignoresSafeArea()
                 .onTapGesture {
                     withAnimation(reduceMotion ? nil : .easeInOut) {

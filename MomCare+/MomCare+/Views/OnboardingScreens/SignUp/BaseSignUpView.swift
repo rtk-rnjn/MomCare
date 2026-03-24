@@ -226,6 +226,7 @@ struct BaseSignUpView: View {
                         .accessibilityHint("Enter your 10-digit mobile number")
                 }
             }
+            .scrollDismissesKeyboard(.interactively)
             .scrollContentBackground(.hidden)
         }
     }

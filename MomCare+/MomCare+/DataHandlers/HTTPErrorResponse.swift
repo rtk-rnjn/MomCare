@@ -186,25 +186,32 @@ struct HTTPErrorResponse: Codable, LocalizedError {
             }
         }
 
-        func toOSLogMessage() -> String {
+        func toOSLogMessageString() -> String {
             switch self {
             case let .message(message):
-                message
+                return message
 
             case let .validation(errors):
-                errors.map { error in
-                    let fieldPath = error.loc
-.map { loc in
+                let errorMessages = errors.map { error in
+                    let locations = error.loc.map { loc -> String in
                         switch loc {
-                        case let .string(s): s
-                        case let .int(i): "[\(i)]"
+                        case let .string(value):
+                            return value
+
+                        case let .int(index):
+                            return "[\(index)]"
                         }
                     }
-.joined(separator: ".")
 
-                    return "\(fieldPath): \(error.msg) (type: \(error.type))"
+                    let fieldPath = locations.joined(separator: ".")
+
+                    let message = error.msg
+                    let type = error.type
+
+                    return "\(fieldPath): \(message) (type: \(type))"
                 }
-.joined(separator: "; ")
+
+                return errorMessages.joined(separator: "; ")
             }
         }
     }

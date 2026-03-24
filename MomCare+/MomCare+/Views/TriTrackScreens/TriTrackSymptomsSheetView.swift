@@ -42,6 +42,7 @@ struct TriTrackSymptomsSheetView: View {
                     }
                 }
             }
+            .scrollDismissesKeyboard(.interactively)
             .listStyle(.plain)
             .navigationTitle("Select a Symptom")
             .navigationBarTitleDisplayMode(.inline)

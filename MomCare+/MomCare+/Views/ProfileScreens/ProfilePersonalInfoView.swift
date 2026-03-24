@@ -75,6 +75,7 @@ struct ProfilePersonalInfoView: View {
                     .font(.footnote)
             }
         }
+        .scrollDismissesKeyboard(.interactively)
         .listStyle(.insetGrouped)
         .navigationTitle("Personal Information")
         .navigationBarTitleDisplayMode(.inline)

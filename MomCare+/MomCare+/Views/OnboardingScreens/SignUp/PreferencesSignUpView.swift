@@ -99,6 +99,7 @@ struct PreferencesSignUpView: View {
                 dueDateSection
                 selectionSection
             }
+            .scrollDismissesKeyboard(.interactively)
             .scrollContentBackground(.hidden)
         }
         .onAppear {

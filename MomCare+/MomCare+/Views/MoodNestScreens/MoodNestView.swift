@@ -8,7 +8,7 @@ struct MoodNestView: View {
         NavigationStack {
             ZStack {
                 moodNestViewModel.backgroundColor
-.ignoresSafeArea()
+                    .ignoresSafeArea()
                     .accessibilityHidden(true)
 
                 VStack(spacing: 32) {
