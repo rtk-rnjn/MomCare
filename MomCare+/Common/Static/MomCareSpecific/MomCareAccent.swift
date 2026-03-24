@@ -1,8 +1,8 @@
 import SwiftUI
 
 enum MomCareAccent {
-    static let primary: Color = .init("primaryAppColor")
-    static let secondary: Color = .init("secondaryAppColor")
+    nonisolated static let primary: Color = .init("primaryAppColor")
+    nonisolated static let secondary: Color = .init("secondaryAppColor")
 }
 
 enum MoodColors {

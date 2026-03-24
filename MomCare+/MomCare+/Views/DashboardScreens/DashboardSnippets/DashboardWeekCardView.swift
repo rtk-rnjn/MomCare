@@ -1,9 +1,29 @@
 import SwiftUI
+import TipKit
+
+struct DashboardWeekCardTip: Tip {
+    var title: Text {
+        Text("Pregnancy Progress Card")
+    }
+
+    var message: Text? {
+        Text("This card shows your current week and day of pregnancy, as well as the trimester you're in.")
+    }
+
+    var image: Image? {
+        Image(systemName: "calendar")
+            .symbolRenderingMode(.multicolor)
+            .symbolRenderingMode(.palette)
+    }
+}
 
 struct DashboardWeekCardView: View {
+
     let week: Int?
     let day: Int?
     let trimester: String?
+
+    private let tip = DashboardWeekCardTip()
 
     var body: some View {
         VStack(spacing: 0) {
@@ -33,6 +53,7 @@ struct DashboardWeekCardView: View {
                         .lineLimit(1)
                         .minimumScaleFactor(0.85)
                         .padding(.leading, 16)
+                        .popoverTip(tip, arrowEdge: .top)
 
                     Spacer()
 

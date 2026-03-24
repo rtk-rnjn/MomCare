@@ -222,3 +222,45 @@ struct ProfilePersonalInfoView: View {
         return min ... max
     }
 }
+
+private struct InfoRow: View {
+    let title: String
+    let value: String
+    let isEditing: Bool
+
+    var body: some View {
+        HStack {
+            Text(title)
+                .foregroundColor(.primary)
+
+            Spacer()
+
+            Text(value)
+                .foregroundColor(isEditing ? Color("primaryAppColor") : .secondary)
+        }
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel("\(title): \(value)")
+    }
+}
+
+private struct ProfileEditableTextRow: View {
+    let title: String
+    @Binding var text: String
+
+    let isEditing: Bool
+    let displayText: String
+
+    var body: some View {
+        HStack {
+            Text(title)
+                .foregroundColor(.primary)
+
+            Spacer()
+
+            TextField(displayText, text: $text)
+                .multilineTextAlignment(.trailing)
+                .foregroundColor(isEditing ? MomCareAccent.primary : .secondary)
+                .disabled(!isEditing)
+        }
+    }
+}

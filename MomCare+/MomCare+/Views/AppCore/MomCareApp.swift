@@ -9,7 +9,12 @@ struct MomCareApp: App {
     init() {
         do {
             try Tips.configure()
-        } catch {}
+            #if DEBUG
+            try? Tips.resetDatastore()
+            #endif // DEBUG
+        } catch {
+
+        }
     }
 
     // MARK: Internal

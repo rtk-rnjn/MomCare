@@ -1,6 +1,40 @@
 import SwiftUI
 import TipKit
 
+struct HeaderRowAddTip: Tip {
+
+    static let dismissedEvent = Event(id: "headerRowAddTipDismissed")
+
+    var title: Text {
+        Text("Add Food Items")
+    }
+
+    var message: Text? {
+        Text("You can add food items to your meal plan by tapping the pencil icon in the meal header.")
+    }
+}
+
+struct ItemRowSlideTip: Tip {
+
+    var title: Text {
+        Text("Mark as Consumed or Delete")
+    }
+
+    var message: Text? {
+        Text("You can also mark a food item as consumed or delete it by swiping left or right on the item.")
+    }
+
+    var image: Image? {
+        Image(systemName: "checkmark.circle")
+            .symbolRenderingMode(.palette)
+            .symbolColorRenderingMode(.flat)
+    }
+
+    var rules: [Rule] {
+        #Rule(HeaderRowAddTip.dismissedEvent) { $0.donations.count > 0 }
+    }
+}
+
 struct MealTimelineCardView: View {
     // MARK: Internal
 
@@ -52,6 +86,8 @@ struct MealTimelineCardView: View {
 
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
+    private let itemRowSlideTip: ItemRowSlideTip = .init()
+
     private func mealSection(title: String, items: [FoodReferenceModel], originalItems: [FoodReferenceModel], mealType: MealType) -> some View {
         Section {
             HeaderRow(
@@ -101,6 +137,7 @@ struct MealTimelineCardView: View {
                             }
                         }
                     )
+                    .popoverTip(title == "Breakfast" && item.id == items.first?.id ? itemRowSlideTip : nil, arrowEdge: .top)
                     .background {
                         LinearGradient(
                             colors: [
@@ -135,6 +172,8 @@ private struct HeaderRow: View {
     let hideBottomLine: Bool
     let mealType: MealType
     let onToggle: (Bool) async -> Void
+
+    let headerTip = HeaderRowAddTip()
 
     var body: some View {
         HStack(alignment: .center, spacing: 12) {
@@ -171,6 +210,14 @@ private struct HeaderRow: View {
                     .foregroundColor(MomCareAccent.primary)
             }
             .accessibilityLabel("Add food to \(section.title)")
+            .popoverTip(hideTopLine ? headerTip : nil)
+            .task {
+                for await status in headerTip.statusUpdates {
+                    if case .invalidated = status {
+                        await HeaderRowAddTip.dismissedEvent.donate()
+                    }
+                }
+            }
             .frame(minWidth: 44, minHeight: 44)
         }
         .frame(height: 66)
