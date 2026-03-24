@@ -118,13 +118,13 @@ extension ContentServiceHandler {
         try await healthStore.save(sample)
     }
 
-    nonisolated func writeHealthData(
+    nonisolated func writeHealthData(  // swiftlint:disable:this function_parameter_count
         categoryTypeIdentifier: HKCategoryTypeIdentifier,
         value: Int,
         start: Date,
         end: Date,
         device: HKDevice?,
-        metadata: [String : Any]?
+        metadata: [String: Any]?
     ) async throws {
         let categoryType = HKCategoryType(categoryTypeIdentifier)
 
