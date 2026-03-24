@@ -13,8 +13,7 @@ extension ContentServiceHandler {
         }
 
         let startOfDate = Calendar.current.startOfDay(for: date)
-        let completionDuration: TimeInterval = Database.shared[.breathingProgress(startOfDate)] ?? 0
-        return completionDuration
+        return Database.shared[.breathingProgress(startOfDate)] ?? 0
     }
 
     func fetchStepCount(for date: Date) async -> Int {
