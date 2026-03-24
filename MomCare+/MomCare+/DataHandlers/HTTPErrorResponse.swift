@@ -1,4 +1,5 @@
 import Foundation
+import OSLog
 
 enum CodableValue: Codable, Sendable {
     case int(Int)
@@ -182,6 +183,28 @@ struct HTTPErrorResponse: Codable, LocalizedError {
 
             case let .validation(errors):
                 try container.encode(errors)
+            }
+        }
+
+        func toOSLogMessage() -> String {
+            switch self {
+            case let .message(message):
+                message
+
+            case let .validation(errors):
+                errors.map { error in
+                    let fieldPath = error.loc
+.map { loc in
+                        switch loc {
+                        case let .string(s): s
+                        case let .int(i): "[\(i)]"
+                        }
+                    }
+.joined(separator: ".")
+
+                    return "\(fieldPath): \(error.msg) (type: \(error.type))"
+                }
+.joined(separator: "; ")
             }
         }
     }

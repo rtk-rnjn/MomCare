@@ -193,6 +193,8 @@ class NetworkManager {
 
         if httpResponse.statusCode >= 400 {
             let errorResponse: HTTPErrorResponse = try data.decodeUsingJSONDecoder()
+            let osLogMessage = errorResponse.detail.toOSLogMessage()
+            logger.error("HTTP Exception: \(osLogMessage)")
             throw APIErrorResolver.error(from: httpResponse.statusCode, with: errorResponse)
         }
 

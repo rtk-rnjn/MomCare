@@ -78,8 +78,9 @@ final class AuthenticationService: ObservableObject {
     func register(emailAddress: String, password: String) async throws -> NetworkResponse<RegistrationResponse> {
         let response: NetworkResponse<RegistrationResponse> = try await NetworkManager.shared.post(url: Endpoint.register.urlString, body: prepareCredentialsData(emailAddress: emailAddress, password: password))
 
+        let success = handleSuccess(response, expectedStatusCode: 201)
         try await fetchCredentials()
-        return handleSuccess(response, expectedStatusCode: 201)
+        return success
     }
 
     @discardableResult
@@ -98,8 +99,9 @@ final class AuthenticationService: ObservableObject {
         let refreshTokenData = RefreshToken(refreshToken: refreshToken).encodeUsingJSONEncoder()
         let response: NetworkResponse<TokenPair> = try await NetworkManager.shared.post(url: Endpoint.refresh.urlString, body: refreshTokenData)
 
+        let success = handleSuccess(response, expectedStatusCode: 200)
         try await fetchCredentials()
-        return handleSuccess(response, expectedStatusCode: 200)
+        return success
     }
 
     @discardableResult
@@ -215,9 +217,8 @@ final class AuthenticationService: ObservableObject {
     @discardableResult
     func delete() async throws -> NetworkResponse<Bool> {
         let networkResponse: NetworkResponse<Bool> = try await NetworkManager.shared.delete(url: Endpoint.delete.urlString, headers: AuthenticationService.authorizationHeaders)
-        if networkResponse.success {
-            dropCredentials()
-        } else {}
+
+        dropCredentials()
         return networkResponse
     }
 
@@ -225,8 +226,9 @@ final class AuthenticationService: ObservableObject {
         let payloadData = ThirdPartyLogin(idToken: idToken, existingEmailAddress: existingEmailAddress).encodeUsingJSONEncoder()
         let response: NetworkResponse<TokenPair> = try await NetworkManager.shared.post(url: Endpoint.appleLogin.urlString, body: payloadData)
 
+        let success = handleSuccess(response, expectedStatusCode: 200)
         try await fetchCredentials()
-        return handleSuccess(response, expectedStatusCode: 200)
+        return success
     }
 
     @discardableResult
@@ -298,7 +300,10 @@ final class AuthenticationService: ObservableObject {
         KeychainHelper.remove(.refreshToken)
 
         hasAccessToken = false
+        tokenPair = nil
         userModel = nil
+        credentials = nil
+        Database.shared.purge()
     }
 
     private func loginWithApple(token: String) async throws -> NetworkResponse<TokenPair> {
@@ -309,7 +314,8 @@ final class AuthenticationService: ObservableObject {
 
         let response: NetworkResponse<TokenPair> = try await NetworkManager.shared.post(url: Endpoint.appleLogin.urlString, body: data)
 
+        let success = handleSuccess(response, expectedStatusCode: 200)
         try await fetchCredentials()
-        return handleSuccess(response, expectedStatusCode: 200)
+        return success
     }
 }
