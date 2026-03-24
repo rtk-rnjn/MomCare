@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct NutritionProgressCardHelpView: View {
+struct MyPlanDietPlanGuideView: View {
     // MARK: Internal
 
     var body: some View {

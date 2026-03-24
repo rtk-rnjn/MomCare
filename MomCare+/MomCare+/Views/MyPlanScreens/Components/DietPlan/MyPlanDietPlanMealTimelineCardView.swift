@@ -435,30 +435,31 @@ private struct NutritionPreview: View {
 }
 
 
+private enum CircleStyle {
+    case header
+    case item
+
+    // MARK: Internal
+
+    var size: CGFloat {
+        self == .header ? 22 : 16
+    }
+
+    var maskSize: CGFloat {
+        size + 4
+    }
+
+    var strokeWidth: CGFloat {
+        self == .header ? 2 : 1.5
+    }
+
+    var checkmarkFont: Font {
+        self == .header ? .caption.bold() : .caption2.bold()
+    }
+}
 
 private struct TimelineCircle: View {
-    private enum CircleStyle {
-        case header
-        case item
 
-        // MARK: Internal
-
-        var size: CGFloat {
-            self == .header ? 22 : 16
-        }
-
-        var maskSize: CGFloat {
-            size + 4
-        }
-
-        var strokeWidth: CGFloat {
-            self == .header ? 2 : 1.5
-        }
-
-        var checkmarkFont: Font {
-            self == .header ? .caption.bold() : .caption2.bold()
-        }
-    }
 
     let isChecked: Bool
     var style: CircleStyle = .header

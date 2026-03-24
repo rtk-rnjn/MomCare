@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct MyPlanExerciseHelpView: View {
+struct MyPlanExerciseGuideView: View {
     // MARK: Internal
 
     var body: some View {

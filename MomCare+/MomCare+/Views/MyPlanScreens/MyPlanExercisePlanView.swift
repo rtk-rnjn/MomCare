@@ -32,7 +32,7 @@ struct MyPlanExercisePlanView: View {
             .padding(.horizontal, 16)
         }
         .sheet(isPresented: $showHelp) {
-            MyPlanExerciseHelpView()
+            MyPlanExerciseGuideView()
         }
         .fullScreenCover(isPresented: $showHistory) {
             ExerciseHistory()

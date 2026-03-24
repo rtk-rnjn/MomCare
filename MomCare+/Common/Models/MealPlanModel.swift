@@ -1,4 +1,5 @@
 import Foundation
+import SwiftUI
 
 enum MealType: String, Codable {
     case breakfast
@@ -30,6 +31,7 @@ extension MealType: CaseIterable {
         }
     }
 }
+
 
 struct FoodReferenceModel: Codable, Sendable, Identifiable, Equatable {
     enum CodingKeys: String, CodingKey {
