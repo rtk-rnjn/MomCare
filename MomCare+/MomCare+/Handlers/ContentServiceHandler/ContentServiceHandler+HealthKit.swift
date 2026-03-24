@@ -106,18 +106,29 @@ extension ContentServiceHandler {
     nonisolated func writeHealthData(
         quantityTypeIdentifier: HKQuantityTypeIdentifier,
         value: Double,
-        unit: HKUnit
+        unit: HKUnit,
+        start: Date = .init(),
+        end: Date = .init()
     ) async throws {
-        guard let quantityType = HKQuantityType.quantityType(forIdentifier: quantityTypeIdentifier) else {
-            return
-        }
-
-        let calendar = Calendar.current
-        let start = calendar.startOfDay(for: Date())
-        let end = calendar.date(byAdding: .day, value: 1, to: start)!
+        let quantityType = HKQuantityType(quantityTypeIdentifier)
 
         let quantity = HKQuantity(unit: unit, doubleValue: value)
         let sample = HKQuantitySample(type: quantityType, quantity: quantity, start: start, end: end)
+
+        try await healthStore.save(sample)
+    }
+
+    nonisolated func writeHealthData(
+        categoryTypeIdentifier: HKCategoryTypeIdentifier,
+        value: Int,
+        start: Date,
+        end: Date,
+        device: HKDevice?,
+        metadata: [String : Any]?
+    ) async throws {
+        let categoryType = HKCategoryType(categoryTypeIdentifier)
+
+        let sample = HKCategorySample(type: categoryType, value: value, start: start, end: end, device: device, metadata: metadata)
 
         try await healthStore.save(sample)
     }
