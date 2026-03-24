@@ -5,11 +5,6 @@ import TipKit
 struct DashboardView: View {
     // MARK: Internal
 
-    @State private var tips = TipGroup {
-        MomCareTips.Dashboard.DashboardWeekCardTip()
-        MomCareTips.Dashboard.DashboardEventCardTip()
-    }
-
     var body: some View {
         ScrollView(.vertical, showsIndicators: false) {
             VStack(spacing: 20) {
@@ -145,6 +140,11 @@ struct DashboardView: View {
     }
 
     // MARK: Private
+
+    @State private var tips = TipGroup {
+        MomCareTips.Dashboard.DashboardWeekCardTip()
+        MomCareTips.Dashboard.DashboardEventCardTip()
+    }
 
     @EnvironmentObject private var contentServiceHandler: ContentServiceHandler
     @EnvironmentObject private var eventKitHandler: EventKitHandler

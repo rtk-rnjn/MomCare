@@ -2,7 +2,6 @@ import TipKit
 import UIKit
 
 enum MomCareTips {
-
     enum Dashboard {
         struct DashboardWeekCardTip: Tip {
             var title: Text {
@@ -97,7 +96,6 @@ enum MomCareTips {
                 UIImage(systemName: "hand.tap")
                     .map { $0.withTintColor(.black, renderingMode: .alwaysOriginal) }
                     .map(Image.init(uiImage:))
-
             }
         }
     }
@@ -107,11 +105,11 @@ enum MomCareTips {
             var title: Text {
                 Text("Mood Slider")
             }
-            
+
             var message: Text? {
                 Text("Drag the slider to indicate how you're feeling today.")
             }
-            
+
             var image: Image? {
                 UIImage(systemName: "hand.draw")
                     .map { $0.withTintColor(.black, renderingMode: .alwaysOriginal) }

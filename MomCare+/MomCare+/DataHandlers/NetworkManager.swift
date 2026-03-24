@@ -1,8 +1,8 @@
 import Foundation
-import UIKit
 import OSLog
+import UIKit
 
-private let logger = MomCareLogger.network
+private let logger: Logger = MomCareLogger.network
 
 enum HTTPMethod: String {
     case GET

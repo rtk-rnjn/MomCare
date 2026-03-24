@@ -11,7 +11,7 @@ struct MomCareApp: App {
             try Tips.configure(
                 [
                     .displayFrequency(.immediate),
-                    .datastoreLocation(.applicationDefault),
+                    .datastoreLocation(.applicationDefault)
                 ]
             )
             #if DEBUG

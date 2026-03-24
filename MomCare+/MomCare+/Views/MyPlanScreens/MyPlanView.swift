@@ -4,12 +4,6 @@ import TipKit
 struct MyPlanView: View {
     // MARK: Internal
 
-    @State private var dietPlanTips = TipGroup {
-        MomCareTips.DietPlan.ProgressCardSlideOrTapTip()
-        MomCareTips.DietPlan.HeaderRowAddTip()
-        MomCareTips.DietPlan.ItemRowSlideTip()
-    }
-
     var body: some View {
         VStack(spacing: 0) {
             Picker("", selection: $controlState.myPlanSegment) {
@@ -36,6 +30,12 @@ struct MyPlanView: View {
     }
 
     // MARK: Private
+
+    @State private var dietPlanTips = TipGroup {
+        MomCareTips.DietPlan.ProgressCardSlideOrTapTip()
+        MomCareTips.DietPlan.HeaderRowAddTip()
+        MomCareTips.DietPlan.ItemRowSlideTip()
+    }
 
     @AppStorage(FeatureFlagState.forceUseLargeTitle.rawValue, store: UserDefaults(suiteName: "group.MomCare")) private var forceUseLargeTitle: Bool = false
 

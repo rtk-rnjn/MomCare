@@ -7,8 +7,6 @@ struct WalkingCardView: View {
     let stepsToday: Double
     let stepsGoal: Double
 
-    private let tip = MomCareTips.ExercisePlan.WalkingCardTapTip()
-
     var body: some View {
         VStack(spacing: 14) {
             HStack {
@@ -106,6 +104,8 @@ struct WalkingCardView: View {
     @State private var percentCompleted: Double = 0
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @Environment(\.accessibilityReduceTransparency) private var reduceTransparency
+
+    private let tip = MomCareTips.ExercisePlan.WalkingCardTapTip()
 
     private func updateProgress() {
         guard stepsGoal > 0 else {

@@ -4,8 +4,6 @@ import TipKit
 struct MoodNestView: View {
     // MARK: Internal
 
-    private let sliderTip: MomCareTips.MoodNest.MoodNestSliderTip = .init()
-
     var body: some View {
         NavigationStack {
             ZStack {
@@ -90,4 +88,6 @@ struct MoodNestView: View {
     @StateObject private var moodNestViewModel: MoodNestViewModel = .init()
     @EnvironmentObject private var controlState: ControlState
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
+
+    private let sliderTip: MomCareTips.MoodNest.MoodNestSliderTip = .init()
 }
