@@ -13,7 +13,6 @@ enum LoginProvider {
 }
 
 final class AuthenticationService: ObservableObject {
-
     // MARK: Lifecycle
 
     init() {
@@ -34,6 +33,7 @@ final class AuthenticationService: ObservableObject {
         guard let accessToken = KeychainHelper.get(.accessToken), !accessToken.isEmpty else {
             return nil
         }
+
         return ["Authorization": "Bearer \(accessToken)"]
     }
 
@@ -43,6 +43,7 @@ final class AuthenticationService: ObservableObject {
         guard let expiresAtTimestamp = tokenPair?.expiresAtTimestamp else {
             return true
         }
+
         return expiresAtTimestamp <= Date.now.timeIntervalSince1970
     }
 
@@ -77,6 +78,7 @@ final class AuthenticationService: ObservableObject {
     func register(emailAddress: String, password: String) async throws -> NetworkResponse<RegistrationResponse> {
         let response: NetworkResponse<RegistrationResponse> = try await NetworkManager.shared.post(url: Endpoint.register.urlString, body: prepareCredentialsData(emailAddress: emailAddress, password: password))
 
+        try await fetchCredentials()
         return handleSuccess(response, expectedStatusCode: 201)
     }
 
@@ -87,6 +89,8 @@ final class AuthenticationService: ObservableObject {
         _ = handleSuccess(networkResponse, expectedStatusCode: 200)
 
         KeychainHelper.set(password, forKey: .password)
+        try await fetchCredentials()
+
         return networkResponse
     }
 
@@ -94,6 +98,7 @@ final class AuthenticationService: ObservableObject {
         let refreshTokenData = RefreshToken(refreshToken: refreshToken).encodeUsingJSONEncoder()
         let response: NetworkResponse<TokenPair> = try await NetworkManager.shared.post(url: Endpoint.refresh.urlString, body: refreshTokenData)
 
+        try await fetchCredentials()
         return handleSuccess(response, expectedStatusCode: 200)
     }
 
@@ -173,21 +178,18 @@ final class AuthenticationService: ObservableObject {
 
     @discardableResult
     func changeEmailAddress(newEmailAddress: String) async throws -> NetworkResponse<ServerMessage> {
-
         let payloadData = ChangeEmailAddress(newEmailAddress: newEmailAddress).encodeUsingJSONEncoder()
         return try await NetworkManager.shared.patch(url: Endpoint.changeEmail.urlString, body: payloadData, headers: AuthenticationService.authorizationHeaders)
     }
 
     @discardableResult
     func changePassword(currentPassword: String, newPassword: String) async throws -> NetworkResponse<ServerMessage> {
-
         let payloadData = ChangePassword(currentPassword: currentPassword, newPassword: newPassword).encodeUsingJSONEncoder()
         return try await NetworkManager.shared.patch(url: Endpoint.changePassword.urlString, body: payloadData, headers: AuthenticationService.authorizationHeaders)
     }
 
     @discardableResult
     func requestOTP(emailAddress: String) async throws -> NetworkResponse<ServerMessage> {
-
         let payloadData = RequestOTP(emailAddress: emailAddress).encodeUsingJSONEncoder()
         return try await NetworkManager.shared.post(url: Endpoint.requestOTP.urlString, body: payloadData)
     }
@@ -200,7 +202,6 @@ final class AuthenticationService: ObservableObject {
 
     @discardableResult
     func verifyOTP(emailAddress: String, otp: String) async throws -> NetworkResponse<ServerMessage> {
-
         let payloadData = VerifyOTP(emailAddress: emailAddress, otp: otp).encodeUsingJSONEncoder()
         return try await NetworkManager.shared.post(url: Endpoint.verifyOTP.urlString, body: payloadData)
     }
@@ -213,10 +214,8 @@ final class AuthenticationService: ObservableObject {
 
     @discardableResult
     func delete() async throws -> NetworkResponse<Bool> {
-
         let networkResponse: NetworkResponse<Bool> = try await NetworkManager.shared.delete(url: Endpoint.delete.urlString, headers: AuthenticationService.authorizationHeaders)
         if networkResponse.success {
-
             dropCredentials()
         } else {}
         return networkResponse
@@ -226,6 +225,7 @@ final class AuthenticationService: ObservableObject {
         let payloadData = ThirdPartyLogin(idToken: idToken, existingEmailAddress: existingEmailAddress).encodeUsingJSONEncoder()
         let response: NetworkResponse<TokenPair> = try await NetworkManager.shared.post(url: Endpoint.appleLogin.urlString, body: payloadData)
 
+        try await fetchCredentials()
         return handleSuccess(response, expectedStatusCode: 200)
     }
 
@@ -241,7 +241,7 @@ final class AuthenticationService: ObservableObject {
     func fetchCredentials() async throws -> NetworkResponse<UserCredential> {
         let response: NetworkResponse<UserCredential> = try await NetworkManager.shared.get(url: Endpoint.credentials.urlString, headers: AuthenticationService.authorizationHeaders)
 
-        credentials = credentials
+        credentials = response.data
         return response
     }
 
@@ -249,7 +249,7 @@ final class AuthenticationService: ObservableObject {
     func login(with provider: LoginProvider = .apple, token: String) async throws -> NetworkResponse<TokenPair> {
         switch provider {
         case .apple:
-            return try await loginWithApple(token: token)
+            try await loginWithApple(token: token)
         }
     }
 
@@ -274,7 +274,7 @@ final class AuthenticationService: ObservableObject {
         }
     }
 
-    private func handleSuccess<T: TokenContaining>(_ response: NetworkResponse<T>, expectedStatusCode: Int) -> NetworkResponse<T> {
+    private func handleSuccess<T: TokenContaining>(_ response: NetworkResponse<T>, expectedStatusCode _: Int) -> NetworkResponse<T> {
         let data = response.data
         persistSession(accessToken: data.accessToken, refreshToken: data.refreshToken, expiresAtTimestamp: data.expiresAtTimestamp)
 
@@ -308,6 +308,8 @@ final class AuthenticationService: ObservableObject {
         }
 
         let response: NetworkResponse<TokenPair> = try await NetworkManager.shared.post(url: Endpoint.appleLogin.urlString, body: data)
+
+        try await fetchCredentials()
         return handleSuccess(response, expectedStatusCode: 200)
     }
 }

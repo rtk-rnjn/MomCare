@@ -2,7 +2,6 @@ import SwiftUI
 import UserNotifications
 
 struct ProfileNotificationsView: View {
-
     // MARK: Internal
 
     var body: some View {
@@ -81,11 +80,9 @@ struct ProfileNotificationsView: View {
     @State private var mealReminderTime: Date = Calendar.current.date(bySettingHour: 12, minute: 0, second: 0, of: Date()) ?? Date()
     @State private var exerciseReminderTime: Date = Calendar.current.date(bySettingHour: 8, minute: 0, second: 0, of: Date()) ?? Date()
     @State private var showSettingsAlert = false
-
 }
 
 private extension ProfileNotificationsView {
-
     func loadStatus() {
         isEnabled = UserDefaults.standard.bool(forKey: "notificationsEnabled")
         mealReminderEnabled = UserDefaults.standard.bool(forKey: "mealReminderEnabled")
@@ -143,7 +140,9 @@ private extension ProfileNotificationsView {
         UserDefaults.standard.set(mealReminderEnabled, forKey: "mealReminderEnabled")
         UserDefaults.standard.set(mealReminderTime, forKey: "mealReminderTime")
 
-        guard mealReminderEnabled else { return }
+        guard mealReminderEnabled else {
+            return
+        }
 
         cancelNotification(id: NotificationID.mealReminder)
 
@@ -157,7 +156,6 @@ private extension ProfileNotificationsView {
         let request = UNNotificationRequest(identifier: NotificationID.mealReminder, content: content, trigger: trigger)
 
         UNUserNotificationCenter.current().add(request) { _ in
-
         }
     }
 
@@ -165,7 +163,9 @@ private extension ProfileNotificationsView {
         UserDefaults.standard.set(exerciseReminderEnabled, forKey: "exerciseReminderEnabled")
         UserDefaults.standard.set(exerciseReminderTime, forKey: "exerciseReminderTime")
 
-        guard exerciseReminderEnabled else { return }
+        guard exerciseReminderEnabled else {
+            return
+        }
 
         cancelNotification(id: NotificationID.exerciseReminder)
 
@@ -179,7 +179,6 @@ private extension ProfileNotificationsView {
         let request = UNNotificationRequest(identifier: NotificationID.exerciseReminder, content: content, trigger: trigger)
 
         UNUserNotificationCenter.current().add(request) { _ in
-
         }
     }
 

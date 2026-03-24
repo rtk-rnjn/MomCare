@@ -10,7 +10,6 @@ import WatchConnectivity
 #endif
 
 class WatchConnector: NSObject, WCSessionDelegate {
-
     // MARK: Lifecycle
 
     override init() {

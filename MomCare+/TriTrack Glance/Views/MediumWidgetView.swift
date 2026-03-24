@@ -2,7 +2,6 @@ import SwiftUI
 import WidgetKit
 
 struct MediumWidgetView: View {
-
     // MARK: Internal
 
     let entry: TriTrackEntry

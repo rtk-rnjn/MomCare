@@ -2,7 +2,6 @@ import SwiftUI
 import TipKit
 
 struct WaterLogListView: View {
-
     // MARK: Internal
 
     @ObservedObject var store: WaterStore
@@ -59,7 +58,6 @@ struct WaterLogListView: View {
     @State private var editingEntry: WaterLogEntry?
     @State private var showAddEntry = false
     @State private var tipIndex = 0
-    @State private var quoteIndex = 0
 
     private var summaryHeader: some View {
         HStack(spacing: 0) {
@@ -91,13 +89,14 @@ struct WaterLogListView: View {
     }
 
     private var pillDivider: some View {
-        Divider().frame(height: 36).background(Color(hex: "924350").opacity(0.1))
+        Divider()
+.frame(height: 36)
+.background(Color(hex: "924350").opacity(0.1))
             .accessibilityHidden(true)
     }
 
     private var tipsSection: some View {
         VStack(spacing: 8) {
-
             HStack(alignment: .top, spacing: 10) {
                 Image(systemName: "quote.bubble.fill")
                     .foregroundColor(Color(hex: "924350").opacity(0.65))
@@ -265,7 +264,6 @@ struct WaterLogListView: View {
 }
 
 struct AddWaterEntrySheet: View {
-
     // MARK: Internal
 
     @ObservedObject var store: WaterStore
@@ -284,7 +282,8 @@ struct AddWaterEntrySheet: View {
                                     Text("\(Int(p))ml")
                                         .font(.subheadline.weight(.semibold))
                                         .foregroundColor(amount == p ? .white : Color(hex: "924350"))
-                                        .padding(.horizontal, 14).padding(.vertical, 8)
+                                        .padding(.horizontal, 14)
+.padding(.vertical, 8)
                                         .background(amount == p ? Color(hex: "924350") : Color(hex: "FAE8E4"),
                                                     in: Capsule())
                                 }
@@ -300,8 +299,12 @@ struct AddWaterEntrySheet: View {
                     HStack {
                         Text("Custom").foregroundStyle(.secondary)
                         TextField("e.g. 375", text: $customText)
-                            .keyboardType(.numberPad).focused($focused).multilineTextAlignment(.trailing)
-                            .onChange(of: customText) { _, v in if let d = Double(v) { amount = d } }
+                            .keyboardType(.numberPad)
+.focused($focused)
+.multilineTextAlignment(.trailing)
+                            .onChange(of: customText) { _, v in if let d = Double(v) {
+                                amount = d
+                            } }
                         Text("ml").foregroundStyle(.secondary)
                     }
                 }
@@ -316,7 +319,8 @@ struct AddWaterEntrySheet: View {
                     HStack {
                         Spacer()
                         Text("Adding \(Int(amount)) ml")
-                            .font(.subheadline).foregroundStyle(.secondary)
+                            .font(.subheadline)
+.foregroundStyle(.secondary)
                         Spacer()
                     }
                 }
@@ -334,7 +338,9 @@ struct AddWaterEntrySheet: View {
                             dismiss()
                         }
                     }
-                    .fontWeight(.semibold).foregroundColor(Color(hex: "924350")).disabled(amount <= 0)
+                    .fontWeight(.semibold)
+.foregroundColor(Color(hex: "924350"))
+.disabled(amount <= 0)
                 }
             }
         }
@@ -350,11 +356,9 @@ struct AddWaterEntrySheet: View {
     @FocusState private var focused: Bool
 
     private let presets: [Double] = [150, 200, 250, 300, 500]
-
 }
 
 struct EditWaterEntrySheet: View {
-
     // MARK: Lifecycle
 
     init(store: WaterStore, entry: WaterLogEntry) {
@@ -381,7 +385,9 @@ struct EditWaterEntrySheet: View {
                         TextField("Amount", text: $customText)
                             .keyboardType(.numberPad)
                             .multilineTextAlignment(.trailing)
-                            .onChange(of: customText) { _, v in if let d = Double(v) { amount = d } }
+                            .onChange(of: customText) { _, v in if let d = Double(v) {
+                                amount = d
+                            } }
                         Text("ml").foregroundStyle(.secondary)
                     }
                 }
@@ -415,5 +421,4 @@ struct EditWaterEntrySheet: View {
     @State private var amount: Double
     @State private var selectedDate: Date
     @State private var customText: String
-
 }

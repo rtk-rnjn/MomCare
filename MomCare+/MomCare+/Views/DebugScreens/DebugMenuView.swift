@@ -1,7 +1,6 @@
 import SwiftUI
 
 struct DebugMenuView: View {
-
     var body: some View {
         NavigationStack {
             List {
@@ -21,10 +20,7 @@ struct DebugMenuView: View {
 enum DebugSection: String, CaseIterable, Identifiable {
     case deviceInfo = "Device & App Info"
     case accessibility = "Accessibility Inspector"
-    case performance = "Performance Monitor"
     case featureFlags = "Feature Flags"
-    case network = "Network Inspector"
-    case logs = "Console Logs"
     case osLogs = "OS Logs"
     case permissions = "Permissions Status"
     case dataInspector = "Data Inspector"
@@ -33,18 +29,20 @@ enum DebugSection: String, CaseIterable, Identifiable {
 
     // MARK: Internal
 
-    var id: String { rawValue }
-    var title: String { rawValue }
+    var id: String {
+        rawValue
+    }
+
+    var title: String {
+        rawValue
+    }
 
     @ViewBuilder
-    func destination() -> some View { // swiftlint:disable:this cyclomatic_complexity
+    func destination() -> some View {
         switch self {
         case .deviceInfo: DeviceInfoView()
         case .accessibility: AccessibilityInspectorView()
-        case .performance: PerformanceMonitorView()
         case .featureFlags: FeatureFlagsView()
-        case .network: NetworkInspectorView()
-        case .logs: LogsConsoleView()
         case .osLogs: OSLogsView()
         case .permissions: PermissionsStatusView()
         case .dataInspector: DataInspectorView()

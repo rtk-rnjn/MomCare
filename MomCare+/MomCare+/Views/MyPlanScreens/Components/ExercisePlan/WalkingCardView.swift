@@ -1,7 +1,6 @@
 import SwiftUI
 
 struct WalkingCardView: View {
-
     // MARK: Internal
 
     let stepsToday: Double
@@ -110,8 +109,8 @@ struct WalkingCardView: View {
             percentCompleted = 0
             return
         }
+
         progress = min(Double(stepsToday) / Double(stepsGoal), 1.0)
         percentCompleted = progress * 100
     }
-
 }

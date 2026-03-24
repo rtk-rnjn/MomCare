@@ -1,7 +1,6 @@
 import SwiftUI
 
 struct WeekStripView: View {
-
     // MARK: Internal
 
     let date: Date

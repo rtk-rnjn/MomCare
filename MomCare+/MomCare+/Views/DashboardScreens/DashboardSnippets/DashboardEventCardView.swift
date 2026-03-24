@@ -3,14 +3,12 @@ import SwiftUI
 import TipKit
 
 struct DashboardEventCardView: View {
-
     // MARK: Internal
 
     let upcomingEvent: EKEvent?
 
     var body: some View {
         VStack(spacing: 0) {
-
             VStack(alignment: .leading, spacing: 6) {
                 if let event = upcomingEvent {
                     Text(event.title)
@@ -113,5 +111,4 @@ struct DashboardEventCardView: View {
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     @State private var showEventSheet: Bool = false
-
 }

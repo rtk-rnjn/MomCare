@@ -1,17 +1,24 @@
-import LNPopupUI
-import SwiftUI
 import Combine
 import EventKit
 import HealthKit
+import LNPopupUI
+import SwiftUI
 
 struct RefreshError: LocalizedError {
-    var errorDescription: String? { "Failed to refresh session. Please log in again." }
-    var failureReason: String? { "The session could not be refreshed, likely due to an expired token or network issue." }
-    var recoverySuggestion: String? { "Please try logging in again to refresh your session and regain access to all features." }
+    var errorDescription: String? {
+        "Failed to refresh session. Please log in again."
+    }
+
+    var failureReason: String? {
+        "The session could not be refreshed, likely due to an expired token or network issue."
+    }
+
+    var recoverySuggestion: String? {
+        "Please try logging in again to refresh your session and regain access to all features."
+    }
 }
 
 struct MomCareMainTabView: View {
-
     // MARK: Internal
 
     @Environment(\.horizontalSizeClass) var sizeClass
@@ -26,7 +33,6 @@ struct MomCareMainTabView: View {
 
     @EnvironmentObject private var authenticationService: AuthenticationService
     @EnvironmentObject private var contentServiceHandler: ContentServiceHandler
-    @EnvironmentObject private var eventKitHandler: EventKitHandler
     @EnvironmentObject private var controlState: ControlState
 
     @State private var isRefreshing = true
@@ -96,7 +102,6 @@ struct MomCareMainTabView: View {
         .popupInteractionStyle(.drag)
         .popupBarProgressViewStyle(.bottom)
         .popupCloseButtonStyle(.chevron)
-
         .sheet(isPresented: $showLoginSheet) {
             Task { await refreshAccessToken() }
         } content: {
@@ -131,7 +136,6 @@ struct MomCareMainTabView: View {
                 Task { await refreshAccessToken() }
             }
         }
-
     }
 
     private func refreshAccessToken() async {
@@ -150,12 +154,9 @@ struct MomCareMainTabView: View {
     }
 
     private func fetchDailyInsights() async throws {
-
         let networkResponse = try await ContentRepository.shared.generateDailyInsights()
 
         contentServiceHandler.todayFocusText = networkResponse.data.todaysFocus
         contentServiceHandler.dailyTipText = networkResponse.data.dailyTip
-
     }
-
 }

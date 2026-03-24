@@ -1,7 +1,6 @@
 import AppIntents
 
 struct LogSymptomIntent: AppIntent {
-
     static let title: LocalizedStringResource = "Log Symptom"
     static let description: IntentDescription = .init("Log a pregnancy symptom.")
 
@@ -11,7 +10,7 @@ struct LogSymptomIntent: AppIntent {
     var symptom: String
 
     func perform() async throws -> some IntentResult {
-        return .result(
+        .result(
             dialog: "Logged \(symptom)"
         )
     }

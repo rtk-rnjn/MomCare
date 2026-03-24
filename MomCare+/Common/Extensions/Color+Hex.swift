@@ -5,7 +5,10 @@ extension Color {
         let hex = hex.trimmingCharacters(in: CharacterSet.alphanumerics.inverted)
         var int: UInt64 = 0
         unsafe Scanner(string: hex).scanHexInt64(&int)
-        let alpha, red, green, blue: UInt64
+        let alpha: UInt64
+        let red: UInt64
+        let green: UInt64
+        let blue: UInt64
 
         switch hex.count {
         case 3:

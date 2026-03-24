@@ -1,9 +1,8 @@
+import AVFoundation
 import SwiftUI
 import TipKit
-import AVFoundation
 
 struct MyPlanExercisePlanView: View {
-
     // MARK: Internal
 
     var body: some View {
@@ -15,19 +14,17 @@ struct MyPlanExercisePlanView: View {
             )
             .padding(.horizontal, 16)
 
-            VStack(spacing: 0) {
-                ScrollView(.vertical, showsIndicators: false) {
-                    exerciseCardsView
-                }
-                .refreshable {
-                    Task {
-                        do {
-                            try await contentServiceHandler.fetchUserExercises()
-                            HapticsHandler.notification(.success)
-                        } catch {
-                            controlState.error = error
-                            HapticsHandler.notification(.error)
-                        }
+            ScrollView(.vertical, showsIndicators: false) {
+                exerciseCardsView
+            }
+            .refreshable {
+                Task {
+                    do {
+                        try await contentServiceHandler.fetchUserExercises()
+                        HapticsHandler.notification(.success)
+                    } catch {
+                        controlState.error = error
+                        HapticsHandler.notification(.error)
                     }
                 }
             }
@@ -121,6 +118,9 @@ struct MyPlanExercisePlanView: View {
                 .onTapGesture {
                     showWalkingHistory = true
                 }
+                .onAppear {
+                    contentServiceHandler.fetchTodaySteps()
+                }
 
             BreathingCardView {
                 withAnimation(reduceMotion ? nil : .easeInOut) {
@@ -157,6 +157,8 @@ struct MyPlanExercisePlanView: View {
                     }
                 }
             }
+
+            Color.clear.padding(.bottom, 10)
         }
         .padding(.horizontal, 16)
         .padding(.top, 16)
@@ -165,7 +167,8 @@ struct MyPlanExercisePlanView: View {
 
     private func exerciseInfoOverlay() -> some View {
         ZStack {
-            Color.black.opacity(0.4)
+            Color.black
+.opacity(0.4)
                 .ignoresSafeArea()
                 .onTapGesture {
                     withAnimation(reduceMotion ? nil : .easeInOut) {
@@ -190,5 +193,4 @@ struct MyPlanExercisePlanView: View {
             }
         }
     }
-
 }

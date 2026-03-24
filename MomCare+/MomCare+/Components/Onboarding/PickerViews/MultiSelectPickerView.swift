@@ -1,7 +1,6 @@
 import SwiftUI
 
 struct MultiSelectPickerView<T: Hashable & CaseIterable & RawRepresentable>: View where T.RawValue == String {
-
     // MARK: Internal
 
     let title: String
@@ -69,7 +68,10 @@ struct MultiSelectPickerView<T: Hashable & CaseIterable & RawRepresentable>: Vie
     @State private var searchText = ""
 
     private var filteredItems: [T] {
-        guard searchable, !searchText.isEmpty else { return items }
+        guard searchable, !searchText.isEmpty else {
+            return items
+        }
+
         return items.filter {
             $0.rawValue.localizedCaseInsensitiveContains(searchText)
         }

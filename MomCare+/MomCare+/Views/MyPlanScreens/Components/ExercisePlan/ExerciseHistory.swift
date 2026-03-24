@@ -1,21 +1,25 @@
 import SwiftUI
 
 private extension Date {
-    var startOfDay: Date { Calendar.current.startOfDay(for: self) }
-    var nextDay: Date { Calendar.current.date(byAdding: .day, value: 1, to: startOfDay)! }
+    var startOfDay: Date {
+        Calendar.current.startOfDay(for: self)
+    }
+
+    var nextDay: Date {
+        Calendar.current.date(byAdding: .day, value: 1, to: startOfDay)!
+    }
 }
 
 struct ExerciseHistory: View {
-
     // MARK: Internal
 
     var body: some View {
         NavigationStack {
             VStack(spacing: 0) {
-                CompactCalendarView(selectedDate: $selectedDate, isExpanded: $isCalendarExpanded)
+                CompactCalendarView(selectedDate: $selectedDate, isExpanded: $controlState.showingExpandedCalendar)
 
                 Group {
-                    if isLoading && exercises == nil {
+                    if isLoading, exercises == nil {
                         VStack(spacing: 12) {
                             ProgressView()
                             Text("Loading exercise history…")
@@ -76,6 +80,33 @@ struct ExerciseHistory: View {
                 ToolbarItem(placement: .cancellationAction) {
                     Button(role: .close) { dismiss() }
                 }
+
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button {
+                        withAnimation(reduceMotion ? nil : .easeInOut) {
+                            controlState.showingExpandedCalendar.toggle()
+                        }
+                    } label: {
+                        Image(systemName: "calendar")
+                            .font(.body)
+                            .foregroundColor(Color.CustomColors.mutedRaspberry)
+                            .symbolEffect(.bounce, value: controlState.showingExpandedCalendar)
+                    }
+                    .accessibilityLabel(controlState.showingExpandedCalendar ? "Collapse calendar" : "Expand calendar")
+                    .accessibilityIdentifier("expandCalendarButton")
+                }
+
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button {
+                        selectedDate = Date()
+                    } label: {
+                        Image(systemName: "\(Calendar.current.component(.day, from: Date())).calendar")
+                            .font(.body)
+                            .foregroundColor(Color.CustomColors.mutedRaspberry)
+                    }
+                    .accessibilityLabel("Jump to today")
+                    .accessibilityIdentifier("jumpToTodayButton")
+                }
             }
             .task(id: selectedDate.startOfDay) {
                 await load(for: selectedDate)
@@ -88,12 +119,13 @@ struct ExerciseHistory: View {
     @State private var exercises: [UserExerciseModel]?
     @State private var selectedDate: Date = .init()
 
-    @State private var isCalendarExpanded = false
     @State private var isLoading = false
     @State private var errorMessage: String?
 
     @Environment(\.dismiss) private var dismiss
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
+
+    @EnvironmentObject private var controlState: ControlState
 
     @MainActor
     private func load(for date: Date) async {
@@ -118,14 +150,12 @@ struct ExerciseHistory: View {
 // MARK: - Summary (native row)
 
 private struct ExerciseDaySummaryRow: View {
-
     // MARK: Internal
 
     let exercises: [UserExerciseModel]
 
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
-
             HStack(spacing: 16) {
                 metric("Completed", value: "\(completedCount)/\(exercises.count)")
                 metric("Time", value: formattedDuration)
@@ -152,7 +182,10 @@ private struct ExerciseDaySummaryRow: View {
     @State private var totalSeconds: Double = 0
 
     private var overallProgress: Double {
-        guard !exercises.isEmpty else { return 0 }
+        guard !exercises.isEmpty else {
+            return 0
+        }
+
         return Double(completedCount) / Double(exercises.count)
     }
 
@@ -160,7 +193,9 @@ private struct ExerciseDaySummaryRow: View {
         let total = Int(totalSeconds)
         let mins = total / 60
         let secs = total % 60
-        if mins > 0 { return "\(mins)m \(secs)s" }
+        if mins > 0 {
+            return "\(mins)m \(secs)s"
+        }
         return "\(secs)s"
     }
 
@@ -182,7 +217,9 @@ private struct ExerciseDaySummaryRow: View {
         var duration = 0.0
 
         for ex in exercises {
-            if await ex.isCompleted { completed += 1 }
+            if await ex.isCompleted {
+                completed += 1
+            }
             duration += ex.videoDurationCompletedSeconds
         }
 
@@ -196,14 +233,12 @@ private struct ExerciseDaySummaryRow: View {
 // MARK: - Exercise row (native list row)
 
 private struct ExerciseHistoryRow: View {
-
     // MARK: Internal
 
     let userExercise: UserExerciseModel
 
     var body: some View {
         HStack(alignment: .top, spacing: 12) {
-
             // Thumbnail
             ZStack {
                 RoundedRectangle(cornerRadius: 12, style: .continuous)

@@ -1,7 +1,6 @@
 import SwiftUI
 
 struct ValuePickerSheet<UnitType: Dimension>: View {
-
     // MARK: Internal
 
     let title: String
@@ -20,7 +19,6 @@ struct ValuePickerSheet<UnitType: Dimension>: View {
             }
             .pickerStyle(.wheel)
             .labelsHidden()
-
             .navigationTitle(title)
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {

@@ -1,7 +1,6 @@
 import SwiftUI
 
 struct WeeklyProgressCardView: View {
-
     // MARK: Internal
 
     let completedCount: Int
@@ -92,14 +91,15 @@ struct WeeklyProgressCardView: View {
     @Environment(\.accessibilityReduceTransparency) private var reduceTransparency
 
     private var overallProgress: Double {
-        guard totalCount > 0 else { return 0 }
+        guard totalCount > 0 else {
+            return 0
+        }
+
         return min(Double(completedCount) / Double(totalCount), 1.0)
     }
-
 }
 
 private struct DayRingView: View {
-
     // MARK: Internal
 
     let dayName: String
@@ -157,5 +157,4 @@ struct DayProgress: Identifiable {
         let dayName = formatter.string(from: date)
         return String(dayName.prefix(3))
     }
-
 }

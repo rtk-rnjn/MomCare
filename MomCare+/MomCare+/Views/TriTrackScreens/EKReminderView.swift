@@ -1,8 +1,7 @@
-import SwiftUI
 import EventKit
+import SwiftUI
 
 struct EKReminderView: View {
-
     // MARK: Internal
 
     enum RepeatRule: String, CaseIterable {
@@ -21,7 +20,9 @@ struct EKReminderView: View {
     @State var reminder: EKReminder
     @Binding var selectedDate: Date
 
-    var isCompleted: Bool { reminder.isCompleted }
+    var isCompleted: Bool {
+        reminder.isCompleted
+    }
 
     var body: some View {
         NavigationStack {
@@ -253,6 +254,7 @@ struct EKReminderView: View {
         switch repeatRule {
         case .never:
             reminder.recurrenceRules = nil
+
         case .custom:
             let rule = EKRecurrenceRule(
                 recurrenceWith: repeatUnit,
@@ -344,5 +346,4 @@ struct EKReminderView: View {
     @State private var hasChanges = false
     @State private var showErrorAlert = false
     @State private var alertMessage: String?
-
 }

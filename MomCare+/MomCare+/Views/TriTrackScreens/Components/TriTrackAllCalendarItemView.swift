@@ -1,8 +1,7 @@
-import SwiftUI
 import EventKit
+import SwiftUI
 
 struct TriTrackAllCalendarItemView: View {
-
     // MARK: Internal
 
     @Binding var selectedDate: Date
@@ -117,7 +116,6 @@ struct TriTrackAllCalendarItemView: View {
             showErrorAlert = true
         }
     }
-
 }
 
 struct DateSectionHeader: View {
@@ -154,7 +152,6 @@ struct DateSectionHeader: View {
 }
 
 struct TimelineRow: View {
-
     // MARK: Internal
 
     let event: EKEvent
@@ -163,7 +160,6 @@ struct TimelineRow: View {
 
     var body: some View {
         HStack(alignment: .top, spacing: 14) {
-
             VStack(spacing: 0) {
                 Circle()
                     .fill(event.isAllDay ? eventColor.opacity(0.3) : eventColor)
@@ -178,7 +174,6 @@ struct TimelineRow: View {
             .padding(.top, 4)
 
             VStack(alignment: .leading, spacing: showDetails ? 5 : 0) {
-
                 HStack(spacing: 6) {
                     Text(event.title ?? "Untitled")
                         .font(.headline)
@@ -192,7 +187,6 @@ struct TimelineRow: View {
                 }
 
                 if showDetails {
-
                     HStack(spacing: 6) {
                         Image(systemName: event.isAllDay ? "sun.max" : "clock")
                             .font(.caption2)
@@ -281,7 +275,10 @@ struct TimelineRow: View {
     }
 
     private var durationLabel: String? {
-        guard !event.isAllDay else { return nil }
+        guard !event.isAllDay else {
+            return nil
+        }
+
         let seconds = event.endDate.timeIntervalSince(event.startDate)
         let minutes = Int(seconds / 60)
         if minutes < 60 {
@@ -292,5 +289,4 @@ struct TimelineRow: View {
             return "\(minutes / 60)h \(minutes % 60)m"
         }
     }
-
 }

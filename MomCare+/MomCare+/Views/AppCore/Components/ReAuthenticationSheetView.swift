@@ -1,8 +1,7 @@
-import SwiftUI
 import AuthenticationServices
+import SwiftUI
 
 struct ReAuthenticationSheetView: View {
-
     // MARK: Internal
 
     var body: some View {
@@ -48,7 +47,6 @@ struct ReAuthenticationSheetView: View {
                                 .foregroundStyle(.secondary)
                                 .multilineTextAlignment(.center)
                                 .fixedSize(horizontal: false, vertical: true)
-
                         }
                         .padding(.top, 32)
                         .padding(.horizontal, 28)
@@ -56,11 +54,12 @@ struct ReAuthenticationSheetView: View {
                         .accessibilityLabel("If you have an Apple ID linked to your account, you can use it to sign in quickly and securely without needing to enter your password.")
 
                         VStack(spacing: 12) {
-
                             SignInWithAppleButton(.continue) { request in
                                 request.requestedScopes = []
-                            } onCompletion: { _ in
-                                Task {}
+                            } onCompletion: { result in
+                                Task {
+                                    await handleAppleLogin(result)
+                                }
                             }
                             .signInWithAppleButtonStyle(.black)
                             .frame(height: 50)
@@ -74,11 +73,9 @@ struct ReAuthenticationSheetView: View {
                             .foregroundStyle(.secondary)
                             .padding(.bottom, 8)
                             .accessibilityHint("Closes this sheet")
-
                         }
                         .padding(.horizontal, 28)
                         .padding(.bottom, 24)
-
                     }
                     .navigationBarHidden(true)
                 }
@@ -108,7 +105,12 @@ struct ReAuthenticationSheetView: View {
 
                             do {
                                 try await submitEmailLogin()
-                            } catch {}
+                                await MainActor.run {
+                                    dismiss()
+                                }
+                            } catch {
+                                controlState.error = error
+                            }
                         }
                     } label: {
                         if isLoading {
@@ -126,7 +128,6 @@ struct ReAuthenticationSheetView: View {
                     .controlSize(.large)
                     .accessibilityLabel("Sign In")
                     .accessibilityHint("Signs you in to your account")
-
                 }
             }
         }
@@ -140,11 +141,11 @@ struct ReAuthenticationSheetView: View {
 
     @State private var email: String = ""
     @State private var password: String = ""
-    @State private var isPasswordVisible: Bool = false
     @State private var isLoading: Bool = false
 
     @State private var showAppleLoginSheet: Bool = false
     @EnvironmentObject private var authenticationService: AuthenticationService
+    @EnvironmentObject private var controlState: ControlState
 
     @FocusState private var focusedField: Field?
 
@@ -171,5 +172,27 @@ struct ReAuthenticationSheetView: View {
         try await authenticationService.login(emailAddress: email, password: password)
     }
 
-    private func submitAppleLogin(_ result: Result<ASAuthorization, any Error>) async {}
+    private func handleAppleLogin(_ result: Result<ASAuthorization, any Error>) async {
+        switch result {
+        case let .success(auth):
+            do {
+                guard let credential = auth.credential as? ASAuthorizationAppleIDCredential,
+                      let tokenData = credential.identityToken,
+                      let tokenString = String(data: tokenData, encoding: .utf8) else {
+                    throw TokenParseError()
+                }
+
+                _ = try await authenticationService.appleLogin(idToken: tokenString)
+
+                await MainActor.run {
+                    dismiss()
+                }
+            } catch {
+                controlState.error = error
+            }
+
+        case let .failure(error):
+            controlState.error = error
+        }
+    }
 }

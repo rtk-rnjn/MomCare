@@ -2,7 +2,6 @@ import SwiftUI
 import UIKit
 
 class SemiCircleAnimationView: UIView {
-
     // MARK: Lifecycle
 
     override init(frame: CGRect) {
@@ -63,7 +62,9 @@ class SemiCircleAnimationView: UIView {
     }
 
     private func updatePath(isFullCircle: Bool) {
-        guard bounds.width > 0 else { return }
+        guard bounds.width > 0 else {
+            return
+        }
 
         let path = UIBezierPath()
         let center = CGPoint(x: bounds.midX, y: bounds.midY)

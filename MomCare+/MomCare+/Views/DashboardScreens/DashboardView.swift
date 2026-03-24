@@ -3,7 +3,6 @@ import SwiftUI
 import TipKit
 
 struct DashboardView: View {
-
     // MARK: Internal
 
     var body: some View {
@@ -82,7 +81,8 @@ struct DashboardView: View {
 
             DashboardDietCardView(
                 consumed: contentServiceHandler.nutritionIntakeTotals?.calories ?? 0,
-                goal: contentServiceHandler.nutritionGoalTotals?.calories ?? 0
+                goal: contentServiceHandler.nutritionGoalTotals?.calories ?? 0,
+                recommended: contentServiceHandler.recommendedNutritionGoalTotals?.calories ?? 0
             )
             .padding(.horizontal)
             .onTapGesture {
@@ -104,6 +104,9 @@ struct DashboardView: View {
             .onTapGesture {
                 controlState.selectedTab = .myPlan
                 controlState.myPlanSegment = .exercise
+            }
+            .onAppear {
+                contentServiceHandler.fetchTodaySteps()
             }
             .accessibilityAddTraits(.isButton)
             .accessibilityHint("Double tap to view your exercise plan")

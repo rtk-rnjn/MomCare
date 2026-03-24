@@ -1,7 +1,7 @@
 import CryptoKit
+import EventKit
 import Foundation
 import UIKit
-import EventKit
 
 private let appGroup = "group.MomCare"
 
@@ -63,7 +63,6 @@ enum ValidDatabaseKeys {
 
 @MainActor
 final class Database {
-
     // MARK: Lifecycle
 
     private init() {
@@ -79,6 +78,26 @@ final class Database {
     // MARK: Internal
 
     static let shared: Database = .init()
+
+    func find<T: Codable>(withMatchingRegex pattern: String) -> [T] {
+        guard let regex = try? NSRegularExpression(pattern: pattern) else {
+            return []
+        }
+
+        var results = [T]()
+
+        for key in userDefaults.dictionaryRepresentation().keys {
+            let range = NSRange(key.startIndex..<key.endIndex, in: key)
+
+            if regex.firstMatch(in: key, options: [], range: range) != nil,
+               let data = userDefaults.data(forKey: key),
+               let decoded = try? data.decodeUsingJSONDecoder() as T {
+                results.append(decoded)
+            }
+        }
+
+        return results
+    }
 
     subscript<T: Codable>(_ key: ValidDatabaseKeys) -> T? {
         get {
@@ -106,11 +125,9 @@ final class Database {
 
     private let userDefaults: UserDefaults
     private let directory: URL
-
 }
 
 extension Database {
-
     func image(for url: URL) -> UIImage? {
         let key = cacheKey(for: url)
         let fileURL = directory.appendingPathComponent(key)
@@ -126,7 +143,10 @@ extension Database {
         let key = cacheKey(for: url)
         let fileURL = directory.appendingPathComponent(key)
 
-        guard let data = image.jpegData(compressionQuality: 1) else { return }
+        guard let data = image.jpegData(compressionQuality: 1) else {
+            return
+        }
+
         try? data.write(to: fileURL)
     }
 
@@ -146,5 +166,4 @@ extension Database {
 
         return user.pregnancyProgress()
     }
-
 }

@@ -1,7 +1,6 @@
 import SwiftUI
 
 struct DayCell: View {
-
     // MARK: Internal
 
     let date: Date
@@ -22,7 +21,6 @@ struct DayCell: View {
                 .foregroundColor(isSelected ? .white : (isToday ? Color.CustomColors.mutedRaspberry : .primary))
                 .frame(width: 36, height: 36)
                 .background(Circle().fill(isSelected ? Color.CustomColors.mutedRaspberry : (isToday ? Color.CustomColors.mutedRaspberry.opacity(0.25) : Color.clear)))
-
         }
         .frame(maxWidth: .infinity)
         .accessibilityElement(children: .ignore)
@@ -42,8 +40,12 @@ struct DayCell: View {
 
     private var accessibilityDateLabel: String {
         var label = date.formatted(.dateTime.weekday(.wide).month(.wide).day())
-        if isSelected { label += ", selected" }
-        if isToday { label += ", today" }
+        if isSelected {
+            label += ", selected"
+        }
+        if isToday {
+            label += ", today"
+        }
         return label
     }
 

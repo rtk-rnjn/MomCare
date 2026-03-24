@@ -22,10 +22,10 @@ extension ContentRepository {
     }
 
     func updateExerciseCompletion(userExerciseId id: String, duration: TimeInterval) async throws -> NetworkResponse<Bool> {
-
         guard let data = ExerciseDuration(duration: duration).encodeUsingJSONEncoder() else {
             fatalError()
         }
+
         return try await NetworkManager.shared.post(url: Endpoint.updateExerciseDuration.urlString(with: id), body: data, headers: authenticationHeaders)
     }
 }

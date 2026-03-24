@@ -1,33 +1,7 @@
 import SwiftUI
 import TipKit
 
-struct InitialsAvatar: View {
-
-    let name: String
-
-    var initials: String {
-        let parts = name.split(separator: " ")
-        let first = parts.first?.prefix(1) ?? ""
-        let last = parts.dropFirst().first?.prefix(1) ?? ""
-        return (first + last).uppercased()
-    }
-
-    var body: some View {
-        ZStack {
-            Circle()
-                .fill(MomCareAccent.primary.opacity(0.2))
-
-            Text(initials)
-                .font(.title3.weight(.semibold))
-                .foregroundColor(MomCareAccent.primary)
-        }
-        .accessibilityLabel("Profile picture for \(name)")
-        .accessibilityHidden(name.isEmpty)
-    }
-}
-
 struct ProfilePersonalInfoView: View {
-
     // MARK: Internal
 
     enum SheetType: Identifiable {
@@ -45,25 +19,18 @@ struct ProfilePersonalInfoView: View {
     @State var name: String
     @State var dateOfBirth: Date
 
+    @State var height: Int?
+    @State var currentWeight: Int?
+    @State var prePregnancyWeight: Int?
+
     var body: some View {
         List {
             Section {
-                HStack {
-                    Spacer()
-                    InitialsAvatar(name: authenticationService.userModel?.fullName ?? "-")
-                        .frame(width: 80, height: 80)
-                        .foregroundColor(MomCareAccent.primary)
-                    Spacer()
-                }
-                .listRowBackground(Color.clear)
-            }
-
-            Section {
-                ProfileEditableTextRow(title: "Full name", text: $name, isEditing: isEditing, displayText: authenticationService.userModel?.fullName ?? "Not Set")
+                ProfileEditableTextRow(title: "Full name", text: $name, isEditing: isEditing, displayText: name)
 
                 InfoRowDate(
                     title: "Date of Birth",
-                    date: authenticationService.userModel?.dateOfBirth ?? dateOfBirth,
+                    date: dateOfBirth,
                     isEditing: isEditing
                 ) {
                     if reduceMotion {
@@ -85,27 +52,33 @@ struct ProfilePersonalInfoView: View {
                     .datePickerStyle(.wheel)
                     .labelsHidden()
                 }
+            } header: {
+                Text("Basic Information")
             }
 
             Section {
-                pickerRow("Height", value: measurementFormatter.string(from: Measurement(value: Double(authenticationService.userModel?.height ?? 0), unit: UnitLength.centimeters))) {
+                pickerRow("Height", value: measurementFormatter.string(from: Measurement(value: Double(height ?? 0), unit: UnitLength.centimeters))) {
                     activeSheet = .height
                 }
 
-                pickerRow("Current Weight", value: measurementFormatter.string(from: Measurement(value: Double(authenticationService.userModel?.currentWeight ?? 0), unit: UnitMass.kilograms))) {
+                pickerRow("Current Weight", value: measurementFormatter.string(from: Measurement(value: Double(currentWeight ?? 0), unit: UnitMass.kilograms))) {
                     activeSheet = .currentWeight
                 }
 
-                pickerRow("Pre Pregnancy Weight", value: measurementFormatter.string(from: Measurement(value: Double(authenticationService.userModel?.prePregnancyWeight ?? 0), unit: UnitMass.kilograms))) {
+                pickerRow("Pre Pregnancy Weight", value: measurementFormatter.string(from: Measurement(value: Double(prePregnancyWeight ?? 0), unit: UnitMass.kilograms))) {
                     activeSheet = .prePregnancyWeight
                 }
+            } header: {
+                Text("Measurements")
+            } footer: {
+                Text("This information will help us provide you with personalized insights and recommendations throughout your pregnancy journey.")
+                    .font(.footnote)
             }
         }
         .listStyle(.insetGrouped)
         .navigationTitle("Personal Information")
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
-
             ToolbarItem(placement: .navigationBarTrailing) {
                 Button(isEditing ? "Done" : "Edit") {
                     HapticsHandler.impact(.light)
@@ -138,7 +111,6 @@ struct ProfilePersonalInfoView: View {
                     showingAlert = true
                     alertMessage = error.localizedDescription
                 }
-
             }
         }
         .alert(isPresented: $showingAlert) {
@@ -175,7 +147,10 @@ struct ProfilePersonalInfoView: View {
 
     func pickerRow(_ title: String, value: String, action: @escaping () -> Void) -> some View {
         Button {
-            guard isEditing else { return }
+            guard isEditing else {
+                return
+            }
+
             action()
         } label: {
             InfoRow(title: title, value: value, isEditing: isEditing)
@@ -185,10 +160,15 @@ struct ProfilePersonalInfoView: View {
     }
 
     func makeChanges() async throws {
-        if name != authenticationService.userModel?.fullName {
-            let firstName = name.split(separator: " ").first.map(String.init) ?? ""
-            let lastName = name.split(separator: " ").dropFirst().first.map(String.init) ?? ""
+        guard let userModel = authenticationService.userModel else {
+            return
+        }
 
+        let personNameComponentsFormatter = PersonNameComponentsFormatter()
+        let firstName = personNameComponentsFormatter.personNameComponents(from: name)?.givenName ?? ""
+        let lastName = personNameComponentsFormatter.personNameComponents(from: name)?.familyName ?? ""
+
+        if name != userModel.fullName {
             _ = try await authenticationService.update(
                 firstName: .value(firstName),
                 lastName: .value(lastName),
@@ -197,20 +177,20 @@ struct ProfilePersonalInfoView: View {
             authenticationService.userModel?.lastName = lastName
         }
 
-        if dateOfBirth.timeIntervalSince1970 != authenticationService.userModel?.dateOfBirthTimestamp {
+        if dateOfBirth.timeIntervalSince1970 != userModel.dateOfBirthTimestamp {
             _ = try await authenticationService.update(dateOfBirthTimestamp: .value(dateOfBirth.timeIntervalSince1970))
             authenticationService.userModel?.dateOfBirthTimestamp = dateOfBirth.timeIntervalSince1970
         }
 
-        if let height, height != authenticationService.userModel?.height {
+        if let height, height != userModel.height {
             _ = try await authenticationService.update(height: .value(height))
             authenticationService.userModel?.height = height
         }
-        if let currentWeight, currentWeight != authenticationService.userModel?.currentWeight {
+        if let currentWeight, currentWeight != userModel.currentWeight {
             _ = try await authenticationService.update(currentWeight: .value(currentWeight))
             authenticationService.userModel?.currentWeight = currentWeight
         }
-        if let prePregnancyWeight, prePregnancyWeight != authenticationService.userModel?.prePregnancyWeight {
+        if let prePregnancyWeight, prePregnancyWeight != userModel.prePregnancyWeight {
             _ = try await authenticationService.update(prePregnancyWeight: .value(prePregnancyWeight))
             authenticationService.userModel?.prePregnancyWeight = prePregnancyWeight
         }
@@ -219,15 +199,10 @@ struct ProfilePersonalInfoView: View {
     // MARK: Private
 
     @Environment(\.accessibilityReduceMotion) private var reduceMotion: Bool
-
     @EnvironmentObject private var authenticationService: AuthenticationService
 
     @State private var isEditing = false
     @State private var showDateOfBirthPicker = false
-
-    @State private var height: Int?
-    @State private var currentWeight: Int?
-    @State private var prePregnancyWeight: Int?
 
     @State private var activeSheet: SheetType?
     @State private var showingAlert = false

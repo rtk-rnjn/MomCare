@@ -80,11 +80,9 @@ enum TriTrackSegment: String, CaseIterable, Identifiable {
 
 @MainActor
 final class ControlState: ObservableObject {
-
     // MARK: Lifecycle
 
     init() {
-
         isOnboardingCompleted = UserDefaults.standard.bool(forKey: "isOnboardingCompleted")
         isLoggedIn = UserDefaults.standard.bool(forKey: "isLoggedIn")
 

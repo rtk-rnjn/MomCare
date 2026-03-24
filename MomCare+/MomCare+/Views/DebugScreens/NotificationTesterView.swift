@@ -2,7 +2,6 @@ import SwiftUI
 import UserNotifications
 
 struct NotificationTesterView: View {
-
     // MARK: Internal
 
     var body: some View {
@@ -99,27 +98,27 @@ struct NotificationTesterView: View {
 
     private var permissionIcon: String {
         switch permissionStatus {
-        case .authorized: return "bell.badge.fill"
-        case .denied: return "bell.slash.fill"
-        default: return "bell.fill"
+        case .authorized: "bell.badge.fill"
+        case .denied: "bell.slash.fill"
+        default: "bell.fill"
         }
     }
 
     private var permissionColor: Color {
         switch permissionStatus {
-        case .authorized: return .green
-        case .denied: return .red
-        default: return .secondary
+        case .authorized: .green
+        case .denied: .red
+        default: .secondary
         }
     }
 
     private var permissionLabel: String {
         switch permissionStatus {
-        case .authorized: return "Authorized — notifications enabled"
-        case .denied: return "Denied — go to Settings to enable"
-        case .provisional: return "Provisional"
-        case .notDetermined: return "Not yet requested"
-        default: return "Unknown"
+        case .authorized: "Authorized — notifications enabled"
+        case .denied: "Denied — go to Settings to enable"
+        case .provisional: "Provisional"
+        case .notDetermined: "Not yet requested"
+        default: "Unknown"
         }
     }
 

@@ -7,7 +7,6 @@ enum CardDisplayMode: Int, CaseIterable {
 }
 
 struct ProgressCardView: View {
-
     // MARK: Internal
 
     let plan: MealPlanModel?
@@ -38,7 +37,6 @@ struct ProgressCardView: View {
 
     var body: some View {
         VStack(spacing: 0) {
-
             collapsedHeader
 
             if isExpanded {
@@ -96,7 +94,6 @@ struct ProgressCardView: View {
 
     private var collapsedHeader: some View {
         HStack(alignment: .center, spacing: 20) {
-
             ProgressRingView(
                 consumed: calorieIntake,
                 target: calorieGoal,
@@ -112,9 +109,7 @@ struct ProgressCardView: View {
 
     private var modeContent: some View {
         VStack(alignment: .leading, spacing: 12) {
-
             switch displayMode {
-
             case .calories:
                 CaloriesSummaryView(
                     intake: calorieIntake,
@@ -214,13 +209,11 @@ struct ProgressCardView: View {
     }
 
     private func handleDragEnd(_ value: DragGesture.Value) {
-
         let threshold: CGFloat = 20
         let allModes = CardDisplayMode.allCases
         let current = displayMode.rawValue
 
         if value.translation.height < -threshold {
-
             dragDirection = .up
             let next = (current + 1) % allModes.count
 
@@ -229,7 +222,6 @@ struct ProgressCardView: View {
             }
 
         } else if value.translation.height > threshold {
-
             dragDirection = .down
             let prev = (current - 1 + allModes.count) % allModes.count
 
@@ -247,11 +239,9 @@ struct ProgressCardView: View {
             }
         }
     }
-
 }
 
 private struct CaloriesSummaryView: View {
-
     // MARK: Internal
 
     let intake: Measurement<UnitEnergy>?
@@ -259,13 +249,15 @@ private struct CaloriesSummaryView: View {
     let recommended: Measurement<UnitEnergy>?
 
     var difference: Double {
-        guard let intake, let recommended else { return 0 }
+        guard let intake, let recommended else {
+            return 0
+        }
+
         return intake.converted(to: recommended.unit).value - recommended.value
     }
 
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
-
             Label("Remaining", systemImage: "flame")
                 .font(.caption.weight(.semibold))
                 .foregroundColor(.secondary)
@@ -308,28 +300,28 @@ private struct CaloriesSummaryView: View {
 
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
-    private var remaining: Double { max(-difference, 0) }
+    private var remaining: Double {
+        max(-difference, 0)
+    }
 
     private var isOver: Bool {
-        guard let intake, let recommended else { return false }
+        guard let intake, let recommended else {
+            return false
+        }
+
         return intake.converted(to: recommended.unit).value > recommended.value
     }
 
     private var isGoalModified: Bool {
-        guard let goal, let recommended else { return false }
-        return goal != recommended
-    }
+        guard let goal, let recommended else {
+            return false
+        }
 
-    private var consumedText: String {
-        intake?.formattedOneDecimal ?? "-"
+        return goal != recommended
     }
 
     private var goalText: String {
         goal?.formattedOneDecimal ?? "-"
-    }
-
-    private var recommendedText: String {
-        recommended?.formattedOneDecimal ?? "-"
     }
 
     @ViewBuilder
@@ -376,7 +368,6 @@ private struct CaloriesSummaryView: View {
 }
 
 private struct ExpandedDetailView: View {
-
     // MARK: Internal
 
     let caloriesConsumed: Measurement<UnitEnergy>?
@@ -458,7 +449,9 @@ private struct ExpandedDetailView: View {
     // MARK: Private
 
     private var calorieDifference: Double {
-        guard let caloriesConsumed, let caloriesTarget else { return 0 }
+        guard let caloriesConsumed, let caloriesTarget else {
+            return 0
+        }
 
         let consumedValue = caloriesConsumed.converted(to: caloriesTarget.unit).value
         let targetValue = caloriesTarget.value
@@ -467,15 +460,15 @@ private struct ExpandedDetailView: View {
     }
 
     private var isCalorieConsumedGreaterThanTarget: Bool {
-        guard let caloriesConsumed, let caloriesTarget else { return false }
+        guard let caloriesConsumed, let caloriesTarget else {
+            return false
+        }
 
         return caloriesConsumed > caloriesTarget
     }
-
 }
 
 private struct CalorieStatPill: View {
-
     // MARK: Internal
 
     let label: String
@@ -505,7 +498,6 @@ private struct CalorieStatPill: View {
 }
 
 private struct MealRow: View {
-
     // MARK: Internal
 
     let mealType: MealType
@@ -551,33 +543,43 @@ private struct MealRow: View {
 
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
-    private var consumed: Int { references.filter(\.isConsumed).count }
-    private var total: Int { references.count }
-    private var progress: Double {
-        guard total > 0 else { return 0 }
-        return Double(consumed) / Double(total)
+    private var consumed: Int {
+        references.filter(\.isConsumed).count
     }
 
+    private var total: Int {
+        references.count
+    }
+
+    private var progress: Double {
+        guard total > 0 else {
+            return 0
+        }
+
+        return Double(consumed) / Double(total)
+    }
 }
 
 extension MealType: CaseIterable {
-    static var allCases: [MealType] { [.breakfast, .lunch, .dinner, .snacks] }
+    static var allCases: [MealType] {
+        [.breakfast, .lunch, .dinner, .snacks]
+    }
 
     var iconName: String {
         switch self {
-        case .breakfast: return "sun.horizon"
-        case .lunch: return "sun.max"
-        case .dinner: return "moon.stars"
-        case .snacks: return "leaf"
+        case .breakfast: "sun.horizon"
+        case .lunch: "sun.max"
+        case .dinner: "moon.stars"
+        case .snacks: "leaf"
         }
     }
 
     var accentColor: Color {
         switch self {
-        case .breakfast: return Color(hex: "E3B34B")
-        case .lunch: return Color(hex: "6E8B6F")
-        case .dinner: return Color(hex: "A7C0CD")
-        case .snacks: return Color(hex: "E07B8A")
+        case .breakfast: Color(hex: "E3B34B")
+        case .lunch: Color(hex: "6E8B6F")
+        case .dinner: Color(hex: "A7C0CD")
+        case .snacks: Color(hex: "E07B8A")
         }
     }
 }
@@ -585,15 +587,21 @@ extension MealType: CaseIterable {
 struct RingLayout: Layout {
     let lineWidth: CGFloat
 
-    func sizeThatFits(proposal: ProposedViewSize, subviews: Subviews, cache: inout ()) -> CGSize {
-        guard let content = subviews.first else { return .zero }
+    func sizeThatFits(proposal _: ProposedViewSize, subviews: Subviews, cache _: inout ()) -> CGSize {
+        guard let content = subviews.first else {
+            return .zero
+        }
+
         let contentSize = content.sizeThatFits(.unspecified)
         let diameter = max(contentSize.width, contentSize.height) + lineWidth * 2
         return CGSize(width: diameter, height: diameter)
     }
 
-    func placeSubviews(in bounds: CGRect, proposal: ProposedViewSize, subviews: Subviews, cache: inout ()) {
-        guard let content = subviews.first else { return }
+    func placeSubviews(in bounds: CGRect, proposal _: ProposedViewSize, subviews: Subviews, cache _: inout ()) {
+        guard let content = subviews.first else {
+            return
+        }
+
         let contentSize = content.sizeThatFits(.unspecified)
         let origin = CGPoint(
             x: bounds.midX - contentSize.width / 2,
@@ -604,7 +612,6 @@ struct RingLayout: Layout {
 }
 
 struct ProgressRingView: View {
-
     // MARK: Internal
 
     let consumed: Measurement<UnitEnergy>?
@@ -612,7 +619,6 @@ struct ProgressRingView: View {
     let original: Measurement<UnitEnergy>?
 
     var body: some View {
-
         RingLayout(lineWidth: 14) {
             numericPercentageTextView
         }
@@ -653,39 +659,57 @@ struct ProgressRingView: View {
     }
 
     private var percentage: Int {
-        guard let consumed, let original else { return 0 }
+        guard let consumed, let original else {
+            return 0
+        }
 
         let consumedValue = consumed.converted(to: original.unit).value
         let originalValue = original.value
 
-        guard originalValue > 0 else { return 0 }
+        guard originalValue > 0 else {
+            return 0
+        }
 
         return Int((consumedValue / originalValue) * 100)
     }
 
     private var difference: Double {
-        guard let target, let original else { return 0 }
+        guard let target, let original else {
+            return 0
+        }
+
         return (target - original).value
     }
 
     private var targetModification: TargetModification? {
-        guard let target, let original else { return nil }
+        guard let target, let original else {
+            return nil
+        }
 
-        if target > original { return .increased }
-        if target < original { return .decreased }
+        if target > original {
+            return .increased
+        }
+        if target < original {
+            return .decreased
+        }
         return nil
     }
 
     private var modificationColor: Color {
         switch targetModification {
-        case .increased: return .secondary.mix(with: .black, by: 0.2)
-        case .decreased: return .secondary.mix(with: .white, by: 0.35)
-        case .none: return .secondary
+        case .increased: .secondary.mix(with: .black, by: 0.2)
+        case .decreased: .secondary.mix(with: .white, by: 0.35)
+        case .none: .secondary
         }
     }
 
-    private var consumedValue: Double? { consumed?.value }
-    private var goalValue: Double? { original?.value }
+    private var consumedValue: Double? {
+        consumed?.value
+    }
+
+    private var goalValue: Double? {
+        original?.value
+    }
 
     private var useCompactFont: Bool {
         (consumedValue ?? 0) > 999
@@ -723,7 +747,6 @@ struct ProgressRingView: View {
                             animatedNumber(consumedValue)
                             Text("/").font(valueFont)
                             animatedNumber(goalValue)
-
                         }
 
                         // Thanks chatgpt for this hack,
@@ -746,7 +769,6 @@ struct ProgressRingView: View {
             }
 
             HStack(spacing: 6) {
-
                 Text(UnitEnergy.kilocalories.symbol)
                     .font(.subheadline)
                     .foregroundStyle(.secondary)
@@ -778,11 +800,9 @@ struct ProgressRingView: View {
             value: value
         )
     }
-
 }
 
 struct MacroBarRow: View {
-
     // MARK: Internal
 
     let title: String
@@ -866,29 +886,39 @@ struct MacroBarRow: View {
     @Environment(\.accessibilityReduceTransparency) private var reduceTransparency
 
     private var targetModification: TargetModification? {
-        guard let goal, let recommendedGoal else { return nil }
+        guard let goal, let recommendedGoal else {
+            return nil
+        }
 
-        if goal > recommendedGoal { return .increased }
-        if goal < recommendedGoal { return .decreased }
+        if goal > recommendedGoal {
+            return .increased
+        }
+        if goal < recommendedGoal {
+            return .decreased
+        }
 
         return nil
     }
 
     private var modificationColor: Color {
         switch targetModification {
-        case .increased: return .secondary.mix(with: .black, by: 0.2)
-        case .decreased: return .secondary.mix(with: .white, by: 0.35)
-        case .none: return .secondary
+        case .increased: .secondary.mix(with: .black, by: 0.2)
+        case .decreased: .secondary.mix(with: .white, by: 0.35)
+        case .none: .secondary
         }
     }
 
     private var recommendedProgress: Double {
-        guard let intake, let recommendedGoal else { return 0 }
+        guard let intake, let recommendedGoal else {
+            return 0
+        }
 
         let intakeValue = intake.converted(to: recommendedGoal.unit).value
         let goalValue = recommendedGoal.value
 
-        guard goalValue > 0 else { return 0 }
+        guard goalValue > 0 else {
+            return 0
+        }
 
         return intakeValue / goalValue
     }
@@ -898,7 +928,9 @@ struct MacroBarRow: View {
     }
 
     private var difference: Double {
-        guard let intake, let recommendedGoal else { return 0 }
+        guard let intake, let recommendedGoal else {
+            return 0
+        }
 
         let intakeValue = intake.converted(to: recommendedGoal.unit).value
         let goalValue = recommendedGoal.value
@@ -960,5 +992,4 @@ struct MacroBarRow: View {
         }
         .animation(reduceMotion ? nil : .easeInOut, value: showPercentage)
     }
-
 }

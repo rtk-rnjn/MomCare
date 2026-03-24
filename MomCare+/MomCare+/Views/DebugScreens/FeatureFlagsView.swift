@@ -1,7 +1,16 @@
 import SwiftUI
 
-struct FeatureFlagsView: View {
+enum FeatureFlagState: String {
+    case experimentalFeatures
+    case experimentalUI
+    case debugLogging
+    case forceDarkMode
+    case forceLightMode
 
+    case forceUseLargeTitle
+}
+
+struct FeatureFlagsView: View {
     // MARK: Internal
 
     var body: some View {
@@ -19,11 +28,12 @@ struct FeatureFlagsView: View {
                     tint: .purple,
                     isOn: $experimentalFeatures
                 )
+
                 FlagToggle(
-                    label: "Debug Logging",
-                    icon: "doc.text.magnifyingglass",
-                    tint: .blue,
-                    isOn: $debugLogging
+                    label: "Experimental UI",
+                    icon: "wand.and.stars",
+                    tint: .pink,
+                    isOn: $experimentalUI
                 )
             } header: {
                 Text("Experimental Flags")
@@ -83,7 +93,6 @@ struct FeatureFlagsView: View {
                     .font(.footnote)
                     .foregroundStyle(.secondary)
             }
-
         }
         .navigationTitle("Feature Flags")
         .navigationBarTitleDisplayMode(.inline)
@@ -92,12 +101,11 @@ struct FeatureFlagsView: View {
     // MARK: Private
 
     @AppStorage(FeatureFlagState.experimentalFeatures.rawValue, store: UserDefaults(suiteName: "group.MomCare")) private var experimentalFeatures: Bool = false
-    @AppStorage(FeatureFlagState.debugLogging.rawValue, store: UserDefaults(suiteName: "group.MomCare")) private var debugLogging: Bool = false
     @AppStorage(FeatureFlagState.forceUseLargeTitle.rawValue, store: UserDefaults(suiteName: "group.MomCare")) private var forceUseLargeTitle: Bool = false
+    @AppStorage(FeatureFlagState.experimentalUI.rawValue, store: UserDefaults(suiteName: "group.MomCare")) private var experimentalUI: Bool = false
 
     @AppStorage(FeatureFlagState.forceDarkMode.rawValue, store: UserDefaults(suiteName: "group.MomCare")) private var forceDarkMode: Bool = false
     @AppStorage(FeatureFlagState.forceLightMode.rawValue, store: UserDefaults(suiteName: "group.MomCare")) private var forceLightMode: Bool = true
-
 }
 
 private struct FlagToggle: View {

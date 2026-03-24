@@ -1,7 +1,6 @@
 import SwiftUI
 
 struct PrivacyPolicyView: View {
-
     // MARK: Internal
 
     var body: some View {
@@ -118,7 +117,6 @@ struct PrivacyPolicyView: View {
 }
 
 struct PolicySectionView: View {
-
     // MARK: Internal
 
     let title: String

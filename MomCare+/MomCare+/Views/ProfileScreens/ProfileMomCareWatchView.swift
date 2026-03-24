@@ -2,7 +2,6 @@ import SwiftUI
 import WatchConnectivity
 
 struct ProfileMomCareWatchView: View {
-
     // MARK: Internal
 
     var body: some View {

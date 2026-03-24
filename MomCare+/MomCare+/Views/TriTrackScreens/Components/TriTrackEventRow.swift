@@ -2,7 +2,6 @@ import EventKit
 import SwiftUI
 
 struct TriTrackEventRow: View {
-
     // MARK: Internal
 
     let event: EKEvent
@@ -10,7 +9,6 @@ struct TriTrackEventRow: View {
     @Binding var selectedDate: Date
 
     var body: some View {
-
         HStack(spacing: 14) {
             dateCapsule
 
@@ -24,7 +22,6 @@ struct TriTrackEventRow: View {
         .accessibilityValue(event.startDate.formatted(.dateTime.weekday().day().month().hour().minute()))
         .accessibilityHint("Double tap to view event details, long press for more options")
         .accessibilityAddTraits(.isButton)
-
     }
 
     // MARK: Private
@@ -34,15 +31,11 @@ struct TriTrackEventRow: View {
     private var now: Date {
         .init()
     }
-
 }
 
 extension TriTrackEventRow {
-
     var dateCapsule: some View {
-
         VStack(spacing: 4) {
-
             Text(event.startDate.formatted(.dateTime.day()))
                 .font(.headline.weight(.bold))
 
@@ -67,11 +60,8 @@ extension TriTrackEventRow {
 }
 
 extension TriTrackEventRow {
-
     func appointmentInfo() -> some View {
-
         VStack(alignment: .leading, spacing: 4) {
-
             Text(event.title)
                 .font(.headline)
                 .lineLimit(1)
@@ -118,7 +108,6 @@ extension TriTrackEventRow {
 
             if let location = event.location,
                !location.isEmpty {
-
                 Text(location)
                     .font(.caption)
                     .foregroundColor(.secondary)
@@ -129,7 +118,6 @@ extension TriTrackEventRow {
 }
 
 extension TriTrackEventRow {
-
     private var isToday: Bool {
         Calendar.current.isDate(event.startDate, inSameDayAs: selectedDate)
     }

@@ -1,7 +1,6 @@
 import SwiftUI
 
 struct DashboardInsightCardView: View {
-
     // MARK: Internal
 
     let title: String
@@ -63,5 +62,4 @@ struct DashboardInsightCardView: View {
     // MARK: Private
 
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
-
 }

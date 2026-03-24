@@ -19,7 +19,7 @@ struct FoodReferenceModel: Codable, Sendable, Identifiable, Equatable {
     var count: Int
 
     var isConsumed: Bool {
-        return (consumedAtTimestamp ?? 0) > 0
+        (consumedAtTimestamp ?? 0) > 0
     }
 
     var id: String {
@@ -72,10 +72,10 @@ struct MealPlanModel: Codable, Sendable {
     subscript(_ type: MealType) -> [FoodReferenceModel] {
         get {
             switch type {
-            case .breakfast: return breakfast
-            case .lunch: return lunch
-            case .dinner: return dinner
-            case .snacks: return snacks
+            case .breakfast: breakfast
+            case .lunch: lunch
+            case .dinner: dinner
+            case .snacks: snacks
             }
         }
         set {

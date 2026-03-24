@@ -7,7 +7,6 @@ private let reminderIdentifier = "com.momcareplus.tritrack.reminders"
 
 @MainActor
 final class EventKitHandler: ObservableObject {
-
     // MARK: Internal
 
     @Published var events: [EKEvent] = []
@@ -47,11 +46,10 @@ final class EventKitHandler: ObservableObject {
         return nil
     }
 
-    func createOrGetCalendar(identifierKey: String, eventType: EKEntityType, title: String, source calendarSource: EKCalendar?) throws -> EKCalendar {
+    func createOrGetCalendar(identifierKey _: String, eventType: EKEntityType, title: String, source calendarSource: EKCalendar?) throws -> EKCalendar {
         let identifier: String? = Database.shared[.calendarIdentifier(eventType)]
 
         if let identifier, let calendar = getCalendar(with: identifier) {
-
             return calendar
         }
 
@@ -66,7 +64,6 @@ final class EventKitHandler: ObservableObject {
     }
 
     func fetchAppointments(selectedDate: Date) throws {
-
         let calendar = Calendar.current
         let startDate = calendar.startOfDay(for: selectedDate)
         let endDate = calendar.date(byAdding: .day, value: 1, to: startDate)!
@@ -80,19 +77,17 @@ final class EventKitHandler: ObservableObject {
     }
 
     func fetchReminders(startDate: Date) throws {
-
         let predicate = try eventStore.predicateForReminders(in: [createOrGetReminderCalendar()])
         eventStore.fetchReminders(matching: predicate) { reminders in
             DispatchQueue.main.async {
                 self.reminders = reminders?.filter { reminder in
                     self.reminderMatchesDate(reminder, date: startDate)
                 } ?? []
-
             }
         }
     }
 
-    func markReminder(complete: Bool, reminder: EKReminder, date: Date) throws -> EKReminder {
+    func markReminder(complete: Bool, reminder: EKReminder, date _: Date) throws -> EKReminder {
         reminder.isCompleted = complete
         reminder.completionDate = complete ? Date() : nil
         try eventStore.save(reminder, commit: true)
@@ -109,12 +104,10 @@ final class EventKitHandler: ObservableObject {
     }
 
     func fetchAllReminders() throws {
-
         let predicate = try eventStore.predicateForReminders(in: [createOrGetReminderCalendar()])
         eventStore.fetchReminders(matching: predicate) { reminders in
             DispatchQueue.main.async {
                 self.allReminders = reminders ?? []
-
             }
         }
     }
@@ -133,7 +126,6 @@ final class EventKitHandler: ObservableObject {
     }
 
     func fetchAllEvents() throws {
-
         let now = Date()
         let lastTwoYear = Calendar.current.date(byAdding: .year, value: -2, to: now)!
         let nextTwoYear = Calendar.current.date(byAdding: .year, value: 2, to: now)!
@@ -164,7 +156,6 @@ final class EventKitHandler: ObservableObject {
         structuredLocaltion: EKStructuredLocation? = nil,
         alarm: EKAlarm? = nil
     ) throws -> EKEvent {
-
         let event = EKEvent(eventStore: eventStore)
 
         event.title = title
@@ -215,8 +206,6 @@ final class EventKitHandler: ObservableObject {
 
     // MARK: Private
 
-    private var cancellables: Set<AnyCancellable> = []
-
     private func fetchOnGoingOrMostRecentUpcomingEvent(from events: [EKEvent]) -> EKEvent? {
         let now = Date()
         let ongoingEvents = events.filter { $0.startDate <= now && $0.endDate >= now }
@@ -229,7 +218,6 @@ final class EventKitHandler: ObservableObject {
     }
 
     private func reminderMatchesDate(_ reminder: EKReminder, date: Date) -> Bool {
-
         let calendar = Calendar.current
 
         guard let startDate = (reminder.startDateComponents ?? reminder.dueDateComponents)?.date else {
@@ -255,12 +243,14 @@ final class EventKitHandler: ObservableObject {
         date: Date,
         calendar: Calendar
     ) -> Bool {
-
-        if let end = rule.recurrenceEnd?.endDate, date > end { return false }
-        if date < startDate { return false }
+        if let end = rule.recurrenceEnd?.endDate, date > end {
+            return false
+        }
+        if date < startDate {
+            return false
+        }
 
         switch rule.frequency {
-
         case .daily:
             return matchesDaily(rule: rule, startDate: startDate, date: date, calendar: calendar)
 
@@ -284,7 +274,6 @@ final class EventKitHandler: ObservableObject {
         date: Date,
         calendar: Calendar
     ) -> Bool {
-
         let days = calendar.dateComponents([.day], from: startDate, to: date).day ?? 0
         return days % rule.interval == 0
     }
@@ -295,9 +284,10 @@ final class EventKitHandler: ObservableObject {
         date: Date,
         calendar: Calendar
     ) -> Bool {
-
         let weeks = calendar.dateComponents([.weekOfYear], from: startDate, to: date).weekOfYear ?? 0
-        guard weeks % rule.interval == 0 else { return false }
+        guard weeks % rule.interval == 0 else {
+            return false
+        }
 
         let weekday = calendar.component(.weekday, from: date)
 
@@ -315,9 +305,10 @@ final class EventKitHandler: ObservableObject {
         date: Date,
         calendar: Calendar
     ) -> Bool {
-
         let months = calendar.dateComponents([.month], from: startDate, to: date).month ?? 0
-        guard months % rule.interval == 0 else { return false }
+        guard months % rule.interval == 0 else {
+            return false
+        }
 
         let startDay = calendar.component(.day, from: startDate)
         let dateDay = calendar.component(.day, from: date)
@@ -331,9 +322,10 @@ final class EventKitHandler: ObservableObject {
         date: Date,
         calendar: Calendar
     ) -> Bool {
-
         let years = calendar.dateComponents([.year], from: startDate, to: date).year ?? 0
-        guard years % rule.interval == 0 else { return false }
+        guard years % rule.interval == 0 else {
+            return false
+        }
 
         let startMonth = calendar.component(.month, from: startDate)
         let startDay = calendar.component(.day, from: startDate)
@@ -343,5 +335,4 @@ final class EventKitHandler: ObservableObject {
 
         return startMonth == dateMonth && startDay == dateDay
     }
-
 }

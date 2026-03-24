@@ -1,7 +1,6 @@
 import SwiftUI
 
 struct CountryPickerView: View {
-
     // MARK: Internal
 
     @Binding var selectedCountry: String?

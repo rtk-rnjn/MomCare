@@ -1,7 +1,6 @@
 import SwiftUI
 
 struct ErrorAlertModifier<Actions: View>: ViewModifier {
-
     // MARK: Internal
 
     @Binding var error: (any Error)?
@@ -26,7 +25,9 @@ struct ErrorAlertModifier<Actions: View>: ViewModifier {
     private var isPresented: Binding<Bool> {
         Binding(
             get: { error != nil },
-            set: { if !$0 { error = nil } }
+            set: { if !$0 {
+                error = nil
+            } }
         )
     }
 
@@ -55,7 +56,6 @@ struct ErrorAlertModifier<Actions: View>: ViewModifier {
 }
 
 extension View {
-
     func errorAlert(error: Binding<(any Error)?>) -> some View {
         modifier(
             ErrorAlertModifier(error: error) { _ in

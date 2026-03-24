@@ -1,8 +1,7 @@
-import SwiftUI
 import AuthenticationServices
+import SwiftUI
 
 struct PasswordFieldsEmptyError: LocalizedError {
-
     var errorDescription: String? {
         NSLocalizedString(
             "Please fill all password fields.",
@@ -26,7 +25,6 @@ struct PasswordFieldsEmptyError: LocalizedError {
 }
 
 struct PasswordMismatchError: LocalizedError {
-
     var errorDescription: String? {
         NSLocalizedString(
             "New passwords do not match.",
@@ -50,7 +48,6 @@ struct PasswordMismatchError: LocalizedError {
 }
 
 struct PasswordTooShortError: LocalizedError {
-
     var errorDescription: String? {
         NSLocalizedString(
             "Password must be at least 6 characters.",
@@ -74,7 +71,6 @@ struct PasswordTooShortError: LocalizedError {
 }
 
 struct TokenParseError: LocalizedError {
-
     var errorDescription: String? {
         NSLocalizedString(
             "Failed to parse Apple Sign-In token.",
@@ -98,12 +94,15 @@ struct TokenParseError: LocalizedError {
 }
 
 struct ProfileAccountSecurityView: View {
-
     // MARK: Internal
+
+    var hasAppleIdentifier: Bool {
+        authenticationService.credentials?.appleIdentifier != nil
+    }
 
     var body: some View {
         List {
-            if !emailAddress.isEmpty {
+            if !emailAddress.isEmpty || !hasAppleIdentifier {
                 Section {
                     HStack {
                         Text("Email Address")
@@ -124,56 +123,66 @@ struct ProfileAccountSecurityView: View {
                     Text("Your email address is used for account recovery and notifications.")
                         .font(.footnote)
                 }
-            }
 
-            Section {
-                Button {
-                    toggleChangePassword()
-                } label: {
-                    HStack {
-                        Text("Change Password")
-                        Spacer()
-                        Image(systemName: isChangingPassword ? "chevron.down" : "chevron.right")
-                            .foregroundColor(.secondary)
-                            .contentTransition(reduceMotion ? .identity : .symbolEffect)
-                            .animation(
-                                reduceMotion ? nil : .easeInOut,
-                                value: isChangingPassword
-                            )
-                    }
-                }
-                .foregroundColor(.primary)
-                .accessibilityHint(isChangingPassword ? "Collapses the password change form" : "Expands the password change form")
-
-                if isChangingPassword {
-
-                    SecureFieldRow(title: "Old Password", text: $oldPassword)
-                    SecureFieldRow(title: "New Password", text: $newPassword)
-                    SecureFieldRow(title: "Confirm Password", text: $confirmPassword)
-
-                    Button("Change") {
-                        validatePasswordAndSubmit {
-                            do {
-                                _ = try await authenticationService.changePassword(
-                                    currentPassword: oldPassword,
-                                    newPassword: newPassword
+                Section {
+                    Button {
+                        toggleChangePassword()
+                    } label: {
+                        HStack {
+                            Text("Change Password")
+                            Spacer()
+                            Image(systemName: isChangingPassword ? "chevron.down" : "chevron.right")
+                                .foregroundColor(.secondary)
+                                .contentTransition(reduceMotion ? .identity : .symbolEffect)
+                                .animation(
+                                    reduceMotion ? nil : .easeInOut,
+                                    value: isChangingPassword
                                 )
-                            } catch {
-                                controlState.error = error
-                            }
                         }
                     }
-                    .frame(maxWidth: .infinity)
-                    .foregroundColor(canSubmit ? Color("primaryAppColor") : .secondary)
-                    .disabled(!canSubmit)
-                }
-            } header: {
-                Text("Security")
-            } footer: {
-                Text("Your password must be at least 6 characters long. Make sure to choose a strong password to keep your account secure.")
-                    .font(.footnote)
-            }
+                    .foregroundColor(.primary)
+                    .accessibilityHint(isChangingPassword ? "Collapses the password change form" : "Expands the password change form")
 
+                    if isChangingPassword {
+                        SecureFieldRow(title: "Old Password", text: $oldPassword)
+                        SecureFieldRow(title: "New Password", text: $newPassword)
+                        SecureFieldRow(title: "Confirm Password", text: $confirmPassword)
+
+                        Button("Change") {
+                            validatePasswordAndSubmit {
+                                do {
+                                    _ = try await authenticationService.changePassword(
+                                        currentPassword: oldPassword,
+                                        newPassword: newPassword
+                                    )
+                                } catch {
+                                    controlState.error = error
+                                }
+                            }
+                        }
+                        .frame(maxWidth: .infinity)
+                        .foregroundColor(canSubmit ? Color("primaryAppColor") : .secondary)
+                        .disabled(!canSubmit)
+                    }
+                } header: {
+                    Text("Security")
+                } footer: {
+                    Text("Your password must be at least 6 characters long. Make sure to choose a strong password to keep your account secure.")
+                        .font(.footnote)
+                }
+            } else {
+                Section {
+                    if hasAppleIdentifier {
+                        Text("This account is connected with Apple Sign-In.")
+                            .foregroundStyle(.secondary)
+                    } else {
+                        Text("No email address associated with this account.")
+                            .foregroundStyle(.secondary)
+                    }
+                } header: {
+                    Text("Account Information")
+                }
+            }
             Section {
                 HStack {
                     Text("Apple ID")
@@ -216,7 +225,6 @@ struct ProfileAccountSecurityView: View {
                             .foregroundStyle(.secondary)
                             .multilineTextAlignment(.center)
                             .fixedSize(horizontal: false, vertical: true)
-
                     }
                     .padding(.top, 32)
                     .padding(.horizontal, 28)
@@ -224,7 +232,6 @@ struct ProfileAccountSecurityView: View {
                     .accessibilityLabel("Connect with Apple. Link your Apple ID to sign in quickly and keep your account secure.")
 
                     VStack(spacing: 12) {
-
                         SignInWithAppleButton(.continue) { request in
                             request.requestedScopes = []
                         } onCompletion: { result in
@@ -242,11 +249,9 @@ struct ProfileAccountSecurityView: View {
                         .foregroundStyle(.secondary)
                         .padding(.bottom, 8)
                         .accessibilityHint("Closes this sheet")
-
                     }
                     .padding(.horizontal, 28)
                     .padding(.bottom, 24)
-
                 }
                 .navigationBarHidden(true)
             }
@@ -257,7 +262,6 @@ struct ProfileAccountSecurityView: View {
         .navigationBarTitleDisplayMode(.inline)
         .onAppear {
             let credentials = authenticationService.credentials
-            hasAppleIdentifier = credentials?.appleIdentifier != nil
             emailAddress = credentials?.emailAddress ?? ""
         }
     }
@@ -269,17 +273,14 @@ struct ProfileAccountSecurityView: View {
     }
 
     func validatePasswordAndSubmit(completion: (() async -> Void)? = nil) {
-
         guard canSubmit else {
             controlState.error = PasswordFieldsEmptyError()
             return
         }
-
         guard newPassword == confirmPassword else {
             controlState.error = PasswordMismatchError()
             return
         }
-
         guard newPassword.count >= 6 else {
             controlState.error = PasswordTooShortError()
             return
@@ -313,7 +314,6 @@ struct ProfileAccountSecurityView: View {
     @State private var newPassword = ""
     @State private var confirmPassword = ""
 
-    @State private var hasAppleIdentifier: Bool = false
     @State private var showAppleConnectSheet: Bool = false
 
     private var canSubmit: Bool {
@@ -335,6 +335,7 @@ struct ProfileAccountSecurityView: View {
             } catch {
                 controlState.error = error
             }
+            showAppleConnectSheet = false
 
         case let .failure(error):
             controlState.error = error
@@ -343,7 +344,6 @@ struct ProfileAccountSecurityView: View {
 }
 
 struct SecureFieldRow: View {
-
     let title: String
 
     @Binding var text: String

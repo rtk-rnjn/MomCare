@@ -1,7 +1,6 @@
 import SwiftUI
 
 struct MyPlanView: View {
-
     // MARK: Internal
 
     var body: some View {

@@ -1,7 +1,6 @@
 import SwiftUI
 
 struct DataInspectorView: View {
-
     // MARK: Internal
 
     var body: some View {
@@ -133,7 +132,10 @@ struct DataInspectorView: View {
         guard let cacheURL = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask).first,
               let contents = try? FileManager.default.contentsOfDirectory(
                 at: cacheURL, includingPropertiesForKeys: nil)
-        else { return }
+        else {
+            return
+        }
+
         for url in contents {
             try? FileManager.default.removeItem(at: url)
         }

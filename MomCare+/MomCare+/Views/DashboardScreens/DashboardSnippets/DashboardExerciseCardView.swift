@@ -1,7 +1,6 @@
 import SwiftUI
 
 struct DashboardExerciseCard: View {
-
     // MARK: Internal
 
     let stepsToday: Int
@@ -60,11 +59,9 @@ struct DashboardExerciseCard: View {
 
         return formatter.string(from: seconds) ?? ""
     }
-
 }
 
 struct ExerciseRow: View {
-
     // MARK: Internal
 
     let color: Color
@@ -107,7 +104,6 @@ struct ExerciseRow: View {
 }
 
 struct ActivityRingView: View {
-
     // MARK: Internal
 
     let stepsGoalProgress: Double
@@ -131,7 +127,6 @@ struct ActivityRingView: View {
 
                 PercentageRing(ringWidth: ringWidth, percent: caloriesGoalProgress * 100, backgroundColor: Color.orange.opacity(0.15), foregroundColors: [.orange])
                     .frame(width: inner * 2, height: inner * 2)
-
             }
             .frame(width: size, height: size)
             .accessibilityElement(children: .ignore)
@@ -144,8 +139,6 @@ struct ActivityRingView: View {
     // MARK: Private
 
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
-    @Environment(\.accessibilityDifferentiateWithoutColor) private var differentiateWithoutColor
-    @Environment(\.accessibilityReduceTransparency) private var reduceTransparency
 
     private let ringWidth: CGFloat = 14
     private let spacing: CGFloat = 2

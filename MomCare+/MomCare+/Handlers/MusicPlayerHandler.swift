@@ -6,7 +6,6 @@ import UIKit
 
 @MainActor
 final class MusicPlayerHandler: ObservableObject {
-
     // MARK: Lifecycle
 
     init() {
@@ -81,7 +80,6 @@ final class MusicPlayerHandler: ObservableObject {
     }
 
     func preparePlaylistAndPlay(_ playlist: PlaylistModel, startingWith index: Int = 0) {
-
         self.playlist = playlist.songs
         currentSongIndex = index
         if let song = playlist.songs[safe: index] {
@@ -90,23 +88,21 @@ final class MusicPlayerHandler: ObservableObject {
     }
 
     func skipToNext() {
-
         play(song: adjacentSong(offset: 1))
     }
 
     func skipToPrevious() {
-
         play(song: adjacentSong(offset: -1))
     }
 
     func togglePlayPause() -> Bool {
-        guard let player else { return false }
+        guard let player else {
+            return false
+        }
 
         if player.timeControlStatus == .playing {
-
             player.pause()
         } else {
-
             player.play()
         }
 
@@ -114,13 +110,15 @@ final class MusicPlayerHandler: ObservableObject {
     }
 
     func stop() {
-
         player?.pause()
         discardPlayer()
     }
 
     func seek(by seconds: Double) {
-        guard let player else { return }
+        guard let player else {
+            return
+        }
+
         let newTime = CMTime(
             seconds: seconds,
             preferredTimescale: CMTimeScale(NSEC_PER_SEC)
@@ -133,11 +131,12 @@ final class MusicPlayerHandler: ObservableObject {
     private var timeObserverToken: Any?
 
     private func play(song: SongModel?, discardPrevious: Bool = true) {
-        guard let song else { return }
+        guard let song else {
+            return
+        }
 
         Task {
             guard let url = await song.url, let image = await song.image else {
-
                 return
             }
 
@@ -164,7 +163,10 @@ final class MusicPlayerHandler: ObservableObject {
     }
 
     private func prepareAVPlayer(with song: SongModel) async -> AVPlayer? {
-        guard let url = await song.url else { return nil }
+        guard let url = await song.url else {
+            return nil
+        }
+
         return prepareAVPlayer(with: url)
     }
 
@@ -182,7 +184,10 @@ final class MusicPlayerHandler: ObservableObject {
             queue: .main
         ) { _ in
             DispatchQueue.main.async {
-                guard let duration = self.player?.currentItem?.duration.seconds, duration > 0 else { return }
+                guard let duration = self.player?.currentItem?.duration.seconds, duration > 0 else {
+                    return
+                }
+
                 self.playbackProgress = (self.player?.currentTime().seconds ?? 0) / duration
             }
         }
@@ -202,11 +207,9 @@ final class MusicPlayerHandler: ObservableObject {
         }
 
         NotificationCenter.default.removeObserver(self) // swiftlint:disable:this notification_center_detachment
-
     }
 
     @objc private func playerDidFinishPlaying() {
-
         if let next = adjacentSong(offset: 1) {
             play(song: next, discardPrevious: false)
         }

@@ -2,7 +2,6 @@ import SwiftUI
 import TipKit
 
 struct MealTimelineCardView: View {
-
     // MARK: Internal
 
     let plan: MealPlanModel?
@@ -42,7 +41,6 @@ struct MealTimelineCardView: View {
         .listRowSpacing(0)
         .scrollIndicators(.hidden)
         .scrollDismissesKeyboard(.immediately)
-
         .scrollBounceBehavior(.basedOnSize)
         .environment(\.defaultMinListRowHeight, 0)
     }
@@ -54,7 +52,6 @@ struct MealTimelineCardView: View {
 
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
-    @ViewBuilder
     private func mealSection(title: String, items: [FoodReferenceModel], originalItems: [FoodReferenceModel], mealType: MealType) -> some View {
         Section {
             HeaderRow(
@@ -131,7 +128,6 @@ struct MealTimelineCardView: View {
 }
 
 private struct HeaderRow: View {
-
     // MARK: Internal
 
     let section: MealSection
@@ -193,7 +189,6 @@ private struct HeaderRow: View {
 }
 
 private struct ItemRow: View {
-
     // MARK: Internal
 
     var item: FoodReferenceModel
@@ -312,7 +307,6 @@ private struct TimelineLine: View {
 }
 
 struct FoodThumbnail: View {
-
     // MARK: Internal
 
     @State var foodReferenceModel: FoodReferenceModel
@@ -348,11 +342,9 @@ struct FoodThumbnail: View {
     // MARK: Private
 
     @State private var uiImage: UIImage?
-
 }
 
 private struct MealContextMenu: ViewModifier {
-
     // MARK: Internal
 
     let item: FoodReferenceModel
@@ -399,7 +391,6 @@ private struct MealContextMenu: ViewModifier {
 }
 
 private struct NutritionPreview: View {
-
     // MARK: Internal
 
     let item: FoodReferenceModel

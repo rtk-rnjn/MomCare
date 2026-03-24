@@ -1,9 +1,8 @@
+import Combine
 import SwiftUI
 import UIKit
-import Combine
 
 struct AccessibilityInspectorView: View {
-
     // MARK: Internal
 
     var body: some View {
@@ -45,7 +44,6 @@ struct AccessibilityInspectorView: View {
     private let timer = Timer.publish(every: 1.5, on: .main, in: .common).autoconnect()
 
     private var dynamicTypeLabel: String {
-
         let cat = UIApplication.shared.preferredContentSizeCategory
         switch cat {
         case .extraSmall: return "XS"
@@ -66,7 +64,6 @@ struct AccessibilityInspectorView: View {
 }
 
 private struct AccessibilityRow: View {
-
     // MARK: Internal
 
     let label: String

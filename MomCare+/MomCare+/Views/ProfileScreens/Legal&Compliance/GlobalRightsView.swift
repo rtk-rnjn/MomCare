@@ -1,7 +1,6 @@
 import SwiftUI
 
 struct GlobalRightsView: View {
-
     // MARK: Internal
 
     var body: some View {

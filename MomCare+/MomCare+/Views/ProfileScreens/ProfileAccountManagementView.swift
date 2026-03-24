@@ -1,7 +1,6 @@
 import SwiftUI
 
 struct ProfileAccountManagementView: View {
-
     // MARK: Internal
 
     var body: some View {

@@ -3,7 +3,6 @@ import Foundation
 protocol APIError: Error, LocalizedError {}
 
 struct BadRequestError: @preconcurrency APIError {
-
     var errorDescription: String? {
         "Invalid request."
     }
@@ -18,7 +17,6 @@ struct BadRequestError: @preconcurrency APIError {
 }
 
 struct UnauthorizedError: @preconcurrency APIError {
-
     var errorDescription: String? {
         "Authentication failed."
     }
@@ -33,7 +31,6 @@ struct UnauthorizedError: @preconcurrency APIError {
 }
 
 struct ForbiddenError: @preconcurrency APIError {
-
     var errorDescription: String? {
         "Access denied."
     }
@@ -48,7 +45,6 @@ struct ForbiddenError: @preconcurrency APIError {
 }
 
 struct NotFoundError: @preconcurrency APIError {
-
     var errorDescription: String? {
         "Resource not found."
     }
@@ -63,7 +59,6 @@ struct NotFoundError: @preconcurrency APIError {
 }
 
 struct ConflictError: @preconcurrency APIError {
-
     var errorDescription: String? {
         "Conflict occurred."
     }
@@ -78,7 +73,6 @@ struct ConflictError: @preconcurrency APIError {
 }
 
 struct AccountDeletedError: @preconcurrency APIError {
-
     var errorDescription: String? {
         "Account deleted."
     }
@@ -93,7 +87,6 @@ struct AccountDeletedError: @preconcurrency APIError {
 }
 
 struct ValidationError: @preconcurrency APIError {
-
     var errorDescription: String? {
         "Invalid input."
     }
@@ -108,7 +101,6 @@ struct ValidationError: @preconcurrency APIError {
 }
 
 struct AccountLockedError: @preconcurrency APIError {
-
     var errorDescription: String? {
         "Account locked."
     }
@@ -123,7 +115,6 @@ struct AccountLockedError: @preconcurrency APIError {
 }
 
 struct NetworkError: @preconcurrency APIError {
-
     var errorDescription: String? {
         "Network connection failed."
     }
@@ -138,7 +129,6 @@ struct NetworkError: @preconcurrency APIError {
 }
 
 struct UnknownAPIError: @preconcurrency APIError {
-
     var errorDescription: String? {
         "Something went wrong."
     }
@@ -153,37 +143,34 @@ struct UnknownAPIError: @preconcurrency APIError {
 }
 
 enum APIErrorResolver {
-
     static func error(from statusCode: Int, with error: HTTPErrorResponse? = nil) -> any LocalizedError {
-
         switch statusCode {
-
         case 400:
-            return BadRequestError()
+            BadRequestError()
 
         case 401:
-            return UnauthorizedError()
+            UnauthorizedError()
 
         case 403:
-            return ForbiddenError()
+            ForbiddenError()
 
         case 404:
-            return NotFoundError()
+            NotFoundError()
 
         case 409:
-            return ConflictError()
+            ConflictError()
 
         case 410:
-            return AccountDeletedError()
+            AccountDeletedError()
 
         case 422:
-            return error ?? ValidationError()
+            error ?? ValidationError()
 
         case 423:
-            return AccountLockedError()
+            AccountLockedError()
 
         default:
-            return UnknownAPIError()
+            UnknownAPIError()
         }
     }
 }

@@ -3,7 +3,6 @@ import Foundation
 private let baseURLString = "http://13.203.42.179/api"
 
 enum Endpoint: String {
-
     case register = "/v1/auth/register"
     case login = "/v1/auth/login"
     case me = "/v1/auth/me" // swiftlint:disable:this identifier_name

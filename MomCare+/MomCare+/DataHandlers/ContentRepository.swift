@@ -3,7 +3,6 @@ import Foundation
 
 @MainActor
 class ContentRepository {
-
     static let shared: ContentRepository = .init()
 
     var authenticationHeaders: [String: String]? {
@@ -23,15 +22,15 @@ class ContentRepository {
     }
 
     func generateDailyInsights() async throws -> NetworkResponse<DailyInsightModel> {
-        return try await NetworkManager.shared.get(url: Endpoint.generateTips.urlString, headers: authenticationHeaders)
+        try await NetworkManager.shared.get(url: Endpoint.generateTips.urlString, headers: authenticationHeaders)
     }
 
     func generateMealPlan() async throws -> NetworkResponse<MealPlanModel> {
-        return try await NetworkManager.shared.get(url: Endpoint.generatePlan.urlString, headers: authenticationHeaders)
+        try await NetworkManager.shared.get(url: Endpoint.generatePlan.urlString, headers: authenticationHeaders)
     }
 
     func generateUserExercises() async throws -> NetworkResponse<[UserExerciseModel]> {
-        return try await NetworkManager.shared.get(url: Endpoint.generateExercises.urlString, headers: authenticationHeaders)
+        try await NetworkManager.shared.get(url: Endpoint.generateExercises.urlString, headers: authenticationHeaders)
     }
 
     func getOrFetchExercise(id: String) async throws -> NetworkResponse<ExerciseModel> {
@@ -57,19 +56,19 @@ class ContentRepository {
     }
 
     func fetchSongStreamUri(id: String) async throws -> NetworkResponse<ServerMessage> {
-        return try await NetworkManager.shared.get(url: Endpoint.fetchSongUri.urlString(with: id))
+        try await NetworkManager.shared.get(url: Endpoint.fetchSongUri.urlString(with: id))
     }
 
     func fetchExerciseStreamUri(id: String) async throws -> NetworkResponse<ServerMessage> {
-        return try await NetworkManager.shared.get(url: Endpoint.fetchExerciseUri.urlString(with: id))
+        try await NetworkManager.shared.get(url: Endpoint.fetchExerciseUri.urlString(with: id))
     }
 
     func fetchSongs(for moodType: MoodType) async throws -> NetworkResponse<[SongModel]> {
-        return try await NetworkManager.shared.get(url: Endpoint.songs.urlString, queryParameters: ["mood": moodType])
+        try await NetworkManager.shared.get(url: Endpoint.songs.urlString, queryParameters: ["mood": moodType])
     }
 
     func fetchFoodImage(id: String) async throws -> NetworkResponse<ServerMessage> {
-        return try await NetworkManager.shared.get(url: Endpoint.fetchFoodImageUri.urlString(with: id))
+        try await NetworkManager.shared.get(url: Endpoint.fetchFoodImageUri.urlString(with: id))
     }
 
     func fetchUserExercises(from startDate: Date, to endDate: Date) async throws -> NetworkResponse<[UserExerciseModel]> {

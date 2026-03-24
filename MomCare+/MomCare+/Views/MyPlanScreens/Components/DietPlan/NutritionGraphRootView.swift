@@ -1,8 +1,7 @@
-import SwiftUI
 import Charts
+import SwiftUI
 
 struct NutritionGraphRootView: View {
-
     // MARK: Internal
 
     let calorieIntake: Measurement<UnitEnergy>
@@ -15,7 +14,6 @@ struct NutritionGraphRootView: View {
         NavigationStack {
             ScrollView(showsIndicators: false) {
                 VStack(spacing: 0) {
-
                     summaryStrip
                         .padding(.horizontal, 16)
                         .padding(.top, 8)
@@ -142,29 +140,28 @@ struct NutritionGraphRootView: View {
 
     private func todayValue(for kind: VitalKind) -> Double {
         switch kind {
-        case .calories: return nutritionIntakeTotals?.calories ?? 0
-        case .protein: return nutritionIntakeTotals?.protein ?? 0
-        case .carbs: return nutritionIntakeTotals?.carbs ?? 0
-        case .fats: return nutritionIntakeTotals?.fats ?? 0
-        case .sugar: return nutritionIntakeTotals?.sugar ?? 0
-        case .sodium: return nutritionIntakeTotals?.sodium ?? 0
+        case .calories: nutritionIntakeTotals?.calories ?? 0
+        case .protein: nutritionIntakeTotals?.protein ?? 0
+        case .carbs: nutritionIntakeTotals?.carbs ?? 0
+        case .fats: nutritionIntakeTotals?.fats ?? 0
+        case .sugar: nutritionIntakeTotals?.sugar ?? 0
+        case .sodium: nutritionIntakeTotals?.sodium ?? 0
         }
     }
 
     private func targetValue(for kind: VitalKind) -> Double {
         switch kind {
-        case .calories: return nutritionGoalTotals?.calories ?? 0
-        case .protein: return nutritionGoalTotals?.protein ?? 0
-        case .carbs: return nutritionGoalTotals?.carbs ?? 0
-        case .fats: return nutritionGoalTotals?.fats ?? 0
-        case .sugar: return nutritionGoalTotals?.sugar ?? 0
-        case .sodium: return nutritionGoalTotals?.sodium ?? 0
+        case .calories: nutritionGoalTotals?.calories ?? 0
+        case .protein: nutritionGoalTotals?.protein ?? 0
+        case .carbs: nutritionGoalTotals?.carbs ?? 0
+        case .fats: nutritionGoalTotals?.fats ?? 0
+        case .sugar: nutritionGoalTotals?.sugar ?? 0
+        case .sodium: nutritionGoalTotals?.sodium ?? 0
         }
     }
 }
 
 private struct VitalCardRow: View {
-
     // MARK: Internal
 
     let kind: VitalKind
@@ -173,7 +170,6 @@ private struct VitalCardRow: View {
 
     var body: some View {
         HStack(spacing: 14) {
-
             ZStack {
                 RoundedRectangle(cornerRadius: 10, style: .continuous)
                     .fill(kind.color.opacity(0.14))
@@ -241,7 +237,10 @@ private struct VitalCardRow: View {
     // MARK: Private
 
     private var progress: Double {
-        guard targetValue > 0 else { return 0 }
+        guard targetValue > 0 else {
+            return 0
+        }
+
         return min(todayValue / targetValue, 1.0)
     }
 
@@ -251,9 +250,9 @@ private struct VitalCardRow: View {
 
     private func formattedValue(_ v: Double) -> String {
         if kind == .calories || kind == .sodium {
-            return v.formatted(.number.precision(.fractionLength(0)))
+            v.formatted(.number.precision(.fractionLength(0)))
         } else {
-            return v.formatted(.number.precision(.fractionLength(1)))
+            v.formatted(.number.precision(.fractionLength(1)))
         }
     }
 }

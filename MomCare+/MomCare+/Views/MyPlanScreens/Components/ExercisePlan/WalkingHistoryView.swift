@@ -1,8 +1,7 @@
-import SwiftUI
 import Charts
+import SwiftUI
 
 struct WalkingHistoryView: View {
-
     // MARK: Lifecycle
 
     init(stepsGoal: Int) {
@@ -17,10 +16,9 @@ struct WalkingHistoryView: View {
         NavigationStack {
             ScrollView(showsIndicators: false) {
                 VStack(spacing: 0) {
-
                     CompactCalendarView(
                         selectedDate: $selectedDate,
-                        isExpanded: $isCalendarExpanded
+                        isExpanded: $controlState.showingExpandedCalendar
                     )
                     .padding(.bottom, 8)
 
@@ -33,7 +31,6 @@ struct WalkingHistoryView: View {
 
                         statsGrid
                             .padding(.horizontal, 20)
-
                     }
                     .padding(.top, 8)
                     .padding(.bottom, 40)
@@ -44,6 +41,33 @@ struct WalkingHistoryView: View {
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
                     Button(role: .cancel) { dismiss() }
+                }
+
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button {
+                        withAnimation(reduceMotion ? nil : .easeInOut) {
+                            controlState.showingExpandedCalendar.toggle()
+                        }
+                    } label: {
+                        Image(systemName: "calendar")
+                            .font(.body)
+                            .foregroundColor(Color.CustomColors.mutedRaspberry)
+                            .symbolEffect(.bounce, value: controlState.showingExpandedCalendar)
+                    }
+                    .accessibilityLabel(controlState.showingExpandedCalendar ? "Collapse calendar" : "Expand calendar")
+                    .accessibilityIdentifier("expandCalendarButton")
+                }
+
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button {
+                        selectedDate = Date()
+                    } label: {
+                        Image(systemName: "\(Calendar.current.component(.day, from: Date())).calendar")
+                            .font(.body)
+                            .foregroundColor(Color.CustomColors.mutedRaspberry)
+                    }
+                    .accessibilityLabel("Jump to today")
+                    .accessibilityIdentifier("jumpToTodayButton")
                 }
             }
             .onChange(of: selectedDate) {
@@ -62,13 +86,14 @@ struct WalkingHistoryView: View {
     // MARK: Private
 
     @EnvironmentObject private var contentServiceHandler: ContentServiceHandler
+    @EnvironmentObject private var controlState: ControlState
+
     @Environment(\.dismiss) private var dismiss
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     @State private var selectedDate: Date = .init()
     @State private var selectedDateSteps: Int = 0
     @State private var rangePoints: [StepDataPoint] = []
-    @State private var isCalendarExpanded = false
     @State private var selectedBar: StepDataPoint?
 
     private var chartTitle: String = "This Week"
@@ -76,17 +101,24 @@ struct WalkingHistoryView: View {
     private var chartSubtitle: String = "Daily step count"
 
     private var xAxisValues: [String] {
-        return rangePoints.map { barLabel($0) }
+        rangePoints.map { barLabel($0) }
     }
 
     private var average: Int {
-        guard !rangePoints.isEmpty else { return 0 }
+        guard !rangePoints.isEmpty else {
+            return 0
+        }
+
         return rangePoints.reduce(0) { $0 + $1.steps } / rangePoints.count
     }
 
-    private var maximum: Int { rangePoints.map(\.steps).max() ?? 0 }
+    private var maximum: Int {
+        rangePoints.map(\.steps).max() ?? 0
+    }
 
-    private var totalForRange: Int { rangePoints.reduce(0) { $0 + $1.steps } }
+    private var totalForRange: Int {
+        rangePoints.reduce(0) { $0 + $1.steps }
+    }
 
     private var goalMetCount: Int {
         rangePoints.filter { $0.steps >= stepsGoal }.count
@@ -181,7 +213,6 @@ struct WalkingHistoryView: View {
 
     private var chartSection: some View {
         VStack(alignment: .leading, spacing: 14) {
-
             HStack {
                 VStack(alignment: .leading, spacing: 2) {
                     Text(chartTitle)
@@ -270,7 +301,6 @@ struct WalkingHistoryView: View {
                         }
                 }
             }
-
         }
         .padding(18)
         .shadow(color: Color.black.opacity(0.04), radius: 8, x: 0, y: 3)
