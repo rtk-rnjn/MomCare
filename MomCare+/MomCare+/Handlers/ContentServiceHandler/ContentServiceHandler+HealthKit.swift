@@ -118,7 +118,7 @@ extension ContentServiceHandler {
         try await healthStore.save(sample)
     }
 
-    nonisolated func writeHealthData(  // swiftlint:disable:this function_parameter_count
+    nonisolated func writeHealthData( // swiftlint:disable:this function_parameter_count
         categoryTypeIdentifier: HKCategoryTypeIdentifier,
         value: Int,
         start: Date,
