@@ -209,7 +209,7 @@ struct TriTrackAddCalendarItemSheetView: View {
                     notes: notes,
                     recurrenceRules: recurrenceRules,
                     location: selectedMapItem?.name,
-                    structuredLocaltion: selectedMapItem.map {
+                    structuredLocation: selectedMapItem.map {
                         let loc = EKStructuredLocation(title: $0.name ?? "")
                         loc.geoLocation = $0.location
                         return loc

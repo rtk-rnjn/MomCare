@@ -1,41 +1,7 @@
 import SwiftUI
 import TipKit
 
-struct HeaderRowAddTip: Tip {
-
-    static let dismissedEvent = Event(id: "headerRowAddTipDismissed")
-
-    var title: Text {
-        Text("Add Food Items")
-    }
-
-    var message: Text? {
-        Text("You can add food items to your meal plan by tapping the pencil icon in the meal header.")
-    }
-}
-
-struct ItemRowSlideTip: Tip {
-
-    var title: Text {
-        Text("Mark as Consumed or Delete")
-    }
-
-    var message: Text? {
-        Text("You can also mark a food item as consumed or delete it by swiping left or right on the item.")
-    }
-
-    var image: Image? {
-        Image(systemName: "checkmark.circle")
-            .symbolRenderingMode(.palette)
-            .symbolColorRenderingMode(.flat)
-    }
-
-    var rules: [Rule] {
-        #Rule(HeaderRowAddTip.dismissedEvent) { $0.donations.count > 0 }
-    }
-}
-
-struct MealTimelineCardView: View {
+struct MyPlanDietPlanMealTimelineCardView: View {
     // MARK: Internal
 
     let plan: MealPlanModel?
@@ -86,11 +52,9 @@ struct MealTimelineCardView: View {
 
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
-    private let itemRowSlideTip: ItemRowSlideTip = .init()
-
     private func mealSection(title: String, items: [FoodReferenceModel], originalItems: [FoodReferenceModel], mealType: MealType) -> some View {
         Section {
-            HeaderRow(
+            MealTimelineHeaderRow(
                 section: MealSection(title: title, items: items),
                 hideTopLine: title == "Breakfast",
                 hideBottomLine: title == "Dinner" && items.isEmpty,
@@ -117,7 +81,7 @@ struct MealTimelineCardView: View {
                 .listRowInsets(.bottom, 0)
             } else {
                 ForEach(items) { item in
-                    ItemRow(
+                    MealTimelineFoodItemRow(
                         item: item,
                         hideTopLine: false,
                         hideBottomLine: item.id == items.last?.id && title == "Dinner",
@@ -137,7 +101,6 @@ struct MealTimelineCardView: View {
                             }
                         }
                     )
-                    .popoverTip(title == "Breakfast" && item.id == items.first?.id ? itemRowSlideTip : nil, arrowEdge: .top)
                     .background {
                         LinearGradient(
                             colors: [
@@ -164,7 +127,7 @@ struct MealTimelineCardView: View {
     }
 }
 
-private struct HeaderRow: View {
+private struct MealTimelineHeaderRow: View {
     // MARK: Internal
 
     let section: MealSection
@@ -172,8 +135,6 @@ private struct HeaderRow: View {
     let hideBottomLine: Bool
     let mealType: MealType
     let onToggle: (Bool) async -> Void
-
-    let headerTip = HeaderRowAddTip()
 
     var body: some View {
         HStack(alignment: .center, spacing: 12) {
@@ -210,14 +171,6 @@ private struct HeaderRow: View {
                     .foregroundColor(MomCareAccent.primary)
             }
             .accessibilityLabel("Add food to \(section.title)")
-            .popoverTip(hideTopLine ? headerTip : nil)
-            .task {
-                for await status in headerTip.statusUpdates {
-                    if case .invalidated = status {
-                        await HeaderRowAddTip.dismissedEvent.donate()
-                    }
-                }
-            }
             .frame(minWidth: 44, minHeight: 44)
         }
         .frame(height: 66)
@@ -235,7 +188,7 @@ private struct HeaderRow: View {
     @State private var showSearchFoodSheet = false
 }
 
-private struct ItemRow: View {
+private struct MealTimelineFoodItemRow: View {
     // MARK: Internal
 
     var item: FoodReferenceModel
@@ -349,7 +302,7 @@ private struct TimelineLine: View {
     }
 }
 
-struct FoodThumbnail: View {
+private struct FoodThumbnail: View {
     // MARK: Internal
 
     @State var foodReferenceModel: FoodReferenceModel
@@ -481,30 +434,32 @@ private struct NutritionPreview: View {
     }
 }
 
-enum CircleStyle {
-    case header
-    case item
 
-    // MARK: Internal
 
-    var size: CGFloat {
-        self == .header ? 22 : 16
+private struct TimelineCircle: View {
+    private enum CircleStyle {
+        case header
+        case item
+
+        // MARK: Internal
+
+        var size: CGFloat {
+            self == .header ? 22 : 16
+        }
+
+        var maskSize: CGFloat {
+            size + 4
+        }
+
+        var strokeWidth: CGFloat {
+            self == .header ? 2 : 1.5
+        }
+
+        var checkmarkFont: Font {
+            self == .header ? .caption.bold() : .caption2.bold()
+        }
     }
 
-    var maskSize: CGFloat {
-        size + 4
-    }
-
-    var strokeWidth: CGFloat {
-        self == .header ? 2 : 1.5
-    }
-
-    var checkmarkFont: Font {
-        self == .header ? .caption.bold() : .caption2.bold()
-    }
-}
-
-struct TimelineCircle: View {
     let isChecked: Bool
     var style: CircleStyle = .header
 
@@ -531,7 +486,7 @@ struct TimelineCircle: View {
     }
 }
 
-struct MealSection: Identifiable {
+private struct MealSection: Identifiable {
     let id: UUID = .init()
     let title: String
     var items: [FoodReferenceModel]

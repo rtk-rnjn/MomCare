@@ -2,28 +2,12 @@ import EventKit
 import SwiftUI
 import TipKit
 
-struct DashboardEventCardTip: Tip {
-    var title: Text {
-        Text("Upcoming Event")
-    }
 
-    var message: Text? {
-        Text("This card shows your next upcoming event and allows you to add new events.")
-    }
-
-    var image: Image? {
-        Image(systemName: "calendar.badge.clock")
-            .symbolRenderingMode(.multicolor)
-            .symbolRenderingMode(.palette)
-    }
-}
 
 struct DashboardEventCardView: View {
     // MARK: Internal
 
     let upcomingEvent: EKEvent?
-
-    private let tip = DashboardEventCardTip()
 
     var body: some View {
         VStack(spacing: 0) {
@@ -71,7 +55,6 @@ struct DashboardEventCardView: View {
                     }
                     .padding(.leading, 16)
                     .buttonStyle(.plain)
-                    .popoverTip(tip, arrowEdge: .top)
 
                     Spacer()
 

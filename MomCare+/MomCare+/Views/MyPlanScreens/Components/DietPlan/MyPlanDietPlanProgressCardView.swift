@@ -1,13 +1,13 @@
 import SwiftUI
 
-enum CardDisplayMode: Int, CaseIterable {
-    case calories
-    case macros
-    case micros
-}
-
-struct ProgressCardView: View {
+struct MyPlanDietPlanProgressCardView: View {
     // MARK: Internal
+
+    private enum CardDisplayMode: Int, CaseIterable {
+        case calories
+        case macros
+        case micros
+    }
 
     let plan: MealPlanModel?
 
@@ -560,31 +560,7 @@ private struct MealRow: View {
     }
 }
 
-extension MealType: CaseIterable {
-    static var allCases: [MealType] {
-        [.breakfast, .lunch, .dinner, .snacks]
-    }
-
-    var iconName: String {
-        switch self {
-        case .breakfast: "sun.horizon"
-        case .lunch: "sun.max"
-        case .dinner: "moon.stars"
-        case .snacks: "leaf"
-        }
-    }
-
-    var accentColor: Color {
-        switch self {
-        case .breakfast: Color(hex: "E3B34B")
-        case .lunch: Color(hex: "6E8B6F")
-        case .dinner: Color(hex: "A7C0CD")
-        case .snacks: Color(hex: "E07B8A")
-        }
-    }
-}
-
-struct RingLayout: Layout {
+private struct RingLayout: Layout {
     let lineWidth: CGFloat
 
     func sizeThatFits(proposal _: ProposedViewSize, subviews: Subviews, cache _: inout ()) -> CGSize {
@@ -611,7 +587,7 @@ struct RingLayout: Layout {
     }
 }
 
-struct ProgressRingView: View {
+private struct ProgressRingView: View {
     // MARK: Internal
 
     let consumed: Measurement<UnitEnergy>?
@@ -802,7 +778,7 @@ struct ProgressRingView: View {
     }
 }
 
-struct MacroBarRow: View {
+private struct MacroBarRow: View {
     // MARK: Internal
 
     let title: String

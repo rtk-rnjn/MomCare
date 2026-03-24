@@ -1,24 +1,12 @@
 import SwiftUI
 import TipKit
 
-struct ProgressCardTip: Tip {
-    var title: Text {
-        Text("Progress Card")
-    }
-
-    var message: Text? {
-        Text("The Progress Card provides an overview of your daily nutrition intake compared to your goals.")
-    }
-}
-
 struct MyPlanDietPlanView: View {
     // MARK: Internal
 
-    private let progressCardTip: ProgressCardTip = .init()
-
     var body: some View {
         VStack(spacing: 12) {
-            ProgressCardView(
+            MyPlanDietPlanProgressCardView(
                 plan: contentServiceHandler.myPlanModel,
 
                 calorieIntake: contentServiceHandler.nutritionIntakeTotals?.energy,
@@ -54,9 +42,8 @@ struct MyPlanDietPlanView: View {
                     Label("View in Graph", systemImage: "chart.bar.xaxis")
                 }
             }
-            .popoverTip(progressCardTip, arrowEdge: .top)
 
-            MealTimelineCardView(plan: contentServiceHandler.myPlanModel)
+            MyPlanDietPlanMealTimelineCardView(plan: contentServiceHandler.myPlanModel)
                 .refreshable {
                     do {
                         try await contentServiceHandler.fetchMealPlan()
