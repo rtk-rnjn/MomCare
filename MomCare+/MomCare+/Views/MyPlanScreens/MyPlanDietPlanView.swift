@@ -5,10 +5,13 @@ import TipKit
 struct MyPlanDietPlanView: View {
     // MARK: Internal
 
+    let tips: TipGroup
+
     var body: some View {
         VStack(spacing: 12) {
             MyPlanDietPlanProgressCardView(
                 plan: contentServiceHandler.myPlanModel,
+                tip: tips.currentTip as? MomCareTips.DietPlan.ProgressCardSlideOrTapTip,
 
                 calorieIntake: contentServiceHandler.nutritionIntakeTotals?.energy,
                 calorieGoal: contentServiceHandler.nutritionGoalTotals?.energy,
@@ -44,7 +47,11 @@ struct MyPlanDietPlanView: View {
                 }
             }
 
-            MyPlanDietPlanMealTimelineCardView(plan: contentServiceHandler.myPlanModel)
+            MyPlanDietPlanMealTimelineCardView(
+                plan: contentServiceHandler.myPlanModel,
+                addFoodItemTip: tips.currentTip as? MomCareTips.DietPlan.HeaderRowAddTip,
+                slideFoodItemRowTip: tips.currentTip as? MomCareTips.DietPlan.ItemRowSlideTip
+            )
                 .refreshable {
                     do {
                         try await contentServiceHandler.fetchMealPlan()

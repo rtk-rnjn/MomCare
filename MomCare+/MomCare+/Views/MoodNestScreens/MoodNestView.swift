@@ -4,6 +4,8 @@ import TipKit
 struct MoodNestView: View {
     // MARK: Internal
 
+    private let sliderTip: MomCareTips.MoodNest.MoodNestSliderTip = .init()
+
     var body: some View {
         NavigationStack {
             ZStack {
@@ -46,6 +48,7 @@ struct MoodNestView: View {
                                 }
                             }
                         }
+                        .popoverTip(sliderTip, arrowEdge: .bottom)
                         .padding(.horizontal, 40)
                         .padding(.top, 30)
                         .tint(.white)

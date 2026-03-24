@@ -75,9 +75,7 @@ class ContentRepository {
         let startDateTimestamp = startDate.timeIntervalSince1970
         let endDateTimestamp = endDate.timeIntervalSince1970
 
-        guard let data: Data = TimestampRange(startTimestamp: startDateTimestamp, endTimestamp: endDateTimestamp).encodeUsingJSONEncoder() else {
-            fatalError()
-        }
+        let data: Data = try TimestampRange(startTimestamp: startDateTimestamp, endTimestamp: endDateTimestamp).encodeUsingJSONEncoder()
 
         let url = Endpoint.searchGeneratedExercises.urlString
         return try await NetworkManager.shared.post(url: url, body: data, headers: authenticationHeaders)
@@ -87,9 +85,7 @@ class ContentRepository {
         let startDateTimestamp = startDate.timeIntervalSince1970
         let endDateTimestamp = endDate.timeIntervalSince1970
 
-        guard let data: Data = TimestampRange(startTimestamp: startDateTimestamp, endTimestamp: endDateTimestamp).encodeUsingJSONEncoder() else {
-            fatalError()
-        }
+        let data: Data = try TimestampRange(startTimestamp: startDateTimestamp, endTimestamp: endDateTimestamp).encodeUsingJSONEncoder()
 
         return try await NetworkManager.shared.post(url: Endpoint.searchGeneratedPlan.urlString, body: data, headers: authenticationHeaders)
     }

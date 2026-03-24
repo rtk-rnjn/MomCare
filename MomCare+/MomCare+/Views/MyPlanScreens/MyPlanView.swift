@@ -1,7 +1,14 @@
 import SwiftUI
+import TipKit
 
 struct MyPlanView: View {
     // MARK: Internal
+
+    @State private var dietPlanTips = TipGroup {
+        MomCareTips.DietPlan.ProgressCardSlideOrTapTip()
+        MomCareTips.DietPlan.HeaderRowAddTip()
+        MomCareTips.DietPlan.ItemRowSlideTip()
+    }
 
     var body: some View {
         VStack(spacing: 0) {
@@ -17,7 +24,7 @@ struct MyPlanView: View {
 
             switch controlState.myPlanSegment {
             case .diet:
-                MyPlanDietPlanView()
+                MyPlanDietPlanView(tips: dietPlanTips)
             case .exercise:
                 MyPlanExercisePlanView()
             }

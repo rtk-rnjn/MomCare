@@ -1,6 +1,5 @@
 import Combine
 import HealthKit
-import OSLog
 import SwiftUI
 
 final class ContentServiceHandler: ObservableObject {

@@ -1,4 +1,3 @@
-import OSLog
 import SwiftUI
 
 struct AboutMomCareView: View {

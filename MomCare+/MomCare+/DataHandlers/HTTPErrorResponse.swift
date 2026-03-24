@@ -1,5 +1,4 @@
 import Foundation
-import OSLog
 
 enum CodableValue: Codable, Sendable {
     case int(Int)

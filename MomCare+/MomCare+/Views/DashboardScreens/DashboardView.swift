@@ -5,6 +5,11 @@ import TipKit
 struct DashboardView: View {
     // MARK: Internal
 
+    @State private var tips = TipGroup {
+        MomCareTips.Dashboard.DashboardWeekCardTip()
+        MomCareTips.Dashboard.DashboardEventCardTip()
+    }
+
     var body: some View {
         ScrollView(.vertical, showsIndicators: false) {
             VStack(spacing: 20) {
@@ -31,7 +36,8 @@ struct DashboardView: View {
             DashboardWeekCardView(
                 week: authenticationService.userModel?.pregnancyProgress.week,
                 day: authenticationService.userModel?.pregnancyProgress.day,
-                trimester: authenticationService.userModel?.pregnancyProgress.trimester
+                trimester: authenticationService.userModel?.pregnancyProgress.trimester,
+                tip: tips.currentTip as? MomCareTips.Dashboard.DashboardWeekCardTip
             )
                 .frame(maxWidth: .infinity)
                 .onTapGesture {
@@ -40,7 +46,7 @@ struct DashboardView: View {
                 }
 
             if let event = eventKitHandler.onGoingOrMostRecentUpcomingEvent {
-                DashboardEventCardView(upcomingEvent: event)
+                DashboardEventCardView(upcomingEvent: event, tip: tips.currentTip as? MomCareTips.Dashboard.DashboardEventCardTip)
                     .frame(maxWidth: .infinity)
                     .contextMenu {
                         Button {
@@ -52,7 +58,7 @@ struct DashboardView: View {
                         TriTrackEventDetailsContextView(event: event)
                     }
             } else {
-                DashboardEventCardView(upcomingEvent: eventKitHandler.onGoingOrMostRecentUpcomingEvent)
+                DashboardEventCardView(upcomingEvent: eventKitHandler.onGoingOrMostRecentUpcomingEvent, tip: tips.currentTip as? MomCareTips.Dashboard.DashboardEventCardTip)
                     .frame(maxWidth: .infinity)
             }
         }

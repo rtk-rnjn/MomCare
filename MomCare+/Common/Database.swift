@@ -125,7 +125,7 @@ final class Database {
                 return
             }
 
-            guard let data = newValue.encodeUsingJSONEncoder() else {
+            guard let data = try? newValue.encodeUsingJSONEncoder() else {
                 return
             }
 

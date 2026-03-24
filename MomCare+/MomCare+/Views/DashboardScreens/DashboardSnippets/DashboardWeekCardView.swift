@@ -6,6 +6,8 @@ struct DashboardWeekCardView: View {
     let day: Int?
     let trimester: String?
 
+    let tip: (any Tip)?
+
     var body: some View {
         VStack(spacing: 0) {
             VStack(alignment: .leading, spacing: 8) {
@@ -34,6 +36,7 @@ struct DashboardWeekCardView: View {
                         .lineLimit(1)
                         .minimumScaleFactor(0.85)
                         .padding(.leading, 16)
+                        .popoverTip(tip, arrowEdge: .top)
 
                     Spacer()
 

@@ -5,6 +5,8 @@ struct MyPlanDietPlanMealTimelineCardView: View {
     // MARK: Internal
 
     let plan: MealPlanModel?
+    let addFoodItemTip: (any Tip)?
+    let slideFoodItemRowTip: (any Tip)?
 
     var body: some View {
         List {
@@ -58,7 +60,8 @@ struct MyPlanDietPlanMealTimelineCardView: View {
                 section: MealSection(title: title, items: items),
                 hideTopLine: title == "Breakfast",
                 hideBottomLine: title == "Dinner" && items.isEmpty,
-                mealType: mealType
+                mealType: mealType,
+                tip: addFoodItemTip
             ) { consumed in
                 do {
                     try await contentServiceHandler.markFoodsAs(consumed: !consumed, mealType: mealType)
@@ -101,6 +104,7 @@ struct MyPlanDietPlanMealTimelineCardView: View {
                             }
                         }
                     )
+                    .popoverTip(slideFoodItemRowTip, arrowEdge: .top)
                     .background {
                         LinearGradient(
                             colors: [
@@ -134,6 +138,7 @@ private struct MealTimelineHeaderRow: View {
     let hideTopLine: Bool
     let hideBottomLine: Bool
     let mealType: MealType
+    let tip: (any Tip)?
     let onToggle: (Bool) async -> Void
 
     var body: some View {
@@ -170,6 +175,7 @@ private struct MealTimelineHeaderRow: View {
                     .font(.title3)
                     .foregroundColor(MomCareAccent.primary)
             }
+            .popoverTip(tip, arrowEdge: .trailing)
             .accessibilityLabel("Add food to \(section.title)")
             .frame(minWidth: 44, minHeight: 44)
         }

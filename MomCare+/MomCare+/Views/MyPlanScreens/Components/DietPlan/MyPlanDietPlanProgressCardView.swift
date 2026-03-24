@@ -1,9 +1,11 @@
 import SwiftUI
+import TipKit
 
 struct MyPlanDietPlanProgressCardView: View {
     // MARK: Internal
 
     let plan: MealPlanModel?
+    let tip: (any Tip)?
 
     let calorieIntake: Measurement<UnitEnergy>?
     let calorieGoal: Measurement<UnitEnergy>?
@@ -32,6 +34,7 @@ struct MyPlanDietPlanProgressCardView: View {
     var body: some View {
         VStack(spacing: 0) {
             collapsedHeader
+                .popoverTip(tip, arrowEdge: .top)
 
             if isExpanded {
                 expandedSection

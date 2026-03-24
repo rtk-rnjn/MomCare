@@ -1,8 +1,8 @@
 import Foundation
 
-private let baseURLString = "http://13.203.42.179/api"
+nonisolated private let baseURLString = "http://13.203.42.179/api"
 
-enum Endpoint: String {
+enum Endpoint: String, Sendable {
     case register = "/v1/auth/register"
     case login = "/v1/auth/login"
     case me = "/v1/auth/me" // swiftlint:disable:this identifier_name
@@ -53,11 +53,11 @@ enum Endpoint: String {
 }
 
 extension Endpoint {
-    var urlString: String {
+    nonisolated var urlString: String {
         baseURLString + rawValue
     }
 
-    func urlString(with parameters: String...) -> String {
+    nonisolated func urlString(with parameters: String...) -> String {
         return unsafe String(format: urlString, arguments: parameters)
     }
 }

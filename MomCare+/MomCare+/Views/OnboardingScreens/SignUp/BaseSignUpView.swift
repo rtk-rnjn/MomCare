@@ -166,6 +166,10 @@ struct BaseSignUpView: View {
                         .textInputAutocapitalization(.words)
                         .listRowBackground(Color(.secondarySystemBackground))
                         .focused($isFocused, equals: .fullName)
+                        .onSubmit {
+                            isFocused = .email
+                        }
+                        .submitLabel(.next)
                         .accessibilityLabel("Full name")
                         .accessibilityHint("Enter your full name")
                 }
@@ -177,6 +181,10 @@ struct BaseSignUpView: View {
                         .autocorrectionDisabled()
                         .listRowBackground(Color(.secondarySystemBackground))
                         .focused($isFocused, equals: .email)
+                        .onSubmit {
+                            isFocused = .password
+                        }
+                        .submitLabel(.next)
                         .accessibilityLabel("Email address")
                         .accessibilityHint("Enter your email address")
                 } footer: {
@@ -221,6 +229,17 @@ struct BaseSignUpView: View {
                         .onChange(of: mobileNumber) { _, newValue in
                             mobileNumber = newValue.filter(\.isNumber)
                         }
+                        .focused($isFocused, equals: .mobileNumber)
+                        .onSubmit {
+                            Task {
+                                do {
+                                    try await handleCreate()
+                                } catch {
+                                    controlState.error = error
+                                }
+                            }
+                        }
+                        .submitLabel(.done)
                         .listRowBackground(Color(.secondarySystemBackground))
                         .accessibilityLabel("Mobile number")
                         .accessibilityHint("Enter your 10-digit mobile number")
@@ -250,6 +269,14 @@ struct BaseSignUpView: View {
             }
             .focused($isFocused, equals: type == .confirmPassword ? .confirmPassword : .password)
             .animation(reduceMotion ? nil : .easeInOut(duration: 0.2), value: isVisible.wrappedValue)
+            .onSubmit {
+                if type == .password {
+                    isFocused = .confirmPassword
+                } else if type == .confirmPassword {
+                    isFocused = .mobileNumber
+                }
+            }
+            .submitLabel(.next)
 
             Button {
                 withAnimation(reduceMotion ? nil : .easeInOut(duration: 0.2)) {

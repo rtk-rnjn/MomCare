@@ -1,10 +1,13 @@
 import SwiftUI
+import TipKit
 
 struct WalkingCardView: View {
     // MARK: Internal
 
     let stepsToday: Double
     let stepsGoal: Double
+
+    private let tip = MomCareTips.ExercisePlan.WalkingCardTapTip()
 
     var body: some View {
         VStack(spacing: 14) {
@@ -77,6 +80,7 @@ struct WalkingCardView: View {
             .frame(height: 8)
             .accessibilityHidden(true)
         }
+        .popoverTip(tip, arrowEdge: .top)
         .padding(18)
         .background(
             RoundedRectangle(cornerRadius: 20, style: .continuous)

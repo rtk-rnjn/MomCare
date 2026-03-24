@@ -6,7 +6,7 @@ import UIKit
 import UserNotifications
 import WidgetKit
 
-private let logger: Logger = .init(subsystem: "com.MomCare.AppDelegate", category: "AppDelegate")
+private let logger: Logger = MomCareLogger.appDelegate
 
 class AppDelegate: NSObject, UIApplicationDelegate, ObservableObject {
     func application(
@@ -40,9 +40,7 @@ class AppDelegate: NSObject, UIApplicationDelegate, ObservableObject {
 
     func application(_: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
         let token = deviceToken.map { unsafe String(format: "%02.2hhx", $0) }.joined()
-        guard let data = RegisterDevice(deviceToken: token).encodeUsingJSONEncoder() else {
-            return
-        }
+        let data = try? RegisterDevice(deviceToken: token).encodeUsingJSONEncoder()
 
         Task {
             if let authenticationHeaders = AuthenticationService.authorizationHeaders {

@@ -7,6 +7,8 @@ struct DashboardEventCardView: View {
 
     let upcomingEvent: EKEvent?
 
+    let tip: (any Tip)?
+
     var body: some View {
         VStack(spacing: 0) {
             VStack(alignment: .leading, spacing: 6) {
@@ -49,7 +51,9 @@ struct DashboardEventCardView: View {
                     } label: {
                         Text("Add Event")
                             .font(.title3.weight(.semibold))
-                            .foregroundColor(MomCareAccent.primary)
+//                            .foregroundColor(MomCareAccent.primary)
+                            .foregroundColor(.secondary)
+                            .popoverTip(tip, arrowEdge: .top)
                     }
                     .padding(.leading, 16)
                     .buttonStyle(.plain)
