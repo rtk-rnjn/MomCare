@@ -1,5 +1,6 @@
 import Foundation
 import OSLog
+import UIKit
 
 private let logger: Logger = .init(subsystem: "com.MomCare.NetworkManager", category: "Network")
 
@@ -151,34 +152,41 @@ class NetworkManager {
         let url = request.url?.absoluteString ?? "unknown URL"
         logger.info("Performing \(request.httpMethod ?? "UNKNOWN") request to \(url)")
 
-        var attempts = 5
+        do {
+            var attempts = 5
 
-        while attempts > 0 {
-            do {
-                let (data, response) = try await URLSession.shared.data(for: request)
+            while attempts > 0 {
+                do {
+                    let (data, response) = try await URLSession.shared.data(for: request)
 
-                return try await handleRequest(
-                    response: response,
-                    data: data,
-                    url: url
-                )
-            } catch {
-                attempts -= 1
+                    return try await handleRequest(
+                        response: response,
+                        data: data,
+                        url: url
+                    )
+                } catch {
+                    attempts -= 1
 
-                if let urlError = error as? URLError {
-                    switch urlError.code {
-                    case .networkConnectionLost, .notConnectedToInternet, .timedOut:
-                        logger.warning("Network error occurred for request to \(url): \(urlError.localizedDescription). Retrying... (\(5 - attempts) attempts left)")
+                    if let urlError = error as? URLError {
+                        switch urlError.code {
+                        case .networkConnectionLost, .notConnectedToInternet, .timedOut:
+                            logger.warning("Network error occurred for request to \(url): \(urlError.localizedDescription). Retrying... (\(5 - attempts) attempts left)")
 
-                        try? await Task.sleep(nanoseconds: UInt64(1_000_000_000 * (attempts % 5)))
+                            try? await Task.sleep(nanoseconds: UInt64(1_000_000_000 * (attempts % 5)))
 
-                    default:
-                        throw error
+                        default:
+                            throw error
+                        }
                     }
-                }
 
-                throw error
+                    throw error
+                }
             }
+        } catch {
+            if error is URLError {
+                await MainActor.run { HapticsHandler.notification(.error) }
+            }
+            throw error
         }
     }
 
@@ -195,10 +203,12 @@ class NetworkManager {
             let errorResponse: HTTPErrorResponse = try data.decodeUsingJSONDecoder()
             let osLogMessage = errorResponse.detail.toOSLogMessageString()
             logger.error("HTTP Exception: \(osLogMessage)")
+            await MainActor.run { HapticsHandler.notification(.error) }
             throw APIErrorResolver.error(from: httpResponse.statusCode, with: errorResponse)
         }
 
         let maybeData: T = try data.decodeUsingJSONDecoder()
+        await MainActor.run { HapticsHandler.notification(.success) }
         return NetworkResponse(data: maybeData, statusCode: httpResponse.statusCode)
     }
 }
