@@ -146,7 +146,7 @@ class NetworkManager {
         return try await performRequest(request)
     }
 
-    private func performRequest<T: Codable>(_ request: URLRequest) async throws -> NetworkResponse<T> {
+    private func performRequest<T: Codable>(_ request: URLRequest) async throws -> NetworkResponse<T> { // swiftlint:disable:this cyclomatic_complexity
         let url = request.url?.absoluteString ?? "unknown URL"
         logger.info("Performing \(request.httpMethod ?? "UNKNOWN") request to \(url)")
 
