@@ -255,6 +255,18 @@ final class AuthenticationService: ObservableObject {
         }
     }
 
+    @discardableResult
+    func forgetPassword(emailAddress: String) async throws -> NetworkResponse<ServerMessage> {
+        let payloadData = try ForgetPassword(emailAddress: emailAddress).encodeUsingJSONEncoder()
+        return try await NetworkManager.shared.post(url: Endpoint.forgetPassword.urlString, body: payloadData)
+    }
+
+    @discardableResult
+    func resetPassword(emailAddress: String, otp: String, newPassword: String) async throws -> NetworkResponse<ServerMessage> {
+        let payloadData = try ResetPassword(emailAddress: emailAddress, otp: otp, newPassword: newPassword).encodeUsingJSONEncoder()
+        return try await NetworkManager.shared.post(url: Endpoint.resetPassword.urlString, body: payloadData)
+    }
+
     // MARK: Private
 
     private func loadTokenPairIfNeeded() {

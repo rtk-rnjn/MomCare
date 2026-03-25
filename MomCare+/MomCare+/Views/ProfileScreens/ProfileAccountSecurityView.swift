@@ -299,13 +299,6 @@ struct ProfileAccountSecurityView: View {
 
     // MARK: Private
 
-    private enum Field {
-        case emailAddressField
-        case oldPasswordField
-        case newPasswordField
-        case confirmPasswordField
-    }
-
     @State private var emailAddress: String = ""
 
     @EnvironmentObject private var authenticationService: AuthenticationService

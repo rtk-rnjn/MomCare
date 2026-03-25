@@ -20,15 +20,6 @@ struct NetworkResponse<T: Codable>: Codable {
 
     var data: T
     var statusCode: Int
-    var responseHeaders: [AnyHashable: Any]?
-
-    var localizedError: any LocalizedError {
-        APIErrorResolver.error(from: statusCode)
-    }
-
-    var success: Bool {
-        (200...299).contains(statusCode)
-    }
 }
 
 class NetworkManager {
@@ -210,11 +201,15 @@ class NetworkManager {
         logger.info("Received response with status code \(httpResponse.statusCode) for request to \(url)")
 
         if httpResponse.statusCode >= 400 {
-            let errorResponse: HTTPErrorResponse = try data.decodeUsingJSONDecoder()
-            let osLogMessage = errorResponse.detail.toOSLogMessageString()
-            logger.error("HTTP Exception: \(osLogMessage)")
             await MainActor.run { HapticsHandler.notification(.error) }
-            throw APIErrorResolver.error(from: httpResponse.statusCode, with: errorResponse)
+
+            if let errorResponse: HTTPErrorResponse = try? data.decodeUsingJSONDecoder() {
+                let osLogMessage = errorResponse.detail.toOSLogMessageString()
+                logger.error("HTTP Exception: \(osLogMessage)")
+                throw APIErrorResolver.error(from: httpResponse.statusCode, with: errorResponse)
+            }
+
+            throw APIErrorResolver.error(from: httpResponse.statusCode, with: nil)
         }
 
         let maybeData: T = try data.decodeUsingJSONDecoder()

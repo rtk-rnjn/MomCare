@@ -12,6 +12,8 @@ enum Endpoint: String, Sendable {
     case delete = "/v1/auth/delete"
     case changeEmail = "/v1/auth/change-email"
     case changePassword = "/v1/auth/change-password"
+    case forgetPassword = "/v1/auth/forget-password"
+    case resetPassword = "/v1/auth/reset-password"
     case requestOTP = "/v1/auth/request-otp"
     case verifyOTP = "/v1/auth/verify-otp"
     case credentials = "/v2/auth/credentials"

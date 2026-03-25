@@ -9,14 +9,6 @@ class ContentRepository {
         AuthenticationService.authorizationHeaders
     }
 
-    var startOfTheDate: Date {
-        Calendar.current.startOfDay(for: Date())
-    }
-
-    func startOfTheDate(from timestamp: TimeInterval) -> Date {
-        Calendar.current.startOfDay(for: Date(timeIntervalSince1970: timestamp))
-    }
-
     func cachedResponse<T: Codable>(from data: T) -> NetworkResponse<T> {
         NetworkResponse(data: data, statusCode: 200)
     }
