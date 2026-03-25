@@ -110,18 +110,25 @@ struct ProfileAccountSecurityView: View {
                         Spacer()
 
                         Text(emailAddress)
-                            .keyboardType(.emailAddress)
+                            .lineLimit(1)
                             .multilineTextAlignment(.trailing)
                             .autocorrectionDisabled()
-                            .textInputAutocapitalization(.never)
-                            .focused($focusedField, equals: .emailAddressField)
+                            .minimumScaleFactor(0.8)
+                            .truncationMode(.middle)
                     }
+                    .accessibilityElement(children: .combine)
+                    .accessibilityLabel("Email Address: \(emailAddress)")
 
                 } header: {
                     Text("Account Information")
                 } footer: {
-                    Text("Your email address is used for account recovery and notifications.")
-                        .font(.footnote)
+                    if !hasAppleIdentifier {
+                        Text("Your email address is used for account recovery and notifications.")
+                            .font(.footnote)
+                    } else {
+                        Text("This account is connected with Apple Sign-In. Email address is not required.")
+                            .font(.footnote)
+                    }
                 }
 
                 Section {
@@ -163,6 +170,8 @@ struct ProfileAccountSecurityView: View {
                         .frame(maxWidth: .infinity)
                         .foregroundColor(canSubmit ? Color("primaryAppColor") : .secondary)
                         .disabled(!canSubmit)
+                        .accessibilityLabel("Change password")
+                        .accessibilityHint("Submits the new password")
                     }
                 } header: {
                     Text("Security")
@@ -199,11 +208,14 @@ struct ProfileAccountSecurityView: View {
                         }
                     }
                     .disabled(hasAppleIdentifier)
+                    .accessibilityLabel(hasAppleIdentifier ? "Apple ID: Connected" : "Apple ID: Not connected")
+                    .accessibilityHint(hasAppleIdentifier ? "" : "Double tap to connect your Apple ID")
                 }
             } header: {
                 Text("Third Party Integration")
             }
         }
+        .scrollDismissesKeyboard(.interactively)
         .listStyle(.insetGrouped)
         .sheet(isPresented: $showAppleConnectSheet) {
             NavigationStack {
@@ -292,15 +304,6 @@ struct ProfileAccountSecurityView: View {
     }
 
     // MARK: Private
-
-    private enum Field {
-        case emailAddressField
-        case oldPasswordField
-        case newPasswordField
-        case confirmPasswordField
-    }
-
-    @FocusState private var focusedField: Field?
 
     @State private var emailAddress: String = ""
 

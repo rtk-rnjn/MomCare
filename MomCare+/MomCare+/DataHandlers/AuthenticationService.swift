@@ -78,8 +78,9 @@ final class AuthenticationService: ObservableObject {
     func register(emailAddress: String, password: String) async throws -> NetworkResponse<RegistrationResponse> {
         let response: NetworkResponse<RegistrationResponse> = try await NetworkManager.shared.post(url: Endpoint.register.urlString, body: prepareCredentialsData(emailAddress: emailAddress, password: password))
 
+        let success = handleSuccess(response, expectedStatusCode: 201)
         try await fetchCredentials()
-        return handleSuccess(response, expectedStatusCode: 201)
+        return success
     }
 
     @discardableResult
@@ -95,11 +96,12 @@ final class AuthenticationService: ObservableObject {
     }
 
     func refresh(refreshToken: String) async throws -> NetworkResponse<TokenPair> {
-        let refreshTokenData = RefreshToken(refreshToken: refreshToken).encodeUsingJSONEncoder()
+        let refreshTokenData = try RefreshToken(refreshToken: refreshToken).encodeUsingJSONEncoder()
         let response: NetworkResponse<TokenPair> = try await NetworkManager.shared.post(url: Endpoint.refresh.urlString, body: refreshTokenData)
 
+        let success = handleSuccess(response, expectedStatusCode: 200)
         try await fetchCredentials()
-        return handleSuccess(response, expectedStatusCode: 200)
+        return success
     }
 
     @discardableResult
@@ -113,7 +115,7 @@ final class AuthenticationService: ObservableObject {
 
     @discardableResult
     func logout(refreshToken: String) async throws -> NetworkResponse<ServerMessage> {
-        let refreshTokenData = RefreshToken(refreshToken: refreshToken).encodeUsingJSONEncoder()
+        let refreshTokenData = try RefreshToken(refreshToken: refreshToken).encodeUsingJSONEncoder()
         let response: NetworkResponse<ServerMessage> = try await NetworkManager.shared.post(url: Endpoint.logout.urlString, body: refreshTokenData)
 
         dropCredentials()
@@ -178,19 +180,19 @@ final class AuthenticationService: ObservableObject {
 
     @discardableResult
     func changeEmailAddress(newEmailAddress: String) async throws -> NetworkResponse<ServerMessage> {
-        let payloadData = ChangeEmailAddress(newEmailAddress: newEmailAddress).encodeUsingJSONEncoder()
+        let payloadData = try ChangeEmailAddress(newEmailAddress: newEmailAddress).encodeUsingJSONEncoder()
         return try await NetworkManager.shared.patch(url: Endpoint.changeEmail.urlString, body: payloadData, headers: AuthenticationService.authorizationHeaders)
     }
 
     @discardableResult
     func changePassword(currentPassword: String, newPassword: String) async throws -> NetworkResponse<ServerMessage> {
-        let payloadData = ChangePassword(currentPassword: currentPassword, newPassword: newPassword).encodeUsingJSONEncoder()
+        let payloadData = try ChangePassword(currentPassword: currentPassword, newPassword: newPassword).encodeUsingJSONEncoder()
         return try await NetworkManager.shared.patch(url: Endpoint.changePassword.urlString, body: payloadData, headers: AuthenticationService.authorizationHeaders)
     }
 
     @discardableResult
     func requestOTP(emailAddress: String) async throws -> NetworkResponse<ServerMessage> {
-        let payloadData = RequestOTP(emailAddress: emailAddress).encodeUsingJSONEncoder()
+        let payloadData = try RequestOTP(emailAddress: emailAddress).encodeUsingJSONEncoder()
         return try await NetworkManager.shared.post(url: Endpoint.requestOTP.urlString, body: payloadData)
     }
 
@@ -202,7 +204,7 @@ final class AuthenticationService: ObservableObject {
 
     @discardableResult
     func verifyOTP(emailAddress: String, otp: String) async throws -> NetworkResponse<ServerMessage> {
-        let payloadData = VerifyOTP(emailAddress: emailAddress, otp: otp).encodeUsingJSONEncoder()
+        let payloadData = try VerifyOTP(emailAddress: emailAddress, otp: otp).encodeUsingJSONEncoder()
         return try await NetworkManager.shared.post(url: Endpoint.verifyOTP.urlString, body: payloadData)
     }
 
@@ -215,18 +217,18 @@ final class AuthenticationService: ObservableObject {
     @discardableResult
     func delete() async throws -> NetworkResponse<Bool> {
         let networkResponse: NetworkResponse<Bool> = try await NetworkManager.shared.delete(url: Endpoint.delete.urlString, headers: AuthenticationService.authorizationHeaders)
-        if networkResponse.success {
-            dropCredentials()
-        } else {}
+
+        dropCredentials()
         return networkResponse
     }
 
     func appleLogin(idToken: String, existingEmailAddress: String? = nil) async throws -> NetworkResponse<TokenPair> {
-        let payloadData = ThirdPartyLogin(idToken: idToken, existingEmailAddress: existingEmailAddress).encodeUsingJSONEncoder()
+        let payloadData = try ThirdPartyLogin(idToken: idToken, existingEmailAddress: existingEmailAddress).encodeUsingJSONEncoder()
         let response: NetworkResponse<TokenPair> = try await NetworkManager.shared.post(url: Endpoint.appleLogin.urlString, body: payloadData)
 
+        let success = handleSuccess(response, expectedStatusCode: 200)
         try await fetchCredentials()
-        return handleSuccess(response, expectedStatusCode: 200)
+        return success
     }
 
     @discardableResult
@@ -251,6 +253,18 @@ final class AuthenticationService: ObservableObject {
         case .apple:
             try await loginWithApple(token: token)
         }
+    }
+
+    @discardableResult
+    func forgetPassword(emailAddress: String) async throws -> NetworkResponse<ServerMessage> {
+        let payloadData = try ForgetPassword(emailAddress: emailAddress).encodeUsingJSONEncoder()
+        return try await NetworkManager.shared.post(url: Endpoint.forgetPassword.urlString, body: payloadData)
+    }
+
+    @discardableResult
+    func resetPassword(emailAddress: String, otp: String, newPassword: String) async throws -> NetworkResponse<ServerMessage> {
+        let payloadData = try ResetPassword(emailAddress: emailAddress, otp: otp, newPassword: newPassword).encodeUsingJSONEncoder()
+        return try await NetworkManager.shared.post(url: Endpoint.resetPassword.urlString, body: payloadData)
     }
 
     // MARK: Private
@@ -290,7 +304,7 @@ final class AuthenticationService: ObservableObject {
     }
 
     private func prepareCredentialsData(emailAddress: String, password: String) -> Data? {
-        LoginCredentials(emailAddress: emailAddress, password: password).encodeUsingJSONEncoder()
+        try? LoginCredentials(emailAddress: emailAddress, password: password).encodeUsingJSONEncoder()
     }
 
     private func dropCredentials() {
@@ -298,18 +312,20 @@ final class AuthenticationService: ObservableObject {
         KeychainHelper.remove(.refreshToken)
 
         hasAccessToken = false
+        tokenPair = nil
         userModel = nil
+        credentials = nil
+        Database.shared.purge()
     }
 
     private func loginWithApple(token: String) async throws -> NetworkResponse<TokenPair> {
         let payload = ThirdPartyLogin(idToken: token, existingEmailAddress: nil)
-        guard let data = payload.encodeUsingJSONEncoder() else {
-            fatalError()
-        }
+        let data = try payload.encodeUsingJSONEncoder()
 
         let response: NetworkResponse<TokenPair> = try await NetworkManager.shared.post(url: Endpoint.appleLogin.urlString, body: data)
 
+        let success = handleSuccess(response, expectedStatusCode: 200)
         try await fetchCredentials()
-        return handleSuccess(response, expectedStatusCode: 200)
+        return success
     }
 }

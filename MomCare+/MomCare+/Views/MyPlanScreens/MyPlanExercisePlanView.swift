@@ -21,10 +21,8 @@ struct MyPlanExercisePlanView: View {
                 Task {
                     do {
                         try await contentServiceHandler.fetchUserExercises()
-                        HapticsHandler.notification(.success)
                     } catch {
                         controlState.error = error
-                        HapticsHandler.notification(.error)
                     }
                 }
             }
@@ -34,7 +32,7 @@ struct MyPlanExercisePlanView: View {
             .padding(.horizontal, 16)
         }
         .sheet(isPresented: $showHelp) {
-            MyPlanExerciseHelpView()
+            MyPlanExerciseGuideView()
         }
         .fullScreenCover(isPresented: $showHistory) {
             ExerciseHistory()
@@ -52,6 +50,8 @@ struct MyPlanExercisePlanView: View {
                 } label: {
                     Image(systemName: "clock.arrow.circlepath")
                 }
+                .accessibilityLabel("Exercise history")
+                .accessibilityHint("Opens your exercise history")
             }
 
             ToolbarItem(placement: .topBarTrailing) {
@@ -105,11 +105,16 @@ struct MyPlanExercisePlanView: View {
     @State private var showHistory = false
     @State private var showWalkingHistory = false
 
-    @State private var breathingCompleted: Bool = false
     @State private var walkingCompleted: Bool = false
 
     private var completedCount: Int {
         contentServiceHandler.totalUserExercisesCompleted + (breathingCompleted ? 1 : 0) + (walkingCompleted ? 1 : 0)
+    }
+
+    private var breathingCompleted: Bool {
+        let durationCompleted = contentServiceHandler.fetchBreathingCompletionDuration(for: .init())
+        let totalDuration = contentServiceHandler.breathingTargetInSeconds
+        return durationCompleted >= totalDuration
     }
 
     private var exerciseCardsView: some View {
@@ -118,6 +123,8 @@ struct MyPlanExercisePlanView: View {
                 .onTapGesture {
                     showWalkingHistory = true
                 }
+                .accessibilityHint("Double tap to view walking history")
+                .accessibilityAddTraits(.isButton)
                 .onAppear {
                     contentServiceHandler.fetchTodaySteps()
                 }
@@ -168,7 +175,7 @@ struct MyPlanExercisePlanView: View {
     private func exerciseInfoOverlay() -> some View {
         ZStack {
             Color.black
-.opacity(0.4)
+                .opacity(0.4)
                 .ignoresSafeArea()
                 .onTapGesture {
                     withAnimation(reduceMotion ? nil : .easeInOut) {

@@ -14,6 +14,20 @@ struct SignInMissingFieldValue: LocalizedError {
     }
 }
 
+struct SignInInvalidEmailAddress: LocalizedError {
+    var errorDescription: String? {
+        "Invalid Email Address"
+    }
+
+    var failureReason: String? {
+        "The email address you entered is not valid."
+    }
+
+    var recoverySuggestion: String? {
+        "Please enter a valid email address in the format 'example@domain.com'."
+    }
+}
+
 struct SignInView: View {
     // MARK: Internal
 
@@ -59,6 +73,11 @@ struct SignInView: View {
             .navigationDestination(isPresented: $navigateToOTPVerification) {
                 OTPScreenView()
             }
+            .sheet(isPresented: $showForgetPasswordSheet) {
+                ForgetPasswordView(showingForgetPasswordSheet: $showForgetPasswordSheet)
+                    .presentationDetents([.medium, .large])
+                    .interactiveDismissDisabled()
+            }
         }
     }
 
@@ -68,6 +87,10 @@ struct SignInView: View {
 
         guard !emailAddress.isEmpty, !password.isEmpty else {
             controlState.error = SignInMissingFieldValue()
+            return
+        }
+        guard isValidEmail(emailAddress) else {
+            controlState.error = SignInInvalidEmailAddress()
             return
         }
 
@@ -99,6 +122,11 @@ struct SignInView: View {
 
     // MARK: Private
 
+    private enum Field {
+        case email
+        case password
+    }
+
     @State private var isLoading: Bool = false
 
     @EnvironmentObject private var authenticationService: AuthenticationService
@@ -107,8 +135,12 @@ struct SignInView: View {
     @State private var navigateToHealthMetricsSignUp = false
     @State private var navigateToOTPVerification = false
 
+    @State private var showForgetPasswordSheet = false
+
     @State private var emailAddress = ""
     @State private var password = ""
+
+    @FocusState private var focusedField: Field?
 
     private var signInForm: some View {
         Form {
@@ -116,14 +148,27 @@ struct SignInView: View {
                 emailField
                 passwordField
             } footer: {
-                if !isValidEmail(emailAddress), !emailAddress.isEmpty {
+                if !isValidEmail(emailAddress), !emailAddress.isEmpty, focusedField != .email {
                     Text("Please enter a valid email address.")
                         .foregroundColor(.red)
                         .accessibilityLabel("Invalid email address")
                         .accessibilityHint("The email address you entered is not valid. Please correct it before submitting.")
                 }
             }
+            Section {
+                Text("Forget Password?")
+                    .foregroundStyle(.blue)
+                    .onTapGesture {
+                        showForgetPasswordSheet = true
+                    }
+                    .accessibilityAddTraits(.isButton)
+                    .accessibilityHint("Tap to reset your password")
+            }
         }
+        .onAppear {
+            focusedField = .email
+        }
+        .scrollDismissesKeyboard(.interactively)
         .scrollContentBackground(.hidden)
     }
 
@@ -133,6 +178,11 @@ struct SignInView: View {
             .textInputAutocapitalization(.never)
             .autocorrectionDisabled()
             .listRowBackground(Color(.secondarySystemBackground))
+            .focused($focusedField, equals: .email)
+            .onSubmit {
+                focusedField = .password
+            }
+            .submitLabel(.next)
             .accessibilityLabel("Email address")
             .accessibilityHint("Enter your email address")
     }
@@ -140,6 +190,11 @@ struct SignInView: View {
     private var passwordField: some View {
         SecureField("Password", text: $password)
             .listRowBackground(Color(.secondarySystemBackground))
+            .focused($focusedField, equals: .password)
+            .onSubmit {
+                Task { await handleSubmit() }
+            }
+            .submitLabel(.go)
             .accessibilityLabel("Password")
             .accessibilityHint("Enter your password")
     }

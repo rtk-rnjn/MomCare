@@ -22,7 +22,7 @@ extension ContentServiceHandler {
         recommendedNutritionGoalTotals = originalNutritionTargetTotals
     }
 
-    func consumeFoodInHealthKit(_ food: FoodItemModel, consume: Bool) async throws {
+    nonisolated func consumeFoodInHealthKit(_ food: FoodItemModel, consume: Bool) async throws {
         let multiplier = consume ? 1.0 : -1.0
 
         try await writeHealthData(quantityTypeIdentifier: .dietaryEnergyConsumed, value: food.totalCalories * multiplier, unit: .kilocalorie())
@@ -56,7 +56,7 @@ extension ContentServiceHandler {
 
     func markFoodsAs(consumed: Bool, mealType: MealType) async throws {
         for foodReference in myPlanModel?[mealType] ?? [] {
-            Task {
+            Task { // I know what I am doing.
                 try await markFoodAs(consumed: consumed, in: mealType, foodReference: foodReference)
             }
         }
@@ -75,6 +75,8 @@ extension ContentServiceHandler {
         } else {
             self.myPlanModel?[mealType].append(foodReference)
         }
+
+        await fetchMyPlanMeta()
     }
 
     func removeFoodFromPlan(foodId: String, mealType: MealType) async throws {
@@ -87,5 +89,7 @@ extension ContentServiceHandler {
         if let index = self.myPlanModel?[mealType].firstIndex(where: { $0.foodId == foodId }) {
             self.myPlanModel?[mealType].remove(at: index)
         }
+
+        await fetchMyPlanMeta()
     }
 }

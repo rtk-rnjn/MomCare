@@ -114,6 +114,7 @@ struct HealthMetricsSignUpView: View {
                 measurementSection
                 locationSection
             }
+            .scrollDismissesKeyboard(.interactively)
             .scrollContentBackground(.hidden)
         }
     }

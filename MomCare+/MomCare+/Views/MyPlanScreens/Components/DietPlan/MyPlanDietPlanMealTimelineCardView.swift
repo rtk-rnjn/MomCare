@@ -1,10 +1,12 @@
 import SwiftUI
 import TipKit
 
-struct MealTimelineCardView: View {
+struct MyPlanDietPlanMealTimelineCardView: View {
     // MARK: Internal
 
     let plan: MealPlanModel?
+    let addFoodItemTip: (any Tip)?
+    let slideFoodItemRowTip: (any Tip)?
 
     var body: some View {
         List {
@@ -54,11 +56,12 @@ struct MealTimelineCardView: View {
 
     private func mealSection(title: String, items: [FoodReferenceModel], originalItems: [FoodReferenceModel], mealType: MealType) -> some View {
         Section {
-            HeaderRow(
+            MealTimelineHeaderRow(
                 section: MealSection(title: title, items: items),
                 hideTopLine: title == "Breakfast",
                 hideBottomLine: title == "Dinner" && items.isEmpty,
-                mealType: mealType
+                mealType: mealType,
+                tip: addFoodItemTip
             ) { consumed in
                 do {
                     try await contentServiceHandler.markFoodsAs(consumed: !consumed, mealType: mealType)
@@ -79,9 +82,11 @@ struct MealTimelineCardView: View {
                 .listRowSeparator(.hidden)
                 .listRowInsets(.top, 0)
                 .listRowInsets(.bottom, 0)
+                .accessibilityElement(children: .combine)
+                .accessibilityLabel("Loading meal items")
             } else {
                 ForEach(items) { item in
-                    ItemRow(
+                    MealTimelineFoodItemRow(
                         item: item,
                         hideTopLine: false,
                         hideBottomLine: item.id == items.last?.id && title == "Dinner",
@@ -101,6 +106,7 @@ struct MealTimelineCardView: View {
                             }
                         }
                     )
+                    .popoverTip(slideFoodItemRowTip, arrowEdge: .top)
                     .background {
                         LinearGradient(
                             colors: [
@@ -127,13 +133,14 @@ struct MealTimelineCardView: View {
     }
 }
 
-private struct HeaderRow: View {
+private struct MealTimelineHeaderRow: View {
     // MARK: Internal
 
     let section: MealSection
     let hideTopLine: Bool
     let hideBottomLine: Bool
     let mealType: MealType
+    let tip: (any Tip)?
     let onToggle: (Bool) async -> Void
 
     var body: some View {
@@ -170,6 +177,7 @@ private struct HeaderRow: View {
                     .font(.title3)
                     .foregroundColor(MomCareAccent.primary)
             }
+            .popoverTip(tip, arrowEdge: .trailing)
             .accessibilityLabel("Add food to \(section.title)")
             .frame(minWidth: 44, minHeight: 44)
         }
@@ -188,7 +196,7 @@ private struct HeaderRow: View {
     @State private var showSearchFoodSheet = false
 }
 
-private struct ItemRow: View {
+private struct MealTimelineFoodItemRow: View {
     // MARK: Internal
 
     var item: FoodReferenceModel
@@ -236,7 +244,6 @@ private struct ItemRow: View {
         .modifier(MealContextMenu(item: item, food: food, onToggle: onToggle, onDelete: onDelete))
         .swipeActions(edge: .leading, allowsFullSwipe: true) {
             Button {
-                HapticsHandler.notification(item.isConsumed ? .warning : .success)
                 Task {
                     await onToggle(item.isConsumed)
                 }
@@ -250,7 +257,6 @@ private struct ItemRow: View {
         }
         .swipeActions(edge: .trailing, allowsFullSwipe: false) {
             Button(role: .destructive) {
-                HapticsHandler.notification(.warning)
                 Task { await onDelete() }
             } label: {
                 Label("", systemImage: "trash")
@@ -263,13 +269,11 @@ private struct ItemRow: View {
         .accessibilityValue(item.isConsumed ? "consumed" : "not consumed")
         .accessibilityHint("Long press for more options.")
         .accessibilityAction(named: item.isConsumed ? "Undo" : "Consume") {
-            HapticsHandler.notification(item.isConsumed ? .warning : .success)
             Task {
                 await onToggle(item.isConsumed)
             }
         }
         .accessibilityAction(named: "Delete") {
-            HapticsHandler.notification(.warning)
             Task { await onDelete() }
         }
         .task {
@@ -306,7 +310,7 @@ private struct TimelineLine: View {
     }
 }
 
-struct FoodThumbnail: View {
+private struct FoodThumbnail: View {
     // MARK: Internal
 
     @State var foodReferenceModel: FoodReferenceModel
@@ -368,7 +372,6 @@ private struct MealContextMenu: ViewModifier {
     @ViewBuilder
     private var menuButtons: some View {
         Button {
-            HapticsHandler.notification(item.isConsumed ? .warning : .success)
             Task {
                 await onToggle(item.isConsumed)
             }
@@ -382,7 +385,6 @@ private struct MealContextMenu: ViewModifier {
         Divider()
 
         Button(role: .destructive) {
-            HapticsHandler.notification(.warning)
             Task { await onDelete() }
         } label: {
             Label("Delete", systemImage: "trash")
@@ -440,7 +442,7 @@ private struct NutritionPreview: View {
     }
 }
 
-enum CircleStyle {
+private enum CircleStyle {
     case header
     case item
 
@@ -463,7 +465,7 @@ enum CircleStyle {
     }
 }
 
-struct TimelineCircle: View {
+private struct TimelineCircle: View {
     let isChecked: Bool
     var style: CircleStyle = .header
 
@@ -490,7 +492,7 @@ struct TimelineCircle: View {
     }
 }
 
-struct MealSection: Identifiable {
+private struct MealSection: Identifiable {
     let id: UUID = .init()
     let title: String
     var items: [FoodReferenceModel]

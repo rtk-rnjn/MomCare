@@ -5,7 +5,6 @@ extension ContentServiceHandler {
     func updateBreathingCompletionDuration(duration: TimeInterval) {
         let startOfDate = Calendar.current.startOfDay(for: Date())
         Database.shared[.breathingProgress(startOfDate)] = duration
-        breathingCompletionDuration = duration
     }
 
     func fetchBreathingCompletionDuration(for date: Date) -> TimeInterval {
@@ -14,9 +13,7 @@ extension ContentServiceHandler {
         }
 
         let startOfDate = Calendar.current.startOfDay(for: date)
-        let completionDuration: TimeInterval = Database.shared[.breathingProgress(startOfDate)] ?? 0
-        breathingCompletionDuration = completionDuration
-        return completionDuration
+        return Database.shared[.breathingProgress(startOfDate)] ?? 0
     }
 
     func fetchStepCount(for date: Date) async -> Int {

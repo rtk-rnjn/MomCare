@@ -1,4 +1,3 @@
-import OSLog
 import SwiftUI
 
 struct AboutMomCareView: View {
@@ -23,6 +22,7 @@ struct AboutMomCareView: View {
                 }
                 .accessibilityElement(children: .combine)
                 .accessibilityLabel("App version \(appVersion)")
+                .accessibilityHint("Long press to reveal debug options")
             }
 
             Section {

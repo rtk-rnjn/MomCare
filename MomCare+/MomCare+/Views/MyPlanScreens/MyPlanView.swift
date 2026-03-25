@@ -1,4 +1,5 @@
 import SwiftUI
+import TipKit
 
 struct MyPlanView: View {
     // MARK: Internal
@@ -17,7 +18,7 @@ struct MyPlanView: View {
 
             switch controlState.myPlanSegment {
             case .diet:
-                MyPlanDietPlanView()
+                MyPlanDietPlanView(tips: dietPlanTips)
             case .exercise:
                 MyPlanExercisePlanView()
             }
@@ -29,6 +30,12 @@ struct MyPlanView: View {
     }
 
     // MARK: Private
+
+    @State private var dietPlanTips = TipGroup {
+        MomCareTips.DietPlan.ProgressCardSlideOrTapTip()
+        MomCareTips.DietPlan.HeaderRowAddTip()
+        MomCareTips.DietPlan.ItemRowSlideTip()
+    }
 
     @AppStorage(FeatureFlagState.forceUseLargeTitle.rawValue, store: UserDefaults(suiteName: "group.MomCare")) private var forceUseLargeTitle: Bool = false
 

@@ -9,8 +9,6 @@ enum DestinationType {
 struct OTPScreenView: View {
     // MARK: Internal
 
-    let isSheet: Bool = false
-
     var redactedDisplayEmail: String {
         guard
             let email = authenticationService.credentials?.emailAddress,
@@ -81,8 +79,6 @@ struct OTPScreenView: View {
     }
 
     // MARK: Private
-
-    @Environment(\.dismiss) private var dismiss
 
     @EnvironmentObject private var authenticationService: AuthenticationService
     @EnvironmentObject private var controlState: ControlState

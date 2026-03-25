@@ -1,5 +1,5 @@
 {
-  "originHash" : "4ad40d057ee08875e9d4d7a777c8820735deeaf5cc8b273f88f979881558c13b",
+  "originHash" : "b1a110a42e9db9d1604c52f9a0edb44692b435545484882a6863d17c850cc397",
   "pins" : [
     {
       "identity" : "lnpopupcontroller",
@@ -26,15 +26,6 @@
       "state" : {
         "revision" : "181a95b992f84d99a14c562c86e8ebef3cbcdca9",
         "version" : "1.1.5"
-      }
-    },
-    {
-      "identity" : "swift-collections",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/apple/swift-collections.git",
-      "state" : {
-        "revision" : "8d9834a6189db730f6264db7556a7ffb751e99ee",
-        "version" : "1.4.0"
       }
     }
   ],

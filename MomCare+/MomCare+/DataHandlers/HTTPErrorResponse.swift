@@ -184,6 +184,35 @@ struct HTTPErrorResponse: Codable, LocalizedError {
                 try container.encode(errors)
             }
         }
+
+        func toOSLogMessageString() -> String {
+            switch self {
+            case let .message(message):
+                return message
+
+            case let .validation(errors):
+                let errorMessages = errors.map { error in
+                    let locations = error.loc.map { loc -> String in
+                        switch loc {
+                        case let .string(value):
+                            return value
+
+                        case let .int(index):
+                            return "[\(index)]"
+                        }
+                    }
+
+                    let fieldPath = locations.joined(separator: ".")
+
+                    let message = error.msg
+                    let type = error.type
+
+                    return "\(fieldPath): \(message) (type: \(type))"
+                }
+
+                return errorMessages.joined(separator: "; ")
+            }
+        }
     }
 
     let detail: Detail

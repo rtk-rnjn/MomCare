@@ -75,13 +75,13 @@ struct ProfilePersonalInfoView: View {
                     .font(.footnote)
             }
         }
+        .scrollDismissesKeyboard(.interactively)
         .listStyle(.insetGrouped)
         .navigationTitle("Personal Information")
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
                 Button(isEditing ? "Done" : "Edit") {
-                    HapticsHandler.impact(.light)
                     if reduceMotion {
                         isEditing.toggle()
                     } else {
@@ -220,5 +220,50 @@ struct ProfilePersonalInfoView: View {
         let min = calendar.date(byAdding: .year, value: -45, to: now)!
         let max = calendar.date(byAdding: .year, value: -18, to: now)!
         return min ... max
+    }
+}
+
+private struct InfoRow: View {
+    let title: String
+    let value: String
+    let isEditing: Bool
+
+    var body: some View {
+        HStack {
+            Text(title)
+                .foregroundColor(.primary)
+
+            Spacer()
+
+            Text(value)
+                .foregroundColor(isEditing ? Color("primaryAppColor") : .secondary)
+        }
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel("\(title): \(value)")
+    }
+}
+
+private struct ProfileEditableTextRow: View {
+    let title: String
+    @Binding var text: String
+
+    let isEditing: Bool
+    let displayText: String
+
+    var body: some View {
+        HStack {
+            Text(title)
+                .foregroundColor(.primary)
+
+            Spacer()
+
+            TextField(displayText, text: $text)
+                .multilineTextAlignment(.trailing)
+                .foregroundColor(isEditing ? MomCareAccent.primary : .secondary)
+                .disabled(!isEditing)
+                .accessibilityLabel(title)
+        }
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel("\(title): \(displayText)")
     }
 }

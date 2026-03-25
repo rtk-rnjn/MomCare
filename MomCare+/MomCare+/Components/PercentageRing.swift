@@ -2,73 +2,6 @@ import SwiftUI
 
 /// https://gist.github.com/frankfka/2517d69da68ef041e3257d5cfd27fe5d
 
-extension Double {
-    nonisolated func toRadians() -> Double {
-        self * Double.pi / 180
-    }
-
-    nonisolated func toCGFloat() -> CGFloat {
-        CGFloat(self)
-    }
-}
-
-struct RingShape: Shape {
-    // MARK: Lifecycle
-
-    init(percent: Double = 100, startAngle: Double = -90, drawnClockwise: Bool = false) {
-        self.percent = percent
-        self.startAngle = startAngle
-        self.drawnClockwise = drawnClockwise
-    }
-
-    // MARK: Internal
-
-    var animatableData: Double {
-        get { percent }
-        set { percent = newValue }
-    }
-
-    static func percentToAngle(percent: Double, startAngle: Double) -> Double {
-        (percent / 100 * 360) + startAngle
-    }
-
-    func path(in rect: CGRect) -> Path {
-        let radius = min(rect.width, rect.height) / 2
-        let center = CGPoint(x: rect.midX, y: rect.midY)
-        let endAngle = Angle(degrees: RingShape.percentToAngle(percent: percent, startAngle: startAngle))
-        return Path { path in
-            path.addArc(center: center, radius: radius, startAngle: Angle(degrees: startAngle), endAngle: endAngle, clockwise: drawnClockwise)
-        }
-    }
-
-    // MARK: Private
-
-    private var percent: Double
-    private var startAngle: Double
-    private let drawnClockwise: Bool
-}
-
-struct RingCapShape: Shape {
-    var percent: Double
-    var startAngle: Double = -90
-
-    var animatableData: Double {
-        get { percent }
-        set { percent = newValue }
-    }
-
-    func path(in rect: CGRect) -> Path {
-        let radius = min(rect.width, rect.height) / 2
-        let center = CGPoint(x: rect.midX, y: rect.midY)
-        let angleInRadians = RingShape.percentToAngle(percent: percent, startAngle: startAngle).toRadians()
-        let capCenter = CGPoint(
-            x: center.x + radius * cos(angleInRadians).toCGFloat(),
-            y: center.y + radius * sin(angleInRadians).toCGFloat()
-        )
-        return Path(ellipseIn: CGRect(origin: capCenter, size: .zero))
-    }
-}
-
 struct PercentageRing: View {
     // MARK: Internal
 
@@ -193,16 +126,38 @@ private struct EndCapShape: Shape {
     }
 }
 
-extension Double {
-    func clamped(to range: ClosedRange<Double>) -> Double {
-        if isNaN {
-            return range.lowerBound
-        }
+private struct RingShape: Shape {
+    // MARK: Lifecycle
 
-        if isInfinite {
-            return range.lowerBound
-        }
-
-        return min(max(self, range.lowerBound), range.upperBound)
+    init(percent: Double = 100, startAngle: Double = -90, drawnClockwise: Bool = false) {
+        self.percent = percent
+        self.startAngle = startAngle
+        self.drawnClockwise = drawnClockwise
     }
+
+    // MARK: Internal
+
+    var animatableData: Double {
+        get { percent }
+        set { percent = newValue }
+    }
+
+    static func percentToAngle(percent: Double, startAngle: Double) -> Double {
+        (percent / 100 * 360) + startAngle
+    }
+
+    func path(in rect: CGRect) -> Path {
+        let radius = min(rect.width, rect.height) / 2
+        let center = CGPoint(x: rect.midX, y: rect.midY)
+        let endAngle = Angle(degrees: RingShape.percentToAngle(percent: percent, startAngle: startAngle))
+        return Path { path in
+            path.addArc(center: center, radius: radius, startAngle: Angle(degrees: startAngle), endAngle: endAngle, clockwise: drawnClockwise)
+        }
+    }
+
+    // MARK: Private
+
+    private var percent: Double
+    private var startAngle: Double
+    private let drawnClockwise: Bool
 }

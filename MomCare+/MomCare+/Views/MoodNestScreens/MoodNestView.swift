@@ -8,7 +8,7 @@ struct MoodNestView: View {
         NavigationStack {
             ZStack {
                 moodNestViewModel.backgroundColor
-.ignoresSafeArea()
+                    .ignoresSafeArea()
                     .accessibilityHidden(true)
 
                 VStack(spacing: 32) {
@@ -46,6 +46,7 @@ struct MoodNestView: View {
                                 }
                             }
                         }
+                        .popoverTip(sliderTip, arrowEdge: .bottom)
                         .padding(.horizontal, 40)
                         .padding(.top, 30)
                         .tint(.white)
@@ -87,4 +88,6 @@ struct MoodNestView: View {
     @StateObject private var moodNestViewModel: MoodNestViewModel = .init()
     @EnvironmentObject private var controlState: ControlState
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
+
+    private let sliderTip: MomCareTips.MoodNest.MoodNestSliderTip = .init()
 }

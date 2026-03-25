@@ -114,17 +114,17 @@ struct AccountLockedError: @preconcurrency APIError {
     }
 }
 
-struct NetworkError: @preconcurrency APIError {
+struct RateLimitExceededError: @preconcurrency APIError {
     var errorDescription: String? {
-        "Network connection failed."
+        "Too many requests."
     }
 
     var failureReason: String? {
-        "The request could not be completed due to a network issue."
+        "You have exceeded the allowed number of requests."
     }
 
     var recoverySuggestion: String? {
-        "Please check your internet connection and try again."
+        "Please wait a moment before trying again."
     }
 }
 
@@ -142,8 +142,22 @@ struct UnknownAPIError: @preconcurrency APIError {
     }
 }
 
+struct ServerError5XX: @preconcurrency APIError {
+    var errorDescription: String? {
+        "Snap! Something went wrong on our end."
+    }
+
+    var failureReason: String? {
+        "An unexpected error occurred on the server."
+    }
+
+    var recoverySuggestion: String? {
+        "Please try again later or contact developers if the issue persists."
+    }
+}
+
 enum APIErrorResolver {
-    static func error(from statusCode: Int, with error: HTTPErrorResponse? = nil) -> any LocalizedError {
+    static func error(from statusCode: Int, with error: HTTPErrorResponse? = nil) -> any LocalizedError { // swiftlint:disable:this cyclomatic_complexity
         switch statusCode {
         case 400:
             BadRequestError()
@@ -168,6 +182,12 @@ enum APIErrorResolver {
 
         case 423:
             AccountLockedError()
+
+        case 429:
+            RateLimitExceededError()
+
+        case 500..<600:
+            ServerError5XX()
 
         default:
             UnknownAPIError()

@@ -91,6 +91,7 @@ struct OnboardingView: View {
                         }
                         .font(.body.weight(.semibold))
                         .foregroundStyle(MomCareAccent.primary)
+                        .accessibilityHint("Creates a new MomCare account")
                     }
                     .font(.subheadline)
                     .padding(.top, 4)
@@ -138,5 +139,26 @@ struct OnboardingView: View {
             alertMessage = "Apple Sign-In failed: \(error.localizedDescription)"
             showAlert = true
         }
+    }
+}
+
+private struct OnboardingPageView: View {
+    let page: OnboardingPage
+
+    var body: some View {
+        VStack(spacing: 12) {
+            Image(page.imageName)
+                .resizable()
+                .scaledToFit()
+                .frame(maxHeight: 400)
+                .accessibilityHidden(true)
+
+            Text(page.title)
+                .font(.subheadline)
+                .fontWeight(.semibold)
+                .multilineTextAlignment(.center)
+                .accessibilityAddTraits(.isHeader)
+        }
+        .padding(.bottom, 22)
     }
 }

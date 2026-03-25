@@ -99,6 +99,18 @@ final class Database {
         return results
     }
 
+    func purge() {
+        let keysToDelete: [ValidDatabaseKeys] = [
+            .userModel,
+            .credentials,
+            .tokenPair
+        ]
+
+        for key in keysToDelete {
+            userDefaults.removeObject(forKey: key.rawValue)
+        }
+    }
+
     subscript<T: Codable>(_ key: ValidDatabaseKeys) -> T? {
         get {
             guard let data = userDefaults.data(forKey: key.rawValue) else {
@@ -113,7 +125,7 @@ final class Database {
                 return
             }
 
-            guard let data = newValue.encodeUsingJSONEncoder() else {
+            guard let data = try? newValue.encodeUsingJSONEncoder() else {
                 return
             }
 

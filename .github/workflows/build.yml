@@ -17,6 +17,7 @@ on:
     paths:
       - "**/*.swift"
       - "**/*.yml"
+    types: [opened, synchronize, reopened, ready_for_review]
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -24,6 +25,7 @@ concurrency:
 
 jobs:
   build:
+    if: github.event_name != 'pull_request' || github.event.pull_request.draft == false
     name: Build default scheme using any available iPhone simulator
     runs-on: macos-26
 

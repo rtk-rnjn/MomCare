@@ -15,6 +15,7 @@ disabled_rules:
   - file_length
   - identifier_name
   - todo
+  - nesting
 
 reporter: "github-actions-logging"
 strict: true

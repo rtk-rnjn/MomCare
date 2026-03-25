@@ -215,7 +215,7 @@ struct FilterChip: View {
         Button(action: action) {
             HStack(spacing: 4) {
                 Image(systemName: icon)
-.font(.caption2)
+                    .font(.caption2)
                     .accessibilityHidden(true)
                 Text(label).font(.caption.weight(.medium))
             }

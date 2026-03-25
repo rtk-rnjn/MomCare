@@ -22,7 +22,7 @@ struct TriTrackSymptomDetailView: View {
                             Text(trimester)
                                 .font(.caption.weight(.semibold))
                                 .padding(.horizontal, 10)
-.padding(.vertical, 5)
+                                .padding(.vertical, 5)
                                 .background(Color.black.opacity(0.05))
                                 .foregroundColor(.black.opacity(0.8))
                                 .clipShape(Capsule())
@@ -45,10 +45,14 @@ struct TriTrackSymptomDetailView: View {
                     HStack(spacing: 10) {
                         Image(systemName: "list.bullet.clipboard.fill")
                             .foregroundColor(themeColor)
+                            .accessibilityHidden(true)
                         Text("What you can do")
                             .foregroundColor(.black)
                     }
                     .font(.headline)
+                    .accessibilityElement(children: .combine)
+                    .accessibilityLabel("What you can do")
+                    .accessibilityAddTraits(.isHeader)
 
                     VStack(alignment: .leading, spacing: 10) {
                         ForEach(symptom.remedies, id: \.self) { remedy in
@@ -111,12 +115,13 @@ struct SymptomSectionView: View {
         VStack(alignment: .leading, spacing: 8) {
             HStack(spacing: 10) {
                 Image(systemName: iconName)
-.foregroundColor(color)
+                    .foregroundColor(color)
                     .accessibilityHidden(true)
                 Text(title)
-.foregroundColor(.black)
+                    .foregroundColor(.black)
                     .accessibilityAddTraits(.isHeader)
-            }.font(.headline)
+            }
+            .font(.headline)
 
             Text(LocalizedStringKey(content))
                 .font(.body)

@@ -90,8 +90,8 @@ struct WaterLogListView: View {
 
     private var pillDivider: some View {
         Divider()
-.frame(height: 36)
-.background(Color(hex: "924350").opacity(0.1))
+            .frame(height: 36)
+            .background(Color(hex: "924350").opacity(0.1))
             .accessibilityHidden(true)
     }
 
@@ -109,7 +109,7 @@ struct WaterLogListView: View {
             .background(
                 reduceTransparency ? Color(hex: "FAE8E4") : Color(hex: "FAE8E4").opacity(0.55),
                 in: RoundedRectangle(cornerRadius: 14, style: .continuous))
-            .accessibilityElement(children: .combine)
+            .accessibilityHidden(true)
 
             let tip = WaterStore.waterTips[tipIndex]
             HStack(alignment: .top, spacing: 10) {
@@ -283,7 +283,7 @@ struct AddWaterEntrySheet: View {
                                         .font(.subheadline.weight(.semibold))
                                         .foregroundColor(amount == p ? .white : Color(hex: "924350"))
                                         .padding(.horizontal, 14)
-.padding(.vertical, 8)
+                                        .padding(.vertical, 8)
                                         .background(amount == p ? Color(hex: "924350") : Color(hex: "FAE8E4"),
                                                     in: Capsule())
                                 }
@@ -300,11 +300,13 @@ struct AddWaterEntrySheet: View {
                         Text("Custom").foregroundStyle(.secondary)
                         TextField("e.g. 375", text: $customText)
                             .keyboardType(.numberPad)
-.focused($focused)
-.multilineTextAlignment(.trailing)
-                            .onChange(of: customText) { _, v in if let d = Double(v) {
-                                amount = d
-                            } }
+                            .focused($focused)
+                            .multilineTextAlignment(.trailing)
+                            .onChange(of: customText) { _, v in
+                                if let d = Double(v) {
+                                    amount = d
+                                }
+                            }
                         Text("ml").foregroundStyle(.secondary)
                     }
                 }
@@ -320,11 +322,12 @@ struct AddWaterEntrySheet: View {
                         Spacer()
                         Text("Adding \(Int(amount)) ml")
                             .font(.subheadline)
-.foregroundStyle(.secondary)
+                            .foregroundStyle(.secondary)
                         Spacer()
                     }
                 }
             }
+            .scrollDismissesKeyboard(.interactively)
             .navigationTitle("Add Water")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
@@ -339,8 +342,8 @@ struct AddWaterEntrySheet: View {
                         }
                     }
                     .fontWeight(.semibold)
-.foregroundColor(Color(hex: "924350"))
-.disabled(amount <= 0)
+                    .foregroundColor(Color(hex: "924350"))
+                    .disabled(amount <= 0)
                 }
             }
         }
@@ -395,6 +398,7 @@ struct EditWaterEntrySheet: View {
                     DatePicker("When", selection: $selectedDate, in: ...Date(), displayedComponents: [.date, .hourAndMinute])
                 }
             }
+            .scrollDismissesKeyboard(.interactively)
             .navigationTitle("Edit Entry")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {

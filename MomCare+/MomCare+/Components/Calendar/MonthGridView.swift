@@ -32,7 +32,7 @@ struct MonthGridView: View {
                             .frame(height: cellHeight)
                     } else {
                         Color.clear
-.frame(height: cellHeight)
+                            .frame(height: cellHeight)
                             .accessibilityHidden(true)
                     }
                 }

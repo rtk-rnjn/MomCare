@@ -123,6 +123,20 @@ struct RequestOTP: Codable, Sendable {
     var emailAddress: String
 }
 
+typealias ForgetPassword = RequestOTP
+
+struct ResetPassword: Codable, Sendable {
+    enum CodingKeys: String, CodingKey {
+        case emailAddress = "email_address"
+        case otp
+        case newPassword = "new_password"
+    }
+
+    var emailAddress: String
+    var otp: String
+    var newPassword: String
+}
+
 struct VerifyOTP: Codable, Sendable {
     enum CodingKeys: String, CodingKey {
         case emailAddress = "email_address"

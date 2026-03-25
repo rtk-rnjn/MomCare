@@ -61,6 +61,7 @@ struct ProfileHealthInfoView: View {
                 }
             }
         }
+        .scrollDismissesKeyboard(.interactively)
         .listStyle(.insetGrouped)
         .navigationTitle("Health Information")
         .navigationBarTitleDisplayMode(.inline)

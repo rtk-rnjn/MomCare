@@ -1,7 +1,6 @@
 import MetricKit
-import OSLog
 
-private let logger: Logger = .init(subsystem: "com.MomCare.AppDelegate", category: "AppDelegate")
+private let logger: Logger = MomCareLogger.appDelegate
 
 extension AppDelegate: MXMetricManagerSubscriber {
     func didReceive(_ payloads: [MXMetricPayload]) {

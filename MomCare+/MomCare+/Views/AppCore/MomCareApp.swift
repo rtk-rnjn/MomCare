@@ -8,7 +8,15 @@ struct MomCareApp: App {
 
     init() {
         do {
-            try Tips.configure()
+            try Tips.configure(
+                [
+                    .displayFrequency(.immediate),
+                    .datastoreLocation(.applicationDefault)
+                ]
+            )
+            #if DEBUG
+            try Tips.resetDatastore()
+            #endif // DEBUG
         } catch {}
     }
 

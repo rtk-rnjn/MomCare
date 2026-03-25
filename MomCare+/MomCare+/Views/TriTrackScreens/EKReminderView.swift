@@ -34,6 +34,7 @@ struct EKReminderView: View {
                 notesSection
                 deleteSection
             }
+            .scrollDismissesKeyboard(.interactively)
             .scrollIndicators(.hidden)
             .listStyle(.insetGrouped)
             .navigationTitle("Reminder")
@@ -155,6 +156,7 @@ struct EKReminderView: View {
                     .keyboardType(.numberPad)
                     .multilineTextAlignment(.trailing)
                     .frame(width: 60)
+                    .accessibilityLabel("Repeat interval")
                 }
             }
 

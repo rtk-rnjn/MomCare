@@ -1,15 +1,5 @@
 import SwiftUI
 
-private extension Date {
-    var startOfDay: Date {
-        Calendar.current.startOfDay(for: self)
-    }
-
-    var nextDay: Date {
-        Calendar.current.date(byAdding: .day, value: 1, to: startOfDay)!
-    }
-}
-
 struct ExerciseHistory: View {
     // MARK: Internal
 
@@ -27,6 +17,8 @@ struct ExerciseHistory: View {
                                 .foregroundStyle(.secondary)
                         }
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
+                        .accessibilityElement(children: .combine)
+                        .accessibilityLabel("Loading exercise history")
                     } else if let errorMessage {
                         ContentUnavailableView(
                             "Couldn’t load exercises",
@@ -39,6 +31,8 @@ struct ExerciseHistory: View {
                             }
                             .buttonStyle(.borderedProminent)
                             .padding(.bottom, 24)
+                            .accessibilityLabel("Retry")
+                            .accessibilityHint("Retries loading the exercise history for this date")
                         }
                     } else if let exercises, exercises.isEmpty {
                         ContentUnavailableView(

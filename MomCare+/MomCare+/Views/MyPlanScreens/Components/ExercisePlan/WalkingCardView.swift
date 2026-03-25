@@ -1,4 +1,5 @@
 import SwiftUI
+import TipKit
 
 struct WalkingCardView: View {
     // MARK: Internal
@@ -77,6 +78,7 @@ struct WalkingCardView: View {
             .frame(height: 8)
             .accessibilityHidden(true)
         }
+        .popoverTip(tip, arrowEdge: .top)
         .padding(18)
         .background(
             RoundedRectangle(cornerRadius: 20, style: .continuous)
@@ -102,6 +104,8 @@ struct WalkingCardView: View {
     @State private var percentCompleted: Double = 0
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @Environment(\.accessibilityReduceTransparency) private var reduceTransparency
+
+    private let tip = MomCareTips.ExercisePlan.WalkingCardTapTip()
 
     private func updateProgress() {
         guard stepsGoal > 0 else {

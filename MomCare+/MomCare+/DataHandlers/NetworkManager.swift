@@ -1,7 +1,8 @@
 import Foundation
 import OSLog
+import UIKit
 
-private let logger: Logger = .init(subsystem: "com.MomCare.NetworkManager", category: "Network")
+private let logger: Logger = MomCareLogger.network
 
 enum HTTPMethod: String {
     case GET
@@ -19,15 +20,6 @@ struct NetworkResponse<T: Codable>: Codable {
 
     var data: T
     var statusCode: Int
-    var responseHeaders: [AnyHashable: Any]?
-
-    var localizedError: any LocalizedError {
-        APIErrorResolver.error(from: statusCode)
-    }
-
-    var success: Bool {
-        (200...299).contains(statusCode)
-    }
 }
 
 class NetworkManager {
@@ -151,34 +143,51 @@ class NetworkManager {
         let url = request.url?.absoluteString ?? "unknown URL"
         logger.info("Performing \(request.httpMethod ?? "UNKNOWN") request to \(url)")
 
-        var attempts = 5
+        do {
+            var attempts = 5
 
-        while attempts > 0 {
-            do {
-                let (data, response) = try await URLSession.shared.data(for: request)
+            while attempts > 0 {
+                do {
+                    let (data, response) = try await URLSession.shared.data(for: request)
 
-                return try await handleRequest(
-                    response: response,
-                    data: data,
-                    url: url
-                )
-            } catch {
-                attempts -= 1
+                    return try await handleRequest(
+                        response: response,
+                        data: data,
+                        url: url
+                    )
+                } catch {
+                    attempts -= 1
 
-                if let urlError = error as? URLError {
-                    switch urlError.code {
-                    case .networkConnectionLost, .notConnectedToInternet, .timedOut:
-                        logger.warning("Network error occurred for request to \(url): \(urlError.localizedDescription). Retrying... (\(5 - attempts) attempts left)")
+                    if let urlError = error as? URLError {
+                        switch urlError.code {
+                        case .networkConnectionLost, .notConnectedToInternet, .timedOut:
+                            logger.warning("Network error occurred for request to \(url): \(urlError.localizedDescription). Retrying... (\(5 - attempts) attempts left)")
 
-                        try? await Task.sleep(nanoseconds: UInt64(1_000_000_000 * (attempts % 5)))
+                            try? await Task.sleep(nanoseconds: UInt64(1_000_000_000 * (attempts % 5)))
 
-                    default:
-                        throw error
+                            await MainActor.run {
+                                HapticsHandler.notification(.warning)
+                            }
+
+                        default:
+                            await MainActor.run {
+                                HapticsHandler.notification(.error)
+                            }
+                            throw error
+                        }
                     }
-                }
 
-                throw error
+                    await MainActor.run {
+                        HapticsHandler.notification(.error)
+                    }
+                    throw error
+                }
             }
+        } catch {
+            if error is URLError {
+                await MainActor.run { HapticsHandler.notification(.error) }
+            }
+            throw error
         }
     }
 
@@ -192,11 +201,19 @@ class NetworkManager {
         logger.info("Received response with status code \(httpResponse.statusCode) for request to \(url)")
 
         if httpResponse.statusCode >= 400 {
-            let errorResponse: HTTPErrorResponse = try data.decodeUsingJSONDecoder()
-            throw APIErrorResolver.error(from: httpResponse.statusCode, with: errorResponse)
+            await MainActor.run { HapticsHandler.notification(.error) }
+
+            if let errorResponse: HTTPErrorResponse = try? data.decodeUsingJSONDecoder() {
+                let osLogMessage = errorResponse.detail.toOSLogMessageString()
+                logger.error("HTTP Exception: \(osLogMessage)")
+                throw APIErrorResolver.error(from: httpResponse.statusCode, with: errorResponse)
+            }
+
+            throw APIErrorResolver.error(from: httpResponse.statusCode, with: nil)
         }
 
         let maybeData: T = try data.decodeUsingJSONDecoder()
+        await MainActor.run { HapticsHandler.notification(.success) }
         return NetworkResponse(data: maybeData, statusCode: httpResponse.statusCode)
     }
 }
