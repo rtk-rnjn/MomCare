@@ -324,6 +324,7 @@ private struct PermissionRow: View {
             }
             .padding(.top, 8)
         }
+        .errorAlert(error: $error)
         .padding(16)
         .background(
             reduceTransparency
@@ -350,7 +351,7 @@ private struct PermissionRow: View {
                         do {
                             try await contentServiceHandler.startStepCountObservation()
                         } catch {
-                            controlState.error = error
+                            self.error = error
                         }
 
                     case .calendar:
@@ -405,6 +406,8 @@ private struct PermissionRow: View {
 
     // MARK: Private
 
+    @State private var error: (any Error)?
+
     @Environment(\.openURL) private var openURL
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @Environment(\.accessibilityReduceTransparency) private var reduceTransparency
@@ -415,5 +418,4 @@ private struct PermissionRow: View {
 
     @EnvironmentObject private var contentServiceHandler: ContentServiceHandler
     @EnvironmentObject private var eventKitHandler: EventKitHandler
-    @EnvironmentObject private var controlState: ControlState
 }
