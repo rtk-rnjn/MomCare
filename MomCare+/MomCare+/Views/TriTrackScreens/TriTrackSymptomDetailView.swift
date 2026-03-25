@@ -45,10 +45,14 @@ struct TriTrackSymptomDetailView: View {
                     HStack(spacing: 10) {
                         Image(systemName: "list.bullet.clipboard.fill")
                             .foregroundColor(themeColor)
+                            .accessibilityHidden(true)
                         Text("What you can do")
                             .foregroundColor(.black)
                     }
                     .font(.headline)
+                    .accessibilityElement(children: .combine)
+                    .accessibilityLabel("What you can do")
+                    .accessibilityAddTraits(.isHeader)
 
                     VStack(alignment: .leading, spacing: 10) {
                         ForEach(symptom.remedies, id: \.self) { remedy in

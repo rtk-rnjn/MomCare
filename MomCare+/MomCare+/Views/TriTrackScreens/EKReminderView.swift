@@ -156,6 +156,7 @@ struct EKReminderView: View {
                     .keyboardType(.numberPad)
                     .multilineTextAlignment(.trailing)
                     .frame(width: 60)
+                    .accessibilityLabel("Repeat interval")
                 }
             }
 

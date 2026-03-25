@@ -131,6 +131,7 @@ struct TriTrackAddCalendarItemSheetView: View {
                             hasData = true
                         }
                     }
+                    .accessibilityHint("Toggles all day setting for this event")
 
                 DatePicker("Starts", selection: $startDate, in: dateRange(), displayedComponents: isAllDay ? [.date] : [.date, .hourAndMinute])
                 DatePicker("Ends", selection: $endDate, in: dateRange(), displayedComponents: isAllDay ? [.date] : [.date, .hourAndMinute])
@@ -141,6 +142,7 @@ struct TriTrackAddCalendarItemSheetView: View {
                             hasData = true
                         }
                     }
+                    .accessibilityHint("Enables or disables monthly recurrence for this event")
             }
 
             Section {
@@ -149,10 +151,13 @@ struct TriTrackAddCalendarItemSheetView: View {
                 } label: {
                     HStack {
                         Image(systemName: "map")
+                            .accessibilityHidden(true)
                         Text(selectedMapItem?.name ?? "Select Location")
                             .foregroundColor(selectedMapItem == nil ? .secondary : .primary)
                     }
                 }
+                .accessibilityLabel(selectedMapItem?.name ?? "Select Location")
+                .accessibilityHint("Double tap to open the map and pick a location")
             }
 
             alarmSection
@@ -171,6 +176,7 @@ struct TriTrackAddCalendarItemSheetView: View {
                         hasData = true
                     }
                 }
+                .accessibilityHint("Enables or disables daily recurrence for this reminder")
 
             alarmSection
         }
