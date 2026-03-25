@@ -25,7 +25,6 @@ extension EventKitHandler {
         )
         let fetched = eventStore.events(matching: predicate)
         allEvents = fetched
-        onGoingOrMostRecentUpcomingEvent = ongoingOrNextUpcoming(from: fetched)
     }
 
     func createEvent(
@@ -62,9 +61,9 @@ extension EventKitHandler {
         try eventStore.remove(event, span: .thisEvent, commit: true)
     }
 
-    // MARK: - Private
+    var onGoingOrMostRecentUpcomingEvent: EKEvent? {
+        let events = events + allEvents
 
-    private func ongoingOrNextUpcoming(from events: [EKEvent]) -> EKEvent? {
         let now = Date()
         if let ongoing = events.first(where: { $0.startDate <= now && $0.endDate >= now }) {
             return ongoing

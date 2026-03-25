@@ -20,7 +20,6 @@ final class EventKitHandler: ObservableObject {
 
     @Published var events: [EKEvent] = []
     @Published var allEvents: [EKEvent] = []
-    @Published var onGoingOrMostRecentUpcomingEvent: EKEvent?
 
     @Published var reminders: [EKReminder] = []
     @Published var allReminders: [EKReminder] = []
