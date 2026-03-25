@@ -593,7 +593,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 0.21;
+				MARKETING_VERSION = 0.22;
 				PRODUCT_BUNDLE_IDENTIFIER = com.Team05.MomCare.TriTrackGlance;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
@@ -633,7 +633,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 0.21;
+				MARKETING_VERSION = 0.22;
 				PRODUCT_BUNDLE_IDENTIFIER = com.Team05.MomCare.TriTrackGlance;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
