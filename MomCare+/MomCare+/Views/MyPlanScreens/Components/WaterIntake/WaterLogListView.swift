@@ -109,7 +109,7 @@ struct WaterLogListView: View {
             .background(
                 reduceTransparency ? Color(hex: "FAE8E4") : Color(hex: "FAE8E4").opacity(0.55),
                 in: RoundedRectangle(cornerRadius: 14, style: .continuous))
-            .accessibilityElement(children: .combine)
+            .accessibilityHidden(true)
 
             let tip = WaterStore.waterTips[tipIndex]
             HStack(alignment: .top, spacing: 10) {

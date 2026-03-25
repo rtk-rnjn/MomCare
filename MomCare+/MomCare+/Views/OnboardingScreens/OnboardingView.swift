@@ -91,6 +91,7 @@ struct OnboardingView: View {
                         }
                         .font(.body.weight(.semibold))
                         .foregroundStyle(MomCareAccent.primary)
+                        .accessibilityHint("Creates a new MomCare account")
                     }
                     .font(.subheadline)
                     .padding(.top, 4)

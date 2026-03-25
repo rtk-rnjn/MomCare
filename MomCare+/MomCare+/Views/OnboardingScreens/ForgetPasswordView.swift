@@ -54,6 +54,8 @@ struct ForgetPasswordView: View {
                             }
                         }
                         .submitLabel(.continue)
+                        .accessibilityLabel("Email address")
+                        .accessibilityHint("Enter the email address associated with your account")
                 } footer: {
                     Text("If you know your Apple Relay Email, you can use it to reset your password.")
                         .font(.footnote)
@@ -76,6 +78,8 @@ struct ForgetPasswordView: View {
                     Button(role: .cancel) {
                         dismiss()
                     }
+                    .accessibilityLabel("Cancel")
+                    .accessibilityHint("Closes the forgot password sheet")
                 }
 
                 ToolbarItem(placement: .bottomBar) {
@@ -92,6 +96,8 @@ struct ForgetPasswordView: View {
                     .frame(maxWidth: .infinity, alignment: .center)
                     .buttonStyle(.borderedProminent)
                     .tint(MomCareAccent.primary)
+                    .accessibilityLabel("Continue")
+                    .accessibilityHint("Sends a password reset code to your email address")
                 }
             }
         }
@@ -148,6 +154,8 @@ struct ForgetPasswordOTPView: View {
                         }
                         otpCode = otpCode.filter { $0.isNumber }
                     }
+                    .accessibilityLabel("One-time password")
+                    .accessibilityHint("Enter the 6-digit code sent to your email address")
             } footer: {
                 Text("A 6-digit OTP has been sent to \(emailAddress). Please enter it above to continue.")
                     .font(.footnote)
@@ -186,6 +194,8 @@ struct ForgetPasswordOTPView: View {
                 .frame(maxWidth: .infinity, alignment: .center)
                 .buttonStyle(.borderedProminent)
                 .tint(MomCareAccent.primary)
+                .accessibilityLabel("Continue")
+                .accessibilityHint("Verifies your one-time password and proceeds to reset your password")
             }
         }
     }
@@ -222,6 +232,8 @@ struct ResetPasswordView: View {
                         focusedField = .confirmPassword
                     }
                     .autocapitalization(.none)
+                    .accessibilityLabel("New password")
+                    .accessibilityHint("Enter your new password")
 
                 SecureField("Confirm Password", text: $confirmPassword)
                     .focused($focusedField, equals: .confirmPassword)
@@ -230,6 +242,8 @@ struct ResetPasswordView: View {
                         focusedField = nil
                     }
                     .autocapitalization(.none)
+                    .accessibilityLabel("Confirm password")
+                    .accessibilityHint("Re-enter your new password to confirm it matches")
             } footer: {
                 Text("Your new password must be at least 8 characters long and include a mix of letters, numbers, and special characters.")
                     .font(.footnote)
@@ -263,6 +277,8 @@ struct ResetPasswordView: View {
                 .frame(maxWidth: .infinity, alignment: .center)
                 .buttonStyle(.borderedProminent)
                 .tint(MomCareAccent.primary)
+                .accessibilityLabel("Reset password")
+                .accessibilityHint("Saves your new password")
             }
         }
     }

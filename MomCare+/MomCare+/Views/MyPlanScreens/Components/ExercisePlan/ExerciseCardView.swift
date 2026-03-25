@@ -48,6 +48,7 @@ struct ExerciseCardView: View {
                         )
                     }
                     .accessibilityLabel(completionProgress >= 1 ? "Replay \(exercise?.name ?? "exercise")" : "Start \(exercise?.name ?? "exercise")")
+                    .accessibilityHint("Double tap to play the exercise video")
                     .accessibilityIdentifier("startExerciseButton")
                     .fullScreenCover(isPresented: $startExercisePlayer) {
                         NavigationStack {
