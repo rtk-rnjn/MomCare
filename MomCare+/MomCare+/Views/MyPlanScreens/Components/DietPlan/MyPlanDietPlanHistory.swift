@@ -16,6 +16,8 @@ struct MyPlanDietPlanHistory: View {
                                 .foregroundStyle(.secondary)
                         }
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
+                        .accessibilityElement(children: .combine)
+                        .accessibilityLabel("Loading meal plan")
                     } else if let plan {
                         List {
                             FoodReferenceSection(type: .breakfast, items: plan.breakfast)
@@ -53,6 +55,7 @@ struct MyPlanDietPlanHistory: View {
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
                     Button(role: .close) { dismiss() }
+                        .accessibilityLabel("Close")
                 }
 
                 ToolbarItem(placement: .topBarTrailing) {
@@ -227,6 +230,7 @@ private struct FoodReferenceSection: View {
                 HStack(spacing: 10) {
                     Image(systemName: type.iconName)
                         .foregroundStyle(type.accentColor)
+                        .accessibilityHidden(true)
 
                     Text(type.rawValue.capitalized)
                         .font(.headline)

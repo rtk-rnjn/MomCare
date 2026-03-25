@@ -261,6 +261,9 @@ private struct ProfileEditableTextRow: View {
                 .multilineTextAlignment(.trailing)
                 .foregroundColor(isEditing ? MomCareAccent.primary : .secondary)
                 .disabled(!isEditing)
+                .accessibilityLabel(title)
         }
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel("\(title): \(displayText)")
     }
 }

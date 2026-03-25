@@ -50,6 +50,8 @@ struct MyPlanExercisePlanView: View {
                 } label: {
                     Image(systemName: "clock.arrow.circlepath")
                 }
+                .accessibilityLabel("Exercise history")
+                .accessibilityHint("Opens your exercise history")
             }
 
             ToolbarItem(placement: .topBarTrailing) {
@@ -121,6 +123,8 @@ struct MyPlanExercisePlanView: View {
                 .onTapGesture {
                     showWalkingHistory = true
                 }
+                .accessibilityHint("Double tap to view walking history")
+                .accessibilityAddTraits(.isButton)
                 .onAppear {
                     contentServiceHandler.fetchTodaySteps()
                 }

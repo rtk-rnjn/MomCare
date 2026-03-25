@@ -82,6 +82,8 @@ struct MyPlanDietPlanMealTimelineCardView: View {
                 .listRowSeparator(.hidden)
                 .listRowInsets(.top, 0)
                 .listRowInsets(.bottom, 0)
+                .accessibilityElement(children: .combine)
+                .accessibilityLabel("Loading meal items")
             } else {
                 ForEach(items) { item in
                     MealTimelineFoodItemRow(

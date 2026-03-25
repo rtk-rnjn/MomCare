@@ -128,6 +128,7 @@ struct ValueCardView: View {
         .background(Color.gray.opacity(0.05))
         .cornerRadius(20)
         .accessibilityElement(children: .combine)
+        .accessibilityLabel(title)
     }
 }
 
@@ -150,5 +151,6 @@ struct QuoteView: View {
         .background(Color.gray.opacity(0.08))
         .cornerRadius(20)
         .padding(.horizontal)
+        .accessibilityElement(children: .combine)
     }
 }

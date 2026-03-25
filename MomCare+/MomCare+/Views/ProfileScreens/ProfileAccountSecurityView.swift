@@ -116,6 +116,8 @@ struct ProfileAccountSecurityView: View {
                             .minimumScaleFactor(0.8)
                             .truncationMode(.middle)
                     }
+                    .accessibilityElement(children: .combine)
+                    .accessibilityLabel("Email Address: \(emailAddress)")
 
                 } header: {
                     Text("Account Information")
@@ -168,6 +170,8 @@ struct ProfileAccountSecurityView: View {
                         .frame(maxWidth: .infinity)
                         .foregroundColor(canSubmit ? Color("primaryAppColor") : .secondary)
                         .disabled(!canSubmit)
+                        .accessibilityLabel("Change password")
+                        .accessibilityHint("Submits the new password")
                     }
                 } header: {
                     Text("Security")
@@ -204,6 +208,8 @@ struct ProfileAccountSecurityView: View {
                         }
                     }
                     .disabled(hasAppleIdentifier)
+                    .accessibilityLabel(hasAppleIdentifier ? "Apple ID: Connected" : "Apple ID: Not connected")
+                    .accessibilityHint(hasAppleIdentifier ? "" : "Double tap to connect your Apple ID")
                 }
             } header: {
                 Text("Third Party Integration")

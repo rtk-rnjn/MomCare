@@ -87,6 +87,8 @@ struct MyPlanDietPlanView: View {
                 } label: {
                     Image(systemName: "clock.arrow.circlepath")
                 }
+                .accessibilityLabel("Meal plan history")
+                .accessibilityHint("Opens your meal plan history")
             }
 
             ToolbarItem(placement: .topBarTrailing) {

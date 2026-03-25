@@ -392,6 +392,7 @@ private struct ExpandedDetailView: View {
                     .font(.caption.weight(.semibold))
                     .foregroundColor(.secondary)
                     .textCase(.uppercase)
+                    .accessibilityAddTraits(.isHeader)
 
                 MacroBarRow(
                     title: "Sugar",
@@ -417,6 +418,7 @@ private struct ExpandedDetailView: View {
                     .font(.caption.weight(.semibold))
                     .foregroundColor(.secondary)
                     .textCase(.uppercase)
+                    .accessibilityAddTraits(.isHeader)
 
                 HStack {
                     CalorieStatPill(label: "Consumed", value: caloriesConsumed?.value ?? 0, color: MomCareAccent.primary)
@@ -437,6 +439,7 @@ private struct ExpandedDetailView: View {
                         .font(.caption.weight(.semibold))
                         .foregroundColor(.secondary)
                         .textCase(.uppercase)
+                        .accessibilityAddTraits(.isHeader)
 
                     ForEach(MealType.allCases, id: \.self) { meal in
                         MealRow(
@@ -493,6 +496,8 @@ private struct CalorieStatPill: View {
         .frame(maxWidth: .infinity)
         .padding(.vertical, 8)
         .background(color.opacity(0.08), in: RoundedRectangle(cornerRadius: 10, style: .continuous))
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel("\(label): \(value.formatted(.number))")
     }
 
     // MARK: Private
