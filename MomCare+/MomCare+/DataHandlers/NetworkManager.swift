@@ -96,6 +96,13 @@ class NetworkManager {
 
     // MARK: Private
 
+    private var isNetworkHapticsEnabled: Bool {
+        let key = FeatureFlagState.networkHaptics.rawValue
+        let userDefaults = UserDefaults(suiteName: "group.MomCare")
+
+        return userDefaults?.bool(forKey: key) ?? false
+    }
+
     private func buildURLString(
         url: String = "",
         queryParameters: [String: any Codable]? = nil
@@ -139,7 +146,7 @@ class NetworkManager {
         return try await performRequest(request)
     }
 
-    private func performRequest<T: Codable>(_ request: URLRequest) async throws -> NetworkResponse<T> {
+    private func performRequest<T: Codable>(_ request: URLRequest) async throws -> NetworkResponse<T> { // swiftlint:disable:this cyclomatic_complexity
         let url = request.url?.absoluteString ?? "unknown URL"
         logger.info("Performing \(request.httpMethod ?? "UNKNOWN") request to \(url)")
 
@@ -166,26 +173,34 @@ class NetworkManager {
                             try? await Task.sleep(nanoseconds: UInt64(1_000_000_000 * (attempts % 5)))
 
                             await MainActor.run {
-                                HapticsHandler.notification(.warning)
+                                if isNetworkHapticsEnabled {
+                                    HapticsHandler.notification(.warning)
+                                }
                             }
 
                         default:
                             await MainActor.run {
-                                HapticsHandler.notification(.error)
+                                if isNetworkHapticsEnabled {
+                                    HapticsHandler.notification(.error)
+                                }
                             }
                             throw error
                         }
                     }
 
                     await MainActor.run {
-                        HapticsHandler.notification(.error)
+                        if isNetworkHapticsEnabled {
+                            HapticsHandler.notification(.error)
+                        }
                     }
                     throw error
                 }
             }
         } catch {
             if error is URLError {
-                await MainActor.run { HapticsHandler.notification(.error) }
+                await MainActor.run { if isNetworkHapticsEnabled {
+                    HapticsHandler.notification(.error)
+                } }
             }
             throw error
         }
@@ -201,7 +216,9 @@ class NetworkManager {
         logger.info("Received response with status code \(httpResponse.statusCode) for request to \(url)")
 
         if httpResponse.statusCode >= 400 {
-            await MainActor.run { HapticsHandler.notification(.error) }
+            await MainActor.run { if isNetworkHapticsEnabled {
+                HapticsHandler.notification(.error)
+            } }
 
             if let errorResponse: HTTPErrorResponse = try? data.decodeUsingJSONDecoder() {
                 let osLogMessage = errorResponse.detail.toOSLogMessageString()
@@ -213,7 +230,9 @@ class NetworkManager {
         }
 
         let maybeData: T = try data.decodeUsingJSONDecoder()
-        await MainActor.run { HapticsHandler.notification(.success) }
+        await MainActor.run { if isNetworkHapticsEnabled {
+            HapticsHandler.notification(.success)
+        } }
         return NetworkResponse(data: maybeData, statusCode: httpResponse.statusCode)
     }
 }

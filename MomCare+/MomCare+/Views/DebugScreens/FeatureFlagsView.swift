@@ -6,6 +6,7 @@ enum FeatureFlagState: String {
     case debugLogging
     case forceDarkMode
     case forceLightMode
+    case networkHaptics
 
     case forceUseLargeTitle
 }
@@ -34,6 +35,13 @@ struct FeatureFlagsView: View {
                     icon: "wand.and.stars",
                     tint: .pink,
                     isOn: $experimentalUI
+                )
+
+                FlagToggle(
+                    label: "Network Haptics",
+                    icon: "waveform.path.ecg",
+                    tint: .red,
+                    isOn: $networkHaptics
                 )
             } header: {
                 Text("Experimental Flags")
@@ -103,6 +111,7 @@ struct FeatureFlagsView: View {
     @AppStorage(FeatureFlagState.experimentalFeatures.rawValue, store: UserDefaults(suiteName: "group.MomCare")) private var experimentalFeatures: Bool = false
     @AppStorage(FeatureFlagState.forceUseLargeTitle.rawValue, store: UserDefaults(suiteName: "group.MomCare")) private var forceUseLargeTitle: Bool = false
     @AppStorage(FeatureFlagState.experimentalUI.rawValue, store: UserDefaults(suiteName: "group.MomCare")) private var experimentalUI: Bool = false
+    @AppStorage(FeatureFlagState.networkHaptics.rawValue, store: UserDefaults(suiteName: "group.MomCare")) private var networkHaptics: Bool = false
 
     @AppStorage(FeatureFlagState.forceDarkMode.rawValue, store: UserDefaults(suiteName: "group.MomCare")) private var forceDarkMode: Bool = false
     @AppStorage(FeatureFlagState.forceLightMode.rawValue, store: UserDefaults(suiteName: "group.MomCare")) private var forceLightMode: Bool = true
