@@ -109,6 +109,16 @@ struct OTPScreenView: View {
             .accessibilityHidden(true)
 
             hiddenOTPTextField
+                .onSubmit {
+                    Task {
+                        do {
+                            try await handleSubmit()
+                        } catch {
+                            controlState.error = error
+                        }
+                    }
+                }
+                .submitLabel(.done)
         }
         .contentShape(Rectangle())
         .onTapGesture {
@@ -132,6 +142,9 @@ struct OTPScreenView: View {
                 .otpTextFieldStyle(isFocused: $isFieldFocused)
                 .onChange(of: otpString) { _, newValue in
                     sanitizeOTP(newValue)
+                    if otpString.count == otpLength {
+                        isFieldFocused = false
+                    }
                 }
         }
     }
