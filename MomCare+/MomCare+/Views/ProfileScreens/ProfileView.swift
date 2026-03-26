@@ -112,6 +112,7 @@ struct ProfileView: View {
 
     @EnvironmentObject private var authenticationService: AuthenticationService
     @EnvironmentObject private var controlState: ControlState
+    @Environment(\.openURL) private var openURL
 
     private var footerView: some View {
         VStack(spacing: 4) {
@@ -121,6 +122,12 @@ struct ProfileView: View {
             Text("Connect with Us")
                 .foregroundStyle(Color("primaryAppColor"))
                 .fontWeight(.medium)
+                .onTapGesture {
+                    let url = "mailto:support.momcare@vision-labs.site"
+                    if let mailURL = URL(string: url) {
+                        openURL(mailURL)
+                    }
+                }
         }
         .frame(maxWidth: .infinity)
         .multilineTextAlignment(.center)

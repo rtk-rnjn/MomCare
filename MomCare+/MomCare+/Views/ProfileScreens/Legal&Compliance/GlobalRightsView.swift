@@ -60,7 +60,7 @@ struct GlobalRightsView: View {
                         .foregroundColor(.secondary)
                         .multilineTextAlignment(.center)
 
-                    Text("privacy@momcare.com")
+                    Text("support.momcare@vision-labs.site")
                         .font(.headline)
                         .fontWeight(.semibold)
                         .foregroundColor(accentColor)
@@ -68,7 +68,7 @@ struct GlobalRightsView: View {
                         .padding(.horizontal, 24)
                         .background(Color.gray.opacity(0.1))
                         .clipShape(Capsule())
-                        .accessibilityLabel("Contact email: privacy@momcare.com")
+                        .accessibilityLabel("Contact email: support.momcare@vision-labs.site")
                 }
                 .padding(.vertical, 24)
             }
