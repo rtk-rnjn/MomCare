@@ -51,8 +51,9 @@ struct DashboardEventCardView: View {
                     } label: {
                         Text("Add Event")
                             .font(.title3.weight(.semibold))
-//                            .foregroundColor(MomCareAccent.primary)
                             .foregroundColor(.secondary)
+                            .lineLimit(1)
+                            .minimumScaleFactor(0.85)
                             .popoverTip(tip, arrowEdge: .top)
                     }
                     .padding(.leading, 16)

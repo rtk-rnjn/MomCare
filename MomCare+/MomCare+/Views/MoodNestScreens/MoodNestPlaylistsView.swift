@@ -27,7 +27,7 @@ struct MoodNestPlaylistsView: View {
                     startPoint: .top,
                     endPoint: .bottom
                 )
-                .frame(height: 350)
+                .frame(maxHeight: 350)
                 .ignoresSafeArea(edges: .top)
 
                 Spacer()
@@ -45,7 +45,7 @@ struct MoodNestPlaylistsView: View {
             }
         }
         .background(Color(.systemBackground))
-        .navigationTitle("MoodNest")
+        .navigationTitle("Mood")
         .navigationBarTitleDisplayMode(.inline)
         .task {
             await moodResultViewModel.loadData()

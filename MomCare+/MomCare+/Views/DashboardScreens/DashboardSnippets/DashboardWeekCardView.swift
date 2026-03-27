@@ -55,7 +55,7 @@ struct DashboardWeekCardView: View {
                 }
             }
         }
-        .frame(minHeight: 160)
+        .frame(height: 160)
         .background(Color(.systemBackground))
         .dashboardCardStyle()
         .accessibilityElement(children: .ignore)
