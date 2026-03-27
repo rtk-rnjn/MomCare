@@ -2,6 +2,7 @@ import SwiftUI
 import TipKit
 
 struct MoodNestView: View {
+    // MARK: Internal
 
     var body: some View {
         NavigationStack {
@@ -11,7 +12,6 @@ struct MoodNestView: View {
                     .accessibilityHidden(true)
 
                 VStack {
-
                     Spacer()
 
                     Text("How are you feeling right now?")
