@@ -638,12 +638,6 @@ private struct ProgressRingView: View {
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @Environment(\.accessibilityReduceTransparency) private var reduceTransparency
 
-    private func togglePercentageDisplay() {
-        withAnimation(reduceMotion ? nil : .easeInOut) {
-            showPercentage.toggle()
-        }
-    }
-
     private var progress: Double {
         guard let consumed, let original else {
             return 0
@@ -796,6 +790,12 @@ private struct ProgressRingView: View {
             reduceMotion ? nil : .easeInOut,
             value: value
         )
+    }
+
+    private func togglePercentageDisplay() {
+        withAnimation(reduceMotion ? nil : .easeInOut) {
+            showPercentage.toggle()
+        }
     }
 }
 
@@ -991,5 +991,11 @@ private struct MacroBarRow: View {
             }
         }
         .animation(reduceMotion ? nil : .easeInOut, value: showPercentage)
+    }
+
+    private func togglePercentageDisplay() {
+        withAnimation(reduceMotion ? nil : .easeInOut) {
+            showPercentage.toggle()
+        }
     }
 }
