@@ -14,7 +14,7 @@ enum MoodType: String, Codable, CaseIterable, Identifiable {
     }
 }
 
-struct SongMetadata: Codable, Sendable, Equatable, Hashable {
+nonisolated struct SongMetadata: Codable, Sendable, Equatable, Hashable {
     enum CodingKeys: String, CodingKey {
         case author
         case title
@@ -58,7 +58,7 @@ struct PlaylistModel: Identifiable {
     }
 }
 
-struct SongModel: Codable, Sendable, Identifiable, Equatable, Hashable {
+nonisolated struct SongModel: Codable, Sendable, Identifiable, Equatable, Hashable {
     enum CodingKeys: String, CodingKey {
         case _id
         case mood

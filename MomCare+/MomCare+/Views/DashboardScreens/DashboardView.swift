@@ -148,7 +148,7 @@ struct DashboardView: View {
 
     @EnvironmentObject private var contentServiceHandler: ContentServiceHandler
     @EnvironmentObject private var eventKitHandler: EventKitHandler
-    @EnvironmentObject private var authenticationService: AuthenticationService
+    @EnvironmentObject private var authenticationService: MCAuthenticationService
 
     @EnvironmentObject private var controlState: ControlState
 

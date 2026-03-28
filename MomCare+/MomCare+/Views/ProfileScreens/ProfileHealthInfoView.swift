@@ -182,7 +182,7 @@ struct ProfileHealthInfoView: View {
 
     @Environment(\.accessibilityReduceMotion) private var reduceMotion: Bool
 
-    @EnvironmentObject private var authenticationService: AuthenticationService
+    @EnvironmentObject private var authenticationService: MCAuthenticationService
     @EnvironmentObject private var controlState: ControlState
 
     @State private var isEditing = false

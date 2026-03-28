@@ -336,7 +336,7 @@ private struct FoodThumbnail: View {
         }
         .frame(width: 54, height: 54)
         .task {
-            let networkResponse = try? await ContentRepository.shared.fetchFoodImage(id: foodReferenceModel.foodId)
+            let networkResponse = try? await MCContentRepository.shared.fetchFoodImage(id: foodReferenceModel.foodId)
             if let uri = networkResponse?.data.detail {
                 uiImage = try? await UIImage.getOrFetch(from: uri)
             }

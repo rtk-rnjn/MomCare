@@ -145,7 +145,7 @@ struct TriTrackView: View {
     @AppStorage(FeatureFlagState.forceUseLargeTitle.rawValue, store: UserDefaults(suiteName: "group.MomCare")) private var forceUseLargeTitle: Bool = false
 
     @EnvironmentObject private var controlState: ControlState
-    @EnvironmentObject private var authenticationService: AuthenticationService
+    @EnvironmentObject private var authenticationService: MCAuthenticationService
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     @State private var selectedDate: Date = Calendar.current.startOfDay(for: .init())

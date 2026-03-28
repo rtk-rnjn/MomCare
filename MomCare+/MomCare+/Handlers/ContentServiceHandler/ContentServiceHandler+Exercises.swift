@@ -5,7 +5,7 @@ extension ContentServiceHandler {
         isFetchingExercises = true
         defer { isFetchingExercises = false }
 
-        let networkResponse = try await ContentRepository.shared.generateUserExercises()
+        let networkResponse = try await MCContentRepository.shared.generateUserExercises()
         userExercises = networkResponse.data
 
         await fetchUserExercisesMeta()
@@ -25,12 +25,12 @@ extension ContentServiceHandler {
         let startDate = Calendar.current.startOfDay(for: date)
         let endDate = Calendar.current.date(byAdding: .day, value: 1, to: startDate)!
 
-        let networkResponse = try await ContentRepository.shared.fetchUserExercises(from: startDate, to: endDate)
+        let networkResponse = try await MCContentRepository.shared.fetchUserExercises(from: startDate, to: endDate)
         return networkResponse.data
     }
 
     func updateExerciseCompletionDuration(id: String, duration: TimeInterval) async throws {
-        _ = try await ContentRepository.shared.updateExerciseCompletion(userExerciseId: id, duration: duration)
+        _ = try await MCContentRepository.shared.updateExerciseCompletion(userExerciseId: id, duration: duration)
 
         if let index = userExercises.firstIndex(where: { $0.id == id }) {
             await MainActor.run {

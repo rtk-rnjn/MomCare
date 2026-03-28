@@ -31,7 +31,7 @@ struct MomCareMainTabView: View {
 
     // MARK: Private
 
-    @EnvironmentObject private var authenticationService: AuthenticationService
+    @EnvironmentObject private var authenticationService: MCAuthenticationService
     @EnvironmentObject private var contentServiceHandler: ContentServiceHandler
     @EnvironmentObject private var controlState: ControlState
 
@@ -154,7 +154,7 @@ struct MomCareMainTabView: View {
     }
 
     private func fetchDailyInsights() async throws {
-        let networkResponse = try await ContentRepository.shared.generateDailyInsights()
+        let networkResponse = try await MCContentRepository.shared.generateDailyInsights()
 
         contentServiceHandler.todayFocusText = networkResponse.data.todaysFocus
         contentServiceHandler.dailyTipText = networkResponse.data.dailyTip

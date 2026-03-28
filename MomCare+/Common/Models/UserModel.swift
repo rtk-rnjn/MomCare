@@ -7,7 +7,7 @@ enum HealthProfileType: String {
     case dietaryPreference
 }
 
-struct UserModel: Codable, Sendable {
+nonisolated struct UserModel: Codable, Sendable {
     enum CodingKeys: String, CodingKey {
         case _id
         case firstName = "first_name"

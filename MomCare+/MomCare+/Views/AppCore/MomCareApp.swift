@@ -39,7 +39,7 @@ struct MomCareApp: App {
     // MARK: Private
 
     @StateObject private var healthStore: ContentServiceHandler = .init()
-    @StateObject private var authenticationService: AuthenticationService = .init()
+    @StateObject private var authenticationService: MCAuthenticationService = .init()
     @StateObject private var musicPlayerHandler: MusicPlayerHandler = .init()
     @StateObject private var eventKitHandler: EventKitHandler = .init()
     @StateObject private var controlState: ControlState = .init()

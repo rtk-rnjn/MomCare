@@ -131,7 +131,6 @@ struct BaseSignUpView: View {
         case email
         case password
         case confirmPassword
-        case mobileNumber
     }
 
     private enum PasswordFieldType: String {
@@ -139,7 +138,7 @@ struct BaseSignUpView: View {
         case confirmPassword = "Confirm Password"
     }
 
-    @EnvironmentObject private var authenticationService: AuthenticationService
+    @EnvironmentObject private var authenticationService: MCAuthenticationService
     @EnvironmentObject private var controlState: ControlState
 
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
@@ -148,7 +147,6 @@ struct BaseSignUpView: View {
     @State private var email = ""
     @State private var password = ""
     @State private var confirmPassword = ""
-    @State private var mobileNumber = ""
 
     @State private var showPassword = false
     @State private var showConfirmPassword = false
@@ -222,28 +220,6 @@ struct BaseSignUpView: View {
                 .contentTransition(reduceMotion ? .identity : .interpolate)
                 .animation(reduceMotion ? nil : .easeInOut(duration: 0.2), value: password)
                 .animation(reduceMotion ? nil : .easeInOut(duration: 0.2), value: confirmPassword)
-
-                Section {
-                    TextField("Mobile Number", text: $mobileNumber)
-                        .keyboardType(.numberPad)
-                        .onChange(of: mobileNumber) { _, newValue in
-                            mobileNumber = newValue.filter(\.isNumber)
-                        }
-                        .focused($isFocused, equals: .mobileNumber)
-                        .onSubmit {
-                            Task {
-                                do {
-                                    try await handleCreate()
-                                } catch {
-                                    controlState.error = error
-                                }
-                            }
-                        }
-                        .submitLabel(.done)
-                        .listRowBackground(Color(.secondarySystemBackground))
-                        .accessibilityLabel("Mobile number")
-                        .accessibilityHint("Enter your 10-digit mobile number")
-                }
             }
             .scrollDismissesKeyboard(.interactively)
             .scrollContentBackground(.hidden)
@@ -273,7 +249,7 @@ struct BaseSignUpView: View {
                 if type == .password {
                     isFocused = .confirmPassword
                 } else if type == .confirmPassword {
-                    isFocused = .mobileNumber
+                    isFocused = nil
                 }
             }
             .submitLabel(.next)
@@ -309,10 +285,9 @@ struct BaseSignUpView: View {
 
         authenticationService.userModel?.firstName = firstName
         authenticationService.userModel?.lastName = lastName
-        authenticationService.userModel?.phoneNumber = mobileNumber
 
         navigateToOTP = authenticationService.hasAccessToken
-        _ = try await authenticationService.update(firstName: .value(firstName), lastName: .value(lastName), phoneNumber: .value(mobileNumber))
+        _ = try await authenticationService.update(firstName: .value(firstName), lastName: .value(lastName))
     }
 
     private func handleCreate() async throws {
@@ -333,9 +308,6 @@ struct BaseSignUpView: View {
         guard password.count >= 8 else {
             throw BaseSignUpWeakPassword()
         }
-        guard mobileNumber.count == 10 else {
-            throw BaseSignUpMobileNumberInvalid()
-        }
 
         try await communicateWithServer()
 
@@ -353,9 +325,6 @@ struct BaseSignUpView: View {
         }
         if confirmPassword.isEmpty {
             missing.append("Confirm Password")
-        }
-        if mobileNumber.isEmpty {
-            missing.append("Mobile Number")
         }
 
         return missing

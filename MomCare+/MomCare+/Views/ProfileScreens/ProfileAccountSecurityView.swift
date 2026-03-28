@@ -307,7 +307,7 @@ struct ProfileAccountSecurityView: View {
 
     @State private var emailAddress: String = ""
 
-    @EnvironmentObject private var authenticationService: AuthenticationService
+    @EnvironmentObject private var authenticationService: MCAuthenticationService
     @EnvironmentObject private var controlState: ControlState
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
 

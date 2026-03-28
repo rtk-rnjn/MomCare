@@ -7,10 +7,10 @@ struct PregnancyProgress: Codable {
     let isValid: Bool
 }
 
-private let totalDays = 280
+nonisolated private let totalDays = 280
 
 enum Utils {
-    static func progress(fromDueDate dueDate: Date, today: Date = Date()) -> PregnancyProgress {
+    nonisolated static func progress(fromDueDate dueDate: Date, today: Date = Date()) -> PregnancyProgress {
         let calendar = Calendar.current
 
         guard let startDate = calendar.date(byAdding: .day, value: -totalDays, to: dueDate) else {
@@ -41,7 +41,7 @@ enum Utils {
         )
     }
 
-    static func weekRange(containing date: Date) -> [Date] {
+    nonisolated static func weekRange(containing date: Date) -> [Date] {
         var calendar = Calendar.current
         calendar.firstWeekday = 1
 
@@ -54,7 +54,7 @@ enum Utils {
         }
     }
 
-    static func formattedTime(_ time: TimeInterval) -> String {
+    nonisolated static func formattedTime(_ time: TimeInterval) -> String {
         if time.isNaN || time.isInfinite {
             return "-:-"
         }

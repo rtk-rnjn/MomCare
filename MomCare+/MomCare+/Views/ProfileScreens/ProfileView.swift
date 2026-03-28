@@ -110,7 +110,7 @@ struct ProfileView: View {
 
     @State private var showSignOutAlert = false
 
-    @EnvironmentObject private var authenticationService: AuthenticationService
+    @EnvironmentObject private var authenticationService: MCAuthenticationService
     @EnvironmentObject private var controlState: ControlState
     @Environment(\.openURL) private var openURL
 

@@ -43,8 +43,8 @@ class AppDelegate: NSObject, UIApplicationDelegate, ObservableObject {
         let data = try? RegisterDevice(deviceToken: token).encodeUsingJSONEncoder()
 
         Task {
-            if let authenticationHeaders = AuthenticationService.authorizationHeaders {
-                let _: NetworkResponse<Bool>? = try? await NetworkManager.shared.post(url: Endpoint.apns.urlString, body: data, headers: authenticationHeaders)
+            if let authenticationHeaders = MCAuthenticationService.authorizationHeaders {
+                let _: NetworkResponse<Bool>? = try? await MCNetworkManager.shared.post(url: Endpoint.apns.urlString, body: data, headers: authenticationHeaders)
             }
         }
     }

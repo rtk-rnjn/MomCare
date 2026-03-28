@@ -52,7 +52,7 @@ struct ProfileAccountManagementView: View {
     @State private var showDeleteAlert = false
     @State private var showErrorAlert = false
     @State private var alertMessage: String?
-    @EnvironmentObject private var authenticationService: AuthenticationService
+    @EnvironmentObject private var authenticationService: MCAuthenticationService
 
     private func deleteAccount() async {
         do {

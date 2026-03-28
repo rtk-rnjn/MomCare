@@ -199,7 +199,7 @@ struct ProfilePersonalInfoView: View {
     // MARK: Private
 
     @Environment(\.accessibilityReduceMotion) private var reduceMotion: Bool
-    @EnvironmentObject private var authenticationService: AuthenticationService
+    @EnvironmentObject private var authenticationService: MCAuthenticationService
 
     @State private var isEditing = false
     @State private var showDateOfBirthPicker = false

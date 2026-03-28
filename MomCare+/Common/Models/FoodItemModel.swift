@@ -7,7 +7,7 @@ enum FoodType: String, Codable, Hashable {
     case vegan
 }
 
-struct FoodItemModel: Equatable, Hashable, Identifiable, Sendable, Codable, CustomStringConvertible {
+nonisolated struct FoodItemModel: Equatable, Hashable, Identifiable, Sendable, Codable, CustomStringConvertible {
     enum CodingKeys: String, CodingKey {
         case _id
         case name

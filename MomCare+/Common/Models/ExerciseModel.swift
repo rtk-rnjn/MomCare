@@ -8,7 +8,7 @@ enum ExerciseLevel: String, Codable, Sendable {
     case intermediate = "Intermediate"
 }
 
-struct ExerciseModel: Codable, Sendable {
+nonisolated struct ExerciseModel: Codable, Sendable {
     enum CodingKeys: String, CodingKey {
         case _id
         case name
@@ -48,7 +48,7 @@ struct ExerciseModel: Codable, Sendable {
     }
 }
 
-struct UserExerciseModel: Codable, Sendable, Identifiable, Equatable {
+nonisolated struct UserExerciseModel: Codable, Sendable, Identifiable, Equatable {
     enum CodingKeys: String, CodingKey {
         case _id
         case userId = "user_id"

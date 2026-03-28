@@ -144,7 +144,7 @@ struct ReAuthenticationSheetView: View {
     @State private var isLoading: Bool = false
 
     @State private var showAppleLoginSheet: Bool = false
-    @EnvironmentObject private var authenticationService: AuthenticationService
+    @EnvironmentObject private var authenticationService: MCAuthenticationService
     @EnvironmentObject private var controlState: ControlState
 
     @FocusState private var focusedField: Field?

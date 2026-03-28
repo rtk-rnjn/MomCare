@@ -22,7 +22,7 @@ struct MomCareRootView: View {
     @AppStorage(FeatureFlagState.forceLightMode.rawValue, store: UserDefaults(suiteName: "group.MomCare"))
     private var forceLightMode: Bool = true
 
-    @EnvironmentObject private var authenticationService: AuthenticationService
+    @EnvironmentObject private var authenticationService: MCAuthenticationService
 
     private var isLoggedIn: Bool {
         guard let userModel = authenticationService.userModel else {
