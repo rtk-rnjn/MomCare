@@ -1,8 +1,20 @@
 import Foundation
 
-protocol APIError: Error, LocalizedError {}
+protocol APIError: Error, LocalizedError {
+    var serverMessage: String? { get set }
+}
 
 struct BadRequestError: @preconcurrency APIError {
+    // MARK: Lifecycle
+
+    nonisolated init(serverMessage: String? = nil) {
+        self.serverMessage = serverMessage
+    }
+
+    // MARK: Internal
+
+    var serverMessage: String?
+
     var errorDescription: String? {
         "Invalid request."
     }
@@ -17,6 +29,16 @@ struct BadRequestError: @preconcurrency APIError {
 }
 
 struct UnauthorizedError: @preconcurrency APIError {
+    // MARK: Lifecycle
+
+    nonisolated init(serverMessage: String? = nil) {
+        self.serverMessage = serverMessage
+    }
+
+    // MARK: Internal
+
+    var serverMessage: String?
+
     var errorDescription: String? {
         "Authentication failed."
     }
@@ -31,6 +53,16 @@ struct UnauthorizedError: @preconcurrency APIError {
 }
 
 struct ForbiddenError: @preconcurrency APIError {
+    // MARK: Lifecycle
+
+    nonisolated init(serverMessage: String? = nil) {
+        self.serverMessage = serverMessage
+    }
+
+    // MARK: Internal
+
+    var serverMessage: String?
+
     var errorDescription: String? {
         "Access denied."
     }
@@ -45,6 +77,16 @@ struct ForbiddenError: @preconcurrency APIError {
 }
 
 struct NotFoundError: @preconcurrency APIError {
+    // MARK: Lifecycle
+
+    nonisolated init(serverMessage: String? = nil) {
+        self.serverMessage = serverMessage
+    }
+
+    // MARK: Internal
+
+    var serverMessage: String?
+
     var errorDescription: String? {
         "Resource not found."
     }
@@ -59,6 +101,16 @@ struct NotFoundError: @preconcurrency APIError {
 }
 
 struct ConflictError: @preconcurrency APIError {
+    // MARK: Lifecycle
+
+    nonisolated init(serverMessage: String? = nil) {
+        self.serverMessage = serverMessage
+    }
+
+    // MARK: Internal
+
+    var serverMessage: String?
+
     var errorDescription: String? {
         "Conflict occurred."
     }
@@ -73,6 +125,16 @@ struct ConflictError: @preconcurrency APIError {
 }
 
 struct AccountDeletedError: @preconcurrency APIError {
+    // MARK: Lifecycle
+
+    nonisolated init(serverMessage: String? = nil) {
+        self.serverMessage = serverMessage
+    }
+
+    // MARK: Internal
+
+    var serverMessage: String?
+
     var errorDescription: String? {
         "Account deleted."
     }
@@ -87,6 +149,16 @@ struct AccountDeletedError: @preconcurrency APIError {
 }
 
 struct ValidationError: @preconcurrency APIError {
+    // MARK: Lifecycle
+
+    nonisolated init(serverMessage: String? = nil) {
+        self.serverMessage = serverMessage
+    }
+
+    // MARK: Internal
+
+    var serverMessage: String?
+
     var errorDescription: String? {
         "Invalid input."
     }
@@ -101,6 +173,16 @@ struct ValidationError: @preconcurrency APIError {
 }
 
 struct AccountLockedError: @preconcurrency APIError {
+    // MARK: Lifecycle
+
+    nonisolated init(serverMessage: String? = nil) {
+        self.serverMessage = serverMessage
+    }
+
+    // MARK: Internal
+
+    var serverMessage: String?
+
     var errorDescription: String? {
         "Account locked."
     }
@@ -115,6 +197,16 @@ struct AccountLockedError: @preconcurrency APIError {
 }
 
 struct RateLimitExceededError: @preconcurrency APIError {
+    // MARK: Lifecycle
+
+    nonisolated init(serverMessage: String? = nil) {
+        self.serverMessage = serverMessage
+    }
+
+    // MARK: Internal
+
+    var serverMessage: String?
+
     var errorDescription: String? {
         "Too many requests."
     }
@@ -129,6 +221,16 @@ struct RateLimitExceededError: @preconcurrency APIError {
 }
 
 struct UnknownAPIError: @preconcurrency APIError {
+    // MARK: Lifecycle
+
+    nonisolated init(serverMessage: String? = nil) {
+        self.serverMessage = serverMessage
+    }
+
+    // MARK: Internal
+
+    var serverMessage: String?
+
     var errorDescription: String? {
         "Something went wrong."
     }
@@ -143,6 +245,16 @@ struct UnknownAPIError: @preconcurrency APIError {
 }
 
 struct ServerError5XX: @preconcurrency APIError {
+    // MARK: Lifecycle
+
+    nonisolated init(serverMessage: String? = nil) {
+        self.serverMessage = serverMessage
+    }
+
+    // MARK: Internal
+
+    var serverMessage: String?
+
     var errorDescription: String? {
         "Snap! Something went wrong on our end."
     }
@@ -160,37 +272,37 @@ enum APIErrorResolver {
     nonisolated static func error(from statusCode: Int, with error: HTTPErrorResponse? = nil) -> any LocalizedError { // swiftlint:disable:this cyclomatic_complexity
         switch statusCode {
         case 400:
-            BadRequestError()
+            BadRequestError(serverMessage: error?.errorDescription)
 
         case 401:
-            UnauthorizedError()
+            UnauthorizedError(serverMessage: error?.errorDescription)
 
         case 403:
-            ForbiddenError()
+            ForbiddenError(serverMessage: error?.errorDescription)
 
         case 404:
-            NotFoundError()
+            NotFoundError(serverMessage: error?.errorDescription)
 
         case 409:
-            ConflictError()
+            ConflictError(serverMessage: error?.errorDescription)
 
         case 410:
-            AccountDeletedError()
+            AccountDeletedError(serverMessage: error?.errorDescription)
 
         case 422:
-            error ?? ValidationError()
+            error ?? ValidationError(serverMessage: error?.errorDescription)
 
         case 423:
-            AccountLockedError()
+            AccountLockedError(serverMessage: error?.errorDescription)
 
         case 429:
-            RateLimitExceededError()
+            RateLimitExceededError(serverMessage: error?.errorDescription)
 
         case 500..<600:
-            ServerError5XX()
+            ServerError5XX(serverMessage: error?.errorDescription)
 
         default:
-            UnknownAPIError()
+            UnknownAPIError(serverMessage: error?.errorDescription)
         }
     }
 }

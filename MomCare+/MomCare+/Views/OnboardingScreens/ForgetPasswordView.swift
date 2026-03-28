@@ -295,7 +295,6 @@ struct ResetPasswordView: View {
 
     @FocusState private var focusedField: Field?
 
-    @Environment(\.dismiss) private var dismiss
     @EnvironmentObject private var authenticationService: MCAuthenticationService
 
     @State private var success: Bool = false

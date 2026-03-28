@@ -109,8 +109,6 @@ struct ExerciseCardView: View {
 
     // MARK: Private
 
-    @Environment(\.dismiss) private var dismiss
-
     @State private var exercise: ExerciseModel?
     @State private var exerciseURL: URL?
     @State private var uiImage: UIImage?

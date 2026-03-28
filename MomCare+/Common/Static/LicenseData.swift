@@ -11,8 +11,8 @@ enum LicenseData {
     static let appLicense: [LicenseInfo] = [
         .init(
             name: "MomCare+",
-            license: "GNU General Public License v2.0",
-            urlString: "https://www.gnu.org/licenses/old-licenses/gpl-2.0.en.html"
+            license: "CC BY-NC-ND 4.0 License",
+            urlString: "https://creativecommons.org/licenses/by-nc-nd/4.0/deed.en"
         )
     ]
 
@@ -26,9 +26,9 @@ enum LicenseData {
 
     static let thirdPartyLicenses: [LicenseInfo] = [
         .init(
-            name: "LNPopupController",
+            name: "LNPopupUI",
             license: "MIT License",
-            urlString: "https://github.com/LeoNatan/LNPopupController"
+            urlString: "https://github.com/LeoNatan/LNPopupUI"
         )
     ]
 }

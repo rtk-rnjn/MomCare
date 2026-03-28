@@ -45,7 +45,7 @@ enum LogLevel: String, CaseIterable, Sendable {
     }
 }
 
-struct LogEntry: Identifiable, Sendable {
+struct LogEntry: Identifiable, Sendable, Equatable {
     let id: UUID = .init()
     let date: Date
     let osLogLevel: OSLogEntryLog.Level
@@ -78,7 +78,7 @@ struct OSLogsView: View {
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
                 Button {
-                    fetchLogs()
+                    try? fetchLogs()
                 } label: {
                     if isLoading {
                         ProgressView().controlSize(.small)
@@ -97,7 +97,7 @@ struct OSLogsView: View {
                     .accessibilityHint("Removes all currently displayed log entries")
             }
         }
-        .onAppear { fetchLogs() }
+        .onAppear { try? fetchLogs() }
         .overlay {
             if !isLoading, filtered.isEmpty {
                 ContentUnavailableView(
@@ -153,7 +153,7 @@ struct OSLogsView: View {
     private var logList: some View {
         List(filtered) { entry in
             LogEntryRow(entry: entry, isExpanded: expandedIDs.contains(entry.id)) {
-                withAnimation(reduceMotion ? nil : .snappy) {
+                withAnimation(reduceMotion ? nil : .easeInOut) {
                     if expandedIDs.contains(entry.id) {
                         expandedIDs.remove(entry.id)
                     } else {
@@ -163,46 +163,50 @@ struct OSLogsView: View {
             }
             .listRowInsets(EdgeInsets(top: 6, leading: 12, bottom: 6, trailing: 12))
             .listRowBackground(Color(.systemGroupedBackground))
+            .listRowSeparator(.hidden)
         }
         .listStyle(.plain)
         .background(Color(.systemGroupedBackground))
+        .animation(reduceMotion ? nil : .easeInOut, value: filtered)
     }
 
-    private func fetchLogs() {
+    private func fetchLogs() throws {
         isLoading = true
         Task.detached {
-            var fetched = [LogEntry]()
-            do {
-                let store = try OSLogStore(scope: .currentProcessIdentifier)
-                let position = store.position(timeIntervalSinceLatestBoot: -300)
-                let raw = try store.getEntries(at: position)
-                fetched = raw.compactMap { entry -> LogEntry? in
-                    guard let log = entry as? OSLogEntryLog else {
-                        return nil
-                    }
-
-                    return LogEntry(
-                        date: log.date,
-                        osLogLevel: log.level,
-                        category: log.category,
-                        subsystem: log.subsystem,
-                        message: log.composedMessage
-                    )
+            let store = try OSLogStore(scope: .currentProcessIdentifier)
+            let position = store.position(timeIntervalSinceLatestBoot: -300)
+            for entry in try store.getEntries(at: position) {
+                guard let log = entry as? OSLogEntryLog else {
+                    continue
                 }
-            } catch {
-                fetched = [LogEntry(date: Date(), osLogLevel: .fault,
-                                    category: "System", subsystem: "OSLogsView",
-                                    message: "Failed to read logs: \(error.localizedDescription)")]
+
+                let date = log.date
+                let level = log.level
+                let category = log.category
+                let subsystem = log.subsystem
+                let message = log.composedMessage
+
+                DispatchQueue.main.async {
+                    withAnimation(reduceMotion ? nil : .snappy) {
+                        entries.insert(LogEntry(
+                            date: date,
+                            osLogLevel: level,
+                            category: category,
+                            subsystem: subsystem,
+                            message: message
+                        ), at: 0)
+                    }
+                }
             }
+
             await MainActor.run {
-                entries = fetched
                 isLoading = false
             }
         }
     }
 }
 
-struct FilterChip: View {
+private struct FilterChip: View {
     // MARK: Internal
 
     let label: String
@@ -240,7 +244,7 @@ struct FilterChip: View {
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
 }
 
-struct LogEntryRow: View {
+private struct LogEntryRow: View {
     let entry: LogEntry
     let isExpanded: Bool
     let onTap: () -> Void
@@ -313,7 +317,7 @@ struct LogEntryRow: View {
     }
 }
 
-struct LabeledDetail: View {
+private struct LabeledDetail: View {
     let icon: String
     let label: String
     let value: String

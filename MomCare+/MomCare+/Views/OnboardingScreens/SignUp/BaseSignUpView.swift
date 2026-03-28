@@ -42,20 +42,6 @@ struct BaseSignUpWeakPassword: LocalizedError {
     }
 }
 
-struct BaseSignUpMobileNumberInvalid: LocalizedError {
-    var errorDescription: String? {
-        "Invalid mobile number"
-    }
-
-    var failureReason: String? {
-        "The mobile number you entered is not valid. Please ensure it contains only digits and is the correct length."
-    }
-
-    var recoverySuggestion: String? {
-        "Enter a valid 10-digit mobile number without any spaces or special characters."
-    }
-}
-
 struct BaseSignUpMissingFields: LocalizedError {
     let fields: [String]
 

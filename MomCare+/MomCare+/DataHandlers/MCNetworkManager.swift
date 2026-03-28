@@ -25,7 +25,7 @@ struct NetworkResponse<T: Codable & Sendable>: Codable, Sendable {
 class MCNetworkManager {
     // MARK: Internal
 
-    static let shared: MCNetworkManager = .init()
+    nonisolated static let shared: MCNetworkManager = .init()
 
     nonisolated func get<T: Codable & Sendable>(
         url: String,
