@@ -1,8 +1,7 @@
 import Combine
 import Foundation
 
-@MainActor
-class MCContentRepository {
+actor MCContentRepository {
     static let shared: MCContentRepository = .init()
 
     var authenticationHeaders: [String: String]? {
@@ -26,24 +25,28 @@ class MCContentRepository {
     }
 
     func getOrFetchExercise(id: String) async throws -> NetworkResponse<ExerciseModel> {
-        if let data: ExerciseModel = Database.shared[.exerciseModel(id)] {
+        if let data: ExerciseModel = await Database.shared[.exerciseModel(id)] {
             return cachedResponse(from: data)
         }
 
         let networkResponse: NetworkResponse<ExerciseModel> = try await MCNetworkManager.shared.get(url: Endpoint.fetchExercise.urlString(with: id))
 
-        Database.shared[.exerciseModel(id)] = networkResponse.data
+        await MainActor.run {
+            Database.shared[.exerciseModel(id)] = networkResponse.data
+        }
         return networkResponse
     }
 
     func getOrFetchFoodItem(id: String) async throws -> NetworkResponse<FoodItemModel> {
-        if let data: FoodItemModel = Database.shared[.foodModel(id)] {
+        if let data: FoodItemModel = await Database.shared[.foodModel(id)] {
             return cachedResponse(from: data)
         }
 
         let networkResponse: NetworkResponse<FoodItemModel> = try await MCNetworkManager.shared.get(url: Endpoint.fetchFood.urlString(with: id))
 
-        Database.shared[.foodModel(id)] = networkResponse.data
+        await MainActor.run {
+            Database.shared[.foodModel(id)] = networkResponse.data
+        }
         return networkResponse
     }
 
