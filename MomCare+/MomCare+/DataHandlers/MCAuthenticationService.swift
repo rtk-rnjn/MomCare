@@ -297,7 +297,7 @@ final class MCAuthenticationService: ObservableObject {
     }
 
     nonisolated private func handleSuccess<T: TokenContaining>(_ response: NetworkResponse<T>, expectedStatusCode _: Int) -> NetworkResponse<T> {
-        self.persistSession(accessToken: response.data.accessToken, refreshToken: response.data.refreshToken, expiresAtTimestamp: response.data.expiresAtTimestamp)
+        persistSession(accessToken: response.data.accessToken, refreshToken: response.data.refreshToken, expiresAtTimestamp: response.data.expiresAtTimestamp)
 
         DispatchQueue.main.async {
             self.tokenPair = response.data
