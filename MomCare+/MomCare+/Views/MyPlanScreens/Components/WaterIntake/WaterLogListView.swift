@@ -235,6 +235,7 @@ struct WaterLogListView: View {
         .accessibilityLabel("\(entry.formattedAmount) at \(entry.formattedDateTime)")
         .accessibilityHint("Double tap to edit")
         .accessibilityAddTraits(.isButton)
+        .accessibilityAction(.default) { editingEntry = entry }
         .onTapGesture { editingEntry = entry }
         .swipeActions(edge: .trailing, allowsFullSwipe: true) {
             Button(role: .destructive) {

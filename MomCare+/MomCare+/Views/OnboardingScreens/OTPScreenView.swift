@@ -80,7 +80,7 @@ struct OTPScreenView: View {
 
     // MARK: Private
 
-    @EnvironmentObject private var authenticationService: AuthenticationService
+    @EnvironmentObject private var authenticationService: MCAuthenticationService
     @EnvironmentObject private var controlState: ControlState
 
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
@@ -119,6 +119,19 @@ struct OTPScreenView: View {
                     }
                 }
                 .submitLabel(.done)
+                .toolbar {
+                    ToolbarItem(placement: .keyboard) {
+                        Button(role: .confirm) {
+                            Task {
+                                do {
+                                    try await handleSubmit()
+                                } catch {
+                                    controlState.error = error
+                                }
+                            }
+                        }
+                    }
+                }
         }
         .contentShape(Rectangle())
         .onTapGesture {
@@ -134,6 +147,9 @@ struct OTPScreenView: View {
         .accessibilityValue("\(otpString.count) of \(otpLength) digits entered")
         .accessibilityHint("Tap to enter your \(otpLength)-digit verification code")
         .accessibilityAddTraits(.isButton)
+        .accessibilityAction(.default) {
+            isFieldFocused = true
+        }
     }
 
     private var hiddenOTPTextField: some View {

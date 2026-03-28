@@ -19,6 +19,9 @@ struct TriTrackAllCalendarItemView: View {
                                 .onTapGesture {
                                     selectedEvent = EKCalendarItemWrapper(item: event)
                                 }
+                                .accessibilityAction(.default) {
+                                    selectedEvent = EKCalendarItemWrapper(item: event)
+                                }
                         }
                     } header: {
                         DateSectionHeader(date: section.date, isToday: isToday, isPast: isPast)

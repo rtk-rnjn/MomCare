@@ -52,7 +52,7 @@ struct HealthMetricsSignUpView: View {
 
     // MARK: Private
 
-    @EnvironmentObject private var authenticationService: AuthenticationService
+    @EnvironmentObject private var authenticationService: MCAuthenticationService
     @EnvironmentObject private var controlState: ControlState
 
     @State private var dateOfBirth: Date = .init()

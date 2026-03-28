@@ -158,6 +158,11 @@ private struct MealTimelineHeaderRow: View {
             }
             .accessibilityLabel(section.isCompleted ? "Mark \(section.title) as not completed" : "Mark \(section.title) as completed")
             .accessibilityAddTraits(.isButton)
+            .accessibilityAction(.default) {
+                Task {
+                    await onToggle(section.isCompleted)
+                }
+            }
 
             Text(section.title)
                 .font(.title3.weight(.semibold))
@@ -220,6 +225,11 @@ private struct MealTimelineFoodItemRow: View {
             }
             .accessibilityLabel(item.isConsumed ? "Mark as not consumed" : "Mark as consumed")
             .accessibilityAddTraits(.isButton)
+            .accessibilityAction(.default) {
+                Task {
+                    await onToggle(item.isConsumed)
+                }
+            }
 
             FoodThumbnail(foodReferenceModel: item)
                 .accessibilityHidden(true)
@@ -336,7 +346,7 @@ private struct FoodThumbnail: View {
         }
         .frame(width: 54, height: 54)
         .task {
-            let networkResponse = try? await ContentRepository.shared.fetchFoodImage(id: foodReferenceModel.foodId)
+            let networkResponse = try? await MCContentRepository.shared.fetchFoodImage(id: foodReferenceModel.foodId)
             if let uri = networkResponse?.data.detail {
                 uiImage = try? await UIImage.getOrFetch(from: uri)
             }

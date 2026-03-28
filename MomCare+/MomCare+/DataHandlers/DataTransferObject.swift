@@ -11,27 +11,27 @@ enum AccountStatus: String, Codable, Sendable {
     case deleted
 }
 
-struct LoginCredentials: Codable, Sendable {
+nonisolated struct LoginCredentials: Codable, Sendable {
     enum CodingKeys: String, CodingKey {
         case emailAddress = "email_address"
         case password
     }
 
-    var emailAddress: String
-    var password: String
+    let emailAddress: String
+    let password: String
 }
 
-struct DailyInsightModel: Codable, Sendable {
+nonisolated struct DailyInsightModel: Codable, Sendable {
     enum CodingKeys: String, CodingKey {
         case todaysFocus = "todays_focus"
         case dailyTip = "daily_tip"
     }
 
-    var todaysFocus: String
-    var dailyTip: String
+    let todaysFocus: String
+    let dailyTip: String
 }
 
-struct RegistrationResponse: Codable, Sendable, TokenContaining {
+nonisolated struct RegistrationResponse: Codable, Sendable, TokenContaining {
     enum CodingKeys: String, CodingKey {
         case emailAddress = "email_address"
         case accessToken = "access_token"
@@ -39,29 +39,29 @@ struct RegistrationResponse: Codable, Sendable, TokenContaining {
         case expiresAtTimestamp = "expires_at_timestamp"
     }
 
-    var emailAddress: String
-    var accessToken: String
-    var refreshToken: String
-    var expiresAtTimestamp: TimeInterval
+    let emailAddress: String
+    let accessToken: String
+    let refreshToken: String
+    let expiresAtTimestamp: TimeInterval
 }
 
-struct TokenPair: Codable, Sendable, TokenContaining {
+nonisolated struct TokenPair: Codable, Sendable, TokenContaining {
     enum CodingKeys: String, CodingKey {
         case accessToken = "access_token"
         case refreshToken = "refresh_token"
         case expiresAtTimestamp = "expires_at_timestamp"
     }
 
-    var accessToken: String
-    var refreshToken: String
-    var expiresAtTimestamp: TimeInterval
+    let accessToken: String
+    let refreshToken: String
+    let expiresAtTimestamp: TimeInterval
 }
 
-struct ServerMessage: Codable, Sendable {
+nonisolated struct ServerMessage: Codable, Sendable {
     let detail: String
 }
 
-struct TimestampRange: Codable, Sendable {
+nonisolated struct TimestampRange: Codable, Sendable {
     enum CodingKeys: String, CodingKey {
         case startTimestamp = "start_timestamp"
         case endTimestamp = "end_timestamp"
@@ -71,7 +71,7 @@ struct TimestampRange: Codable, Sendable {
     let endTimestamp: TimeInterval
 }
 
-struct RefreshToken: Codable, Sendable {
+nonisolated struct RefreshToken: Codable, Sendable {
     enum CodingKeys: String, CodingKey {
         case refreshToken = "refresh_token"
     }
@@ -79,83 +79,83 @@ struct RefreshToken: Codable, Sendable {
     let refreshToken: String
 }
 
-struct ThirdPartyLogin: Codable, Sendable {
+nonisolated struct ThirdPartyLogin: Codable, Sendable {
     enum CodingKeys: String, CodingKey {
         case idToken = "id_token"
         case existingEmailAddress = "existing_email_address"
     }
 
-    var idToken: String
-    var existingEmailAddress: String?
+    let idToken: String
+    let existingEmailAddress: String?
 }
 
-struct ChangeEmailAddress: Codable, Sendable {
+nonisolated struct ChangeEmailAddress: Codable, Sendable {
     enum CodingKeys: String, CodingKey {
         case newEmailAddress = "new_email_address"
     }
 
-    var newEmailAddress: String
+    let newEmailAddress: String
 }
 
-struct RegisterDevice: Codable, Sendable {
+nonisolated struct RegisterDevice: Codable, Sendable {
     enum CodingKeys: String, CodingKey {
         case deviceToken = "device_token"
     }
 
-    var deviceToken: String
+    let deviceToken: String
 }
 
-struct ChangePassword: Codable, Sendable {
+nonisolated struct ChangePassword: Codable, Sendable {
     enum CodingKeys: String, CodingKey {
         case currentPassword = "current_password"
         case newPassword = "new_password"
     }
 
-    var currentPassword: String
-    var newPassword: String
+    let currentPassword: String
+    let newPassword: String
 }
 
-struct RequestOTP: Codable, Sendable {
+nonisolated struct RequestOTP: Codable, Sendable {
     enum CodingKeys: String, CodingKey {
         case emailAddress = "email_address"
     }
 
-    var emailAddress: String
+    let emailAddress: String
 }
 
 typealias ForgetPassword = RequestOTP
 
-struct ResetPassword: Codable, Sendable {
+nonisolated struct ResetPassword: Codable, Sendable {
     enum CodingKeys: String, CodingKey {
         case emailAddress = "email_address"
         case otp
         case newPassword = "new_password"
     }
 
-    var emailAddress: String
-    var otp: String
-    var newPassword: String
+    let emailAddress: String
+    let otp: String
+    let newPassword: String
 }
 
-struct VerifyOTP: Codable, Sendable {
+nonisolated struct VerifyOTP: Codable, Sendable {
     enum CodingKeys: String, CodingKey {
         case emailAddress = "email_address"
         case otp
     }
 
-    var emailAddress: String
-    var otp: String
+    let emailAddress: String
+    let otp: String
 }
 
-struct ExerciseDuration: Codable, Sendable {
+nonisolated struct ExerciseDuration: Codable, Sendable {
     enum CodingKeys: String, CodingKey {
         case duration
     }
 
-    var duration: TimeInterval
+    let duration: TimeInterval
 }
 
-struct UserCredential: Codable, Sendable {
+nonisolated struct UserCredential: Codable, Sendable {
     enum CodingKeys: String, CodingKey {
         case emailAddress = "email_address"
         case appleIdentifier = "apple_id"

@@ -118,6 +118,9 @@ struct MyPlanFoodItemSearchView: View {
                 .onTapGesture {
                     detailFoodItem = food
                 }
+                .accessibilityAction(.default) {
+                    detailFoodItem = food
+                }
                 .swipeActions(edge: .trailing, allowsFullSwipe: true) {
                     Button {
                         addFood(food)
@@ -152,7 +155,7 @@ struct MyPlanFoodItemSearchView: View {
 
         task?.cancel()
         foodItems.removeAll()
-        task = NetworkManager.shared.fetchStreamedData(
+        task = MCNetworkManager.shared.fetchStreamedData(
             .GET,
             url: Endpoint.searchFoodItem.urlString,
             queryParameters: ["food_name": query, "limit": 10],

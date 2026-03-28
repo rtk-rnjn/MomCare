@@ -14,7 +14,7 @@ extension AppDelegate: MXMetricManagerSubscriber {
 
     func pushDailyMetrics(_ payload: MXMetricPayload) async throws {
         let data = payload.jsonRepresentation()
-        let _: NetworkResponse<Bool> = try await NetworkManager.shared.post(url: Endpoint.dailyMetrics.urlString, body: data)
+        let _: NetworkResponse<Bool> = try await MCNetworkManager.shared.post(url: Endpoint.dailyMetrics.urlString, body: data)
     }
 
     func didReceive(_ payloads: [MXDiagnosticPayload]) {
@@ -28,7 +28,7 @@ extension AppDelegate: MXMetricManagerSubscriber {
 
     func pushDiagnosticMetrics(_ payload: MXDiagnosticPayload) async throws {
         let data = payload.jsonRepresentation()
-        let _: NetworkResponse<Bool> = try await NetworkManager.shared.post(url: Endpoint.diagnosticMetrics.urlString, body: data)
+        let _: NetworkResponse<Bool> = try await MCNetworkManager.shared.post(url: Endpoint.diagnosticMetrics.urlString, body: data)
     }
 
     func writeMetricsToFile(_ payload: MXMetricPayload) {

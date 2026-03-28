@@ -50,7 +50,7 @@ extension MoodResultViewModel {
     }
 
     func fetchSongs(for moodType: MoodType) async throws -> [SongModel] {
-        let networkResponse = try await ContentRepository.shared.fetchSongs(for: moodType)
+        let networkResponse = try await MCContentRepository.shared.fetchSongs(for: moodType)
         return networkResponse.data
     }
 }

@@ -11,32 +11,34 @@ struct MoodNestView: View {
                     .ignoresSafeArea()
                     .accessibilityHidden(true)
 
-                VStack(spacing: 32) {
-                    Spacer(minLength: 30)
+                VStack {
+                    Spacer()
 
                     Text("How are you feeling right now?")
-                        .font(.title2.weight(.semibold))
+                        .font(.title.weight(.semibold))
                         .multilineTextAlignment(.center)
                         .lineLimit(2)
                         .fixedSize(horizontal: false, vertical: true)
                         .frame(maxWidth: .infinity)
                         .padding(.horizontal, 25)
                         .accessibilityAddTraits(.isHeader)
-                        .accessibilityIdentifier("moodQuestion")
-                        .accessibilityHint("Asks the user to select their current mood")
 
                     Spacer()
 
                     MoodFaceView(moodNestViewModel: moodNestViewModel)
-                        .frame(height: 240)
+                        .frame(maxHeight: 220)
                         .accessibilityHidden(true)
+
+                    Spacer()
 
                     Text(moodNestViewModel.mood.rawValue)
                         .font(.headline)
                         .accessibilityLabel("Current mood: \(moodNestViewModel.mood.rawValue)")
                         .accessibilityAddTraits(.updatesFrequently)
 
-                    Slider(value: $moodNestViewModel.sliderValue, in: 0 ... 3, step: 1)
+                    Spacer()
+
+                    Slider(value: $moodNestViewModel.sliderValue, in: 0...3, step: 1)
                         .onChange(of: moodNestViewModel.sliderValue) {
                             if reduceMotion {
                                 moodNestViewModel.updateMood()
@@ -48,35 +50,41 @@ struct MoodNestView: View {
                         }
                         .popoverTip(sliderTip, arrowEdge: .bottom)
                         .padding(.horizontal, 40)
-                        .padding(.top, 30)
                         .tint(.white)
                         .accessibilityLabel("Mood selector")
                         .accessibilityValue(moodNestViewModel.mood.rawValue)
                         .accessibilityHint("Swipe left or right to change your mood")
                         .accessibilityIdentifier("moodSlider")
 
-                    Button {
-                        UIImpactFeedbackGenerator(style: .soft).impactOccurred()
-                        controlState.showingMoodnestPlaylistsView = true
-                    } label: {
-                        Text("Set Mood ✓")
-                            .font(.headline)
-                            .frame(maxWidth: .infinity)
-                            .padding()
-                            .background(moodNestViewModel.faceColor)
-                            .foregroundStyle(.white)
-                            .clipShape(Capsule())
-                    }
-                    .padding(.horizontal, 32)
-                    .padding(.top, 30)
-                    .accessibilityLabel("Set mood to \(moodNestViewModel.mood.rawValue)")
-                    .accessibilityHint("Opens playlist recommendations for your mood")
-                    .accessibilityIdentifier("setMoodButton")
-                    .navigationDestination(isPresented: $controlState.showingMoodnestPlaylistsView) {
-                        MoodNestPlaylistsView(mood: moodNestViewModel.mood)
-                    }
                     Spacer()
                 }
+                .padding(.horizontal, 20)
+            }
+
+            // ✅ Bottom button (safe & Apple-compliant)
+            .safeAreaInset(edge: .bottom) {
+                Button {
+                    UIImpactFeedbackGenerator(style: .soft).impactOccurred()
+                    controlState.showingMoodnestPlaylistsView = true
+                } label: {
+                    Text("Set Mood ✓")
+                        .font(.headline)
+                        .frame(maxWidth: .infinity)
+                        .padding()
+                        .background(moodNestViewModel.faceColor)
+                        .foregroundStyle(.white)
+                        .clipShape(Capsule())
+                }
+                .padding(.horizontal, 24)
+                .padding(.vertical, 10)
+                .background(moodNestViewModel.backgroundColor)
+                .accessibilityLabel("Set mood to \(moodNestViewModel.mood.rawValue)")
+                .accessibilityHint("Opens playlist recommendations for your mood")
+                .accessibilityIdentifier("setMoodButton")
+            }
+
+            .navigationDestination(isPresented: $controlState.showingMoodnestPlaylistsView) {
+                MoodNestPlaylistsView(mood: moodNestViewModel.mood)
             }
             .navigationBarTitleDisplayMode(.inline)
         }

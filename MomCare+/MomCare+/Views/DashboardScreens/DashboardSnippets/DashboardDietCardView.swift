@@ -78,11 +78,12 @@ struct DashboardDietCardView: View {
                 Text("\(Int(consumed)) / \(Int(recommended)) \(UnitEnergy.kilocalories.symbol)")
                     .font(.title3.weight(.regular))
                     .lineLimit(1)
-                    .minimumScaleFactor(0.8)
+                    .minimumScaleFactor(0.7)
+                    .allowsTightening(true)
                     .contentTransition(reduceMotion ? .identity : .numericText())
                     .animation(reduceMotion ? nil : .easeInOut, value: goal)
             }
-
+            .layoutPriority(1)
             Spacer()
 
             VStack(spacing: 6) {
@@ -105,7 +106,8 @@ struct DashboardDietCardView: View {
                             .animation(reduceMotion ? nil : .easeInOut(duration: 0.9), value: abs(animatedProgress))
                     }
                 }
-                .frame(width: 120, height: 8)
+                .frame(maxWidth: .infinity)
+                .frame(height: 8)
             }
         }
     }

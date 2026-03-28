@@ -131,7 +131,7 @@ struct ExerciseHistory: View {
         let endDate = date.nextDay
 
         do {
-            let response = try await ContentRepository.shared.fetchUserExercises(from: startDate, to: endDate)
+            let response = try await MCContentRepository.shared.fetchUserExercises(from: startDate, to: endDate)
             // Keep empty array if the server returns empty; nil means “no response / unknown”
             exercises = response.data
         } catch {

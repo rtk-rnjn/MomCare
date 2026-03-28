@@ -189,8 +189,9 @@ struct TriTrackSymptomRow: View {
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(symptom.title ?? "Symptom")
         .accessibilityValue(symptom.notes.flatMap { $0.isEmpty ? nil : $0 } ?? "No notes")
-        .accessibilityHint("Double tap to view details, long press for more options")
+        .accessibilityHint("Double tap to edit, long press for more options")
         .accessibilityAddTraits(.isButton)
+        .accessibilityAction(.default) { onEdit() }
         .accessibilityAction(named: "View Details") { onViewDetails() }
         .accessibilityAction(named: "Delete") { onDelete() }
     }

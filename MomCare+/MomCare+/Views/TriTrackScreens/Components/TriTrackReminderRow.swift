@@ -19,6 +19,11 @@ struct TriTrackReminderRow: View {
         }
         .onTapGesture { onTap() }
         .opacity(reminder.isCompleted ? 0.6 : 1)
+        .accessibilityElement(children: .contain)
+        .accessibilityLabel(reminder.title ?? "Reminder")
+        .accessibilityHint("Double tap to view reminder details")
+        .accessibilityAddTraits(.isButton)
+        .accessibilityAction(.default) { onTap() }
     }
 
     // MARK: Private
@@ -210,6 +215,7 @@ extension TriTrackReminderRow {
             .accessibilityLabel(reminder.isCompleted ? "Mark as incomplete" : "Mark as complete")
             .accessibilityHint("Toggles the completion status of this reminder")
             .accessibilityAddTraits(.isButton)
+            .accessibilityAction(.default) { toggleReminder() }
     }
 
     func toggleReminder() {

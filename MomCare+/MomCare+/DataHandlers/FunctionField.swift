@@ -1,6 +1,6 @@
 import Foundation
 
-enum FieldType<Value: Codable> {
+enum FieldType<Value: Codable & Sendable> {
     case unset
     case value(Value)
     case null
@@ -31,5 +31,3 @@ enum FieldType<Value: Codable> {
         }
     }
 }
-
-extension FieldType: Sendable where Value: Sendable {}

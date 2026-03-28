@@ -1,13 +1,7 @@
 import Combine
 import Foundation
 
-enum HealthProfileType: String {
-    case preExistingCondition
-    case intolerance
-    case dietaryPreference
-}
-
-struct UserModel: Codable, Sendable {
+nonisolated struct UserModel: Codable, Sendable {
     enum CodingKeys: String, CodingKey {
         case _id
         case firstName = "first_name"

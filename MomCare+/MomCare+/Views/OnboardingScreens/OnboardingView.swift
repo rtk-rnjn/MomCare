@@ -113,7 +113,7 @@ struct OnboardingView: View {
 
     @State private var navigateToHealthMetricsSignUp = false
 
-    @EnvironmentObject private var authenticationService: AuthenticationService
+    @EnvironmentObject private var authenticationService: MCAuthenticationService
     @EnvironmentObject private var controlState: ControlState
 
     @State private var currentPage = 0

@@ -114,7 +114,7 @@ struct MyPlanDietPlanHistory: View {
         let endDate = date.nextDay
 
         do {
-            let networkResponse = try await ContentRepository.shared.fetchMealPlans(from: startDate, to: endDate)
+            let networkResponse = try await MCContentRepository.shared.fetchMealPlans(from: startDate, to: endDate)
             plan = networkResponse.data.first
         } catch {
             plan = nil

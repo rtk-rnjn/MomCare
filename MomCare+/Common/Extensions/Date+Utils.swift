@@ -1,11 +1,11 @@
 import Foundation
 
 extension Date {
-    var startOfDay: Date {
+    nonisolated var startOfDay: Date {
         Calendar.current.startOfDay(for: self)
     }
 
-    var nextDay: Date {
+    nonisolated var nextDay: Date {
         Calendar.current.date(byAdding: .day, value: 1, to: startOfDay)!
     }
 }

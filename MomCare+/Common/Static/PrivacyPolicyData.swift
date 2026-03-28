@@ -22,7 +22,7 @@ enum PrivacyPolicyText {
         • Trimester-specific guidance delivered weekly
         • Mood, diet, hydration, symptom & exercise tracking
         • Reminders for scans, checkups, supplements, and self-care
-        • Mental wellness tools like guided breathing and MoodNest
+        • Mental wellness tools like guided breathing and Mood
 
         To provide this experience, we collect certain information that you choose to share. Here's what we collect and why.
         """),
@@ -39,7 +39,7 @@ enum PrivacyPolicyText {
         """),
         PolicySectionItem(title: "Why We Collect Your Data", content: """
         • Generate weekly updates based on your pregnancy stage
-        • Track diet/exercise progress and show health trends in ProgressHub
+        • Track diet/exercise progress and show health trends in Progress
         • Send custom reminders for hydration, supplements, or medical checkups
         • Suggest calming music, exercises, and mindfulness tools
         • Enhance motivation through streaks and rewards

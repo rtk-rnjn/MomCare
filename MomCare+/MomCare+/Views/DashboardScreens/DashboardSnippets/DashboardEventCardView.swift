@@ -51,8 +51,9 @@ struct DashboardEventCardView: View {
                     } label: {
                         Text("Add Event")
                             .font(.title3.weight(.semibold))
-//                            .foregroundColor(MomCareAccent.primary)
                             .foregroundColor(.secondary)
+                            .lineLimit(1)
+                            .minimumScaleFactor(0.85)
                             .popoverTip(tip, arrowEdge: .top)
                     }
                     .padding(.leading, 16)
@@ -87,6 +88,9 @@ struct DashboardEventCardView: View {
         )
         .accessibilityAddTraits(.isButton)
         .accessibilityHint("Double tap to add a new event")
+        .accessibilityAction(.default) {
+            showEventSheet = true
+        }
         .accessibilityIdentifier("dashboardEventCard")
         .sheet(
             isPresented: $showEventSheet,

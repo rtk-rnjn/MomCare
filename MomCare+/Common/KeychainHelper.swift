@@ -10,7 +10,7 @@ enum ValidKeychainKeys: String {
 
 enum KeychainHelper {
     @discardableResult
-    static func set(_ value: String?, forKey key: ValidKeychainKeys) -> Bool {
+    nonisolated static func set(_ value: String?, forKey key: ValidKeychainKeys) -> Bool {
         guard let value else {
             return false
         }
@@ -30,7 +30,7 @@ enum KeychainHelper {
     }
 
     @discardableResult
-    static func get(_ key: ValidKeychainKeys) -> String? {
+    nonisolated static func get(_ key: ValidKeychainKeys) -> String? {
         let query: [String: Any] = [
             kSecClass as String: kSecClassGenericPassword,
             kSecAttrAccount as String: key.rawValue,
@@ -48,7 +48,7 @@ enum KeychainHelper {
     }
 
     @discardableResult
-    static func remove(_ key: ValidKeychainKeys) -> Bool {
+    nonisolated static func remove(_ key: ValidKeychainKeys) -> Bool {
         let query: [String: Any] = [
             kSecClass as String: kSecClassGenericPassword,
             kSecAttrAccount as String: key.rawValue

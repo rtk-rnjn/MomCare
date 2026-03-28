@@ -95,6 +95,33 @@ extension CodableValue {
     }
 }
 
+extension CodableValue {
+    init(any value: Any) {
+        switch value {
+        case let v as Int:
+            self = .int(v)
+
+        case let v as Double:
+            self = .double(v)
+
+        case let v as Bool:
+            self = .bool(v)
+
+        case let v as String:
+            self = .string(v)
+
+        case let v as [Any]:
+            self = .array(v.map { CodableValue(any: $0) })
+
+        case let v as [String: Any]:
+            self = .dict(v.mapValues { CodableValue(any: $0) })
+
+        default:
+            self = .string("\(value)")
+        }
+    }
+}
+
 enum HTTPValidationErrorLocation: Codable, Sendable {
     case string(String)
     case int(Int)

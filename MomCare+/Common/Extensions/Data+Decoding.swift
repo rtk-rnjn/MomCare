@@ -1,7 +1,7 @@
 import Foundation
 
 extension Data {
-    func decodeUsingJSONDecoder<T: Codable>() throws -> T {
+    nonisolated func decodeUsingJSONDecoder<T: Codable>() throws -> T {
         let decoder = JSONDecoder()
         decoder.dateDecodingStrategy = .iso8601
 

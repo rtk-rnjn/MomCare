@@ -12,22 +12,22 @@ enum HTTPMethod: String {
     case PATCH
 }
 
-struct NetworkResponse<T: Codable>: Codable {
+struct NetworkResponse<T: Codable & Sendable>: Codable, Sendable {
     enum CodingKeys: String, CodingKey {
         case data
         case statusCode
     }
 
-    var data: T
-    var statusCode: Int
+    let data: T
+    let statusCode: Int
 }
 
-class NetworkManager {
+class MCNetworkManager {
     // MARK: Internal
 
-    static let shared: NetworkManager = .init()
+    nonisolated static let shared: MCNetworkManager = .init()
 
-    func get<T: Codable>(
+    nonisolated func get<T: Codable & Sendable>(
         url: String,
         queryParameters: [String: any Codable]? = nil,
         headers: [String: String]? = nil
@@ -35,19 +35,19 @@ class NetworkManager {
         try await request(url: url, method: .GET, queryParameters: queryParameters, headers: headers)
     }
 
-    func post<T: Codable>(url: String, queryParameters: [String: any Codable]? = nil, body: Data? = nil, headers: [String: String]? = nil) async throws -> NetworkResponse<T> {
+    nonisolated func post<T: Codable & Sendable>(url: String, queryParameters: [String: any Codable]? = nil, body: Data? = nil, headers: [String: String]? = nil) async throws -> NetworkResponse<T> {
         try await request(url: url, method: .POST, body: body, queryParameters: queryParameters, headers: headers)
     }
 
-    func put<T: Codable>(url: String, queryParameters: [String: any Codable]? = nil, body: Data? = nil, headers: [String: String]? = nil) async throws -> NetworkResponse<T> {
+    nonisolated func put<T: Codable & Sendable>(url: String, queryParameters: [String: any Codable]? = nil, body: Data? = nil, headers: [String: String]? = nil) async throws -> NetworkResponse<T> {
         try await request(url: url, method: .PUT, body: body, queryParameters: queryParameters, headers: headers)
     }
 
-    func delete<T: Codable>(url: String, queryParameters: [String: any Codable]? = nil, body: Data? = nil, headers: [String: String]? = nil) async throws -> NetworkResponse<T> {
+    nonisolated func delete<T: Codable & Sendable>(url: String, queryParameters: [String: any Codable]? = nil, body: Data? = nil, headers: [String: String]? = nil) async throws -> NetworkResponse<T> {
         try await request(url: url, method: .DELETE, body: body, queryParameters: queryParameters, headers: headers)
     }
 
-    func patch<T: Codable>(url: String, queryParameters: [String: any Codable]? = nil, body: Data? = nil, headers: [String: String]? = nil) async throws -> NetworkResponse<T> {
+    nonisolated func patch<T: Codable & Sendable>(url: String, queryParameters: [String: any Codable]? = nil, body: Data? = nil, headers: [String: String]? = nil) async throws -> NetworkResponse<T> {
         try await request(url: url, method: .PATCH, body: body, queryParameters: queryParameters, headers: headers)
     }
 
@@ -103,7 +103,7 @@ class NetworkManager {
         return userDefaults?.bool(forKey: key) ?? false
     }
 
-    private func buildURLString(
+    nonisolated private func buildURLString(
         url: String = "",
         queryParameters: [String: any Codable]? = nil
     ) -> URL {
@@ -124,7 +124,7 @@ class NetworkManager {
         return url
     }
 
-    private func request<T: Codable>(
+    nonisolated private func request<T: Codable & Sendable>(
         url: String = "",
         method: HTTPMethod,
         body: Data? = nil,
@@ -146,9 +146,9 @@ class NetworkManager {
         return try await performRequest(request)
     }
 
-    private func performRequest<T: Codable>(_ request: URLRequest) async throws -> NetworkResponse<T> { // swiftlint:disable:this cyclomatic_complexity
+    nonisolated private func performRequest<T: Codable & Sendable>(_ request: URLRequest) async throws -> NetworkResponse<T> { // swiftlint:disable:this cyclomatic_complexity
         let url = request.url?.absoluteString ?? "unknown URL"
-        logger.info("Performing \(request.httpMethod ?? "UNKNOWN") request to \(url)")
+        await logger.info("Performing \(request.httpMethod ?? "UNKNOWN") request to \(url)")
 
         do {
             var attempts = 5
@@ -168,7 +168,7 @@ class NetworkManager {
                     if let urlError = error as? URLError {
                         switch urlError.code {
                         case .networkConnectionLost, .notConnectedToInternet, .timedOut:
-                            logger.warning("Network error occurred for request to \(url): \(urlError.localizedDescription). Retrying... (\(5 - attempts) attempts left)")
+                            await logger.warning("Network error occurred for request to \(url): \(urlError.localizedDescription). Retrying... (\(5 - attempts) attempts left)")
 
                             try? await Task.sleep(nanoseconds: UInt64(1_000_000_000 * (attempts % 5)))
 
@@ -206,14 +206,14 @@ class NetworkManager {
         }
     }
 
-    private func handleRequest<T: Codable>(response: URLResponse, data: Data, url: String) async throws -> NetworkResponse<T> {
+    nonisolated private func handleRequest<T: Codable & Sendable>(response: URLResponse, data: Data, url: String) async throws -> NetworkResponse<T> {
         guard let httpResponse = response as? HTTPURLResponse else {
-            logger.error("Invalid response for request to \(url)")
+            await logger.error("Invalid response for request to \(url)")
 
             throw URLError(.badServerResponse)
         }
 
-        logger.info("Received response with status code \(httpResponse.statusCode) for request to \(url)")
+        await logger.info("Received response with status code \(httpResponse.statusCode) for request to \(url)")
 
         if httpResponse.statusCode >= 400 {
             await MainActor.run { if isNetworkHapticsEnabled {
@@ -222,7 +222,7 @@ class NetworkManager {
 
             if let errorResponse: HTTPErrorResponse = try? data.decodeUsingJSONDecoder() {
                 let osLogMessage = errorResponse.detail.toOSLogMessageString()
-                logger.error("HTTP Exception: \(osLogMessage)")
+                await logger.error("HTTP Exception: \(osLogMessage)")
                 throw APIErrorResolver.error(from: httpResponse.statusCode, with: errorResponse)
             }
 

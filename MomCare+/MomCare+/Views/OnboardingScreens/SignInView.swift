@@ -129,7 +129,7 @@ struct SignInView: View {
 
     @State private var isLoading: Bool = false
 
-    @EnvironmentObject private var authenticationService: AuthenticationService
+    @EnvironmentObject private var authenticationService: MCAuthenticationService
     @EnvironmentObject private var controlState: ControlState
 
     @State private var navigateToHealthMetricsSignUp = false
@@ -163,6 +163,9 @@ struct SignInView: View {
                     }
                     .accessibilityAddTraits(.isButton)
                     .accessibilityHint("Tap to reset your password")
+                    .accessibilityAction(.default) {
+                        showForgetPasswordSheet = true
+                    }
             }
         }
         .onAppear {

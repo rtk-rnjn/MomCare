@@ -29,6 +29,9 @@ struct TriTrackAllRemindersView: View {
                                 .onTapGesture {
                                     selectedReminder = EKCalendarItemWrapper(item: reminder)
                                 }
+                                .accessibilityAction(.default) {
+                                    selectedReminder = EKCalendarItemWrapper(item: reminder)
+                                }
                         }
                     } header: {
                         ReminderSectionHeader(date: section.date, isToday: isToday, isPast: isPast)

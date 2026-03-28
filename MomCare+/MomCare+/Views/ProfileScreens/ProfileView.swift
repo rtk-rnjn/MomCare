@@ -110,7 +110,7 @@ struct ProfileView: View {
 
     @State private var showSignOutAlert = false
 
-    @EnvironmentObject private var authenticationService: AuthenticationService
+    @EnvironmentObject private var authenticationService: MCAuthenticationService
     @EnvironmentObject private var controlState: ControlState
     @Environment(\.openURL) private var openURL
 
@@ -123,6 +123,15 @@ struct ProfileView: View {
                 .foregroundStyle(Color("primaryAppColor"))
                 .fontWeight(.medium)
                 .onTapGesture {
+                    let url = "mailto:support.momcare@vision-labs.site"
+                    if let mailURL = URL(string: url) {
+                        openURL(mailURL)
+                    }
+                }
+                .accessibilityLabel("Connect with Us")
+                .accessibilityHint("Opens email to contact support")
+                .accessibilityAddTraits(.isButton)
+                .accessibilityAction(.default) {
                     let url = "mailto:support.momcare@vision-labs.site"
                     if let mailURL = URL(string: url) {
                         openURL(mailURL)

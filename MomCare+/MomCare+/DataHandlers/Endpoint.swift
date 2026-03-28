@@ -1,6 +1,6 @@
 import Foundation
 
-nonisolated private let baseURLString = "http://13.203.42.179/api"
+nonisolated private let baseURLString = "https://momcare.vision-labs.site/api"
 
 enum Endpoint: String, Sendable {
     case register = "/v1/auth/register"

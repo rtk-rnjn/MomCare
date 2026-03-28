@@ -111,6 +111,9 @@ struct TriTrackCalendarItemContentView: View {
                 .onTapGesture {
                     selectedEvent = EKCalendarItemWrapper(item: event)
                 }
+                .accessibilityAction(.default) {
+                    selectedEvent = EKCalendarItemWrapper(item: event)
+                }
                 .swipeActions(edge: .trailing, allowsFullSwipe: true) {
                     Button(role: .destructive) {
                         deleteEvent(event)

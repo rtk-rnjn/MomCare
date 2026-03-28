@@ -60,7 +60,7 @@ struct FoodReferenceModel: Codable, Sendable, Identifiable, Equatable {
     }
 }
 
-struct MealPlanModel: Codable, Sendable {
+nonisolated struct MealPlanModel: Codable, Sendable {
     enum CodingKeys: String, CodingKey {
         case _id
         case userId = "user_id"

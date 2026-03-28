@@ -206,7 +206,7 @@ struct ForgetPasswordOTPView: View {
     @State private var navigate: Bool = false
     @FocusState private var isOTPFieldFocused: Bool
 
-    @EnvironmentObject private var authenticationService: AuthenticationService
+    @EnvironmentObject private var authenticationService: MCAuthenticationService
 
     @State private var error: (any Error)?
 
@@ -295,8 +295,7 @@ struct ResetPasswordView: View {
 
     @FocusState private var focusedField: Field?
 
-    @Environment(\.dismiss) private var dismiss
-    @EnvironmentObject private var authenticationService: AuthenticationService
+    @EnvironmentObject private var authenticationService: MCAuthenticationService
 
     @State private var success: Bool = false
 

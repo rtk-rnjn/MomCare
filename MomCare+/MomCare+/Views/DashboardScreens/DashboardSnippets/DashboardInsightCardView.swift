@@ -9,16 +9,18 @@ struct DashboardInsightCardView: View {
 
     var body: some View {
         VStack(spacing: 0) {
-            VStack(alignment: .center, spacing: 2) {
+            VStack(alignment: .leading, spacing: 6) {
                 Text(message)
                     .font(.subheadline)
                     .foregroundColor(.secondary)
                     .fontWeight(.semibold)
+                    .lineLimit(nil)
+                    .fixedSize(horizontal: false, vertical: true)
                     .contentTransition(reduceMotion ? .identity : .interpolate)
                     .animation(reduceMotion ? nil : .easeInOut, value: message)
             }
             .padding(16)
-            .frame(height: 135, alignment: .top)
+            .frame(maxWidth: .infinity, alignment: .leading)
 
             ZStack(alignment: .bottomLeading) {
                 Rectangle()

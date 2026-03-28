@@ -125,6 +125,9 @@ struct MyPlanExercisePlanView: View {
                 }
                 .accessibilityHint("Double tap to view walking history")
                 .accessibilityAddTraits(.isButton)
+                .accessibilityAction(.default) {
+                    showWalkingHistory = true
+                }
                 .onAppear {
                     contentServiceHandler.fetchTodaySteps()
                 }

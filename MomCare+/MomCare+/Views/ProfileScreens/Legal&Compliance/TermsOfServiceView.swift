@@ -197,7 +197,7 @@ struct ThirdPartyServicesView: View {
                 ServiceBulletPoint(title: "HealthKit", description: "To collect and analyze health data such as activity, steps, and other metrics, if access is granted by the user.")
                 ServiceBulletPoint(title: "EventKit", description: "To allow appointment logging, calendar integration, and management of pregnancy-related reminders and events.")
                 ServiceBulletPoint(title: "UserNotifications", description: "For delivering local notifications about reminders, tips, hydration alerts, exercise tracking, and more.")
-                ServiceBulletPoint(title: "AVFoundation & MediaPlayer", description: "To power audio playback features in MoodNest, including mood-specific calming soundtracks.")
+                ServiceBulletPoint(title: "AVFoundation & MediaPlayer", description: "To power audio playback features in Mood, including mood-specific calming soundtracks.")
             }
 
             VStack(alignment: .leading, spacing: 12) {

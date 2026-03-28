@@ -14,7 +14,8 @@ struct EyeView: View {
             useSemiCircle: moodNestViewModel.useSemiCircleEyes,
             color: UIColor(moodNestViewModel.faceColor)
         )
-        .frame(width: 130, height: 130)
+        .frame(maxWidth: 130, maxHeight: 130)
+        .aspectRatio(1, contentMode: .fit)
         .scaleEffect(moodNestViewModel.eyeScale)
         .rotationEffect(rotation)
         .accessibilityHidden(true)

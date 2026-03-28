@@ -5,7 +5,7 @@ extension ContentServiceHandler {
         defer { isFetchingMealPlan = false }
 
         isFetchingMealPlan = true
-        let networkResponse = try await ContentRepository.shared.generateMealPlan()
+        let networkResponse = try await MCContentRepository.shared.generateMealPlan()
 
         myPlanModel = networkResponse.data
 
@@ -51,7 +51,7 @@ extension ContentServiceHandler {
 
         await fetchMyPlanMeta()
 
-        _ = try await ContentRepository.shared.markFoodAs(consumed: consumed, planId: myPlanModel._id, meal: mealType, foodId: foodReference.foodId)
+        _ = try await MCContentRepository.shared.markFoodAs(consumed: consumed, planId: myPlanModel._id, meal: mealType, foodId: foodReference.foodId)
     }
 
     func markFoodsAs(consumed: Bool, mealType: MealType) async throws {
@@ -67,7 +67,7 @@ extension ContentServiceHandler {
             return
         }
 
-        _ = try await ContentRepository.shared.addFoodItem(toPlan: myPlanModel._id, meal: mealType, foodId: foodId)
+        _ = try await MCContentRepository.shared.addFoodItem(toPlan: myPlanModel._id, meal: mealType, foodId: foodId)
 
         let foodReference = FoodReferenceModel(foodId: foodId, count: 1)
         if let index = self.myPlanModel?[mealType].firstIndex(where: { $0.foodId == foodId }) {
@@ -84,7 +84,7 @@ extension ContentServiceHandler {
             return
         }
 
-        _ = try await ContentRepository.shared.removeFoodItem(fromPlan: myPlanModel._id, meal: mealType, foodId: foodId)
+        _ = try await MCContentRepository.shared.removeFoodItem(fromPlan: myPlanModel._id, meal: mealType, foodId: foodId)
 
         if let index = self.myPlanModel?[mealType].firstIndex(where: { $0.foodId == foodId }) {
             self.myPlanModel?[mealType].remove(at: index)
