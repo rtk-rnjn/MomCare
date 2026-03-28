@@ -128,6 +128,15 @@ struct ProfileView: View {
                         openURL(mailURL)
                     }
                 }
+                .accessibilityLabel("Connect with Us")
+                .accessibilityHint("Opens email to contact support")
+                .accessibilityAddTraits(.isButton)
+                .accessibilityAction(.default) {
+                    let url = "mailto:support.momcare@vision-labs.site"
+                    if let mailURL = URL(string: url) {
+                        openURL(mailURL)
+                    }
+                }
         }
         .frame(maxWidth: .infinity)
         .multilineTextAlignment(.center)

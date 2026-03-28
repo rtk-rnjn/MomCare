@@ -39,6 +39,10 @@ struct DashboardView: View {
                     controlState.selectedTab = .triTrack
                     controlState.triTrackSegment = .meAndBaby
                 }
+                .accessibilityAction(.default) {
+                    controlState.selectedTab = .triTrack
+                    controlState.triTrackSegment = .meAndBaby
+                }
 
             if let event = eventKitHandler.onGoingOrMostRecentUpcomingEvent {
                 DashboardEventCardView(upcomingEvent: event, tip: tips.currentTip as? MomCareTips.Dashboard.DashboardEventCardTip)
@@ -92,6 +96,10 @@ struct DashboardView: View {
             }
             .accessibilityAddTraits(.isButton)
             .accessibilityHint("Double tap to view your diet plan")
+            .accessibilityAction(.default) {
+                controlState.selectedTab = .myPlan
+                controlState.myPlanSegment = .diet
+            }
 
             DashboardExerciseCard(
                 stepsToday: Int(contentServiceHandler.stepsToday),
@@ -111,6 +119,10 @@ struct DashboardView: View {
             }
             .accessibilityAddTraits(.isButton)
             .accessibilityHint("Double tap to view your exercise plan")
+            .accessibilityAction(.default) {
+                controlState.selectedTab = .myPlan
+                controlState.myPlanSegment = .exercise
+            }
         }
     }
 

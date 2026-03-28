@@ -48,6 +48,7 @@ struct MyPlanDietPlanProgressCardView: View {
         .gesture(pressGesture)
         .accessibilityElement(children: .contain)
         .accessibilityHint(isExpanded ? "Double tap to collapse" : "Double tap to expand details")
+        .accessibilityAction(.default) { toggleExpansion() }
     }
 
     // MARK: Private
@@ -621,6 +622,9 @@ private struct ProgressRingView: View {
         )
         .accessibilityHint("Double tap to toggle percentage view")
         .accessibilityAddTraits([.isButton, .updatesFrequently])
+        .accessibilityAction(.default) {
+            togglePercentageDisplay()
+        }
     }
 
     // MARK: Private
@@ -633,6 +637,12 @@ private struct ProgressRingView: View {
     @State private var showPercentage = false
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @Environment(\.accessibilityReduceTransparency) private var reduceTransparency
+
+    private func togglePercentageDisplay() {
+        withAnimation(reduceMotion ? nil : .easeInOut) {
+            showPercentage.toggle()
+        }
+    }
 
     private var progress: Double {
         guard let consumed, let original else {
@@ -747,9 +757,12 @@ private struct ProgressRingView: View {
             }
             .transition(.opacity.combined(with: .scale))
             .onTapGesture {
-                withAnimation(reduceMotion ? nil : .easeInOut) {
-                    showPercentage.toggle()
-                }
+                togglePercentageDisplay()
+            }
+            .accessibilityHint(showPercentage ? "Double tap to show value" : "Double tap to show percentage")
+            .accessibilityAddTraits(.isButton)
+            .accessibilityAction(.default) {
+                togglePercentageDisplay()
             }
 
             HStack(spacing: 6) {
@@ -814,9 +827,12 @@ private struct MacroBarRow: View {
                     }
                 }
                 .onTapGesture {
-                    withAnimation(reduceMotion ? nil : .easeInOut) {
-                        showPercentage.toggle()
-                    }
+                    togglePercentageDisplay()
+                }
+                .accessibilityHint(showPercentage ? "Double tap to show value" : "Double tap to show percentage")
+                .accessibilityAddTraits(.isButton)
+                .accessibilityAction(.default) {
+                    togglePercentageDisplay()
                 }
                 .font(.caption)
                 .foregroundColor(.primary)

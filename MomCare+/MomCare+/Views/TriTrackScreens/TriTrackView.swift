@@ -386,18 +386,12 @@ struct PregnancyProgressView: View {
                 }
             )
             .onTapGesture {
-                let popupContent = PopupInfoCard(
-                    title: "Baby This Week",
-                    content: trimesterData.babyTipText,
-                    isShowing: $showingBabyInfo,
-                    accentColor: .CustomColors.mutedRaspberry
-                )
-
-                OverlayWindowManager.shared.showOverlay()
-                OverlayWindowManager.shared.setContent(popupContent)
-                showingBabyInfo = true
+                showBabyInfoPopup()
             }
             .accessibilityAddTraits(.isButton)
+            .accessibilityAction(.default) {
+                showBabyInfoPopup()
+            }
 
             CompactInfoCard(
                 title: "Mom This Week",
@@ -421,21 +415,41 @@ struct PregnancyProgressView: View {
                 }
             )
             .onTapGesture {
-                showingMomInfo = true
-
-                let popupContent = PopupInfoCard(
-                    title: "Mom This Week",
-                    content: trimesterData.momTipText,
-                    isShowing: $showingMomInfo,
-                    accentColor: .CustomColors.mutedRaspberry
-                )
-
-                OverlayWindowManager.shared.showOverlay()
-                DispatchQueue.main.async {
-                    OverlayWindowManager.shared.setContent(popupContent)
-                }
+                showMomInfoPopup()
             }
             .accessibilityAddTraits(.isButton)
+            .accessibilityAction(.default) {
+                showMomInfoPopup()
+            }
+        }
+    }
+
+    private func showBabyInfoPopup() {
+        let popupContent = PopupInfoCard(
+            title: "Baby This Week",
+            content: trimesterData.babyTipText,
+            isShowing: $showingBabyInfo,
+            accentColor: .CustomColors.mutedRaspberry
+        )
+
+        OverlayWindowManager.shared.showOverlay()
+        OverlayWindowManager.shared.setContent(popupContent)
+        showingBabyInfo = true
+    }
+
+    private func showMomInfoPopup() {
+        showingMomInfo = true
+
+        let popupContent = PopupInfoCard(
+            title: "Mom This Week",
+            content: trimesterData.momTipText,
+            isShowing: $showingMomInfo,
+            accentColor: .CustomColors.mutedRaspberry
+        )
+
+        OverlayWindowManager.shared.showOverlay()
+        DispatchQueue.main.async {
+            OverlayWindowManager.shared.setContent(popupContent)
         }
     }
 }

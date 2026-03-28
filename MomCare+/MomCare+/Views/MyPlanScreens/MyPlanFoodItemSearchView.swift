@@ -118,6 +118,9 @@ struct MyPlanFoodItemSearchView: View {
                 .onTapGesture {
                     detailFoodItem = food
                 }
+                .accessibilityAction(.default) {
+                    detailFoodItem = food
+                }
                 .swipeActions(edge: .trailing, allowsFullSwipe: true) {
                     Button {
                         addFood(food)

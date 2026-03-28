@@ -88,6 +88,9 @@ struct DashboardEventCardView: View {
         )
         .accessibilityAddTraits(.isButton)
         .accessibilityHint("Double tap to add a new event")
+        .accessibilityAction(.default) {
+            showEventSheet = true
+        }
         .accessibilityIdentifier("dashboardEventCard")
         .sheet(
             isPresented: $showEventSheet,

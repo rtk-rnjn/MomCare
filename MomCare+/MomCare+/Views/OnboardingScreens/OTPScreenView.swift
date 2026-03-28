@@ -147,6 +147,9 @@ struct OTPScreenView: View {
         .accessibilityValue("\(otpString.count) of \(otpLength) digits entered")
         .accessibilityHint("Tap to enter your \(otpLength)-digit verification code")
         .accessibilityAddTraits(.isButton)
+        .accessibilityAction(.default) {
+            isFieldFocused = true
+        }
     }
 
     private var hiddenOTPTextField: some View {

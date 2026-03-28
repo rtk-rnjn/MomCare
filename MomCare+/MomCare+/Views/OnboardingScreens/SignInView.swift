@@ -163,6 +163,9 @@ struct SignInView: View {
                     }
                     .accessibilityAddTraits(.isButton)
                     .accessibilityHint("Tap to reset your password")
+                    .accessibilityAction(.default) {
+                        showForgetPasswordSheet = true
+                    }
             }
         }
         .onAppear {

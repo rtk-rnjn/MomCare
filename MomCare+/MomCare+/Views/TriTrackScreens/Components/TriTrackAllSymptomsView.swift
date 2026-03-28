@@ -17,6 +17,9 @@ struct TriTrackAllSymptomsView: View {
                                 .onTapGesture {
                                     selectedSymptomModel = model
                                 }
+                                .accessibilityAction(.default) {
+                                    selectedSymptomModel = model
+                                }
                         }
                     } header: {
                         SymptomSectionHeader(date: section.date, isToday: isToday, isPast: isPast)

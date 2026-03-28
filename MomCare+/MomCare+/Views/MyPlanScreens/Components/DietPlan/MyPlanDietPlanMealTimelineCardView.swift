@@ -158,6 +158,11 @@ private struct MealTimelineHeaderRow: View {
             }
             .accessibilityLabel(section.isCompleted ? "Mark \(section.title) as not completed" : "Mark \(section.title) as completed")
             .accessibilityAddTraits(.isButton)
+            .accessibilityAction(.default) {
+                Task {
+                    await onToggle(section.isCompleted)
+                }
+            }
 
             Text(section.title)
                 .font(.title3.weight(.semibold))
@@ -220,6 +225,11 @@ private struct MealTimelineFoodItemRow: View {
             }
             .accessibilityLabel(item.isConsumed ? "Mark as not consumed" : "Mark as consumed")
             .accessibilityAddTraits(.isButton)
+            .accessibilityAction(.default) {
+                Task {
+                    await onToggle(item.isConsumed)
+                }
+            }
 
             FoodThumbnail(foodReferenceModel: item)
                 .accessibilityHidden(true)
