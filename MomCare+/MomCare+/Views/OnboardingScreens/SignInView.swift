@@ -148,24 +148,17 @@ struct SignInView: View {
                 emailField
                 passwordField
             } footer: {
-                if !isValidEmail(emailAddress), !emailAddress.isEmpty, focusedField != .email {
-                    Text("Please enter a valid email address.")
-                        .foregroundColor(.red)
-                        .accessibilityLabel("Invalid email address")
-                        .accessibilityHint("The email address you entered is not valid. Please correct it before submitting.")
+                HStack {
+                    Spacer()
+
+                    Button {
+                        showForgetPasswordSheet = true
+                    } label: {
+                        Text("Forget Password?")
+                            .foregroundStyle(.primaryApp)
+                    }
+                    .accessibilityHint("Reset your password")
                 }
-            }
-            Section {
-                Text("Forget Password?")
-                    .foregroundStyle(.blue)
-                    .onTapGesture {
-                        showForgetPasswordSheet = true
-                    }
-                    .accessibilityAddTraits(.isButton)
-                    .accessibilityHint("Tap to reset your password")
-                    .accessibilityAction(.default) {
-                        showForgetPasswordSheet = true
-                    }
             }
         }
         .onAppear {

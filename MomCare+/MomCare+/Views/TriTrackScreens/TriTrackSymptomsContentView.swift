@@ -30,15 +30,16 @@ struct TriTrackSymptomsContentView: View {
                 HStack {
                     Text("Symptoms")
                         .font(.headline)
+                        .accessibilityAddTraits(.isHeader)
 
                     Spacer()
 
                     Text(filterSymptoms(for: selectedDate).count, format: .number)
                         .font(.headline)
-                        .foregroundColor(.secondary)
                         .contentTransition(reduceMotion ? .identity : .numericText())
                         .animation(reduceMotion ? nil : .easeInOut, value: filterSymptoms(for: selectedDate).count)
                 }
+                .foregroundStyle(.black)
             }
         }
         .listStyle(.plain)
@@ -126,7 +127,7 @@ struct TriTrackSymptomRow: View {
         HStack(spacing: 16) {
             Image(systemName: "heart.text.square")
                 .font(.largeTitle)
-                .foregroundColor(.secondary)
+                .foregroundStyle(.secondary)
                 .accessibilityHidden(true)
                 .onTapGesture(perform: onEdit)
 
@@ -137,13 +138,13 @@ struct TriTrackSymptomRow: View {
                 if let notes = symptom.notes, !notes.isEmpty {
                     Text(notes)
                         .font(.subheadline)
-                        .foregroundColor(.secondary)
+                        .foregroundStyle(.secondary)
                         .lineLimit(2)
                 }
 
                 Text("Logged on \(symptom.date, formatter: dateFormatter)")
                     .font(.caption)
-                    .foregroundColor(.secondary)
+                    .foregroundStyle(.secondary)
             }
             .onTapGesture(perform: onEdit)
 
@@ -152,7 +153,7 @@ struct TriTrackSymptomRow: View {
             Button(action: onViewDetails) {
                 Image(systemName: "chevron.right")
                     .font(.title3)
-                    .foregroundColor(.secondary)
+                    .foregroundStyle(.secondary)
             }
             .accessibilityLabel("View details for \(symptom.title ?? "symptom")")
         }

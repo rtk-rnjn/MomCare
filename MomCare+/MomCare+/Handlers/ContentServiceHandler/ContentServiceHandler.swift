@@ -2,6 +2,7 @@ import Combine
 import HealthKit
 import SwiftUI
 
+@MainActor
 final class ContentServiceHandler: ObservableObject {
     // MARK: Lifecycle
 

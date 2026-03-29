@@ -5,11 +5,21 @@ extension ContentServiceHandler {
         defer { isFetchingMealPlan = false }
 
         isFetchingMealPlan = true
-        let networkResponse = try await MCContentRepository.shared.generateMealPlan()
 
-        myPlanModel = networkResponse.data
+        while true {
+            do {
+                let networkResponse = try await MCContentRepository.shared.generateMealPlan()
+                myPlanModel = networkResponse.data
+                await fetchMyPlanMeta()
 
-        await fetchMyPlanMeta()
+                break
+            } catch {
+                if (error as? LongPolling) != nil {
+                    continue
+                }
+                throw error
+            }
+        }
     }
 
     func fetchMyPlanMeta() async {

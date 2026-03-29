@@ -17,6 +17,7 @@ struct DebugMenuView: View {
     }
 }
 
+@MainActor
 enum DebugSection: String, CaseIterable, Identifiable {
     case deviceInfo = "Device & App Info"
     case accessibility = "Accessibility Inspector"

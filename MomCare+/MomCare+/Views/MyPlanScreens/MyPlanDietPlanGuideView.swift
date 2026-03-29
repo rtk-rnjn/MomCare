@@ -408,7 +408,7 @@ private struct RingWithDeltaBadge: View {
 
             Text(deltaLabel)
                 .font(.caption2.weight(.semibold))
-                .foregroundColor(.secondary)
+                .foregroundStyle(.secondary)
                 .padding(.horizontal, 3)
                 .padding(.vertical, 1)
                 .background(Color(.systemGray5), in: Capsule())
@@ -600,7 +600,7 @@ private struct VitalCardBadge: View {
                 .fill(color.opacity(0.14))
             Image(systemName: icon)
                 .font(.title2)
-                .foregroundColor(color)
+                .foregroundStyle(color)
         }
         .frame(width: 50, height: 50)
     }

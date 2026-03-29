@@ -18,6 +18,8 @@ struct MomCareApp: App {
             try Tips.resetDatastore()
             #endif // DEBUG
         } catch {}
+
+        appDelegate.registerBackgroundRefreshTask()
     }
 
     // MARK: Internal

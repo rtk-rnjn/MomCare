@@ -148,7 +148,7 @@ struct CompactCalendarView: View {
                         ZStack(alignment: .center) {
                             Text(currentTitleDate.formatted(.dateTime.month(.wide).year()))
                                 .font(.subheadline)
-                                .foregroundColor(.secondary)
+                                .foregroundStyle(.secondary)
                                 .opacity(1 - t)
                                 .scaleEffect(1 - 0.02 * t, anchor: .leading)
                                 .offset(x: -8 * t * dir)
@@ -156,7 +156,7 @@ struct CompactCalendarView: View {
                             if let incomingTitleDate {
                                 Text(incomingTitleDate.formatted(.dateTime.month(.wide).year()))
                                     .font(.subheadline)
-                                    .foregroundColor(.secondary)
+                                    .foregroundStyle(.secondary)
                                     .opacity(t)
                                     .scaleEffect(0.98 + 0.02 * t, anchor: .leading)
                                     .offset(x: 8 * (1 - t) * dir)

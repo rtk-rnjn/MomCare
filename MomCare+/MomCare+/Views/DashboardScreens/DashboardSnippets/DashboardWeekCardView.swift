@@ -16,7 +16,7 @@ struct DashboardWeekCardView: View {
 
                 Text("Day \(day ?? 0)")
                     .font(.title3)
-                    .foregroundColor(.secondary)
+                    .foregroundStyle(.secondary)
             }
             .frame(maxWidth: .infinity, alignment: .leading)
             .padding(.horizontal, 16)
@@ -46,7 +46,7 @@ struct DashboardWeekCardView: View {
                             .frame(width: 38, height: 38)
 
                         Image(systemName: "calendar")
-                            .foregroundColor(.primary)
+                            .foregroundStyle(.primary)
                             .font(.title3)
                     }
                     .accessibilityHidden(true)

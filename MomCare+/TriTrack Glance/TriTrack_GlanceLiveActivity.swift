@@ -23,7 +23,7 @@ struct TriTrack_GlanceLiveActivity: Widget {
 
                     Text("Day \(context.state.day)")
                         .font(.subheadline)
-                        .foregroundColor(.secondary)
+                        .foregroundStyle(.secondary)
                 }
 
                 Spacer()
@@ -31,7 +31,7 @@ struct TriTrack_GlanceLiveActivity: Widget {
                 Text("Trimester \(context.state.trimester)")
                     .font(.subheadline)
                     .fontWeight(.semibold)
-                    .foregroundColor(Color(red: 139 / 255, green: 69 / 255, blue: 87 / 255))
+                    .foregroundStyle(Color(red: 139 / 255, green: 69 / 255, blue: 87 / 255))
             }
             .padding(16)
             .activityBackgroundTint(Color(.systemBackground))
@@ -46,7 +46,7 @@ struct TriTrack_GlanceLiveActivity: Widget {
 
                         Text("Day \(context.state.day)")
                             .font(.caption)
-                            .foregroundColor(.secondary)
+                            .foregroundStyle(.secondary)
                     }
                     .padding(.leading, 4)
                 }
@@ -55,14 +55,14 @@ struct TriTrack_GlanceLiveActivity: Widget {
                     Text("T\(context.state.trimester)")
                         .font(.subheadline)
                         .fontWeight(.semibold)
-                        .foregroundColor(Color(red: 139 / 255, green: 69 / 255, blue: 87 / 255))
+                        .foregroundStyle(Color(red: 139 / 255, green: 69 / 255, blue: 87 / 255))
                         .padding(.trailing, 4)
                 }
 
                 DynamicIslandExpandedRegion(.bottom) {
                     Text("Trimester \(context.state.trimester)")
                         .font(.caption)
-                        .foregroundColor(.secondary)
+                        .foregroundStyle(.secondary)
                 }
             } compactLeading: {
                 Text("W\(context.state.week)")
@@ -71,7 +71,7 @@ struct TriTrack_GlanceLiveActivity: Widget {
             } compactTrailing: {
                 Text("D\(context.state.day)")
                     .font(.caption2)
-                    .foregroundColor(.secondary)
+                    .foregroundStyle(.secondary)
             } minimal: {
                 Text("\(context.state.week)")
                     .font(.caption2)

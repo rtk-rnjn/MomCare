@@ -180,7 +180,7 @@ private struct MealTimelineHeaderRow: View {
             } label: {
                 Image(systemName: "square.and.pencil")
                     .font(.title3)
-                    .foregroundColor(MomCareAccent.primary)
+                    .foregroundStyle(MomCareAccent.primary)
             }
             .popoverTip(tip, arrowEdge: .trailing)
             .accessibilityLabel("Add food to \(section.title)")
@@ -244,7 +244,7 @@ private struct MealTimelineFoodItemRow: View {
                     Text(food?.calories.formattedOneDecimal ?? "")
                 }
                 .font(.subheadline)
-                .foregroundColor(.secondary)
+                .foregroundStyle(.secondary)
             }
 
             Spacer()
@@ -341,7 +341,7 @@ private struct FoodThumbnail: View {
             } else {
                 Image(systemName: "carrot.fill")
                     .font(.title3)
-                    .foregroundColor(.secondary)
+                    .foregroundStyle(.secondary)
             }
         }
         .frame(width: 54, height: 54)
@@ -416,13 +416,13 @@ private struct NutritionPreview: View {
 
                 FoodThumbnail(foodReferenceModel: item)
                     .font(.largeTitle)
-                    .foregroundColor(.secondary)
+                    .foregroundStyle(.secondary)
             }
             .frame(width: 90, height: 90)
 
             VStack(alignment: .leading, spacing: 6) {
                 Text(food.name.capitalized).font(.headline).lineLimit(1)
-                Text("\(item.count) Serving").font(.caption).foregroundColor(.secondary)
+                Text("\(item.count) Serving").font(.caption).foregroundStyle(.secondary)
                 Divider()
                 HStack(spacing: 16) {
                     VStack(alignment: .leading, spacing: 3) {
@@ -446,7 +446,7 @@ private struct NutritionPreview: View {
 
     private func nutrientLabel(_ label: String, _ value: String) -> some View {
         HStack(spacing: 4) {
-            Text(label).font(.caption2).foregroundColor(.secondary)
+            Text(label).font(.caption2).foregroundStyle(.secondary)
             Text(value).font(.caption2.weight(.semibold))
         }
     }
@@ -496,7 +496,7 @@ private struct TimelineCircle: View {
 
                 Image(systemName: "checkmark")
                     .font(style.checkmarkFont)
-                    .foregroundColor(.white)
+                    .foregroundStyle(.white)
             }
         }
     }

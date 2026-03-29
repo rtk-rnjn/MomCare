@@ -22,6 +22,7 @@ struct ReAuthenticationSheetView: View {
                     }
                 }
             }
+            .errorAlert(error: $error)
             .scrollContentBackground(.hidden)
             .scrollDismissesKeyboard(.interactively)
             .navigationTitle("Refresh Token Expired")
@@ -109,7 +110,7 @@ struct ReAuthenticationSheetView: View {
                                     dismiss()
                                 }
                             } catch {
-                                controlState.error = error
+                                self.error = error
                             }
                         }
                     } label: {
@@ -137,6 +138,8 @@ struct ReAuthenticationSheetView: View {
 
     private enum Field { case email, password }
 
+    @State private var error: (any Error)?
+
     @Environment(\.dismiss) private var dismiss
 
     @State private var email: String = ""
@@ -145,7 +148,6 @@ struct ReAuthenticationSheetView: View {
 
     @State private var showAppleLoginSheet: Bool = false
     @EnvironmentObject private var authenticationService: MCAuthenticationService
-    @EnvironmentObject private var controlState: ControlState
 
     @FocusState private var focusedField: Field?
 
@@ -188,11 +190,11 @@ struct ReAuthenticationSheetView: View {
                     dismiss()
                 }
             } catch {
-                controlState.error = error
+                self.error = error
             }
 
         case let .failure(error):
-            controlState.error = error
+            self.error = error
         }
     }
 }

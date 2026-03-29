@@ -5,10 +5,21 @@ extension ContentServiceHandler {
         isFetchingExercises = true
         defer { isFetchingExercises = false }
 
-        let networkResponse = try await MCContentRepository.shared.generateUserExercises()
-        userExercises = networkResponse.data
+        while true {
+            do {
+                let networkResponse = try await MCContentRepository.shared.generateUserExercises()
+                userExercises = networkResponse.data
 
-        await fetchUserExercisesMeta()
+                await fetchUserExercisesMeta()
+
+                break
+            } catch {
+                if (error as? LongPolling) != nil {
+                    continue
+                }
+                throw error
+            }
+        }
     }
 
     func fetchUserExercisesMeta() async {

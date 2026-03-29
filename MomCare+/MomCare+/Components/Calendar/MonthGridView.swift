@@ -17,7 +17,7 @@ struct MonthGridView: View {
                 ForEach(orderedWeekdaySymbols, id: \.self) { symbol in
                     Text(symbol)
                         .font(.caption.weight(.medium))
-                        .foregroundColor(.secondary)
+                        .foregroundStyle(.secondary)
                         .frame(maxWidth: .infinity)
                 }
             }

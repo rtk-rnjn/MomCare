@@ -89,13 +89,13 @@ struct MoodNestSongsView: View {
             VStack(alignment: .leading, spacing: 8) {
                 Text(playlist.name)
                     .font(.title2.weight(.bold))
-                    .foregroundColor(.white)
+                    .foregroundStyle(.white)
                     .lineLimit(2)
                     .shadow(color: .black.opacity(0.3), radius: 2, x: 0, y: 1)
 
                 Text("\(songs.count) songs • \(totalDuration)")
                     .font(.body)
-                    .foregroundColor(.white.opacity(0.85))
+                    .foregroundStyle(.white.opacity(0.85))
                     .shadow(color: .black.opacity(0.3), radius: 2, x: 0, y: 1)
             }
 
@@ -129,7 +129,7 @@ struct MoodNestSongsView: View {
             }
             .frame(maxWidth: .infinity)
             .padding(.vertical, 14)
-            .foregroundColor(.black)
+            .foregroundStyle(.black)
             .background(Color.white)
             .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
             .shadow(color: .black.opacity(0.2), radius: 8, x: 0, y: 4)
@@ -151,7 +151,7 @@ struct MoodNestSongsView: View {
             }
             .frame(maxWidth: .infinity)
             .padding(.vertical, 14)
-            .foregroundColor(.white)
+            .foregroundStyle(.white)
             .background(Color.black.opacity(0.3))
             .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
             .overlay(
@@ -289,7 +289,7 @@ struct PlaylistTrackRow: View {
     private var nowPlayingIndicator: some View {
         Image(systemName: musicKitHandler.isPlaying ? "waveform" : "pause.fill")
             .font(.body.weight(.semibold))
-            .foregroundColor(.white)
+            .foregroundStyle(.white)
             .symbolEffect(
                 .variableColor.iterative,
                 options: .repeating,

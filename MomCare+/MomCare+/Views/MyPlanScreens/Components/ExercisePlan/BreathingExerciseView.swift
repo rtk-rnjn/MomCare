@@ -52,7 +52,7 @@ struct BreathingExerciseView: View {
                 ToolbarItem(placement: .principal) {
                     Text("Breathing Exercise")
                         .font(.headline.weight(.medium))
-                        .foregroundColor(darkAccent.opacity(0.7))
+                        .foregroundStyle(darkAccent.opacity(0.7))
                         .accessibilityAddTraits(.isHeader)
                 }
             }
@@ -60,7 +60,7 @@ struct BreathingExerciseView: View {
             .navigationSubtitle(
                 Text(formatTime(totalElapsed))
                     .font(.title3.weight(.semibold))
-                    .foregroundColor(darkAccent)
+                    .foregroundStyle(darkAccent)
                     .monospacedDigit()
             )
         }
@@ -238,7 +238,7 @@ struct BreathingExerciseView: View {
         VStack(spacing: 8) {
             Text(phase.rawValue)
                 .font(.title.weight(.semibold))
-                .foregroundColor(darkAccent)
+                .foregroundStyle(darkAccent)
                 .animation(reduceMotion ? nil : .easeInOut(duration: 0.3), value: phase)
                 .accessibilityLabel("Current phase: \(phase.rawValue)")
                 .accessibilityAddTraits(.updatesFrequently)
@@ -247,7 +247,7 @@ struct BreathingExerciseView: View {
                 Text("\(phaseCountdown)")
                     .font(.largeTitle.weight(.light))
                     .fontDesign(.rounded)
-                    .foregroundColor(darkAccent.opacity(0.6))
+                    .foregroundStyle(darkAccent.opacity(0.6))
                     .monospacedDigit()
                     .contentTransition(reduceMotion ? .identity : .numericText())
                     .animation(reduceMotion ? nil : .easeInOut(duration: 0.2), value: phaseCountdown)
@@ -256,7 +256,7 @@ struct BreathingExerciseView: View {
             } else {
                 Text("Session Complete")
                     .font(.subheadline)
-                    .foregroundColor(darkAccent.opacity(0.6))
+                    .foregroundStyle(darkAccent.opacity(0.6))
             }
         }
     }
@@ -286,13 +286,13 @@ struct BreathingExerciseView: View {
             HStack {
                 Text(formatTime(totalElapsed))
                     .font(.caption2.weight(.medium))
-                    .foregroundColor(darkAccent.opacity(0.5))
+                    .foregroundStyle(darkAccent.opacity(0.5))
 
                 Spacer()
 
                 Text(formatTime(totalDuration))
                     .font(.caption2.weight(.medium))
-                    .foregroundColor(darkAccent.opacity(0.5))
+                    .foregroundStyle(darkAccent.opacity(0.5))
             }
             .accessibilityHidden(true)
         }

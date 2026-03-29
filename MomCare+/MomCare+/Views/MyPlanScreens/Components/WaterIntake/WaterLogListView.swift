@@ -99,7 +99,7 @@ struct WaterLogListView: View {
         VStack(spacing: 8) {
             HStack(alignment: .top, spacing: 10) {
                 Image(systemName: "quote.bubble.fill")
-                    .foregroundColor(Color(hex: "924350").opacity(0.65))
+                    .foregroundStyle(Color(hex: "924350").opacity(0.65))
                     .font(.subheadline)
                     .padding(.top, 1)
                     .accessibilityHidden(true)
@@ -114,7 +114,7 @@ struct WaterLogListView: View {
             let tip = WaterStore.waterTips[tipIndex]
             HStack(alignment: .top, spacing: 10) {
                 Image(systemName: tip.icon)
-                    .foregroundColor(Color(hex: "5B9BD5"))
+                    .foregroundStyle(Color(hex: "5B9BD5"))
                     .font(.subheadline)
                     .frame(width: 20)
                     .padding(.top, 1)
@@ -190,10 +190,10 @@ struct WaterLogListView: View {
 
     private func statPill(icon: String, label: String, value: String, color: Color) -> some View {
         VStack(spacing: 4) {
-            Image(systemName: icon).font(.caption).foregroundColor(color)
+            Image(systemName: icon).font(.caption).foregroundStyle(color)
             Text(value)
                 .font(.subheadline.weight(.bold))
-                .foregroundColor(color)
+                .foregroundStyle(color)
                 .contentTransition(reduceMotion ? .identity : .numericText())
                 .minimumScaleFactor(0.7)
                 .lineLimit(1)
@@ -210,13 +210,13 @@ struct WaterLogListView: View {
                     .frame(width: 34, height: 34)
                 Image(systemName: "drop.fill")
                     .font(.footnote)
-                    .foregroundColor(Color(hex: "5B9BD5"))
+                    .foregroundStyle(Color(hex: "5B9BD5"))
             }
 
             VStack(alignment: .leading, spacing: 2) {
                 Text(entry.formattedAmount)
                     .font(.subheadline.weight(.semibold))
-                    .foregroundColor(Color(hex: "924350"))
+                    .foregroundStyle(Color(hex: "924350"))
                 Text(entry.formattedDateTime)
                     .font(.caption)
                     .foregroundStyle(.secondary)
@@ -282,7 +282,7 @@ struct AddWaterEntrySheet: View {
                                 } label: {
                                     Text("\(Int(p))ml")
                                         .font(.subheadline.weight(.semibold))
-                                        .foregroundColor(amount == p ? .white : Color(hex: "924350"))
+                                        .foregroundStyle(amount == p ? .white : Color(hex: "924350"))
                                         .padding(.horizontal, 14)
                                         .padding(.vertical, 8)
                                         .background(amount == p ? Color(hex: "924350") : Color(hex: "FAE8E4"),
@@ -333,7 +333,7 @@ struct AddWaterEntrySheet: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
-                    Button("Cancel") { dismiss() }.foregroundColor(Color(hex: "924350"))
+                    Button("Cancel") { dismiss() }.foregroundStyle(Color(hex: "924350"))
                 }
                 ToolbarItem(placement: .confirmationAction) {
                     Button("Add") {
@@ -343,7 +343,7 @@ struct AddWaterEntrySheet: View {
                         }
                     }
                     .fontWeight(.semibold)
-                    .foregroundColor(Color(hex: "924350"))
+                    .foregroundStyle(Color(hex: "924350"))
                     .disabled(amount <= 0)
                 }
             }

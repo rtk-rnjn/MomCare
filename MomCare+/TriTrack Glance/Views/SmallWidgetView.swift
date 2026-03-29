@@ -11,11 +11,11 @@ struct SmallWidgetView: View {
                     Text("Week \(entry.week)")
                         .font(.title2)
                         .fontWeight(.bold)
-                        .foregroundColor(.primary)
+                        .foregroundStyle(.primary)
 
                     Text("Day \(entry.day)")
                         .font(.headline)
-                        .foregroundColor(.secondary)
+                        .foregroundStyle(.secondary)
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
 
@@ -23,7 +23,7 @@ struct SmallWidgetView: View {
 
                 Text(entry.fruitComparison.isEmpty ? "" : "Size of a \(entry.fruitComparison)")
                     .font(.caption2)
-                    .foregroundColor(.secondary)
+                    .foregroundStyle(.secondary)
                     .lineLimit(1)
 
                 Spacer(minLength: 6)
@@ -31,7 +31,7 @@ struct SmallWidgetView: View {
                 Text("Trimester \(entry.trimester)")
                     .font(.caption)
                     .fontWeight(.semibold)
-                    .foregroundColor(Color(red: 139 / 255, green: 69 / 255, blue: 87 / 255))
+                    .foregroundStyle(Color(red: 139 / 255, green: 69 / 255, blue: 87 / 255))
             }
             .padding(14)
             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
@@ -39,11 +39,11 @@ struct SmallWidgetView: View {
             VStack(spacing: 8) {
                 Image(systemName: "heart.circle")
                     .font(.title2)
-                    .foregroundColor(.secondary)
+                    .foregroundStyle(.secondary)
 
                 Text("Open MomCare\nto get started")
                     .font(.caption)
-                    .foregroundColor(.secondary)
+                    .foregroundStyle(.secondary)
                     .multilineTextAlignment(.center)
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)

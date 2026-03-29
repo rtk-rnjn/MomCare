@@ -9,7 +9,7 @@ struct ProfileMomCareWatchView: View {
             Section("Status") {
                 Label(connector.session?.isReachable == true ? "Watch Reachable" : "Watch Not Reachable",
                       systemImage: connector.session?.isReachable == true ? "checkmark.circle.fill" : "xmark.circle.fill")
-                    .foregroundColor(connector.session?.isReachable == true ? .green : .red)
+                    .foregroundStyle(connector.session?.isReachable == true ? .green : .red)
 
                 HStack {
                     Text("Activation State")

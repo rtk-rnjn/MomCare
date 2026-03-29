@@ -6,6 +6,7 @@ import UIKit
 import UserNotifications
 import WidgetKit
 
+private let refreshTaskIdentifier = "com.MomCare.BackgroundTask.RefreshToken"
 private let logger: Logger = MomCareLogger.appDelegate
 
 class AppDelegate: NSObject, UIApplicationDelegate, ObservableObject {
@@ -15,11 +16,11 @@ class AppDelegate: NSObject, UIApplicationDelegate, ObservableObject {
         [UIApplication.LaunchOptionsKey: Any]? = nil
     ) -> Bool {
         logger.info("App launched with options: \(launchOptions.debugDescription)")
+        UNUserNotificationCenter.current().delegate = self
+
         UIApplication.shared.registerForRemoteNotifications()
 
         WidgetCenter.shared.reloadAllTimelines()
-
-        UNUserNotificationCenter.current().delegate = self
 
         UISegmentedControl.appearance().selectedSegmentTintColor = .white
         UISegmentedControl.appearance().backgroundColor = UIColor(Color.CustomColors.mutedRaspberry)
@@ -52,10 +53,40 @@ class AppDelegate: NSObject, UIApplicationDelegate, ObservableObject {
     func application(_: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: any Error) {
         logger.error("Failed to register for remote notifications: \(error.localizedDescription)")
     }
+
+    func application(_: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable: Any]) async -> UIBackgroundFetchResult {
+        print("Push received:", userInfo)
+        return .newData
+    }
 }
 
 extension AppDelegate: UNUserNotificationCenterDelegate {
     nonisolated func userNotificationCenter(_: UNUserNotificationCenter, willPresent _: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
         completionHandler([.banner, .sound, .badge])
+    }
+}
+
+extension AppDelegate {
+    func registerBackgroundRefreshTask() {
+        BGTaskScheduler.shared.register(forTaskWithIdentifier: refreshTaskIdentifier, using: .main) { task in
+            if let task = task as? BGAppRefreshTask {
+                self.scheduleBackgroundRefresh()
+                Task {
+                    await MCAuthenticationService.refresh(task: task)
+                }
+            }
+        }
+    }
+
+    func scheduleBackgroundRefresh() {
+        let request = BGAppRefreshTaskRequest(identifier: refreshTaskIdentifier)
+        request.earliestBeginDate = Date(timeIntervalSinceNow: 30 * 60)
+
+        do {
+            try BGTaskScheduler.shared.submit(request)
+            logger.info("Scheduled background refresh task")
+        } catch {
+            logger.error("Failed to schedule background refresh task: \(error.localizedDescription)")
+        }
     }
 }

@@ -14,7 +14,7 @@ struct ExerciseCardView: View {
                 VStack(alignment: .leading, spacing: 0) {
                     Text(exercise?.level.rawValue ?? "")
                         .font(.caption.weight(.medium))
-                        .foregroundColor(.secondary)
+                        .foregroundStyle(.secondary)
                         .padding(.bottom, 8)
 
                     Text(exercise?.name ?? "Exercise")
@@ -22,7 +22,7 @@ struct ExerciseCardView: View {
 
                     Text("\(Int(completionProgress * 100))% completed")
                         .font(.caption.weight(.medium))
-                        .foregroundColor(.secondary)
+                        .foregroundStyle(.secondary)
                         .padding(.bottom, 12)
                         .contentTransition(reduceMotion ? .identity : .numericText())
                         .animation(reduceMotion ? nil : .easeInOut, value: completionProgress)
@@ -39,7 +39,7 @@ struct ExerciseCardView: View {
                                 .accessibilityHidden(true)
                         }
                         .font(.subheadline.weight(.semibold))
-                        .foregroundColor(.white)
+                        .foregroundStyle(.white)
                         .padding(.horizontal, 20)
                         .padding(.vertical, 10)
                         .background(
@@ -73,7 +73,7 @@ struct ExerciseCardView: View {
                     } else {
                         Image(systemName: "figure.strengthtraining.traditional")
                             .font(.title)
-                            .foregroundColor(darkAccentColor)
+                            .foregroundStyle(darkAccentColor)
                     }
                 }
                 .frame(width: 80, height: 80)
@@ -84,7 +84,7 @@ struct ExerciseCardView: View {
             Button(action: onTapInfo) {
                 Image(systemName: "info.circle.fill")
                     .font(.title3)
-                    .foregroundColor(darkAccentColor.opacity(0.5))
+                    .foregroundStyle(darkAccentColor.opacity(0.5))
             }
             .accessibilityLabel("Exercise information")
             .accessibilityHint("Shows details about this exercise")

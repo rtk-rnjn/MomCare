@@ -21,15 +21,14 @@ struct RefreshError: LocalizedError {
 struct MomCareMainTabView: View {
     // MARK: Internal
 
-    @Environment(\.horizontalSizeClass) var sizeClass
-    @Environment(\.openURL) var openURL
-
     var body: some View {
         tabViewContent(bottomPadding: 0)
             .tint(MomCareAccent.primary)
     }
 
     // MARK: Private
+
+    @Environment(\.openURL) private var openURL
 
     @EnvironmentObject private var authenticationService: MCAuthenticationService
     @EnvironmentObject private var contentServiceHandler: ContentServiceHandler

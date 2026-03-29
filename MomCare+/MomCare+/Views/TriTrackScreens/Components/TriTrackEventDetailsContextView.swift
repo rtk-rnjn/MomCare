@@ -9,7 +9,7 @@ struct TriTrackEventDetailsContextView: View {
             HStack(alignment: .top, spacing: 14) {
                 Image(systemName: "calendar")
                     .font(.title3.weight(.semibold))
-                    .foregroundColor(MomCareAccent.primary)
+                    .foregroundStyle(MomCareAccent.primary)
                     .frame(width: 28)
                     .accessibilityHidden(true)
 
@@ -23,7 +23,7 @@ struct TriTrackEventDetailsContextView: View {
                        !location.isEmpty {
                         Text(location)
                             .font(.subheadline)
-                            .foregroundColor(.secondary)
+                            .foregroundStyle(.secondary)
                     }
                 }
             }
@@ -31,7 +31,7 @@ struct TriTrackEventDetailsContextView: View {
             HStack(alignment: .top, spacing: 14) {
                 Image(systemName: "clock")
                     .font(.body.weight(.medium))
-                    .foregroundColor(.orange)
+                    .foregroundStyle(.orange)
                     .frame(width: 28)
                     .accessibilityHidden(true)
 
@@ -43,7 +43,7 @@ struct TriTrackEventDetailsContextView: View {
                         Text(
                             "\(event.startDate.formatted(.dateTime.hour().minute())) – \(event.endDate.formatted(.dateTime.hour().minute()))"
                         )
-                        .foregroundColor(.secondary)
+                        .foregroundStyle(.secondary)
 
                     } else {
                         Text("From")
@@ -54,7 +54,7 @@ struct TriTrackEventDetailsContextView: View {
                                 .dateTime.weekday(.abbreviated).day().month().year().hour().minute()
                             )
                         )
-                        .foregroundColor(.secondary)
+                        .foregroundStyle(.secondary)
 
                         Text("To")
                             .fontWeight(.medium)
@@ -65,7 +65,7 @@ struct TriTrackEventDetailsContextView: View {
                                 .dateTime.weekday(.abbreviated).day().month().year().hour().minute()
                             )
                         )
-                        .foregroundColor(.secondary)
+                        .foregroundStyle(.secondary)
                     }
                 }
                 .font(.subheadline)
@@ -78,7 +78,7 @@ struct TriTrackEventDetailsContextView: View {
 
                 Text(notes)
                     .font(.footnote)
-                    .foregroundColor(.secondary)
+                    .foregroundStyle(.secondary)
                     .lineLimit(4)
                     .fixedSize(horizontal: false, vertical: true)
             }

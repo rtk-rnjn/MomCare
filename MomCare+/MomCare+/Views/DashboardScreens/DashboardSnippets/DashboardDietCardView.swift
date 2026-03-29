@@ -71,7 +71,7 @@ struct DashboardDietCardView: View {
                         .frame(width: 35, height: 35)
 
                     Image(systemName: "fork.knife")
-                        .foregroundColor(.white)
+                        .foregroundStyle(.white)
                 }
                 .accessibilityHidden(true)
 

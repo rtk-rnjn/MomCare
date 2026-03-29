@@ -231,12 +231,12 @@ private struct InfoRow: View {
     var body: some View {
         HStack {
             Text(title)
-                .foregroundColor(.primary)
+                .foregroundStyle(.primary)
 
             Spacer()
 
             Text(value)
-                .foregroundColor(isEditing ? Color("primaryAppColor") : .secondary)
+                .foregroundStyle(isEditing ? Color("primaryAppColor") : .secondary)
         }
         .accessibilityElement(children: .combine)
         .accessibilityLabel("\(title): \(value)")
@@ -253,13 +253,13 @@ private struct ProfileEditableTextRow: View {
     var body: some View {
         HStack {
             Text(title)
-                .foregroundColor(.primary)
+                .foregroundStyle(.primary)
 
             Spacer()
 
             TextField(displayText, text: $text)
                 .multilineTextAlignment(.trailing)
-                .foregroundColor(isEditing ? MomCareAccent.primary : .secondary)
+                .foregroundStyle(isEditing ? MomCareAccent.primary : .secondary)
                 .disabled(!isEditing)
                 .accessibilityLabel(title)
         }

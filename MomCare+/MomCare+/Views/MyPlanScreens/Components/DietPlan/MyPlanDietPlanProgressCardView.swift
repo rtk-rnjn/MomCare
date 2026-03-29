@@ -264,12 +264,12 @@ private struct CaloriesSummaryView: View {
         VStack(alignment: .leading, spacing: 8) {
             Label("Remaining", systemImage: "flame")
                 .font(.caption.weight(.semibold))
-                .foregroundColor(.secondary)
+                .foregroundStyle(.secondary)
                 .accessibilityHidden(true)
 
             Text(Measurement(value: remaining, unit: UnitEnergy.kilocalories), format: .measurement(width: .wide, usage: .food))
                 .font(.title3.weight(.bold))
-                .foregroundColor(isOver ? .red : .primary)
+                .foregroundStyle(isOver ? .red : .primary)
                 .contentTransition(reduceMotion ? .identity : .numericText(countsDown: true))
                 .animation(reduceMotion ? nil : .easeInOut, value: remaining)
                 .accessibilityLabel(isOver ? "Over budget" : "Remaining calories")
@@ -286,7 +286,7 @@ private struct CaloriesSummaryView: View {
                     systemImage: "exclamationmark.triangle.fill"
                 )
                 .font(.footnote)
-                .foregroundColor(.red)
+                .foregroundStyle(.red)
                 .contentTransition(reduceMotion ? .identity : .numericText(value: overMeasurement.value))
                 .animation(reduceMotion ? nil : .easeInOut, value: overMeasurement.value)
                 .accessibilityLabel(
@@ -391,7 +391,7 @@ private struct ExpandedDetailView: View {
             VStack(alignment: .leading, spacing: 4) {
                 Text("Micros")
                     .font(.caption.weight(.semibold))
-                    .foregroundColor(.secondary)
+                    .foregroundStyle(.secondary)
                     .textCase(.uppercase)
                     .accessibilityAddTraits(.isHeader)
 
@@ -417,7 +417,7 @@ private struct ExpandedDetailView: View {
             VStack(alignment: .leading, spacing: 4) {
                 Text("Calories")
                     .font(.caption.weight(.semibold))
-                    .foregroundColor(.secondary)
+                    .foregroundStyle(.secondary)
                     .textCase(.uppercase)
                     .accessibilityAddTraits(.isHeader)
 
@@ -438,7 +438,7 @@ private struct ExpandedDetailView: View {
                 VStack(alignment: .leading, spacing: 8) {
                     Text("Meals")
                         .font(.caption.weight(.semibold))
-                        .foregroundColor(.secondary)
+                        .foregroundStyle(.secondary)
                         .textCase(.uppercase)
                         .accessibilityAddTraits(.isHeader)
 
@@ -486,13 +486,13 @@ private struct CalorieStatPill: View {
         VStack(spacing: 2) {
             Text(value, format: .number)
                 .font(.subheadline.weight(.semibold))
-                .foregroundColor(color)
+                .foregroundStyle(color)
                 .contentTransition(reduceMotion ? .identity : .numericText())
                 .animation(reduceMotion ? nil : .easeInOut, value: value)
 
             Text(label)
                 .font(.caption2)
-                .foregroundColor(.secondary)
+                .foregroundStyle(.secondary)
         }
         .frame(maxWidth: .infinity)
         .padding(.vertical, 8)
@@ -516,7 +516,7 @@ private struct MealRow: View {
         HStack(spacing: 10) {
             Image(systemName: mealType.iconName)
                 .font(.caption)
-                .foregroundColor(.secondary)
+                .foregroundStyle(.secondary)
                 .frame(width: 20)
                 .accessibilityHidden(true)
 
@@ -539,7 +539,7 @@ private struct MealRow: View {
 
             Text("\(consumed)/\(total)")
                 .font(.caption2)
-                .foregroundColor(.secondary)
+                .foregroundStyle(.secondary)
                 .frame(width: 32, alignment: .trailing)
                 .monospacedDigit()
         }
@@ -813,7 +813,7 @@ private struct MacroBarRow: View {
             HStack {
                 Text(title)
                     .font(.caption)
-                    .foregroundColor(.primary)
+                    .foregroundStyle(.primary)
 
                 Spacer()
 
@@ -835,7 +835,7 @@ private struct MacroBarRow: View {
                     togglePercentageDisplay()
                 }
                 .font(.caption)
-                .foregroundColor(.primary)
+                .foregroundStyle(.primary)
                 .animation(reduceMotion ? nil : .easeInOut, value: showPercentage)
             }
 
@@ -948,7 +948,7 @@ private struct MacroBarRow: View {
 
                     if difference > 0 {
                         Text("(\(difference, format: .number.sign(strategy: .always())))")
-                            .foregroundColor(.secondary)
+                            .foregroundStyle(.secondary)
                             .contentTransition(reduceMotion ? .identity : .numericText(value: difference))
                             .animation(reduceMotion ? nil : .easeInOut, value: difference)
                     }
@@ -964,19 +964,19 @@ private struct MacroBarRow: View {
                 if let recommendedGoal, targetModification != nil {
                     HStack {
                         Text(recommendedGoal.formattedOneDecimal)
-                            .foregroundColor(modificationColor)
+                            .foregroundStyle(modificationColor)
 
                         if targetModification == .increased {
                             Image(systemName: "arrow.up")
                                 .font(.caption2.bold())
-                                .foregroundColor(modificationColor)
+                                .foregroundStyle(modificationColor)
                                 .contentTransition(reduceMotion ? .identity : .symbolEffect)
                                 .animation(reduceMotion ? nil : .easeInOut, value: targetModification)
 
                         } else if targetModification == .decreased {
                             Image(systemName: "arrow.down")
                                 .font(.caption2.bold())
-                                .foregroundColor(modificationColor)
+                                .foregroundStyle(modificationColor)
                                 .contentTransition(reduceMotion ? .identity : .symbolEffect)
                                 .animation(reduceMotion ? nil : .easeInOut, value: targetModification)
                         }

@@ -62,7 +62,7 @@ struct MoodNestPlaylistsView: View {
     var captionSection: some View {
         Text(moodResultViewModel.caption)
             .font(.title.weight(.bold))
-            .foregroundColor(.primary)
+            .foregroundStyle(.primary)
             .lineLimit(3)
             .fixedSize(horizontal: false, vertical: true)
             .frame(maxWidth: .infinity, alignment: .leading)
@@ -81,7 +81,7 @@ struct MoodNestPlaylistsView: View {
         VStack(alignment: .leading, spacing: 16) {
             Text("More Playlists")
                 .font(.title3.weight(.bold))
-                .foregroundColor(.primary)
+                .foregroundStyle(.primary)
                 .accessibilityAddTraits(.isHeader)
 
             LazyVGrid(
@@ -139,7 +139,7 @@ struct MoodNestPlaylistsView: View {
                     VStack(alignment: .leading, spacing: 16) {
                         Text(hero.name)
                             .font(.title.weight(.bold))
-                            .foregroundColor(.white)
+                            .foregroundStyle(.white)
                             .lineLimit(2)
                             .shadow(color: .black.opacity(0.3), radius: 4, x: 0, y: 2)
 
@@ -154,7 +154,7 @@ struct MoodNestPlaylistsView: View {
                                 Text("Play Now")
                                     .font(.body.weight(.bold))
                             }
-                            .foregroundColor(.black)
+                            .foregroundStyle(.black)
                             .padding(.horizontal, 24)
                             .padding(.vertical, 12)
                             .background(Color.white)

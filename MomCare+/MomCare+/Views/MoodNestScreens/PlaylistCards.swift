@@ -41,7 +41,7 @@ struct PlaylistCard: View {
 
             Text(playlist.name)
                 .font(.callout.weight(.bold))
-                .foregroundColor(.white)
+                .foregroundStyle(.white)
                 .padding(12)
                 .lineLimit(2)
                 .shadow(color: reduceTransparency ? .clear : .black.opacity(0.3), radius: 3, x: 0, y: 2)

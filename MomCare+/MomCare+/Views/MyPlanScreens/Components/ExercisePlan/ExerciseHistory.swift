@@ -83,7 +83,7 @@ struct ExerciseHistory: View {
                     } label: {
                         Image(systemName: "calendar")
                             .font(.body)
-                            .foregroundColor(Color.CustomColors.mutedRaspberry)
+                            .foregroundStyle(Color.CustomColors.mutedRaspberry)
                             .symbolEffect(.bounce, value: controlState.showingExpandedCalendar)
                     }
                     .accessibilityLabel(controlState.showingExpandedCalendar ? "Collapse calendar" : "Expand calendar")
@@ -96,7 +96,7 @@ struct ExerciseHistory: View {
                     } label: {
                         Image(systemName: "\(Calendar.current.component(.day, from: Date())).calendar")
                             .font(.body)
-                            .foregroundColor(Color.CustomColors.mutedRaspberry)
+                            .foregroundStyle(Color.CustomColors.mutedRaspberry)
                     }
                     .accessibilityLabel("Jump to today")
                     .accessibilityIdentifier("jumpToTodayButton")

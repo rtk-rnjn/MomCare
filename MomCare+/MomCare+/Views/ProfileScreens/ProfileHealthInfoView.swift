@@ -48,7 +48,7 @@ struct ProfileHealthInfoView: View {
             } footer: {
                 Text("This information helps us provide you with more personalized content and recommendations.")
                     .font(.footnote)
-                    .foregroundColor(.secondary)
+                    .foregroundStyle(.secondary)
             }
 
             Section {
@@ -159,11 +159,11 @@ struct ProfileHealthInfoView: View {
                 Spacer()
 
                 Text(value)
-                    .foregroundColor(isEditing ? Color("primaryAppColor") : .secondary)
+                    .foregroundStyle(isEditing ? Color("primaryAppColor") : .secondary)
 
                 if isEditing {
                     Image(systemName: "chevron.right")
-                        .foregroundColor(Color(UIColor.tertiaryLabel))
+                        .foregroundStyle(Color(UIColor.tertiaryLabel))
                 }
             }
         }

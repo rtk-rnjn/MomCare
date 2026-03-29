@@ -13,7 +13,7 @@ struct GlobalRightsView: View {
                             .frame(width: 60, height: 60)
                         Image(systemName: "hand.raised.fill")
                             .font(.largeTitle.weight(.bold))
-                            .foregroundColor(accentColor)
+                            .foregroundStyle(accentColor)
                     }
                     .accessibilityHidden(true)
 
@@ -26,7 +26,7 @@ struct GlobalRightsView: View {
 
                     Text("We are committed to safeguarding your privacy. You have the right to control your personal information, and we make it easy for you to do so.")
                         .font(.subheadline)
-                        .foregroundColor(.primary)
+                        .foregroundStyle(.primary)
                         .multilineTextAlignment(.center)
                 }
                 .padding(.top, 32)
@@ -57,13 +57,13 @@ struct GlobalRightsView: View {
 
                     Text("To exercise any of these rights, please send a clear request to our dedicated privacy team. We will respond to your request in a timely manner, in accordance with applicable law.")
                         .font(.subheadline)
-                        .foregroundColor(.secondary)
+                        .foregroundStyle(.secondary)
                         .multilineTextAlignment(.center)
 
                     Text("support.momcare@vision-labs.site")
                         .font(.headline)
                         .fontWeight(.semibold)
-                        .foregroundColor(accentColor)
+                        .foregroundStyle(accentColor)
                         .padding(.vertical, 12)
                         .padding(.horizontal, 24)
                         .background(Color.gray.opacity(0.1))
@@ -93,7 +93,7 @@ struct GDPRRightView: View {
         HStack(alignment: .top, spacing: 12) {
             Image(systemName: iconName)
                 .font(.title2)
-                .foregroundColor(accentColor)
+                .foregroundStyle(accentColor)
                 .frame(width: 24, alignment: .center)
                 .accessibilityHidden(true)
 
@@ -104,7 +104,7 @@ struct GDPRRightView: View {
 
                 Text(description)
                     .font(.subheadline)
-                    .foregroundColor(.primary)
+                    .foregroundStyle(.primary)
                     .lineSpacing(4)
             }
         }

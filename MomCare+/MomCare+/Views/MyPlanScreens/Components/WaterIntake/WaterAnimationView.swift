@@ -61,7 +61,7 @@ struct WaterDropFillView: View {
                     Spacer()
                     Text("\(Int(animatedProgress * 100))%")
                         .font(.title.weight(.bold))
-                        .foregroundColor(.white)
+                        .foregroundStyle(.white)
                         .shadow(color: Color(hex: "4A90C4").opacity(0.4), radius: 4, x: 0, y: 2)
                         .contentTransition(reduceMotion ? .identity : .numericText())
                         .animation(reduceMotion ? nil : .easeInOut, value: Int(animatedProgress * 100))

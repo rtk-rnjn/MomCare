@@ -12,7 +12,7 @@ struct TriTrackEventRow: View {
         HStack(spacing: 14) {
             dateCapsule
 
-            appointmentInfo()
+            appointmentInfo
 
             Spacer()
         }
@@ -48,7 +48,7 @@ extension TriTrackEventRow {
                 .fill(isToday ? Color.CustomColors.mutedRaspberry :
                         Color(.systemGray6))
         )
-        .foregroundColor(isToday ? .white : .primary)
+        .foregroundStyle(isToday ? .white : .primary)
         .overlay(
             isToday && differentiateWithoutColor
             ? RoundedRectangle(cornerRadius: 12)
@@ -60,7 +60,7 @@ extension TriTrackEventRow {
 }
 
 extension TriTrackEventRow {
-    func appointmentInfo() -> some View {
+    var appointmentInfo: some View {
         VStack(alignment: .leading, spacing: 4) {
             Text(event.title)
                 .font(.headline)
@@ -110,7 +110,7 @@ extension TriTrackEventRow {
                !location.isEmpty {
                 Text(location)
                     .font(.caption)
-                    .foregroundColor(.secondary)
+                    .foregroundStyle(.secondary)
                     .lineLimit(1)
             }
         }

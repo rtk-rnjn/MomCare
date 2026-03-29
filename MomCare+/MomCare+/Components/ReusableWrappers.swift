@@ -12,12 +12,12 @@ struct InfoRowDate: View {
     var body: some View {
         HStack {
             Text(title)
-                .foregroundColor(.primary)
+                .foregroundStyle(.primary)
 
             Spacer()
 
             Text(formatted)
-                .foregroundColor(isEditing ? Color("primaryAppColor") : .secondary)
+                .foregroundStyle(isEditing ? Color("primaryAppColor") : .secondary)
         }
         .contentShape(Rectangle())
         .onTapGesture {

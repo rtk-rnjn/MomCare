@@ -139,7 +139,7 @@ struct ProfileAccountSecurityView: View {
                             Text("Change Password")
                             Spacer()
                             Image(systemName: isChangingPassword ? "chevron.down" : "chevron.right")
-                                .foregroundColor(.secondary)
+                                .foregroundStyle(.secondary)
                                 .contentTransition(reduceMotion ? .identity : .symbolEffect)
                                 .animation(
                                     reduceMotion ? nil : .easeInOut,
@@ -147,7 +147,7 @@ struct ProfileAccountSecurityView: View {
                                 )
                         }
                     }
-                    .foregroundColor(.primary)
+                    .foregroundStyle(.primary)
                     .accessibilityHint(isChangingPassword ? "Collapses the password change form" : "Expands the password change form")
 
                     if isChangingPassword {
@@ -155,29 +155,47 @@ struct ProfileAccountSecurityView: View {
                         SecureFieldRow(title: "New Password", text: $newPassword)
                         SecureFieldRow(title: "Confirm Password", text: $confirmPassword)
 
-                        Button("Change") {
+                        Button {
                             validatePasswordAndSubmit {
                                 do {
                                     _ = try await authenticationService.changePassword(
                                         currentPassword: oldPassword,
                                         newPassword: newPassword
                                     )
+                                    await authenticationService.logout()
                                 } catch {
                                     controlState.error = error
                                 }
                             }
+                        } label: {
+                            if isLoading {
+                                ProgressView()
+                                    .progressViewStyle(CircularProgressViewStyle(tint: Color("primaryAppColor")))
+                            } else {
+                                Text("Change")
+                            }
                         }
                         .frame(maxWidth: .infinity)
-                        .foregroundColor(canSubmit ? Color("primaryAppColor") : .secondary)
+                        .foregroundStyle(canSubmit ? Color("primaryAppColor") : .secondary)
                         .disabled(!canSubmit)
+                        .onAppear {
+                            if let password = KeychainHelper.get(.password) {
+                                oldPassword = password
+                            }
+                        }
                         .accessibilityLabel("Change password")
                         .accessibilityHint("Submits the new password")
                     }
                 } header: {
                     Text("Security")
                 } footer: {
-                    Text("Your password must be at least 6 characters long. Make sure to choose a strong password to keep your account secure.")
+                    let text = isChangingPassword ? "Your password must be at least 6 characters long. Make sure to choose a strong password to keep your account secure." : "Changing your password will log you out of all devices. You will need to sign in again with your new password."
+
+                    Text(text)
                         .font(.footnote)
+                        .foregroundStyle(isChangingPassword ? .secondary : Color.red)
+                        .contentTransition(reduceMotion ? .identity : .interpolate)
+                        .animation(reduceMotion ? nil : .interpolatingSpring, value: text)
                 }
             } else {
                 Section {
@@ -201,10 +219,10 @@ struct ProfileAccountSecurityView: View {
                     } label: {
                         if hasAppleIdentifier {
                             Text("Connected")
-                                .foregroundColor(.red)
+                                .foregroundStyle(.red)
                         } else {
                             Text("Connect")
-                                .foregroundColor(.black)
+                                .foregroundStyle(.black)
                         }
                     }
                     .disabled(hasAppleIdentifier)
@@ -285,6 +303,9 @@ struct ProfileAccountSecurityView: View {
     }
 
     func validatePasswordAndSubmit(completion: (() async -> Void)? = nil) {
+        isLoading = true
+        defer { isLoading = false }
+
         guard canSubmit else {
             controlState.error = PasswordFieldsEmptyError()
             return
@@ -304,6 +325,8 @@ struct ProfileAccountSecurityView: View {
     }
 
     // MARK: Private
+
+    @State private var isLoading = false
 
     @State private var emailAddress: String = ""
 

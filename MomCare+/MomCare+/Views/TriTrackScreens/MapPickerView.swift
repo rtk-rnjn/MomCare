@@ -116,6 +116,7 @@ struct MapPickerView: View {
         )
 }
 
+@MainActor
 final class MapSearchService: NSObject, ObservableObject {
     // MARK: Lifecycle
 

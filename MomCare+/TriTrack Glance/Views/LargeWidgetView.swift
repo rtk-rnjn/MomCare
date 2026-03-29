@@ -31,11 +31,11 @@ struct LargeWidgetView: View {
             VStack(spacing: 12) {
                 Image(systemName: "heart.circle")
                     .font(.largeTitle)
-                    .foregroundColor(.secondary)
+                    .foregroundStyle(.secondary)
 
                 Text("Open MomCare to get started")
                     .font(.body)
-                    .foregroundColor(.secondary)
+                    .foregroundStyle(.secondary)
                     .multilineTextAlignment(.center)
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -86,7 +86,7 @@ struct LargeWidgetView: View {
             Text("Trimester \(entry.trimester)")
                 .font(.headline)
                 .fontWeight(.semibold)
-                .foregroundColor(Color(red: 139 / 255, green: 69 / 255, blue: 87 / 255))
+                .foregroundStyle(Color(red: 139 / 255, green: 69 / 255, blue: 87 / 255))
         }
     }
 
@@ -94,7 +94,7 @@ struct LargeWidgetView: View {
         VStack(alignment: .leading, spacing: 8) {
             Text("Baby this week")
                 .font(.caption)
-                .foregroundColor(.secondary)
+                .foregroundStyle(.secondary)
                 .textCase(.uppercase)
 
             if !entry.fruitComparison.isEmpty {
@@ -110,7 +110,7 @@ struct LargeWidgetView: View {
             } else {
                 Text("Data unavailable")
                     .font(.body)
-                    .foregroundColor(.secondary)
+                    .foregroundStyle(.secondary)
             }
         }
     }
@@ -147,7 +147,7 @@ struct LargeWidgetView: View {
                     Image(systemName: "leaf.circle.fill")
                         .resizable()
                         .scaledToFit()
-                        .foregroundColor(.green)
+                        .foregroundStyle(.green)
 
                 @unknown default:
                     EmptyView()
@@ -157,7 +157,7 @@ struct LargeWidgetView: View {
             Image(systemName: "leaf.circle.fill")
                 .resizable()
                 .scaledToFit()
-                .foregroundColor(.green)
+                .foregroundStyle(.green)
         }
     }
 
@@ -165,7 +165,7 @@ struct LargeWidgetView: View {
         VStack(alignment: .leading, spacing: 2) {
             Text(label)
                 .font(.caption2)
-                .foregroundColor(.secondary)
+                .foregroundStyle(.secondary)
 
             Text(value)
                 .font(.body)

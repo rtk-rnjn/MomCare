@@ -76,7 +76,7 @@ struct ExerciseRow: View {
                     .frame(width: 32, height: 32)
 
                 Image(systemName: icon)
-                    .foregroundColor(.white)
+                    .foregroundStyle(.white)
                     .font(.caption.weight(.bold))
             }
             .accessibilityHidden(true)

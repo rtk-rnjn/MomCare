@@ -12,7 +12,7 @@ struct DashboardInsightCardView: View {
             VStack(alignment: .leading, spacing: 6) {
                 Text(message)
                     .font(.subheadline)
-                    .foregroundColor(.secondary)
+                    .foregroundStyle(.secondary)
                     .fontWeight(.semibold)
                     .lineLimit(nil)
                     .fixedSize(horizontal: false, vertical: true)
@@ -43,7 +43,7 @@ struct DashboardInsightCardView: View {
                         .frame(width: 38, height: 38)
 
                     Image(systemName: icon)
-                        .foregroundColor(.primary)
+                        .foregroundStyle(.primary)
                         .font(.title3)
                 }
                 .accessibilityHidden(true)

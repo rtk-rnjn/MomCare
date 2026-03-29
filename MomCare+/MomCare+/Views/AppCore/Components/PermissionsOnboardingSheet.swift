@@ -2,6 +2,7 @@ import EventKit
 import HealthKit
 import SwiftUI
 import UIKit
+import UserNotifications
 
 private let kFirstTime = "momcare_firsttime"
 
@@ -47,11 +48,26 @@ struct EKReminderError: LocalizedError {
     }
 }
 
+struct UserNotificationError: LocalizedError {
+    var errorDescription: String? {
+        "Notification Access Denied"
+    }
+
+    var failureReason: String? {
+        "The app does not have permission to send notifications."
+    }
+
+    var recoverySuggestion: String? {
+        "Please grant Notification permissions in Settings to receive timely updates and reminders."
+    }
+}
+
 private struct AppPermission: Identifiable {
     enum PermissionType {
         case healthKit
         case calendar
         case reminders
+        case notifications
     }
 
     let id: UUID = .init()
@@ -166,6 +182,13 @@ struct PermissionsOnboardingSheet: View {
             title: "Reminders",
             reason: "We'll nudge you gently — medication, hydration, prenatal vitamins — so your routine stays effortless.",
             type: .reminders
+        ),
+        AppPermission(
+            icon: "bell",
+            iconColor: .pink,
+            title: "Notifications",
+            reason: "Timely updates on your meal plans, exercises, and daily insights to keep you in the loop.",
+            type: .notifications
         )
     ]
 
@@ -367,6 +390,9 @@ private struct PermissionRow: View {
                         if !granted {
                             ekReminderError = EKReminderError()
                         }
+
+                    case .notifications:
+                        await requestNotificationPermission()
                     }
                 } catch {
                     permission.isEnabled = false
@@ -374,6 +400,7 @@ private struct PermissionRow: View {
                     case .healthKit: healthKitError = error
                     case .calendar: ekEventError = error
                     case .reminders: ekReminderError = error
+                    case .notifications: self.error = error
                     }
                 }
             }
@@ -418,4 +445,18 @@ private struct PermissionRow: View {
 
     @EnvironmentObject private var contentServiceHandler: ContentServiceHandler
     @EnvironmentObject private var eventKitHandler: EventKitHandler
+
+    private func requestNotificationPermission() async {
+        let center = UNUserNotificationCenter.current()
+        do {
+            let settings = try await center.requestAuthorization(options: [.alert, .badge, .sound])
+            permission.isEnabled = settings
+            if !settings {
+                error = UserNotificationError()
+            }
+        } catch {
+            permission.isEnabled = false
+            self.error = error
+        }
+    }
 }

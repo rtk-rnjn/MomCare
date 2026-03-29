@@ -49,7 +49,7 @@ struct PrivacyPolicyView: View {
                     .frame(width: 60, height: 60)
                 Image(systemName: "lock.shield")
                     .font(.largeTitle.weight(.bold))
-                    .foregroundColor(accentColor)
+                    .foregroundStyle(accentColor)
             }
             .accessibilityHidden(true)
 
@@ -62,7 +62,7 @@ struct PrivacyPolicyView: View {
 
             Text(PrivacyPolicyText.headerSubtitle)
                 .font(.subheadline)
-                .foregroundColor(.primary)
+                .foregroundStyle(.primary)
                 .multilineTextAlignment(.center)
         }
     }
@@ -72,7 +72,7 @@ struct PrivacyPolicyView: View {
             HStack(spacing: 12) {
                 Image(systemName: "envelope")
                     .font(.title2)
-                    .foregroundColor(accentColor)
+                    .foregroundStyle(accentColor)
                     .frame(width: 24, alignment: .center)
                     .accessibilityHidden(true)
 
@@ -83,33 +83,33 @@ struct PrivacyPolicyView: View {
 
             Text(PrivacyPolicyText.contactSubtitle)
                 .font(.subheadline)
-                .foregroundColor(.primary)
+                .foregroundStyle(.primary)
                 .lineSpacing(4)
 
             VStack(alignment: .leading, spacing: 8) {
                 HStack(spacing: 8) {
                     Image(systemName: "envelope.fill")
-                        .foregroundColor(accentColor)
+                        .foregroundStyle(accentColor)
                         .accessibilityHidden(true)
                     Text(PrivacyPolicyText.contactEmail)
                         .font(.subheadline)
-                        .foregroundColor(.primary)
+                        .foregroundStyle(.primary)
                 }
 
                 HStack(spacing: 8) {
                     Image(systemName: "globe")
-                        .foregroundColor(accentColor)
+                        .foregroundStyle(accentColor)
                         .accessibilityHidden(true)
                     Text(PrivacyPolicyText.contactWebsite)
                         .font(.subheadline)
-                        .foregroundColor(.primary)
+                        .foregroundStyle(.primary)
                 }
             }
 
             Text(PrivacyPolicyText.contactFooter)
                 .multilineTextAlignment(.center)
                 .font(.subheadline)
-                .foregroundColor(accentColor)
+                .foregroundStyle(accentColor)
                 .padding(.top, 8)
                 .frame(maxWidth: .infinity, alignment: .center)
         }
@@ -128,7 +128,7 @@ struct PolicySectionView: View {
             HStack(spacing: 12) {
                 Image(systemName: iconName(for: title))
                     .font(.title2)
-                    .foregroundColor(accentColor)
+                    .foregroundStyle(accentColor)
                     .frame(width: 24, alignment: .center)
                     .accessibilityHidden(true)
 
@@ -144,7 +144,7 @@ struct PolicySectionView: View {
                     } else {
                         Text(line)
                             .font(.subheadline)
-                            .foregroundColor(.primary)
+                            .foregroundStyle(.primary)
                             .lineSpacing(4)
                     }
                 }
@@ -176,7 +176,7 @@ struct PrivacyBulletPoint: View {
                 .accessibilityHidden(true)
             Text(text.dropFirst(1))
                 .font(.subheadline)
-                .foregroundColor(.primary)
+                .foregroundStyle(.primary)
         }
     }
 }

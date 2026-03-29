@@ -71,7 +71,7 @@ struct OnboardingView: View {
                     NavigationLink(destination: SignInView()) {
                         Text("Continue with Email")
                             .font(.title3)
-                            .foregroundColor(.white)
+                            .foregroundStyle(.white)
                             .frame(maxWidth: .infinity)
                             .frame(height: 52)
                             .background(MomCareAccent.primary)

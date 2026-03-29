@@ -387,7 +387,7 @@ private struct DateBadgePreview: View {
             RoundedRectangle(cornerRadius: 12)
                 .fill(color)
         )
-        .foregroundColor(textColor)
+        .foregroundStyle(textColor)
     }
 }
 
@@ -400,7 +400,7 @@ private struct CalendarIconBadge: View {
                 RoundedRectangle(cornerRadius: 12)
                     .fill(Color(.systemGray6))
             )
-            .foregroundColor(.primary)
+            .foregroundStyle(.primary)
     }
 }
 
