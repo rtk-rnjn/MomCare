@@ -185,19 +185,6 @@ struct ProfileAccountSecurityView: View {
                         }
                         .accessibilityLabel("Change password")
                         .accessibilityHint("Submits the new password")
-                        .accessibilityAction {
-                            validatePasswordAndSubmit {
-                                do {
-                                    _ = try await authenticationService.changePassword(
-                                        currentPassword: oldPassword,
-                                        newPassword: newPassword
-                                    )
-                                    await authenticationService.logout()
-                                } catch {
-                                    controlState.error = error
-                                }
-                            }
-                        }
                     }
                 } header: {
                     Text("Security")
