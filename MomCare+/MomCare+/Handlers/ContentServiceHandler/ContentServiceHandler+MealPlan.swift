@@ -14,7 +14,7 @@ extension ContentServiceHandler {
 
                 break
             } catch {
-                if let _ = error as? LongPolling {
+                if (error as? LongPolling) != nil {
                     continue
                 }
                 throw error

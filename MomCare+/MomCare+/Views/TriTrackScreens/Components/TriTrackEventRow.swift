@@ -12,7 +12,7 @@ struct TriTrackEventRow: View {
         HStack(spacing: 14) {
             dateCapsule
 
-            appointmentInfo()
+            appointmentInfo
 
             Spacer()
         }
@@ -60,7 +60,7 @@ extension TriTrackEventRow {
 }
 
 extension TriTrackEventRow {
-    func appointmentInfo() -> some View {
+    var appointmentInfo: some View {
         VStack(alignment: .leading, spacing: 4) {
             Text(event.title)
                 .font(.headline)
