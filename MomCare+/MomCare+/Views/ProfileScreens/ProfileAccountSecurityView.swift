@@ -139,7 +139,7 @@ struct ProfileAccountSecurityView: View {
                             Text("Change Password")
                             Spacer()
                             Image(systemName: isChangingPassword ? "chevron.down" : "chevron.right")
-                                .foregroundColor(.secondary)
+                                .foregroundStyle(.secondary)
                                 .contentTransition(reduceMotion ? .identity : .symbolEffect)
                                 .animation(
                                     reduceMotion ? nil : .easeInOut,
@@ -147,7 +147,7 @@ struct ProfileAccountSecurityView: View {
                                 )
                         }
                     }
-                    .foregroundColor(.primary)
+                    .foregroundStyle(.primary)
                     .accessibilityHint(isChangingPassword ? "Collapses the password change form" : "Expands the password change form")
 
                     if isChangingPassword {
@@ -168,7 +168,7 @@ struct ProfileAccountSecurityView: View {
                             }
                         }
                         .frame(maxWidth: .infinity)
-                        .foregroundColor(canSubmit ? Color("primaryAppColor") : .secondary)
+                        .foregroundStyle(canSubmit ? Color("primaryAppColor") : .secondary)
                         .disabled(!canSubmit)
                         .accessibilityLabel("Change password")
                         .accessibilityHint("Submits the new password")
@@ -201,10 +201,10 @@ struct ProfileAccountSecurityView: View {
                     } label: {
                         if hasAppleIdentifier {
                             Text("Connected")
-                                .foregroundColor(.red)
+                                .foregroundStyle(.red)
                         } else {
                             Text("Connect")
-                                .foregroundColor(.black)
+                                .foregroundStyle(.black)
                         }
                     }
                     .disabled(hasAppleIdentifier)

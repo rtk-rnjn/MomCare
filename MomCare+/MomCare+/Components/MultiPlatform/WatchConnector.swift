@@ -9,6 +9,7 @@ import WatchConnectivity
     private let logger: os.Logger = .init(subsystem: "com.MomCare.WatchApp.WatchConnector", category: "WatchConnector")
 #endif
 
+@MainActor
 class WatchConnector: NSObject, WCSessionDelegate {
     // MARK: Lifecycle
 

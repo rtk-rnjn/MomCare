@@ -13,7 +13,7 @@ struct DisclaimersView: View {
                             .frame(width: 60, height: 60)
                         Image(systemName: "exclamationmark.shield")
                             .font(.largeTitle.weight(.bold))
-                            .foregroundColor(accentColor)
+                            .foregroundStyle(accentColor)
                     }
                     .accessibilityHidden(true)
                     Text("MomCare supports you, but your doctor knows you best!")
@@ -25,7 +25,7 @@ struct DisclaimersView: View {
 
                     Text("Your safety and understanding are important to us. Please review the information below before using MomCare+.")
                         .font(.subheadline)
-                        .foregroundColor(.primary)
+                        .foregroundStyle(.primary)
                         .multilineTextAlignment(.center)
                 }
                 .padding(.top, 32)
@@ -49,7 +49,7 @@ struct DisclaimersView: View {
                 VStack(spacing: 16) {
                     Text("By using MomCare+, you acknowledge that you have read and understood these disclaimers.")
                         .font(.footnote)
-                        .foregroundColor(accentColor)
+                        .foregroundStyle(accentColor)
                 }
                 .padding(.top, 16)
             }
@@ -72,7 +72,7 @@ struct DisclaimerSection: View {
             HStack(alignment: .top, spacing: 12) {
                 Image(systemName: icon)
                     .font(.title2)
-                    .foregroundColor(accentColor)
+                    .foregroundStyle(accentColor)
                     .frame(width: 24, alignment: .leading)
                     .accessibilityHidden(true)
 
@@ -90,7 +90,7 @@ struct DisclaimerSection: View {
                 Text(.init(source))
                     .font(.footnote)
                     .italic()
-                    .foregroundColor(.secondary)
+                    .foregroundStyle(.secondary)
                     .padding(.top, 4)
             }
         }

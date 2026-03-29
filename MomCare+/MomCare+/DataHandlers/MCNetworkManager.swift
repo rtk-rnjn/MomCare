@@ -12,6 +12,20 @@ enum HTTPMethod: String {
     case PATCH
 }
 
+struct LongPollingResponse: Codable, Sendable {
+    enum CodingKeys: String, CodingKey {
+        case status
+        case taskIdentifier = "task_id"
+        case detail
+        case retryAfterSeconds = "retry_after_seconds"
+    }
+
+    let status: String
+    let taskIdentifier: String
+    let detail: String
+    let retryAfterSeconds: Double
+}
+
 struct NetworkResponse<T: Codable & Sendable>: Codable, Sendable {
     enum CodingKeys: String, CodingKey {
         case data
@@ -22,7 +36,7 @@ struct NetworkResponse<T: Codable & Sendable>: Codable, Sendable {
     let statusCode: Int
 }
 
-class MCNetworkManager {
+actor MCNetworkManager {
     // MARK: Internal
 
     nonisolated static let shared: MCNetworkManager = .init()
@@ -51,6 +65,7 @@ class MCNetworkManager {
         try await request(url: url, method: .PATCH, body: body, queryParameters: queryParameters, headers: headers)
     }
 
+    @MainActor
     func fetchStreamedData<T: Codable & CustomStringConvertible>(
         _ method: HTTPMethod,
         url: String,
@@ -96,6 +111,7 @@ class MCNetworkManager {
 
     // MARK: Private
 
+    @MainActor
     private var isNetworkHapticsEnabled: Bool {
         let key = FeatureFlagState.networkHaptics.rawValue
         let userDefaults = UserDefaults(suiteName: "group.MomCare")
@@ -148,7 +164,7 @@ class MCNetworkManager {
 
     nonisolated private func performRequest<T: Codable & Sendable>(_ request: URLRequest) async throws -> NetworkResponse<T> { // swiftlint:disable:this cyclomatic_complexity
         let url = request.url?.absoluteString ?? "unknown URL"
-        await logger.info("Performing \(request.httpMethod ?? "UNKNOWN") request to \(url)")
+        logger.info("Performing \(request.httpMethod ?? "UNKNOWN") request to \(url)")
 
         do {
             var attempts = 5
@@ -168,7 +184,7 @@ class MCNetworkManager {
                     if let urlError = error as? URLError {
                         switch urlError.code {
                         case .networkConnectionLost, .notConnectedToInternet, .timedOut:
-                            await logger.warning("Network error occurred for request to \(url): \(urlError.localizedDescription). Retrying... (\(5 - attempts) attempts left)")
+                            logger.warning("Network error occurred for request to \(url): \(urlError.localizedDescription). Retrying... (\(5 - attempts) attempts left)")
 
                             try? await Task.sleep(nanoseconds: UInt64(1_000_000_000 * (attempts % 5)))
 
@@ -208,12 +224,12 @@ class MCNetworkManager {
 
     nonisolated private func handleRequest<T: Codable & Sendable>(response: URLResponse, data: Data, url: String) async throws -> NetworkResponse<T> {
         guard let httpResponse = response as? HTTPURLResponse else {
-            await logger.error("Invalid response for request to \(url)")
+            logger.error("Invalid response for request to \(url)")
 
             throw URLError(.badServerResponse)
         }
 
-        await logger.info("Received response with status code \(httpResponse.statusCode) for request to \(url)")
+        logger.info("Received response with status code \(httpResponse.statusCode) for request to \(url)")
 
         if httpResponse.statusCode >= 400 {
             await MainActor.run { if isNetworkHapticsEnabled {
@@ -222,11 +238,17 @@ class MCNetworkManager {
 
             if let errorResponse: HTTPErrorResponse = try? data.decodeUsingJSONDecoder() {
                 let osLogMessage = errorResponse.detail.toOSLogMessageString()
-                await logger.error("HTTP Exception: \(osLogMessage)")
+                logger.error("HTTP Exception: \(osLogMessage)")
                 throw APIErrorResolver.error(from: httpResponse.statusCode, with: errorResponse)
             }
 
             throw APIErrorResolver.error(from: httpResponse.statusCode, with: nil)
+        }
+
+        if let longPolling: LongPollingResponse = try? data.decodeUsingJSONDecoder() {
+            logger.info("Received long polling response for request to \(url): status=\(longPolling.status), taskIdentifier=\(longPolling.taskIdentifier, privacy: .public), detail=\(longPolling.detail, privacy: .public), retryAfterSeconds=\(longPolling.retryAfterSeconds)")
+
+            throw APIErrorResolver.longPollingResponse(longPolling)
         }
 
         let maybeData: T = try data.decodeUsingJSONDecoder()

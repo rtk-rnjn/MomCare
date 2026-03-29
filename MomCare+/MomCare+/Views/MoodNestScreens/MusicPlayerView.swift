@@ -27,12 +27,12 @@ struct MusicPlayerView: View {
                     Text(musicPlayerHandler.currentSong?.metadata?.title ?? "Unknown Title")
                         .font(.title2)
                         .fontWeight(.bold)
-                        .foregroundColor(.white)
+                        .foregroundStyle(.white)
                         .lineLimit(1)
 
                     Text(musicPlayerHandler.currentSong?.metadata?.author ?? "")
                         .font(.title3)
-                        .foregroundColor(.white.opacity(0.6))
+                        .foregroundStyle(.white.opacity(0.6))
                         .lineLimit(1)
                 }
 
@@ -41,7 +41,7 @@ struct MusicPlayerView: View {
                 Button {} label: {
                     Image(systemName: "ellipsis.circle.fill")
                         .font(.title2)
-                        .foregroundColor(.white.opacity(0.6))
+                        .foregroundStyle(.white.opacity(0.6))
                         .symbolRenderingMode(.hierarchical)
                 }
                 .accessibilityLabel("Song options")
@@ -67,7 +67,7 @@ struct MusicPlayerView: View {
                     Text(Utils.formattedTime(musicPlayerHandler.player?.currentItem?.duration.seconds ?? 0))
                 }
                 .font(.caption)
-                .foregroundColor(.white.opacity(0.5))
+                .foregroundStyle(.white.opacity(0.5))
                 .monospacedDigit()
                 .accessibilityHidden(true)
             }
@@ -80,7 +80,7 @@ struct MusicPlayerView: View {
                 } label: {
                     Image(systemName: "backward.fill")
                         .font(.title)
-                        .foregroundColor(.white)
+                        .foregroundStyle(.white)
                 }
                 .accessibilityLabel("Previous track")
                 .frame(minWidth: 44, minHeight: 44)
@@ -91,7 +91,7 @@ struct MusicPlayerView: View {
                 } label: {
                     Image(systemName: musicPlayerHandler.player?.timeControlStatus == .playing ? "pause.fill" : "play.fill")
                         .font(.largeTitle)
-                        .foregroundColor(.white)
+                        .foregroundStyle(.white)
                         .frame(width: 56, height: 56)
                         .animation(
                             reduceMotion ? .linear(duration: 0.05) : .easeInOut,
@@ -106,7 +106,7 @@ struct MusicPlayerView: View {
                 } label: {
                     Image(systemName: "forward.fill")
                         .font(.title)
-                        .foregroundColor(.white)
+                        .foregroundStyle(.white)
                 }
                 .accessibilityLabel("Next track")
                 .frame(minWidth: 44, minHeight: 44)
@@ -117,7 +117,7 @@ struct MusicPlayerView: View {
             VStack(spacing: 12) {
                 HStack {
                     Image(systemName: "speaker.fill")
-                        .foregroundColor(.white.opacity(0.7))
+                        .foregroundStyle(.white.opacity(0.7))
                         .accessibilityHidden(true)
 
                     SystemVolumeSlider()
@@ -127,7 +127,7 @@ struct MusicPlayerView: View {
 
                     HStack(spacing: 12) {
                         Image(systemName: "speaker.wave.3.fill")
-                            .foregroundColor(.white.opacity(0.7))
+                            .foregroundStyle(.white.opacity(0.7))
                             .accessibilityHidden(true)
                         SystemRoutePicker()
                             .frame(width: 30, height: 30)

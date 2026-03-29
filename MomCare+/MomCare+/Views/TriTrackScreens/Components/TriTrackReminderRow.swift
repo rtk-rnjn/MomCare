@@ -154,7 +154,7 @@ extension TriTrackReminderRow {
             RoundedRectangle(cornerRadius: 12)
                 .fill(backgroundColor(now: Date()))
         )
-        .foregroundColor(foregroundColor(now: Date()))
+        .foregroundStyle(foregroundColor(now: Date()))
         .overlay(
             differentiateWithoutColor && dueDate ?? Date() < Date()
             ? Image(systemName: hasRecurrence ? "exclamationmark.2" : "exclamationmark")
@@ -190,13 +190,13 @@ extension TriTrackReminderRow {
                             .foregroundStyle(.secondary)
                     }
                 }
-                .foregroundColor(.secondary)
+                .foregroundStyle(.secondary)
             }
 
             if let notes = reminder.notes, !notes.isEmpty {
                 Text(notes)
                     .font(.caption)
-                    .foregroundColor(.secondary)
+                    .foregroundStyle(.secondary)
                     .lineLimit(1)
             }
         }
@@ -206,7 +206,7 @@ extension TriTrackReminderRow {
 extension TriTrackReminderRow {
     var completionIndicator: some View {
         Image(systemName: reminder.isCompleted ? "checkmark.circle.fill" : "circle")
-            .foregroundColor(
+            .foregroundStyle(
                 reminder.isCompleted
                 ? .green
                 : (dueDate ?? Date() < Date() ? .red : .gray.opacity(0.6))

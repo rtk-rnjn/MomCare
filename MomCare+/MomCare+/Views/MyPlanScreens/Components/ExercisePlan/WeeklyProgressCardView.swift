@@ -13,7 +13,7 @@ struct WeeklyProgressCardView: View {
             HStack {
                 Text("Weekly Progress")
                     .font(.headline)
-                    .foregroundColor(.primary)
+                    .foregroundStyle(.primary)
                     .accessibilityAddTraits(.isHeader)
 
                 Spacer()
@@ -21,7 +21,7 @@ struct WeeklyProgressCardView: View {
                 let weekday = Calendar.current.component(.weekday, from: Date())
                 Text("\(weekday)/7 days")
                     .font(.subheadline)
-                    .foregroundColor(.secondary)
+                    .foregroundStyle(.secondary)
                     .accessibilityHidden(true)
                     .contentTransition(reduceMotion ? .identity : .numericText(value: Double(weekday)))
                     .animation(reduceMotion ? nil : .easeInOut, value: weekday)
@@ -40,12 +40,12 @@ struct WeeklyProgressCardView: View {
                     HStack(spacing: 6) {
                         Image(systemName: "target")
                             .font(.subheadline)
-                            .foregroundColor(Color.CustomColors.mutedRaspberry)
+                            .foregroundStyle(Color.CustomColors.mutedRaspberry)
                             .accessibilityHidden(true)
 
                         Text("Total: \(completedCount)/\(totalCount)")
                             .font(.subheadline.weight(.semibold))
-                            .foregroundColor(.primary)
+                            .foregroundStyle(.primary)
                             .contentTransition(reduceMotion ? .identity : .numericText(value: Double(completedCount)))
                             .animation(reduceMotion ? nil : .easeInOut, value: completedCount)
                     }
@@ -54,7 +54,7 @@ struct WeeklyProgressCardView: View {
 
                     Text("\(Int(overallProgress * 100))%")
                         .font(.subheadline.weight(.bold))
-                        .foregroundColor(Color.CustomColors.mutedRaspberry)
+                        .foregroundStyle(Color.CustomColors.mutedRaspberry)
                         .contentTransition(reduceMotion ? .identity : .numericText(value: overallProgress))
                         .animation(reduceMotion ? nil : .easeInOut, value: overallProgress)
                 }
@@ -110,7 +110,7 @@ private struct DayRingView: View {
         VStack(spacing: 6) {
             Text(dayName)
                 .font(.caption.weight(.semibold))
-                .foregroundColor(Calendar.current.isDate(date, inSameDayAs: Date()) ? .black : Color.CustomColors.mutedRaspberry)
+                .foregroundStyle(Calendar.current.isDate(date, inSameDayAs: Date()) ? .black : Color.CustomColors.mutedRaspberry)
 
             ZStack {
                 Circle()
@@ -128,7 +128,7 @@ private struct DayRingView: View {
                 if progress >= 1.0 {
                     Image(systemName: "checkmark")
                         .font(.caption2.bold())
-                        .foregroundColor(Color.CustomColors.mutedRaspberry)
+                        .foregroundStyle(Color.CustomColors.mutedRaspberry)
                 }
             }
             .frame(width: 30, height: 30)

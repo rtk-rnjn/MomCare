@@ -22,7 +22,7 @@ struct ProfileAccountManagementView: View {
             } footer: {
                 Text("Deleting your account will permanently remove all your data from MomCare+. This action cannot be undone.")
                     .font(.footnote)
-                    .foregroundColor(.secondary)
+                    .foregroundStyle(.secondary)
             }
         }
         .listStyle(.insetGrouped)

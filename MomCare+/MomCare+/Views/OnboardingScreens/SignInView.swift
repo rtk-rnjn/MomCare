@@ -150,7 +150,7 @@ struct SignInView: View {
             } footer: {
                 if !isValidEmail(emailAddress), !emailAddress.isEmpty, focusedField != .email {
                     Text("Please enter a valid email address.")
-                        .foregroundColor(.red)
+                        .foregroundStyle(.red)
                         .accessibilityLabel("Invalid email address")
                         .accessibilityHint("The email address you entered is not valid. Please correct it before submitting.")
                 }

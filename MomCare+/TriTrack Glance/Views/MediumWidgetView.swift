@@ -16,14 +16,14 @@ struct MediumWidgetView: View {
 
                     Text("Day \(entry.day)")
                         .font(.headline)
-                        .foregroundColor(.secondary)
+                        .foregroundStyle(.secondary)
 
                     Spacer(minLength: 4)
 
                     Text("Trimester \(entry.trimester)")
                         .font(.subheadline)
                         .fontWeight(.semibold)
-                        .foregroundColor(Color(red: 139 / 255, green: 69 / 255, blue: 87 / 255))
+                        .foregroundStyle(Color(red: 139 / 255, green: 69 / 255, blue: 87 / 255))
                 }
                 .frame(maxHeight: .infinity, alignment: .leading)
                 .padding(.trailing, 12)
@@ -34,7 +34,7 @@ struct MediumWidgetView: View {
                 VStack(alignment: .leading, spacing: 8) {
                     Text("Baby this week")
                         .font(.caption)
-                        .foregroundColor(.secondary)
+                        .foregroundStyle(.secondary)
                         .textCase(.uppercase)
 
                     if !entry.fruitComparison.isEmpty {
@@ -51,7 +51,7 @@ struct MediumWidgetView: View {
                     } else {
                         Text("Data unavailable")
                             .font(.subheadline)
-                            .foregroundColor(.secondary)
+                            .foregroundStyle(.secondary)
                     }
                 }
                 .padding(.leading, 12)
@@ -63,11 +63,11 @@ struct MediumWidgetView: View {
             HStack(spacing: 12) {
                 Image(systemName: "heart.circle")
                     .font(.title2)
-                    .foregroundColor(.secondary)
+                    .foregroundStyle(.secondary)
 
                 Text("Open MomCare to get started")
                     .font(.subheadline)
-                    .foregroundColor(.secondary)
+                    .foregroundStyle(.secondary)
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
         }
@@ -89,7 +89,7 @@ struct MediumWidgetView: View {
                     Image(systemName: "leaf.circle.fill")
                         .resizable()
                         .scaledToFit()
-                        .foregroundColor(.green)
+                        .foregroundStyle(.green)
 
                 @unknown default:
                     EmptyView()
@@ -99,7 +99,7 @@ struct MediumWidgetView: View {
             Image(systemName: "leaf.circle.fill")
                 .resizable()
                 .scaledToFit()
-                .foregroundColor(.green)
+                .foregroundStyle(.green)
         }
     }
 }

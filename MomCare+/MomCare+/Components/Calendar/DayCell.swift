@@ -13,12 +13,12 @@ struct DayCell: View {
             if showWeekday {
                 Text(date.formatted(.dateTime.weekday(.abbreviated)))
                     .font(.footnote.weight(.medium))
-                    .foregroundColor(.secondary)
+                    .foregroundStyle(.secondary)
             }
 
             Text(date.formatted(.dateTime.day()))
                 .font(.body.weight(isSelected ? .semibold : .regular))
-                .foregroundColor(isSelected ? .white : (isToday ? Color.CustomColors.mutedRaspberry : .primary))
+                .foregroundStyle(isSelected ? .white : (isToday ? Color.CustomColors.mutedRaspberry : .primary))
                 .frame(width: 36, height: 36)
                 .background(Circle().fill(isSelected ? Color.CustomColors.mutedRaspberry : (isToday ? Color.CustomColors.mutedRaspberry.opacity(0.25) : Color.clear)))
         }

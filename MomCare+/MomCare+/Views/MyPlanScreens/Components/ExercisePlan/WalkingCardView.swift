@@ -13,12 +13,12 @@ struct WalkingCardView: View {
                 HStack(spacing: 8) {
                     Image(systemName: "figure.walk")
                         .font(.title3.weight(.medium))
-                        .foregroundColor(Color(hex: "4A8A62"))
+                        .foregroundStyle(Color(hex: "4A8A62"))
                         .accessibilityHidden(true)
 
                     Text("Walking")
                         .font(.headline)
-                        .foregroundColor(.primary)
+                        .foregroundStyle(.primary)
                 }
 
                 Spacer()
@@ -26,18 +26,18 @@ struct WalkingCardView: View {
                 if stepsToday >= stepsGoal {
                     Label("Done", systemImage: "checkmark.circle.fill")
                         .font(.caption.weight(.semibold))
-                        .foregroundColor(Color(hex: "4A8A62"))
+                        .foregroundStyle(Color(hex: "4A8A62"))
                 } else {
                     HStack {
                         Text(percentCompleted, format: .number.precision(.fractionLength(2)))
                             .font(.subheadline.weight(.semibold))
-                            .foregroundColor(Color(hex: "4A8A62"))
+                            .foregroundStyle(Color(hex: "4A8A62"))
                             .contentTransition(reduceMotion ? .identity : .numericText(value: percentCompleted))
                             .animation(reduceMotion ? nil : .easeInOut(duration: 0.8), value: percentCompleted)
 
                         Text("%")
                             .font(.subheadline.weight(.semibold))
-                            .foregroundColor(Color(hex: "4A8A62"))
+                            .foregroundStyle(Color(hex: "4A8A62"))
                     }
                 }
             }
@@ -46,10 +46,10 @@ struct WalkingCardView: View {
                 VStack(alignment: .leading, spacing: 2) {
                     Text("\(Int(stepsToday))")
                         .font(.title2.weight(.bold))
-                        .foregroundColor(.primary)
+                        .foregroundStyle(.primary)
                     Text("Steps")
                         .font(.caption)
-                        .foregroundColor(.secondary)
+                        .foregroundStyle(.secondary)
                 }
 
                 Spacer()
@@ -57,10 +57,10 @@ struct WalkingCardView: View {
                 VStack(alignment: .trailing, spacing: 2) {
                     Text("\(Int(stepsGoal))")
                         .font(.callout.weight(.semibold))
-                        .foregroundColor(.secondary)
+                        .foregroundStyle(.secondary)
                     Text("Goal")
                         .font(.caption)
-                        .foregroundColor(.secondary)
+                        .foregroundStyle(.secondary)
                 }
             }
 

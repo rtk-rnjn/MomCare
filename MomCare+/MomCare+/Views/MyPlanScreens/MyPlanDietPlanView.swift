@@ -264,7 +264,7 @@ private struct NutritionGraphRootView: View {
                 .textCase(.uppercase)
             Text(value)
                 .font(.subheadline.weight(.bold))
-                .foregroundColor(color)
+                .foregroundStyle(color)
                 .contentTransition(reduceMotion ? .identity : .numericText())
                 .animation(reduceMotion ? nil : .easeInOut, value: value)
         }
@@ -309,7 +309,7 @@ private struct VitalCardRow: View {
                     .frame(width: 44, height: 44)
                 Image(systemName: kind.sfSymbol)
                     .font(.title3.weight(.medium))
-                    .foregroundColor(kind.color)
+                    .foregroundStyle(kind.color)
             }
             .accessibilityHidden(true)
 
@@ -323,7 +323,7 @@ private struct VitalCardRow: View {
 
                     Text("\(formattedValue(todayValue)) \(kind.unitLabel)")
                         .font(.subheadline.weight(.medium))
-                        .foregroundColor(kind.color)
+                        .foregroundStyle(kind.color)
                         .monospacedDigit()
                 }
 
@@ -488,7 +488,7 @@ private struct VitalDetailView: View {
                     .frame(width: 56, height: 56)
                 Image(systemName: kind.sfSymbol)
                     .font(.title2)
-                    .foregroundColor(kind.color)
+                    .foregroundStyle(kind.color)
             }
             .accessibilityHidden(true)
 
@@ -557,7 +557,7 @@ private struct VitalDetailView: View {
         VStack(alignment: .leading, spacing: 8) {
             Label("About \(kind.rawValue)", systemImage: "info.circle.fill")
                 .font(.subheadline.weight(.semibold))
-                .foregroundColor(kind.color)
+                .foregroundStyle(kind.color)
 
             Text(kind.description)
                 .font(.subheadline)
@@ -602,7 +602,7 @@ private struct VitalDetailView: View {
                     Spacer()
                     Text("\(formattedValue(pt.value)) \(kind.unitLabel)")
                         .font(.caption.weight(.bold))
-                        .foregroundColor(kind.color)
+                        .foregroundStyle(kind.color)
                 }
                 .padding(.horizontal, 4)
                 .transition(unsafe reduceMotion ? .opacity : .opacity.combined(with: .scale(scale: 0.95)))
@@ -747,7 +747,7 @@ private struct VitalDetailView: View {
         HStack(alignment: .top, spacing: 12) {
             Image(systemName: "lightbulb.fill")
                 .font(.subheadline)
-                .foregroundColor(.orange)
+                .foregroundStyle(.orange)
                 .padding(.top, 1)
 
             VStack(alignment: .leading, spacing: 4) {

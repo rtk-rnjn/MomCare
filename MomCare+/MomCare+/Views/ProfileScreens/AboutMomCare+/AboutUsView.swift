@@ -46,7 +46,7 @@ struct AboutUsView: View {
 
                     Text("Crafted with care. Informed by evidence. Focused on you.")
                         .font(.footnote)
-                        .foregroundColor(.secondary)
+                        .foregroundStyle(.secondary)
                         .frame(maxWidth: .infinity, alignment: .center)
                         .padding(.bottom)
                         .padding(.top, 16)
@@ -69,13 +69,13 @@ struct AboutInfoView: View {
         VStack(alignment: .leading, spacing: 16) {
             HStack(spacing: 8) {
                 Image(systemName: iconName)
-                    .foregroundColor(iconColor)
+                    .foregroundStyle(iconColor)
                     .accessibilityHidden(true)
-                Text(eyebrowText).foregroundColor(.primary)
+                Text(eyebrowText).foregroundStyle(.primary)
                 Spacer()
             }
             .font(.caption.weight(.medium))
-            .foregroundColor(.primary)
+            .foregroundStyle(.primary)
             .padding(.horizontal, 12)
             .padding(.vertical, 10)
             .frame(maxWidth: .infinity)
@@ -86,13 +86,13 @@ struct AboutInfoView: View {
             Text(title)
                 .font(.title2)
                 .fontWeight(.bold)
-                .foregroundColor(.primary)
+                .foregroundStyle(.primary)
                 .textCase(.uppercase)
                 .accessibilityAddTraits(.isHeader)
 
             Text(bodyText)
                 .font(.body)
-                .foregroundColor(.primary)
+                .foregroundStyle(.primary)
                 .lineSpacing(6)
         }
         .padding(.horizontal)
@@ -113,14 +113,14 @@ struct ValueCardView: View {
 
                 Image(systemName: iconName)
                     .font(.title3)
-                    .foregroundColor(brandPink)
+                    .foregroundStyle(brandPink)
                     .accessibilityHidden(true)
             }
 
             Text(title)
                 .font(.footnote)
                 .fontWeight(.semibold)
-                .foregroundColor(.primary)
+                .foregroundStyle(.primary)
                 .multilineTextAlignment(.center)
         }
         .frame(minWidth: 0, maxWidth: .infinity, minHeight: 100)
@@ -137,13 +137,13 @@ struct QuoteView: View {
         VStack(spacing: 16) {
             Image(systemName: "quote.opening")
                 .font(.title.weight(.bold))
-                .foregroundColor(brandPink.opacity(0.5))
+                .foregroundStyle(brandPink.opacity(0.5))
                 .accessibilityHidden(true)
 
             Text(AboutUs.quote)
                 .font(.title3)
                 .fontWeight(.medium)
-                .foregroundColor(brandPink)
+                .foregroundStyle(brandPink)
                 .multilineTextAlignment(.center)
         }
         .padding(.horizontal)

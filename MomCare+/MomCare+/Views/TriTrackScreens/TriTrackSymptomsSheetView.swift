@@ -24,7 +24,7 @@ struct TriTrackSymptomsSheetView: View {
                         dismiss()
                     }, label: {
                         Text("Other")
-                            .foregroundColor(.primary)
+                            .foregroundStyle(.primary)
                     })
                     .accessibilityLabel("Other symptom")
                     .accessibilityHint("Double tap to log a custom symptom")
@@ -37,7 +37,7 @@ struct TriTrackSymptomsSheetView: View {
                             dismiss()
                         }, label: {
                             Text(symptom.name)
-                                .foregroundColor(.primary)
+                                .foregroundStyle(.primary)
                         })
                         .accessibilityHint("Double tap to select this symptom")
                     }

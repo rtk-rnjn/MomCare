@@ -48,7 +48,7 @@ extension TriTrackEventRow {
                 .fill(isToday ? Color.CustomColors.mutedRaspberry :
                         Color(.systemGray6))
         )
-        .foregroundColor(isToday ? .white : .primary)
+        .foregroundStyle(isToday ? .white : .primary)
         .overlay(
             isToday && differentiateWithoutColor
             ? RoundedRectangle(cornerRadius: 12)
@@ -110,7 +110,7 @@ extension TriTrackEventRow {
                !location.isEmpty {
                 Text(location)
                     .font(.caption)
-                    .foregroundColor(.secondary)
+                    .foregroundStyle(.secondary)
                     .lineLimit(1)
             }
         }

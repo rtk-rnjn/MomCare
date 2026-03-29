@@ -141,7 +141,7 @@ struct MyPlanExercisePlanView: View {
             HStack {
                 Text("Today's Exercises")
                     .font(.headline)
-                    .foregroundColor(.primary)
+                    .foregroundStyle(.primary)
                 Spacer()
             }
             .padding(.horizontal, 4)

@@ -51,7 +51,7 @@ struct WalkingHistoryView: View {
                     } label: {
                         Image(systemName: "calendar")
                             .font(.body)
-                            .foregroundColor(Color.CustomColors.mutedRaspberry)
+                            .foregroundStyle(Color.CustomColors.mutedRaspberry)
                             .symbolEffect(.bounce, value: controlState.showingExpandedCalendar)
                     }
                     .accessibilityLabel(controlState.showingExpandedCalendar ? "Collapse calendar" : "Expand calendar")
@@ -64,7 +64,7 @@ struct WalkingHistoryView: View {
                     } label: {
                         Image(systemName: "\(Calendar.current.component(.day, from: Date())).calendar")
                             .font(.body)
-                            .foregroundColor(Color.CustomColors.mutedRaspberry)
+                            .foregroundStyle(Color.CustomColors.mutedRaspberry)
                     }
                     .accessibilityLabel("Jump to today")
                     .accessibilityIdentifier("jumpToTodayButton")
@@ -146,7 +146,7 @@ struct WalkingHistoryView: View {
                 VStack(spacing: 1) {
                     Text("\(Int(progress * 100))%")
                         .font(.body.weight(.bold))
-                        .foregroundColor(Color(hex: "4A8A62"))
+                        .foregroundStyle(Color(hex: "4A8A62"))
                         .contentTransition(reduceMotion ? .identity : .numericText())
                         .animation(reduceMotion ? nil : .easeInOut, value: progress)
                 }
@@ -158,7 +158,7 @@ struct WalkingHistoryView: View {
                 HStack(alignment: .lastTextBaseline, spacing: 4) {
                     Text(selectedDateSteps.formatted())
                         .font(.largeTitle.weight(.heavy))
-                        .foregroundColor(.primary)
+                        .foregroundStyle(.primary)
                         .contentTransition(reduceMotion ? .identity : .numericText())
                         .animation(reduceMotion ? nil : .easeInOut, value: selectedDateSteps)
 
@@ -176,7 +176,7 @@ struct WalkingHistoryView: View {
                     if metGoal {
                         Label("Goal met", systemImage: "checkmark.circle.fill")
                             .font(.caption.weight(.semibold))
-                            .foregroundColor(Color(hex: "4A8A62"))
+                            .foregroundStyle(Color(hex: "4A8A62"))
                             .labelStyle(.titleAndIcon)
                     }
                 }
@@ -233,7 +233,7 @@ struct WalkingHistoryView: View {
                     Spacer()
                     Text(bar.steps.formatted() + " steps")
                         .font(.caption.weight(.bold))
-                        .foregroundColor(Color(hex: "4A8A62"))
+                        .foregroundStyle(Color(hex: "4A8A62"))
                 }
                 .padding(.horizontal, 4)
                 .transition(unsafe .opacity.combined(with: .scale(scale: 0.95)))
@@ -347,7 +347,7 @@ struct WalkingHistoryView: View {
                     .frame(width: 38, height: 38)
                 Image(systemName: icon)
                     .font(.callout.weight(.medium))
-                    .foregroundColor(color)
+                    .foregroundStyle(color)
             }
 
             VStack(alignment: .leading, spacing: 2) {
@@ -356,7 +356,7 @@ struct WalkingHistoryView: View {
                     .foregroundStyle(.secondary)
                 Text(value)
                     .font(.subheadline.weight(.bold))
-                    .foregroundColor(.primary)
+                    .foregroundStyle(.primary)
                     .contentTransition(reduceMotion ? .identity : .numericText())
                     .animation(reduceMotion ? nil : .easeInOut, value: value)
                 Text(unit)

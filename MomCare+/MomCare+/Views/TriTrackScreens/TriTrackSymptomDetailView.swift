@@ -14,7 +14,7 @@ struct TriTrackSymptomDetailView: View {
                     Text(symptom.name)
                         .font(.largeTitle)
                         .fontWeight(.bold)
-                        .foregroundColor(.black)
+                        .foregroundStyle(.black)
                         .accessibilityAddTraits(.isHeader)
 
                     HStack {
@@ -24,7 +24,7 @@ struct TriTrackSymptomDetailView: View {
                                 .padding(.horizontal, 10)
                                 .padding(.vertical, 5)
                                 .background(Color.black.opacity(0.05))
-                                .foregroundColor(.black.opacity(0.8))
+                                .foregroundStyle(.black.opacity(0.8))
                                 .clipShape(Capsule())
                         }
                     }
@@ -44,10 +44,10 @@ struct TriTrackSymptomDetailView: View {
                 VStack(alignment: .leading, spacing: 12) {
                     HStack(spacing: 10) {
                         Image(systemName: "list.bullet.clipboard.fill")
-                            .foregroundColor(themeColor)
+                            .foregroundStyle(themeColor)
                             .accessibilityHidden(true)
                         Text("What you can do")
-                            .foregroundColor(.black)
+                            .foregroundStyle(.black)
                     }
                     .font(.headline)
                     .accessibilityElement(children: .combine)
@@ -61,13 +61,13 @@ struct TriTrackSymptomDetailView: View {
                                     .resizable()
                                     .scaledToFit()
                                     .frame(width: 6, height: 6)
-                                    .foregroundColor(accentColor)
+                                    .foregroundStyle(accentColor)
                                     .accessibilityHidden(true)
                                 Text(remedy)
                             }
                         }
                     }
-                    .foregroundColor(Color(.darkGray))
+                    .foregroundStyle(Color(.darkGray))
                 }
 
                 ForEach(bottomInfoSections) { section in
@@ -115,17 +115,17 @@ struct SymptomSectionView: View {
         VStack(alignment: .leading, spacing: 8) {
             HStack(spacing: 10) {
                 Image(systemName: iconName)
-                    .foregroundColor(color)
+                    .foregroundStyle(color)
                     .accessibilityHidden(true)
                 Text(title)
-                    .foregroundColor(.black)
+                    .foregroundStyle(.black)
                     .accessibilityAddTraits(.isHeader)
             }
             .font(.headline)
 
             Text(LocalizedStringKey(content))
                 .font(.body)
-                .foregroundColor(Color(.darkGray))
+                .foregroundStyle(Color(.darkGray))
         }
     }
 }

@@ -4,7 +4,7 @@ protocol APIError: Error, LocalizedError {
     var serverMessage: String? { get set }
 }
 
-struct BadRequestError: @preconcurrency APIError {
+struct BadRequestError: APIError {
     // MARK: Lifecycle
 
     nonisolated init(serverMessage: String? = nil) {
@@ -28,7 +28,7 @@ struct BadRequestError: @preconcurrency APIError {
     }
 }
 
-struct UnauthorizedError: @preconcurrency APIError {
+struct UnauthorizedError: APIError {
     // MARK: Lifecycle
 
     nonisolated init(serverMessage: String? = nil) {
@@ -52,7 +52,7 @@ struct UnauthorizedError: @preconcurrency APIError {
     }
 }
 
-struct ForbiddenError: @preconcurrency APIError {
+struct ForbiddenError: APIError {
     // MARK: Lifecycle
 
     nonisolated init(serverMessage: String? = nil) {
@@ -76,7 +76,7 @@ struct ForbiddenError: @preconcurrency APIError {
     }
 }
 
-struct NotFoundError: @preconcurrency APIError {
+struct NotFoundError: APIError {
     // MARK: Lifecycle
 
     nonisolated init(serverMessage: String? = nil) {
@@ -100,7 +100,7 @@ struct NotFoundError: @preconcurrency APIError {
     }
 }
 
-struct ConflictError: @preconcurrency APIError {
+struct ConflictError: APIError {
     // MARK: Lifecycle
 
     nonisolated init(serverMessage: String? = nil) {
@@ -124,7 +124,7 @@ struct ConflictError: @preconcurrency APIError {
     }
 }
 
-struct AccountDeletedError: @preconcurrency APIError {
+struct AccountDeletedError: APIError {
     // MARK: Lifecycle
 
     nonisolated init(serverMessage: String? = nil) {
@@ -148,7 +148,7 @@ struct AccountDeletedError: @preconcurrency APIError {
     }
 }
 
-struct ValidationError: @preconcurrency APIError {
+struct ValidationError: APIError {
     // MARK: Lifecycle
 
     nonisolated init(serverMessage: String? = nil) {
@@ -172,7 +172,7 @@ struct ValidationError: @preconcurrency APIError {
     }
 }
 
-struct AccountLockedError: @preconcurrency APIError {
+struct AccountLockedError: APIError {
     // MARK: Lifecycle
 
     nonisolated init(serverMessage: String? = nil) {
@@ -196,7 +196,7 @@ struct AccountLockedError: @preconcurrency APIError {
     }
 }
 
-struct RateLimitExceededError: @preconcurrency APIError {
+struct RateLimitExceededError: APIError {
     // MARK: Lifecycle
 
     nonisolated init(serverMessage: String? = nil) {
@@ -220,7 +220,7 @@ struct RateLimitExceededError: @preconcurrency APIError {
     }
 }
 
-struct UnknownAPIError: @preconcurrency APIError {
+struct UnknownAPIError: APIError {
     // MARK: Lifecycle
 
     nonisolated init(serverMessage: String? = nil) {
@@ -244,7 +244,7 @@ struct UnknownAPIError: @preconcurrency APIError {
     }
 }
 
-struct ServerError5XX: @preconcurrency APIError {
+struct ServerError5XX: APIError {
     // MARK: Lifecycle
 
     nonisolated init(serverMessage: String? = nil) {
@@ -268,7 +268,23 @@ struct ServerError5XX: @preconcurrency APIError {
     }
 }
 
+struct LongPolling: APIError {
+    // MARK: Lifecycle
+
+    nonisolated init(serverMessage: String? = nil) {
+        self.serverMessage = serverMessage
+    }
+
+    // MARK: Internal
+
+    var serverMessage: String?
+}
+
 enum APIErrorResolver {
+    nonisolated static func longPollingResponse(_: LongPollingResponse) -> LongPolling {
+        LongPolling()
+    }
+
     nonisolated static func error(from statusCode: Int, with error: HTTPErrorResponse? = nil) -> any LocalizedError { // swiftlint:disable:this cyclomatic_complexity
         switch statusCode {
         case 400:

@@ -51,7 +51,7 @@ struct DashboardEventCardView: View {
                     } label: {
                         Text("Add Event")
                             .font(.title3.weight(.semibold))
-                            .foregroundColor(.secondary)
+                            .foregroundStyle(.secondary)
                             .lineLimit(1)
                             .minimumScaleFactor(0.85)
                             .popoverTip(tip, arrowEdge: .top)
@@ -67,7 +67,7 @@ struct DashboardEventCardView: View {
                             .frame(width: 38, height: 38)
 
                         Image(systemName: "calendar.badge.clock")
-                            .foregroundColor(.primary)
+                            .foregroundStyle(.primary)
                             .font(.title3)
                     }
                     .accessibilityHidden(true)

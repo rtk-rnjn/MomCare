@@ -17,7 +17,7 @@ struct CreditsView: View {
                     Text("Our Team")
                         .font(.title2)
                         .fontWeight(.bold)
-                        .foregroundColor(brandPink)
+                        .foregroundStyle(brandPink)
                         .accessibilityAddTraits(.isHeader)
 
                     LazyVGrid(columns: teamGridColumns, spacing: 20) {
@@ -29,7 +29,7 @@ struct CreditsView: View {
                     Text("Guidance & Mentorship")
                         .font(.title2)
                         .fontWeight(.bold)
-                        .foregroundColor(brandPink)
+                        .foregroundStyle(brandPink)
                         .padding(.top, 24)
                         .accessibilityAddTraits(.isHeader)
 
@@ -42,7 +42,7 @@ struct CreditsView: View {
                     Text("Special Thanks")
                         .font(.title2)
                         .fontWeight(.bold)
-                        .foregroundColor(brandPink)
+                        .foregroundStyle(brandPink)
                         .padding(.top, 24)
                         .accessibilityAddTraits(.isHeader)
 
@@ -54,7 +54,7 @@ struct CreditsView: View {
 
                     Text("We're grateful to everyone who helped make MomCare+ possible.")
                         .font(.caption)
-                        .foregroundColor(textSecondary)
+                        .foregroundStyle(textSecondary)
                         .frame(maxWidth: .infinity, alignment: .center)
                         .padding(.top, 32)
                         .padding(.bottom, 20)
@@ -94,7 +94,7 @@ struct TeamMemberCard: View {
                     .overlay(
                         Image(systemName: "person.fill")
                             .font(.largeTitle)
-                            .foregroundColor(imagePlaceholderForeground)
+                            .foregroundStyle(imagePlaceholderForeground)
                     )
                     .accessibilityHidden(true)
             }
@@ -103,11 +103,11 @@ struct TeamMemberCard: View {
                 Text(name)
                     .font(.headline)
                     .fontWeight(.semibold)
-                    .foregroundColor(textPrimary)
+                    .foregroundStyle(textPrimary)
 
                 Text(role)
                     .font(.caption)
-                    .foregroundColor(textSecondary)
+                    .foregroundStyle(textSecondary)
                     .multilineTextAlignment(.center)
                     .fixedSize(horizontal: false, vertical: true)
             }
@@ -136,11 +136,11 @@ struct CreditListCard: View {
             Text(name)
                 .font(.headline)
                 .fontWeight(.semibold)
-                .foregroundColor(textPrimary)
+                .foregroundStyle(textPrimary)
 
             Text(description)
                 .font(.subheadline)
-                .foregroundColor(textSecondary)
+                .foregroundStyle(textSecondary)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding()

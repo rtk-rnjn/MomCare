@@ -153,7 +153,7 @@ struct TriTrackAddCalendarItemSheetView: View {
                         Image(systemName: "map")
                             .accessibilityHidden(true)
                         Text(selectedMapItem?.name ?? "Select Location")
-                            .foregroundColor(selectedMapItem == nil ? .secondary : .primary)
+                            .foregroundStyle(selectedMapItem == nil ? .secondary : .primary)
                     }
                 }
                 .accessibilityLabel(selectedMapItem?.name ?? "Select Location")

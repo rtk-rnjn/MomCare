@@ -36,7 +36,7 @@ struct BaseInfoSheetLayout<HeaderIcon: View>: View {
             Button(action: onClose) {
                 Image(systemName: "xmark")
                     .font(.subheadline.weight(.semibold))
-                    .foregroundColor(.secondary)
+                    .foregroundStyle(.secondary)
                     .padding(8)
                     .background(Circle().fill(Color(.systemGray6)))
             }
@@ -64,7 +64,7 @@ private extension BaseInfoSheetLayout {
                     .padding(.vertical, 8)
                 Text(subtitle)
                     .font(.caption.weight(.medium))
-                    .foregroundColor(accentColor)
+                    .foregroundStyle(accentColor)
                     .padding(.horizontal, 10)
                     .padding(.vertical, 3)
                     .background(
@@ -85,7 +85,7 @@ private extension BaseInfoSheetLayout {
 
             Text(description)
                 .font(.subheadline)
-                .foregroundColor(.secondary)
+                .foregroundStyle(.secondary)
                 .fixedSize(horizontal: false, vertical: true)
         }
     }
@@ -114,7 +114,7 @@ private extension BaseInfoSheetLayout {
                 ForEach(tags, id: \.self) { tag in
                     Text(tag)
                         .font(.caption.weight(.medium))
-                        .foregroundColor(accentColor)
+                        .foregroundStyle(accentColor)
                         .padding(.horizontal, 8)
                         .padding(.vertical, 6)
                         .frame(maxWidth: .infinity)
@@ -157,7 +157,7 @@ struct ExerciseInfoSheet: View {
             } else {
                 Image(systemName: "figure.strengthtraining.traditional")
                     .font(.title2)
-                    .foregroundColor(accentColor)
+                    .foregroundStyle(accentColor)
             }
         }
         .task {
@@ -196,7 +196,7 @@ struct BreathingInfoSheet: View {
         } headerIcon: {
             Image(systemName: "lungs.fill")
                 .font(.title2)
-                .foregroundColor(accentColor)
+                .foregroundStyle(accentColor)
         }
     }
 
@@ -225,12 +225,12 @@ private struct StatItem: View {
         VStack(spacing: 4) {
             Image(systemName: icon)
                 .font(.subheadline)
-                .foregroundColor(accentColor)
+                .foregroundStyle(accentColor)
                 .accessibilityHidden(true)
 
             Text(value)
                 .font(.caption2.weight(.medium))
-                .foregroundColor(.secondary)
+                .foregroundStyle(.secondary)
                 .multilineTextAlignment(.center)
 //                .lineLimit(2)
         }

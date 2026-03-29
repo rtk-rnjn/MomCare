@@ -11,13 +11,13 @@ struct OpenSourceView: View {
                 VStack(alignment: .leading, spacing: 24) {
                     Text("MomCare+ is proudly built using open-source software. We are grateful to the developers and communities who create and maintain these essential tools.")
                         .font(.subheadline)
-                        .foregroundColor(textSecondary)
+                        .foregroundStyle(textSecondary)
 
                     VStack(alignment: .leading, spacing: 12) {
                         Text("Our License")
                             .font(.title2)
                             .fontWeight(.bold)
-                            .foregroundColor(brandPink)
+                            .foregroundStyle(brandPink)
                             .accessibilityAddTraits(.isHeader)
 
                         ForEach(LicenseData.appLicense) { license in
@@ -33,7 +33,7 @@ struct OpenSourceView: View {
                         Text("Project Report")
                             .font(.title2)
                             .fontWeight(.bold)
-                            .foregroundColor(brandPink)
+                            .foregroundStyle(brandPink)
                             .accessibilityAddTraits(.isHeader)
 
                         ForEach(LicenseData.projectReport) { report in
@@ -49,7 +49,7 @@ struct OpenSourceView: View {
                         Text("Third-Party Libraries")
                             .font(.title2)
                             .fontWeight(.bold)
-                            .foregroundColor(brandPink)
+                            .foregroundStyle(brandPink)
                             .accessibilityAddTraits(.isHeader)
 
                         ForEach(LicenseData.thirdPartyLicenses) { license in
@@ -82,18 +82,18 @@ struct LicenseCardView: View {
                         Text(name)
                             .font(.headline)
                             .fontWeight(.semibold)
-                            .foregroundColor(textPrimary)
+                            .foregroundStyle(textPrimary)
 
                         Text(license)
                             .font(.subheadline)
-                            .foregroundColor(textSecondary)
+                            .foregroundStyle(textSecondary)
                     }
 
                     Spacer()
 
                     Image(systemName: "arrow.up.right.square")
                         .font(.title3)
-                        .foregroundColor(textSecondary.opacity(0.7))
+                        .foregroundStyle(textSecondary.opacity(0.7))
                         .accessibilityHidden(true)
                 }
                 .padding()

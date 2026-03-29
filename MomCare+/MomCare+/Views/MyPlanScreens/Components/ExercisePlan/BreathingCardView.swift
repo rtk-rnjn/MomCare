@@ -11,14 +11,14 @@ struct BreathingCardView: View {
                 VStack(alignment: .leading, spacing: 6) {
                     Text("Beginner")
                         .font(.caption.weight(.medium))
-                        .foregroundColor(.secondary)
+                        .foregroundStyle(.secondary)
 
                     Text("Breathing")
                         .font(.title3.weight(.bold))
 
                     Text("\(Int(completionProgress * 100))% completed")
                         .font(.caption.weight(.medium))
-                        .foregroundColor(.secondary)
+                        .foregroundStyle(.secondary)
                         .padding(.bottom, 10)
 
                     Button {
@@ -30,7 +30,7 @@ struct BreathingCardView: View {
                             Text(completionProgress >= 1 ? "Replay" : "Start")
                         }
                         .font(.subheadline.weight(.semibold))
-                        .foregroundColor(.white)
+                        .foregroundStyle(.white)
                         .padding(.horizontal, 20)
                         .padding(.vertical, 10)
                         .background(
@@ -56,7 +56,7 @@ struct BreathingCardView: View {
 
                     Image(systemName: "lungs.fill")
                         .font(.title)
-                        .foregroundColor(darkAccentColor)
+                        .foregroundStyle(darkAccentColor)
                 }
                 .frame(width: 80, height: 80)
                 .padding(16)
@@ -66,7 +66,7 @@ struct BreathingCardView: View {
             Button(action: onInfo) {
                 Image(systemName: "info.circle.fill")
                     .font(.title3)
-                    .foregroundColor(darkAccentColor.opacity(0.5))
+                    .foregroundStyle(darkAccentColor.opacity(0.5))
             }
             .accessibilityLabel("Breathing exercise information")
             .accessibilityHint("Shows details about this breathing exercise")

@@ -1,3 +1,4 @@
+import BackgroundTasks
 import Combine
 import Foundation
 import SwiftUI
@@ -12,6 +13,7 @@ enum LoginProvider {
     case apple
 }
 
+@MainActor
 final class MCAuthenticationService: ObservableObject {
     // MARK: Lifecycle
 
@@ -71,6 +73,24 @@ final class MCAuthenticationService: ObservableObject {
     @Published var userModel: UserModel? {
         didSet {
             Database.shared[.userModel] = userModel
+        }
+    }
+
+    nonisolated static func refresh(task: BGAppRefreshTask) async {
+        if let refreshToken = KeychainHelper.get(.refreshToken) {
+            do {
+                let refreshTokenData = try RefreshToken(refreshToken: refreshToken).encodeUsingJSONEncoder()
+                let response: NetworkResponse<TokenPair> = try await MCNetworkManager.shared.post(url: Endpoint.refresh.urlString, body: refreshTokenData)
+
+                KeychainHelper.set(response.data.accessToken, forKey: .accessToken)
+                KeychainHelper.set(response.data.refreshToken, forKey: .refreshToken)
+
+            } catch {
+                task.setTaskCompleted(success: false)
+                return
+            }
+
+            task.setTaskCompleted(success: true)
         }
     }
 

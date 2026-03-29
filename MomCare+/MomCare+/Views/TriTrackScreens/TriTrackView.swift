@@ -47,7 +47,7 @@ struct TriTrackView: View {
                 } label: {
                     Image(systemName: "calendar")
                         .font(.body)
-                        .foregroundColor(Color.CustomColors.mutedRaspberry)
+                        .foregroundStyle(Color.CustomColors.mutedRaspberry)
                         .symbolEffect(.bounce, value: controlState.showingExpandedCalendar)
                 }
                 .accessibilityLabel(controlState.showingExpandedCalendar ? "Collapse calendar" : "Expand calendar")
@@ -60,7 +60,7 @@ struct TriTrackView: View {
                 } label: {
                     Image(systemName: "\(Calendar.current.component(.day, from: Date())).calendar")
                         .font(.body)
-                        .foregroundColor(Color.CustomColors.mutedRaspberry)
+                        .foregroundStyle(Color.CustomColors.mutedRaspberry)
                 }
                 .accessibilityLabel("Jump to today")
                 .accessibilityIdentifier("jumpToTodayButton")
@@ -104,7 +104,7 @@ struct TriTrackView: View {
                     } label: {
                         Image(systemName: "plus")
                             .font(.body)
-                            .foregroundColor(Color.CustomColors.mutedRaspberry)
+                            .foregroundStyle(Color.CustomColors.mutedRaspberry)
                             .transition(.scale.combined(with: .opacity))
                     }
                     .accessibilityLabel("Add event")
@@ -129,7 +129,7 @@ struct TriTrackView: View {
                     } label: {
                         Image(systemName: "plus")
                             .font(.body)
-                            .foregroundColor(Color.CustomColors.mutedRaspberry)
+                            .foregroundStyle(Color.CustomColors.mutedRaspberry)
                             .transition(.scale.combined(with: .opacity))
                     }
                     .disabled(selectedDate > Date())
@@ -238,7 +238,7 @@ struct PregnancyProgressView: View {
                 }
                 .font(.title)
                 .fontWeight(.bold)
-                .foregroundColor(.CustomColors.mutedRaspberry)
+                .foregroundStyle(Color.CustomColors.mutedRaspberry)
             }
             .accessibilityElement(children: .ignore)
             .accessibilityLabel("\(pregnancyData.trimester), Week \(pregnancyData.week), Day \(pregnancyData.day)")
@@ -303,7 +303,7 @@ struct PregnancyProgressView: View {
                     Text(height, format: .measurement(width: .abbreviated, usage: .asProvided, numberFormatStyle: .number.precision(.fractionLength(2))))
                         .font(.title2)
                         .fontWeight(.bold)
-                        .foregroundColor(.CustomColors.mutedRaspberry)
+                        .foregroundStyle(Color.CustomColors.mutedRaspberry)
                         .contentTransition(reduceMotion ? .identity : .numericText())
                         .animation(reduceMotion ? nil : .easeInOut, value: height)
                 }
@@ -341,7 +341,7 @@ struct PregnancyProgressView: View {
                     Text(weight, format: .measurement(width: .abbreviated, usage: .personWeight, numberFormatStyle: .number.precision(.fractionLength(2))))
                         .font(.title2)
                         .fontWeight(.bold)
-                        .foregroundColor(.CustomColors.mutedRaspberry)
+                        .foregroundStyle(Color.CustomColors.mutedRaspberry)
                         .contentTransition(reduceMotion ? .identity : .numericText())
                         .animation(reduceMotion ? nil : .easeInOut, value: weight)
                 }
@@ -481,7 +481,7 @@ struct ComparisonView: View {
 
             Image(systemName: "arrow.right")
                 .font(.title2.weight(.bold))
-                .foregroundColor(.secondary)
+                .foregroundStyle(.secondary)
                 .frame(width: 40)
                 .accessibilityHidden(true)
 
@@ -539,7 +539,7 @@ struct CompactInfoCard: View {
                 } else {
                     Image(systemName: iconName)
                         .font(.subheadline)
-                        .foregroundColor(accentColor)
+                        .foregroundStyle(accentColor)
                         .contentTransition(reduceMotion ? .identity : .symbolEffect)
                         .animation(reduceMotion ? nil : .easeInOut, value: iconName)
                         .accessibilityHidden(true)
@@ -547,7 +547,7 @@ struct CompactInfoCard: View {
 
                 Text(title)
                     .font(.subheadline.weight(.semibold))
-                    .foregroundColor(.primary)
+                    .foregroundStyle(.primary)
                     .lineLimit(1)
                     .accessibilityAddTraits(.isHeader)
                     .contentTransition(reduceMotion ? .identity : .interpolate)
@@ -556,7 +556,7 @@ struct CompactInfoCard: View {
 
             Text(previewText)
                 .font(.footnote)
-                .foregroundColor(.secondary)
+                .foregroundStyle(.secondary)
                 .lineLimit(5)
                 .lineSpacing(1)
                 .multilineTextAlignment(.leading)
@@ -615,7 +615,7 @@ struct PopupInfoCard: View {
                     Text(title)
                         .font(.title3)
                         .fontWeight(.bold)
-                        .foregroundColor(.CustomColors.mutedRaspberry)
+                        .foregroundStyle(Color.CustomColors.mutedRaspberry)
                         .offset(y: envelopeOpen ? 5 : 15)
                         .accessibilityAddTraits(.isHeader)
                 }
@@ -627,7 +627,7 @@ struct PopupInfoCard: View {
                         ForEach(0 ..< 15, id: \.self) { _ in
                             Image(systemName: "heart.fill")
                                 .font(.caption2)
-                                .foregroundColor(accentColor.opacity(0.2))
+                                .foregroundStyle(accentColor.opacity(0.2))
                         }
                     }
                     .padding(.top, 12)
@@ -647,7 +647,7 @@ struct PopupInfoCard: View {
                         ForEach(0 ..< 15, id: \.self) { _ in
                             Image(systemName: "heart.fill")
                                 .font(.caption2)
-                                .foregroundColor(accentColor.opacity(0.2))
+                                .foregroundStyle(accentColor.opacity(0.2))
                         }
                     }
                     .padding(.bottom, 12)
@@ -657,7 +657,7 @@ struct PopupInfoCard: View {
                     Button(action: closeCard) {
                         Text("Close")
                             .fontWeight(.medium)
-                            .foregroundColor(.white)
+                            .foregroundStyle(.white)
                             .padding(.vertical, 14)
                             .frame(maxWidth: .infinity)
                             .background(
@@ -916,7 +916,7 @@ struct StitchingBorder: View {
                 )
             }
             .stroke(style: StrokeStyle(lineWidth: 1.5, lineCap: .round, lineJoin: .round))
-            .foregroundColor(color.opacity(0.8))
+            .foregroundStyle(color.opacity(0.8))
         }
     }
 

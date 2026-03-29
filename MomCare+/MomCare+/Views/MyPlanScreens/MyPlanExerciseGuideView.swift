@@ -319,7 +319,7 @@ private struct DayRingBadge: View {
         VStack(spacing: 4) {
             Text("Wed")
                 .font(.caption2.weight(.semibold))
-                .foregroundColor(isToday ? .black : Color.CustomColors.mutedRaspberry)
+                .foregroundStyle(isToday ? .black : Color.CustomColors.mutedRaspberry)
 
             ZStack {
                 Circle()
@@ -333,7 +333,7 @@ private struct DayRingBadge: View {
                 if progress >= 1.0 {
                     Image(systemName: "checkmark")
                         .font(.caption2.weight(.bold))
-                        .foregroundColor(Color.CustomColors.mutedRaspberry)
+                        .foregroundStyle(Color.CustomColors.mutedRaspberry)
                 }
             }
             .frame(width: 28, height: 28)
@@ -378,7 +378,7 @@ private struct PercentBadge: View {
     var body: some View {
         Text(value)
             .font(.body.weight(.bold))
-            .foregroundColor(color)
+            .foregroundStyle(color)
     }
 }
 
@@ -389,7 +389,7 @@ private struct LevelBadge: View {
     var body: some View {
         Text(label)
             .font(.caption2.weight(.semibold))
-            .foregroundColor(color)
+            .foregroundStyle(color)
             .padding(.horizontal, 6)
             .padding(.vertical, 4)
             .background(color.opacity(0.12), in: RoundedRectangle(cornerRadius: 6, style: .continuous))
@@ -407,7 +407,7 @@ private struct PlayButtonBadge: View {
             Text(label)
                 .font(.caption2.weight(.semibold))
         }
-        .foregroundColor(.white)
+        .foregroundStyle(.white)
         .padding(.horizontal, 8)
         .padding(.vertical, 5)
         .background(color, in: RoundedRectangle(cornerRadius: 8, style: .continuous))
@@ -421,7 +421,7 @@ private struct ExerciseThumbnailBadge: View {
                 .fill(Color(hex: "D4A08A").opacity(0.25))
             Image(systemName: "figure.strengthtraining.traditional")
                 .font(.title3)
-                .foregroundColor(Color(hex: "9B6B52"))
+                .foregroundStyle(Color(hex: "9B6B52"))
         }
     }
 }

@@ -46,7 +46,7 @@ struct WaterLogView: View {
                 if let amt = lastAdded {
                     Text("+\(Int(amt))ml")
                         .font(.title2.weight(.bold))
-                        .foregroundColor(Color(hex: "924350"))
+                        .foregroundStyle(Color(hex: "924350"))
                         .shadow(color: Color(hex: "FAE8E4"), radius: 3)
                         .offset(y: feedbackOffset)
                         .opacity(feedbackOpacity)
@@ -211,14 +211,14 @@ struct WaterLogView: View {
                 } label: {
                     Image(systemName: "chevron.left")
                         .font(.caption.weight(.semibold))
-                        .foregroundColor(Color(hex: "924350"))
+                        .foregroundStyle(Color(hex: "924350"))
                         .frame(width: 28, height: 28)
                 }
                 .accessibilityLabel("Previous week")
 
                 Text(monthYearString(for: selectedDate))
                     .font(.subheadline.weight(.bold))
-                    .foregroundColor(Color(hex: "924350"))
+                    .foregroundStyle(Color(hex: "924350"))
                     .frame(maxWidth: .infinity)
                     .animation(reduceMotion ? nil : .easeInOut, value: selectedDate)
 
@@ -231,7 +231,7 @@ struct WaterLogView: View {
                 } label: {
                     Image(systemName: "chevron.right")
                         .font(.caption.weight(.semibold))
-                        .foregroundColor(
+                        .foregroundStyle(
                             Calendar.current.isDate(
                                 weekDays(around: selectedDate).last ?? selectedDate,
                                 equalTo: weekDays(around: Date()).last ?? Date(),
@@ -270,7 +270,7 @@ struct WaterLogView: View {
                         VStack(spacing: 5) {
                             Text(dayNumber(day))
                                 .font(.subheadline.weight(isSelected ? .bold : .regular))
-                                .foregroundColor(
+                                .foregroundStyle(
                                     isSelected ? .white
                                     : isFuture ? Color.primary.opacity(0.25)
                                     : isToday ? Color(hex: "924350")
@@ -279,7 +279,7 @@ struct WaterLogView: View {
 
                             Text(dayName(day))
                                 .font(.caption2.weight(.medium))
-                                .foregroundColor(
+                                .foregroundStyle(
                                     isSelected ? .white.opacity(0.85)
                                     : isFuture ? Color.secondary.opacity(0.35)
                                     : .secondary
@@ -323,7 +323,7 @@ struct WaterLogView: View {
                     Button { Task { await addWater(preset.ml) } } label: {
                         Text(preset.label)
                             .font(.subheadline.weight(.semibold))
-                            .foregroundColor(.white)
+                            .foregroundStyle(.white)
                             .frame(maxWidth: .infinity)
                             .padding(.vertical, 15)
                             .background(
