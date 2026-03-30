@@ -6,7 +6,6 @@ class Game2048: ObservableObject {
     @Published var board: [[Int]] = Array(repeating: Array(repeating: 0, count: 4), count: 4)
     @Published var score: Int = 0
     @Published var tileIds: [[UUID]] = (0..<4).map { _ in (0..<4).map { _ in UUID() } }
-    @Published var isAnimating = false // Prevents input overlap
 
     init() { reset() }
 
@@ -22,34 +21,25 @@ class Game2048: ObservableObject {
             board[r].indices.filter { board[r][$0] == 0 }.map { (r, $0) }
         }
         if let (r, c) = emptyCells.randomElement() {
-            // Animate only the new tile appearing
-            withAnimation(.easeIn(duration: 0.15)) {
-                board[r][c] = Double.random(in: 0...1) < 0.9 ? 2 : 4
-                tileIds[r][c] = UUID()
-            }
+            board[r][c] = Double.random(in: 0...1) < 0.9 ? 2 : 4
+            tileIds[r][c] = UUID()
         }
     }
 
-    func move(_ direction: Edge, animation: Animation) {
-        guard !isAnimating else { return }
+    func move(_ direction: Edge) {
 
         let oldBoard = board
 
-        withAnimation(animation) {
-            for i in 0..<4 {
-                var line = getLine(at: i, for: direction)
-                var idLine = getIdLine(at: i, for: direction)
-                (line, idLine) = slideAndMerge(line, idLine)
-                setLine(line, idLine, at: i, for: direction)
-            }
+        for i in 0..<4 {
+            var line = getLine(at: i, for: direction)
+            var idLine = getIdLine(at: i, for: direction)
+            (line, idLine) = slideAndMerge(line, idLine)
+            setLine(line, idLine, at: i, for: direction)
         }
 
+
         if board != oldBoard {
-            isAnimating = true
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-                self.spawnTile()
-                self.isAnimating = false
-            }
+            spawnTile()
         }
     }
 
@@ -65,7 +55,6 @@ class Game2048: ObservableObject {
                         newLine[i] = newLine[j]
                         newIds[i] = newIds[j]
                         newLine[j] = 0
-                        newIds[j] = UUID()
                         break
                     }
                 }
@@ -77,14 +66,18 @@ class Game2048: ObservableObject {
             if newLine[i] != 0 && newLine[i] == newLine[i+1] {
                 newLine[i] *= 2
                 score += newLine[i]
+
+                // keep tile i identity
+                // remove tile i+1
                 newLine[i+1] = 0
-                newIds[i+1] = UUID()
+
                 for j in i+1..<3 {
                     newLine[j] = newLine[j+1]
                     newIds[j] = newIds[j+1]
-                    newLine[j+1] = 0
-                    newIds[j+1] = UUID()
                 }
+
+                newLine[3] = 0
+                newIds[3] = UUID()
             }
         }
         return (newLine, newIds)
@@ -157,7 +150,9 @@ struct Game2048View: View {
 
                         let movementAnimation: Animation = reduceMotion ? .linear(duration: 0.1) : .spring(response: 0.2, dampingFraction: 0.8)
 
-                        engine.move(direction, animation: movementAnimation)
+                        withAnimation(movementAnimation) {
+                            engine.move(direction)
+                        }
 
                         if engine.score > highScore { highScore = engine.score }
                     }
