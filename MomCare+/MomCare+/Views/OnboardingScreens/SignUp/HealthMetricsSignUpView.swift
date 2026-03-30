@@ -262,7 +262,7 @@ struct HealthMetricsSignUpView: View {
         }
 
         guard let height, let prePregnancyWeight, let currentWeight else {
-            fatalError()
+            fatalError(Quote.randomQuote.displayString)
         }
 
         authenticationService.userModel?.height = height

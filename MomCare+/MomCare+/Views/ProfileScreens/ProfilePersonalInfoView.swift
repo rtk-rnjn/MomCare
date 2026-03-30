@@ -217,8 +217,10 @@ struct ProfilePersonalInfoView: View {
     private var allowedDateOfBirthRange: ClosedRange<Date> {
         let calendar = Calendar.current
         let now = Date()
-        let min = calendar.date(byAdding: .year, value: -45, to: now)!
-        let max = calendar.date(byAdding: .year, value: -18, to: now)!
+        guard let min = calendar.date(byAdding: .year, value: -45, to: now), let max = calendar.date(byAdding: .year, value: -18, to: now) else {
+            fatalError(Quote.randomQuote.displayString)
+        }
+
         return min ... max
     }
 }

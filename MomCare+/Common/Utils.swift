@@ -46,7 +46,7 @@ enum Utils {
         calendar.firstWeekday = 1
 
         guard let startOfWeek = calendar.dateInterval(of: .weekOfYear, for: date)?.start else {
-            fatalError("Could not calculate week range")
+            fatalError(Quote.randomQuote.displayString)
         }
 
         return (0 ..< 7).compactMap { offset in

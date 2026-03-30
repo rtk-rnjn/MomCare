@@ -18,8 +18,6 @@ class AppDelegate: NSObject, UIApplicationDelegate, ObservableObject {
         logger.info("App launched with options: \(launchOptions.debugDescription)")
         UNUserNotificationCenter.current().delegate = self
 
-        UIApplication.shared.registerForRemoteNotifications()
-
         WidgetCenter.shared.reloadAllTimelines()
 
         UISegmentedControl.appearance().selectedSegmentTintColor = .white

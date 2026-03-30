@@ -140,12 +140,50 @@ struct DashboardView: View {
                     message: contentServiceHandler.todayFocusText,
                     icon: "target"
                 )
+                .contextMenu {
+                    Button {
+                        UIPasteboard.general.string = contentServiceHandler.todayFocusText
+                    } label: {
+                        Label("Copy Today's Focus", systemImage: "doc.on.doc")
+                    }
+
+                    if experimentalFeatures {
+                        // Hehehehe.
+                        Button {
+                            show2048Game = true
+                        } label: {
+                            Label("Play 2048", systemImage: "gamecontroller")
+                        }
+                    }
+                }
+                .fullScreenCover(isPresented: $show2048Game) {
+                    Game2048View()
+                }
 
                 DashboardInsightCardView(
                     title: "Daily Tip",
                     message: contentServiceHandler.dailyTipText,
                     icon: "lightbulb"
                 )
+                .contextMenu {
+                    Button {
+                        UIPasteboard.general.string = contentServiceHandler.dailyTipText
+                    } label: {
+                        Label("Copy Daily's Tip", systemImage: "doc.on.doc")
+                    }
+
+                    if experimentalFeatures {
+                        // UwU
+                        Button {
+                            showWaterSortGame = true
+                        } label: {
+                            Label("Play Water Sort", systemImage: "gamecontroller")
+                        }
+                    }
+                }
+                .fullScreenCover(isPresented: $showWaterSortGame) {
+                    GameWaterSortView()
+                }
             }
             .padding(.horizontal)
         }
@@ -165,6 +203,11 @@ struct DashboardView: View {
     @EnvironmentObject private var controlState: ControlState
 
     @State private var selectedEvent: EKCalendarItemWrapper?
+
+    @AppStorage(FeatureFlagState.experimentalFeatures.rawValue, store: UserDefaults(suiteName: "group.MomCare")) private var experimentalFeatures: Bool = false
+
+    @State private var show2048Game: Bool = false
+    @State private var showWaterSortGame: Bool = false
 }
 
 extension View {

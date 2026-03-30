@@ -296,8 +296,6 @@ struct MyPlanDietPlanGuideView: View {
     }
 }
 
-// MARK: - Section / Card / Row scaffolding
-
 private struct HelpSection<Content: View>: View {
     let title: String
     @ViewBuilder let content: () -> Content
@@ -361,8 +359,6 @@ private struct HelpDivider: View {
     }
 }
 
-// MARK: - Badges
-
 private struct RingBadge: View {
     var progress: Double
     var label: String
@@ -418,7 +414,6 @@ private struct RingWithDeltaBadge: View {
     }
 }
 
-/// Macro bar badge showing an up or down arrow next to the original target value.
 private struct MacroWithArrowBadge: View {
     enum Direction: String {
         case up

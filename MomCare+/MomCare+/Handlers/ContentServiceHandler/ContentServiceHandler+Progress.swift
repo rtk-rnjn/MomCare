@@ -22,7 +22,9 @@ extension ContentServiceHandler {
         }
 
         let startDate = Calendar.current.startOfDay(for: date)
-        let endDate = Calendar.current.date(byAdding: .day, value: 1, to: startDate)!
+        guard let endDate = Calendar.current.date(byAdding: .day, value: 1, to: startDate) else {
+            fatalError(Quote.randomQuote.displayString)
+        }
 
         return await withCheckedContinuation { continuation in
             fetchHealthData(quantityTypeIdentifier: .stepCount, unit: .count(), startDate: startDate, endDate: endDate) { count in

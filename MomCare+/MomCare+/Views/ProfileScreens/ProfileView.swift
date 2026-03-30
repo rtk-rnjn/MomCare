@@ -19,17 +19,18 @@ struct ProfileRow: Identifiable {
 
 private let sections: [ProfileSection] = [
     ProfileSection(rows: [
-        ProfileRow(title: "Personal Information", systemImage: "person.crop.circle", type: .personalInfo),
-        ProfileRow(title: "Health Information", systemImage: "heart.text.square", type: .healthInfo)
+        ProfileRow(title: "Personal Information", systemImage: "person.crop.circle", type: .personalInformation),
+        ProfileRow(title: "Health Information", systemImage: "heart.text.square", type: .healthInformation)
     ]),
 
     ProfileSection(rows: [
         ProfileRow(title: "Account and Security", systemImage: "lock.shield", type: .security),
+        ProfileRow(title: "Notifications", systemImage: "bell", type: .notifications),
         ProfileRow(title: "Legal & Compliance", systemImage: "doc.text", type: .legal)
     ]),
 
     ProfileSection(rows: [
-        ProfileRow(title: "About MomCare+", systemImage: "info.circle", type: .aboutApp)
+        ProfileRow(title: "About MomCare+", systemImage: "info.circle", type: .aboutApplication)
     ]),
 
     ProfileSection(rows: [
@@ -157,7 +158,7 @@ struct ProfileView: View {
     @ViewBuilder
     private func destinationView(for type: ProfileRowType) -> some View {
         switch type {
-        case .personalInfo:
+        case .personalInformation:
             ProfilePersonalInfoView(
                 name: authenticationService.userModel?.fullName ?? "Not Set",
                 dateOfBirth: authenticationService.userModel?.dateOfBirth ?? .init(),
@@ -166,7 +167,7 @@ struct ProfileView: View {
                 prePregnancyWeight: authenticationService.userModel?.prePregnancyWeight
             )
 
-        case .healthInfo:
+        case .healthInformation:
             ProfileHealthInfoView()
 
         case .security:
@@ -175,11 +176,14 @@ struct ProfileView: View {
         case .legal:
             LegalComplianceView()
 
-        case .aboutApp:
+        case .aboutApplication:
             AboutMomCareView()
 
         case .accountManagement:
             ProfileAccountManagementView()
+
+        case .notifications:
+            ProfileNotificationsView()
 
         default:
             EmptyView()

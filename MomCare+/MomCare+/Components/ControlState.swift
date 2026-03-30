@@ -35,12 +35,12 @@ enum AppTab: Int, CaseIterable {
 }
 
 enum ProfileRowType: Int {
-    case personalInfo
-    case healthInfo
+    case personalInformation
+    case healthInformation
     case notifications
     case security
     case legal
-    case aboutApp
+    case aboutApplication
     case watch
     case accountManagement
     case signOut

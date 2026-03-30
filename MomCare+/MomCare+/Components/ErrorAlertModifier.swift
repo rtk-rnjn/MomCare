@@ -25,9 +25,11 @@ struct ErrorAlertModifier<Actions: View>: ViewModifier {
     private var isPresented: Binding<Bool> {
         Binding(
             get: { error != nil },
-            set: { if !$0 {
-                error = nil
-            } }
+            set: { newValue in
+                if newValue == false {
+                    error = nil
+                }
+            }
         )
     }
 

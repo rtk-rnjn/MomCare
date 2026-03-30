@@ -181,7 +181,6 @@ struct WalkingHistoryView: View {
                     }
                 }
 
-                // Mini goal progress bar
                 GeometryReader { geo in
                     ZStack(alignment: .leading) {
                         Capsule()

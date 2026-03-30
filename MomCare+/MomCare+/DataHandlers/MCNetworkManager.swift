@@ -134,7 +134,7 @@ actor MCNetworkManager {
         }
 
         guard let url = URL(string: urlString) else {
-            fatalError()
+            fatalError(Quote.randomQuote.displayString)
         }
 
         return url

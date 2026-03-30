@@ -72,7 +72,7 @@ struct CrashSimulatorView: View {
         .navigationTitle("Crash Simulator")
         .navigationBarTitleDisplayMode(.inline)
         .confirmationDialog("Force Crash", isPresented: $showCrashConfirm, titleVisibility: .visible) {
-            Button("Crash Now", role: .destructive) { fatalError("[DebugMenu] Intentional crash triggered.") }
+            Button("Crash Now", role: .destructive) { fatalError(Quote.randomQuote.displayString) }
         } message: {
             Text("This will immediately terminate the app.")
         }

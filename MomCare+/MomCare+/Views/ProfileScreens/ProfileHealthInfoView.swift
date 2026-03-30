@@ -198,7 +198,10 @@ struct ProfileHealthInfoView: View {
     private var allowedDueDateRange: ClosedRange<Date> {
         let calendar = Calendar.current
         let now = Date()
-        let max = calendar.date(byAdding: .weekOfYear, value: 40, to: now)!
+        guard let max = calendar.date(byAdding: .weekOfYear, value: 40, to: now) else {
+            fatalError(Quote.randomQuote.displayString)
+        }
+
         return now ... max
     }
 
