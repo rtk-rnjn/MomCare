@@ -14,9 +14,6 @@ struct MomCareApp: App {
                     .datastoreLocation(.applicationDefault)
                 ]
             )
-            #if DEBUG
-            try Tips.resetDatastore()
-            #endif // DEBUG
         } catch {}
 
         appDelegate.registerBackgroundRefreshTask()
