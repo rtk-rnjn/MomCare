@@ -479,6 +479,9 @@ private struct MealReminderRow: View {
                         .font(.caption)
                         .foregroundStyle(.secondary)
                         .contentTransition(.numericText())
+                        .animation(animation, value: reminder.wrappedValue.isEnabled)
+                        .animation(animation, value: reminder.wrappedValue.time)
+                        .animation(animation, value: reminder.wrappedValue.frequency)
                 }
             } icon: {
                 Image(systemName: meal.iconName)
@@ -488,6 +491,12 @@ private struct MealReminderRow: View {
     }
 
     // MARK: Private
+
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+
+    private var animation: Animation? {
+        reduceMotion ? nil : .smooth(duration: 0.3)
+    }
 
     private var subtitle: String {
         guard reminder.wrappedValue.isEnabled else {
@@ -515,6 +524,9 @@ private struct ExerciseReminderRow: View {
                         .font(.caption)
                         .foregroundStyle(.secondary)
                         .contentTransition(.numericText())
+                        .animation(animation, value: exercise.wrappedValue.isEnabled)
+                        .animation(animation, value: exercise.wrappedValue.time)
+                        .animation(animation, value: exercise.wrappedValue.frequency)
                 }
             } icon: {
                 Image(systemName: "figure.run")
@@ -524,6 +536,12 @@ private struct ExerciseReminderRow: View {
     }
 
     // MARK: Private
+
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+
+    private var animation: Animation? {
+        reduceMotion ? nil : .smooth(duration: 0.3)
+    }
 
     private var subtitle: String {
         guard exercise.wrappedValue.isEnabled else {
@@ -616,11 +634,16 @@ struct MealReminderDetailView: View {
     private let manager: NotificationManager = .shared
 
     private var animation: Animation? {
-        reduceMotion ? nil : .smooth(duration: 0.25)
+        reduceMotion ? nil : .smooth(duration: 0.3)
     }
 
     private var transition: AnyTransition {
-        unsafe reduceMotion ? .opacity : .move(edge: .top).combined(with: .opacity)
+        unsafe reduceMotion
+            ? .opacity
+            : .asymmetric(
+                insertion: .push(from: .bottom).combined(with: .opacity),
+                removal: .push(from: .top).combined(with: .opacity)
+            )
     }
 
     private var enabledBinding: Binding<Bool> {
@@ -722,11 +745,16 @@ struct ExerciseReminderDetailView: View {
     private let manager: NotificationManager = .shared
 
     private var animation: Animation? {
-        reduceMotion ? nil : .smooth(duration: 0.25)
+        reduceMotion ? nil : .smooth(duration: 0.3)
     }
 
     private var transition: AnyTransition {
-        unsafe reduceMotion ? .opacity : .move(edge: .top).combined(with: .opacity)
+        unsafe reduceMotion
+            ? .opacity
+            : .asymmetric(
+                insertion: .push(from: .bottom).combined(with: .opacity),
+                removal: .push(from: .top).combined(with: .opacity)
+            )
     }
 
     private var enabledBinding: Binding<Bool> {
