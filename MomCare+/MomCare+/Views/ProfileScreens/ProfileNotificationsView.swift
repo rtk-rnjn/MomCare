@@ -300,14 +300,6 @@ struct ProfileNotificationsView: View {
                     Toggle("Promotional Notifications", isOn: remoteToggleBinding)
                         .transition(transition)
                 }
-            } footer: {
-                Text(
-                    globallyEnabled
-                        ? "Manage your reminders below."
-                        : "Reminders help you stay on track with meals and exercise."
-                )
-                .animation(animation, value: globallyEnabled)
-                .contentTransition(.numericText())
             }
 
             if globallyEnabled {
@@ -325,6 +317,13 @@ struct ProfileNotificationsView: View {
                     ExerciseReminderRow(exercise: exerciseBinding)
                 }
                 .transition(transition)
+            }
+        }
+        .onChange(of: UIApplication.shared.isRegisteredForRemoteNotifications) {
+            if UIApplication.shared.isRegisteredForRemoteNotifications == false {
+                Task {
+                    await unRegister()
+                }
             }
         }
         .listStyle(.insetGrouped)
@@ -439,6 +438,10 @@ struct ProfileNotificationsView: View {
                 }
             }
         )
+    }
+
+    private func unRegister() async {
+        let _: NetworkResponse<Bool>? = try? await MCNetworkManager.shared.delete(url: Endpoint.apns.urlString, headers: MCAuthenticationService.authorizationHeaders)
     }
 
     private func reminderBinding(for meal: MealType) -> Binding<MealReminder> {
