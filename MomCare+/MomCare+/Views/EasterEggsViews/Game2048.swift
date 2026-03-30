@@ -1,13 +1,19 @@
-import SwiftUI
 import Combine
+import SwiftUI
 
 @MainActor
 class Game2048: ObservableObject {
+    // MARK: Lifecycle
+
+    init() {
+        reset()
+    }
+
+    // MARK: Internal
+
     @Published var board: [[Int]] = Array(repeating: Array(repeating: 0, count: 4), count: 4)
     @Published var score: Int = 0
     @Published var tileIds: [[UUID]] = (0..<4).map { _ in (0..<4).map { _ in UUID() } }
-
-    init() { reset() }
 
     func reset() {
         board = Array(repeating: Array(repeating: 0, count: 4), count: 4)
@@ -27,7 +33,6 @@ class Game2048: ObservableObject {
     }
 
     func move(_ direction: Edge) {
-
         let oldBoard = board
 
         for i in 0..<4 {
@@ -37,73 +42,66 @@ class Game2048: ObservableObject {
             setLine(line, idLine, at: i, for: direction)
         }
 
-
         if board != oldBoard {
             spawnTile()
         }
     }
 
-    private func slideAndMerge(_ line: [Int], _ ids: [UUID]) -> ([Int], [UUID]) {
-        var newLine = line
-        var newIds = ids
+    // MARK: Private
 
-        // Slide
+    private func slideAndMerge(_ line: [Int], _ ids: [UUID]) -> ([Int], [UUID]) {
+        var newLine = Array(repeating: 0, count: 4)
+        var newIds = (0..<4).map { _ in UUID() }
+
+        var lastIndex = 0
         for i in 0..<4 {
-            if newLine[i] == 0 {
-                for j in i+1..<4 {
-                    if newLine[j] != 0 {
-                        newLine[i] = newLine[j]
-                        newIds[i] = newIds[j]
-                        newLine[j] = 0
-                        break
-                    }
-                }
+            if line[i] != 0 {
+                newLine[lastIndex] = line[i]
+                newIds[lastIndex] = ids[i]
+                lastIndex += 1
             }
         }
 
-        // Merge
         for i in 0..<3 {
-            if newLine[i] != 0 && newLine[i] == newLine[i+1] {
+            if newLine[i] != 0, newLine[i] == newLine[i+1] {
                 newLine[i] *= 2
                 score += newLine[i]
-
-                // keep tile i identity
-                // remove tile i+1
-                newLine[i+1] = 0
 
                 for j in i+1..<3 {
                     newLine[j] = newLine[j+1]
                     newIds[j] = newIds[j+1]
                 }
-
                 newLine[3] = 0
                 newIds[3] = UUID()
             }
         }
+
         return (newLine, newIds)
     }
 
     private func getLine(at i: Int, for dir: Edge) -> [Int] {
         switch dir {
-        case .leading: return board[i]
-        case .trailing: return board[i].reversed()
-        case .top: return (0..<4).map { board[$0][i] }
-        case .bottom: return (0..<4).map { board[$0][i] }.reversed()
+        case .leading: board[i]
+        case .trailing: board[i].reversed()
+        case .top: (0..<4).map { board[$0][i] }
+        case .bottom: (0..<4).map { board[$0][i] }.reversed()
         }
     }
 
     private func getIdLine(at i: Int, for dir: Edge) -> [UUID] {
         switch dir {
-        case .leading: return tileIds[i]
-        case .trailing: return tileIds[i].reversed()
-        case .top: return (0..<4).map { tileIds[$0][i] }
-        case .bottom: return (0..<4).map { tileIds[$0][i] }.reversed()
+        case .leading: tileIds[i]
+        case .trailing: tileIds[i].reversed()
+        case .top: (0..<4).map { tileIds[$0][i] }
+        case .bottom: (0..<4).map { tileIds[$0][i] }.reversed()
         }
     }
 
     private func setLine(_ line: [Int], _ ids: [UUID], at i: Int, for dir: Edge) {
         var fL = line; var fI = ids
-        if dir == .trailing || dir == .bottom { fL.reverse(); fI.reverse() }
+        if dir == .trailing || dir == .bottom {
+            fL.reverse(); fI.reverse()
+        }
         for j in 0..<4 {
             if dir == .leading || dir == .trailing {
                 board[i][j] = fL[j]; tileIds[i][j] = fI[j]
@@ -115,57 +113,72 @@ class Game2048: ObservableObject {
 }
 
 struct Game2048View: View {
-    @StateObject private var engine = Game2048()
-    @AppStorage("highScore") private var highScore: Int = 0
-    @Namespace private var gridSpace
-
-    @Environment(\.accessibilityReduceMotion) var reduceMotion
-    @Environment(\.accessibilityReduceTransparency) var reduceTransparency
+    // MARK: Internal
 
     var body: some View {
-        VStack(spacing: 24) {
-            HStack {
-                Text("2048").font(.system(size: 50, weight: .black))
-                Spacer()
-                ScoreBox(title: "SCORE", value: engine.score)
-                ScoreBox(title: "BEST", value: highScore)
-            }
-            .padding(.horizontal)
+        NavigationStack {
+            VStack {
+                ZStack {
+                    boardBackground
+                    boardGrid
+                }
+                .aspectRatio(1, contentMode: .fit)
+                .padding(12)
+                .background(reduceTransparency ? Color.gray : Color(.systemGray5).opacity(0.8))
+                .cornerRadius(12)
+                .padding()
+                .gesture(
+                    DragGesture(minimumDistance: 30)
+                        .onEnded { gesture in
+                            let h = gesture.translation.width
+                            let v = gesture.translation.height
+                            let direction: Edge = abs(h) > abs(v) ? (h > 0 ? .trailing : .leading) : (v > 0 ? .bottom : .top)
 
-            ZStack {
-                boardBackground
-                boardGrid
-            }
-            .aspectRatio(1, contentMode: .fit)
-            .padding(12)
-            .background(reduceTransparency ? Color.gray : Color(.systemGray5).opacity(0.8))
-            .cornerRadius(12)
-            .padding()
-            .gesture(
-                DragGesture(minimumDistance: 30)
-                    .onEnded { gesture in
-                        let h = gesture.translation.width
-                        let v = gesture.translation.height
-                        let direction: Edge = abs(h) > abs(v) ? (h > 0 ? .trailing : .leading) : (v > 0 ? .bottom : .top)
+                            withAnimation(reduceMotion ? .linear(duration: 0.1) : .spring(response: 0.2, dampingFraction: 0.8)) {
+                                engine.move(direction)
+                            }
 
-                        let movementAnimation: Animation = reduceMotion ? .linear(duration: 0.1) : .spring(response: 0.2, dampingFraction: 0.8)
-
-                        withAnimation(movementAnimation) {
-                            engine.move(direction)
+                            if engine.score > highScore {
+                                highScore = engine.score
+                            }
                         }
-
-                        if engine.score > highScore { highScore = engine.score }
-                    }
-            )
-
-            Button(action: { withAnimation { engine.reset() } }) {
-                Label("New Game", systemImage: "arrow.clockwise")
-                    .font(.headline).padding().frame(maxWidth: .infinity)
-                    .background(Color.accentColor).foregroundColor(.white).cornerRadius(12)
+                )
             }
             .padding(.horizontal)
+            .navigationTitle("2048")
+            .navigationBarTitleDisplayMode(.large)
+            .navigationSubtitle("Score: \(engine.score) | High Score: \(highScore)")
+            .toolbar {
+                ToolbarItem(placement: .bottomBar) {
+                    Button {
+                        withAnimation { engine.reset() }
+                    } label: {
+                        Label("New Game", systemImage: "arrow.clockwise")
+                            .frame(maxWidth: .infinity)
+                            .background(Color.accentColor)
+                            .foregroundColor(.white)
+                    }
+                }
+            }
+            .toolbar {
+                ToolbarItem(placement: .cancellationAction) {
+                    Button(role: .cancel) {
+                        dismiss()
+                    }
+                }
+            }
         }
     }
+
+    // MARK: Private
+
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @Environment(\.accessibilityReduceTransparency) private var reduceTransparency
+    @Environment(\.dismiss) private var dismiss
+
+    @StateObject private var engine: Game2048 = .init()
+    @AppStorage("highScore") private var highScore: Int = 0
+    @Namespace private var gridSpace
 
     private var boardBackground: some View {
         VStack(spacing: 12) {
@@ -181,19 +194,25 @@ struct Game2048View: View {
     }
 
     private var boardGrid: some View {
-        VStack(spacing: 12) {
-            ForEach(0..<4, id: \.self) { r in
-                HStack(spacing: 12) {
+        // We use a GeometryReader to get the size of a single cell
+        GeometryReader { proxy in
+            let cellSize = (proxy.size.width - 36) / 4 // 36 = spacing (12 * 3)
+
+            ZStack(alignment: .topLeading) {
+                ForEach(0..<4, id: \.self) { r in
                     ForEach(0..<4, id: \.self) { c in
                         let val = engine.board[r][c]
-                        ZStack {
-                            if val != 0 {
-                                unsafe TileView(value: val)
-                                    .matchedGeometryEffect(id: engine.tileIds[r][c], in: gridSpace)
-                                    .transition(reduceMotion ? .opacity : .scale.combined(with: .opacity))
-                            }
+                        if val != 0 {
+                            TileView(value: val)
+                                .frame(width: cellSize, height: cellSize)
+                                // Calculate exact position so tiles can fly anywhere
+                                .offset(
+                                    x: CGFloat(c) * (cellSize + 12),
+                                    y: CGFloat(r) * (cellSize + 12)
+                                )
+                                .matchedGeometryEffect(id: engine.tileIds[r][c], in: gridSpace)
+                                .transition(.scale.combined(with: .opacity))
                         }
-                        .frame(maxWidth: .infinity, maxHeight: .infinity)
                     }
                 }
             }
@@ -201,22 +220,27 @@ struct Game2048View: View {
     }
 }
 
-// MARK: - Helper Views
 private struct ScoreBox: View {
     let title: String
     let value: Int
+
     var body: some View {
         VStack {
             Text(title).font(.caption).bold()
             Text("\(value)").font(.title3).bold()
         }
-        .padding(.vertical, 8).padding(.horizontal, 16)
-        .background(Color(.systemGray4)).cornerRadius(8)
+        .padding(.vertical, 8)
+.padding(.horizontal, 16)
+        .background(Color(.systemGray4))
+.cornerRadius(8)
     }
 }
 
 private struct TileView: View {
+    // MARK: Internal
+
     let value: Int
+
     @Environment(\.accessibilityReduceTransparency) var reduceTransparency
 
     var body: some View {
@@ -230,16 +254,18 @@ private struct TileView: View {
         }
     }
 
+    // MARK: Private
+
     private var tileColor: Color {
         switch value {
-        case 2: return .white
-        case 4: return Color(red: 0.95, green: 0.9, blue: 0.8)
-        case 8: return .orange.opacity(0.6)
-        case 16: return .orange.opacity(0.8)
-        case 32: return .orange
-        case 64: return .red.opacity(0.7)
-        case 128...2048: return .yellow
-        default: return .orange
+        case 2: .white
+        case 4: Color(red: 0.95, green: 0.9, blue: 0.8)
+        case 8: .orange.opacity(0.6)
+        case 16: .orange.opacity(0.8)
+        case 32: .orange
+        case 64: .red.opacity(0.7)
+        case 128...2048: .yellow
+        default: .orange
         }
     }
 }

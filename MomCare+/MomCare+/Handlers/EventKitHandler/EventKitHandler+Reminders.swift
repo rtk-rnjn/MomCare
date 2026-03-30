@@ -84,8 +84,6 @@ extension EventKitHandler {
         try eventStore.remove(reminder, commit: true)
     }
 
-    // MARK: - Recurrence Matching
-
     private func reminderMatchesDate(_ reminder: EKReminder, date: Date) -> Bool {
         let calendar = Calendar.current
 

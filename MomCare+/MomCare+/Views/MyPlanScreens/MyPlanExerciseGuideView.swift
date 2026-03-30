@@ -310,7 +310,6 @@ private struct LegendDivider: View {
     }
 }
 
-// Mini day ring
 private struct DayRingBadge: View {
     let progress: Double
     let isToday: Bool

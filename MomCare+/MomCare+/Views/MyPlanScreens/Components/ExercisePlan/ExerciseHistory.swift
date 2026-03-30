@@ -141,8 +141,6 @@ struct ExerciseHistory: View {
     }
 }
 
-// MARK: - Summary (native row)
-
 private struct ExerciseDaySummaryRow: View {
     // MARK: Internal
 
@@ -224,8 +222,6 @@ private struct ExerciseDaySummaryRow: View {
     }
 }
 
-// MARK: - Exercise row (native list row)
-
 private struct ExerciseHistoryRow: View {
     // MARK: Internal
 
@@ -252,7 +248,6 @@ private struct ExerciseHistoryRow: View {
             .frame(width: 56, height: 56)
             .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
 
-            // Main text
             VStack(alignment: .leading, spacing: 6) {
                 HStack(spacing: 8) {
                     Text(exercise?.name ?? "Loading…")

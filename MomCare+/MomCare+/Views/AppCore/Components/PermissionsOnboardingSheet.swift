@@ -178,8 +178,6 @@ struct PermissionsOnboardingSheet: View {
         permissions.contains { $0.isRequesting }
     }
 
-    // MARK: Subviews
-
     private var serverStatusPill: some View {
         HStack(spacing: 8) {
             if fetchingDataFromServer {

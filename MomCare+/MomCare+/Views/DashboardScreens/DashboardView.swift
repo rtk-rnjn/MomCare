@@ -157,19 +157,7 @@ struct DashboardView: View {
                     }
                 }
                 .fullScreenCover(isPresented: $show2048Game) {
-                    NavigationStack {
-                        Game2048View()
-                            .navigationTitle("2048")
-                            .navigationBarTitleDisplayMode(.inline)
-                            .interactiveDismissDisabled()
-                            .toolbar {
-                                ToolbarItem(placement: .cancellationAction) {
-                                    Button(role: .cancel) {
-                                        show2048Game = false
-                                    }
-                                }
-                            }
-                    }
+                    Game2048View()
                 }
 
                 DashboardInsightCardView(
@@ -177,6 +165,25 @@ struct DashboardView: View {
                     message: contentServiceHandler.dailyTipText,
                     icon: "lightbulb"
                 )
+                .contextMenu {
+                    Button {
+                        UIPasteboard.general.string = contentServiceHandler.dailyTipText
+                    } label: {
+                        Label("Copy Daily's Tip", systemImage: "doc.on.doc")
+                    }
+
+                    if experimentalFeatures {
+                        // UwU
+                        Button {
+                            showWaterSortGame = true
+                        } label: {
+                            Label("Play Water Sort", systemImage: "gamecontroller")
+                        }
+                    }
+                }
+                .fullScreenCover(isPresented: $showWaterSortGame) {
+                    GameWaterSortView()
+                }
             }
             .padding(.horizontal)
         }
@@ -198,7 +205,9 @@ struct DashboardView: View {
     @State private var selectedEvent: EKCalendarItemWrapper?
 
     @AppStorage(FeatureFlagState.experimentalFeatures.rawValue, store: UserDefaults(suiteName: "group.MomCare")) private var experimentalFeatures: Bool = false
+
     @State private var show2048Game: Bool = false
+    @State private var showWaterSortGame: Bool = false
 }
 
 extension View {
