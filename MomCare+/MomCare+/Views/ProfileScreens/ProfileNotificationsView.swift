@@ -336,7 +336,9 @@ struct ProfileNotificationsView: View {
         }
         .alert("Notifications Disabled", isPresented: $showSettingsAlert) {
             Button("Open Settings") {
-                UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!)
+                if let url = URL(string: UIApplication.openSettingsURLString) {
+                    UIApplication.shared.canOpenURL(url)
+                }
             }
             Button("Cancel", role: .cancel) {
                 globallyEnabled = false

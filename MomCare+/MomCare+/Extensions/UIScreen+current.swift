@@ -12,7 +12,7 @@ extension UIWindow {
                 return window
             }
         }
-        fatalError()
+        fatalError(Quote.randomQuote.displayString)
     }
 #else
     static var currnt: UIWindow {

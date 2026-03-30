@@ -6,6 +6,10 @@ extension Date {
     }
 
     nonisolated var nextDay: Date {
-        Calendar.current.date(byAdding: .day, value: 1, to: startOfDay)!
+        if let date = Calendar.current.date(byAdding: .day, value: 1, to: startOfDay) {
+            return date
+        }
+
+        fatalError(Quote.randomQuote.displayString)
     }
 }

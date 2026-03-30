@@ -34,7 +34,9 @@ extension ContentServiceHandler {
         }
 
         let startDate = Calendar.current.startOfDay(for: date)
-        let endDate = Calendar.current.date(byAdding: .day, value: 1, to: startDate)!
+        guard let endDate = Calendar.current.date(byAdding: .day, value: 1, to: startDate) else {
+            fatalError(Quote.randomQuote.displayString)
+        }
 
         let networkResponse = try await MCContentRepository.shared.fetchUserExercises(from: startDate, to: endDate)
         return networkResponse.data

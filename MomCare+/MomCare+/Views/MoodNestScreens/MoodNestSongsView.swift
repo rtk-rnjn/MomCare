@@ -24,11 +24,13 @@ struct MoodNestSongsView: View {
                         .padding(.bottom, 16)
 
                     ForEach(songs) { song in
-                        PlaylistTrackRow(playlist: playlist, songIndex: songs.firstIndex(of: song)!)
-                            .padding(.horizontal, 20)
+                        if let index = songs.firstIndex(of: song) {
+                            PlaylistTrackRow(playlist: playlist, songIndex: index)
+                                .padding(.horizontal, 20)
 
-                        Divider()
-                            .padding(.leading, 80)
+                            Divider()
+                                .padding(.leading, 80)
+                        }
                     }
                     .animation(animation, value: songs)
 

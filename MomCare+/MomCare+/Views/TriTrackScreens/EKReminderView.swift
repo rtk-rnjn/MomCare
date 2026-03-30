@@ -271,7 +271,7 @@ struct EKReminderView: View {
             case .daily: frequency = .daily
             case .weekly: frequency = .weekly
             case .monthly: frequency = .monthly
-            default: fatalError()
+            default: fatalError(Quote.randomQuote.displayString)
             }
             let rule = EKRecurrenceRule(
                 recurrenceWith: frequency,
