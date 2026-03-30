@@ -167,7 +167,7 @@ struct PermissionsOnboardingSheet: View {
             title: "Reminders",
             reason: "We'll nudge you gently — medication, hydration, prenatal vitamins — so your routine stays effortless.",
             type: .reminders
-        ),
+        )
     ]
 
     private var allPermissionsGranted: Bool {
