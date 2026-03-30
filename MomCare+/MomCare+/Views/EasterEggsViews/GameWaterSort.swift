@@ -8,22 +8,35 @@ enum WaterType: CaseIterable {
     case yellow
     case purple
     case orange
+    case cyan
+    case pink
 
     // MARK: Internal
 
     var color: Color {
         switch self {
-        case .blue: return .blue; case .red: return .red; case .green: return .green
-        case .yellow: return .yellow; case .purple: return .purple; case .orange: return .orange
+        case .blue: .blue
+        case .red: .red
+        case .green: .green
+        case .yellow: .yellow
+        case .purple: .purple
+        case .orange: .orange
+        case .cyan: .cyan
+        case .pink: .pink
         }
     }
 
     // Symbols for Colorblind accessibility
     var symbol: String {
         switch self {
-        case .blue: return "drop.fill"; case .red: return "flame.fill"
-        case .green: return "leaf.fill"; case .yellow: return "sun.max.fill"
-        case .purple: return "moon.fill"; case .orange: return "bolt.fill"
+        case .blue: "drop.fill"
+        case .red: "flame.fill"
+        case .green: "leaf.fill"
+        case .yellow: "sun.max.fill"
+        case .purple: "moon.fill"
+        case .orange: "bolt.fill"
+        case .cyan: "wind"
+        case .pink: "heart.fill"
         }
     }
 
@@ -48,13 +61,12 @@ class WaterSortEngine: ObservableObject {
     @Published var isSolved: Bool = false
 
     let capacity = 4
-    var difficulty: Int // Number of colors
+    var difficulty: Int
 
     func setupLevel() {
         var colors = [WaterType]()
         let activeColors = Array(WaterType.allCases.prefix(difficulty))
 
-        // Create 4 units of each color
         for color in activeColors {
             for _ in 0..<capacity {
                 colors.append(color)
@@ -62,13 +74,12 @@ class WaterSortEngine: ObservableObject {
         }
         colors.shuffle()
 
-        // Distribute into bottles (plus 2 empty ones)
         bottles = []
         for i in 0..<difficulty {
             let start = i * capacity
             bottles.append(Array(colors[start..<start+capacity]))
         }
-        bottles.append([]); bottles.append([]) // Empty relief bottles
+        bottles.append([]); bottles.append([])
         isSolved = false
         moves = 0
     }
@@ -100,10 +111,8 @@ class WaterSortEngine: ObservableObject {
 
         let colorToMove = bottles[src].last!
 
-        // Rule: Must be empty or match top color
         if bottles[dst].isEmpty || bottles[dst].last == colorToMove {
             withAnimation(.spring(response: 0.4, dampingFraction: 0.7)) {
-                // Pour all contiguous units of the same color
                 while !bottles[src].isEmpty, bottles[src].last == colorToMove, bottles[dst].count < capacity {
                     bottles[dst].append(bottles[src].removeLast())
                 }
@@ -148,7 +157,7 @@ struct GameWaterSortView: View {
                     Text("🎉 Well Done!")
                         .font(.title2)
                         .bold()
-                        .foregroundColor(.green)
+                        .foregroundStyle(.green)
                         .transition(.scale)
                 }
             }
@@ -165,7 +174,7 @@ struct GameWaterSortView: View {
                 }
 
                 ToolbarItem(placement: .cancellationAction) {
-                    Button("Close") {
+                    Button(role: .cancel) {
                         dismiss()
                     }
                 }
@@ -186,8 +195,6 @@ struct GameWaterSortView: View {
 
     // MARK: Private
 
-    // MARK: Private
-
     @StateObject private var engine: WaterSortEngine = .init(difficulty: 4)
 }
 
@@ -202,7 +209,6 @@ struct BottleView: View {
     var body: some View {
         VStack(spacing: 8) {
             ZStack(alignment: .bottom) {
-                // Glass Shape
                 RoundedRectangle(cornerRadius: 15)
                     .stroke(Color.primary.opacity(reduceTransparency ? 1.0 : 0.3), lineWidth: 3)
                     .frame(width: 60, height: 160)
@@ -211,7 +217,6 @@ struct BottleView: View {
                             .fill(reduceTransparency ? Color(.systemBackground) : Color.primary.opacity(0.05))
                     )
 
-                // Water Layers
                 VStack(spacing: 0) {
                     ForEach((0..<colors.count).reversed(), id: \.self) { i in
                         let type = colors[i]
@@ -219,10 +224,9 @@ struct BottleView: View {
                             Rectangle()
                                 .fill(type.color)
 
-                            // ACCESSIBILITY: Symbol for Colorblind users
                             Image(systemName: type.symbol)
-                                .foregroundColor(.white.opacity(0.8))
-                                .font(.system(size: 14, weight: .bold))
+                                .foregroundStyle(.white.opacity(0.8))
+                                .font(.body.weight(.bold))
                                 .shadow(radius: 1)
                         }
                         .frame(width: 54, height: 150 / CGFloat(capacity))
@@ -233,7 +237,6 @@ struct BottleView: View {
                 .clipShape(RoundedRectangle(cornerRadius: 12))
                 .padding(3)
             }
-            // ACCESSIBILITY: Replace "flying" animation with simple highlight if Reduce Motion is on
             .offset(y: (isSelected && !reduceMotion) ? -20 : 0)
             .scaleEffect((isSelected && reduceMotion) ? 1.1 : 1.0)
             .overlay(

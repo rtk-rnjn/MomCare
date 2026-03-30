@@ -54,26 +54,22 @@ class Game2048: ObservableObject {
         var newIds = (0..<4).map { _ in UUID() }
 
         var lastIndex = 0
-        for i in 0..<4 {
-            if line[i] != 0 {
-                newLine[lastIndex] = line[i]
-                newIds[lastIndex] = ids[i]
-                lastIndex += 1
-            }
+        for i in 0..<4 where line[i] != 0 {
+            newLine[lastIndex] = line[i]
+            newIds[lastIndex] = ids[i]
+            lastIndex += 1
         }
 
-        for i in 0..<3 {
-            if newLine[i] != 0, newLine[i] == newLine[i+1] {
-                newLine[i] *= 2
-                score += newLine[i]
+        for i in 0..<3 where newLine[i] != 0 && newLine[i] == newLine[i+1] {
+            newLine[i] *= 2
+            score += newLine[i]
 
-                for j in i+1..<3 {
-                    newLine[j] = newLine[j+1]
-                    newIds[j] = newIds[j+1]
-                }
-                newLine[3] = 0
-                newIds[3] = UUID()
+            for j in i+1..<3 {
+                newLine[j] = newLine[j+1]
+                newIds[j] = newIds[j+1]
             }
+            newLine[3] = 0
+            newIds[3] = UUID()
         }
 
         return (newLine, newIds)
@@ -156,7 +152,7 @@ struct Game2048View: View {
                         Label("New Game", systemImage: "arrow.clockwise")
                             .frame(maxWidth: .infinity)
                             .background(Color.accentColor)
-                            .foregroundColor(.white)
+                            .foregroundStyle(.white)
                     }
                 }
             }
@@ -194,9 +190,8 @@ struct Game2048View: View {
     }
 
     private var boardGrid: some View {
-        // We use a GeometryReader to get the size of a single cell
         GeometryReader { proxy in
-            let cellSize = (proxy.size.width - 36) / 4 // 36 = spacing (12 * 3)
+            let cellSize = (proxy.size.width - 36) / 4
 
             ZStack(alignment: .topLeading) {
                 ForEach(0..<4, id: \.self) { r in
@@ -230,9 +225,9 @@ private struct ScoreBox: View {
             Text("\(value)").font(.title3).bold()
         }
         .padding(.vertical, 8)
-.padding(.horizontal, 16)
+        .padding(.horizontal, 16)
         .background(Color(.systemGray4))
-.cornerRadius(8)
+        .cornerRadius(8)
     }
 }
 
@@ -248,8 +243,9 @@ private struct TileView: View {
             RoundedRectangle(cornerRadius: 8)
                 .fill(tileColor)
             Text("\(value)")
-                .font(.system(size: 28, weight: .bold, design: .rounded))
-                .foregroundColor(value < 8 ? .black : .white)
+                .font(.largeTitle)
+.bold()
+                .foregroundStyle(value < 8 ? .black : .white)
                 .minimumScaleFactor(0.5)
         }
     }

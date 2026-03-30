@@ -257,7 +257,7 @@ let sdfProverbs: [Quote] = [
     Quote(text: "Victory outlasts truth.", attribution: "SDF proverb")
 ]
 
-let modernWarfareRemasteredQuotes: [Quote] = [
+let modernWarfareRemasteredQuotes: [Quote] = [ // swiftlint:disable:this inclusive_language
     Quote(text: "The future influences the present just as much as the past.", attribution: "Friedrich Nietzsche"),
     Quote(text: "You cannot escape the responsibility of tomorrow by evading it today.", attribution: "Abraham Lincoln"),
     Quote(text: "Study the past if you would define the future.", attribution: "Confucius"),
