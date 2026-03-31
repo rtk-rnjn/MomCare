@@ -25,7 +25,14 @@ struct MoodNestView: View {
 
                     Spacer()
 
-                    MoodFaceView(moodNestViewModel: moodNestViewModel)
+                    MoodFaceView(
+                        isSemiCircleEyes: moodNestViewModel.useSemiCircleEyes,
+                        faceColor: moodNestViewModel.faceColor,
+                        eyeScale: moodNestViewModel.eyeScale,
+                        leftEyeRotation: moodNestViewModel.eyeRotationLeft,
+                        rightEyeRotation: moodNestViewModel.eyeRotationRight,
+                        smileRotation: moodNestViewModel.smileRotation
+                    )
                         .frame(maxHeight: 220)
                         .accessibilityHidden(true)
 
@@ -61,7 +68,6 @@ struct MoodNestView: View {
                 .padding(.horizontal, 20)
             }
 
-            // ✅ Bottom button (safe & Apple-compliant)
             .safeAreaInset(edge: .bottom) {
                 Button {
                     UIImpactFeedbackGenerator(style: .soft).impactOccurred()

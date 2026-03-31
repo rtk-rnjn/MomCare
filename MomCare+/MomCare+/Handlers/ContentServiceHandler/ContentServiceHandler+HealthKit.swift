@@ -27,6 +27,8 @@ extension ContentServiceHandler {
             .biologicalSex, .dateOfBirth
         ]
 
+        let stateOfMind = HKStateOfMindType.stateOfMindType()
+
         let readQuantityTypes = readQuantityIdentifiers.compactMap { HKQuantityType.quantityType(forIdentifier: $0) }
         let writeQuantityTypes = writeQuantityIdentifiers.compactMap { HKQuantityType.quantityType(forIdentifier: $0) }
 
@@ -39,10 +41,12 @@ extension ContentServiceHandler {
             Set(readQuantityTypes)
             .union(readCategoryTypes)
             .union(readCharacteristicTypes)
+            .union([stateOfMind])
 
         let writeTypes: Set<HKSampleType> =
             Set(writeQuantityTypes)
             .union(writeCategoryTypes)
+            .union([stateOfMind])
 
         try await healthStore.requestAuthorization(toShare: writeTypes, read: readTypes)
     }

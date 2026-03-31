@@ -1,4 +1,5 @@
 import SwiftUI
+import TipKit
 
 extension Color {
     enum CustomColors {
@@ -260,6 +261,11 @@ struct PregnancyProgressView: View {
     @State private var showingMomInfo = false
     @State private var selectedCardPosition: CGRect = .zero
 
+    @State private var tips: TipGroup = TipGroup {
+        MomCareTips.TriTrack.TriTrackBabyTip()
+        MomCareTips.TriTrack.TriTrackMomTip()
+    }
+
     private var sizeComparisonView: some View {
         VStack(spacing: 0) {
             ComparisonView(trimesterData: trimesterData, imageName: trimesterData.babyImageUri)
@@ -377,6 +383,7 @@ struct PregnancyProgressView: View {
                 backgroundColor: Color(hex: "FBE8E5"),
                 accentColor: .CustomColors.mutedRaspberry
             )
+            .popoverTip(tips.currentTip as? MomCareTips.TriTrack.TriTrackBabyTip, arrowEdge: .bottom)
             .background(
                 GeometryReader { geo in
                     Color.clear
@@ -401,6 +408,7 @@ struct PregnancyProgressView: View {
                 backgroundColor: Color(hex: "FBE8E5"),
                 accentColor: .CustomColors.mutedRaspberry
             )
+            .popoverTip(tips.currentTip as? MomCareTips.TriTrack.TriTrackMomTip, arrowEdge: .bottom)
             .background(
                 GeometryReader { geo in
                     Color.clear

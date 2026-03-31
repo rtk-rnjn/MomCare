@@ -3,13 +3,9 @@ import TipKit
 import UIKit
 
 struct MoodNestPlaylistsView: View {
-    // MARK: Lifecycle
-
-    init(mood: MoodType) {
-        _moodResultViewModel = StateObject(wrappedValue: MoodResultViewModel(mood: mood))
-    }
-
     // MARK: Internal
+
+    let mood: MoodType
 
     var body: some View {
         ZStack {
@@ -48,19 +44,23 @@ struct MoodNestPlaylistsView: View {
         .navigationTitle("Mood")
         .navigationBarTitleDisplayMode(.inline)
         .task {
-            await moodResultViewModel.loadData()
+            do {
+                try await contentService.fetchMoodNestData(for: mood)
+            } catch {
+                controlState.error = error
+            }
 
-            let heroPlaylist = moodResultViewModel.playlists.randomElement()
-            if let heroPlaylist {
+            try? await contentService.logMoodToHealthKit(mood: mood)
+
+            if let heroPlaylist = contentService.playlists.randomElement() {
                 self.heroPlaylist = heroPlaylist
                 uiImage = await heroPlaylist.image
             }
         }
-        .errorAlert(error: $moodResultViewModel.error)
     }
 
     var captionSection: some View {
-        Text(moodResultViewModel.caption)
+        Text(contentService.moodNestCaption)
             .font(.title.weight(.bold))
             .foregroundStyle(.primary)
             .lineLimit(3)
@@ -91,7 +91,7 @@ struct MoodNestPlaylistsView: View {
                 ],
                 spacing: 16
             ) {
-                ForEach(moodResultViewModel.playlists) { playlist in
+                ForEach(contentService.playlists) { playlist in
                     NavigationLink(destination: MoodNestSongsView(playlist: playlist)) {
                         PlaylistCard(playlist: playlist)
                     }
@@ -186,9 +186,9 @@ struct MoodNestPlaylistsView: View {
     // MARK: Private
 
     @EnvironmentObject private var musicPlayerHandler: MusicPlayerHandler
+    @EnvironmentObject private var contentService: ContentServiceHandler
     @EnvironmentObject private var controlState: ControlState
 
-    @StateObject private var moodResultViewModel: MoodResultViewModel
     @State private var heroPlaylist: PlaylistModel?
     @State private var uiImage: UIImage?
 }

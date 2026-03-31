@@ -59,6 +59,7 @@ struct SignInView: View {
                                 .frame(maxWidth: .infinity)
                         }
                     }
+                    .disabled(isLoading)
                     .frame(maxWidth: .infinity)
                     .buttonStyle(.borderedProminent)
                     .tint(MomCareAccent.primary)
@@ -96,9 +97,8 @@ struct SignInView: View {
 
         do {
             try await authenticationService.login(emailAddress: emailAddress, password: password)
-            let credentialsResponse = try await authenticationService.fetchCredentials()
-
-            let verified = credentialsResponse.data.verified
+            let credentials = authenticationService.credentials
+            let verified = credentials?.verified ?? false
             if !verified {
                 navigateToOTPVerification = true
                 return
@@ -109,14 +109,8 @@ struct SignInView: View {
             return
         }
 
-        do {
-            try await authenticationService.me()
-
-            if authenticationService.userModel?.dateOfBirth == nil {
-                navigateToHealthMetricsSignUp = true
-            }
-        } catch {
-            controlState.error = error
+        if authenticationService.userModel?.dateOfBirth == nil {
+            navigateToHealthMetricsSignUp = true
         }
     }
 

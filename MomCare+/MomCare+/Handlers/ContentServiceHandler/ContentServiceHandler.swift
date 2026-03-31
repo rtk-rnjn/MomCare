@@ -46,6 +46,10 @@ final class ContentServiceHandler: ObservableObject {
     @Published var todayFocusText: String = ""
     @Published var dailyTipText: String = ""
 
+    @Published var moodNestCaption: String = ""
+    @Published var songs: [SongModel] = []
+    @Published var playlists: [PlaylistModel] = []
+
     let healthStore: HKHealthStore = .init()
 
     @Published var myPlanModel: MealPlanModel? {

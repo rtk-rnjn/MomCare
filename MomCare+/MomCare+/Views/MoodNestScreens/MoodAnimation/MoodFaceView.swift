@@ -1,18 +1,35 @@
 import SwiftUI
 
 struct MoodFaceView: View {
-    @ObservedObject var moodNestViewModel: MoodNestViewModel
+    let isSemiCircleEyes: Bool
+    let faceColor: Color
+    let eyeScale: CGSize
+
+    let leftEyeRotation: Angle
+    let rightEyeRotation: Angle
+
+    let smileRotation: Angle
 
     var body: some View {
         VStack(spacing: -3) {
             HStack(spacing: 30) {
-                EyeView(moodNestViewModel: moodNestViewModel, isLeft: true)
-                EyeView(moodNestViewModel: moodNestViewModel, isLeft: false)
+                EyeView(
+                    isSemiCircleEyes: isSemiCircleEyes,
+                    faceColor: faceColor,
+                    eyeScale: eyeScale,
+                    rotation: leftEyeRotation
+                )
+                EyeView(
+                    isSemiCircleEyes: isSemiCircleEyes,
+                    faceColor: faceColor,
+                    eyeScale: eyeScale,
+                    rotation: rightEyeRotation
+                )
             }
 
             SmileView(
-                rotation: moodNestViewModel.smileRotation,
-                color: moodNestViewModel.faceColor
+                rotation: smileRotation,
+                color: faceColor
             )
         }
         .accessibilityHidden(true)

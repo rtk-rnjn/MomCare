@@ -35,8 +35,6 @@ struct OnboardingView: View {
                         Task {
                             do {
                                 try await handleAppleSignIn(result)
-                                _ = try await authenticationService.me()
-                                _ = try await authenticationService.fetchCredentials()
 
                                 if authenticationService.userModel?.dueDateTimestamp == nil {
                                     navigateToHealthMetricsSignUp = true

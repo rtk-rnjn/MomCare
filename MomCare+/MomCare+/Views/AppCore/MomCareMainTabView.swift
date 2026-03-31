@@ -144,7 +144,7 @@ struct MomCareMainTabView: View {
             try await authenticationService.refresh()
             isRefreshing = false
         } catch {
-            if let error = error as? URLError {
+            if (error as? URLError)?.code == .cancelled {
                 controlState.error = error
             } else {
                 refreshError = RefreshError()

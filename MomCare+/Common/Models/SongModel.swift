@@ -1,4 +1,5 @@
 import Foundation
+import HealthKit
 import UIKit
 
 enum MoodType: String, Codable, CaseIterable, Identifiable {
@@ -11,6 +12,33 @@ enum MoodType: String, Codable, CaseIterable, Identifiable {
 
     var id: String {
         rawValue
+    }
+
+    var emoji: String {
+        switch self {
+        case .angry: "😡"
+        case .sad: "😢"
+        case .happy: "😊"
+        case .stressed: "😰"
+        }
+    }
+
+    var valence: Double {
+        switch self {
+        case .angry: -1
+        case .sad: -0.5
+        case .stressed: -0.25
+        case .happy: 1
+        }
+    }
+
+    var label: HKStateOfMind.Label {
+        switch self {
+        case .angry: .angry
+        case .sad: .sad
+        case .stressed: .stressed
+        case .happy: .happy
+        }
     }
 }
 

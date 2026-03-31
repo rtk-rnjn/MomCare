@@ -117,4 +117,38 @@ enum MomCareTips {
             }
         }
     }
+
+    enum TriTrack {
+        struct TriTrackBabyTip: Tip {
+            var title: Text {
+                Text("Baby Section")
+            }
+
+            var message: Text? {
+                Text("Tap on the card to explore details about your baby.")
+            }
+
+            var image: Image? {
+                UIImage(systemName: "hand.tap")
+                    .map { $0.withTintColor(.black, renderingMode: .alwaysOriginal) }
+                    .map(Image.init(uiImage:))
+            }
+        }
+
+        struct TriTrackMomTip: Tip {
+            var title: Text {
+                Text("Mom Section")
+            }
+
+            var message: Text? {
+                Text("Tap on the card to explore details about you during this trimester.")
+            }
+
+            var image: Image? {
+                UIImage(systemName: "hand.tap")
+                    .map { $0.withTintColor(.black, renderingMode: .alwaysOriginal) }
+                    .map(Image.init(uiImage:))
+            }
+        }
+    }
 }

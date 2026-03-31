@@ -155,12 +155,12 @@ struct PreferencesSignUpView: View {
                     ProgressView()
                         .progressViewStyle(.circular)
                         .tint(.white)
-                        .frame(maxWidth: .infinity)
                 } else {
                     Text("Finish")
                         .frame(maxWidth: .infinity)
                 }
             }
+            .disabled(isLoading)
             .buttonStyle(.borderedProminent)
             .tint(MomCareAccent.primary)
             .controlSize(.large)
