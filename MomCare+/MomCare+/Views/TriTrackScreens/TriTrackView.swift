@@ -391,7 +391,7 @@ struct PregnancyProgressView: View {
             CompactInfoCard(
                 title: "Baby This Week",
                 iconName: "figure.and.child.holdinghands",
-                previewText: getTruncatedText(from: trimesterData.babyTipText, maxLength: 100),
+                previewText: trimesterData.babyTipText,
                 isEmoji: false,
                 backgroundColor: Color(hex: "FBE8E5"),
                 accentColor: .CustomColors.mutedRaspberry
@@ -416,7 +416,7 @@ struct PregnancyProgressView: View {
             CompactInfoCard(
                 title: "Mom This Week",
                 iconName: "figure.and.child.holdinghands",
-                previewText: getTruncatedText(from: trimesterData.momTipText, maxLength: 100),
+                previewText: getTruncatedText(from: trimesterData.momTipText, maxLength: 70),
                 isEmoji: false,
                 backgroundColor: Color(hex: "FBE8E5"),
                 accentColor: .CustomColors.mutedRaspberry
@@ -548,7 +548,7 @@ struct CompactInfoCard: View {
     let accentColor: Color
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 4) {
+        VStack(alignment: .leading, spacing: 2) {
             HStack(spacing: 2) {
                 if isEmoji {
                     Text(iconName)
@@ -570,6 +570,7 @@ struct CompactInfoCard: View {
                     .font(.subheadline.weight(.semibold))
                     .foregroundStyle(.primary)
                     .lineLimit(1)
+                    .minimumScaleFactor(0.85)
                     .accessibilityAddTraits(.isHeader)
                     .contentTransition(reduceMotion ? .identity : .interpolate)
                     .animation(reduceMotion ? nil : .easeInOut, value: title)
@@ -578,23 +579,19 @@ struct CompactInfoCard: View {
             Text(previewText)
                 .font(.footnote)
                 .foregroundStyle(.secondary)
-                .lineLimit(5)
-                .lineSpacing(1)
-                .multilineTextAlignment(.leading)
+                .lineLimit(4)
+                .truncationMode(.tail)
+                .overlay(alignment: .bottomTrailing) {
+                    Text("… see more")
+                        .font(.footnote.weight(.semibold))
+                        .foregroundStyle(.secondary)
+                        .background(backgroundColor)
+                }
                 .padding(.top, 2)
-                .contentTransition(reduceMotion ? .identity : .interpolate)
-                .animation(reduceMotion ? nil : .easeInOut, value: previewText)
-            HStack {
-                Spacer()
-                
-                Text("See more")
-                    .font(.caption.weight(.semibold))
-                    .foregroundColor(accentColor)
-            }
         }
         .padding(12)
         .frame(maxWidth: .infinity)
-        .frame(height: 120)
+        .frame(minHeight: 120, alignment: .top)
         .background(
             RoundedRectangle(cornerRadius: 16)
                 .fill(backgroundColor)
