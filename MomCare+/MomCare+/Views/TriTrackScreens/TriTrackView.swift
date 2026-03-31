@@ -154,8 +154,8 @@ struct TriTrackView: View {
 
     // MARK: Private
 
-    @AppStorage(FeatureFlagState.forceUseLargeTitle.rawValue, store: UserDefaults(suiteName: "group.MomCare")) private var forceUseLargeTitle: Bool = false
-    @AppStorage(FeatureFlagState.experimentalFeatures.rawValue, store: UserDefaults(suiteName: "group.MomCare")) private var experimentalFeaturesEnabled: Bool = false
+    @AppStorage(FeatureFlagState.forceUseLargeTitle.rawValue, store: Database.shared.userDefaults) private var forceUseLargeTitle: Bool = false
+    @AppStorage(FeatureFlagState.experimentalFeatures.rawValue, store: Database.shared.userDefaults) private var experimentalFeaturesEnabled: Bool = false
 
     @EnvironmentObject private var controlState: ControlState
     @EnvironmentObject private var authenticationService: MCAuthenticationService

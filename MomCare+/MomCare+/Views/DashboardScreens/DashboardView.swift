@@ -204,7 +204,7 @@ struct DashboardView: View {
 
     @State private var selectedEvent: EKCalendarItemWrapper?
 
-    @AppStorage(FeatureFlagState.experimentalFeatures.rawValue, store: UserDefaults(suiteName: "group.MomCare")) private var experimentalFeatures: Bool = false
+    @AppStorage(FeatureFlagState.experimentalFeatures.rawValue, store: Database.shared.userDefaults) private var experimentalFeatures: Bool = false
 
     @State private var show2048Game: Bool = false
     @State private var showWaterSortGame: Bool = false

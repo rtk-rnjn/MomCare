@@ -91,8 +91,6 @@ struct MoodNestView: View {
     @EnvironmentObject private var controlState: ControlState
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
-    private let sliderTip: MomCareTips.MoodNest.MoodNestSliderTip = .init()
-
     private var stateOfMindPermission: HKAuthorizationStatus {
         contentService.healthStore.authorizationStatus(for: .stateOfMindType())
     }
@@ -143,7 +141,6 @@ struct MoodNestView: View {
                 .accessibilityLabel(mood.rawValue)
             }
         }
-        .popoverTip(sliderTip, arrowEdge: .bottom)
         .padding(.horizontal, 30)
         .accessibilityLabel("Mood selector")
         .accessibilityValue(moodNestViewModel.mood.rawValue)

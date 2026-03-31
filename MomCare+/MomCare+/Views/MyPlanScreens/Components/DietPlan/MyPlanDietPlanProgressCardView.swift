@@ -64,7 +64,7 @@ struct MyPlanDietPlanProgressCardView: View {
         case down
     }
 
-    @AppStorage(FeatureFlagState.experimentalFeatures.rawValue, store: UserDefaults(suiteName: "group.MomCare")) private var experimentalFeatures: Bool = false
+    @AppStorage(FeatureFlagState.experimentalFeatures.rawValue, store: Database.shared.userDefaults) private var experimentalFeatures: Bool = false
 
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
 

@@ -39,7 +39,7 @@ struct DashboardDietCardView: View {
 
     // MARK: Private
 
-    @AppStorage(FeatureFlagState.experimentalUI.rawValue, store: UserDefaults(suiteName: "group.MomCare")) private var experimentalUI: Bool = false
+    @AppStorage(FeatureFlagState.experimentalUI.rawValue, store: Database.shared.userDefaults) private var experimentalUI: Bool = false
 
     @State private var animatedProgress: Double = 0
     @Environment(\.accessibilityReduceMotion) private var reduceMotion

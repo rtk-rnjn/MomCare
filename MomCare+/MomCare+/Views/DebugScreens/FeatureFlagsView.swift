@@ -108,13 +108,13 @@ struct FeatureFlagsView: View {
 
     // MARK: Private
 
-    @AppStorage(FeatureFlagState.experimentalFeatures.rawValue, store: UserDefaults(suiteName: "group.MomCare")) private var experimentalFeatures: Bool = false
-    @AppStorage(FeatureFlagState.forceUseLargeTitle.rawValue, store: UserDefaults(suiteName: "group.MomCare")) private var forceUseLargeTitle: Bool = false
-    @AppStorage(FeatureFlagState.experimentalUI.rawValue, store: UserDefaults(suiteName: "group.MomCare")) private var experimentalUI: Bool = false
-    @AppStorage(FeatureFlagState.networkHaptics.rawValue, store: UserDefaults(suiteName: "group.MomCare")) private var networkHaptics: Bool = false
+    @AppStorage(FeatureFlagState.experimentalFeatures.rawValue, store: Database.shared.userDefaults) private var experimentalFeatures: Bool = false
+    @AppStorage(FeatureFlagState.forceUseLargeTitle.rawValue, store: Database.shared.userDefaults) private var forceUseLargeTitle: Bool = false
+    @AppStorage(FeatureFlagState.experimentalUI.rawValue, store: Database.shared.userDefaults) private var experimentalUI: Bool = false
+    @AppStorage(FeatureFlagState.networkHaptics.rawValue, store: Database.shared.userDefaults) private var networkHaptics: Bool = false
 
-    @AppStorage(FeatureFlagState.forceDarkMode.rawValue, store: UserDefaults(suiteName: "group.MomCare")) private var forceDarkMode: Bool = false
-    @AppStorage(FeatureFlagState.forceLightMode.rawValue, store: UserDefaults(suiteName: "group.MomCare")) private var forceLightMode: Bool = true
+    @AppStorage(FeatureFlagState.forceDarkMode.rawValue, store: Database.shared.userDefaults) private var forceDarkMode: Bool = false
+    @AppStorage(FeatureFlagState.forceLightMode.rawValue, store: Database.shared.userDefaults) private var forceLightMode: Bool = true
 }
 
 private struct FlagToggle: View {
