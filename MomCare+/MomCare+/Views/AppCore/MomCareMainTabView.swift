@@ -126,14 +126,14 @@ struct MomCareMainTabView: View {
                 return
             }
 
-            Task {
+            Task<Void, Never> {
                 fetchingDataFromServer = true
                 defer { fetchingDataFromServer = false }
 
                 do {
-                    async let exercises = contentServiceHandler.fetchUserExercises()
-                    async let insights = fetchDailyInsights()
-                    async let mealPlan = contentServiceHandler.fetchMealPlan()
+                    async let exercises: Void = contentServiceHandler.fetchUserExercises()
+                    async let insights: Void = fetchDailyInsights()
+                    async let mealPlan: Void = contentServiceHandler.fetchMealPlan()
 
                     _ = try await (exercises, insights, mealPlan)
 

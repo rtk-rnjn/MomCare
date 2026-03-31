@@ -7,8 +7,8 @@ extension ContentServiceHandler {
 
         while true {
             do {
-                async let fetchExercisesMeta = fetchUserExercisesMeta()
-                async let networkResponse = MCContentRepository.shared.generateUserExercises()
+                async let fetchExercisesMeta: Void = fetchUserExercisesMeta()
+                async let networkResponse: NetworkResponse<[UserExerciseModel]> = MCContentRepository.shared.generateUserExercises()
 
                 await fetchExercisesMeta
                 userExercises = try await networkResponse.data
@@ -24,9 +24,9 @@ extension ContentServiceHandler {
     }
 
     func fetchUserExercisesMeta() async {
-        async let weeklyProgress = fetchWeeklyExerciseProgress()
-        async let totalCompleted = userExercises.fetchTotalUserExercisesCompleted()
-        async let totalDuration = userExercises.fetchTotalExerciseDuration()
+        async let weeklyProgress: Void = fetchWeeklyExerciseProgress()
+        async let totalCompleted: Int = userExercises.fetchTotalUserExercisesCompleted()
+        async let totalDuration: TimeInterval = userExercises.fetchTotalExerciseDuration()
 
         await weeklyProgress
         totalUserExercisesCompleted = await totalCompleted
