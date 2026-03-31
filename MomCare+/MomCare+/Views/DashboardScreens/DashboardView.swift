@@ -135,36 +135,29 @@ struct DashboardView: View {
                 .accessibilityAddTraits(.isHeader)
 
             HStack(spacing: 16) {
-                if contentServiceHandler.todayFocusText.isEmpty || true {
-                    Spacer()
-                    ProgressView()
-                        .frame(maxWidth: .infinity)
-                    Spacer()
-                } else {
-                    DashboardInsightCardView(
-                        title: "Today's Focus",
-                        message: contentServiceHandler.todayFocusText,
-                        icon: "target"
-                    )
-                    .contextMenu {
-                        Button {
-                            UIPasteboard.general.string = contentServiceHandler.todayFocusText
-                        } label: {
-                            Label("Copy Today's Focus", systemImage: "doc.on.doc")
-                        }
+                DashboardInsightCardView(
+                    title: "Today's Focus",
+                    message: contentServiceHandler.todayFocusText,
+                    icon: "target"
+                )
+                .contextMenu {
+                    Button {
+                        UIPasteboard.general.string = contentServiceHandler.todayFocusText
+                    } label: {
+                        Label("Copy Today's Focus", systemImage: "doc.on.doc")
+                    }
 
-                        if experimentalFeatures {
-                            // Hehehehe.
-                            Button {
-                                show2048Game = true
-                            } label: {
-                                Label("Play 2048", systemImage: "gamecontroller")
-                            }
+                    if experimentalFeatures {
+                        // Hehehehe.
+                        Button {
+                            show2048Game = true
+                        } label: {
+                            Label("Play 2048", systemImage: "gamecontroller")
                         }
                     }
-                    .fullScreenCover(isPresented: $show2048Game) {
-                        Game2048View()
-                    }
+                }
+                .fullScreenCover(isPresented: $show2048Game) {
+                    Game2048View()
                 }
 
                 DashboardInsightCardView(
