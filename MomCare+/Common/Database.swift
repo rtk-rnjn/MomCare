@@ -79,6 +79,8 @@ final class Database {
 
     static let shared: Database = .init()
 
+    let userDefaults: UserDefaults
+
     func find<T: Codable>(withMatchingRegex pattern: String) -> [T] {
         guard let regex = try? NSRegularExpression(pattern: pattern) else {
             return []
@@ -137,7 +139,6 @@ final class Database {
 
     // MARK: Private
 
-    private let userDefaults: UserDefaults
     private let directory: URL
 }
 

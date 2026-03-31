@@ -37,7 +37,7 @@ struct MyPlanView: View {
         MomCareTips.DietPlan.ItemRowSlideTip()
     }
 
-    @AppStorage(FeatureFlagState.forceUseLargeTitle.rawValue, store: UserDefaults(suiteName: "group.MomCare")) private var forceUseLargeTitle: Bool = false
+    @AppStorage(FeatureFlagState.forceUseLargeTitle.rawValue, store: Database.shared.userDefaults) private var forceUseLargeTitle: Bool = false
 
     @EnvironmentObject private var controlState: ControlState
 }

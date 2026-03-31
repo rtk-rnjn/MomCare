@@ -173,7 +173,7 @@ struct Game2048View: View {
     @Environment(\.dismiss) private var dismiss
 
     @StateObject private var engine: Game2048 = .init()
-    @AppStorage("highScore", store: UserDefaults(suiteName: "group.MomCare")) private var highScore: Int = 0
+    @AppStorage("highScore", store: Database.shared.userDefaults) private var highScore: Int = 0
     @Namespace private var gridSpace
 
     private var boardBackground: some View {

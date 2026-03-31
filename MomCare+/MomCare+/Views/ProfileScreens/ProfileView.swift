@@ -99,7 +99,7 @@ struct ProfileView: View {
 
     // MARK: Private
 
-    @AppStorage(kFirstTime, store: UserDefaults(suiteName: "group.MomCare")) private var firstTime: Bool = true
+    @AppStorage(kFirstTime, store: Database.shared.userDefaults) private var firstTime: Bool = true
 
     @State private var showSignOutAlert = false
 
