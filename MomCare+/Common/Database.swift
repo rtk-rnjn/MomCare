@@ -100,14 +100,16 @@ final class Database {
     }
 
     func purge() {
-        let keysToDelete: [ValidDatabaseKeys] = [
-            .userModel,
-            .credentials,
-            .tokenPair
+        let keysNotToDeletePrefix: [String] = [
+            "MomCare_exercise_",
+            "MomCare_song_",
+            "MomCare_food_"
         ]
 
-        for key in keysToDelete {
-            userDefaults.removeObject(forKey: key.rawValue)
+        let keysToDeletePrefix = "MomCare_"
+
+        for key in userDefaults.dictionaryRepresentation().keys where key.hasPrefix(keysToDeletePrefix) && !keysNotToDeletePrefix.contains(where: { key.hasPrefix($0) }) {
+            userDefaults.removeObject(forKey: key)
         }
     }
 
