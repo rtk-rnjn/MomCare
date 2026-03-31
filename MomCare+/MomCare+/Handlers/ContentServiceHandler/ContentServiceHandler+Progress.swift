@@ -75,10 +75,8 @@ extension ContentServiceHandler {
         }
 
         await withTaskGroup(of: (Int, Double).self) { group in
-
             for (index, date) in dates.enumerated() {
                 group.addTask {
-
                     let exercise = await self.calculateTotalCompletionPercentage(for: date)
 
                     let breathing =

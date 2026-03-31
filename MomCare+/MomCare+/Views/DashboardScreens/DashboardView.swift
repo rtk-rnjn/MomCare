@@ -152,7 +152,7 @@ struct DashboardView: View {
                         } label: {
                             Label("Copy Today's Focus", systemImage: "doc.on.doc")
                         }
-                        
+
                         if experimentalFeatures {
                             // Hehehehe.
                             Button {
