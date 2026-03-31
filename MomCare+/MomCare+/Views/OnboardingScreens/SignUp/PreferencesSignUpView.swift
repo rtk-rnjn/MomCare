@@ -270,7 +270,3 @@ struct PreferencesSignUpView: View {
         authenticationService.userModel?.dueDateTimestamp = dueDate.timeIntervalSince1970
     }
 }
-
-#Preview {
-    PreferencesSignUpView()
-}
