@@ -28,6 +28,7 @@ final class EventKitHandler: ObservableObject {
 
     @Published var eventStore: EKEventStore = .init()
 
+    @discardableResult
     func requestAccess(for type: EKEntityType) async throws -> Bool {
         switch type {
         case .reminder:

@@ -91,6 +91,9 @@ struct TriTrackSymptomsContentView: View {
     }
 
     func delete(_ model: SymptomModel) {
+        Task {
+            try? await contentService.deleteSymptom(model)
+        }
         context.delete(model)
         do {
             try context.save()
@@ -104,6 +107,7 @@ struct TriTrackSymptomsContentView: View {
 
     @State private var selectedSymptomModel: SymptomModel?
 
+    @EnvironmentObject private var contentService: ContentServiceHandler
     @EnvironmentObject private var controlState: ControlState
 
     @Environment(\.modelContext) private var context

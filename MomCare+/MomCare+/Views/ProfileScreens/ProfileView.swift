@@ -85,14 +85,6 @@ struct ProfileView: View {
         .listStyle(.insetGrouped)
         .scrollContentBackground(.hidden)
         .background(Color(.systemGroupedBackground))
-        .task {
-            do {
-                try await authenticationService.me()
-                try await authenticationService.fetchCredentials()
-            } catch {
-                controlState.error = error
-            }
-        }
         .alert("Sign Out?", isPresented: $showSignOutAlert) {
             Button(role: .cancel) {}
 
@@ -112,7 +104,6 @@ struct ProfileView: View {
     @State private var showSignOutAlert = false
 
     @EnvironmentObject private var authenticationService: MCAuthenticationService
-    @EnvironmentObject private var controlState: ControlState
     @Environment(\.openURL) private var openURL
 
     private var footerView: some View {

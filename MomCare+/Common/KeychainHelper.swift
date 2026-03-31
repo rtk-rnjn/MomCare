@@ -1,7 +1,7 @@
 import Foundation
 import Security
 
-enum ValidKeychainKeys: String {
+enum ValidKeychainKeys: String, CaseIterable {
     case accessToken
     case refreshToken
     case password
@@ -54,5 +54,11 @@ enum KeychainHelper {
             kSecAttrAccount as String: key.rawValue
         ]
         return SecItemDelete(query as CFDictionary) == errSecSuccess
+    }
+
+    nonisolated static func purge() {
+        for key in ValidKeychainKeys.allCases {
+            remove(key)
+        }
     }
 }

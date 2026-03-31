@@ -141,7 +141,6 @@ final class MCAuthenticationService: ObservableObject {
 
         await MainActor.run {
             dropCredentials()
-            hasAccessToken = false
         }
         return response
     }
@@ -226,12 +225,14 @@ final class MCAuthenticationService: ObservableObject {
 
     @discardableResult
     nonisolated func verifyOTP(emailAddress: String, otp: String) async throws -> NetworkResponse<ServerMessage> {
+        try await fetchCredentials()
         let payloadData = try VerifyOTP(emailAddress: emailAddress, otp: otp).encodeUsingJSONEncoder()
         return try await MCNetworkManager.shared.post(url: Endpoint.verifyOTP.urlString, body: payloadData)
     }
 
     @discardableResult
     func verifyOTP(otp: String) async throws -> NetworkResponse<ServerMessage> {
+        try await fetchCredentials()
         let credentials: UserCredential? = Database.shared[.credentials]
         return try await verifyOTP(emailAddress: credentials?.emailAddress ?? "", otp: otp)
     }
@@ -256,26 +257,6 @@ final class MCAuthenticationService: ObservableObject {
     }
 
     @discardableResult
-    nonisolated func me() async throws -> NetworkResponse<UserModel> {
-        let response: NetworkResponse<UserModel> = try await MCNetworkManager.shared.get(url: Endpoint.me.urlString, headers: MCAuthenticationService.authorizationHeaders)
-
-        await MainActor.run {
-            userModel = response.data
-        }
-        return response
-    }
-
-    @discardableResult
-    nonisolated func fetchCredentials() async throws -> NetworkResponse<UserCredential> {
-        let response: NetworkResponse<UserCredential> = try await MCNetworkManager.shared.get(url: Endpoint.credentials.urlString, headers: MCAuthenticationService.authorizationHeaders)
-
-        await MainActor.run {
-            credentials = response.data
-        }
-        return response
-    }
-
-    @discardableResult
     nonisolated func login(with provider: LoginProvider = .apple, token: String) async throws -> NetworkResponse<TokenPair> {
         switch provider {
         case .apple:
@@ -296,6 +277,29 @@ final class MCAuthenticationService: ObservableObject {
     }
 
     // MARK: Private
+
+    @discardableResult
+    nonisolated private func me() async throws -> NetworkResponse<UserModel> {
+        let response: NetworkResponse<UserModel> = try await MCNetworkManager.shared.get(url: Endpoint.me.urlString, headers: MCAuthenticationService.authorizationHeaders)
+
+        await MainActor.run {
+            userModel = response.data
+        }
+        return response
+    }
+
+    @discardableResult
+    nonisolated private func fetchCredentials() async throws -> NetworkResponse<UserCredential> {
+        let response: NetworkResponse<UserCredential> = try await MCNetworkManager.shared.get(url: Endpoint.credentials.urlString, headers: MCAuthenticationService.authorizationHeaders)
+
+        await MainActor.run {
+            credentials = response.data
+        }
+
+        try await me()
+
+        return response
+    }
 
     private func loadTokenPairIfNeeded() {
         if let pair: TokenPair = Database.shared[.tokenPair] {
@@ -339,13 +343,14 @@ final class MCAuthenticationService: ObservableObject {
     }
 
     private func dropCredentials() {
-        KeychainHelper.remove(.accessToken)
-        KeychainHelper.remove(.refreshToken)
+        KeychainHelper.purge()
 
         hasAccessToken = false
         tokenPair = nil
         userModel = nil
         credentials = nil
+
+        ControlState.purge()
         Database.shared.purge()
     }
 

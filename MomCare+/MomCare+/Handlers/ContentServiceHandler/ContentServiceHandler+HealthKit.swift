@@ -27,6 +27,36 @@ extension ContentServiceHandler {
             .biologicalSex, .dateOfBirth
         ]
 
+        let symptomsReadWrite: [HKCategoryTypeIdentifier] = [
+             .lowerBackPain,
+             .constipation,
+             .abdominalCramps,
+             .dizziness,
+             .hotFlashes,
+             .appetiteChanges,
+             .headache,
+             .bladderIncontinence,
+             .heartburn,
+             .pelvicPain,
+             .drySkin,
+             .acne,
+             .breastPain,
+             .fatigue,
+             .sleepChanges,
+             .nausea,
+             .vomiting,
+             .shortnessOfBreath,
+             .rapidPoundingOrFlutteringHeartbeat,
+             .fever,
+             .chills,
+             .generalizedBodyAche,
+             .nightSweats,
+             .moodChanges,
+             .hairLoss
+        ]
+
+        let stateOfMind = HKStateOfMindType.stateOfMindType()
+
         let readQuantityTypes = readQuantityIdentifiers.compactMap { HKQuantityType.quantityType(forIdentifier: $0) }
         let writeQuantityTypes = writeQuantityIdentifiers.compactMap { HKQuantityType.quantityType(forIdentifier: $0) }
 
@@ -35,14 +65,21 @@ extension ContentServiceHandler {
 
         let readCharacteristicTypes = readCharacteristicIdentifiers.compactMap { HKObjectType.characteristicType(forIdentifier: $0) }
 
+        let readSymptomTypes = symptomsReadWrite.compactMap { HKObjectType.categoryType(forIdentifier: $0) }
+        let writeSymptomTypes = symptomsReadWrite.compactMap { HKObjectType.categoryType(forIdentifier: $0) }
+
         let readTypes: Set<HKObjectType> =
             Set(readQuantityTypes)
             .union(readCategoryTypes)
             .union(readCharacteristicTypes)
+            .union([stateOfMind])
+            .union(readSymptomTypes)
 
         let writeTypes: Set<HKSampleType> =
             Set(writeQuantityTypes)
             .union(writeCategoryTypes)
+            .union([stateOfMind])
+            .union(writeSymptomTypes)
 
         try await healthStore.requestAuthorization(toShare: writeTypes, read: readTypes)
     }
@@ -131,5 +168,159 @@ extension ContentServiceHandler {
         let sample = HKCategorySample(type: categoryType, value: value, start: start, end: end, device: device, metadata: metadata)
 
         try await healthStore.save(sample)
+    }
+
+    nonisolated func sync(heightInCentimeters height: Double) async throws {
+        guard let heightType = HKObjectType.quantityType(forIdentifier: .height) else {
+            return
+        }
+
+        let quantity = HKQuantity(unit: .meterUnit(with: .centi), doubleValue: height)
+
+        let now = Date()
+        let sample = HKQuantitySample(type: heightType, quantity: quantity, start: now, end: now)
+
+        try await healthStore.save(sample)
+    }
+
+    nonisolated func sync(weightInKilograms weight: Double) async throws {
+        guard let weightType = HKObjectType.quantityType(forIdentifier: .bodyMass) else {
+            return
+        }
+
+        let quantity = HKQuantity(unit: .gramUnit(with: .kilo), doubleValue: weight)
+
+        let now = Date()
+        let sample = HKQuantitySample(type: weightType, quantity: quantity, start: now, end: now)
+
+        try await healthStore.save(sample)
+    }
+}
+
+extension ContentServiceHandler {
+    func saveSymptom(_ model: SymptomModel) async throws {
+        guard
+            let symptomId = model.symptomId,
+            let symptom = PregnancySymptoms.allSymptoms.first(where: { $0.id == symptomId }),
+            let identifiers = symptom.healthKitIdentifier
+        else {
+            return
+        }
+
+        let metadata: [String: Any] = [
+            HKMetadataKeyExternalUUID: model.id.uuidString,
+            "momcare.symptomId": symptomId,
+            "momcare.symptomName": symptom.name
+        ]
+
+        let samples: [HKCategorySample] = identifiers.compactMap { identifier in
+            guard let type = HKObjectType.categoryType(forIdentifier: identifier) else {
+                return nil
+            }
+
+            return HKCategorySample(
+                type: type,
+                value: HKCategoryValueSeverity.mild.rawValue,
+                start: model.date,
+                end: model.date,
+                metadata: metadata
+            )
+        }
+
+        guard !samples.isEmpty else {
+            return
+        }
+
+        try await healthStore.save(samples)
+    }
+
+    nonisolated func fetchSymptoms(for date: Date) async throws -> [HKCategorySample] {
+        let identifiers = PregnancySymptoms.allSymptoms
+            .compactMap(\.healthKitIdentifier)
+            .flatMap { $0 }
+
+        let start = Calendar.current.startOfDay(for: date)
+        let end = Calendar.current.date(byAdding: .day, value: 1, to: start)!
+
+        var results = [HKCategorySample]()
+
+        try await withThrowingTaskGroup(of: [HKCategorySample].self) { group in
+            for identifier in identifiers {
+                group.addTask {
+                    guard let type = HKObjectType.categoryType(forIdentifier: identifier) else {
+                        return []
+                    }
+
+                    return try await withCheckedThrowingContinuation { continuation in
+                        let query = HKSampleQuery(
+                            sampleType: type,
+                            predicate: HKQuery.predicateForSamples(
+                                withStart: start,
+                                end: end,
+                                options: .strictStartDate
+                            ),
+                            limit: HKObjectQueryNoLimit,
+                            sortDescriptors: nil
+                        ) { _, samples, error in
+                            if let error {
+                                continuation.resume(throwing: error)
+                                return
+                            }
+
+                            continuation.resume(returning: samples as? [HKCategorySample] ?? [])
+                        }
+
+                        self.healthStore.execute(query)
+                    }
+                }
+            }
+
+            for try await samples in group {
+                results.append(contentsOf: samples)
+            }
+        }
+
+        return results
+    }
+
+    func deleteSymptom(_ model: SymptomModel) async throws {
+        let predicate = HKQuery.predicateForObjects(
+            withMetadataKey: HKMetadataKeyExternalUUID,
+            allowedValues: [model.id.uuidString]
+        )
+
+        let types = PregnancySymptoms.allSymptoms
+            .compactMap(\.healthKitIdentifier)
+            .flatMap { $0 }
+
+        for identifier in types {
+            guard let type = HKObjectType.categoryType(forIdentifier: identifier) else {
+                continue
+            }
+
+            let samples: [HKCategorySample] = try await withCheckedThrowingContinuation { continuation in
+                let query = HKSampleQuery(
+                    sampleType: type,
+                    predicate: predicate,
+                    limit: HKObjectQueryNoLimit,
+                    sortDescriptors: nil
+                ) { _, samples, error in
+                    if let error {
+                        continuation.resume(throwing: error)
+                        return
+                    }
+
+                    continuation.resume(returning: samples as? [HKCategorySample] ?? [])
+                }
+
+                healthStore.execute(query)
+            }
+
+            guard !samples.isEmpty else {
+                continue
+            }
+
+            try await healthStore.delete(samples)
+        }
     }
 }

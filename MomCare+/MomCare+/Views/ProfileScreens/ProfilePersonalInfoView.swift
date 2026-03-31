@@ -185,10 +185,12 @@ struct ProfilePersonalInfoView: View {
         if let height, height != userModel.height {
             _ = try await authenticationService.update(height: .value(height))
             authenticationService.userModel?.height = height
+            try? await contentService.sync(heightInCentimeters: Double(height))
         }
         if let currentWeight, currentWeight != userModel.currentWeight {
             _ = try await authenticationService.update(currentWeight: .value(currentWeight))
             authenticationService.userModel?.currentWeight = currentWeight
+            try? await contentService.sync(weightInKilograms: Double(currentWeight))
         }
         if let prePregnancyWeight, prePregnancyWeight != userModel.prePregnancyWeight {
             _ = try await authenticationService.update(prePregnancyWeight: .value(prePregnancyWeight))
@@ -200,6 +202,7 @@ struct ProfilePersonalInfoView: View {
 
     @Environment(\.accessibilityReduceMotion) private var reduceMotion: Bool
     @EnvironmentObject private var authenticationService: MCAuthenticationService
+    @EnvironmentObject private var contentService: ContentServiceHandler
 
     @State private var isEditing = false
     @State private var showDateOfBirthPicker = false

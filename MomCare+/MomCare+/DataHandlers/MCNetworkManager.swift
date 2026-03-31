@@ -162,7 +162,43 @@ actor MCNetworkManager {
         return try await performRequest(request)
     }
 
-    nonisolated private func performRequest<T: Codable & Sendable>(_ request: URLRequest) async throws -> NetworkResponse<T> { // swiftlint:disable:this cyclomatic_complexity
+    nonisolated private func retryHandler(_ error: any Error, _ url: String, _ attempts: Int) async throws {
+        guard let urlError = error as? URLError else {
+            await MainActor.run {
+                if isNetworkHapticsEnabled {
+                    HapticsHandler.notification(.error)
+                }
+            }
+            throw error
+        }
+
+        switch urlError.code {
+        case .badURL, .cancelled, .unknown:
+            logger.warning("Non-retriable network error occurred for request to \(url): \(urlError.localizedDescription). Not retrying.")
+
+        case .networkConnectionLost, .notConnectedToInternet, .timedOut:
+            logger.warning("Network error occurred for request to \(url): \(urlError.localizedDescription). Retrying... (\(5 - attempts) attempts left)")
+
+            try? await Task.sleep(nanoseconds: UInt64(1_000_000_000 * (attempts % 5)))
+
+            await MainActor.run {
+                if isNetworkHapticsEnabled {
+                    HapticsHandler.notification(.warning)
+                }
+            }
+
+        default:
+            logger.warning("Unexpected network error occurred for request to \(url): \(urlError.localizedDescription). Not retrying.")
+            await MainActor.run {
+                if isNetworkHapticsEnabled {
+                    HapticsHandler.notification(.error)
+                }
+            }
+            throw error
+        }
+    }
+
+    private func performRequest<T: Codable & Sendable>(_ request: URLRequest) async throws -> NetworkResponse<T> {
         let url = request.url?.absoluteString ?? "unknown URL"
         logger.info("Performing \(request.httpMethod ?? "UNKNOWN") request to \(url)")
 
@@ -172,47 +208,14 @@ actor MCNetworkManager {
             while attempts > 0 {
                 do {
                     let (data, response) = try await URLSession.shared.data(for: request)
-
-                    return try await handleRequest(
-                        response: response,
-                        data: data,
-                        url: url
-                    )
+                    return try await handleRequest(response: response, data: data, url: url)
                 } catch {
                     attempts -= 1
-
-                    if let urlError = error as? URLError {
-                        switch urlError.code {
-                        case .networkConnectionLost, .notConnectedToInternet, .timedOut:
-                            logger.warning("Network error occurred for request to \(url): \(urlError.localizedDescription). Retrying... (\(5 - attempts) attempts left)")
-
-                            try? await Task.sleep(nanoseconds: UInt64(1_000_000_000 * (attempts % 5)))
-
-                            await MainActor.run {
-                                if isNetworkHapticsEnabled {
-                                    HapticsHandler.notification(.warning)
-                                }
-                            }
-
-                        default:
-                            await MainActor.run {
-                                if isNetworkHapticsEnabled {
-                                    HapticsHandler.notification(.error)
-                                }
-                            }
-                            throw error
-                        }
-                    }
-
-                    await MainActor.run {
-                        if isNetworkHapticsEnabled {
-                            HapticsHandler.notification(.error)
-                        }
-                    }
-                    throw error
+                    try await retryHandler(error, url, attempts)
                 }
             }
         } catch {
+            logger.error("Failed to perform request to \(url): \(error.localizedDescription)")
             if error is URLError {
                 await MainActor.run { if isNetworkHapticsEnabled {
                     HapticsHandler.notification(.error)
@@ -220,6 +223,8 @@ actor MCNetworkManager {
             }
             throw error
         }
+
+        throw APIErrorResolver.error(from: -1)
     }
 
     nonisolated private func handleRequest<T: Codable & Sendable>(response: URLResponse, data: Data, url: String) async throws -> NetworkResponse<T> {

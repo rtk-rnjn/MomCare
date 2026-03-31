@@ -41,13 +41,6 @@ struct HealthMetricsSignUpView: View {
         } message: {
             Text(alertMessage)
         }
-        .task {
-            do {
-                _ = try await authenticationService.refresh()
-            } catch {
-                controlState.error = error
-            }
-        }
     }
 
     // MARK: Private
@@ -172,12 +165,12 @@ struct HealthMetricsSignUpView: View {
                     ProgressView()
                         .progressViewStyle(.circular)
                         .tint(.white)
-                        .frame(maxWidth: .infinity)
                 } else {
                     Text("Next")
                         .frame(maxWidth: .infinity)
                 }
             }
+            .disabled(isLoading)
             .buttonStyle(.borderedProminent)
             .tint(MomCareAccent.primary)
             .controlSize(.large)

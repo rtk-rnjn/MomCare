@@ -78,34 +78,50 @@ enum TriTrackSegment: String, CaseIterable, Identifiable {
     }
 }
 
+enum ControlStateKey: String, CaseIterable {
+    case isOnboardingCompleted
+    case isLoggedIn
+    case selectedTab
+    case myPlanSegment
+    case triTrackSegment
+    case showingPopup
+    case showingPopupBar
+
+    // MARK: Internal
+
+    var userDefaultsKey: String {
+        "MomCare_ControlState_" + rawValue
+    }
+}
+
 @MainActor
 final class ControlState: ObservableObject {
     // MARK: Lifecycle
 
     init() {
-        isOnboardingCompleted = UserDefaults.standard.bool(forKey: "isOnboardingCompleted")
-        isLoggedIn = UserDefaults.standard.bool(forKey: "isLoggedIn")
+        isOnboardingCompleted = UserDefaults.standard.bool(forKey: ControlStateKey.isOnboardingCompleted.userDefaultsKey)
+        isLoggedIn = UserDefaults.standard.bool(forKey: ControlStateKey.isLoggedIn.userDefaultsKey)
 
-        if let savedTab = UserDefaults.standard.object(forKey: "selectedTab") as? Int,
+        if let savedTab = UserDefaults.standard.object(forKey: ControlStateKey.selectedTab.userDefaultsKey) as? Int,
            let tab = AppTab(rawValue: savedTab) {
             selectedTab = tab
         }
 
-        if let savedSegment = UserDefaults.standard.string(forKey: "myPlanSegment"),
+        if let savedSegment = UserDefaults.standard.string(forKey: ControlStateKey.myPlanSegment.userDefaultsKey),
            let segment = MyPlanSegment(rawValue: savedSegment) {
             myPlanSegment = segment
         }
 
-        if let savedTriSegment = UserDefaults.standard.string(forKey: "triTrackSegment"),
+        if let savedTriSegment = UserDefaults.standard.string(forKey: ControlStateKey.triTrackSegment.userDefaultsKey),
            let segment = TriTrackSegment(rawValue: savedTriSegment) {
             triTrackSegment = segment
         }
 
-        if let savedShowingPopup = UserDefaults.standard.object(forKey: "showingPopup") as? Bool {
+        if let savedShowingPopup = UserDefaults.standard.object(forKey: ControlStateKey.showingPopup.userDefaultsKey) as? Bool {
             showingPopup = savedShowingPopup
         }
 
-        if let savedShowingPopupBar = UserDefaults.standard.object(forKey: "showingPopupBar") as? Bool {
+        if let savedShowingPopupBar = UserDefaults.standard.object(forKey: ControlStateKey.showingPopupBar.userDefaultsKey) as? Bool {
             showingPopupBar = savedShowingPopupBar
         }
     }
@@ -122,43 +138,39 @@ final class ControlState: ObservableObject {
     @Published var showingTriTrackHelp: Bool = false
 
     @Published var showingPopup: Bool = false {
-        didSet { UserDefaults.standard.set(showingPopup, forKey: "showingPopup") }
+        didSet { UserDefaults.standard.set(showingPopup, forKey: ControlStateKey.showingPopup.userDefaultsKey) }
     }
 
     @Published var showingPopupBar: Bool = false {
-        didSet { UserDefaults.standard.set(showingPopupBar, forKey: "showingPopupBar") }
+        didSet { UserDefaults.standard.set(showingPopupBar, forKey: ControlStateKey.showingPopupBar.userDefaultsKey) }
     }
 
     @Published var isOnboardingCompleted: Bool = false {
-        didSet { UserDefaults.standard.set(isOnboardingCompleted, forKey: "isOnboardingCompleted") }
+        didSet { UserDefaults.standard.set(isOnboardingCompleted, forKey: ControlStateKey.isOnboardingCompleted.userDefaultsKey) }
     }
 
     @Published var isLoggedIn: Bool = false {
-        didSet { UserDefaults.standard.set(isLoggedIn, forKey: "isLoggedIn") }
+        didSet { UserDefaults.standard.set(isLoggedIn, forKey: ControlStateKey.isLoggedIn.userDefaultsKey) }
     }
 
     @Published var selectedTab: AppTab = .progress {
-        didSet { UserDefaults.standard.set(selectedTab.rawValue, forKey: "selectedTab") }
+        didSet { UserDefaults.standard.set(selectedTab.rawValue, forKey: ControlStateKey.selectedTab.userDefaultsKey) }
     }
 
     @Published var myPlanSegment: MyPlanSegment = .diet {
-        didSet { UserDefaults.standard.set(myPlanSegment.rawValue, forKey: "myPlanSegment") }
+        didSet { UserDefaults.standard.set(myPlanSegment.rawValue, forKey: ControlStateKey.myPlanSegment.userDefaultsKey) }
     }
 
     @Published var triTrackSegment: TriTrackSegment = .meAndBaby {
-        didSet { UserDefaults.standard.set(triTrackSegment.rawValue, forKey: "triTrackSegment") }
+        didSet { UserDefaults.standard.set(triTrackSegment.rawValue, forKey: ControlStateKey.triTrackSegment.userDefaultsKey) }
     }
 
-    func clearAll() {
-        let keys: [String] = [
-            "isOnboardingCompleted",
-            "isLoggedIn",
-            "selectedTab",
-            "myPlanSegment",
-            "triTrackSegment",
-            "showingPopup",
-            "showingPopupBar"
-        ]
-        keys.forEach { UserDefaults.standard.removeObject(forKey: $0) }
+    static func purge() {
+        ControlStateKey.allCases.forEach { UserDefaults.standard.removeObject(forKey: $0.userDefaultsKey) }
+    }
+
+    func minimizePopup() {
+        showingPopup = false
+        showingPopupBar = true
     }
 }

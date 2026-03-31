@@ -148,22 +148,26 @@ struct MyPlanExercisePlanView: View {
             .accessibilityElement(children: .combine)
             .accessibilityAddTraits(.isHeader)
 
-            ForEach(contentServiceHandler.userExercises) { exercise in
-                ExerciseCardView(userExerciseModel: exercise) {
-                    selectedExerciseInfo = exercise
-                    withAnimation(reduceMotion ? nil : .easeInOut) {
-                        showingExerciseInfo = true
-                    }
-                } onVideoDismiss: { avPlayer in
-                    let currentTime = avPlayer.currentTime().seconds
-                    do {
-                        if currentTime.isFinite {
-                            try await contentServiceHandler.updateExerciseCompletionDuration(id: exercise.id, duration: currentTime)
-
-                            await contentServiceHandler.fetchUserExercisesMeta()
+            if contentServiceHandler.userExercises.isEmpty {
+                ProgressView()
+            } else {
+                ForEach(contentServiceHandler.userExercises) { exercise in
+                    ExerciseCardView(userExerciseModel: exercise) {
+                        selectedExerciseInfo = exercise
+                        withAnimation(reduceMotion ? nil : .easeInOut) {
+                            showingExerciseInfo = true
                         }
-                    } catch {
-                        controlState.error = error
+                    } onVideoDismiss: { avPlayer in
+                        let currentTime = avPlayer.currentTime().seconds
+                        do {
+                            if currentTime.isFinite {
+                                try await contentServiceHandler.updateExerciseCompletionDuration(id: exercise.id, duration: currentTime)
+
+                                await contentServiceHandler.fetchUserExercisesMeta()
+                            }
+                        } catch {
+                            controlState.error = error
+                        }
                     }
                 }
             }

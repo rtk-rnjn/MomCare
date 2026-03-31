@@ -4,6 +4,8 @@ import HealthKit
 import LNPopupUI
 import SwiftUI
 
+private let kFirstTime = "momcare_firsttime"
+
 struct RefreshError: LocalizedError {
     var errorDescription: String? {
         "Failed to refresh session. Please log in again."
@@ -29,7 +31,9 @@ struct MomCareMainTabView: View {
     // MARK: Private
 
     @Environment(\.openURL) private var openURL
+    @AppStorage(kFirstTime) private var firstTime: Bool = true
 
+    @EnvironmentObject private var eventKitHandler: EventKitHandler
     @EnvironmentObject private var authenticationService: MCAuthenticationService
     @EnvironmentObject private var contentServiceHandler: ContentServiceHandler
     @EnvironmentObject private var controlState: ControlState
@@ -80,7 +84,14 @@ struct MomCareMainTabView: View {
         .task {
             await refreshAccessToken()
         }
-        .permissionsOnboardingSheet(fetchingData: $fetchingDataFromServer)
+        .task {
+            if !firstTime {
+                try? await contentServiceHandler.requestHealthKitAccess()
+                _ = try? await eventKitHandler.requestAccess(for: .reminder)
+                _ = try? await eventKitHandler.requestAccess(for: .event)
+            }
+        }
+        .permissionsOnboardingSheet(showingSheet: $firstTime, fetchingData: $fetchingDataFromServer)
         .errorAlert(error: $controlState.error)
         .errorAlert(error: $refreshError) { _ in
             Button("Login") {
@@ -124,8 +135,8 @@ struct MomCareMainTabView: View {
                     fetchingDataFromServer = false
 
                 } catch {
-                    controlState.error = error
                     fetchingDataFromServer = false
+                    controlState.error = error
                 }
             }
         }
@@ -144,11 +155,7 @@ struct MomCareMainTabView: View {
             try await authenticationService.refresh()
             isRefreshing = false
         } catch {
-            if let error = error as? URLError {
-                controlState.error = error
-            } else {
-                refreshError = RefreshError()
-            }
+            refreshError = RefreshError()
         }
     }
 

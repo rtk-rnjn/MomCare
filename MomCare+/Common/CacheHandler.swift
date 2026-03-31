@@ -1,6 +1,6 @@
 import Foundation
 
-actor CacheHandler {
+final actor CacheHandler {
     static let shared: CacheHandler = .init()
 
     private(set) var cache: NSCache<NSString, AnyObject> = .init()

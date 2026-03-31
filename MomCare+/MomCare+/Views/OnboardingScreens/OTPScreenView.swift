@@ -92,6 +92,8 @@ struct OTPScreenView: View {
 
     @State private var destination: DestinationType?
 
+    @State private var isLoading = false
+
     private let otpLength = 6
     private let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
 
@@ -175,14 +177,20 @@ struct OTPScreenView: View {
                 }
             }
         } label: {
-            Text("Verify")
-                .frame(maxWidth: .infinity)
+            if isLoading {
+                ProgressView()
+                    .progressViewStyle(.circular)
+                    .tint(.white)
+            } else {
+                Text("Verify")
+                    .frame(maxWidth: .infinity)
+            }
         }
         .frame(maxWidth: .infinity)
         .buttonStyle(.borderedProminent)
         .tint(MomCareAccent.primary)
         .controlSize(.large)
-        .disabled(otpString.count != otpLength)
+        .disabled(otpString.count != otpLength || isLoading)
         .accessibilityLabel("Verify code")
         .accessibilityHint("Verifies the 6-digit code you entered")
         .accessibilityIdentifier("verifyButton")
@@ -220,8 +228,10 @@ struct OTPScreenView: View {
     }
 
     private func handleSubmit() async throws {
+        isLoading = true
+        defer { isLoading = false }
+
         try await authenticationService.verifyOTP(otp: otpString)
-        try await authenticationService.me()
 
         guard let user = authenticationService.userModel else {
             return

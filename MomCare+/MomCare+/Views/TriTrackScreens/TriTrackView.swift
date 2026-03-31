@@ -1,4 +1,5 @@
 import SwiftUI
+import TipKit
 
 extension Color {
     enum CustomColors {
@@ -37,6 +38,9 @@ struct TriTrackView: View {
         }
         .sheet(isPresented: $controlState.showingTriTrackHelp) {
             TriTrackRowLegendView()
+        }
+        .sheet(isPresented: $showingAddMedication) {
+            AddMedicationView()
         }
         .toolbar {
             ToolbarItem(placement: .topBarLeading) {
@@ -117,6 +121,14 @@ struct TriTrackView: View {
                         } label: {
                             Label("Show all symptoms", systemImage: "calendar")
                         }
+
+                        if experimentalFeaturesEnabled {
+                            Button {
+                                showingAddMedication = true
+                            } label: {
+                                Label("Add Medication", systemImage: "pills")
+                            }
+                        }
                     } label: {
                         Image(systemName: "ellipsis")
                             .accessibilityHidden(true)
@@ -143,11 +155,13 @@ struct TriTrackView: View {
     // MARK: Private
 
     @AppStorage(FeatureFlagState.forceUseLargeTitle.rawValue, store: UserDefaults(suiteName: "group.MomCare")) private var forceUseLargeTitle: Bool = false
+    @AppStorage(FeatureFlagState.experimentalFeatures.rawValue, store: UserDefaults(suiteName: "group.MomCare")) private var experimentalFeaturesEnabled: Bool = false
 
     @EnvironmentObject private var controlState: ControlState
     @EnvironmentObject private var authenticationService: MCAuthenticationService
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
+    @State private var showingAddMedication: Bool = false
     @State private var selectedDate: Date = Calendar.current.startOfDay(for: .init())
     @State private var showingAllEvents: Bool = false
     @State private var showingAllReminders: Bool = false
@@ -259,6 +273,11 @@ struct PregnancyProgressView: View {
     @State private var showingBabyInfo = false
     @State private var showingMomInfo = false
     @State private var selectedCardPosition: CGRect = .zero
+
+    @State private var tips: TipGroup = TipGroup {
+        MomCareTips.TriTrack.TriTrackBabyTip()
+        MomCareTips.TriTrack.TriTrackMomTip()
+    }
 
     private var sizeComparisonView: some View {
         VStack(spacing: 0) {
@@ -377,6 +396,7 @@ struct PregnancyProgressView: View {
                 backgroundColor: Color(hex: "FBE8E5"),
                 accentColor: .CustomColors.mutedRaspberry
             )
+            .popoverTip(tips.currentTip as? MomCareTips.TriTrack.TriTrackBabyTip, arrowEdge: .bottom)
             .background(
                 GeometryReader { geo in
                     Color.clear
@@ -401,6 +421,7 @@ struct PregnancyProgressView: View {
                 backgroundColor: Color(hex: "FBE8E5"),
                 accentColor: .CustomColors.mutedRaspberry
             )
+            .popoverTip(tips.currentTip as? MomCareTips.TriTrack.TriTrackMomTip, arrowEdge: .bottom)
             .background(
                 GeometryReader { geo in
                     Color.clear
