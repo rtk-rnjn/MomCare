@@ -16,6 +16,10 @@ struct MomCareApp: App {
             )
         } catch {}
 
+        #if DEBUG
+        try? Tips.resetDatastore()
+        #endif // DEBUG
+
         appDelegate.registerBackgroundRefreshTask()
     }
 
