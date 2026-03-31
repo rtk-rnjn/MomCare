@@ -14,6 +14,7 @@ enum MoodType: String, Codable, CaseIterable, Identifiable {
         rawValue
     }
 
+
     var emoji: String {
         switch self {
         case .angry: "😡"

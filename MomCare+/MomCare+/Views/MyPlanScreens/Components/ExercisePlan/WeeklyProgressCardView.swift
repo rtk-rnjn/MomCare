@@ -29,7 +29,7 @@ struct WeeklyProgressCardView: View {
 
             HStack(spacing: 0) {
                 ForEach(weeklyProgress) { day in
-                    DayRingView(dayName: day.dayName, progress: day.completionPercentage, date: day.date)
+                    DayRingView(dayName: day.dayName, progress: day.completionPercentage, date: day.date, inProgress: day.inProgress)
                         .frame(maxWidth: .infinity)
                 }
             }
@@ -105,6 +105,7 @@ private struct DayRingView: View {
     let dayName: String
     let progress: Double
     let date: Date
+    let inProgress: Bool
 
     var body: some View {
         VStack(spacing: 6) {
@@ -113,17 +114,21 @@ private struct DayRingView: View {
                 .foregroundStyle(Calendar.current.isDate(date, inSameDayAs: Date()) ? .black : Color.CustomColors.mutedRaspberry)
 
             ZStack {
-                Circle()
-                    .stroke(reduceTransparency ? Color(.systemGray4) : Color.secondary.opacity(0.15), lineWidth: 4)
+                if inProgress {
+                    ProgressView()
+                } else {
+                    Circle()
+                        .stroke(reduceTransparency ? Color(.systemGray4) : Color.secondary.opacity(0.15), lineWidth: 4)
 
-                Circle()
-                    .trim(from: 0, to: min(progress, 1.0))
-                    .stroke(
-                        Color.CustomColors.mutedRaspberry,
-                        style: StrokeStyle(lineWidth: 4, lineCap: .round)
-                    )
-                    .rotationEffect(.degrees(-90))
-                    .animation(reduceMotion ? nil : .easeInOut, value: progress)
+                    Circle()
+                        .trim(from: 0, to: min(progress, 1.0))
+                        .stroke(
+                            Color.CustomColors.mutedRaspberry,
+                            style: StrokeStyle(lineWidth: 4, lineCap: .round)
+                        )
+                        .rotationEffect(.degrees(-90))
+                        .animation(reduceMotion ? nil : .easeInOut, value: progress)
+                }
 
                 if progress >= 1.0 {
                     Image(systemName: "checkmark")
@@ -148,6 +153,7 @@ struct DayProgress: Identifiable {
     let id: UUID = .init()
     let date: Date
     var completionPercentage: Double
+    var inProgress: Bool = true
 
     var dayName: String {
         let formatter = DateFormatter()

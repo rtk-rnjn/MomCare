@@ -68,18 +68,35 @@ extension ContentServiceHandler {
     }
 
     func fetchWeeklyExerciseProgress() async {
-        let range = Utils.weekRange(containing: Date())
-        var temp = [DayProgress]()
+        let dates = Utils.weekRange(containing: Date())
 
-        for date in range {
-            let exerciseProgressPercentage = await calculateTotalCompletionPercentage(for: date)
-            let breathingProgressPercentage = fetchBreathingCompletionDuration(for: date) / breathingTargetInSeconds
-            let stepsProgressPercentage = Double(await fetchStepCount(for: date)) / stepsGoal
-
-            let progress = (exerciseProgressPercentage + breathingProgressPercentage + stepsProgressPercentage) / 3
-            temp.append(.init(date: date, completionPercentage: progress))
+        weeklyProgress = dates.map {
+            DayProgress(date: $0, completionPercentage: 0, inProgress: true)
         }
 
-        weeklyProgress = temp
+        await withTaskGroup(of: (Int, Double).self) { group in
+
+            for (index, date) in dates.enumerated() {
+                group.addTask {
+
+                    let exercise = await self.calculateTotalCompletionPercentage(for: date)
+
+                    let breathing =
+                    await self.fetchBreathingCompletionDuration(for: date) / self.breathingTargetInSeconds
+
+                    let steps =
+                    await Double(await self.fetchStepCount(for: date)) / self.stepsGoal
+
+                    let total = (exercise + breathing + steps) / 3
+
+                    return (index, min(total, 1))
+                }
+            }
+
+            for await (index, progress) in group {
+                weeklyProgress[index].completionPercentage = progress
+                weeklyProgress[index].inProgress = false
+            }
+        }
     }
 }
