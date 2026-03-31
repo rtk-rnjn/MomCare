@@ -350,8 +350,8 @@ struct ProfileNotificationsView: View {
 
     // MARK: Private
 
-    @AppStorage(NotificationKey.globallyEnabled) private var globallyEnabled = false
-    @AppStorage(NotificationKey.remoteEnabled) private var remoteEnabled = false
+    @AppStorage(NotificationKey.globallyEnabled, store: UserDefaults(suiteName: "group.MomCare")) private var globallyEnabled = false
+    @AppStorage(NotificationKey.remoteEnabled, store: UserDefaults(suiteName: "group.MomCare")) private var remoteEnabled = false
 
     @State private var mealReminders: [MealType: MealReminder] = [:]
     @State private var exercise: ExerciseReminder = .default

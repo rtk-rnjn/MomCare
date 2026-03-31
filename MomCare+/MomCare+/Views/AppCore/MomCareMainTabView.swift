@@ -31,7 +31,7 @@ struct MomCareMainTabView: View {
     // MARK: Private
 
     @Environment(\.openURL) private var openURL
-    @AppStorage(kFirstTime) private var firstTime: Bool = true
+    @AppStorage(kFirstTime, store: UserDefaults(suiteName: "group.MomCare")) private var firstTime: Bool = true
 
     @EnvironmentObject private var eventKitHandler: EventKitHandler
     @EnvironmentObject private var authenticationService: MCAuthenticationService
