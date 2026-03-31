@@ -14,8 +14,11 @@ extension ContentServiceHandler {
                 userExercises = try await networkResponse.data
 
                 break
-            } catch is LongPolling {
-                continue
+            } catch {
+                if error is LongPolling {
+                    continue
+                }
+                throw error
             }
         }
     }
