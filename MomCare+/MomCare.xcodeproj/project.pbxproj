@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 90;
+	objectVersion = 100;
 	objects = {
 
 /* Begin PBXAggregateTarget section */
@@ -251,7 +251,7 @@
 			packageReferences = (
 				92C3EEB02F3EEAD8001C8C9B /* XCRemoteSwiftPackageReference "LNPopupUI" */,
 			);
-			preferredProjectObjectVersion = 90;
+			preferredProjectObjectVersion = 100;
 			productRefGroup = 184B287A2F2626090086424A /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
