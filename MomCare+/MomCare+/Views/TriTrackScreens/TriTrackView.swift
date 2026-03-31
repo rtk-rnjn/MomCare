@@ -194,7 +194,7 @@ struct TriTrackView: View {
 
             tabContent
         }
-        .frame(maxHeight: .infinity)
+//        .frame(maxHeight: .infinity)
         .background(Color(.systemBackground))
         .clipShape(RoundedCorner(radius: 24, corners: [.topLeft, .topRight]))
     }
@@ -212,7 +212,7 @@ struct TriTrackView: View {
             }
             .padding(.horizontal, 16)
             .padding(.top, 16)
-            .padding(.bottom, 50)
+            .padding(.bottom, 100)
 
         case .events:
             TriTrackCalendarItemContentView(selectedDate: $selectedDate)
@@ -390,9 +390,9 @@ struct PregnancyProgressView: View {
         HStack(spacing: 12) {
             CompactInfoCard(
                 title: "Baby This Week",
-                iconName: "👶",
+                iconName: "figure.and.child.holdinghands",
                 previewText: getTruncatedText(from: trimesterData.babyTipText, maxLength: 100),
-                isEmoji: true,
+                isEmoji: false,
                 backgroundColor: Color(hex: "FBE8E5"),
                 accentColor: .CustomColors.mutedRaspberry
             )
@@ -415,9 +415,9 @@ struct PregnancyProgressView: View {
 
             CompactInfoCard(
                 title: "Mom This Week",
-                iconName: "🤰",
+                iconName: "figure.and.child.holdinghands",
                 previewText: getTruncatedText(from: trimesterData.momTipText, maxLength: 100),
-                isEmoji: true,
+                isEmoji: false,
                 backgroundColor: Color(hex: "FBE8E5"),
                 accentColor: .CustomColors.mutedRaspberry
             )
@@ -584,6 +584,13 @@ struct CompactInfoCard: View {
                 .padding(.top, 2)
                 .contentTransition(reduceMotion ? .identity : .interpolate)
                 .animation(reduceMotion ? nil : .easeInOut, value: previewText)
+            HStack {
+                Spacer()
+                
+                Text("See more")
+                    .font(.caption.weight(.semibold))
+                    .foregroundColor(accentColor)
+            }
         }
         .padding(12)
         .frame(maxWidth: .infinity)
