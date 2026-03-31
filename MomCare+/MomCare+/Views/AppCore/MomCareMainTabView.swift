@@ -127,15 +127,17 @@ struct MomCareMainTabView: View {
             }
 
             Task {
+                fetchingDataFromServer = true
+                defer { fetchingDataFromServer = false }
+
                 do {
-                    fetchingDataFromServer = true
-                    try await contentServiceHandler.fetchUserExercises()
-                    try await fetchDailyInsights()
-                    try await contentServiceHandler.fetchMealPlan()
-                    fetchingDataFromServer = false
+                    async let exercises = contentServiceHandler.fetchUserExercises()
+                    async let insights = fetchDailyInsights()
+                    async let mealPlan = contentServiceHandler.fetchMealPlan()
+
+                    _ = try await (exercises, insights, mealPlan)
 
                 } catch {
-                    fetchingDataFromServer = false
                     controlState.error = error
                 }
             }
