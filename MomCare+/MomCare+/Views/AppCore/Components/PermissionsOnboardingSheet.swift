@@ -4,8 +4,6 @@ import SwiftUI
 import UIKit
 import UserNotifications
 
-private let kFirstTime = "momcare_firsttime"
-
 struct HealthKitError: LocalizedError {
     var errorDescription: String? {
         "HealthKit Access Denied"
@@ -66,8 +64,7 @@ private struct AppPermission: Identifiable {
 }
 
 struct PermissionsOnboardingSheetModifier: ViewModifier {
-    // MARK: Internal
-
+    @Binding var firstTime: Bool
     @Binding var fetchingDataFromServer: Bool
 
     func body(content: Content) -> some View {
@@ -84,13 +81,11 @@ struct PermissionsOnboardingSheetModifier: ViewModifier {
     }
 
     // MARK: Private
-
-    @AppStorage(kFirstTime) private var firstTime: Bool = true
 }
 
 extension View {
-    func permissionsOnboardingSheet(fetchingData: Binding<Bool>) -> some View {
-        modifier(PermissionsOnboardingSheetModifier(fetchingDataFromServer: fetchingData))
+    func permissionsOnboardingSheet(showingSheet: Binding<Bool>, fetchingData: Binding<Bool>) -> some View {
+        modifier(PermissionsOnboardingSheetModifier(firstTime: showingSheet, fetchingDataFromServer: fetchingData))
     }
 }
 

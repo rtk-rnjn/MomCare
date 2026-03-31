@@ -1,3 +1,4 @@
+import HealthKit
 import SwiftUI
 import TipKit
 
@@ -38,30 +39,7 @@ struct MoodNestView: View {
 
                     Spacer()
 
-                    Text(moodNestViewModel.mood.rawValue)
-                        .font(.headline)
-                        .accessibilityLabel("Current mood: \(moodNestViewModel.mood.rawValue)")
-                        .accessibilityAddTraits(.updatesFrequently)
-
-                    Spacer()
-
-                    Slider(value: $moodNestViewModel.sliderValue, in: 0...3, step: 1)
-                        .onChange(of: moodNestViewModel.sliderValue) {
-                            if reduceMotion {
-                                moodNestViewModel.updateMood()
-                            } else {
-                                withAnimation(.easeInOut(duration: 0.4)) {
-                                    moodNestViewModel.updateMood()
-                                }
-                            }
-                        }
-                        .popoverTip(sliderTip, arrowEdge: .bottom)
-                        .padding(.horizontal, 40)
-                        .tint(.white)
-                        .accessibilityLabel("Mood selector")
-                        .accessibilityValue(moodNestViewModel.mood.rawValue)
-                        .accessibilityHint("Swipe left or right to change your mood")
-                        .accessibilityIdentifier("moodSlider")
+                    moodButtons
 
                     Spacer()
                 }
@@ -88,20 +66,93 @@ struct MoodNestView: View {
                 .accessibilityHint("Opens playlist recommendations for your mood")
                 .accessibilityIdentifier("setMoodButton")
             }
-
+            .toolbar {
+                if stateOfMindPermission == .notDetermined {
+                    ToolbarItem(placement: .topBarTrailing) {
+                        Button {
+                            askForPermission()
+                        } label: {
+                            Label("Permission Error", systemImage: "exclamationmark.triangle")
+                        }
+                    }
+                }
+            }
             .navigationDestination(isPresented: $controlState.showingMoodnestPlaylistsView) {
                 MoodNestPlaylistsView(mood: moodNestViewModel.mood)
             }
             .navigationBarTitleDisplayMode(.inline)
         }
-        .navigationViewStyle(StackNavigationViewStyle())
     }
 
     // MARK: Private
 
     @StateObject private var moodNestViewModel: MoodNestViewModel = .init()
+    @EnvironmentObject private var contentService: ContentServiceHandler
     @EnvironmentObject private var controlState: ControlState
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     private let sliderTip: MomCareTips.MoodNest.MoodNestSliderTip = .init()
+
+    private var stateOfMindPermission: HKAuthorizationStatus {
+        contentService.healthStore.authorizationStatus(for: .stateOfMindType())
+    }
+
+    private var moodButtons: some View {
+        let columns = [
+            GridItem(.flexible(), spacing: 16),
+            GridItem(.flexible(), spacing: 16)
+        ]
+
+        return LazyVGrid(columns: columns, spacing: 16) {
+            ForEach(0...3, id: \.self) { index in
+                let mood = MoodType.from(int: index)
+                let isSelected = moodNestViewModel.sliderValue == Double(index)
+
+                Button {
+                    moodNestViewModel.sliderValue = Double(index)
+
+                    if reduceMotion {
+                        moodNestViewModel.updateMood()
+                    } else {
+                        withAnimation(.easeInOut(duration: 0.4)) {
+                            moodNestViewModel.updateMood()
+                        }
+                    }
+
+                } label: {
+                    VStack(spacing: 8) {
+                        Text(mood.emoji)
+                            .font(.system(size: 34))
+
+                        Text(mood.rawValue)
+                            .font(.headline)
+                    }
+                    .frame(maxWidth: .infinity)
+                    .frame(height: 90)
+                    .foregroundStyle(isSelected ? .black : .white)
+                    .background(
+                        RoundedRectangle(cornerRadius: 14)
+                            .fill(
+                                isSelected
+                                ? Color.white
+                                : Color.white.opacity(0.2)
+                            )
+                    )
+                }
+                .buttonStyle(.plain)
+                .accessibilityLabel(mood.rawValue)
+            }
+        }
+        .popoverTip(sliderTip, arrowEdge: .bottom)
+        .padding(.horizontal, 30)
+        .accessibilityLabel("Mood selector")
+        .accessibilityValue(moodNestViewModel.mood.rawValue)
+        .accessibilityHint("Select a mood")
+        .accessibilityIdentifier("moodButtons")
+    }
+
+    private func askForPermission() {
+        contentService.healthStore.requestAuthorization(toShare: [.stateOfMindType()], read: [.stateOfMindType()]) { _, _ in
+        }
+    }
 }

@@ -1,4 +1,5 @@
 import Foundation
+import HealthKit
 import SwiftData
 
 enum PregnancySymptoms { // swiftlint:disable:this type_body_length
@@ -11,7 +12,8 @@ enum PregnancySymptoms { // swiftlint:disable:this type_body_length
             symotomDescription: "Common due to hormonal changes that loosen joints, the shift in your center of gravity, and extra weight gain. The pain is often felt in the lower back.",
             remedies: ["Practice good posture.", "Wear low-heeled, supportive shoes.", "Sleep on your side with a pillow between your knees.", "Apply a warm compress to the painful area.", "Incorporate gentle exercise like walking or swimming."],
             whenToCallDoctor: "If the back pain is severe, constant, accompanied by a fever, or if you feel rhythmic cramping pains, as this could be a sign of preterm labor.",
-            sources: "[NHS](https://www.nhs.uk/pregnancy/related-conditions/common-symptoms/back-pain/), [Mayo Clinic](https://www.mayoclinic.org/healthy-lifestyle/pregnancy-week-by-week/in-depth/pregnancy/art-20046080)"
+            sources: "[NHS](https://www.nhs.uk/pregnancy/related-conditions/common-symptoms/back-pain/), [Mayo Clinic](https://www.mayoclinic.org/healthy-lifestyle/pregnancy-week-by-week/in-depth/pregnancy/art-20046080)",
+            healthKitIdentifier: [.lowerBackPain]
         ),
         Symptom(
             id: 2,
@@ -31,7 +33,8 @@ enum PregnancySymptoms { // swiftlint:disable:this type_body_length
             symotomDescription: "The pregnancy hormone progesterone slows down your digestive system. The pressure of your growing uterus on your rectum can also contribute.",
             remedies: ["Eat a high-fiber diet (fruits, vegetables, whole grains).", "Drink plenty of water throughout the day.", "Engage in regular physical activity.", "Talk to your doctor before taking any laxatives."],
             whenToCallDoctor: "If you have severe abdominal pain, constipation lasts for more than a week, or it's accompanied by nausea and vomiting.",
-            sources: "[Mayo Clinic](https://www.mayoclinic.org/healthy-lifestyle/pregnancy-week-by-week/expert-answers/pregnancy-constipation/faq-20058550)"
+            sources: "[Mayo Clinic](https://www.mayoclinic.org/healthy-lifestyle/pregnancy-week-by-week/expert-answers/pregnancy-constipation/faq-20058550)",
+            healthKitIdentifier: [.constipation]
         ),
         Symptom(
             id: 4,
@@ -41,7 +44,8 @@ enum PregnancySymptoms { // swiftlint:disable:this type_body_length
             symotomDescription: "Mild cramping is often caused by the stretching of your uterus or 'round ligament pain' as it supports your growing belly. It often feels like a pulling sensation.",
             remedies: ["Change your position slowly.", "Sit down and rest if a cramp strikes.", "Stay well-hydrated.", "A warm bath can help relax the muscles."],
             whenToCallDoctor: "If cramping is severe, persistent, or accompanied by any spotting, bleeding, fever, or unusual vaginal discharge.",
-            sources: "[American Pregnancy Association](https://americanpregnancy.org/healthy-pregnancy/pregnancy-health-wellness/muscle-cramps-during-pregnancy/)"
+            sources: "[American Pregnancy Association](https://americanpregnancy.org/healthy-pregnancy/pregnancy-health-wellness/muscle-cramps-during-pregnancy/)",
+            healthKitIdentifier: [.abdominalCramps]
         ),
         Symptom(
             id: 5,
@@ -51,7 +55,8 @@ enum PregnancySymptoms { // swiftlint:disable:this type_body_length
             symotomDescription: "Your circulatory system expands rapidly during pregnancy, which can lead to lower blood pressure and feelings of lightheadedness. Low blood sugar can also be a cause.",
             remedies: ["Get up slowly from sitting or lying down.", "Avoid standing for very long periods.", "Eat regular, small meals to avoid low blood sugar.", "Stay hydrated."],
             whenToCallDoctor: "If you faint, or if dizziness is accompanied by blurred vision, severe headaches, or heart palpitations.",
-            sources: "[NHS](https://www.nhs.uk/pregnancy/related-conditions/common-symptoms/tiredness/)"
+            sources: "[NHS](https://www.nhs.uk/pregnancy/related-conditions/common-symptoms/tiredness/)",
+            healthKitIdentifier: [.dizziness]
         ),
         Symptom(
             id: 6,
@@ -61,7 +66,8 @@ enum PregnancySymptoms { // swiftlint:disable:this type_body_length
             symotomDescription: "An increased metabolic rate and a higher volume of blood circulating in your body can make you feel warmer than usual.",
             remedies: ["Wear loose, breathable clothing.", "Drink plenty of cool water.", "Use a fan or air conditioning.", "Take lukewarm showers."],
             whenToCallDoctor: "If you have a fever (a temperature of 38°C or 100.4°F or higher), as this could indicate an infection.",
-            sources: "[The Bump](https://www.thebump.com/a/hot-flashes-pregnancy)"
+            sources: "[The Bump](https://www.thebump.com/a/hot-flashes-pregnancy)",
+            healthKitIdentifier: [.hotFlashes]
         ),
         Symptom(
             id: 7,
@@ -71,7 +77,8 @@ enum PregnancySymptoms { // swiftlint:disable:this type_body_length
             symotomDescription: "Rapidly changing hormones are thought to be the main cause of strong cravings for certain foods and sudden aversions to others you used to enjoy.",
             remedies: ["Indulge cravings in moderation.", "Find healthy substitutes for unhealthy cravings.", "Don't force yourself to eat foods that make you feel nauseous."],
             whenToCallDoctor: "If you crave non-food items like dirt, clay, or ice (a condition called pica), as it can be a sign of a nutritional deficiency.",
-            sources: "[healthline](https://www.healthline.com/health/pregnancy/food-aversions)"
+            sources: "[healthline](https://www.healthline.com/health/pregnancy/food-aversions)",
+            healthKitIdentifier: [.appetiteChanges]
         ),
         Symptom(
             id: 8,
@@ -81,7 +88,8 @@ enum PregnancySymptoms { // swiftlint:disable:this type_body_length
             symotomDescription: "Hormonal shifts, especially in the first trimester, are a common cause. Dehydration, stress, and lack of sleep can also trigger them.",
             remedies: ["Get plenty of rest.", "Stay hydrated.", "Apply a cold or warm compress to your forehead.", "Practice relaxation techniques like deep breathing."],
             whenToCallDoctor: "If your headache is severe, persistent, or accompanied by blurred vision or swelling in your hands and face, especially in the second or third trimester (sign of preeclampsia).",
-            sources: "[NHS](https://www.nhs.uk/pregnancy/related-conditions/common-symptoms/headaches/)"
+            sources: "[NHS](https://www.nhs.uk/pregnancy/related-conditions/common-symptoms/headaches/)",
+            healthKitIdentifier: [.headache]
         ),
         Symptom(
             id: 9,
@@ -91,7 +99,8 @@ enum PregnancySymptoms { // swiftlint:disable:this type_body_length
             symotomDescription: "The growing uterus puts pressure on your bladder, which can cause leakage of urine.",
             remedies: ["Practice Kegel exercises to strengthen pelvic floor muscles.", "Urinate frequently; don't wait until your bladder is full.", "Wear a panty liner for protection."],
             whenToCallDoctor: "If you experience pain or a burning sensation when you urinate, as this could be a urinary tract infection (UTI).",
-            sources: "[Babycenter](https://www.babycenter.com/pregnancy/your-body/urinary-incontinence-during-pregnancy_20004870)"
+            sources: "[Babycenter](https://www.babycenter.com/pregnancy/your-body/urinary-incontinence-during-pregnancy_20004870)",
+            healthKitIdentifier: [.bladderIncontinence]
         ),
         Symptom(
             id: 10,
@@ -101,7 +110,8 @@ enum PregnancySymptoms { // swiftlint:disable:this type_body_length
             symotomDescription: "Pregnancy hormones relax the muscular valve at the top of the stomach, allowing stomach acid to flow back up into the esophagus.",
             remedies: ["Eat smaller, more frequent meals.", "Avoid spicy, fatty, and acidic foods.", "Stay upright for at least an hour after eating.", "Prop your head up with extra pillows when sleeping."],
             whenToCallDoctor: "If heartburn is severe, prevents you from eating or sleeping, or if you have difficulty swallowing.",
-            sources: "[NHS](https://www.nhs.uk/pregnancy/related-conditions/common-symptoms/indigestion-and-heartburn/)"
+            sources: "[NHS](https://www.nhs.uk/pregnancy/related-conditions/common-symptoms/indigestion-and-heartburn/)",
+            healthKitIdentifier: [.heartburn]
         ),
         Symptom(
             id: 11,
@@ -141,7 +151,8 @@ enum PregnancySymptoms { // swiftlint:disable:this type_body_length
             symotomDescription: "Hormones soften the ligaments that stabilize your pelvis, causing pain and instability as your body prepares for birth.",
             remedies: ["Wear a pelvic support belt.", "Avoid activities that make the pain worse, like heavy lifting.", "Keep your knees together when getting out of a car or bed.", "Ask your doctor about physical therapy."],
             whenToCallDoctor: "If the pain is severe and limits your ability to move around and perform daily activities.",
-            sources: "[NHS](https://www.nhs.uk/pregnancy/related-conditions/common-symptoms/pelvic-pain/)"
+            sources: "[NHS](https://www.nhs.uk/pregnancy/related-conditions/common-symptoms/pelvic-pain/)",
+            healthKitIdentifier: [.pelvicPain]
         ),
         Symptom(
             id: 15,
@@ -161,7 +172,8 @@ enum PregnancySymptoms { // swiftlint:disable:this type_body_length
             symotomDescription: "Hormones are the primary cause of these common skin changes during pregnancy.",
             remedies: ["Use sunscreen with high SPF to prevent melasma from worsening.", "Keep skin well-moisturized to help with itching from stretch marks.", "Most changes fade after delivery."],
             whenToCallDoctor: "If you develop a new rash or severe itching, especially on your hands and feet (a potential sign of cholestasis).",
-            sources: "[Mayo Clinic](https://www.mayoclinic.org/healthy-lifestyle/pregnancy-week-by-week/in-depth/pregnancy/art-20047732)"
+            sources: "[Mayo Clinic](https://www.mayoclinic.org/healthy-lifestyle/pregnancy-week-by-week/in-depth/pregnancy/art-20047732)",
+            healthKitIdentifier: [.drySkin, .acne]
         ),
         Symptom(
             id: 17,
@@ -171,7 +183,8 @@ enum PregnancySymptoms { // swiftlint:disable:this type_body_length
             symotomDescription: "Mild stomach pain can be due to gas, constipation, or the stretching of round ligaments. It is usually temporary and not severe.",
             remedies: ["For gas or bloating, avoid trigger foods and eat slowly.", "For round ligament pain, move slowly and avoid sudden movements."],
             whenToCallDoctor: "Call immediately for severe or persistent pain, especially if it's accompanied by fever, bleeding, contractions, or changes in vaginal discharge.",
-            sources: "[NHS](https://www.nhs.uk/pregnancy/related-conditions/common-symptoms/stomach-pain/)"
+            sources: "[NHS](https://www.nhs.uk/pregnancy/related-conditions/common-symptoms/stomach-pain/)",
+            healthKitIdentifier: [.abdominalCramps]
         ),
         Symptom(
             id: 18,
@@ -191,7 +204,8 @@ enum PregnancySymptoms { // swiftlint:disable:this type_body_length
             symotomDescription: "Hormonal changes increase blood flow and cause changes in breast tissue to prepare for breastfeeding.",
             remedies: ["Wear a well-fitting, supportive bra, even at night if it helps.", "Avoid underwire bras that can dig in.", "A cotton sports bra can be a comfortable option."],
             whenToCallDoctor: "This is a normal symptom. Contact your doctor if you find a new or changing lump.",
-            sources: "[Mayo Clinic](https://www.mayoclinic.org/healthy-lifestyle/pregnancy-week-by-week/in-depth/pregnancy/art-20047208), [What To Expect](https://www.whattoexpect.com/pregnancy/symptoms-and-solutions/breast-tenderness.aspx)"
+            sources: "[Mayo Clinic](https://www.mayoclinic.org/healthy-lifestyle/pregnancy-week-by-week/in-depth/pregnancy/art-20047208), [What To Expect](https://www.whattoexpect.com/pregnancy/symptoms-and-solutions/breast-tenderness.aspx)",
+            healthKitIdentifier: [.breastPain]
         ),
         Symptom(
             id: 20,
@@ -201,7 +215,8 @@ enum PregnancySymptoms { // swiftlint:disable:this type_body_length
             symotomDescription: "Your body is working hard to grow the placenta and the baby, and hormonal changes can disrupt your sleep patterns.",
             remedies: ["Listen to your body and rest or nap when you need to.", "Engage in light exercise during the day.", "Create a relaxing bedtime routine.", "Use pillows to find a comfortable sleeping position."],
             whenToCallDoctor: "If fatigue is so severe it impacts your daily life, or if you suspect you may have anemia or depression.",
-            sources: "[NHS](https://www.nhs.uk/pregnancy/related-conditions/common-symptoms/tiredness/)"
+            sources: "[NHS](https://www.nhs.uk/pregnancy/related-conditions/common-symptoms/tiredness/)",
+            healthKitIdentifier: [.fatigue, .sleepChanges]
         ),
         Symptom(
             id: 21,
@@ -251,7 +266,137 @@ enum PregnancySymptoms { // swiftlint:disable:this type_body_length
             symotomDescription: "Nausea and vomiting are very common, especially in the first trimester, likely caused by rapidly rising hormone levels.",
             remedies: ["Eat small, frequent meals.", "Keep plain crackers by your bed to eat before getting up.", "Avoid smells that trigger nausea.", "Try sipping ginger ale or ginger tea."],
             whenToCallDoctor: "If you are vomiting multiple times a day, unable to keep any food or liquid down, and losing weight. This could be hyperemesis gravidarum.",
-            sources: "[NHS](https://www.nhs.uk/pregnancy/related-conditions/common-symptoms/vomiting-and-morning-sickness/)"
+            sources: "[NHS](https://www.nhs.uk/pregnancy/related-conditions/common-symptoms/vomiting-and-morning-sickness/)",
+            healthKitIdentifier: [.nausea, .vomiting]
+        ),
+        Symptom(
+            id: 26,
+            name: "Shortness of Breath",
+            whatIsIt: "A feeling of difficulty breathing or not getting enough air.",
+            trimesters: ["2nd Trimester", "3rd Trimester"],
+            symotomDescription: "Shortness of breath is common during pregnancy because hormonal changes increase breathing drive and the growing uterus pushes upward on the diaphragm, reducing lung expansion.",
+            remedies: [
+                "Sit upright and maintain good posture.",
+                "Sleep with extra pillows to elevate the upper body.",
+                "Practice slow and steady breathing exercises.",
+                "Avoid strenuous physical activity."
+            ],
+            whenToCallDoctor: "If breathing difficulty is sudden, severe, accompanied by chest pain, fainting, or blue lips.",
+            sources: "",
+            healthKitIdentifier: [.shortnessOfBreath]
+        ),
+
+        Symptom(
+            id: 27,
+            name: "Rapid or Fluttering Heartbeat",
+            whatIsIt: "A sensation where the heart feels like it is pounding, racing, or fluttering.",
+            trimesters: ["2nd Trimester", "3rd Trimester"],
+            symotomDescription: "During pregnancy blood volume and heart workload increase significantly, which can lead to occasional heart palpitations or rapid heartbeat sensations.",
+            remedies: [
+                "Stay hydrated throughout the day.",
+                "Reduce caffeine intake.",
+                "Practice relaxation techniques like deep breathing.",
+                "Rest if symptoms occur."
+            ],
+            whenToCallDoctor: "If palpitations are persistent, associated with chest pain, dizziness, or fainting.",
+            sources: "",
+            healthKitIdentifier: [.rapidPoundingOrFlutteringHeartbeat]
+        ),
+
+        Symptom(
+            id: 28,
+            name: "Fever",
+            whatIsIt: "A body temperature higher than normal, typically above 38°C (100.4°F).",
+            trimesters: ["1st Trimester", "2nd Trimester", "3rd Trimester"],
+            symotomDescription: "Fever during pregnancy usually indicates infection such as flu, urinary infection, or other inflammatory conditions and should be evaluated by a healthcare professional.",
+            remedies: [
+                "Rest and stay hydrated.",
+                "Monitor body temperature regularly.",
+                "Use doctor-approved medication if recommended."
+            ],
+            whenToCallDoctor: "If temperature exceeds 38°C or is accompanied by chills, rash, severe headache, or persistent symptoms.",
+            sources: "",
+            healthKitIdentifier: [.fever]
+        ),
+
+        Symptom(
+            id: 29,
+            name: "Chills",
+            whatIsIt: "A sensation of coldness often accompanied by shivering.",
+            trimesters: ["1st Trimester", "2nd Trimester", "3rd Trimester"],
+            symotomDescription: "Chills can occur when the body responds to infection or fever and may signal the immune system reacting to illness during pregnancy.",
+            remedies: [
+                "Rest and stay warm.",
+                "Drink fluids to maintain hydration.",
+                "Monitor body temperature."
+            ],
+            whenToCallDoctor: "If chills occur with fever, severe fatigue, or persistent illness symptoms.",
+            sources: "",
+            healthKitIdentifier: [.chills]
+        ),
+
+        Symptom(
+            id: 30,
+            name: "Body Aches",
+            whatIsIt: "Generalized pain or soreness throughout the body.",
+            trimesters: ["1st Trimester", "2nd Trimester", "3rd Trimester"],
+            symotomDescription: "Hormonal changes, increased weight, and musculoskeletal strain during pregnancy can lead to widespread aches in muscles and joints.",
+            remedies: [
+                "Gentle stretching or prenatal yoga.",
+                "Warm baths or compresses.",
+                "Light physical activity like walking."
+            ],
+            whenToCallDoctor: "If body aches are severe, persistent, or accompanied by fever.",
+            sources: "",
+            healthKitIdentifier: [.generalizedBodyAche]
+        ),
+
+        Symptom(
+            id: 31,
+            name: "Night Sweats",
+            whatIsIt: "Excessive sweating during sleep that may soak clothing or bedding.",
+            trimesters: ["1st Trimester", "2nd Trimester", "3rd Trimester"],
+            symotomDescription: "Hormonal changes and increased blood circulation during pregnancy can disrupt temperature regulation, leading to night sweats.",
+            remedies: [
+                "Wear breathable sleepwear.",
+                "Keep the bedroom cool and well ventilated.",
+                "Use lightweight bedding."
+            ],
+            whenToCallDoctor: "If night sweats are persistent, severe, or accompanied by fever.",
+            sources: "",
+            healthKitIdentifier: [.nightSweats]
+        ),
+
+        Symptom(
+            id: 32,
+            name: "Mood Changes",
+            whatIsIt: "Frequent emotional shifts such as irritability, sadness, or anxiety.",
+            trimesters: ["1st Trimester", "2nd Trimester", "3rd Trimester"],
+            symotomDescription: "Hormonal fluctuations during pregnancy can influence brain chemistry and emotional regulation, leading to mood swings.",
+            remedies: [
+                "Maintain regular sleep patterns.",
+                "Engage in light exercise or relaxation techniques.",
+                "Seek emotional support from friends or family."
+            ],
+            whenToCallDoctor: "If feelings of depression, anxiety, or emotional distress persist or interfere with daily life.",
+            sources: "",
+            healthKitIdentifier: [.moodChanges]
+        ),
+
+        Symptom(
+            id: 33,
+            name: "Hair Loss",
+            whatIsIt: "Excessive shedding or thinning of hair.",
+            trimesters: ["3rd Trimester"],
+            symotomDescription: "Hormonal fluctuations can affect the hair growth cycle, sometimes causing increased hair shedding during late pregnancy or after delivery.",
+            remedies: [
+                "Maintain a balanced diet with sufficient vitamins and minerals.",
+                "Use gentle hair care products.",
+                "Avoid tight hairstyles that pull on the hair."
+            ],
+            whenToCallDoctor: "If hair loss is sudden, severe, or accompanied by scalp irritation.",
+            sources: "",
+            healthKitIdentifier: [.hairLoss]
         )
     ]
 }
@@ -316,6 +461,8 @@ struct Symptom: Identifiable, Equatable {
     var remedies: [String]
     var whenToCallDoctor: String
     var sources: String
+
+    var healthKitIdentifier: [HKCategoryTypeIdentifier]?
 }
 
 struct SymptomInfoSection: Identifiable {

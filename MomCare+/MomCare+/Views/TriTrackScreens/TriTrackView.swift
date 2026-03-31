@@ -39,6 +39,9 @@ struct TriTrackView: View {
         .sheet(isPresented: $controlState.showingTriTrackHelp) {
             TriTrackRowLegendView()
         }
+        .sheet(isPresented: $showingAddMedication) {
+            AddMedicationView()
+        }
         .toolbar {
             ToolbarItem(placement: .topBarLeading) {
                 Button {
@@ -118,6 +121,14 @@ struct TriTrackView: View {
                         } label: {
                             Label("Show all symptoms", systemImage: "calendar")
                         }
+
+                        if experimentalFeaturesEnabled {
+                            Button {
+                                showingAddMedication = true
+                            } label: {
+                                Label("Add Medication", systemImage: "pills")
+                            }
+                        }
                     } label: {
                         Image(systemName: "ellipsis")
                             .accessibilityHidden(true)
@@ -144,11 +155,13 @@ struct TriTrackView: View {
     // MARK: Private
 
     @AppStorage(FeatureFlagState.forceUseLargeTitle.rawValue, store: UserDefaults(suiteName: "group.MomCare")) private var forceUseLargeTitle: Bool = false
+    @AppStorage(FeatureFlagState.experimentalFeatures.rawValue, store: UserDefaults(suiteName: "group.MomCare")) private var experimentalFeaturesEnabled: Bool = false
 
     @EnvironmentObject private var controlState: ControlState
     @EnvironmentObject private var authenticationService: MCAuthenticationService
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
+    @State private var showingAddMedication: Bool = false
     @State private var selectedDate: Date = Calendar.current.startOfDay(for: .init())
     @State private var showingAllEvents: Bool = false
     @State private var showingAllReminders: Bool = false

@@ -40,6 +40,16 @@ enum MoodType: String, Codable, CaseIterable, Identifiable {
         case .happy: .happy
         }
     }
+
+    static func from(int: Int) -> MoodType {
+        switch int {
+        case 0: .happy
+        case 1: .stressed
+        case 2: .sad
+        case 3: .angry
+        default: .happy
+        }
+    }
 }
 
 nonisolated struct SongMetadata: Codable, Sendable, Equatable, Hashable {

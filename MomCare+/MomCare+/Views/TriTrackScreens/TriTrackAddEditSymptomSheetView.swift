@@ -4,8 +4,6 @@ import SwiftUI
 struct TriTrackAddEditSymptomSheetView: View {
     // MARK: Internal
 
-    @Environment(\.modelContext) var modelContext
-
     let selectedDate: Date
 
     @State var existingSymptom: SymptomModel?
@@ -116,6 +114,9 @@ struct TriTrackAddEditSymptomSheetView: View {
 
     // MARK: Private
 
+    @Environment(\.modelContext) private var modelContext
+    @EnvironmentObject private var contentService: ContentServiceHandler
+
     @Environment(\.dismiss) private var dismiss
 
     @State private var title: String = ""
@@ -128,7 +129,16 @@ struct TriTrackAddEditSymptomSheetView: View {
 
     private func saveOrEdit() {
         if existingSymptom == nil {
-            let model = SymptomModel(date: selectedDate, symptomId: selectedSymptom?.id, title: title, notes: notes)
+            let date: Date = if Calendar.current.isDate(selectedDate, inSameDayAs: Date()) {
+                .init()
+            } else {
+                selectedDate
+            }
+
+            let model = SymptomModel(date: date, symptomId: selectedSymptom?.id, title: title, notes: notes)
+            Task {
+                try? await contentService.saveSymptom(model)
+            }
             modelContext.insert(model)
 
         } else {
