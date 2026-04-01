@@ -390,7 +390,7 @@ struct PregnancyProgressView: View {
         HStack(spacing: 12) {
             CompactInfoCard(
                 title: "Baby This Week",
-                iconName: "figure.and.child.holdinghands",
+                iconName: "babyAsset",
                 previewText: trimesterData.babyTipText,
                 isEmoji: false,
                 backgroundColor: Color(hex: "FBE8E5"),
@@ -415,8 +415,8 @@ struct PregnancyProgressView: View {
 
             CompactInfoCard(
                 title: "Mom This Week",
-                iconName: "figure.and.child.holdinghands",
-                previewText: getTruncatedText(from: trimesterData.momTipText, maxLength: 70),
+                iconName: "momAsset",
+                previewText: trimesterData.momTipText,
                 isEmoji: false,
                 backgroundColor: Color(hex: "FBE8E5"),
                 accentColor: .CustomColors.mutedRaspberry
@@ -550,52 +550,62 @@ struct CompactInfoCard: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 2) {
             HStack(spacing: 2) {
-                if isEmoji {
-                    Text(iconName)
-                        .font(.body)
-                        .contentTransition(reduceMotion ? .identity : .interpolate)
-                        .animation(reduceMotion ? nil : .easeInOut, value: iconName)
-                        .accessibilityHidden(true)
-
-                } else {
-                    Image(systemName: iconName)
-                        .font(.subheadline)
-                        .foregroundStyle(accentColor)
-                        .contentTransition(reduceMotion ? .identity : .symbolEffect)
-                        .animation(reduceMotion ? nil : .easeInOut, value: iconName)
-                        .accessibilityHidden(true)
-                }
-
+                
                 Text(title)
                     .font(.subheadline.weight(.semibold))
                     .foregroundStyle(.primary)
                     .lineLimit(1)
-                    .minimumScaleFactor(0.85)
+                    .multilineTextAlignment(.center)
                     .accessibilityAddTraits(.isHeader)
                     .contentTransition(reduceMotion ? .identity : .interpolate)
                     .animation(reduceMotion ? nil : .easeInOut, value: title)
             }
+            
+            ZStack(alignment: .bottomTrailing) {
 
-            Text(previewText)
-                .font(.footnote)
-                .foregroundStyle(.secondary)
-                .lineLimit(4)
-                .truncationMode(.tail)
-                .overlay(alignment: .bottomTrailing) {
-                    Text("… see more")
+                Text(previewText)
+                    .font(.footnote)
+                    .foregroundStyle(.secondary)
+                    .lineLimit(4)
+                HStack(spacing: 0) {
+                    Spacer()
+
+                    LinearGradient(
+                        stops: [
+                            .init(color: backgroundColor.opacity(0), location: 0.0),
+                            .init(color: backgroundColor.opacity(0.7), location: 0.6),
+                            .init(color: backgroundColor, location: 1.0)
+                        ],
+                        startPoint: .leading,
+                        endPoint: .trailing
+                    )
+                    .frame(width: 50, height: 20)
+
+                    Text("see more")
                         .font(.footnote.weight(.semibold))
                         .foregroundStyle(.secondary)
+                        .lineLimit(1)
+                        .fixedSize(horizontal: true, vertical: false)
+                        .padding(.horizontal, 2)
                         .background(backgroundColor)
                 }
-                .padding(.top, 2)
+            }
         }
         .padding(12)
         .frame(maxWidth: .infinity)
         .frame(minHeight: 120, alignment: .top)
         .background(
-            RoundedRectangle(cornerRadius: 16)
-                .fill(backgroundColor)
-                .shadow(color: Color.black.opacity(0.05), radius: 8, x: 0, y: 2)
+            ZStack {
+                RoundedRectangle(cornerRadius: 16)
+                    .fill(backgroundColor)
+                
+                Image(iconName)
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 100, height: 100)
+                    .opacity(0.1)
+                    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
+            }
         )
         .accessibilityElement(children: .combine)
         .accessibilityLabel("\(title). \(previewText)")
