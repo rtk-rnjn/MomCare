@@ -157,7 +157,8 @@ struct MomCareMainTabView: View {
             try await authenticationService.refresh()
             isRefreshing = false
         } catch {
-            if let _ = await authenticationService.autoLogin() {
+            let refresh = await authenticationService.autoLogin()
+            if refresh != nil {
                 isRefreshing = false
                 return
             }
