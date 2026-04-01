@@ -10,8 +10,6 @@ extension Color {
 struct TriTrackView: View {
     // MARK: Internal
 
-    @Environment(\.presentationMode) var presentationMode
-
     var body: some View {
         ZStack(alignment: .top) {
             VStack(spacing: 0) {
@@ -41,6 +39,9 @@ struct TriTrackView: View {
         }
         .sheet(isPresented: $showingAddMedication) {
             AddMedicationView()
+        }
+        .sheet(isPresented: $showingMedicationList) {
+            MedicationListView()
         }
         .toolbar {
             ToolbarItem(placement: .topBarLeading) {
@@ -128,6 +129,12 @@ struct TriTrackView: View {
                             } label: {
                                 Label("Add Medication", systemImage: "pills")
                             }
+
+                            Button {
+                                showingMedicationList = true
+                            } label: {
+                                Label("Medication List", systemImage: "list.bullet")
+                            }
                         }
                     } label: {
                         Image(systemName: "ellipsis")
@@ -162,6 +169,7 @@ struct TriTrackView: View {
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     @State private var showingAddMedication: Bool = false
+    @State private var showingMedicationList: Bool = false
     @State private var selectedDate: Date = Calendar.current.startOfDay(for: .init())
     @State private var showingAllEvents: Bool = false
     @State private var showingAllReminders: Bool = false
@@ -203,16 +211,16 @@ struct TriTrackView: View {
     private var tabContent: some View {
         switch controlState.triTrackSegment {
         case .meAndBaby:
-            ScrollView(.vertical, showsIndicators: false) {
+            ScrollView(.vertical) {
                 if let data = trimesterData {
                     PregnancyProgressView(trimesterData: data, pregnancyData: currentProgress)
                 } else {
                     ProgressView()
                 }
             }
+            .scrollIndicators(.hidden)
             .padding(.horizontal, 16)
             .padding(.top, 16)
-            .padding(.bottom, 50)
 
         case .events:
             TriTrackCalendarItemContentView(selectedDate: $selectedDate)
@@ -259,9 +267,9 @@ struct PregnancyProgressView: View {
             .accessibilityAddTraits(.isHeader)
 
             VStack(spacing: 16) {
-                sizeComparisonView
-                growthStatsView
-                infoCardsView
+                babySizeComparisonView
+                babyGrowthStatisticsView
+                babyAndMomInformationSectionView
             }
         }
     }
@@ -279,7 +287,7 @@ struct PregnancyProgressView: View {
         MomCareTips.TriTrack.TriTrackMomTip()
     }
 
-    private var sizeComparisonView: some View {
+    private var babySizeComparisonView: some View {
         VStack(spacing: 0) {
             ComparisonView(trimesterData: trimesterData, imageName: trimesterData.babyImageUri)
                 .frame(height: 120)
@@ -306,7 +314,7 @@ struct PregnancyProgressView: View {
         )
     }
 
-    private var growthStatsView: some View {
+    private var babyGrowthStatisticsView: some View {
         HStack(spacing: 12) {
             VStack(spacing: 8) {
                 HStack {
@@ -317,6 +325,8 @@ struct PregnancyProgressView: View {
                     Text("Height")
                         .font(.headline)
                 }
+                .padding(.top, 8)
+                .padding(.bottom, 2)
 
                 if let height = trimesterData.babyHeight {
                     Text(height, format: .measurement(width: .abbreviated, usage: .asProvided, numberFormatStyle: .number.precision(.fractionLength(2))))
@@ -325,11 +335,12 @@ struct PregnancyProgressView: View {
                         .foregroundStyle(Color.CustomColors.mutedRaspberry)
                         .contentTransition(reduceMotion ? .identity : .numericText())
                         .animation(reduceMotion ? nil : .easeInOut, value: height)
+                        .padding(.top, 2)
+                        .padding(.bottom, 8)
                 }
             }
             .padding()
-            .frame(maxWidth: .infinity)
-            .frame(height: 110)
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
             .background(
                 ZStack {
                     RoundedRectangle(cornerRadius: 16)
@@ -342,7 +353,7 @@ struct PregnancyProgressView: View {
             .accessibilityLabel("Baby height")
             .accessibilityValue(
                 trimesterData.babyHeight.map { h in
-                    h.formatted(.measurement(width: .abbreviated, usage: .asProvided, numberFormatStyle: .number.precision(.fractionLength(2))))
+                    h.formatted(.measurement(width: .wide, usage: .asProvided, numberFormatStyle: .number.precision(.fractionLength(2))))
                 } ?? "Not available"
             )
 
@@ -355,6 +366,8 @@ struct PregnancyProgressView: View {
                     Text("Weight")
                         .font(.headline)
                 }
+                .padding(.top, 8)
+                .padding(.bottom, 2)
 
                 if let weight = trimesterData.babyWeight {
                     Text(weight, format: .measurement(width: .abbreviated, usage: .personWeight, numberFormatStyle: .number.precision(.fractionLength(2))))
@@ -363,11 +376,12 @@ struct PregnancyProgressView: View {
                         .foregroundStyle(Color.CustomColors.mutedRaspberry)
                         .contentTransition(reduceMotion ? .identity : .numericText())
                         .animation(reduceMotion ? nil : .easeInOut, value: weight)
+                        .padding(.top, 2)
+                        .padding(.bottom, 8)
                 }
             }
             .padding()
-            .frame(maxWidth: .infinity)
-            .frame(height: 110)
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
             .background(
                 ZStack {
                     RoundedRectangle(cornerRadius: 16)
@@ -386,13 +400,12 @@ struct PregnancyProgressView: View {
         }
     }
 
-    private var infoCardsView: some View {
+    private var babyAndMomInformationSectionView: some View {
         HStack(spacing: 12) {
             CompactInfoCard(
                 title: "Baby This Week",
                 iconName: "👶",
                 previewText: getTruncatedText(from: trimesterData.babyTipText, maxLength: 100),
-                isEmoji: true,
                 backgroundColor: Color(hex: "FBE8E5"),
                 accentColor: .CustomColors.mutedRaspberry
             )
@@ -417,7 +430,6 @@ struct PregnancyProgressView: View {
                 title: "Mom This Week",
                 iconName: "🤰",
                 previewText: getTruncatedText(from: trimesterData.momTipText, maxLength: 100),
-                isEmoji: true,
                 backgroundColor: Color(hex: "FBE8E5"),
                 accentColor: .CustomColors.mutedRaspberry
             )
@@ -503,7 +515,7 @@ struct ComparisonView: View {
             Image(systemName: "arrow.right")
                 .font(.title2.weight(.bold))
                 .foregroundStyle(.secondary)
-                .frame(width: 40)
+//                .frame(width: 40)
                 .accessibilityHidden(true)
 
             VStack(alignment: .center) {
@@ -526,7 +538,7 @@ struct ComparisonView: View {
             .frame(maxWidth: .infinity)
             .accessibilityHidden(true)
         }
-        .frame(height: 110)
+//        .frame(height: 110)
         .padding(.vertical, 10)
         .accessibilityElement(children: .ignore)
         .accessibilityLabel("Baby size comparison: \(trimesterData.fruitComparison)")
@@ -543,37 +555,18 @@ struct CompactInfoCard: View {
     let title: String
     let iconName: String
     let previewText: String
-    var isEmoji: Bool = false
     let backgroundColor: Color
     let accentColor: Color
 
     var body: some View {
         VStack(alignment: .leading, spacing: 4) {
-            HStack(spacing: 2) {
-                if isEmoji {
-                    Text(iconName)
-                        .font(.body)
-                        .contentTransition(reduceMotion ? .identity : .interpolate)
-                        .animation(reduceMotion ? nil : .easeInOut, value: iconName)
-                        .accessibilityHidden(true)
-
-                } else {
-                    Image(systemName: iconName)
-                        .font(.subheadline)
-                        .foregroundStyle(accentColor)
-                        .contentTransition(reduceMotion ? .identity : .symbolEffect)
-                        .animation(reduceMotion ? nil : .easeInOut, value: iconName)
-                        .accessibilityHidden(true)
-                }
-
-                Text(title)
-                    .font(.subheadline.weight(.semibold))
-                    .foregroundStyle(.primary)
-                    .lineLimit(1)
-                    .accessibilityAddTraits(.isHeader)
-                    .contentTransition(reduceMotion ? .identity : .interpolate)
-                    .animation(reduceMotion ? nil : .easeInOut, value: title)
-            }
+            Text(title)
+                .font(.subheadline.weight(.semibold))
+                .foregroundStyle(.primary)
+                .lineLimit(1)
+                .accessibilityAddTraits(.isHeader)
+                .contentTransition(reduceMotion ? .identity : .interpolate)
+                .animation(reduceMotion ? nil : .easeInOut, value: title)
 
             Text(previewText)
                 .font(.footnote)
@@ -587,7 +580,6 @@ struct CompactInfoCard: View {
         }
         .padding(12)
         .frame(maxWidth: .infinity)
-        .frame(height: 120)
         .background(
             RoundedRectangle(cornerRadius: 16)
                 .fill(backgroundColor)

@@ -10,8 +10,8 @@ extension ContentServiceHandler {
                 async let fetchExercisesMeta: Void = fetchUserExercisesMeta()
                 async let networkResponse: NetworkResponse<[UserExerciseModel]> = MCContentRepository.shared.generateUserExercises()
 
-                await fetchExercisesMeta
                 userExercises = try await networkResponse.data
+                await fetchExercisesMeta
 
                 break
             } catch {
