@@ -62,7 +62,7 @@ struct ForgetPasswordView: View {
                 }
             }
             .errorAlert(error: $error)
-            .scrollDismissesKeyboard(.interactively)
+            .scrollDismissesKeyboard(.immediately)
             .onAppear {
                 isEmailFieldFocused = true
             }
@@ -172,7 +172,7 @@ struct ForgetPasswordOTPView: View {
                 self.error = error
             }
         }
-        .scrollDismissesKeyboard(.interactively)
+        .scrollDismissesKeyboard(.immediately)
         .navigationTitle("Verify OTP")
         .navigationSubtitle("Enter the OTP sent to your email address.")
         .navigationBarTitleDisplayMode(.inline)
@@ -250,7 +250,7 @@ struct ResetPasswordView: View {
             }
         }
         .errorAlert(error: $error)
-        .scrollDismissesKeyboard(.interactively)
+        .scrollDismissesKeyboard(.immediately)
         .onAppear {
             focusedField = .newPassword
         }

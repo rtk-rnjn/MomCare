@@ -2,8 +2,6 @@ import SwiftUI
 import TipKit
 import UIKit
 
-private let kFirstTime = "momcare_firsttime"
-
 struct ProfileSection: Identifiable {
     var id: UUID = .init()
     let rows: [ProfileRow]
@@ -85,21 +83,30 @@ struct ProfileView: View {
         .listStyle(.insetGrouped)
         .scrollContentBackground(.hidden)
         .background(Color(.systemGroupedBackground))
-        .alert("Sign Out?", isPresented: $showSignOutAlert) {
-            Button(role: .cancel) {}
-
-            Button("Sign Out", role: .destructive) {
+//        .alert("Sign Out?", isPresented: $showSignOutAlert) {
+//            Button(role: .cancel) {}
+//
+//            Button("Sign Out", role: .destructive) {
+//                performSignOut()
+//            }
+//
+//        } message: {
+//            Text("You will need to log in again to access your MomCare+ account.")
+//        }
+        .confirmationDialog("Sign Out?", isPresented: $showSignOutAlert, titleVisibility: .visible) {
+            Button("Yes, Delete", role: .destructive) {
                 performSignOut()
             }
 
+            Button("No, Keep", role: .cancel) {
+                performSignOut()
+            }
         } message: {
-            Text("You will need to log in again to access your MomCare+ account.")
+            Text("Do you want to keep the app data on this device? You can choose to keep the data to quickly log back in without needing to re-download your information, or you can choose to remove it for added security.")
         }
     }
 
     // MARK: Private
-
-    @AppStorage(kFirstTime, store: Database.shared.userDefaults) private var firstTime: Bool = true
 
     @State private var showSignOutAlert = false
 
@@ -184,7 +191,6 @@ struct ProfileView: View {
     private func performSignOut() {
         Task {
             await authenticationService.logout()
-            firstTime = true
         }
     }
 }

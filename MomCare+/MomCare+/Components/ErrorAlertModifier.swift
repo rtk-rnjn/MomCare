@@ -1,11 +1,11 @@
 import SwiftUI
 
-struct ErrorAlertModifier<Actions: View>: ViewModifier {
+struct ErrorAlertModifier<ActionView: View>: ViewModifier {
     // MARK: Internal
 
     @Binding var error: (any Error)?
 
-    let actions: (any Error) -> Actions
+    let actions: (any Error) -> ActionView
 
     func body(content: Content) -> some View {
         content

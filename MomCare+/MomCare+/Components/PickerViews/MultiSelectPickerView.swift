@@ -21,7 +21,7 @@ struct MultiSelectPickerView<T: Hashable & CaseIterable & RawRepresentable>: Vie
 
                         Spacer()
 
-                        if tempSelection.contains(item) {
+                        if temporarySelections.contains(item) {
                             Image(systemName: "checkmark")
                                 .foregroundStyle(.blue)
                                 .accessibilityHidden(true)
@@ -30,7 +30,7 @@ struct MultiSelectPickerView<T: Hashable & CaseIterable & RawRepresentable>: Vie
                 }
                 .tint(.primary)
                 .accessibilityLabel(item.rawValue.capitalized)
-                .accessibilityValue(tempSelection.contains(item) ? "Selected" : "Not selected")
+                .accessibilityValue(temporarySelections.contains(item) ? "Selected" : "Not selected")
                 .accessibilityHint("Double tap to toggle selection")
             }
             .navigationTitle(title)
@@ -45,7 +45,7 @@ struct MultiSelectPickerView<T: Hashable & CaseIterable & RawRepresentable>: Vie
 
                 ToolbarItem(placement: .confirmationAction) {
                     Button(role: .confirm) {
-                        selection = tempSelection
+                        selection = temporarySelections
                         dismiss()
                     }
                     .tint(MomCareAccent.primary)
@@ -54,7 +54,7 @@ struct MultiSelectPickerView<T: Hashable & CaseIterable & RawRepresentable>: Vie
                 }
             }
             .onAppear {
-                tempSelection = selection
+                temporarySelections = selection
             }
             .searchable(text: $searchText, isPresented: $searchable)
             .toolbarBackground(.hidden, for: .navigationBar)
@@ -64,7 +64,7 @@ struct MultiSelectPickerView<T: Hashable & CaseIterable & RawRepresentable>: Vie
     // MARK: Private
 
     @Environment(\.dismiss) private var dismiss
-    @State private var tempSelection: Set<T> = []
+    @State private var temporarySelections: Set<T> = []
     @State private var searchText = ""
 
     private var filteredItems: [T] {
@@ -78,10 +78,10 @@ struct MultiSelectPickerView<T: Hashable & CaseIterable & RawRepresentable>: Vie
     }
 
     private func toggle(_ item: T) {
-        if tempSelection.contains(item) {
-            tempSelection.remove(item)
+        if temporarySelections.contains(item) {
+            temporarySelections.remove(item)
         } else {
-            tempSelection.insert(item)
+            temporarySelections.insert(item)
         }
     }
 }

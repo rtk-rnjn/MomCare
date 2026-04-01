@@ -328,7 +328,7 @@ struct AddWaterEntrySheet: View {
                     }
                 }
             }
-            .scrollDismissesKeyboard(.interactively)
+            .scrollDismissesKeyboard(.immediately)
             .navigationTitle("Add Water")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
@@ -399,7 +399,7 @@ struct EditWaterEntrySheet: View {
                     DatePicker("When", selection: $selectedDate, in: ...Date(), displayedComponents: [.date, .hourAndMinute])
                 }
             }
-            .scrollDismissesKeyboard(.interactively)
+            .scrollDismissesKeyboard(.immediately)
             .navigationTitle("Edit Entry")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {

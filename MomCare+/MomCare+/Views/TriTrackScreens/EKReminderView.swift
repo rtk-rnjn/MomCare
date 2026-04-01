@@ -34,7 +34,7 @@ struct EKReminderView: View {
                 notesSection
                 deleteSection
             }
-            .scrollDismissesKeyboard(.interactively)
+            .scrollDismissesKeyboard(.immediately)
             .scrollIndicators(.hidden)
             .listStyle(.insetGrouped)
             .navigationTitle("Reminder")

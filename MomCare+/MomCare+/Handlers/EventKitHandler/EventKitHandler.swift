@@ -2,6 +2,34 @@ import Combine
 import EventKit
 import SwiftUI
 
+struct CalendarNoSourceError: LocalizedError {
+    var errorDescription: String? {
+        "No calendar source available."
+    }
+
+    var failureReason: String? {
+        "The device does not have a default calendar source to create the calendar in."
+    }
+
+    var recoverySuggestion: String? {
+        "Please ensure you have at least one calendar account set up on your device."
+    }
+}
+
+struct ReminderNoSourceError: LocalizedError {
+    var errorDescription: String? {
+        "No reminder source available."
+    }
+
+    var failureReason: String? {
+        "The device does not have a default reminder source to create the reminder calendar in."
+    }
+
+    var recoverySuggestion: String? {
+        "Please ensure you have at least one calendar account set up on your device that supports reminders."
+    }
+}
+
 enum CalendarConfiguration {
     enum Identifier {
         static let event = "com.momcareplus.tritrack.calendar"
@@ -51,20 +79,30 @@ final class EventKitHandler: ObservableObject {
     }
 
     func createOrGetEventCalendar() throws -> EKCalendar {
-        try createOrGetCalendar(
+        let defaultSource = eventStore.defaultCalendarForNewEvents
+        guard let defaultSource else {
+            throw CalendarNoSourceError()
+        }
+
+        return try createOrGetCalendar(
             entityType: .event,
             identifierKey: CalendarConfiguration.Identifier.event,
             title: CalendarConfiguration.Title.event,
-            defaultSource: eventStore.defaultCalendarForNewEvents
+            defaultSource: defaultSource
         )
     }
 
     func createOrGetReminderCalendar() throws -> EKCalendar {
-        try createOrGetCalendar(
+        let defaultSource = eventStore.defaultCalendarForNewReminders()
+        guard let defaultSource else {
+            throw ReminderNoSourceError()
+        }
+
+        return try createOrGetCalendar(
             entityType: .reminder,
             identifierKey: CalendarConfiguration.Identifier.reminder,
             title: CalendarConfiguration.Title.reminder,
-            defaultSource: eventStore.defaultCalendarForNewReminders()
+            defaultSource: defaultSource
         )
     }
 
