@@ -407,8 +407,7 @@ struct PregnancyProgressView: View {
         HStack(spacing: 12) {
             CompactInfoCard(
                 title: "Baby This Week",
-                iconName: "👶",
-                previewText: getTruncatedText(from: trimesterData.babyTipText, maxLength: 100),
+                previewText: trimesterData.babyTipText,
                 backgroundColor: Color(hex: "FBE8E5"),
                 accentColor: .CustomColors.mutedRaspberry
             )
@@ -431,8 +430,7 @@ struct PregnancyProgressView: View {
 
             CompactInfoCard(
                 title: "Mom This Week",
-                iconName: "🤰",
-                previewText: getTruncatedText(from: trimesterData.momTipText, maxLength: 100),
+                previewText: trimesterData.momTipText,
                 backgroundColor: Color(hex: "FBE8E5"),
                 accentColor: .CustomColors.mutedRaspberry
             )
@@ -556,7 +554,6 @@ struct CompactInfoCard: View {
     // MARK: Internal
 
     let title: String
-    let iconName: String
     let previewText: String
     let backgroundColor: Color
     let accentColor: Color
@@ -576,6 +573,7 @@ struct CompactInfoCard: View {
                 .foregroundStyle(.secondary)
                 .lineLimit(4)
                 .lineSpacing(1)
+                .truncationMode(.tail)
                 .multilineTextAlignment(.leading)
                 .padding(.top, 2)
                 .contentTransition(reduceMotion ? .identity : .interpolate)
@@ -967,19 +965,4 @@ struct StitchingBorder: View {
             path.addLine(to: endPoint)
         }
     }
-}
-
-private func getTruncatedText(from text: String, maxLength: Int) -> String {
-    if text.count <= maxLength {
-        return text
-    }
-
-    let index = text.index(text.startIndex, offsetBy: min(maxLength - 3, text.count))
-    let truncatedText = text[..<index]
-
-    if let lastSpace = truncatedText.lastIndex(of: " ") {
-        return text[..<lastSpace] + "..."
-    }
-
-    return String(truncatedText) + "..."
 }
