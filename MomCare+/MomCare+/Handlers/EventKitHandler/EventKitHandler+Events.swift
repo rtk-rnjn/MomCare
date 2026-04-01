@@ -2,6 +2,8 @@ import EventKit
 
 extension EventKitHandler {
     func fetchAppointments(selectedDate: Date) throws {
+        eventStore.refreshSourcesIfNecessary()
+
         let calendar = Calendar.current
         let startDate = calendar.startOfDay(for: selectedDate)
         guard let endDate = calendar.date(byAdding: .day, value: 1, to: startDate) else {
@@ -17,6 +19,8 @@ extension EventKitHandler {
     }
 
     func fetchAllEvents() throws {
+        eventStore.refreshSourcesIfNecessary()
+
         let (start, end) = twoYearDateRange()
         let predicate = try eventStore.predicateForEvents(
             withStart: start,

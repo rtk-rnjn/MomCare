@@ -11,17 +11,7 @@ struct MyPlanFoodItemSearchView: View {
 
     var body: some View {
         NavigationStack {
-            Group {
-                if isLoading {
-                    loadingView
-                } else if foodItems.isEmpty, !searchText.isEmpty {
-                    emptyStateView
-                } else if foodItems.isEmpty {
-                    placeholderView
-                } else {
-                    foodList
-                }
-            }
+            mainView
             .navigationTitle("Add Food")
             .navigationBarTitleDisplayMode(.inline)
             .searchable(text: $searchText, prompt: "Search foods…")
@@ -116,6 +106,19 @@ struct MyPlanFoodItemSearchView: View {
         }
         .accessibilityElement(children: .combine)
         .accessibilityLabel("Search to find food")
+    }
+
+    @ViewBuilder
+    private var mainView: some View {
+        if isLoading {
+            loadingView
+        } else if foodItems.isEmpty, !searchText.isEmpty {
+            emptyStateView
+        } else if foodItems.isEmpty {
+            placeholderView
+        } else {
+            foodList
+        }
     }
 
     private var foodList: some View {

@@ -60,6 +60,9 @@ struct TriTrackCalendarItemContentView: View {
         }
         .listStyle(.plain)
         .background(RoundedRectangle(cornerRadius: 16).fill(Color(.systemBackground)))
+        .onReceive(NotificationCenter.default.publisher(for: .EKEventStoreChanged)) { _ in
+            Task { await refreshData() }
+        }
         .contentMargins(.bottom, 80, for: .scrollContent)
         .sheet(isPresented: $controlState.showingAddEventSheet) {
             Task { await refreshData() }
