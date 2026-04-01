@@ -123,6 +123,13 @@ extension TriTrackEventRow {
     }
 
     private func isPast(now: Date? = .init()) -> Bool {
-        event.startDate < now ?? self.now
+        let currentNow = now ?? self.now
+        
+        if event.isAllDay {
+            return !Calendar.current.isDate(event.startDate, inSameDayAs: currentNow)
+                && event.startDate < currentNow
+        } else {
+            return (event.endDate ?? event.startDate) < currentNow
+        }
     }
 }

@@ -103,7 +103,7 @@ struct DashboardEventCardView: View {
             },
             content: {
                 TriTrackAddCalendarItemSheetView(selectedDate: $date)
-                    .presentationDetents([.medium, .large])
+                    .presentationDetents([.large])
                     .scrollDismissesKeyboard(.immediately)
                     .interactiveDismissDisabled(true)
             }

@@ -60,11 +60,13 @@ struct TriTrackCalendarItemContentView: View {
         }
         .listStyle(.plain)
         .background(RoundedRectangle(cornerRadius: 16).fill(Color(.systemBackground)))
+        .contentMargins(.bottom, 80, for: .scrollContent)
         .sheet(isPresented: $controlState.showingAddEventSheet) {
             Task { await refreshData() }
         } content: {
             TriTrackAddCalendarItemSheetView(selectedDate: $selectedDate, selectedSegment: addMode)
                 .scrollDismissesKeyboard(.immediately)
+                .presentationDetents([.large])
         }
 
         .sheet(item: $selectedEvent) {
