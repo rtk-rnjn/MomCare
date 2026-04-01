@@ -25,6 +25,7 @@ struct MyPlanFoodItemSearchView: View {
             .navigationTitle("Add Food")
             .navigationBarTitleDisplayMode(.inline)
             .searchable(text: $searchText, prompt: "Search foods…")
+            .searchFocused($searchFocus)
             .onChange(of: searchText) { _, newValue in
                 debounceSearch(query: newValue)
             }
@@ -48,6 +49,9 @@ struct MyPlanFoodItemSearchView: View {
             } message: {
                 Text(alertMessage ?? "An unexpected error occurred.")
             }
+            .onAppear {
+                searchFocus = true
+            }
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
                     Button(role: .cancel) {
@@ -60,6 +64,8 @@ struct MyPlanFoodItemSearchView: View {
     }
 
     // MARK: Private
+
+    @FocusState private var searchFocus: Bool
 
     @EnvironmentObject private var contentServiceHandler: ContentServiceHandler
     @Environment(\.dismiss) private var dismiss
