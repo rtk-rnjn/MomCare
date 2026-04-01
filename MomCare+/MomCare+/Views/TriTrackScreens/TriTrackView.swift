@@ -518,7 +518,6 @@ struct ComparisonView: View {
             Image(systemName: "arrow.right")
                 .font(.title2.weight(.bold))
                 .foregroundStyle(.secondary)
-//                .frame(width: 40)
                 .accessibilityHidden(true)
 
             VStack(alignment: .center) {
