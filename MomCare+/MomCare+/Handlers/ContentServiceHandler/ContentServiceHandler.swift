@@ -39,7 +39,9 @@ final class ContentServiceHandler: ObservableObject {
     @Published var totalUserExercisesCompleted: Int = 0
     @Published var totalExerciseDuration: TimeInterval = 0
 
-    @Published var weeklyProgress: [DayProgress] = .init()
+    @Published var weeklyProgress: [DayProgress] = Utils.weekRange(containing: Date()).map {
+        DayProgress(date: $0, completionPercentage: 0, inProgress: true)
+    }
 
     @Published var caloriesBurned: Int = 0
 

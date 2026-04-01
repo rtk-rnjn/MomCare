@@ -116,6 +116,21 @@ final class MCAuthenticationService: ObservableObject {
         return networkResponse
     }
 
+    @discardableResult
+    nonisolated func autoLogin() async -> NetworkResponse<TokenPair>? {
+        if let email = await credentials?.emailAddress,
+           let password = KeychainHelper.get(.password),
+           let response = try? await login(emailAddress: email, password: password) {
+            return response
+        }
+
+        if let appleIdentifier = await credentials?.appleIdentifier {
+            return try? await login(with: .apple, token: appleIdentifier)
+        }
+
+        return nil
+    }
+
     nonisolated func refresh(refreshToken: String) async throws -> NetworkResponse<TokenPair> {
         let refreshTokenData = try RefreshToken(refreshToken: refreshToken).encodeUsingJSONEncoder()
         let response: NetworkResponse<TokenPair> = try await MCNetworkManager.shared.post(url: Endpoint.refresh.urlString, body: refreshTokenData)

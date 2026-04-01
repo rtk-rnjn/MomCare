@@ -7,14 +7,15 @@ extension ContentServiceHandler {
 
         while true {
             do {
-                let networkResponse = try await MCContentRepository.shared.generateUserExercises()
-                userExercises = networkResponse.data
+                async let fetchExercisesMeta: Void = fetchUserExercisesMeta()
+                async let networkResponse: NetworkResponse<[UserExerciseModel]> = MCContentRepository.shared.generateUserExercises()
 
-                await fetchUserExercisesMeta()
+                userExercises = try await networkResponse.data
+                await fetchExercisesMeta
 
                 break
             } catch {
-                if (error as? LongPolling) != nil {
+                if error is LongPolling {
                     continue
                 }
                 throw error
@@ -23,9 +24,13 @@ extension ContentServiceHandler {
     }
 
     func fetchUserExercisesMeta() async {
-        await fetchWeeklyExerciseProgress()
-        totalUserExercisesCompleted = await userExercises.fetchTotalUserExercisesCompleted()
-        totalExerciseDuration = await userExercises.fetchTotalExerciseDuration()
+        async let weeklyProgress: Void = fetchWeeklyExerciseProgress()
+        async let totalCompleted: Int = userExercises.fetchTotalUserExercisesCompleted()
+        async let totalDuration: TimeInterval = userExercises.fetchTotalExerciseDuration()
+
+        await weeklyProgress
+        totalUserExercisesCompleted = await totalCompleted
+        totalExerciseDuration = await totalDuration
     }
 
     func fetchUserExercises(for date: Date) async throws -> [UserExerciseModel]? {

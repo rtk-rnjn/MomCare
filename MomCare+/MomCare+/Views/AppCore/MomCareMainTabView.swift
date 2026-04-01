@@ -126,16 +126,18 @@ struct MomCareMainTabView: View {
                 return
             }
 
-            Task {
+            Task<Void, Never> {
+                fetchingDataFromServer = true
+                defer { fetchingDataFromServer = false }
+
                 do {
-                    fetchingDataFromServer = true
-                    try await contentServiceHandler.fetchUserExercises()
-                    try await fetchDailyInsights()
-                    try await contentServiceHandler.fetchMealPlan()
-                    fetchingDataFromServer = false
+                    async let exercises: Void = contentServiceHandler.fetchUserExercises()
+                    async let insights: Void = fetchDailyInsights()
+                    async let mealPlan: Void = contentServiceHandler.fetchMealPlan()
+
+                    _ = try await (exercises, insights, mealPlan)
 
                 } catch {
-                    fetchingDataFromServer = false
                     controlState.error = error
                 }
             }
@@ -155,6 +157,11 @@ struct MomCareMainTabView: View {
             try await authenticationService.refresh()
             isRefreshing = false
         } catch {
+            let refresh = await authenticationService.autoLogin()
+            if refresh != nil {
+                isRefreshing = false
+                return
+            }
             refreshError = RefreshError()
         }
     }
