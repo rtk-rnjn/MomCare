@@ -17,6 +17,9 @@ nonisolated struct UserModel: Codable, Sendable {
     }
 
     var _id: String
+    var id: String {
+        _id
+    }
 
     var firstName: String?
     var lastName: String?

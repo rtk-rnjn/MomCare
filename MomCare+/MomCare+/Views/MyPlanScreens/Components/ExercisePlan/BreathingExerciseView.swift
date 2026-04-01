@@ -43,7 +43,9 @@ struct BreathingExerciseView: View {
                 ToolbarItem(placement: .cancellationAction) {
                     Button(role: .cancel) {
                         stopAllTimers()
-                        contentServiceHandler.updateBreathingCompletionDuration(duration: totalElapsed)
+                        Task {
+                            try! await contentServiceHandler.saveBreathingSession(start: .init().addingTimeInterval(-totalElapsed), end: .init())
+                        }
                         dismiss()
                     }
                     .accessibilityLabel("Close breathing exercise")
@@ -67,7 +69,12 @@ struct BreathingExerciseView: View {
         .onAppear {
             setupAudioSession()
             startReadyCountdown()
-            totalElapsed = contentServiceHandler.fetchBreathingCompletionDuration(for: Date())
+            Task {
+                let durationCompleted = try? await contentServiceHandler.fetchBreathingCompletionSeconds(for: .init())
+                if let duration = durationCompleted {
+                    totalElapsed = duration
+                }
+            }
         }
         .onDisappear {
             stopAllTimers()

@@ -11,8 +11,6 @@ enum ValidDatabaseKeys {
     case exerciseModel(String)
     case songModel(String)
 
-    case breathingProgress(Date)
-
     case dailyInsight(Date)
     case mealPlan(Date)
     case userExercises(Date)
@@ -34,8 +32,6 @@ enum ValidDatabaseKeys {
             "exercise_\(id)"
         case let .songModel(id):
             "song_\(id)"
-        case let .breathingProgress(date):
-            "breathing_\(date.timeIntervalSince1970)"
         case let .dailyInsight(date):
             "dailyInsight_\(date.timeIntervalSince1970)"
         case let .mealPlan(date):
@@ -105,7 +101,8 @@ final class Database {
         let keysNotToDeletePrefix: [String] = [
             "MomCare_exercise_",
             "MomCare_song_",
-            "MomCare_food_"
+            "MomCare_food_",
+            "MomCare_calendarIdentifier_"
         ]
 
         let keysToDeletePrefix = "MomCare_"

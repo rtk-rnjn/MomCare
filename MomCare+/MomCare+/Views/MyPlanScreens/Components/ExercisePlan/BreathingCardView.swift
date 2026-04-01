@@ -41,7 +41,9 @@ struct BreathingCardView: View {
                     .accessibilityLabel(completionProgress >= 1 ? "Replay breathing exercise" : "Start breathing exercise")
                     .accessibilityIdentifier("startBreathingButton")
                     .fullScreenCover(isPresented: $startBreathingPlayer) {
-                        updateProgress()
+                        Task {
+                            await updateProgress()
+                        }
                     } content: {
                         BreathingExerciseView()
                     }
@@ -80,7 +82,7 @@ struct BreathingCardView: View {
         .accessibilityElement(children: .contain)
         .accessibilityLabel("Breathing exercise, Beginner")
         .accessibilityValue("\(Int(completionProgress * 100)) percent completed")
-        .onAppear { updateProgress() }
+        .onAppear { Task { await updateProgress() } }
     }
 
     // MARK: Private
@@ -99,8 +101,12 @@ struct BreathingCardView: View {
         Color(hex: "4A7A9B")
     }
 
-    private func updateProgress() {
-        completionProgress = contentServiceHandler.fetchBreathingCompletionDuration(for: Date()) / contentServiceHandler.breathingTargetInSeconds
-        completionProgress = min(completionProgress, 1.0)
+    private func updateProgress() async {
+        do {
+            completionProgress = try await contentServiceHandler.fetchBreathingProgress(for: Date(), withTarget: contentServiceHandler.breathingTargetInSeconds)
+            completionProgress = min(completionProgress, 1.0)
+        } catch {
+
+        }
     }
 }
