@@ -158,7 +158,7 @@ struct SignInView: View {
         .onAppear {
             focusedField = .email
         }
-        .scrollDismissesKeyboard(.interactively)
+        .scrollDismissesKeyboard(.immediately)
         .scrollContentBackground(.hidden)
     }
 

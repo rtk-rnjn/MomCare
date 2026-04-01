@@ -198,7 +198,7 @@ extension ContentServiceHandler {
 }
 
 extension ContentServiceHandler {
-    func saveSymptom(_ model: SymptomModel) async throws {
+    nonisolated func saveSymptom(_ model: SymptomModel) async throws {
         guard
             let symptomId = model.symptomId,
             let symptom = PregnancySymptoms.allSymptoms.first(where: { $0.id == symptomId }),
@@ -207,11 +207,17 @@ extension ContentServiceHandler {
             return
         }
 
-        let metadata: [String: Any] = [
+        let userModel: UserModel? = await Database.shared[.userModel]
+
+        var metadata: [String: Any] = [
             HKMetadataKeyExternalUUID: model.id.uuidString,
             "momcare.symptomId": symptomId,
             "momcare.symptomName": symptom.name
         ]
+
+        if let id = userModel?.id {
+            metadata["momcare.userId"] = id
+        }
 
         let samples: [HKCategorySample] = identifiers.compactMap { identifier in
             guard let type = HKObjectType.categoryType(forIdentifier: identifier) else {
@@ -235,6 +241,11 @@ extension ContentServiceHandler {
     }
 
     nonisolated func fetchSymptoms(for date: Date) async throws -> [HKCategorySample] {
+        let userModel: UserModel? = await Database.shared[.userModel]
+        guard let userId = userModel?.id else {
+            return []
+        }
+
         let identifiers = PregnancySymptoms.allSymptoms
             .compactMap(\.healthKitIdentifier)
             .flatMap { $0 }
@@ -246,19 +257,32 @@ extension ContentServiceHandler {
 
         try await withThrowingTaskGroup(of: [HKCategorySample].self) { group in
             for identifier in identifiers {
-                group.addTask {
+                group.addTask { [healthStore] in
                     guard let type = HKObjectType.categoryType(forIdentifier: identifier) else {
                         return []
                     }
 
+                    let datePredicate = HKQuery.predicateForSamples(
+                        withStart: start,
+                        end: end,
+                        options: .strictStartDate
+                    )
+
+                    let userPredicate = HKQuery.predicateForObjects(
+                        withMetadataKey: "momcare.userId",
+                        operatorType: .equalTo,
+                        value: userId
+                    )
+
+                    let predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [
+                        datePredicate,
+                        userPredicate
+                    ])
+
                     return try await withCheckedThrowingContinuation { continuation in
                         let query = HKSampleQuery(
                             sampleType: type,
-                            predicate: HKQuery.predicateForSamples(
-                                withStart: start,
-                                end: end,
-                                options: .strictStartDate
-                            ),
+                            predicate: predicate,
                             limit: HKObjectQueryNoLimit,
                             sortDescriptors: nil
                         ) { _, samples, error in
@@ -270,7 +294,7 @@ extension ContentServiceHandler {
                             continuation.resume(returning: samples as? [HKCategorySample] ?? [])
                         }
 
-                        self.healthStore.execute(query)
+                        healthStore.execute(query)
                     }
                 }
             }
@@ -283,11 +307,27 @@ extension ContentServiceHandler {
         return results
     }
 
-    func deleteSymptom(_ model: SymptomModel) async throws {
-        let predicate = HKQuery.predicateForObjects(
+    nonisolated func deleteSymptom(_ model: SymptomModel) async throws {
+        let userModel: UserModel? = await Database.shared[.userModel]
+        guard let userId = userModel?.id else {
+            return
+        }
+
+        let uuidPredicate = HKQuery.predicateForObjects(
             withMetadataKey: HKMetadataKeyExternalUUID,
             allowedValues: [model.id.uuidString]
         )
+
+        let userPredicate = HKQuery.predicateForObjects(
+            withMetadataKey: "momcare.userId",
+            operatorType: .equalTo,
+            value: userId
+        )
+
+        let predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [
+            uuidPredicate,
+            userPredicate
+        ])
 
         let types = PregnancySymptoms.allSymptoms
             .compactMap(\.healthKitIdentifier)
@@ -322,5 +362,105 @@ extension ContentServiceHandler {
 
             try await healthStore.delete(samples)
         }
+    }
+
+    func editSymptom(old: SymptomModel, new: SymptomModel) async throws {
+        try await deleteSymptom(old)
+        try await saveSymptom(new)
+    }
+}
+
+extension ContentServiceHandler {
+    nonisolated func saveBreathingSession(
+        start: Date,
+        end: Date,
+    ) async throws {
+        let userModel: UserModel? = await Database.shared[.userModel]
+        guard let userId = userModel?.id else {
+            return
+        }
+        guard let type = HKObjectType.categoryType(forIdentifier: .mindfulSession) else {
+            return
+        }
+
+        let metadata: [String: Any] = [
+            "momcare.userId": userId,
+            "momcare.activity": "breathing",
+            HKMetadataKeyExternalUUID: UUID().uuidString
+        ]
+
+        let sample = HKCategorySample(
+            type: type,
+            value: HKCategoryValue.notApplicable.rawValue,
+            start: start,
+            end: end,
+            metadata: metadata
+        )
+
+        try await healthStore.save(sample)
+    }
+
+    nonisolated func fetchBreathingCompletionSeconds(for date: Date) async throws -> TimeInterval {
+        let userModel: UserModel? = await Database.shared[.userModel]
+        guard let userId = userModel?.id else {
+            return 0
+        }
+        guard let type = HKObjectType.categoryType(forIdentifier: .mindfulSession) else {
+            return 0
+        }
+
+        let start = Calendar.current.startOfDay(for: date)
+        let end = Calendar.current.date(byAdding: .day, value: 1, to: start)!
+
+        let datePredicate = HKQuery.predicateForSamples(
+            withStart: start,
+            end: end,
+            options: .strictStartDate
+        )
+
+        let userPredicate = HKQuery.predicateForObjects(
+            withMetadataKey: "momcare.userId",
+            operatorType: .equalTo,
+            value: userId
+        )
+
+        let activityPredicate = HKQuery.predicateForObjects(
+            withMetadataKey: "momcare.activity",
+            operatorType: .equalTo,
+            value: "breathing"
+        )
+
+        let predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [
+            datePredicate,
+            userPredicate,
+            activityPredicate
+        ])
+
+        let samples: [HKCategorySample] = try await withCheckedThrowingContinuation { continuation in
+            let query = HKSampleQuery(
+                sampleType: type,
+                predicate: predicate,
+                limit: HKObjectQueryNoLimit,
+                sortDescriptors: nil
+            ) { _, samples, error in
+                if let error {
+                    continuation.resume(throwing: error)
+                    return
+                }
+
+                continuation.resume(returning: samples as? [HKCategorySample] ?? [])
+            }
+
+            healthStore.execute(query)
+        }
+
+        return samples.reduce(0.0) { partial, sample in
+            partial + sample.endDate.timeIntervalSince(sample.startDate)
+        }
+    }
+
+    nonisolated func fetchBreathingProgress(for date: Date, withTarget target: TimeInterval) async throws -> Double {
+        let completedSeconds = try await fetchBreathingCompletionSeconds(for: date)
+        return min(completedSeconds / target, 1.0)
     }
 }

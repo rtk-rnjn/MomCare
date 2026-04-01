@@ -24,7 +24,7 @@ struct ReAuthenticationSheetView: View {
             }
             .errorAlert(error: $error)
             .scrollContentBackground(.hidden)
-            .scrollDismissesKeyboard(.interactively)
+            .scrollDismissesKeyboard(.immediately)
             .navigationTitle("Refresh Token Expired")
             .navigationSubtitle("HTTP 401 Unauthorized")
             .navigationBarTitleDisplayMode(.inline)

@@ -17,7 +17,6 @@ nonisolated struct UserModel: Codable, Sendable {
     }
 
     var _id: String
-
     var firstName: String?
     var lastName: String?
 
@@ -30,6 +29,10 @@ nonisolated struct UserModel: Codable, Sendable {
 
     var foodIntolerances: [Intolerance] = []
     var dietaryPreferences: [DietaryPreference] = []
+
+    var id: String {
+        _id
+    }
 
     var isProfileComplete: Bool {
         guard dateOfBirthTimestamp != nil, dueDateTimestamp != nil else {

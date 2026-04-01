@@ -2,8 +2,6 @@ import SwiftUI
 import TipKit
 import UIKit
 
-private let kFirstTime = "momcare_firsttime"
-
 struct ProfileSection: Identifiable {
     var id: UUID = .init()
     let rows: [ProfileRow]
@@ -93,13 +91,11 @@ struct ProfileView: View {
             }
 
         } message: {
-            Text("You will need to log in again to access your MomCare+ account.")
+            Text("You will need to log in again to access your MomCare+ account. All Events and data will remain intact.")
         }
     }
 
     // MARK: Private
-
-    @AppStorage(kFirstTime, store: Database.shared.userDefaults) private var firstTime: Bool = true
 
     @State private var showSignOutAlert = false
 
@@ -184,7 +180,6 @@ struct ProfileView: View {
     private func performSignOut() {
         Task {
             await authenticationService.logout()
-            firstTime = true
         }
     }
 }

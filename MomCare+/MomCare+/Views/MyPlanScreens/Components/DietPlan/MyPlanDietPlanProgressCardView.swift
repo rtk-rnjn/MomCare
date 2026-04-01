@@ -97,7 +97,7 @@ struct MyPlanDietPlanProgressCardView: View {
     }
 
     private var collapsedHeader: some View {
-        HStack(alignment: .center, spacing: 20) {
+        HStack(alignment: .center, spacing: 10) {
             ProgressRingView(
                 consumed: calorieIntake,
                 target: calorieGoal,
@@ -941,7 +941,7 @@ private struct MacroBarRow: View {
     private var numericView: some View {
         HStack(spacing: 4) {
             if let intake {
-                HStack {
+                HStack(spacing: 3) {
                     Text(intake.formattedOneDecimal)
                         .contentTransition(reduceMotion ? .identity : .numericText(value: intake.value))
                         .animation(reduceMotion ? nil : .easeInOut, value: intake.value)
@@ -962,7 +962,7 @@ private struct MacroBarRow: View {
 
             if let goal {
                 if let recommendedGoal, targetModification != nil {
-                    HStack {
+                    HStack(spacing: 3) {
                         Text(recommendedGoal.formattedOneDecimal)
                             .foregroundStyle(modificationColor)
 
@@ -990,6 +990,8 @@ private struct MacroBarRow: View {
                 Text("-")
             }
         }
+        .lineLimit(1)
+        .minimumScaleFactor(0.8)
         .animation(reduceMotion ? nil : .easeInOut, value: showPercentage)
     }
 

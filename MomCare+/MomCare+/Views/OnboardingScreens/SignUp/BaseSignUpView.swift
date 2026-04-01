@@ -207,7 +207,7 @@ struct BaseSignUpView: View {
                 .animation(reduceMotion ? nil : .easeInOut(duration: 0.2), value: password)
                 .animation(reduceMotion ? nil : .easeInOut(duration: 0.2), value: confirmPassword)
             }
-            .scrollDismissesKeyboard(.interactively)
+            .scrollDismissesKeyboard(.immediately)
             .scrollContentBackground(.hidden)
         }
     }

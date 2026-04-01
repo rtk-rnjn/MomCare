@@ -107,14 +107,10 @@ struct MyPlanExercisePlanView: View {
 
     @State private var walkingCompleted: Bool = false
 
+    @State private var breathingCompleted: Bool = false
+
     private var completedCount: Int {
         contentServiceHandler.totalUserExercisesCompleted + (breathingCompleted ? 1 : 0) + (walkingCompleted ? 1 : 0)
-    }
-
-    private var breathingCompleted: Bool {
-        let durationCompleted = contentServiceHandler.fetchBreathingCompletionDuration(for: .init())
-        let totalDuration = contentServiceHandler.breathingTargetInSeconds
-        return durationCompleted >= totalDuration
     }
 
     private var exerciseCardsView: some View {
@@ -135,6 +131,18 @@ struct MyPlanExercisePlanView: View {
             BreathingCardView {
                 withAnimation(reduceMotion ? nil : .easeInOut) {
                     showingBreathingInfo = true
+                }
+            }
+            .onAppear {
+                Task {
+                    do {
+                        let progress = try await contentServiceHandler.fetchBreathingProgress(for: .init(), withTarget: contentServiceHandler.breathingTargetInSeconds)
+                        if progress >= 1 {
+                            breathingCompleted = true
+                        }
+                    } catch {
+                        controlState.error = error
+                    }
                 }
             }
 

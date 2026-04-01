@@ -45,7 +45,7 @@ struct TriTrackSymptomsContentView: View {
         .listStyle(.plain)
         .sheet(isPresented: $controlState.showingAddSymptomSheet) {
             TriTrackAddEditSymptomSheetView(selectedDate: selectedDate)
-                .presentationDetents([.medium, .large])
+                .presentationDetents([.large])
                 .scrollDismissesKeyboard(.immediately)
                 .interactiveDismissDisabled(true)
         }
@@ -53,7 +53,7 @@ struct TriTrackSymptomsContentView: View {
             selectedSymptomModel = nil
         } content: { symptomModel in
             TriTrackAddEditSymptomSheetView(selectedDate: selectedDate, existingSymptom: symptomModel)
-                .presentationDetents([.medium, .large])
+                .presentationDetents([.large])
                 .scrollDismissesKeyboard(.immediately)
                 .interactiveDismissDisabled(true)
         }

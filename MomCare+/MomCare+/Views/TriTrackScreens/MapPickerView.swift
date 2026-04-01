@@ -42,7 +42,7 @@ struct MapPickerView: View {
                 }
             }
             .ignoresSafeArea()
-            .searchable(text: $searchService.searchText)
+            .searchable(text: $searchService.searchText, placement: .automatic)
             .searchFocused($isSearchFieldFocused)
             .searchSuggestions {
                 ForEach(searchService.results, id: \.self) { item in

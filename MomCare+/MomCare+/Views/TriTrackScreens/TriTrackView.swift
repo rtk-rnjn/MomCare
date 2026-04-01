@@ -407,6 +407,7 @@ struct PregnancyProgressView: View {
         HStack(spacing: 12) {
             CompactInfoCard(
                 title: "Baby This Week",
+                iconName: "babyAsset",
                 previewText: trimesterData.babyTipText,
                 backgroundColor: Color(hex: "FBE8E5"),
                 accentColor: .CustomColors.mutedRaspberry
@@ -430,6 +431,7 @@ struct PregnancyProgressView: View {
 
             CompactInfoCard(
                 title: "Mom This Week",
+                iconName: "momAsset",
                 previewText: trimesterData.momTipText,
                 backgroundColor: Color(hex: "FBE8E5"),
                 accentColor: .CustomColors.mutedRaspberry
@@ -516,7 +518,6 @@ struct ComparisonView: View {
             Image(systemName: "arrow.right")
                 .font(.title2.weight(.bold))
                 .foregroundStyle(.secondary)
-//                .frame(width: 40)
                 .accessibilityHidden(true)
 
             VStack(alignment: .center) {
@@ -554,37 +555,68 @@ struct CompactInfoCard: View {
     // MARK: Internal
 
     let title: String
+    let iconName: String
     let previewText: String
     let backgroundColor: Color
     let accentColor: Color
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 4) {
-            Text(title)
-                .font(.subheadline.weight(.semibold))
-                .foregroundStyle(.primary)
-                .lineLimit(1)
-                .accessibilityAddTraits(.isHeader)
-                .contentTransition(reduceMotion ? .identity : .interpolate)
-                .animation(reduceMotion ? nil : .easeInOut, value: title)
+        VStack(alignment: .leading, spacing: 2) {
+            HStack(spacing: 2) {
+                Text(title)
+                    .font(.subheadline.weight(.semibold))
+                    .foregroundStyle(.primary)
+                    .lineLimit(1)
+                    .multilineTextAlignment(.center)
+                    .accessibilityAddTraits(.isHeader)
+                    .contentTransition(reduceMotion ? .identity : .interpolate)
+                    .animation(reduceMotion ? nil : .easeInOut, value: title)
+            }
 
-            Text(previewText)
-                .font(.footnote)
-                .foregroundStyle(.secondary)
-                .lineLimit(4)
-                .lineSpacing(1)
-                .truncationMode(.tail)
-                .multilineTextAlignment(.leading)
-                .padding(.top, 2)
-                .contentTransition(reduceMotion ? .identity : .interpolate)
-                .animation(reduceMotion ? nil : .easeInOut, value: previewText)
+            ZStack(alignment: .bottomTrailing) {
+                Text(previewText)
+                    .font(.footnote)
+                    .foregroundStyle(.secondary)
+                    .lineLimit(4)
+                HStack(spacing: 0) {
+                    Spacer()
+
+                    LinearGradient(
+                        stops: [
+                            .init(color: backgroundColor.opacity(0), location: 0.0),
+                            .init(color: backgroundColor.opacity(0.7), location: 0.6),
+                            .init(color: backgroundColor, location: 1.0)
+                        ],
+                        startPoint: .leading,
+                        endPoint: .trailing
+                    )
+                    .frame(width: 50, height: 20)
+
+                    Text("see more")
+                        .font(.footnote.weight(.semibold))
+                        .foregroundStyle(.secondary)
+                        .lineLimit(1)
+                        .fixedSize(horizontal: true, vertical: false)
+                        .padding(.horizontal, 2)
+                        .background(backgroundColor)
+                }
+            }
         }
         .padding(12)
         .frame(maxWidth: .infinity)
+        .frame(minHeight: 120, alignment: .top)
         .background(
-            RoundedRectangle(cornerRadius: 16)
-                .fill(backgroundColor)
-                .shadow(color: Color.black.opacity(0.05), radius: 8, x: 0, y: 2)
+            ZStack {
+                RoundedRectangle(cornerRadius: 16)
+                    .fill(backgroundColor)
+
+                Image(iconName)
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 100, height: 100)
+                    .opacity(0.1)
+                    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
+            }
         )
         .accessibilityElement(children: .combine)
         .accessibilityLabel("\(title). \(previewText)")

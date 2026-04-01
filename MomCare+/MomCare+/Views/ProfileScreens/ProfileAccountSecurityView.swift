@@ -233,7 +233,7 @@ struct ProfileAccountSecurityView: View {
                 Text("Third Party Integration")
             }
         }
-        .scrollDismissesKeyboard(.interactively)
+        .scrollDismissesKeyboard(.immediately)
         .listStyle(.insetGrouped)
         .sheet(isPresented: $showAppleConnectSheet) {
             NavigationStack {

@@ -82,12 +82,25 @@ struct TriTrackAddCalendarItemSheetView: View {
         }
         .interactiveDismissDisabled(hasData)
         .onAppear {
-            startDate = selectedDate
-            endDate = startDate.addingTimeInterval(1)
+            let now = Date()
+            let calendar = Calendar.current
+            startDate = calendar.date(
+                bySettingHour: calendar.component(.hour, from: now),
+                minute: calendar.component(.minute, from: now),
+                second: 0,
+                of: selectedDate
+            ) ?? selectedDate
+            endDate = startDate.addingTimeInterval(3600)
         }
         .onChange(of: startDate) {
-            if startDate > endDate {
-                endDate = startDate.addingTimeInterval(1)
+            if isAllDay {
+                if endDate <= startDate {
+                    endDate = Calendar.current.date(bySettingHour: 23, minute: 59, second: 59, of: startDate) ?? startDate
+                }
+            } else {
+                if endDate <= startDate {
+                    endDate = startDate.addingTimeInterval(3600)
+                }
             }
         }
     }
@@ -106,7 +119,7 @@ struct TriTrackAddCalendarItemSheetView: View {
     @State private var notes = ""
 
     @State private var startDate: Date = .init()
-    @State private var endDate = Date().addingTimeInterval(1)
+    @State private var endDate = Date().addingTimeInterval(3600)
     @State private var isAllDay = false
     @State private var recurrenceEnabled = false
 
@@ -129,12 +142,15 @@ struct TriTrackAddCalendarItemSheetView: View {
                     .onChange(of: isAllDay) {
                         if isAllDay {
                             hasData = true
+                            endDate = Calendar.current.date(bySettingHour: 23, minute: 59, second: 59, of: startDate) ?? startDate
+                        } else {
+                            endDate = startDate.addingTimeInterval(3600)
                         }
                     }
                     .accessibilityHint("Toggles all day setting for this event")
 
                 DatePicker("Starts", selection: $startDate, in: dateRange(), displayedComponents: isAllDay ? [.date] : [.date, .hourAndMinute])
-                DatePicker("Ends", selection: $endDate, in: dateRange(), displayedComponents: isAllDay ? [.date] : [.date, .hourAndMinute])
+                DatePicker("Ends", selection: $endDate, in: startDate...Date.distantFuture, displayedComponents: isAllDay ? [.date] : [.date, .hourAndMinute])
 
                 Toggle("Repeat Monthly", isOn: $recurrenceEnabled)
                     .onChange(of: recurrenceEnabled) {

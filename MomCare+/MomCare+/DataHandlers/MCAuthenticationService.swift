@@ -31,6 +31,10 @@ final class MCAuthenticationService: ObservableObject {
 
     // MARK: Internal
 
+    enum CredentialsType {
+        case databasePurge
+    }
+
     nonisolated static var authorizationHeaders: [String: String]? {
         guard let accessToken = KeychainHelper.get(.accessToken), !accessToken.isEmpty else {
             return nil
@@ -357,7 +361,7 @@ final class MCAuthenticationService: ObservableObject {
         try? LoginCredentials(emailAddress: emailAddress, password: password).encodeUsingJSONEncoder()
     }
 
-    private func dropCredentials() {
+    private func dropCredentials(_ credentialsToDrop: [CredentialsType] = [.databasePurge]) {
         KeychainHelper.purge()
 
         hasAccessToken = false
@@ -365,8 +369,10 @@ final class MCAuthenticationService: ObservableObject {
         userModel = nil
         credentials = nil
 
+        if credentialsToDrop.contains(.databasePurge) {
+            Database.shared.purge()
+        }
         ControlState.purge()
-        Database.shared.purge()
     }
 
     nonisolated private func loginWithApple(token: String) async throws -> NetworkResponse<TokenPair> {

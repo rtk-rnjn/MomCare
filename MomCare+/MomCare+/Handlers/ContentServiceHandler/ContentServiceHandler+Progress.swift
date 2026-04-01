@@ -2,20 +2,6 @@ import Foundation
 import HealthKit
 
 extension ContentServiceHandler {
-    func updateBreathingCompletionDuration(duration: TimeInterval) {
-        let startOfDate = Calendar.current.startOfDay(for: Date())
-        Database.shared[.breathingProgress(startOfDate)] = duration
-    }
-
-    func fetchBreathingCompletionDuration(for date: Date) -> TimeInterval {
-        if date > Date() {
-            return 0
-        }
-
-        let startOfDate = Calendar.current.startOfDay(for: date)
-        return Database.shared[.breathingProgress(startOfDate)] ?? 0
-    }
-
     func fetchStepCount(for date: Date) async -> Int {
         if date > Date() {
             return 0
@@ -75,7 +61,8 @@ extension ContentServiceHandler {
                 group.addTask {
                     let exercise = await self.calculateTotalCompletionPercentage(for: date)
 
-                    let breathing = await self.fetchBreathingCompletionDuration(for: date) / self.breathingTargetInSeconds
+                    let breathingCompletionDuration: TimeInterval? = try? await self.fetchBreathingCompletionSeconds(for: date)
+                    let breathing = await (breathingCompletionDuration ?? 0.0) / self.breathingTargetInSeconds
 
                     let steps = await Double(await self.fetchStepCount(for: date)) / self.stepsGoal
                     let total = (exercise + breathing + steps) / 3
