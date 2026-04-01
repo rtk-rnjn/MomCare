@@ -60,11 +60,13 @@ final class EventKitHandler: ObservableObject {
     func requestAccess(for type: EKEntityType) async throws -> Bool {
         switch type {
         case .reminder:
+            eventStore.refreshSourcesIfNecessary()
             let success = try await eventStore.requestFullAccessToReminders()
             _ = try createOrGetReminderCalendar()
             return success
 
         case .event:
+            eventStore.refreshSourcesIfNecessary()
             let success = try await eventStore.requestFullAccessToEvents()
             _ = try createOrGetEventCalendar()
             return success

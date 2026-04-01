@@ -2,7 +2,6 @@ import Foundation
 import HealthKit
 
 extension ContentServiceHandler {
-
     func fetchStepCount(for date: Date) async -> Int {
         if date > Date() {
             return 0

@@ -105,8 +105,6 @@ struct BreathingCardView: View {
         do {
             completionProgress = try await contentServiceHandler.fetchBreathingProgress(for: Date(), withTarget: contentServiceHandler.breathingTargetInSeconds)
             completionProgress = min(completionProgress, 1.0)
-        } catch {
-
-        }
+        } catch {}
     }
 }

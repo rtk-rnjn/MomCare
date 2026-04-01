@@ -242,7 +242,9 @@ extension ContentServiceHandler {
 
     nonisolated func fetchSymptoms(for date: Date) async throws -> [HKCategorySample] {
         let userModel: UserModel? = await Database.shared[.userModel]
-        guard let userId = userModel?.id else { return [] }
+        guard let userId = userModel?.id else {
+            return []
+        }
 
         let identifiers = PregnancySymptoms.allSymptoms
             .compactMap(\.healthKitIdentifier)
@@ -256,7 +258,6 @@ extension ContentServiceHandler {
         try await withThrowingTaskGroup(of: [HKCategorySample].self) { group in
             for identifier in identifiers {
                 group.addTask { [healthStore] in
-
                     guard let type = HKObjectType.categoryType(forIdentifier: identifier) else {
                         return []
                     }
@@ -279,14 +280,12 @@ extension ContentServiceHandler {
                     ])
 
                     return try await withCheckedThrowingContinuation { continuation in
-
                         let query = HKSampleQuery(
                             sampleType: type,
                             predicate: predicate,
                             limit: HKObjectQueryNoLimit,
                             sortDescriptors: nil
                         ) { _, samples, error in
-
                             if let error {
                                 continuation.resume(throwing: error)
                                 return
@@ -310,7 +309,9 @@ extension ContentServiceHandler {
 
     nonisolated func deleteSymptom(_ model: SymptomModel) async throws {
         let userModel: UserModel? = await Database.shared[.userModel]
-        guard let userId = userModel?.id else { return }
+        guard let userId = userModel?.id else {
+            return
+        }
 
         let uuidPredicate = HKQuery.predicateForObjects(
             withMetadataKey: HKMetadataKeyExternalUUID,
@@ -333,20 +334,17 @@ extension ContentServiceHandler {
             .flatMap { $0 }
 
         for identifier in types {
-
             guard let type = HKObjectType.categoryType(forIdentifier: identifier) else {
                 continue
             }
 
             let samples: [HKCategorySample] = try await withCheckedThrowingContinuation { continuation in
-
                 let query = HKSampleQuery(
                     sampleType: type,
                     predicate: predicate,
                     limit: HKObjectQueryNoLimit,
                     sortDescriptors: nil
                 ) { _, samples, error in
-
                     if let error {
                         continuation.resume(throwing: error)
                         return
@@ -358,17 +356,17 @@ extension ContentServiceHandler {
                 healthStore.execute(query)
             }
 
-            guard !samples.isEmpty else { continue }
+            guard !samples.isEmpty else {
+                continue
+            }
 
             try await healthStore.delete(samples)
         }
     }
 
     func editSymptom(old: SymptomModel, new: SymptomModel) async throws {
-
         try await deleteSymptom(old)
         try await saveSymptom(new)
-
     }
 }
 
@@ -378,8 +376,9 @@ extension ContentServiceHandler {
         end: Date,
     ) async throws {
         let userModel: UserModel? = await Database.shared[.userModel]
-        guard let userId = userModel?.id else { return }
-
+        guard let userId = userModel?.id else {
+            return
+        }
         guard let type = HKObjectType.categoryType(forIdentifier: .mindfulSession) else {
             return
         }
@@ -403,8 +402,9 @@ extension ContentServiceHandler {
 
     nonisolated func fetchBreathingCompletionSeconds(for date: Date) async throws -> TimeInterval {
         let userModel: UserModel? = await Database.shared[.userModel]
-        guard let userId = userModel?.id else { return 0 }
-
+        guard let userId = userModel?.id else {
+            return 0
+        }
         guard let type = HKObjectType.categoryType(forIdentifier: .mindfulSession) else {
             return 0
         }
@@ -437,14 +437,12 @@ extension ContentServiceHandler {
         ])
 
         let samples: [HKCategorySample] = try await withCheckedThrowingContinuation { continuation in
-
             let query = HKSampleQuery(
                 sampleType: type,
                 predicate: predicate,
                 limit: HKObjectQueryNoLimit,
                 sortDescriptors: nil
             ) { _, samples, error in
-
                 if let error {
                     continuation.resume(throwing: error)
                     return
@@ -456,11 +454,9 @@ extension ContentServiceHandler {
             healthStore.execute(query)
         }
 
-        let totalSeconds = samples.reduce(0.0) { partial, sample in
+        return samples.reduce(0.0) { partial, sample in
             partial + sample.endDate.timeIntervalSince(sample.startDate)
         }
-
-        return totalSeconds
     }
 
     nonisolated func fetchBreathingProgress(for date: Date, withTarget target: TimeInterval) async throws -> Double {

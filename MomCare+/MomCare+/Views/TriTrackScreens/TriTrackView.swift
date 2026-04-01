@@ -563,7 +563,6 @@ struct CompactInfoCard: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 2) {
             HStack(spacing: 2) {
-                
                 Text(title)
                     .font(.subheadline.weight(.semibold))
                     .foregroundStyle(.primary)
@@ -573,9 +572,8 @@ struct CompactInfoCard: View {
                     .contentTransition(reduceMotion ? .identity : .interpolate)
                     .animation(reduceMotion ? nil : .easeInOut, value: title)
             }
-            
-            ZStack(alignment: .bottomTrailing) {
 
+            ZStack(alignment: .bottomTrailing) {
                 Text(previewText)
                     .font(.footnote)
                     .foregroundStyle(.secondary)
@@ -607,12 +605,11 @@ struct CompactInfoCard: View {
         .padding(12)
         .frame(maxWidth: .infinity)
         .frame(minHeight: 120, alignment: .top)
-
         .background(
             ZStack {
                 RoundedRectangle(cornerRadius: 16)
                     .fill(backgroundColor)
-                
+
                 Image(iconName)
                     .resizable()
                     .scaledToFit()

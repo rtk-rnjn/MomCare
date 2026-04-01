@@ -31,6 +31,10 @@ final class MCAuthenticationService: ObservableObject {
 
     // MARK: Internal
 
+    enum CredentialsType {
+        case databasePurge
+    }
+
     nonisolated static var authorizationHeaders: [String: String]? {
         guard let accessToken = KeychainHelper.get(.accessToken), !accessToken.isEmpty else {
             return nil
@@ -355,10 +359,6 @@ final class MCAuthenticationService: ObservableObject {
 
     nonisolated private func prepareCredentialsData(emailAddress: String, password: String) -> Data? {
         try? LoginCredentials(emailAddress: emailAddress, password: password).encodeUsingJSONEncoder()
-    }
-
-    enum CredentialsType {
-        case databasePurge
     }
 
     private func dropCredentials(_ credentialsToDrop: [CredentialsType] = [.databasePurge]) {

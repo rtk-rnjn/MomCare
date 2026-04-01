@@ -44,7 +44,7 @@ struct BreathingExerciseView: View {
                     Button(role: .cancel) {
                         stopAllTimers()
                         Task {
-                            try! await contentServiceHandler.saveBreathingSession(start: .init().addingTimeInterval(-totalElapsed), end: .init())
+                            try? await contentServiceHandler.saveBreathingSession(start: .init().addingTimeInterval(-totalElapsed), end: .init())
                         }
                         dismiss()
                     }

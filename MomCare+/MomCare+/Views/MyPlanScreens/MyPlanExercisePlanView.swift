@@ -107,11 +107,11 @@ struct MyPlanExercisePlanView: View {
 
     @State private var walkingCompleted: Bool = false
 
+    @State private var breathingCompleted: Bool = false
+
     private var completedCount: Int {
         contentServiceHandler.totalUserExercisesCompleted + (breathingCompleted ? 1 : 0) + (walkingCompleted ? 1 : 0)
     }
-
-    @State private var breathingCompleted: Bool = false
 
     private var exerciseCardsView: some View {
         VStack(spacing: 14) {
