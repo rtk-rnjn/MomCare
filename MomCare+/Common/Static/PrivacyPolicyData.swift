@@ -12,8 +12,8 @@ enum PrivacyPolicyText {
 
     static let contactTitle = "Contact Us"
     static let contactSubtitle = "If you have any questions, concerns, or requests, feel free to reach out to us:"
-    static let contactEmail = "Email: privacy@momcare.app"
-    static let contactWebsite = "Website: www.momcare.app"
+    static let contactEmail = "Email: support.momcare@vision-labs.site"
+    static let contactWebsite = "Website: momcare.vision-labs.site"
     static let contactFooter = "We’re here to protect your wellness — both physical and digital."
 
     static let policySections: [PolicySectionItem] = [
