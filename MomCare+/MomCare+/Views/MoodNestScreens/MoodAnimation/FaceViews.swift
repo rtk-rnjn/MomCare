@@ -29,11 +29,11 @@ struct SmileView: View {
             .stroke(
                 color,
                 style: StrokeStyle(
-                    lineWidth: 18,
+                    lineWidth: 13,
                     lineCap: .round
                 )
             )
-            .frame(width: 70, height: 30)
+            .frame(width: 42, height: 16)
             .rotationEffect(rotation)
             .accessibilityHidden(true)
     }
@@ -45,7 +45,7 @@ struct SmileShape: Shape {
         path.move(to: CGPoint(x: 0, y: rect.midY))
         path.addQuadCurve(
             to: CGPoint(x: rect.maxX, y: rect.midY),
-            control: CGPoint(x: rect.midX, y: rect.maxY * 2)
+            control: CGPoint(x: rect.midX, y: rect.maxY * 2.0)
         )
         return path
     }
