@@ -77,34 +77,6 @@ struct MyPlanFoodItemSearchView: View {
     @State private var showErrorAlert = false
     @State private var alertMessage: String?
 
-    private var emptyStateView: some View {
-        VStack(spacing: 8) {
-            Spacer()
-            Text("No results for \"\(searchText)\"")
-                .font(.subheadline)
-                .foregroundStyle(.secondary)
-            Spacer()
-        }
-        .accessibilityElement(children: .combine)
-        .accessibilityLabel("No results for \(searchText)")
-    }
-
-    private var placeholderView: some View {
-        VStack(spacing: 8) {
-            Spacer()
-            Image(systemName: "magnifyingglass")
-                .font(.largeTitle.weight(.light))
-                .foregroundStyle(.tertiary)
-                .accessibilityHidden(true)
-            Text("Search to find food")
-                .font(.subheadline)
-                .foregroundStyle(.secondary)
-            Spacer()
-        }
-        .accessibilityElement(children: .combine)
-        .accessibilityLabel("Search to find food")
-    }
-
     private var foodList: some View {
         List(foodItems) { food in
             FoodRowView(food: food)
