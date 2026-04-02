@@ -3,20 +3,7 @@ import SwiftUI
 import TipKit
 
 struct MoodNestView: View {
-
-    @StateObject private var moodNestViewModel = MoodNestViewModel()
-
-    // ✅ ONLY trigger now (for center emoji)
-    @State private var faceTrigger = UUID()
-    @State private var isFaceAngryAnimating = false
-    @State private var isFaceSadAnimating = false
-    @State private var isSadAnimating = false
-
-    @EnvironmentObject private var contentService: ContentServiceHandler
-    @EnvironmentObject private var controlState: ControlState
-
-    private let primary = Color(hex: "#924350")
-    private let secondary = Color(hex: "#FBE8E5")
+    // MARK: Internal
 
     var body: some View {
         NavigationStack {
@@ -60,11 +47,24 @@ struct MoodNestView: View {
             }
         }
     }
+
+    // MARK: Private
+
+    @StateObject private var moodNestViewModel: MoodNestViewModel = .init()
+
+    // ✅ ONLY trigger now (for center emoji)
+    @State private var faceTrigger: UUID = .init()
+    @State private var isFaceAngryAnimating = false
+    @State private var isFaceSadAnimating = false
+    @State private var isSadAnimating = false
+
+    @EnvironmentObject private var controlState: ControlState
+
+    private let primary: Color = .init(hex: "#924350")
+    private let secondary: Color = .init(hex: "#FBE8E5")
 }
 
-// MARK: - UI
 private extension MoodNestView {
-
     var title: some View {
         Text("What is your mood?")
             .font(.title.weight(.semibold))
@@ -73,7 +73,6 @@ private extension MoodNestView {
 
     var faceWithSelector: some View {
         VStack(spacing: 0) {
-
             ZStack {
                 Circle()
                 let angryTint = Color(red: 0.85, green: 0.35, blue: 0.35)
@@ -90,7 +89,7 @@ private extension MoodNestView {
                     .animation(.easeInOut(duration: 0.25), value: isFaceAngryAnimating)
                     .animation(.easeInOut(duration: 0.25), value: isFaceSadAnimating)
                     .frame(width: 220, height: 220)
-                
+
                 MoodFaceView(
                     mood: moodNestViewModel.selectedMood,
                     trigger: faceTrigger,
@@ -122,7 +121,6 @@ private extension MoodNestView {
             let moods: [MoodType] = [.happy, .stressed, .sad, .angry]
 
             ZStack {
-
                 Path {
                     $0.addArc(
                         center: center,
@@ -156,7 +154,6 @@ private extension MoodNestView {
         let isSelected = moodNestViewModel.selectedMood == mood
 
         return ZStack {
-
             // OUTER
             Circle()
                 .fill(
@@ -212,7 +209,6 @@ private extension MoodNestView {
     // MINI FACE (STATIC NOW)
     @ViewBuilder
     func miniFace(for mood: MoodType, isSelected: Bool) -> some View {
-
         let size: CGFloat = isSelected ? 36 : 28
 
         ZStack {

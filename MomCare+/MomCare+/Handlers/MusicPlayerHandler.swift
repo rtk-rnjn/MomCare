@@ -38,6 +38,8 @@ final class MusicPlayerHandler: ObservableObject {
     private(set) var player: AVPlayer?
     @Published var playbackProgress: Double = 0.0
 
+    @Published var currentSongURL: URL?
+
     var isPlaying: Bool {
         player?.timeControlStatus == .playing
     }
@@ -66,8 +68,6 @@ final class MusicPlayerHandler: ObservableObject {
             }
         }
     }
-
-    @Published var currentSongURL: URL? = nil
 
     var currentSong: SongModel? {
         playlist[safe: currentSongIndex]
@@ -276,8 +276,8 @@ final class MusicPlayerHandler: ObservableObject {
         }
     }
 
-    private func configureMediaPlayerNowPlaying(isPlaying: Bool = false) {
-        var payload: [String: Any] = [:]
+    private func configureMediaPlayerNowPlaying(isPlaying _: Bool = false) {
+        var payload = [String: Any]()
 
         if let song = currentSong {
             payload[MPMediaItemPropertyTitle] = song.title

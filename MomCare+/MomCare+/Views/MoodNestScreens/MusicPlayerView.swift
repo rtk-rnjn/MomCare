@@ -133,7 +133,6 @@ struct MusicPlayerView: View {
                     SystemRoutePicker()
                         .frame(width: 30, height: 30)
                         .accessibilityLabel("Audio output")
-
                 }
             }
             .padding(.horizontal, 32)

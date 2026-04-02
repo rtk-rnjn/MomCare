@@ -22,8 +22,6 @@ struct SemiCircleEyeRepresentable: UIViewRepresentable {
     }
 }
 
-// MARK: - Mini Mood Face (CLEAN / STATIC)
-
 struct MiniMoodFaceView: View {
     let mood: MoodType
     let color: Color
@@ -31,7 +29,6 @@ struct MiniMoodFaceView: View {
 
     var body: some View {
         VStack(spacing: 5) {
-
             // Eyes
             HStack(spacing: 10) {
                 eye(isLeft: true)
@@ -60,27 +57,24 @@ struct MiniMoodFaceView: View {
         }
     }
 
-    // MARK: - Eyes
-
     @ViewBuilder
     func eye(isLeft: Bool) -> some View {
         switch mood {
-            
         case .happy:
             Circle()
                 .fill(color)
                 .frame(width: 14, height: 14)
-            
+
         case .sad:
             Circle()
                 .fill(color)
                 .frame(width: 10, height: 10)
-            
+
         case .stressed:
             Capsule()
                 .fill(color)
                 .frame(width: 12, height: 4)
-            
+
         case .angry:
             HalfCircle()
                 .fill(color)
@@ -91,8 +85,6 @@ struct MiniMoodFaceView: View {
         }
     }
 }
-
-// MARK: - Shapes
 
 struct HalfCircle: Shape {
     func path(in rect: CGRect) -> Path {

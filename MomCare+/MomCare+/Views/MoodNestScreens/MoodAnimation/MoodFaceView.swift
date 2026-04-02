@@ -1,6 +1,5 @@
 import SwiftUI
 
-// MARK: - Proper ∩ Eye Shape
 struct InvertedArcEye: Shape {
     func path(in rect: CGRect) -> Path {
         var path = Path()
@@ -17,9 +16,9 @@ struct InvertedArcEye: Shape {
     }
 }
 
-// MARK: - Mood Face
-
 struct MoodFaceView: View {
+    // MARK: Internal
+
     let mood: MoodType
     let trigger: UUID
 
@@ -30,59 +29,35 @@ struct MoodFaceView: View {
     let rightEyeRotation: Angle
     let smileRotation: Angle
 
-    // MARK: Angry
-    @State private var isAngryAnimating = false
-    @State private var isAngryEyesActive = false
-
-    // MARK: Sad
-    @State private var isSadAnimating = false
-    @State private var showTear = false
-    @State private var sadPop = false
-    
-    @State private var tearOffsetY: CGFloat = 0
-    @State private var tearOpacity: Double = 1.0
-
-    @State private var isHappyAnimating = false
-    @State private var happyPop = false
-    
-    @State private var isStressedAnimating = false
-    @State private var stressedPop = false
-    
     var body: some View {
         VStack(spacing: -1) {
-
-            // MARK: Eyes + Tear
             ZStack {
-
                 HStack(spacing: 30) {
-
                     eye(isLeft: true)
                     eye(isLeft: false)
                 }
 
                 // sad Tear bohohoooo lol
-                if mood == .sad && showTear {
+                if mood == .sad, showTear {
                     Circle()
                         .fill(Color(red: 0.88, green: 0.94, blue: 1.0)) // soft watery color
                         .frame(width: 8, height: 12)
                         .offset(
-                            x: 56,                 //  aligns with right eye
-                            y: tearOffsetY + 20        //  animated position
+                            x: 56, //  aligns with right eye
+                            y: tearOffsetY + 20 //  animated position
                         )
                         .opacity(tearOpacity)
                 }
             }
 
-            // MARK: Smile
             ZStack {
-                
                 // Default smile
                 SmileView(
                     rotation: smileRotation,
                     color: faceColor
                 )
                 .opacity(isHappyAnimating ? 0 : 1)
-                
+
                 // Open mouth
                 OpenMouth()
                     .fill(faceColor)
@@ -95,7 +70,6 @@ struct MoodFaceView: View {
 
         // Angry compression
         .scaleEffect(mood == .angry && isAngryAnimating ? 0.95 : 1.0)
-
         // Sad pop
         .scaleEffect(
             mood == .sad && sadPop ? 1.06 :
@@ -112,20 +86,34 @@ struct MoodFaceView: View {
         .animation(.spring(response: 0.25, dampingFraction: 0.5), value: happyPop)
         .animation(.spring(response: 0.25, dampingFraction: 0.5), value: sadPop)
         .animation(.spring(response: 0.25, dampingFraction: 0.5), value: stressedPop)
-
         .animation(.easeInOut(duration: 0.2), value: isAngryAnimating)
-
         .onChange(of: trigger) { _, _ in
             triggerAnimation(for: mood)
         }
     }
+
+    // MARK: Private
+
+    @State private var isAngryAnimating = false
+    @State private var isAngryEyesActive = false
+
+    @State private var isSadAnimating = false
+    @State private var showTear = false
+    @State private var sadPop = false
+
+    @State private var tearOffsetY: CGFloat = 0
+    @State private var tearOpacity: Double = 1.0
+
+    @State private var isHappyAnimating = false
+    @State private var happyPop = false
+
+    @State private var isStressedAnimating = false
+    @State private var stressedPop = false
 }
 
 private extension MoodFaceView {
-
     @ViewBuilder
     func eye(isLeft: Bool) -> some View {
-        
         var isAnyAnimating: Bool {
             (mood == .sad && isSadAnimating) ||
             (mood == .happy && isHappyAnimating) ||
@@ -133,7 +121,6 @@ private extension MoodFaceView {
         }
 
         ZStack {
-
             // Base eye (handles angry + normal)
             EyeView(
                 isSemiCircleEyes: currentBaseEyeShape(),
@@ -168,8 +155,8 @@ private extension MoodFaceView {
         .animation(.easeInOut(duration: 0.2), value: isStressedAnimating)
     }
 }
-private extension MoodFaceView {
 
+private extension MoodFaceView {
     func triggerAnimation(for mood: MoodType) {
         if mood == .angry {
             triggerAngry()
@@ -182,14 +169,11 @@ private extension MoodFaceView {
         }
     }
 
-    // MARK: Angry (UNCHANGED)
-
     func triggerAngry() {
         isAngryAnimating = false
         isAngryEyesActive = false
 
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.08) {
-
             withAnimation(.easeInOut(duration: 0.18)) {
                 isAngryAnimating = true
             }
@@ -209,8 +193,6 @@ private extension MoodFaceView {
         }
     }
 
-    // MARK: Sad (FINAL CORRECT)
-
     func triggerSad() {
         isSadAnimating = false
         showTear = false
@@ -218,7 +200,6 @@ private extension MoodFaceView {
 
         // wait for face transition
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.15) {
-
             // eyes morph
             withAnimation(.easeInOut(duration: 0.25)) {
                 isSadAnimating = true
@@ -231,21 +212,20 @@ private extension MoodFaceView {
 
             // tear appears (delayed so visible)
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
-
                 tearOffsetY = 0
                 tearOpacity = 1.0
                 showTear = true
 
                 withAnimation(.easeIn(duration: 0.35)) {
-                    tearOffsetY = 45     // fall
-                    tearOpacity = 0      // fade out
+                    tearOffsetY = 45 // fall
+                    tearOpacity = 0 // fade out
                 }
             }
 
             // reset
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.7) {
                 withAnimation(.easeInOut(duration: 0.3)) {
-                    isSadAnimating = false   // 👈 THIS is critical
+                    isSadAnimating = false // 👈 THIS is critical
                     sadPop = false
                 }
 
@@ -256,13 +236,13 @@ private extension MoodFaceView {
             }
         }
     }
+
     func triggerHappy() {
         isHappyAnimating = false
         happyPop = false
 
         // wait for base happy face to appear
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.12) {
-
             // transform
             withAnimation(.spring(response: 0.3, dampingFraction: 0.6)) {
                 isHappyAnimating = true
@@ -278,13 +258,13 @@ private extension MoodFaceView {
             }
         }
     }
+
     func triggerStressed() {
         isStressedAnimating = false
         stressedPop = false
 
         // wait for base face transition
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.12) {
-
             // activate stressed eyes + pop
             withAnimation(.spring(response: 0.25, dampingFraction: 0.7)) {
                 isStressedAnimating = true
@@ -301,10 +281,10 @@ private extension MoodFaceView {
         }
     }
 }
-private extension MoodFaceView {
 
+private extension MoodFaceView {
     func currentEyeScale() -> CGSize {
-        if mood == .angry && isAngryEyesActive {
+        if mood == .angry, isAngryEyesActive {
             return CGSize(width: 0.85, height: 0.65)
         }
         return eyeScale
@@ -319,6 +299,7 @@ private extension MoodFaceView {
 
         return isLeft ? leftEyeRotation : rightEyeRotation
     }
+
     func currentBaseEyeShape() -> Bool {
         if mood == .angry {
             return true
@@ -326,6 +307,7 @@ private extension MoodFaceView {
         return false
     }
 }
+
 struct OpenMouth: Shape {
     func path(in rect: CGRect) -> Path {
         var path = Path()
@@ -355,7 +337,7 @@ struct StressedEye: Shape {
             path.move(to: CGPoint(x: rect.minX, y: rect.minY))
             path.addLine(to: CGPoint(x: rect.maxX, y: rect.midY))
             path.addLine(to: CGPoint(x: rect.minX, y: rect.maxY))
-            
+
         } else {
             path.move(to: CGPoint(x: rect.maxX, y: rect.minY))
             path.addLine(to: CGPoint(x: rect.minX, y: rect.midY))

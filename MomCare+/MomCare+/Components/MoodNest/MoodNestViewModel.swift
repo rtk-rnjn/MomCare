@@ -2,6 +2,7 @@ import Combine
 import SwiftUI
 
 final class MoodNestViewModel: ObservableObject {
+    // MARK: Internal
 
     // ✅ NEW source of truth
     @Published var selectedMood: MoodType = .happy
@@ -19,6 +20,8 @@ final class MoodNestViewModel: ObservableObject {
     func selectMood(_ mood: MoodType) {
         applyMood(mood)
     }
+
+    // MARK: Private
 
     private func applyMood(_ mood: MoodType) {
         reset()
