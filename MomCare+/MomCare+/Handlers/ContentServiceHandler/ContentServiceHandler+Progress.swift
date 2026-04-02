@@ -58,6 +58,10 @@ extension ContentServiceHandler {
         return min(totalCompletedDuration / totalDuration, 1.0)
     }
 
+    nonisolated private func cappedProgress(_ progress: Double) -> Double {
+        min(max(progress, 0), 1)
+    }
+
     func fetchWeeklyProgress() async {
         let dates = Utils.weekRange(containing: Date())
 
@@ -70,7 +74,8 @@ extension ContentServiceHandler {
                     let breathing = await (breathingCompletionDuration ?? 0.0) / self.breathingGoalInSeconds
 
                     let steps = await Double(await self.fetchStepCount(for: date)) / self.stepsGoal
-                    let total = (exercise + breathing + steps) / 3
+
+                    let total = (self.cappedProgress(exercise) + self.cappedProgress(breathing) + self.cappedProgress(steps)) / 3
 
                     return (index, min(total, 1))
                 }
