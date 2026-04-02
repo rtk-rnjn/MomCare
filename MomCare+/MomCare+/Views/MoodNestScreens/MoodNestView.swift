@@ -25,7 +25,7 @@ struct MoodNestView: View {
                     CompactCalendarView(selectedDate: $selectedDateForHistory, isExpanded: $controlState.showingExpandedCalendar)
 
                     ContentUnavailableView(
-                        "Comming Soon",
+                        "Coming Soon",
                         systemImage: "clock.arrow.circlepath",
                         description: Text("Mood history details and insights will be available in a future update. Stay tuned!"),
                     )
