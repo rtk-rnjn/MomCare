@@ -45,7 +45,7 @@ struct BreathingExerciseView: View {
                         stopAllTimers()
                         Task {
                             let now = Date()
-                            try? await contentServiceHandler.saveBreathingSession(start: now, end: now)
+                            try? await contentServiceHandler.saveBreathingSession(start: now.addingTimeInterval(-totalElapsed), end: now)
                             _ = try? await contentServiceHandler.fetchBreathingCompletionSeconds(for: now)
                         }
                         dismiss()

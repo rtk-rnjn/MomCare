@@ -5,7 +5,7 @@ extension ContentServiceHandler {
         isFetchingExercises = true
         defer { isFetchingExercises = false }
 
-        _ = try await fetchBreathingCompletionSeconds(for: .init())
+        _ = try? await fetchBreathingCompletionSeconds(for: .init())
         fetchTodaySteps()
 
         while true {

@@ -121,18 +121,19 @@ struct MusicPlayerView: View {
                         .accessibilityHidden(true)
 
                     SystemVolumeSlider()
+                        .layoutPriority(1)
                         .frame(maxWidth: .infinity)
-                        .frame(height: 30)
+                        .frame(height: 20)
                         .accessibilityLabel("Volume")
 
-                    HStack(spacing: 12) {
-                        Image(systemName: "speaker.wave.3.fill")
-                            .foregroundStyle(.white.opacity(0.7))
-                            .accessibilityHidden(true)
-                        SystemRoutePicker()
-                            .frame(width: 30, height: 30)
-                            .accessibilityLabel("Audio output")
-                    }
+                    Image(systemName: "speaker.wave.3.fill")
+                        .foregroundStyle(.white.opacity(0.7))
+                        .accessibilityHidden(true)
+
+                    SystemRoutePicker()
+                        .frame(width: 30, height: 30)
+                        .accessibilityLabel("Audio output")
+
                 }
             }
             .padding(.horizontal, 32)
@@ -238,6 +239,7 @@ struct SystemVolumeSlider: UIViewRepresentable {
 
         volumeView.showsVolumeSlider = true
         volumeView.tintColor = .white
+
         return volumeView
     }
 
