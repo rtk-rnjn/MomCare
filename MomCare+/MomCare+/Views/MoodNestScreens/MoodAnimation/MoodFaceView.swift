@@ -11,7 +11,7 @@ struct MoodFaceView: View {
     let smileRotation: Angle
 
     var body: some View {
-        VStack(spacing: -3) {
+        VStack(spacing: -1) {
             HStack(spacing: 30) {
                 EyeView(
                     isSemiCircleEyes: isSemiCircleEyes,
