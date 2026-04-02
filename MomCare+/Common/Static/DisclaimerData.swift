@@ -50,7 +50,7 @@ enum DisclaimerData {
             content: """
             DISCLAIMER: The week-by-week baby size comparisons (e.g., "the size of an apple") are illustrative approximations meant to provide a fun and relatable way to visualize your baby's growth. Fetal development is unique to each pregnancy and can be influenced by various factors, including genetics, ethnicity, and maternal health. The data used in this app is based on general averages and may not perfectly reflect your baby's individual development. These comparisons are not a medical tool and should not be used for diagnostic purposes. For accurate information about your baby's growth, please rely on the ultrasound measurements and assessments provided by your healthcare professional.
             """,
-            source: "CITATION: Icons are used from [Icons8](https://icons8.com/)."
+            source: nil
         ),
         DisclaimerItem(
             icon: "book",

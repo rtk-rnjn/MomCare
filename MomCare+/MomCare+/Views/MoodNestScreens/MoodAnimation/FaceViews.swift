@@ -1,6 +1,8 @@
 import SwiftUI
 
 struct EyeView: View {
+    // MARK: Internal
+
     let isSemiCircleEyes: Bool
     let faceColor: Color
     let eyeScale: CGSize
@@ -19,6 +21,8 @@ struct EyeView: View {
         .rotationEffect(rotation)
         .accessibilityHidden(true)
     }
+
+    // MARK: Private
 
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
 }

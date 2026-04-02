@@ -271,7 +271,7 @@ struct PregnancyProgressView: View {
                 babyAndMomInformationSectionView
                 Spacer()
                 Color.clear
-                    .padding(40)
+                    .padding(30)
             }
         }
         .frame(maxWidth: .infinity)

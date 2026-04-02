@@ -67,6 +67,7 @@ struct MoodNestPlaylistsView: View {
             .font(.title.weight(.bold))
             .foregroundStyle(.primary)
             .lineLimit(3)
+            .minimumScaleFactor(0.8)
             .fixedSize(horizontal: false, vertical: true)
             .frame(maxWidth: .infinity, alignment: .leading)
             .accessibilityAddTraits(.isHeader)
@@ -194,7 +195,6 @@ struct MoodNestPlaylistsView: View {
     @EnvironmentObject private var contentService: ContentServiceHandler
     @EnvironmentObject private var controlState: ControlState
 
-    @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @Environment(\.accessibilityReduceTransparency) private var reduceTransparency
 
     @State private var heroPlaylist: PlaylistModel?

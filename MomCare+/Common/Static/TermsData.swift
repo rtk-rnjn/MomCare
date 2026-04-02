@@ -60,7 +60,7 @@ enum TermsData {
         LegalSectionItem(type: .standard(
             icon: "envelope.fill",
             title: "Contact Us",
-            content: "For questions or feedback, please contact us at:\n**Email:** support@ourdomain\n**Website:** "
+            content: "For questions or feedback, please contact us at:\n**Email:** support.momcare@vision-labs.site\n**Website: momcare.vision-labs.site** "
         ))
     ]
 }
