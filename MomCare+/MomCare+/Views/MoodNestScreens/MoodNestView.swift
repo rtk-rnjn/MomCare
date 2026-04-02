@@ -33,6 +33,33 @@ struct MoodNestView: View {
                 .navigationTitle("Mood History")
                 .navigationBarTitleDisplayMode(.inline)
                 .toolbar {
+                    ToolbarItem(placement: .topBarTrailing) {
+                        Button {
+                            withAnimation(.easeInOut) {
+                                controlState.showingExpandedCalendar.toggle()
+                            }
+                        } label: {
+                            Image(systemName: "calendar")
+                                .font(.body)
+                                .foregroundStyle(Color.CustomColors.mutedRaspberry)
+                                .symbolEffect(.bounce, value: controlState.showingExpandedCalendar)
+                        }
+                        .accessibilityLabel(controlState.showingExpandedCalendar ? "Collapse calendar" : "Expand calendar")
+                        .accessibilityIdentifier("expandCalendarButton")
+                    }
+
+                    ToolbarItem(placement: .topBarTrailing) {
+                        Button {
+                            selectedDateForHistory = Date()
+                        } label: {
+                            Image(systemName: "\(Calendar.current.component(.day, from: Date())).calendar")
+                                .font(.body)
+                                .foregroundStyle(Color.CustomColors.mutedRaspberry)
+                        }
+                        .accessibilityLabel("Jump to today")
+                        .accessibilityIdentifier("jumpToTodayButton")
+                    }
+
                     ToolbarItem(placement: .cancellationAction) {
                         Button(role: .close) {
                             showHistorySheet = false
@@ -64,6 +91,9 @@ struct MoodNestView: View {
                 Button {
                     HapticsHandler.impact(.soft)
                     controlState.showingMoodnestPlaylistsView = true
+                    Task {
+                        try? await contentService.logMoodToHealthKit(mood: selectedMood)
+                    }
                 } label: {
                     Text("Next Step")
                         .font(.headline)
@@ -124,6 +154,7 @@ struct MoodNestView: View {
                 .font(.title2.weight(.semibold))
 
             moodArc
+                .offset(y: -25)
         }
     }
 
