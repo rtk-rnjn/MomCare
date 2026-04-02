@@ -14,6 +14,11 @@ extension ContentServiceHandler {
 
         return await withCheckedContinuation { continuation in
             fetchHealthData(quantityTypeIdentifier: .stepCount, unit: .count(), startDate: startDate, endDate: endDate) { count in
+                if Calendar.current.isDate(date, inSameDayAs: .init()) {
+                    DispatchQueue.main.async {
+                        self.stepsToday = count
+                    }
+                }
                 continuation.resume(returning: Int(count))
             }
         }
@@ -53,7 +58,7 @@ extension ContentServiceHandler {
         return min(totalCompletedDuration / totalDuration, 1.0)
     }
 
-    func fetchWeeklyExerciseProgress() async {
+    func fetchWeeklyProgress() async {
         let dates = Utils.weekRange(containing: Date())
 
         await withTaskGroup(of: (Int, Double).self) { group in

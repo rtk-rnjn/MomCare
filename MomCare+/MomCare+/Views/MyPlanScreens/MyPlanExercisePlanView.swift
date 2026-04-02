@@ -132,9 +132,9 @@ struct MyPlanExercisePlanView: View {
                     contentServiceHandler.fetchTodaySteps()
                 }
 
-            BreathingCardView {
-                withAnimation(reduceMotion ? nil : .easeInOut) {
-                    showingBreathingInfo = true
+            BreathingCardView(completionProgress: contentServiceHandler.breathingTodayInSeconds / contentServiceHandler.breathingGoalInSeconds) {
+                    withAnimation(reduceMotion ? nil : .easeInOut) {
+                        showingBreathingInfo = true
                 }
             }
             .onAppear {

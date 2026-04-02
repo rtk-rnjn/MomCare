@@ -3,7 +3,8 @@ import SwiftUI
 struct BreathingCardView: View {
     // MARK: Internal
 
-    var onInfo: () -> Void = {}
+    let completionProgress: Double
+    let onInfo: () -> Void
 
     var body: some View {
         ZStack(alignment: .topTrailing) {
@@ -16,7 +17,7 @@ struct BreathingCardView: View {
                     Text("Breathing")
                         .font(.title3.weight(.bold))
 
-                    Text("\(Int(completionProgress * 100))% completed")
+                    Text("\(Int(max(0, min(completionProgress, 1)) * 100))% completed")
                         .font(.caption.weight(.medium))
                         .foregroundStyle(.secondary)
                         .padding(.bottom, 10)
@@ -42,7 +43,7 @@ struct BreathingCardView: View {
                     .accessibilityIdentifier("startBreathingButton")
                     .fullScreenCover(isPresented: $startBreathingPlayer) {
                         Task {
-                            await updateProgress()
+                            await contentServiceHandler.fetchWeeklyProgress()
                         }
                     } content: {
                         BreathingExerciseView()
@@ -81,15 +82,13 @@ struct BreathingCardView: View {
         .shadow(color: darkAccentColor.opacity(0.08), radius: 8, x: 0, y: 4)
         .accessibilityElement(children: .contain)
         .accessibilityLabel("Breathing exercise, Beginner")
-        .accessibilityValue("\(Int(completionProgress * 100)) percent completed")
-        .onAppear { Task { await updateProgress() } }
+        .accessibilityValue("\(Int(max(0, min(completionProgress, 1)) * 100)) percent completed")
     }
 
     // MARK: Private
 
     @EnvironmentObject private var contentServiceHandler: ContentServiceHandler
 
-    @State private var completionProgress: Double = 0
     @State private var startBreathingPlayer: Bool = false
     @Environment(\.accessibilityReduceTransparency) private var reduceTransparency
 
@@ -99,13 +98,5 @@ struct BreathingCardView: View {
 
     private var darkAccentColor: Color {
         Color(hex: "4A7A9B")
-    }
-
-    private func updateProgress() async {
-        do {
-            completionProgress = try await contentServiceHandler.fetchBreathingProgress(for: Date(), withTarget: contentServiceHandler.breathingGoalInSeconds)
-            completionProgress = min(completionProgress, 1.0)
-            await contentServiceHandler.fetchWeeklyExerciseProgress()
-        } catch {}
     }
 }

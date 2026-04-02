@@ -27,7 +27,7 @@ extension ContentServiceHandler {
     }
 
     func fetchUserExercisesMeta() async {
-        async let weeklyProgress: Void = fetchWeeklyExerciseProgress()
+        async let weeklyProgress: Void = fetchWeeklyProgress()
         async let totalCompleted: Int = userExercises.fetchTotalUserExercisesCompleted()
         async let totalDuration: TimeInterval = userExercises.fetchTotalExerciseDuration()
 
