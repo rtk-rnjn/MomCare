@@ -14,6 +14,11 @@ extension ContentServiceHandler {
 
         return await withCheckedContinuation { continuation in
             fetchHealthData(quantityTypeIdentifier: .stepCount, unit: .count(), startDate: startDate, endDate: endDate) { count in
+                if Calendar.current.isDate(date, inSameDayAs: .init()) {
+                    DispatchQueue.main.async {
+                        self.stepsToday = count
+                    }
+                }
                 continuation.resume(returning: Int(count))
             }
         }
@@ -53,7 +58,11 @@ extension ContentServiceHandler {
         return min(totalCompletedDuration / totalDuration, 1.0)
     }
 
-    func fetchWeeklyExerciseProgress() async {
+    nonisolated private func cappedProgress(_ progress: Double) -> Double {
+        min(max(progress, 0), 1)
+    }
+
+    func fetchWeeklyProgress() async {
         let dates = Utils.weekRange(containing: Date())
 
         await withTaskGroup(of: (Int, Double).self) { group in
@@ -62,10 +71,11 @@ extension ContentServiceHandler {
                     let exercise = await self.calculateTotalCompletionPercentage(for: date)
 
                     let breathingCompletionDuration: TimeInterval? = try? await self.fetchBreathingCompletionSeconds(for: date)
-                    let breathing = await (breathingCompletionDuration ?? 0.0) / self.breathingTargetInSeconds
+                    let breathing = await (breathingCompletionDuration ?? 0.0) / self.breathingGoalInSeconds
 
                     let steps = await Double(await self.fetchStepCount(for: date)) / self.stepsGoal
-                    let total = (exercise + breathing + steps) / 3
+
+                    let total = (self.cappedProgress(exercise) + self.cappedProgress(breathing) + self.cappedProgress(steps)) / 3
 
                     return (index, min(total, 1))
                 }

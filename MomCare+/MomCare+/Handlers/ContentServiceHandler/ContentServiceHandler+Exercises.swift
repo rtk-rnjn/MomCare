@@ -5,6 +5,9 @@ extension ContentServiceHandler {
         isFetchingExercises = true
         defer { isFetchingExercises = false }
 
+        _ = try await fetchBreathingCompletionSeconds(for: .init())
+        fetchTodaySteps()
+
         while true {
             do {
                 async let fetchExercisesMeta: Void = fetchUserExercisesMeta()
@@ -24,7 +27,7 @@ extension ContentServiceHandler {
     }
 
     func fetchUserExercisesMeta() async {
-        async let weeklyProgress: Void = fetchWeeklyExerciseProgress()
+        async let weeklyProgress: Void = fetchWeeklyProgress()
         async let totalCompleted: Int = userExercises.fetchTotalUserExercisesCompleted()
         async let totalDuration: TimeInterval = userExercises.fetchTotalExerciseDuration()
 

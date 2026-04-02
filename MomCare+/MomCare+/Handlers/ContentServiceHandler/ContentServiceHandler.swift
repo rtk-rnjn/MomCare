@@ -20,6 +20,10 @@ final class ContentServiceHandler: ObservableObject {
                 await fetchMyPlanMeta()
             }
         }
+
+        Task {
+            try? await fetchBreathingCompletionSeconds(for: .init())
+        }
     }
 
     // MARK: Internal
@@ -30,7 +34,8 @@ final class ContentServiceHandler: ObservableObject {
     @Published var stepsToday: Double = 0
     @Published var stepsGoal: Double = 4200
 
-    @Published var breathingTargetInSeconds: Double = 300
+    @Published var breathingTodayInSeconds: TimeInterval = 0
+    @Published var breathingGoalInSeconds: TimeInterval = 300
 
     @Published var nutritionIntakeTotals: NutritionTotals?
     @Published var nutritionGoalTotals: NutritionTotals?

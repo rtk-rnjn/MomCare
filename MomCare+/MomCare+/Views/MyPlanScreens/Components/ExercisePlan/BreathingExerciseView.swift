@@ -44,7 +44,9 @@ struct BreathingExerciseView: View {
                     Button(role: .cancel) {
                         stopAllTimers()
                         Task {
-                            try? await contentServiceHandler.saveBreathingSession(start: .init().addingTimeInterval(-totalElapsed), end: .init())
+                            let now = Date()
+                            try? await contentServiceHandler.saveBreathingSession(start: now, end: now)
+                            _ = try? await contentServiceHandler.fetchBreathingCompletionSeconds(for: now)
                         }
                         dismiss()
                     }
@@ -73,6 +75,10 @@ struct BreathingExerciseView: View {
                 let durationCompleted = try? await contentServiceHandler.fetchBreathingCompletionSeconds(for: .init())
                 if let duration = durationCompleted {
                     totalElapsed = duration
+                }
+                if totalElapsed > totalDuration {
+                    // replay case
+                    totalElapsed = 0
                 }
             }
         }
@@ -110,7 +116,7 @@ struct BreathingExerciseView: View {
     private let darkAccent: Color = .init(hex: "4A7A9B")
 
     private var totalDuration: Double {
-        contentServiceHandler.breathingTargetInSeconds
+        contentServiceHandler.breathingGoalInSeconds
     }
 
     private var progress: Double {
