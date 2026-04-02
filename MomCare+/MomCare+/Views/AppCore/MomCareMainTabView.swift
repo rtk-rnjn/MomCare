@@ -68,7 +68,7 @@ struct MomCareMainTabView: View {
                 }
 
                 Tab(AppTab.mood.title, systemImage: AppTab.mood.systemImage, value: AppTab.mood) {
-                    MoodNestView()
+                    NavigationStack { MoodNestView() }
                         .safeAreaPadding(bottomPadding)
                         .tag(AppTab.mood)
                 }

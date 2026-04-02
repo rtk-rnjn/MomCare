@@ -4,9 +4,6 @@ import SwiftUI
 final class MoodNestViewModel: ObservableObject {
     // MARK: Internal
 
-    // ✅ NEW source of truth
-    @Published var selectedMood: MoodType = .happy
-
     @Published var backgroundColor: Color = MoodColors.happyBackgroundSwiftUI
     @Published var faceColor: Color = MoodColors.happyFaceSwiftUI
 
@@ -16,16 +13,8 @@ final class MoodNestViewModel: ObservableObject {
     @Published var smileRotation: Angle = .zero
     @Published var useSemiCircleEyes: Bool = false
 
-    // ✅ NEW function (replaces slider logic)
-    func selectMood(_ mood: MoodType) {
-        applyMood(mood)
-    }
-
-    // MARK: Private
-
-    private func applyMood(_ mood: MoodType) {
+    func applyMood(_ mood: MoodType) {
         reset()
-        selectedMood = mood
 
         switch mood {
         case .happy:
@@ -54,6 +43,8 @@ final class MoodNestViewModel: ObservableObject {
             useSemiCircleEyes = true
         }
     }
+
+    // MARK: Private
 
     private func reset() {
         eyeScale = .init(width: 1, height: 1)

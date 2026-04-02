@@ -6,83 +6,100 @@ struct MoodNestView: View {
     // MARK: Internal
 
     var body: some View {
-        NavigationStack {
-            ZStack {
-                secondary.ignoresSafeArea()
+        ZStack {
+            secondary.ignoresSafeArea()
 
-                VStack {
-                    title
-                        .padding(.top, 60)
+            VStack {
+                title
 
-                    Spacer(minLength: 30)
+                Spacer(minLength: 30)
 
-                    faceWithSelector
+                faceWithSelector
 
-                    Spacer(minLength: 100)
-                }
+                Spacer()
             }
+        }
+        .fullScreenCover(isPresented: $showHistorySheet) {
+            NavigationStack {
+                VStack(spacing: 0) {
+                    CompactCalendarView(selectedDate: $selectedDateForHistory, isExpanded: $controlState.showingExpandedCalendar)
 
-            .safeAreaInset(edge: .bottom) {
-                VStack {
-                    Button {
-                        UIImpactFeedbackGenerator(style: .soft).impactOccurred()
-                        controlState.showingMoodnestPlaylistsView = true
-                    } label: {
-                        Text("Next Step")
-                            .font(.headline)
-                            .frame(maxWidth: .infinity)
-                            .padding()
-                            .background(primary)
-                            .foregroundStyle(.white)
-                            .clipShape(Capsule())
+                    ContentUnavailableView(
+                        "Comming Soon",
+                        systemImage: "clock.arrow.circlepath",
+                        description: Text("Mood history details and insights will be available in a future update. Stay tuned!"),
+                    )
+                }
+                .navigationTitle("Mood History")
+                .navigationBarTitleDisplayMode(.inline)
+                .toolbar {
+                    ToolbarItem(placement: .cancellationAction) {
+                        Button(role: .close) {
+                            showHistorySheet = false
+                        }
                     }
-                    .padding(.horizontal, 24)
                 }
-                .padding(.bottom, 100)
-                .background(secondary)
             }
+        }
+        .toolbar {
+            ToolbarItem(placement: .topBarTrailing) {
+                Button {
+                    showHistorySheet = true
+                } label: {
+                    Label("History", systemImage: "clock.arrow.circlepath")
+                }
+            }
+            ToolbarItem(placement: .navigationBarTrailing) {
+                if stateOfMindPermission == .notDetermined {
+                    Button {
+                        askForPermission()
+                    } label: {
+                        Label("Permission Error", systemImage: "exclamationmark.triangle")
+                    }
+                }
+            }
+        }
+        .safeAreaInset(edge: .bottom) {
+            VStack {
+                Button {
+                    HapticsHandler.impact(.soft)
+                    controlState.showingMoodnestPlaylistsView = true
+                } label: {
+                    Text("Next Step")
+                        .font(.headline)
+                        .frame(maxWidth: .infinity)
+                        .padding()
+                        .background(primary)
+                        .foregroundStyle(.white)
+                        .clipShape(Capsule())
+                }
+                .padding(.horizontal, 24)
+            }
+            .padding(.bottom, 12)
+            .background(secondary)
+        }
 
-            .navigationDestination(isPresented: $controlState.showingMoodnestPlaylistsView) {
-                MoodNestPlaylistsView(mood: moodNestViewModel.selectedMood)
-            }
+        .navigationDestination(isPresented: $controlState.showingMoodnestPlaylistsView) {
+            MoodNestPlaylistsView(mood: selectedMood)
         }
     }
 
-    // MARK: Private
-
-    @StateObject private var moodNestViewModel: MoodNestViewModel = .init()
-
-    // ✅ ONLY trigger now (for center emoji)
-    @State private var faceTrigger: UUID = .init()
-    @State private var isFaceAngryAnimating = false
-    @State private var isFaceSadAnimating = false
-    @State private var isSadAnimating = false
-
-    @EnvironmentObject private var controlState: ControlState
-
-    private let primary: Color = .init(hex: "#924350")
-    private let secondary: Color = .init(hex: "#FBE8E5")
-}
-
-private extension MoodNestView {
     var title: some View {
         Text("What is your mood?")
             .font(.title.weight(.semibold))
-            .padding(.top, 60)
     }
 
     var faceWithSelector: some View {
         VStack(spacing: 0) {
             ZStack {
-                Circle()
                 let angryTint = Color(red: 0.85, green: 0.35, blue: 0.35)
                 let sadTint = Color(red: 0.75, green: 0.85, blue: 1.0)
 
                 Circle()
                     .fill(
-                        moodNestViewModel.selectedMood == .angry && isFaceAngryAnimating
+                        selectedMood == .angry && isFaceAngryAnimating
                         ? angryTint
-                        : moodNestViewModel.selectedMood == .sad && isFaceSadAnimating
+                        : selectedMood == .sad && isFaceSadAnimating
                             ? sadTint
                             : moodNestViewModel.backgroundColor
                     )
@@ -91,7 +108,7 @@ private extension MoodNestView {
                     .frame(width: 220, height: 220)
 
                 MoodFaceView(
-                    mood: moodNestViewModel.selectedMood,
+                    mood: selectedMood,
                     trigger: faceTrigger,
                     faceColor: moodNestViewModel.faceColor,
                     isSemiCircleEyes: moodNestViewModel.useSemiCircleEyes,
@@ -103,12 +120,10 @@ private extension MoodNestView {
                 .frame(width: 150, height: 120)
             }
 
-            Text(moodNestViewModel.selectedMood.rawValue)
+            Text(selectedMood.rawValue)
                 .font(.title2.weight(.semibold))
-                .padding(.top, 12)
 
             moodArc
-                .padding(.top, 10)
         }
     }
 
@@ -149,12 +164,10 @@ private extension MoodNestView {
         .frame(height: 170)
     }
 
-    // ✅ CLEAN BUTTON (NO ANIMATION STATES)
     func moodButton(for mood: MoodType) -> some View {
-        let isSelected = moodNestViewModel.selectedMood == mood
+        let isSelected = selectedMood == mood
 
         return ZStack {
-            // OUTER
             Circle()
                 .fill(
                     color(for: mood)
@@ -162,7 +175,6 @@ private extension MoodNestView {
                 )
                 .frame(width: isSelected ? 70 : 52)
 
-            // INNER
             Circle()
                 .fill(color(for: mood))
                 .frame(width: isSelected ? 58 : 44)
@@ -172,19 +184,16 @@ private extension MoodNestView {
         .scaleEffect(isSelected ? 1.12 : 0.9)
         .animation(.spring(response: 0.35, dampingFraction: 0.7), value: isSelected)
         .onTapGesture {
-            UIImpactFeedbackGenerator(style: .medium).impactOccurred()
-
-            // ✅ Step 1: update mood FIRST
+            HapticsHandler.impact(.medium)
             withAnimation(.spring()) {
-                moodNestViewModel.selectMood(mood)
+                moodNestViewModel.applyMood(mood)
+                selectedMood = mood
             }
 
-            // ✅ Step 2: trigger animation AFTER tiny delay (fixes first-tap bug)
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.02) {
                 faceTrigger = UUID()
             }
 
-            // 🔴 Step 3: delayed background animation
             if mood == .angry {
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.08) {
                     isFaceAngryAnimating = true
@@ -206,7 +215,6 @@ private extension MoodNestView {
         }
     }
 
-    // MINI FACE (STATIC NOW)
     @ViewBuilder
     func miniFace(for mood: MoodType, isSelected: Bool) -> some View {
         let size: CGFloat = isSelected ? 36 : 28
@@ -231,6 +239,33 @@ private extension MoodNestView {
         case .sad: MoodColors.sadBackgroundSwiftUI
         case .stressed: MoodColors.stressedBackgroundSwiftUI
         case .angry: MoodColors.angryBackgroundSwiftUI
+        }
+    }
+
+    // MARK: Private
+
+    @EnvironmentObject private var contentService: ContentServiceHandler
+    @State private var selectedMood: MoodType = .happy
+    @State private var showHistorySheet = false
+    @State private var selectedDateForHistory: Date = .init()
+    @StateObject private var moodNestViewModel: MoodNestViewModel = .init()
+
+    @State private var faceTrigger: UUID = .init()
+    @State private var isFaceAngryAnimating = false
+    @State private var isFaceSadAnimating = false
+    @State private var isSadAnimating = false
+
+    @EnvironmentObject private var controlState: ControlState
+
+    private let primary: Color = .init(hex: "#924350")
+    private let secondary: Color = .init(hex: "#FBE8E5")
+
+    private var stateOfMindPermission: HKAuthorizationStatus {
+        contentService.healthStore.authorizationStatus(for: .stateOfMindType())
+    }
+
+    private func askForPermission() {
+        contentService.healthStore.requestAuthorization(toShare: [.stateOfMindType()], read: [.stateOfMindType()]) { _, _ in
         }
     }
 }
