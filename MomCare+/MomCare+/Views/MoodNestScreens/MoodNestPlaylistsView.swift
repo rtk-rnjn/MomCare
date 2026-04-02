@@ -195,7 +195,6 @@ struct MoodNestPlaylistsView: View {
     @EnvironmentObject private var contentService: ContentServiceHandler
     @EnvironmentObject private var controlState: ControlState
 
-    @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @Environment(\.accessibilityReduceTransparency) private var reduceTransparency
 
     @State private var heroPlaylist: PlaylistModel?
