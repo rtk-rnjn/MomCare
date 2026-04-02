@@ -47,7 +47,7 @@ struct MoodNestView: View {
                             .padding()
                             .background(primary)
                             .foregroundStyle(.white)
-                            .clipShape(RoundedRectangle(cornerRadius: 18))
+                            .clipShape(Capsule())
                     }
                     .padding(.horizontal, 24)
                 }
@@ -105,7 +105,7 @@ private extension MoodNestView {
             }
 
             Text(moodNestViewModel.selectedMood.rawValue)
-                .font(.headline)
+                .font(.title2.weight(.semibold))
                 .padding(.top, 12)
 
             moodArc
