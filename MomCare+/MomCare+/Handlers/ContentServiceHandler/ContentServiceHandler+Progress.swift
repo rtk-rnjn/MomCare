@@ -62,7 +62,7 @@ extension ContentServiceHandler {
                     let exercise = await self.calculateTotalCompletionPercentage(for: date)
 
                     let breathingCompletionDuration: TimeInterval? = try? await self.fetchBreathingCompletionSeconds(for: date)
-                    let breathing = await (breathingCompletionDuration ?? 0.0) / self.breathingTargetInSeconds
+                    let breathing = await (breathingCompletionDuration ?? 0.0) / self.breathingGoalInSeconds
 
                     let steps = await Double(await self.fetchStepCount(for: date)) / self.stepsGoal
                     let total = (exercise + breathing + steps) / 3

@@ -90,14 +90,14 @@ extension ContentServiceHandler {
             return
         }
 
-        let now = Date()
-        let startOfDate = Calendar.current.startOfDay(for: now)
-        let predicate = HKQuery.predicateForSamples(withStart: startOfDate, end: now, options: .strictStartDate)
+        let startOfDate = Calendar.current.startOfDay(for: .init())
+        let endOfDate = Calendar.current.date(byAdding: .day, value: 1, to: startOfDate)!
+        let predicate = HKQuery.predicateForSamples(withStart: startOfDate, end: endOfDate, options: .strictStartDate)
 
         let query = HKObserverQuery(sampleType: stepType, predicate: predicate) { _, completionHandler, error in
             defer { completionHandler() }
-            if error != nil {
-                return
+            if let error {
+                logger.error("Error in step count observer query: \(error.localizedDescription)")
             }
             self.fetchTodaySteps()
         }
@@ -108,7 +108,10 @@ extension ContentServiceHandler {
     }
 
     nonisolated func fetchTodaySteps() {
-        fetchHealthData(quantityTypeIdentifier: .stepCount, unit: .count()) { count in
+        let startDate = Calendar.current.startOfDay(for: .init())
+        let endDate = Date()
+
+        fetchHealthData(quantityTypeIdentifier: .stepCount, unit: .count(), startDate: startDate, endDate: endDate) { count in
             DispatchQueue.main.async {
                 self.stepsToday = count
             }
@@ -454,9 +457,17 @@ extension ContentServiceHandler {
             healthStore.execute(query)
         }
 
-        return samples.reduce(0.0) { partial, sample in
+        let internval = samples.reduce(0.0) { partial, sample in
             partial + sample.endDate.timeIntervalSince(sample.startDate)
         }
+
+        if Calendar.current.isDate(date, inSameDayAs: Date()) {
+            await MainActor.run {
+                self.breathingTodayInSeconds = internval
+            }
+        }
+
+        return internval
     }
 
     nonisolated func fetchBreathingProgress(for date: Date, withTarget target: TimeInterval) async throws -> Double {

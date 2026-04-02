@@ -5,6 +5,9 @@ extension ContentServiceHandler {
         isFetchingExercises = true
         defer { isFetchingExercises = false }
 
+        _ = try await fetchBreathingCompletionSeconds(for: .init())
+        fetchTodaySteps()
+
         while true {
             do {
                 async let fetchExercisesMeta: Void = fetchUserExercisesMeta()

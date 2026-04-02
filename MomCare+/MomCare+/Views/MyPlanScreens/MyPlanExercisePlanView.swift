@@ -105,7 +105,9 @@ struct MyPlanExercisePlanView: View {
     @State private var showHistory = false
     @State private var showWalkingHistory = false
 
-    @State private var breathingCompleted: Bool = false
+    private var breathingCompleted: Bool {
+        contentServiceHandler.breathingTodayInSeconds >= contentServiceHandler.breathingGoalInSeconds
+    }
 
     private var walkingCompleted: Bool {
         contentServiceHandler.stepsToday >= contentServiceHandler.stepsGoal
@@ -138,10 +140,7 @@ struct MyPlanExercisePlanView: View {
             .onAppear {
                 Task {
                     do {
-                        let progress = try await contentServiceHandler.fetchBreathingProgress(for: .init(), withTarget: contentServiceHandler.breathingTargetInSeconds)
-                        if progress >= 1 {
-                            breathingCompleted = true
-                        }
+                        _ = try await contentServiceHandler.fetchBreathingCompletionSeconds(for: .init())
                     } catch {
                         controlState.error = error
                     }

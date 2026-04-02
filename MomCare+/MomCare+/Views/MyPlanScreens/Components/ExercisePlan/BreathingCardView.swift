@@ -103,7 +103,7 @@ struct BreathingCardView: View {
 
     private func updateProgress() async {
         do {
-            completionProgress = try await contentServiceHandler.fetchBreathingProgress(for: Date(), withTarget: contentServiceHandler.breathingTargetInSeconds)
+            completionProgress = try await contentServiceHandler.fetchBreathingProgress(for: Date(), withTarget: contentServiceHandler.breathingGoalInSeconds)
             completionProgress = min(completionProgress, 1.0)
         } catch {}
     }
