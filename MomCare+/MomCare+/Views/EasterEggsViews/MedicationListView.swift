@@ -7,8 +7,6 @@ import HealthKit
 import SwiftUI
 import UserNotifications
 
-// MARK: - Notification Model
-
 struct ScheduledDose: Identifiable {
     let id: UUID
     let medicationName: String
@@ -41,8 +39,6 @@ struct MedicationReminder: Identifiable {
         upcomingDoses.isEmpty
     }
 }
-
-// MARK: - View Model
 
 @MainActor
 @Observable
@@ -205,8 +201,6 @@ final class MedicationReminderViewModel {
     }
 }
 
-// MARK: - Root List View
-
 struct MedicationListView: View {
     // MARK: Internal
 
@@ -246,8 +240,6 @@ struct MedicationListView: View {
     @State private var path: NavigationPath = .init()
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
-    // MARK: Toolbar
-
     @ToolbarContentBuilder
     private var toolbarContent: some ToolbarContent {
         ToolbarItem(placement: .primaryAction) {
@@ -271,8 +263,6 @@ struct MedicationListView: View {
             .accessibilityLabel("View timeline")
         }
     }
-
-    // MARK: List Content
 
     private var listContent: some View {
         ScrollView {
@@ -323,8 +313,6 @@ struct MedicationListView: View {
         }
     }
 
-    // MARK: Filter Bar
-
     private var filterBar: some View {
         HStack(spacing: 8) {
             ForEach(MedicationReminderViewModel.ReminderFilter.allCases) { filter in
@@ -340,8 +328,6 @@ struct MedicationListView: View {
             }
         }
     }
-
-    // MARK: States
 
     private var loadingView: some View {
         VStack(spacing: 20) {
@@ -382,8 +368,6 @@ struct MedicationListView: View {
         }
     }
 }
-
-// MARK: - Upcoming Banner Card
 
 struct UpcomingBannerCard: View {
     // MARK: Internal
@@ -449,8 +433,6 @@ struct UpcomingBannerCard: View {
         doses.filter { Calendar.current.isDateInToday($0.fireDate) }.count
     }
 }
-
-// MARK: - Medication Card
 
 struct MedicationCard: View {
     let reminder: MedicationReminder
@@ -571,8 +553,6 @@ struct NextDoseBadge: View {
     }
 }
 
-// MARK: - Section Header
-
 struct SectionHeader: View {
     let title: String
     let symbol: String
@@ -594,8 +574,6 @@ struct SectionHeader: View {
         .background(Color(.systemGroupedBackground))
     }
 }
-
-// MARK: - Filter Chip
 
 private struct FilterChip: View {
     let title: String
@@ -623,8 +601,6 @@ private struct FilterChip: View {
         .accessibilityAddTraits(isSelected ? [.isButton, .isSelected] : .isButton)
     }
 }
-
-// MARK: - Detail View
 
 struct MedicationDetailView: View {
     // MARK: Internal
@@ -748,8 +724,6 @@ struct MedicationDetailView: View {
         }
     }
 
-    // MARK: Hero Card
-
     private var heroCard: some View {
         HStack(spacing: 16) {
             ZStack {
@@ -802,8 +776,6 @@ struct MedicationDetailView: View {
     }
 }
 
-// MARK: - Day Section
-
 struct DaySection: View {
     let day: String
     let doses: [ScheduledDose]
@@ -839,8 +811,6 @@ struct DaySection: View {
         }
     }
 }
-
-// MARK: - Dose Row
 
 struct DoseRow: View {
     // MARK: Internal
@@ -935,8 +905,6 @@ struct DoseRow: View {
         dose.fireDate.timeIntervalSinceNow < 3600 && isUpcoming
     }
 }
-
-// MARK: - Timeline View
 
 struct UpcomingTimelineView: View {
     // MARK: Internal
@@ -1096,8 +1064,6 @@ struct TimelineDoseRow: View {
         dose.fireDate.timeIntervalSinceNow < 3600 && dose.fireDate > Date()
     }
 }
-
-// MARK: - Helpers
 
 extension Array where Element: Hashable {
     func uniqued() -> [Element] {

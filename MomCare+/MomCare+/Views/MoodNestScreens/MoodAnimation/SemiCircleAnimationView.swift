@@ -23,14 +23,22 @@ class SemiCircleAnimationView: UIView {
         shapeLayer.frame = bounds
     }
 
-    func animateToSemiCircle() {
+    func animateToSemiCircle(animated: Bool = true) {
         isFullCircle = false
-        animatePathChange()
+        if animated {
+            animatePathChange()
+        } else {
+            updatePath(isFullCircle: false)
+        }
     }
 
-    func animateToFullCircle() {
+    func animateToFullCircle(animated: Bool = true) {
         isFullCircle = true
-        animatePathChange()
+        if animated {
+            animatePathChange()
+        } else {
+            updatePath(isFullCircle: true)
+        }
     }
 
     func setColor(color: CGColor) {

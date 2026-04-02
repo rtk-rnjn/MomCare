@@ -10,7 +10,8 @@ struct EyeView: View {
     var body: some View {
         SemiCircleEyeRepresentable(
             useSemiCircle: isSemiCircleEyes,
-            color: UIColor(faceColor)
+            color: UIColor(faceColor),
+            reduceMotion: reduceMotion
         )
         .frame(maxWidth: 130, maxHeight: 130)
         .aspectRatio(1, contentMode: .fit)
@@ -18,6 +19,8 @@ struct EyeView: View {
         .rotationEffect(rotation)
         .accessibilityHidden(true)
     }
+
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
 }
 
 struct SmileView: View {
@@ -29,11 +32,11 @@ struct SmileView: View {
             .stroke(
                 color,
                 style: StrokeStyle(
-                    lineWidth: 18,
+                    lineWidth: 13,
                     lineCap: .round
                 )
             )
-            .frame(width: 70, height: 30)
+            .frame(width: 42, height: 16)
             .rotationEffect(rotation)
             .accessibilityHidden(true)
     }
@@ -45,7 +48,7 @@ struct SmileShape: Shape {
         path.move(to: CGPoint(x: 0, y: rect.midY))
         path.addQuadCurve(
             to: CGPoint(x: rect.maxX, y: rect.midY),
-            control: CGPoint(x: rect.midX, y: rect.maxY * 2)
+            control: CGPoint(x: rect.midX, y: rect.maxY * 2.0)
         )
         return path
     }

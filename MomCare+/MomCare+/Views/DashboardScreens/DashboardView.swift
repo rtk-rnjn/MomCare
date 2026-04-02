@@ -19,7 +19,9 @@ struct DashboardView: View {
         }
         .refreshable {
             HapticsHandler.impact(.medium)
-            _ = try? await authenticationService.refresh()
+            do {
+                _ = try await authenticationService.refresh()
+            } catch {}
         }
         .background(Color(.secondarySystemGroupedBackground))
         .navigationTitle("Progress")

@@ -42,10 +42,10 @@ struct MoodNestSongsView: View {
             .clipShape(RoundedRectangle(cornerRadius: 32, style: .continuous))
             .background(
                 RoundedRectangle(cornerRadius: 32, style: .continuous)
-                    .fill(.ultraThinMaterial)
+                    .fill(reduceTransparency ? AnyShapeStyle(Color(.systemBackground)) : AnyShapeStyle(.ultraThinMaterial))
                     .overlay(
                         RoundedRectangle(cornerRadius: 32, style: .continuous)
-                            .stroke(Color.white.opacity(0.2), lineWidth: 1)
+                            .stroke(Color.white.opacity(reduceTransparency ? 0 : 0.2), lineWidth: 1)
                     )
             )
             .padding(.horizontal, 16)
@@ -57,8 +57,10 @@ struct MoodNestSongsView: View {
                 Image(uiImage: uiImage)
                     .resizable()
                     .aspectRatio(contentMode: .fill)
-                    .blur(radius: 80)
+                    .blur(radius: reduceTransparency ? 0 : 80)
+                    .overlay(reduceTransparency ? Color.black.opacity(0.5) : Color.clear)
                     .ignoresSafeArea()
+                    .accessibilityHidden(true)
             }
         }
         .navigationTitle(playlist.name)
@@ -173,6 +175,7 @@ struct MoodNestSongsView: View {
 
     @State private var uiImage: UIImage?
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @Environment(\.accessibilityReduceTransparency) private var reduceTransparency
 
     private var animation: Animation {
         reduceMotion ? .default : .easeIn(duration: 0.25)

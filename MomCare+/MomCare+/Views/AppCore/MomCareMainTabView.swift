@@ -68,7 +68,7 @@ struct MomCareMainTabView: View {
                 }
 
                 Tab(AppTab.mood.title, systemImage: AppTab.mood.systemImage, value: AppTab.mood) {
-                    MoodNestView()
+                    NavigationStack { MoodNestView() }
                         .safeAreaPadding(bottomPadding)
                         .tag(AppTab.mood)
                 }
@@ -152,14 +152,13 @@ struct MomCareMainTabView: View {
 
     private func refreshAccessToken() async {
         isRefreshing = true
+        defer { isRefreshing = false }
 
         do {
             try await authenticationService.refresh()
-            isRefreshing = false
         } catch {
             let refresh = await authenticationService.autoLogin()
             if refresh != nil {
-                isRefreshing = false
                 return
             }
             refreshError = RefreshError()

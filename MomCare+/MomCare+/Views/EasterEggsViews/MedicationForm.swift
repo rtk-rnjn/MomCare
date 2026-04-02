@@ -14,8 +14,6 @@ import HealthKit
 import SwiftUI
 import UserNotifications
 
-// MARK: - Models
-
 enum MedicationForm: String, CaseIterable, Identifiable {
     case capsule
     case tablet
@@ -141,8 +139,6 @@ struct MedicationEntry {
     var notes: String = ""
 }
 
-// MARK: - Step Enum
-
 enum MedicationStep: Int, CaseIterable {
     case drugInfo = 0
     case schedule
@@ -169,8 +165,6 @@ enum MedicationStep: Int, CaseIterable {
         }
     }
 }
-
-// MARK: - Main View
 
 struct AddMedicationView: View {
     // MARK: Internal
@@ -247,8 +241,6 @@ struct AddMedicationView: View {
                           removal: .move(edge: .leading).combined(with: .opacity))
     }
 
-    // MARK: Validation
-
     private var isCurrentStepValid: Bool {
         switch currentStep {
         case .drugInfo:
@@ -266,8 +258,6 @@ struct AddMedicationView: View {
             true
         }
     }
-
-    // MARK: Step Content Router
 
     @ViewBuilder
     private var stepContent: some View {
@@ -289,8 +279,6 @@ struct AddMedicationView: View {
                 .transition(stepTransition)
         }
     }
-
-    // MARK: Bottom Bar
 
     private var bottomBar: some View {
         VStack(spacing: 0) {
@@ -346,8 +334,6 @@ struct AddMedicationView: View {
             .background(.regularMaterial)
         }
     }
-
-    // MARK: - Save to HealthKit + Notifications
 
     private func saveMedication() {
         guard isCurrentStepValid else {
@@ -463,8 +449,6 @@ struct AddMedicationView: View {
     }
 }
 
-// MARK: - Step Progress Bar
-
 struct StepProgressBar: View {
     // MARK: Internal
 
@@ -535,8 +519,6 @@ struct StepDot: View {
 
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
 }
-
-// MARK: - Step 1: Drug Info
 
 struct DrugInfoStep: View {
     // MARK: Internal
@@ -611,8 +593,6 @@ struct DrugInfoStep: View {
 
     private let formColumns = [GridItem(.adaptive(minimum: 90), spacing: 10)]
 }
-
-// MARK: Form Chip
 
 struct FormChip: View {
     let form: MedicationForm
@@ -713,8 +693,6 @@ struct RegularHexagon: Shape {
         return path
     }
 }
-
-// MARK: - Step 2: Schedule
 
 struct ScheduleStep: View {
     // MARK: Internal
@@ -895,8 +873,6 @@ struct DoseTile: View {
     }
 }
 
-// MARK: - Step 3: Duration
-
 struct DurationStep: View {
     // MARK: Internal
 
@@ -997,8 +973,6 @@ struct DurationTile: View {
     }
 }
 
-// MARK: - Step 4: Details
-
 struct DetailsStep: View {
     // MARK: Internal
 
@@ -1059,8 +1033,6 @@ struct DetailsStep: View {
 
     @FocusState private var focusedField: Field?
 }
-
-// MARK: - Summary Card
 
 struct SummaryCard: View {
     let entry: MedicationEntry
@@ -1134,8 +1106,6 @@ struct SummaryRow: View {
         }
     }
 }
-
-// MARK: - Reusable Components
 
 struct SectionCard<Content: View>: View {
     let title: String

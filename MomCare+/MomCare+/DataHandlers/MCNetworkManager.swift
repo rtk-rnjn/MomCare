@@ -174,11 +174,14 @@ actor MCNetworkManager {
         }
 
         switch urlError.code {
-        case .badURL, .cancelled, .unknown:
-            logger.warning("Non-retriable network error occurred for request to \(url): \(urlError.localizedDescription). Not retrying.")
+        case .badURL, .unknown:
+            logger.warning("Non-retriable network error occurred for request to \(url): \(urlError.localizedDescription).")
+
+        case .cancelled:
+            logger.warning("Request to \(url) was cancelled.")
 
         case .networkConnectionLost, .notConnectedToInternet, .timedOut:
-            logger.warning("Network error occurred for request to \(url): \(urlError.localizedDescription). Retrying... (\(5 - attempts) attempts left)")
+            logger.warning("Network error occurred for request to \(url): \(urlError.localizedDescription).")
 
             try? await Task.sleep(nanoseconds: UInt64(1_000_000_000 * (attempts % 5)))
 
@@ -218,11 +221,14 @@ actor MCNetworkManager {
         } catch {
             logger.error("Failed to perform request to \(url): \(error.localizedDescription)")
             if error is URLError {
-                await MainActor.run { if isNetworkHapticsEnabled {
-                    HapticsHandler.notification(.error)
-                } }
+                await MainActor.run {
+                    if isNetworkHapticsEnabled {
+                        HapticsHandler.notification(.error)
+                    }
+                }
+            } else {
+                throw error
             }
-            throw error
         }
 
         throw APIErrorResolver.error(from: -1)

@@ -121,18 +121,18 @@ struct MusicPlayerView: View {
                         .accessibilityHidden(true)
 
                     SystemVolumeSlider()
+                        .layoutPriority(1)
                         .frame(maxWidth: .infinity)
-                        .frame(height: 30)
+                        .frame(height: 20)
                         .accessibilityLabel("Volume")
 
-                    HStack(spacing: 12) {
-                        Image(systemName: "speaker.wave.3.fill")
-                            .foregroundStyle(.white.opacity(0.7))
-                            .accessibilityHidden(true)
-                        SystemRoutePicker()
-                            .frame(width: 30, height: 30)
-                            .accessibilityLabel("Audio output")
-                    }
+                    Image(systemName: "speaker.wave.3.fill")
+                        .foregroundStyle(.white.opacity(0.7))
+                        .accessibilityHidden(true)
+
+                    SystemRoutePicker()
+                        .frame(width: 30, height: 30)
+                        .accessibilityLabel("Audio output")
                 }
             }
             .padding(.horizontal, 32)
@@ -146,8 +146,8 @@ struct MusicPlayerView: View {
                 Image(uiImage: uiImage)
                     .resizable()
                     .aspectRatio(contentMode: .fill)
-                    .blur(radius: 60)
-                    .overlay(Color.black.opacity(0.3))
+                    .blur(radius: reduceTransparency ? 0 : 60)
+                    .overlay(Color.black.opacity(reduceTransparency ? 0.6 : 0.3))
                     .ignoresSafeArea()
                     .accessibilityHidden(true)
                     .popupTransitionTarget()
@@ -230,6 +230,7 @@ struct MusicPlayerView: View {
     @State private var uiImage: UIImage?
 
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @Environment(\.accessibilityReduceTransparency) private var reduceTransparency
 }
 
 struct SystemVolumeSlider: UIViewRepresentable {
@@ -238,6 +239,7 @@ struct SystemVolumeSlider: UIViewRepresentable {
 
         volumeView.showsVolumeSlider = true
         volumeView.tintColor = .white
+
         return volumeView
     }
 

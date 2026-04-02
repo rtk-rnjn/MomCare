@@ -38,6 +38,8 @@ final class MusicPlayerHandler: ObservableObject {
     private(set) var player: AVPlayer?
     @Published var playbackProgress: Double = 0.0
 
+    @Published var currentSongURL: URL?
+
     var isPlaying: Bool {
         player?.timeControlStatus == .playing
     }
@@ -141,6 +143,8 @@ final class MusicPlayerHandler: ObservableObject {
                 return
             }
 
+            currentSongURL = url
+
             if discardPrevious {
                 discardPlayer()
             }
@@ -150,6 +154,7 @@ final class MusicPlayerHandler: ObservableObject {
             currentSongUIImage = image
 
             player = prepareAVPlayer(with: url)
+            configureMediaPlayerNowPlaying()
 
             startObserving()
             player?.play()
@@ -183,13 +188,14 @@ final class MusicPlayerHandler: ObservableObject {
         timeObserverToken = player?.addPeriodicTimeObserver(
             forInterval: interval,
             queue: .main
-        ) { _ in
+        ) { [weak self] _ in
             DispatchQueue.main.async {
-                guard let duration = self.player?.currentItem?.duration.seconds, duration > 0 else {
+                guard let duration = self?.player?.currentItem?.duration.seconds, duration > 0 else {
                     return
                 }
 
-                self.playbackProgress = (self.player?.currentTime().seconds ?? 0) / duration
+                let currentTime = self?.player?.currentTime().seconds ?? 0
+                self?.playbackProgress = currentTime / duration
             }
         }
 
@@ -219,17 +225,17 @@ final class MusicPlayerHandler: ObservableObject {
     private func discardPlayer() {
         stopObserving()
         player = nil
+        MPNowPlayingInfoCenter.default().nowPlayingInfo = nil
         try? stopAudioSession()
     }
 
     private func startAudioSession() throws {
-        let session = AVAudioSession.sharedInstance()
-        try session.setCategory(
+        try AVAudioSession.sharedInstance().setCategory(
             .playback,
             mode: .default,
             options: [.allowAirPlay, .interruptSpokenAudioAndMixWithOthers]
         )
-        try session.setActive(true)
+        try AVAudioSession.sharedInstance().setActive(true)
     }
 
     private func stopAudioSession() throws {
@@ -268,6 +274,27 @@ final class MusicPlayerHandler: ObservableObject {
             self.stop()
             return .success
         }
+    }
+
+    private func configureMediaPlayerNowPlaying(isPlaying _: Bool = false) {
+        var payload = [String: Any]()
+
+        if let song = currentSong {
+            payload[MPMediaItemPropertyTitle] = song.title
+        }
+
+        if let artist = currentSong?.metadata?.author {
+            payload[MPMediaItemPropertyArtist] = artist
+        }
+
+        if let album = currentSong?.playlist {
+            payload[MPMediaItemPropertyAlbumTitle] = album
+        }
+
+        payload[MPNowPlayingInfoPropertyMediaType] = MPNowPlayingInfoMediaType.audio
+        payload[MPNowPlayingInfoPropertyPlaybackRate] = "1"
+
+//        MPNowPlayingInfoCenter.default().nowPlayingInfo = payload
     }
 
     private func configureSkipCommand(

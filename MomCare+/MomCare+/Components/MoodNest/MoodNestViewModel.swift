@@ -2,8 +2,7 @@ import Combine
 import SwiftUI
 
 final class MoodNestViewModel: ObservableObject {
-    @Published var sliderValue: Double = 0
-    @Published var mood: MoodType = .happy
+    // MARK: Internal
 
     @Published var backgroundColor: Color = MoodColors.happyBackgroundSwiftUI
     @Published var faceColor: Color = MoodColors.happyFaceSwiftUI
@@ -14,61 +13,44 @@ final class MoodNestViewModel: ObservableObject {
     @Published var smileRotation: Angle = .zero
     @Published var useSemiCircleEyes: Bool = false
 
-    func updateMood() {
-        switch sliderValue.rounded() {
-        case 0: makeHappy()
-        case 1: makeStressed()
-        case 2: makeSad()
-        case 3: makeAngry()
-        default: break
+    func applyMood(_ mood: MoodType) {
+        reset()
+
+        switch mood {
+        case .happy:
+            backgroundColor = MoodColors.happyBackgroundSwiftUI
+            faceColor = MoodColors.happyFaceSwiftUI
+
+        case .sad:
+            backgroundColor = MoodColors.sadBackgroundSwiftUI
+            faceColor = MoodColors.sadFaceSwiftUI
+            eyeScale = .init(width: 0.8, height: 0.8)
+            smileRotation = .degrees(180)
+
+        case .stressed:
+            backgroundColor = MoodColors.stressedBackgroundSwiftUI
+            faceColor = MoodColors.stressedFaceSwiftUI
+            eyeScale = .init(width: 0.8, height: 0.2)
+            smileRotation = .degrees(180)
+
+        case .angry:
+            backgroundColor = MoodColors.angryBackgroundSwiftUI
+            faceColor = MoodColors.angryFaceSwiftUI
+            eyeScale = .init(width: 0.8, height: 0.8)
+            smileRotation = .degrees(180)
+            eyeRotationLeft = .degrees(30)
+            eyeRotationRight = .degrees(-30)
+            useSemiCircleEyes = true
         }
     }
 
-    func reset() {
+    // MARK: Private
+
+    private func reset() {
         eyeScale = .init(width: 1, height: 1)
         eyeRotationLeft = .zero
         eyeRotationRight = .zero
         smileRotation = .zero
         useSemiCircleEyes = false
-    }
-
-    func makeHappy() {
-        reset()
-        mood = .happy
-        backgroundColor = MoodColors.happyBackgroundSwiftUI
-        faceColor = MoodColors.happyFaceSwiftUI
-    }
-
-    func makeSad() {
-        reset()
-        mood = .sad
-        backgroundColor = MoodColors.sadBackgroundSwiftUI
-        faceColor = MoodColors.sadFaceSwiftUI
-
-        eyeScale = .init(width: 0.8, height: 0.8)
-        smileRotation = .degrees(180)
-    }
-
-    func makeStressed() {
-        reset()
-        mood = .stressed
-        backgroundColor = MoodColors.stressedBackgroundSwiftUI
-        faceColor = MoodColors.stressedFaceSwiftUI
-
-        eyeScale = .init(width: 0.8, height: 0.2)
-        smileRotation = .degrees(180)
-    }
-
-    func makeAngry() {
-        reset()
-        mood = .angry
-        backgroundColor = MoodColors.angryBackgroundSwiftUI
-        faceColor = MoodColors.angryFaceSwiftUI
-
-        eyeScale = .init(width: 0.8, height: 0.8)
-        smileRotation = .degrees(180)
-        eyeRotationLeft = .degrees(30)
-        eyeRotationRight = .degrees(-30)
-        useSemiCircleEyes = true
     }
 }

@@ -79,8 +79,6 @@ struct PermissionsOnboardingSheetModifier: ViewModifier {
                 .interactiveDismissDisabled()
             }
     }
-
-    // MARK: Private
 }
 
 extension View {
