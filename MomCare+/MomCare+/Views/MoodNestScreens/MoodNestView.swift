@@ -5,13 +5,15 @@ import TipKit
 struct MoodNestView: View {
 
     @StateObject private var moodNestViewModel = MoodNestViewModel()
-    @State private var angryTrigger = UUID()
-    @State private var sadTrigger = UUID()
-    @State private var isAngryFlashing = false
-    
+
+    // ✅ ONLY trigger now (for center emoji)
+    @State private var faceTrigger = UUID()
+    @State private var isFaceAngryAnimating = false
+    @State private var isFaceSadAnimating = false
+    @State private var isSadAnimating = false
+
     @EnvironmentObject private var contentService: ContentServiceHandler
     @EnvironmentObject private var controlState: ControlState
-    @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     private let primary = Color(hex: "#924350")
     private let secondary = Color(hex: "#FBE8E5")
@@ -72,15 +74,28 @@ private extension MoodNestView {
     var faceWithSelector: some View {
         VStack(spacing: 0) {
 
-            // My Giant Face
             ZStack {
                 Circle()
-                    .fill(moodNestViewModel.backgroundColor)
-                    .frame(width: 220, height: 220)
+                let angryTint = Color(red: 0.85, green: 0.35, blue: 0.35)
+                let sadTint = Color(red: 0.75, green: 0.85, blue: 1.0)
 
+                Circle()
+                    .fill(
+                        moodNestViewModel.selectedMood == .angry && isFaceAngryAnimating
+                        ? angryTint
+                        : moodNestViewModel.selectedMood == .sad && isFaceSadAnimating
+                            ? sadTint
+                            : moodNestViewModel.backgroundColor
+                    )
+                    .animation(.easeInOut(duration: 0.25), value: isFaceAngryAnimating)
+                    .animation(.easeInOut(duration: 0.25), value: isFaceSadAnimating)
+                    .frame(width: 220, height: 220)
+                
                 MoodFaceView(
-                    isSemiCircleEyes: moodNestViewModel.useSemiCircleEyes,
+                    mood: moodNestViewModel.selectedMood,
+                    trigger: faceTrigger,
                     faceColor: moodNestViewModel.faceColor,
+                    isSemiCircleEyes: moodNestViewModel.useSemiCircleEyes,
                     eyeScale: moodNestViewModel.eyeScale,
                     leftEyeRotation: moodNestViewModel.eyeRotationLeft,
                     rightEyeRotation: moodNestViewModel.eyeRotationRight,
@@ -100,12 +115,11 @@ private extension MoodNestView {
 
     var moodArc: some View {
         GeometryReader { geo in
-
             let size = geo.size
             let center = CGPoint(x: size.width / 2, y: size.height * 0.38)
             let radius: CGFloat = size.width * 0.36
 
-            let moods = MoodType.allCases
+            let moods: [MoodType] = [.happy, .stressed, .sad, .angry]
 
             ZStack {
 
@@ -120,10 +134,11 @@ private extension MoodNestView {
                 }
                 .stroke(Color.gray.opacity(0.25), lineWidth: 2)
 
-                ForEach(Array(moods.enumerated()), id: \.element) { index, mood in
+                ForEach(moods.indices, id: \.self) { index in
+                    let mood = moods[index]
 
                     let angleStep = (160.0 - 20.0) / Double(moods.count - 1)
-                    let angle = (20.0 + Double(index) * angleStep) * .pi / 180
+                    let angle = (160.0 - Double(index) * angleStep) * .pi / 180
 
                     let x = center.x + cos(angle) * radius
                     let y = center.y + sin(angle) * radius
@@ -136,124 +151,84 @@ private extension MoodNestView {
         .frame(height: 170)
     }
 
+    // ✅ CLEAN BUTTON (NO ANIMATION STATES)
     func moodButton(for mood: MoodType) -> some View {
         let isSelected = moodNestViewModel.selectedMood == mood
 
         return ZStack {
-            
-            let softRed = Color(red: 0.85, green: 0.35, blue: 0.35)
-            let isAngryFlash = mood == .angry && isAngryFlashing
 
+            // OUTER
             Circle()
                 .fill(
-                    isAngryFlash
-                    ? softRed.opacity(0.15) // 🔻 reduce intensity
-                    : color(for: mood).opacity(isSelected ? 0.25 : 0.12)
+                    color(for: mood)
+                        .opacity(isSelected ? 0.25 : 0.12)
                 )
                 .frame(width: isSelected ? 70 : 52)
-                .animation(.easeInOut(duration: 0.2), value: isAngryFlashing)
 
             // INNER
             Circle()
-                .fill(
-                    isAngryFlash
-                    ? softRed
-                    : color(for: mood)
-                )
+                .fill(color(for: mood))
                 .frame(width: isSelected ? 58 : 44)
-            
+
             miniFace(for: mood, isSelected: isSelected)
         }
         .scaleEffect(isSelected ? 1.12 : 0.9)
-
-        // 🔥 THIS is the key
-        .animation(.easeInOut(duration: 0.35), value: isAngryFlashing)
-
         .animation(.spring(response: 0.35, dampingFraction: 0.7), value: isSelected)
-
         .onTapGesture {
+            UIImpactFeedbackGenerator(style: .medium).impactOccurred()
+
+            // ✅ Step 1: update mood FIRST
             withAnimation(.spring()) {
                 moodNestViewModel.selectMood(mood)
             }
 
+            // ✅ Step 2: trigger animation AFTER tiny delay (fixes first-tap bug)
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.02) {
+                faceTrigger = UUID()
+            }
+
+            // 🔴 Step 3: delayed background animation
             if mood == .angry {
-                angryTrigger = UUID()
-
-                withAnimation(.easeInOut(duration: 0.2)) {
-                    isAngryFlashing = true
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.08) {
+                    isFaceAngryAnimating = true
                 }
 
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.35) {
-                    withAnimation(.easeInOut(duration: 0.25)) {
-                        isAngryFlashing = false
-                    }
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.50) {
+                    isFaceAngryAnimating = false
                 }
             }
-
             if mood == .sad {
-                sadTrigger = UUID()
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.08) {
+                    isSadAnimating = true
+                }
+
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.6) {
+                    isSadAnimating = false
+                }
             }
-
-            UIImpactFeedbackGenerator(style: .medium).impactOccurred()
-        }
-    }
-    
-    // MARK: - FACE CONFIG
-    func faceConfig(for mood: MoodType) -> (
-        isSemiCircle: Bool,
-        eyeScale: CGSize,
-        leftEyeRotation: Angle,
-        rightEyeRotation: Angle,
-        smileRotation: Angle
-    ) {
-        switch mood {
-
-        case .happy:
-            return (false, CGSize(width: 0.9, height: 0.9), .degrees(0), .degrees(0), .degrees(0))
-
-        case .sad:
-            return (false, CGSize(width: 0.85, height: 0.85), .degrees(0), .degrees(0), .degrees(180))
-
-        case .stressed:
-            return (false, CGSize(width: 0.7, height: 0.7), .degrees(0), .degrees(0), .degrees(10))
-
-        case .angry:
-            return (false, CGSize(width: 0.9, height: 0.7), .degrees(-12), .degrees(12), .degrees(180))
         }
     }
 
-    // MARK: - MINI FACE (FIXED)
+    // MINI FACE (STATIC NOW)
     @ViewBuilder
     func miniFace(for mood: MoodType, isSelected: Bool) -> some View {
 
         let size: CGFloat = isSelected ? 36 : 28
-        
-        // 🌸 Gentle, theme-matching angry red
-        let gentleAngryRed = Color(hex: "#E8897F")
 
         ZStack {
             Circle()
-                .fill(
-                    mood == .angry && isAngryFlashing
-                    ? gentleAngryRed.opacity(0.9) // softer than pure red
-                    : color(for: mood)
-                )
-                .animation(.easeInOut(duration: 0.25), value: isAngryFlashing)
+                .fill(color(for: mood))
                 .frame(width: size * 2.2, height: size * 2.2)
 
             MiniMoodFaceView(
                 mood: mood,
                 color: Color(hex: "#6B3A35"),
-                isActive: isSelected,
-                trigger: mood == .angry ? angryTrigger :
-                         mood == .sad ? sadTrigger :
-                         UUID()
+                isActive: isSelected
             )
             .frame(width: 28, height: 28)
         }
     }
 
-    // MARK: - COLOR FIX
     func color(for mood: MoodType) -> Color {
         switch mood {
         case .happy: MoodColors.happyBackgroundSwiftUI
@@ -261,20 +236,5 @@ private extension MoodNestView {
         case .stressed: MoodColors.stressedBackgroundSwiftUI
         case .angry: MoodColors.angryBackgroundSwiftUI
         }
-    }
-}
-
-// MARK: - HealthKit
-private extension MoodNestView {
-
-    var stateOfMindPermission: HKAuthorizationStatus {
-        contentService.healthStore.authorizationStatus(for: .stateOfMindType())
-    }
-
-    func askForPermission() {
-        contentService.healthStore.requestAuthorization(
-            toShare: [.stateOfMindType()],
-            read: [.stateOfMindType()]
-        ) { _, _ in }
     }
 }

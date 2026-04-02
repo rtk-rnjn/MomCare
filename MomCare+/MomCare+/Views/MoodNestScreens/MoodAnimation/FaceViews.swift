@@ -29,11 +29,11 @@ struct SmileView: View {
             .stroke(
                 color,
                 style: StrokeStyle(
-                    lineWidth: 13, // ✅ thinner = cleaner emoji look
+                    lineWidth: 13,
                     lineCap: .round
                 )
             )
-            .frame(width: 42, height: 16) // ✅ correct proportions
+            .frame(width: 42, height: 16)
             .rotationEffect(rotation)
             .accessibilityHidden(true)
     }
