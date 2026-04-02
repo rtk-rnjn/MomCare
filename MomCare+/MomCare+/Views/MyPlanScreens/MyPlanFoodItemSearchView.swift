@@ -3,11 +3,7 @@ import SwiftUI
 struct MyPlanFoodItemSearchView: View {
     // MARK: Internal
 
-    @State var mealType: MealType
-
-    var isLoading: Bool {
-        task?.state == .running
-    }
+    let mealType: MealType
 
     var body: some View {
         NavigationStack {
@@ -17,7 +13,9 @@ struct MyPlanFoodItemSearchView: View {
             .searchable(text: $searchText, prompt: "Search foods…")
             .searchFocused($searchFocus)
             .onChange(of: searchText) { _, newValue in
-                debounceSearch(query: newValue)
+                Task {
+                    try? await debounceSearch(query: newValue)
+                }
             }
             .sheet(item: $detailFoodItem) { food in
                 NavigationStack {
@@ -27,8 +25,10 @@ struct MyPlanFoodItemSearchView: View {
                         .toolbar {
                             ToolbarItem(placement: .confirmationAction) {
                                 Button("Add") {
-                                    addFood(food)
-                                    dismiss()
+                                    Task {
+                                        await addFood(food)
+                                        dismiss()
+                                    }
                                 }
                             }
                         }
@@ -46,7 +46,6 @@ struct MyPlanFoodItemSearchView: View {
                 ToolbarItem(placement: .cancellationAction) {
                     Button(role: .cancel) {
                         dismiss()
-                        task?.cancel()
                     }
                 }
             }
@@ -61,24 +60,10 @@ struct MyPlanFoodItemSearchView: View {
     @Environment(\.dismiss) private var dismiss
 
     @State private var searchText = ""
-    @State private var foodItems: Set<FoodItemModel> = []
-    @State private var task: URLSessionDataTask?
+    @State private var foodItems: [FoodItemModel] = []
     @State private var detailFoodItem: FoodItemModel?
     @State private var showErrorAlert = false
     @State private var alertMessage: String?
-
-    private var loadingView: some View {
-        VStack(spacing: 10) {
-            Spacer()
-            ProgressView()
-            Text("Searching…")
-                .font(.subheadline)
-                .foregroundStyle(.secondary)
-            Spacer()
-        }
-        .accessibilityElement(children: .combine)
-        .accessibilityLabel("Searching for food")
-    }
 
     private var emptyStateView: some View {
         VStack(spacing: 8) {
@@ -110,9 +95,7 @@ struct MyPlanFoodItemSearchView: View {
 
     @ViewBuilder
     private var mainView: some View {
-        if isLoading {
-            loadingView
-        } else if foodItems.isEmpty, !searchText.isEmpty {
+        if foodItems.isEmpty, !searchText.isEmpty {
             emptyStateView
         } else if foodItems.isEmpty {
             placeholderView
@@ -122,7 +105,7 @@ struct MyPlanFoodItemSearchView: View {
     }
 
     private var foodList: some View {
-        List(Array(foodItems).sorted(by: { $0.name < $1.name })) { food in
+        List(foodItems) { food in
             FoodRowView(food: food)
                 .onTapGesture {
                     detailFoodItem = food
@@ -132,7 +115,7 @@ struct MyPlanFoodItemSearchView: View {
                 }
                 .swipeActions(edge: .trailing, allowsFullSwipe: true) {
                     Button {
-                        addFood(food)
+                        Task { await addFood(food) }
                     } label: {
                         Label("Add", systemImage: "plus")
                     }
@@ -145,56 +128,43 @@ struct MyPlanFoodItemSearchView: View {
         .listStyle(.plain)
     }
 
-    private func addFood(_ food: FoodItemModel) {
-        Task {
-            do {
-                try await contentServiceHandler.addFoodToMyPlan(foodId: food.id, mealType: mealType)
-                await MainActor.run { dismiss() }
-            } catch {
-                alertMessage = error.localizedDescription
-                showErrorAlert = true
-            }
+    private func addFood(_ food: FoodItemModel) async {
+        do {
+            try await contentServiceHandler.addFoodToMyPlan(foodId: food.id, mealType: mealType)
+            await MainActor.run { dismiss() }
+        } catch {
+            alertMessage = error.localizedDescription
+            showErrorAlert = true
         }
     }
 
-    private func debounceSearch(query: String) {
+    private func debounceSearch(query: String) async throws {
+        defer { foodItems.sort { $0.name < $1.name } }
+
         guard !query.isEmpty else {
-            foodItems = []; return
+            foodItems = []
+            return
         }
 
-        task?.cancel()
         foodItems.removeAll()
-        task = MCNetworkManager.shared.fetchStreamedData(
-            .GET,
-            url: Endpoint.searchFoodItem.urlString,
-            queryParameters: ["food_name": query, "limit": 10],
-            headers: nil
-        ) { (food: FoodItemModel) in
-            DispatchQueue.main.async { foodItems.insert(food) }
+
+        let urlString = Endpoint.searchFoodItem.urlString
+        let queryParameters: [String: any Codable] = ["food_name": query, "limit": 10]
+
+        let stream: AsyncThrowingStream<FoodItemModel, any Error> = await MCNetworkManager.shared.fetchStreamedData(.GET, url: urlString, queryParameters: queryParameters)
+
+        for try await item in stream {
+            foodItems.append(item)
         }
     }
 }
 
-struct FoodRowView: View {
+private struct FoodRowView: View {
     let food: FoodItemModel
 
     var body: some View {
         HStack(spacing: 12) {
-            AsyncImage(url: URL(string: food.imageUri ?? "")) { phase in
-                switch phase {
-                case let .success(image):
-                    image.resizable().scaledToFill()
-                default:
-                    Color(.secondarySystemFill)
-                        .overlay(
-                            Image(systemName: "fork.knife")
-                                .font(.caption)
-                                .foregroundStyle(.tertiary)
-                        )
-                }
-            }
-            .frame(width: 52, height: 52)
-            .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
+            FoodThumbnail(foodIdentifier: food.id)
 
             VStack(alignment: .leading, spacing: 3) {
                 Text(food.name.capitalized)
@@ -223,7 +193,7 @@ struct FoodRowView: View {
     }
 }
 
-struct NutritionDetailSheet: View {
+private struct NutritionDetailSheet: View {
     // MARK: Internal
 
     let food: FoodItemModel
@@ -308,7 +278,7 @@ struct NutritionDetailSheet: View {
     }
 }
 
-struct NutritionCell: View {
+private struct NutritionCell: View {
     let label: String
     let value: String
     let unit: String
@@ -331,15 +301,5 @@ struct NutritionCell: View {
         .padding(.vertical, 14)
         .accessibilityElement(children: .combine)
         .accessibilityLabel("\(label), \(value) \(unit)")
-    }
-}
-
-extension FoodType {
-    var displayLabel: String {
-        switch self {
-        case .vegetarian: "Veg"
-        case .nonVegetarian: "Non-Veg"
-        case .vegan: "Vegan"
-        }
     }
 }

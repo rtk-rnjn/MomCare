@@ -65,48 +65,49 @@ actor MCNetworkManager {
         try await request(url: url, method: .PATCH, body: body, queryParameters: queryParameters, headers: headers)
     }
 
-    @MainActor
-    func fetchStreamedData<T: Codable & CustomStringConvertible>(
+    func fetchStreamedData<T: Codable & Sendable>(
         _ method: HTTPMethod,
         url: String,
         queryParameters: [String: any Codable]? = nil,
-        headers: [String: String]? = nil,
-        onItem: (@Sendable (T) -> Void)? = nil
-    ) -> URLSessionDataTask {
-        let finalURL = buildURLString(url: url, queryParameters: queryParameters)
+        headers: [String: String]? = nil
+    ) -> AsyncThrowingStream<T, any Error> {
+        AsyncThrowingStream { continuation in
+            Task {
+                do {
+                    let finalURL = buildURLString(url: url, queryParameters: queryParameters)
 
-        var request = URLRequest(url: finalURL)
-        request.httpMethod = method.rawValue
-        headers?.forEach { request.setValue($0.value, forHTTPHeaderField: $0.key) }
+                    var request = URLRequest(url: finalURL)
+                    request.httpMethod = method.rawValue
+                    headers?.forEach { request.setValue($0.value, forHTTPHeaderField: $0.key) }
 
-        logger.info("Starting streamed request to \(finalURL.absoluteString) with method \(method.rawValue)")
+                    logger.info("Starting streamed request to \(finalURL.absoluteString)")
 
-        let task = URLSession.shared.dataTask(with: request) { data, response, error in
-            if let error {
-                DispatchQueue.main.async {
-                    logger.error("Error fetching streamed data from \(finalURL.absoluteString): \(error.localizedDescription)")
-                }
-                return
-            }
+                    let (bytes, response) = try await URLSession.shared.bytes(for: request)
 
-            guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode <= 400, let data, let fullText = String(data: data, encoding: .utf8) else {
-                return
-            }
-
-            let lines = fullText.split(separator: "\n")
-
-            for line in lines {
-                DispatchQueue.main.async {
-                    if let jsonData = line.data(using: .utf8), let item: T = try? jsonData.decodeUsingJSONDecoder() {
-                        logger.debug("Received streamed item from \(finalURL.absoluteString): \(item, privacy: .public)")
-
-                        onItem?(item)
+                    guard let httpResponse = response as? HTTPURLResponse,
+                          httpResponse.statusCode <= 400 else {
+                        throw URLError(.badServerResponse)
                     }
+
+                    for try await line in bytes.lines {
+                        guard let jsonData = line.data(using: .utf8) else {
+                            continue
+                        }
+
+                        if let item: T = try jsonData.decodeUsingJSONDecoder() {
+                            logger.debug("Stream item: \(String(describing: item))")
+
+                            continuation.yield(item)
+                        }
+                    }
+
+                    continuation.finish()
+
+                } catch {
+                    continuation.finish(throwing: error)
                 }
             }
         }
-        task.resume()
-        return task
     }
 
     // MARK: Private

@@ -19,7 +19,8 @@ class Game2048: ObservableObject {
         board = Array(repeating: Array(repeating: 0, count: 4), count: 4)
         tileIds = (0..<4).map { _ in (0..<4).map { _ in UUID() } }
         score = 0
-        spawnTile(); spawnTile()
+        spawnTile()
+        spawnTile()
     }
 
     func spawnTile() {
@@ -94,15 +95,19 @@ class Game2048: ObservableObject {
     }
 
     private func setLine(_ line: [Int], _ ids: [UUID], at i: Int, for dir: Edge) {
-        var fL = line; var fI = ids
+        var fL = line
+        var fI = ids
         if dir == .trailing || dir == .bottom {
-            fL.reverse(); fI.reverse()
+            fL.reverse()
+            fI.reverse()
         }
         for j in 0..<4 {
             if dir == .leading || dir == .trailing {
-                board[i][j] = fL[j]; tileIds[i][j] = fI[j]
+                board[i][j] = fL[j]
+                tileIds[i][j] = fI[j]
             } else {
-                board[j][i] = fL[j]; tileIds[j][i] = fI[j]
+                board[j][i] = fL[j]
+                tileIds[j][i] = fI[j]
             }
         }
     }

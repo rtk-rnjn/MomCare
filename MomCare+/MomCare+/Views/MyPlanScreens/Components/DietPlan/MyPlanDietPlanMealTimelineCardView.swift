@@ -231,7 +231,7 @@ private struct MealTimelineFoodItemRow: View {
                 }
             }
 
-            FoodThumbnail(foodReferenceModel: item)
+            FoodThumbnail(foodIdentifier: item.foodId)
                 .accessibilityHidden(true)
 
             VStack(alignment: .leading, spacing: 4) {
@@ -320,10 +320,10 @@ private struct TimelineLine: View {
     }
 }
 
-private struct FoodThumbnail: View {
+struct FoodThumbnail: View {
     // MARK: Internal
 
-    @State var foodReferenceModel: FoodReferenceModel
+    let foodIdentifier: String
 
     var body: some View {
         ZStack {
@@ -346,7 +346,7 @@ private struct FoodThumbnail: View {
         }
         .frame(width: 54, height: 54)
         .task {
-            let networkResponse = try? await MCContentRepository.shared.fetchFoodImage(id: foodReferenceModel.foodId)
+            let networkResponse = try? await MCContentRepository.shared.fetchFoodImage(id: foodIdentifier)
             if let uri = networkResponse?.data.detail {
                 uiImage = try? await UIImage.getOrFetch(from: uri)
             }
@@ -414,7 +414,7 @@ private struct NutritionPreview: View {
                 RoundedRectangle(cornerRadius: 12, style: .continuous)
                     .fill(Color.secondary.opacity(0.12))
 
-                FoodThumbnail(foodReferenceModel: item)
+                FoodThumbnail(foodIdentifier: item.foodId)
                     .font(.largeTitle)
                     .foregroundStyle(.secondary)
             }

@@ -15,22 +15,28 @@ enum CodableValue: Codable, Sendable {
         let container = try decoder.singleValueContainer()
 
         if let bool = try? container.decode(Bool.self) {
-            self = .bool(bool); return
+            self = .bool(bool)
+            return
         }
         if let int = try? container.decode(Int.self) {
-            self = .int(int); return
+            self = .int(int)
+            return
         }
         if let double = try? container.decode(Double.self) {
-            self = .double(double); return
+            self = .double(double)
+            return
         }
         if let string = try? container.decode(String.self) {
-            self = .string(string); return
+            self = .string(string)
+            return
         }
         if let array = try? container.decode([CodableValue].self) {
-            self = .array(array); return
+            self = .array(array)
+            return
         }
         if let dict = try? container.decode([String: CodableValue].self) {
-            self = .dict(dict); return
+            self = .dict(dict)
+            return
         }
 
         self = .null
