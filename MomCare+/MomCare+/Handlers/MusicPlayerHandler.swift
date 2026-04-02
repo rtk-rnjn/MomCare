@@ -95,6 +95,7 @@ final class MusicPlayerHandler: ObservableObject {
         play(song: adjacentSong(offset: -1))
     }
 
+    @discardableResult
     func togglePlayPause() -> Bool {
         guard let player else {
             return false

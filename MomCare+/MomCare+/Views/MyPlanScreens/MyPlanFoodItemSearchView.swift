@@ -7,7 +7,7 @@ struct MyPlanFoodItemSearchView: View {
 
     var body: some View {
         NavigationStack {
-            mainView
+            foodList
             .navigationTitle("Add Food")
             .navigationBarTitleDisplayMode(.inline)
             .searchable(text: $searchText, prompt: "Search foods…")
@@ -40,7 +40,16 @@ struct MyPlanFoodItemSearchView: View {
                 Text(alertMessage ?? "An unexpected error occurred.")
             }
             .onAppear {
+                if musicHandler.isPlaying {
+                    musicHandler.togglePlayPause()
+                    needMusicPlayToggle = true
+                }
                 searchFocus = true
+            }
+            .onDisappear {
+                if needMusicPlayToggle {
+                    musicHandler.togglePlayPause()
+                }
             }
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
@@ -57,6 +66,9 @@ struct MyPlanFoodItemSearchView: View {
     @FocusState private var searchFocus: Bool
 
     @EnvironmentObject private var contentServiceHandler: ContentServiceHandler
+    @EnvironmentObject private var musicHandler: MusicPlayerHandler
+
+    @State private var needMusicPlayToggle: Bool = false
     @Environment(\.dismiss) private var dismiss
 
     @State private var searchText = ""
@@ -93,17 +105,6 @@ struct MyPlanFoodItemSearchView: View {
         .accessibilityLabel("Search to find food")
     }
 
-    @ViewBuilder
-    private var mainView: some View {
-        if foodItems.isEmpty, !searchText.isEmpty {
-            emptyStateView
-        } else if foodItems.isEmpty {
-            placeholderView
-        } else {
-            foodList
-        }
-    }
-
     private var foodList: some View {
         List(foodItems) { food in
             FoodRowView(food: food)
@@ -126,6 +127,13 @@ struct MyPlanFoodItemSearchView: View {
                 .listRowBackground(Color.clear)
         }
         .listStyle(.plain)
+        .overlay {
+            if searchText.isEmpty {
+                ContentUnavailableView("Try Searching any Food", systemImage: "magnifyingglass")
+            } else if foodItems.isEmpty {
+                ContentUnavailableView.search
+            }
+        }
     }
 
     private func addFood(_ food: FoodItemModel) async {
@@ -139,8 +147,6 @@ struct MyPlanFoodItemSearchView: View {
     }
 
     private func debounceSearch(query: String) async throws {
-        defer { foodItems.sort { $0.name < $1.name } }
-
         guard !query.isEmpty else {
             foodItems = []
             return
@@ -155,6 +161,7 @@ struct MyPlanFoodItemSearchView: View {
 
         for try await item in stream {
             foodItems.append(item)
+            foodItems.sort { $0.name < $1.name }
         }
     }
 }
