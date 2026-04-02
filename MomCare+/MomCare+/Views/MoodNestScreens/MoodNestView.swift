@@ -5,7 +5,10 @@ import TipKit
 struct MoodNestView: View {
 
     @StateObject private var moodNestViewModel = MoodNestViewModel()
-
+    @State private var angryTrigger = UUID()
+    @State private var sadTrigger = UUID()
+    @State private var isAngryFlashing = false
+    
     @EnvironmentObject private var contentService: ContentServiceHandler
     @EnvironmentObject private var controlState: ControlState
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
@@ -137,27 +140,64 @@ private extension MoodNestView {
         let isSelected = moodNestViewModel.selectedMood == mood
 
         return ZStack {
+            
+            let softRed = Color(red: 0.85, green: 0.35, blue: 0.35)
+            let isAngryFlash = mood == .angry && isAngryFlashing
 
             Circle()
-                .fill(color(for: mood).opacity(isSelected ? 0.35 : 0.18))
+                .fill(
+                    isAngryFlash
+                    ? softRed.opacity(0.15) // 🔻 reduce intensity
+                    : color(for: mood).opacity(isSelected ? 0.25 : 0.12)
+                )
                 .frame(width: isSelected ? 70 : 52)
+                .animation(.easeInOut(duration: 0.2), value: isAngryFlashing)
 
+            // INNER
             Circle()
-                .fill(color(for: mood))
+                .fill(
+                    isAngryFlash
+                    ? softRed
+                    : color(for: mood)
+                )
                 .frame(width: isSelected ? 58 : 44)
-
+            
             miniFace(for: mood, isSelected: isSelected)
         }
         .scaleEffect(isSelected ? 1.12 : 0.9)
+
+        // 🔥 THIS is the key
+        .animation(.easeInOut(duration: 0.35), value: isAngryFlashing)
+
         .animation(.spring(response: 0.35, dampingFraction: 0.7), value: isSelected)
+
         .onTapGesture {
             withAnimation(.spring()) {
                 moodNestViewModel.selectMood(mood)
             }
-            UIImpactFeedbackGenerator(style: .light).impactOccurred()
+
+            if mood == .angry {
+                angryTrigger = UUID()
+
+                withAnimation(.easeInOut(duration: 0.2)) {
+                    isAngryFlashing = true
+                }
+
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.35) {
+                    withAnimation(.easeInOut(duration: 0.25)) {
+                        isAngryFlashing = false
+                    }
+                }
+            }
+
+            if mood == .sad {
+                sadTrigger = UUID()
+            }
+
+            UIImpactFeedbackGenerator(style: .medium).impactOccurred()
         }
     }
-
+    
     // MARK: - FACE CONFIG
     func faceConfig(for mood: MoodType) -> (
         isSemiCircle: Bool,
@@ -187,15 +227,27 @@ private extension MoodNestView {
     func miniFace(for mood: MoodType, isSelected: Bool) -> some View {
 
         let size: CGFloat = isSelected ? 36 : 28
+        
+        // 🌸 Gentle, theme-matching angry red
+        let gentleAngryRed = Color(hex: "#E8897F")
 
         ZStack {
             Circle()
-                .fill(color(for: mood))
+                .fill(
+                    mood == .angry && isAngryFlashing
+                    ? gentleAngryRed.opacity(0.9) // softer than pure red
+                    : color(for: mood)
+                )
+                .animation(.easeInOut(duration: 0.25), value: isAngryFlashing)
                 .frame(width: size * 2.2, height: size * 2.2)
 
             MiniMoodFaceView(
                 mood: mood,
-                color: Color(hex: "#6B3A35")
+                color: Color(hex: "#6B3A35"),
+                isActive: isSelected,
+                trigger: mood == .angry ? angryTrigger :
+                         mood == .sad ? sadTrigger :
+                         UUID()
             )
             .frame(width: 28, height: 28)
         }
