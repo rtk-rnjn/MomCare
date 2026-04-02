@@ -87,7 +87,7 @@ struct MusicPlayerView: View {
 
                 Button {
                     controlState.showingPopupBar = true
-                    _ = musicPlayerHandler.togglePlayPause()
+                    musicPlayerHandler.togglePlayPause()
                 } label: {
                     Image(systemName: musicPlayerHandler.player?.timeControlStatus == .playing ? "pause.fill" : "play.fill")
                         .font(.largeTitle)
@@ -183,7 +183,7 @@ struct MusicPlayerView: View {
                     }
 
                     Button {
-                        _ = musicPlayerHandler.togglePlayPause()
+                        musicPlayerHandler.togglePlayPause()
                     } label: {
                         if musicPlayerHandler.isWaiting {
                             ProgressView()
@@ -234,9 +234,8 @@ struct MusicPlayerView: View {
 
 struct SystemVolumeSlider: UIViewRepresentable {
     func makeUIView(context _: Context) -> MPVolumeView {
-        let volumeView = MPVolumeView(frame: .zero)
+        let volumeView = MPVolumeView()
 
-        volumeView.sizeToFit()
         volumeView.showsVolumeSlider = true
         volumeView.tintColor = .white
         return volumeView

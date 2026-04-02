@@ -77,7 +77,7 @@ final class Database {
 
     let userDefaults: UserDefaults
 
-    func find<T: Codable>(withMatchingRegex pattern: String) -> [T] {
+    func find<T: Codable & Sendable>(withMatchingRegex pattern: String) -> [T] {
         guard let regex = try? NSRegularExpression(pattern: pattern) else {
             return []
         }
@@ -112,7 +112,7 @@ final class Database {
         }
     }
 
-    subscript<T: Codable>(_ key: ValidDatabaseKeys) -> T? {
+    subscript<T: Codable & Sendable>(_ key: ValidDatabaseKeys) -> T? {
         get {
             guard let data = userDefaults.data(forKey: key.rawValue) else {
                 return nil

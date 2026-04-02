@@ -69,7 +69,7 @@ struct TriTrackCalendarItemContentView: View {
         } content: {
             TriTrackAddCalendarItemSheetView(selectedDate: $selectedDate, selectedSegment: addMode)
                 .scrollDismissesKeyboard(.immediately)
-                .presentationDetents([.large])
+                .presentationDetents([.medium, .large])
         }
 
         .sheet(item: $selectedEvent) {

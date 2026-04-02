@@ -79,7 +79,8 @@ class WaterSortEngine: ObservableObject {
             let start = i * capacity
             bottles.append(Array(colors[start..<start+capacity]))
         }
-        bottles.append([]); bottles.append([])
+        bottles.append([])
+        bottles.append([])
         isSolved = false
         moves = 0
     }
@@ -181,9 +182,12 @@ struct GameWaterSortView: View {
 
                 ToolbarItem(placement: .topBarTrailing) {
                     Menu {
-                        Button("Easy (4 colors)") { withAnimation { engine.difficulty = 4; engine.setupLevel() } }
-                        Button("Medium (6 colors)") { withAnimation { engine.difficulty = 6; engine.setupLevel() } }
-                        Button("Hard (8 colors)") { withAnimation { engine.difficulty = 8; engine.setupLevel() } }
+                        Button("Easy (4 colors)") { withAnimation { engine.difficulty = 4
+                            engine.setupLevel() } }
+                        Button("Medium (6 colors)") { withAnimation { engine.difficulty = 6
+                            engine.setupLevel() } }
+                        Button("Hard (8 colors)") { withAnimation { engine.difficulty = 8
+                            engine.setupLevel() } }
                     } label: {
                         Label("Difficulty", systemImage: "gearshape.fill")
                     }

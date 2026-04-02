@@ -5,6 +5,16 @@ enum FoodType: String, Codable, Hashable {
     case vegetarian = "veg"
     case nonVegetarian = "non-veg"
     case vegan
+
+    // MARK: Internal
+
+    var displayLabel: String {
+        switch self {
+        case .vegetarian: "Veg"
+        case .nonVegetarian: "Non-Veg"
+        case .vegan: "Vegan"
+        }
+    }
 }
 
 nonisolated struct FoodItemModel: Equatable, Hashable, Identifiable, Sendable, Codable, CustomStringConvertible {

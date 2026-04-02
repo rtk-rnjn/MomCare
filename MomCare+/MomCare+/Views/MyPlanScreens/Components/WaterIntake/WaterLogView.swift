@@ -99,7 +99,7 @@ struct WaterLogView: View {
         }
         .sheet(isPresented: $showLogs) {
             WaterLogListView(store: store)
-                .presentationDetents([.large])
+                .presentationDetents([.medium, .large])
                 .presentationDragIndicator(.visible)
         }
         .sheet(isPresented: $showSettings) {

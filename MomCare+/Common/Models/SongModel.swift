@@ -122,6 +122,10 @@ nonisolated struct SongModel: Codable, Sendable, Identifiable, Equatable, Hashab
         _id
     }
 
+    var title: String {
+        metadata?.title ?? songName
+    }
+
     var image: UIImage? {
         get async {
             try? await UIImage.getOrFetch(from: songImageUri ?? "")

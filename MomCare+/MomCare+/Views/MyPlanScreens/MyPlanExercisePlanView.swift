@@ -105,9 +105,11 @@ struct MyPlanExercisePlanView: View {
     @State private var showHistory = false
     @State private var showWalkingHistory = false
 
-    @State private var walkingCompleted: Bool = false
-
     @State private var breathingCompleted: Bool = false
+
+    private var walkingCompleted: Bool {
+        contentServiceHandler.stepsToday >= contentServiceHandler.stepsGoal
+    }
 
     private var completedCount: Int {
         contentServiceHandler.totalUserExercisesCompleted + (breathingCompleted ? 1 : 0) + (walkingCompleted ? 1 : 0)
