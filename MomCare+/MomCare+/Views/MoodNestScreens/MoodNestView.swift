@@ -20,47 +20,45 @@ struct MoodNestView: View {
     var body: some View {
         NavigationStack {
             ZStack {
+                secondary.ignoresSafeArea()
 
-                // 🌸 Static soft background (cleaner than mood switching bg)
-                secondary
-                    .ignoresSafeArea()
-
-                VStack(spacing: 28) {
-
-                    topBar
-
-                    Spacer()
-
+                VStack {
+                    
+                    // 👇 TITLE (controlled)
                     title
+                        .padding(.top, 60)
 
-                    mainFace
+                    Spacer(minLength: 10)
 
-                    moodSelector
+                    // 👇 FACE + ARC (main content block)
+                    faceWithSelector
 
-                    Spacer()
+                    Spacer(minLength: 80) // 👈 pushes arc toward button nicely
                 }
-                .padding(.horizontal, 20)
             }
-
-            // MARK: Bottom Button
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
 
             .safeAreaInset(edge: .bottom) {
-                Button {
-                    UIImpactFeedbackGenerator(style: .soft).impactOccurred()
-                    controlState.showingMoodnestPlaylistsView = true
-                } label: {
-                    Text("Next Step")
-                        .font(.headline)
-                        .frame(maxWidth: .infinity)
-                        .padding()
-                        .background(primary)
-                        .foregroundStyle(.white)
-                        .clipShape(RoundedRectangle(cornerRadius: 18))
+                VStack(spacing: 12) {
+                    
+                    Button {
+                        UIImpactFeedbackGenerator(style: .soft).impactOccurred()
+                        controlState.showingMoodnestPlaylistsView = true
+                    } label: {
+                        Text("Next Step")
+                            .font(.headline)
+                            .frame(maxWidth: .infinity)
+                            .padding()
+                            .background(primary)
+                            .foregroundStyle(.white)
+                            .clipShape(RoundedRectangle(cornerRadius: 18))
+                    }
+                    .padding(.horizontal, 24)
+
                 }
-                .padding(.horizontal, 24)
-                .padding(.vertical, 10)
+                .padding(.top, 8)
+                .padding(.bottom, 100) // 👈 KEY FIX
                 .background(secondary)
-                .accessibilityLabel("Continue with mood \(moodNestViewModel.selectedMood.rawValue)")
             }
 
             // MARK: Navigation
@@ -92,41 +90,24 @@ struct MoodNestView: View {
 
 private extension MoodNestView {
     
-    var topBar: some View {
-        HStack {
-            Button("Back") {
-                // handle navigation
-            }
-            .foregroundColor(primary)
-            
-            Spacer()
-            
-            Text("3 of 10")
-                .font(.caption.weight(.medium))
-                .padding(.horizontal, 10)
-                .padding(.vertical, 6)
-                .background(Color.black.opacity(0.05))
-                .clipShape(Capsule())
-        }
-    }
-    
     var title: some View {
         Text("What is your mood?")
-            .font(.title2.weight(.semibold))
+            .font(.title.weight(.semibold))
             .multilineTextAlignment(.center)
+            .padding(.top, 80)
+            .padding(.bottom, 10)// 👈 clean, predictable, device-safe
     }
     
-    var mainFace: some View {
-        VStack(spacing: 12) {
+    var faceWithSelector: some View {
+        VStack(spacing: 0) {
             
             ZStack {
                 Circle()
                     .fill(moodNestViewModel.backgroundColor)
                     .frame(width: 220, height: 220)
                 
-                VStack(spacing: 8) { // ✅ tighter grouping = cuter
+                VStack(spacing: 8) {
                     
-                    // 👀 BIG expressive eyes
                     HStack(spacing: 26) {
                         EyeView(
                             isSemiCircleEyes: moodNestViewModel.useSemiCircleEyes,
@@ -144,65 +125,109 @@ private extension MoodNestView {
                         )
                         .frame(width: 85, height: 85)
                     }
-                    .offset(y: 6) // ✅ bring eyes down (centered look)
+                    .offset(y: 6)
                     
-                    // 🙂 SMALL, subtle smile
                     SmileView(
                         rotation: moodNestViewModel.smileRotation,
                         color: moodNestViewModel.faceColor
                     )
-                    .offset(y: -1) // ✅ closer to eyes
+                    .offset(y: -1)
                 }
             }
             
             Text(moodNestViewModel.selectedMood.rawValue)
                 .font(.headline)
+                .padding(.top, 12)
+            
+            // 👇 ARC IS NOW ATTACHED TO FACE
+            moodArc
+                .padding(.top, 10)
         }
-        .animation(.spring(response: 0.4, dampingFraction: 0.7), value: moodNestViewModel.selectedMood)
     }
     
-    var moodSelector: some View {
-        HStack(spacing: 22) {
-            ForEach(MoodType.allCases) { mood in
-                moodButton(for: mood)
+    var moodArc: some View {
+        GeometryReader { geo in
+            
+            let size = geo.size
+            let center = CGPoint(
+                x: size.width / 2,
+                y: size.height * 0.38
+            )
+            let radius: CGFloat = size.width * 0.36
+            
+            let moods = MoodType.allCases
+            
+            ZStack {
+                
+                Path { path in
+                    path.addArc(
+                        center: center,
+                        radius: radius,
+                        startAngle: .degrees(30),
+                        endAngle: .degrees(150),
+                        clockwise: false
+                    )
+                }
+                .stroke(Color.gray.opacity(0.25), lineWidth: 2)
+                
+                ForEach(Array(moods.enumerated()), id: \.element) { index, mood in
+                    
+                    let total = moods.count
+                    let angleStep = (160.0 - 20.0) / Double(total - 1)
+                    let angleDeg = 20.0 + (Double(index) * angleStep)
+                    let angle = angleDeg * .pi / 180
+                    
+//                    let isSelected = moodNestViewModel.selectedMood == mood
+                    let r = radius
+                    
+                    let x = center.x + cos(angle) * r
+                    let y = center.y + sin(angle) * r
+                    
+                    moodButton(for: mood)
+                        .position(x: x, y: y) // 👈 IMPORTANT (NOT offset)
+                }
             }
         }
-        .accessibilityElement(children: .contain)
-        .accessibilityLabel("Mood selector")
-        .accessibilityValue(moodNestViewModel.selectedMood.rawValue)
+        .frame(height: 170) // 👈 give breathing space
     }
     
     func moodButton(for mood: MoodType) -> some View {
         let isSelected = moodNestViewModel.selectedMood == mood
         
         return ZStack {
+            
+            // 🌈 Soft background glow
+            Circle()
+                .fill(color(for: mood).opacity(isSelected ? 0.35 : 0.18))
+                .frame(width: isSelected ? 70 : 52)
+            
+            // Main circle
             Circle()
                 .fill(color(for: mood))
-                .frame(width: isSelected ? 60 : 48)
+                .frame(width: isSelected ? 58 : 44)
                 .shadow(
-                    color: isSelected ? color(for: mood).opacity(0.4) : .clear,
-                    radius: 8,
-                    y: 4
+                    color: isSelected ? color(for: mood).opacity(0.5) : .clear,
+                    radius: isSelected ? 10 : 0,
+                    y: 6
                 )
             
             Text(mood.emoji)
-                .font(.system(size: 22))
+                .font(.system(size: isSelected ? 26 : 20))
         }
-        .scaleEffect(isSelected ? 1.1 : 0.9)
-        .opacity(isSelected ? 1 : 0.6)
-        .animation(.spring(), value: moodNestViewModel.selectedMood)
+        .scaleEffect(isSelected ? 1.12 : 0.9)
+        .opacity(isSelected ? 1 : 0.65)
+        .animation(.spring(response: 0.35, dampingFraction: 0.7), value: moodNestViewModel.selectedMood)
         .onTapGesture {
             if reduceMotion {
                 moodNestViewModel.selectMood(mood)
             } else {
-                withAnimation(.spring()) {
+                withAnimation(.spring(response: 0.4, dampingFraction: 0.7)) {
                     moodNestViewModel.selectMood(mood)
                 }
             }
             
             UIImpactFeedbackGenerator(style: .light).impactOccurred()
         }
-        .accessibilityLabel(mood.rawValue)
     }
     
     func color(for mood: MoodType) -> Color {

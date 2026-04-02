@@ -21,3 +21,22 @@ struct SemiCircleEyeRepresentable: UIViewRepresentable {
         }
     }
 }
+
+//struct ArcShape: Shape {
+//    func path(in rect: CGRect) -> Path {
+//        var path = Path()
+//        
+//        let radius = rect.width * 0.4
+//        let center = CGPoint(x: rect.midX, y: rect.maxY - 20)
+//        
+//        path.addArc(
+//            center: center,
+//            radius: radius,
+//            startAngle: .degrees(200),
+//            endAngle: .degrees(-20),
+//            clockwise: false
+//        )
+//        
+//        return path
+//    }
+//}
