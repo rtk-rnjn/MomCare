@@ -67,6 +67,7 @@ struct MoodNestPlaylistsView: View {
             .font(.title.weight(.bold))
             .foregroundStyle(.primary)
             .lineLimit(3)
+            .minimumScaleFactor(0.8)
             .fixedSize(horizontal: false, vertical: true)
             .frame(maxWidth: .infinity, alignment: .leading)
             .accessibilityAddTraits(.isHeader)
