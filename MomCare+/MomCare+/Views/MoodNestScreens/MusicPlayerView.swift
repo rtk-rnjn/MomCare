@@ -146,8 +146,8 @@ struct MusicPlayerView: View {
                 Image(uiImage: uiImage)
                     .resizable()
                     .aspectRatio(contentMode: .fill)
-                    .blur(radius: 60)
-                    .overlay(Color.black.opacity(0.3))
+                    .blur(radius: reduceTransparency ? 0 : 60)
+                    .overlay(Color.black.opacity(reduceTransparency ? 0.6 : 0.3))
                     .ignoresSafeArea()
                     .accessibilityHidden(true)
                     .popupTransitionTarget()
@@ -230,6 +230,7 @@ struct MusicPlayerView: View {
     @State private var uiImage: UIImage?
 
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @Environment(\.accessibilityReduceTransparency) private var reduceTransparency
 }
 
 struct SystemVolumeSlider: UIViewRepresentable {

@@ -11,20 +11,23 @@ struct MoodNestPlaylistsView: View {
         ZStack {
             VStack(spacing: 0) {
                 LinearGradient(
-                    colors: [
-                        MomCareAccent.secondary.opacity(1.0),
-                        MomCareAccent.secondary.opacity(1.0),
-                        MomCareAccent.secondary.opacity(0.9),
-                        MomCareAccent.secondary.opacity(0.7),
-                        MomCareAccent.secondary.opacity(0.5),
-                        MomCareAccent.secondary.opacity(0.3),
-                        Color.clear
-                    ],
+                    colors: reduceTransparency
+                        ? [MomCareAccent.secondary, MomCareAccent.secondary]
+                        : [
+                            MomCareAccent.secondary.opacity(1.0),
+                            MomCareAccent.secondary.opacity(1.0),
+                            MomCareAccent.secondary.opacity(0.9),
+                            MomCareAccent.secondary.opacity(0.7),
+                            MomCareAccent.secondary.opacity(0.5),
+                            MomCareAccent.secondary.opacity(0.3),
+                            Color.clear
+                        ],
                     startPoint: .top,
                     endPoint: .bottom
                 )
                 .frame(maxHeight: 350)
                 .ignoresSafeArea(edges: .top)
+                .accessibilityHidden(true)
 
                 Spacer()
             }
@@ -124,12 +127,14 @@ struct MoodNestPlaylistsView: View {
                     }
 
                     LinearGradient(
-                        colors: [
-                            Color.black.opacity(0.8),
-                            Color.black.opacity(0.4),
-                            Color.black.opacity(0.1),
-                            Color.clear
-                        ],
+                        colors: reduceTransparency
+                            ? [Color.black.opacity(0.9), Color.black.opacity(0.6)]
+                            : [
+                                Color.black.opacity(0.8),
+                                Color.black.opacity(0.4),
+                                Color.black.opacity(0.1),
+                                Color.clear
+                            ],
                         startPoint: .bottom,
                         endPoint: .top
                     )
@@ -188,6 +193,9 @@ struct MoodNestPlaylistsView: View {
     @EnvironmentObject private var musicPlayerHandler: MusicPlayerHandler
     @EnvironmentObject private var contentService: ContentServiceHandler
     @EnvironmentObject private var controlState: ControlState
+
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @Environment(\.accessibilityReduceTransparency) private var reduceTransparency
 
     @State private var heroPlaylist: PlaylistModel?
     @State private var uiImage: UIImage?

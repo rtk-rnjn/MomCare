@@ -65,7 +65,7 @@ struct MoodFaceView: View {
                     .offset(y: -4)
                     .opacity(isHappyAnimating ? 1 : 0)
             }
-            .animation(.easeInOut(duration: 0.25), value: isHappyAnimating)
+            .animation(reduceMotion ? nil : .easeInOut(duration: 0.25), value: isHappyAnimating)
         }
 
         // Angry compression
@@ -83,16 +83,21 @@ struct MoodFaceView: View {
                mood == .stressed && stressedPop ? -3 :
                0
         )
-        .animation(.spring(response: 0.25, dampingFraction: 0.5), value: happyPop)
-        .animation(.spring(response: 0.25, dampingFraction: 0.5), value: sadPop)
-        .animation(.spring(response: 0.25, dampingFraction: 0.5), value: stressedPop)
-        .animation(.easeInOut(duration: 0.2), value: isAngryAnimating)
+        .animation(reduceMotion ? nil : .spring(response: 0.25, dampingFraction: 0.5), value: happyPop)
+        .animation(reduceMotion ? nil : .spring(response: 0.25, dampingFraction: 0.5), value: sadPop)
+        .animation(reduceMotion ? nil : .spring(response: 0.25, dampingFraction: 0.5), value: stressedPop)
+        .animation(reduceMotion ? nil : .easeInOut(duration: 0.2), value: isAngryAnimating)
         .onChange(of: trigger) { _, _ in
-            triggerAnimation(for: mood)
+            if !reduceMotion {
+                triggerAnimation(for: mood)
+            }
         }
+        .accessibilityHidden(true)
     }
 
     // MARK: Private
+
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     @State private var isAngryAnimating = false
     @State private var isAngryEyesActive = false
@@ -151,8 +156,8 @@ private extension MoodFaceView {
                     .opacity(isStressedAnimating ? 1 : 0)
             }
         }
-        .animation(.easeInOut(duration: 0.25), value: isSadAnimating)
-        .animation(.easeInOut(duration: 0.2), value: isStressedAnimating)
+        .animation(reduceMotion ? nil : .easeInOut(duration: 0.25), value: isSadAnimating)
+        .animation(reduceMotion ? nil : .easeInOut(duration: 0.2), value: isStressedAnimating)
     }
 }
 

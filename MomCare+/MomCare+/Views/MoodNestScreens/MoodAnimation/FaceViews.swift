@@ -10,7 +10,8 @@ struct EyeView: View {
     var body: some View {
         SemiCircleEyeRepresentable(
             useSemiCircle: isSemiCircleEyes,
-            color: UIColor(faceColor)
+            color: UIColor(faceColor),
+            reduceMotion: reduceMotion
         )
         .frame(maxWidth: 130, maxHeight: 130)
         .aspectRatio(1, contentMode: .fit)
@@ -18,6 +19,8 @@ struct EyeView: View {
         .rotationEffect(rotation)
         .accessibilityHidden(true)
     }
+
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
 }
 
 struct SmileView: View {

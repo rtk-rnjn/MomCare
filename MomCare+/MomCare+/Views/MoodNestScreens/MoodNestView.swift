@@ -99,11 +99,14 @@ struct MoodNestView: View {
                         .font(.headline)
                         .frame(maxWidth: .infinity)
                         .padding()
-                        .background(primary)
+                        .background(reduceTransparency ? primary : primary.opacity(0.95))
                         .foregroundStyle(.white)
                         .clipShape(Capsule())
                 }
                 .padding(.horizontal, 24)
+                .accessibilityLabel("Next step for \(selectedMood.rawValue) mood")
+                .accessibilityValue(selectedMood.rawValue)
+                .accessibilityHint("Opens playlists for your \(selectedMood.rawValue) mood")
             }
             .padding(.bottom, 12)
             .background(secondary)
@@ -117,6 +120,7 @@ struct MoodNestView: View {
     var title: some View {
         Text("What is your mood?")
             .font(.title.weight(.semibold))
+            .accessibilityAddTraits(.isHeader)
     }
 
     var faceWithSelector: some View {
@@ -133,8 +137,8 @@ struct MoodNestView: View {
                             ? sadTint
                             : moodNestViewModel.backgroundColor
                     )
-                    .animation(.easeInOut(duration: 0.25), value: isFaceAngryAnimating)
-                    .animation(.easeInOut(duration: 0.25), value: isFaceSadAnimating)
+                    .animation(reduceMotion ? nil : .easeInOut(duration: 0.25), value: isFaceAngryAnimating)
+                    .animation(reduceMotion ? nil : .easeInOut(duration: 0.25), value: isFaceSadAnimating)
                     .frame(width: 220, height: 220)
 
                 MoodFaceView(
@@ -148,13 +152,19 @@ struct MoodNestView: View {
                     smileRotation: moodNestViewModel.smileRotation
                 )
                 .frame(width: 150, height: 120)
+                .accessibilityHidden(true)
             }
+            .accessibilityLabel("Current mood face: \(selectedMood.rawValue)")
+            .accessibilityValue(selectedMood.emoji)
 
             Text(selectedMood.rawValue)
                 .font(.title2.weight(.semibold))
+                .accessibilityHidden(true)
 
             moodArc
                 .offset(y: -25)
+                .accessibilityLabel("Mood selector")
+                .accessibilityHint("Select your current mood")
         }
     }
 
@@ -198,52 +208,57 @@ struct MoodNestView: View {
     func moodButton(for mood: MoodType) -> some View {
         let isSelected = selectedMood == mood
 
-        return ZStack {
-            Circle()
-                .fill(
-                    color(for: mood)
-                        .opacity(isSelected ? 0.25 : 0.12)
-                )
-                .frame(width: isSelected ? 70 : 52)
-
-            Circle()
-                .fill(color(for: mood))
-                .frame(width: isSelected ? 58 : 44)
-
-            miniFace(for: mood, isSelected: isSelected)
-        }
-        .scaleEffect(isSelected ? 1.12 : 0.9)
-        .animation(.spring(response: 0.35, dampingFraction: 0.7), value: isSelected)
-        .onTapGesture {
+        return Button {
             HapticsHandler.impact(.medium)
-            withAnimation(.spring()) {
+            withAnimation(reduceMotion ? nil : .spring()) {
                 moodNestViewModel.applyMood(mood)
                 selectedMood = mood
             }
 
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.02) {
-                faceTrigger = UUID()
-            }
-
-            if mood == .angry {
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.08) {
-                    isFaceAngryAnimating = true
+            if !reduceMotion {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.02) {
+                    faceTrigger = UUID()
                 }
 
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.50) {
-                    isFaceAngryAnimating = false
+                if mood == .angry {
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.08) {
+                        isFaceAngryAnimating = true
+                    }
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.50) {
+                        isFaceAngryAnimating = false
+                    }
+                }
+                if mood == .sad {
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.08) {
+                        isFaceSadAnimating = true
+                    }
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.6) {
+                        isFaceSadAnimating = false
+                    }
                 }
             }
-            if mood == .sad {
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.08) {
-                    isSadAnimating = true
-                }
+        } label: {
+            ZStack {
+                Circle()
+                    .fill(
+                        color(for: mood)
+                            .opacity(isSelected ? 0.25 : 0.12)
+                    )
+                    .frame(width: isSelected ? 70 : 52)
 
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.6) {
-                    isSadAnimating = false
-                }
+                Circle()
+                    .fill(color(for: mood))
+                    .frame(width: isSelected ? 58 : 44)
+
+                miniFace(for: mood, isSelected: isSelected)
             }
+            .scaleEffect(isSelected ? 1.12 : 0.9)
+            .animation(reduceMotion ? nil : .spring(response: 0.35, dampingFraction: 0.7), value: isSelected)
         }
+        .buttonStyle(.plain)
+        .accessibilityLabel("\(mood.rawValue) mood")
+        .accessibilityHint("Select \(mood.rawValue) as your current mood")
+        .accessibilityAddTraits(isSelected ? [.isSelected] : [])
     }
 
     @ViewBuilder
@@ -284,9 +299,11 @@ struct MoodNestView: View {
     @State private var faceTrigger: UUID = .init()
     @State private var isFaceAngryAnimating = false
     @State private var isFaceSadAnimating = false
-    @State private var isSadAnimating = false
 
     @EnvironmentObject private var controlState: ControlState
+
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @Environment(\.accessibilityReduceTransparency) private var reduceTransparency
 
     private let primary: Color = .init(hex: "#924350")
     private let secondary: Color = .init(hex: "#FBE8E5")

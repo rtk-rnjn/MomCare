@@ -4,6 +4,7 @@ import UIKit
 struct SemiCircleEyeRepresentable: UIViewRepresentable {
     let useSemiCircle: Bool
     let color: UIColor
+    let reduceMotion: Bool
 
     func makeUIView(context _: Context) -> SemiCircleAnimationView {
         let view = SemiCircleAnimationView()
@@ -15,9 +16,9 @@ struct SemiCircleEyeRepresentable: UIViewRepresentable {
         uiView.setColor(color: color.cgColor)
 
         if useSemiCircle {
-            uiView.animateToSemiCircle()
+            uiView.animateToSemiCircle(animated: !reduceMotion)
         } else {
-            uiView.animateToFullCircle()
+            uiView.animateToFullCircle(animated: !reduceMotion)
         }
     }
 }
@@ -55,6 +56,8 @@ struct MiniMoodFaceView: View {
                 }
             }
         }
+        .opacity(isActive ? 1.0 : 0.7)
+        .accessibilityHidden(true)
     }
 
     @ViewBuilder
