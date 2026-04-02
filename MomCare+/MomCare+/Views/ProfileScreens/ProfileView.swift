@@ -28,7 +28,8 @@ private let sections: [ProfileSection] = [
     ]),
 
     ProfileSection(rows: [
-        ProfileRow(title: "About MomCare+", systemImage: "info.circle", type: .aboutApplication)
+        ProfileRow(title: "About MomCare+", systemImage: "info.circle", type: .aboutApplication),
+        ProfileRow(title: "What's New", systemImage: "sparkles", type: .whatsNew)
     ]),
 
     ProfileSection(rows: [
@@ -171,6 +172,9 @@ struct ProfileView: View {
 
         case .notifications:
             ProfileNotificationsView()
+
+        case .whatsNew:
+            WhatsNewView()
 
         default:
             EmptyView()

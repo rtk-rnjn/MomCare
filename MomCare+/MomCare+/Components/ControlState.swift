@@ -45,6 +45,7 @@ enum ProfileRowType: Int {
     case accountManagement
     case signOut
     case footerText
+    case whatsNew
 }
 
 enum MyPlanSegment: String, CaseIterable, Identifiable {
