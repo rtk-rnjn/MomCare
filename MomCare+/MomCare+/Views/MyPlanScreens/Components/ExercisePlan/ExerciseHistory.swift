@@ -72,7 +72,7 @@ struct ExerciseHistory: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
-                    Button(role: .close) { dismiss() }
+                    MCCloseButton { dismiss() }
                 }
 
                 ToolbarItem(placement: .topBarTrailing) {
@@ -94,9 +94,13 @@ struct ExerciseHistory: View {
                     Button {
                         selectedDate = Date()
                     } label: {
-                        Image(systemName: "\(Calendar.current.component(.day, from: Date())).calendar")
-                            .font(.body)
-                            .foregroundStyle(Color.CustomColors.mutedRaspberry)
+                        Label {
+                            Text("Today")
+                        } icon: {
+                            if #available(iOS 26.0, *) {
+                                Image(systemName: "\(Calendar.current.component(.day, from: Date())).calendar")
+                            }
+                        }
                     }
                     .accessibilityLabel("Jump to today")
                     .accessibilityIdentifier("jumpToTodayButton")

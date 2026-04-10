@@ -24,7 +24,7 @@ struct DashboardView: View {
             } catch {}
         }
         .background(Color(.secondarySystemGroupedBackground))
-        .navigationTitle("Progress")
+        .navigationTitle(AppTab.progress.title)
         .navigationBarTitleDisplayMode(.large)
     }
 
@@ -34,7 +34,7 @@ struct DashboardView: View {
                 week: authenticationService.userModel?.pregnancyProgress.week,
                 day: authenticationService.userModel?.pregnancyProgress.day,
                 trimester: authenticationService.userModel?.pregnancyProgress.trimester,
-                tip: tips.currentTip as? MomCareTips.Dashboard.DashboardWeekCardTip
+                tip: currentTip as? MomCareTips.Dashboard.DashboardWeekCardTip
             )
                 .frame(maxWidth: .infinity)
                 .onTapGesture {
@@ -47,7 +47,10 @@ struct DashboardView: View {
                 }
 
             if let event = eventKitHandler.onGoingOrMostRecentUpcomingEvent {
-                DashboardEventCardView(upcomingEvent: event, tip: tips.currentTip as? MomCareTips.Dashboard.DashboardEventCardTip)
+                DashboardEventCardView(
+                    upcomingEvent: event,
+                    tip: currentTip as? MomCareTips.Dashboard.DashboardEventCardTip
+                )
                     .frame(maxWidth: .infinity)
                     .contextMenu {
                         Button {
@@ -59,7 +62,10 @@ struct DashboardView: View {
                         TriTrackEventDetailsContextView(event: event)
                     }
             } else {
-                DashboardEventCardView(upcomingEvent: eventKitHandler.onGoingOrMostRecentUpcomingEvent, tip: tips.currentTip as? MomCareTips.Dashboard.DashboardEventCardTip)
+                DashboardEventCardView(
+                    upcomingEvent: eventKitHandler.onGoingOrMostRecentUpcomingEvent,
+                    tip: currentTip as? MomCareTips.Dashboard.DashboardEventCardTip
+                )
                     .frame(maxWidth: .infinity)
             }
         }
@@ -193,9 +199,20 @@ struct DashboardView: View {
 
     // MARK: Private
 
-    @State private var tips = TipGroup {
-        MomCareTips.Dashboard.DashboardWeekCardTip()
-        MomCareTips.Dashboard.DashboardEventCardTip()
+    @available(iOS 18, *)
+    private var tips: TipGroup {
+        TipGroup {
+            MomCareTips.Dashboard.DashboardWeekCardTip()
+            MomCareTips.Dashboard.DashboardEventCardTip()
+        }
+    }
+
+    private var currentTip: (any Tip)? {
+        if #available(iOS 18.0, *) {
+            return tips.currentTip
+        } else {
+            return nil
+        }
     }
 
     @EnvironmentObject private var contentServiceHandler: ContentServiceHandler

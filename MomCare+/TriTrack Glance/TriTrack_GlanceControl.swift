@@ -2,6 +2,7 @@ import AppIntents
 import SwiftUI
 import WidgetKit
 
+@available(iOS 18.0, *)
 struct TriTrack_GlanceControl: ControlWidget {
     static let kind: String = "com.Team05.MomCare.TriTrack-Glance.Control"
 

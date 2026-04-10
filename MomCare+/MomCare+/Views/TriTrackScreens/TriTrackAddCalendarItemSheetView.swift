@@ -45,7 +45,7 @@ struct TriTrackAddCalendarItemSheetView: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
-                    Button(role: .cancel) {
+                    MCCancelButton {
                         if hasData {
                             showConfirmationDialog = true
                         } else {
@@ -63,7 +63,7 @@ struct TriTrackAddCalendarItemSheetView: View {
                 }
 
                 ToolbarItem(placement: .confirmationAction) {
-                    Button(role: .confirm) {
+                    MCSaveButton {
                         save()
                     }
                     .disabled(title.isEmpty)
@@ -233,7 +233,14 @@ struct TriTrackAddCalendarItemSheetView: View {
                     location: selectedMapItem?.name,
                     structuredLocation: selectedMapItem.map {
                         let loc = EKStructuredLocation(title: $0.name ?? "")
-                        loc.geoLocation = $0.location
+                        if #available(iOS 26.0, *) {
+                            loc.geoLocation = $0.location
+                        } else {
+                            loc.geoLocation = CLLocation(
+                                latitude: $0.placemark.coordinate.latitude,
+                                longitude: $0.placemark.coordinate.latitude
+                            )
+                        }
                         return loc
                     },
                     alarm: alarm

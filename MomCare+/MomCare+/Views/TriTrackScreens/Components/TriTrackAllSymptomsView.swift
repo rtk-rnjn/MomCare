@@ -37,7 +37,6 @@ struct TriTrackAllSymptomsView: View {
                 }
             }
             .searchable(text: $searchText, placement: .automatic, prompt: "Search symptoms or notes…")
-            .searchToolbarBehavior(.minimize)
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button {

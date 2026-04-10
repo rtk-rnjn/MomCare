@@ -56,7 +56,7 @@ struct WaterLogView: View {
             }
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
-                    Button(role: .cancel) {
+                    MCCancelButton {
                         dismiss()
                     }
                 }

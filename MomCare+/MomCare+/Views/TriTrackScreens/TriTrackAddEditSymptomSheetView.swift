@@ -68,7 +68,7 @@ struct TriTrackAddEditSymptomSheetView: View {
             .navigationTitle(existingSymptom == nil ? "New Symptom" : "Edit Symptom")
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
-                    Button(role: .cancel) {
+                    MCCancelButton {
                         dismiss()
                     }
                     .accessibilityLabel("Cancel")
@@ -77,7 +77,7 @@ struct TriTrackAddEditSymptomSheetView: View {
                 }
 
                 ToolbarItem(placement: .confirmationAction) {
-                    Button(role: .confirm) {
+                    MCDoneButton {
                         saveOrEdit()
                     }
                     .disabled(title.isEmpty)

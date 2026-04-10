@@ -23,7 +23,7 @@ struct TriTrackView: View {
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .ignoresSafeArea(edges: .bottom)
         .background(MomCareAccent.secondary.ignoresSafeArea())
-        .navigationTitle("TriTrack")
+        .navigationTitle(AppTab.triTrack.title)
         .navigationBarTitleDisplayMode(forceUseLargeTitle ? .large : .inline)
         .navigationDestination(isPresented: $showingAllEvents) {
             TriTrackAllCalendarItemView(selectedDate: $selectedDate)
@@ -63,9 +63,13 @@ struct TriTrackView: View {
                 Button {
                     selectedDate = Date()
                 } label: {
-                    Image(systemName: "\(Calendar.current.component(.day, from: Date())).calendar")
-                        .font(.body)
-                        .foregroundStyle(Color.CustomColors.mutedRaspberry)
+                    Label {
+                        Text("Today")
+                    } icon: {
+                        if #available(iOS 26.0, *) {
+                            Image(systemName: "\(Calendar.current.component(.day, from: Date())).calendar")
+                        }
+                    }
                 }
                 .accessibilityLabel("Jump to today")
                 .accessibilityIdentifier("jumpToTodayButton")
@@ -285,9 +289,20 @@ struct PregnancyProgressView: View {
     @State private var showingMomInfo = false
     @State private var selectedCardPosition: CGRect = .zero
 
-    @State private var tips: TipGroup = TipGroup {
-        MomCareTips.TriTrack.TriTrackBabyTip()
-        MomCareTips.TriTrack.TriTrackMomTip()
+    @available(iOS 18.0, *)
+    private var tips: TipGroup {
+        TipGroup {
+            MomCareTips.TriTrack.TriTrackBabyTip()
+            MomCareTips.TriTrack.TriTrackMomTip()
+        }
+    }
+
+    private var currentTip: (any Tip)? {
+        if #available(iOS 18.0, *) {
+            return tips.currentTip
+        } else {
+            return nil
+        }
     }
 
     private var babySizeComparisonView: some View {
@@ -412,7 +427,7 @@ struct PregnancyProgressView: View {
                 backgroundColor: Color(hex: "FBE8E5"),
                 accentColor: .CustomColors.mutedRaspberry
             )
-            .popoverTip(tips.currentTip as? MomCareTips.TriTrack.TriTrackBabyTip, arrowEdge: .bottom)
+            .compatPopoverTip(currentTip as? MomCareTips.TriTrack.TriTrackBabyTip, arrowEdge: .bottom)
             .background(
                 GeometryReader { geo in
                     Color.clear
@@ -436,7 +451,7 @@ struct PregnancyProgressView: View {
                 backgroundColor: Color(hex: "FBE8E5"),
                 accentColor: .CustomColors.mutedRaspberry
             )
-            .popoverTip(tips.currentTip as? MomCareTips.TriTrack.TriTrackMomTip, arrowEdge: .bottom)
+            .compatPopoverTip(currentTip as? MomCareTips.TriTrack.TriTrackMomTip, arrowEdge: .bottom)
             .background(
                 GeometryReader { geo in
                     Color.clear

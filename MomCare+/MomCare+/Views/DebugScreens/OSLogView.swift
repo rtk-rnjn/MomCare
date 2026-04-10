@@ -74,7 +74,6 @@ struct OSLogsView: View {
         .navigationTitle("OS Logs")
         .navigationBarTitleDisplayMode(.large)
         .searchable(text: $searchText, placement: .automatic, prompt: "Search messages, category…")
-        .searchToolbarBehavior(.minimize)
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
                 Button {

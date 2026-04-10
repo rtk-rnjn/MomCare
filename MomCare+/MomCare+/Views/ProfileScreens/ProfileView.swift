@@ -80,12 +80,12 @@ struct ProfileView: View {
                 }
             }
         }
-        .navigationTitle("Profile")
+        .navigationTitle(AppTab.settings.title)
         .listStyle(.insetGrouped)
         .scrollContentBackground(.hidden)
         .background(Color(.systemGroupedBackground))
         .alert("Sign Out?", isPresented: $showSignOutAlert) {
-            Button(role: .cancel) {}
+            MCCancelButton {}
 
             Button("Sign Out", role: .destructive) {
                 performSignOut()

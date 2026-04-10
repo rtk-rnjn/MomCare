@@ -164,7 +164,6 @@ struct GameWaterSortView: View {
             }
             .navigationTitle("Water Sort")
             .navigationBarTitleDisplayMode(.large)
-            .navigationSubtitle("Moves: \(engine.moves)")
             .toolbar {
                 ToolbarItem(placement: .bottomBar) {
                     Button("Restart") {
@@ -175,7 +174,7 @@ struct GameWaterSortView: View {
                 }
 
                 ToolbarItem(placement: .cancellationAction) {
-                    Button(role: .cancel) {
+                    MCCancelButton {
                         dismiss()
                     }
                 }

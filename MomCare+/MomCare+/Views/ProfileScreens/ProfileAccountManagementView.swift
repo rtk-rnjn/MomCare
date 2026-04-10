@@ -35,7 +35,7 @@ struct ProfileAccountManagementView: View {
                 }
             }
 
-            Button(role: .cancel) {}
+            MCCancelButton {}
 
         } message: {
             Text("Are you sure you want to permanently delete your MomCare+ account and all associated data?")

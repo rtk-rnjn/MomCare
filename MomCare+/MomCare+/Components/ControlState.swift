@@ -7,7 +7,7 @@ enum AppTab: Int, CaseIterable {
     case myPlan
     case triTrack
     case mood
-    case profile
+    case settings
 
     // MARK: Internal
 
@@ -18,7 +18,7 @@ enum AppTab: Int, CaseIterable {
         case .myPlan: "My Plan"
         case .triTrack: "TriTrack"
         case .mood: "Mood"
-        case .profile: "Profile"
+        case .settings: "Settings"
         }
     }
 
@@ -29,7 +29,7 @@ enum AppTab: Int, CaseIterable {
         case .myPlan: "list.bullet.clipboard.fill"
         case .triTrack: "calendar"
         case .mood: "face.dashed.fill"
-        case .profile: "person.crop.circle"
+        case .settings: "gearshape.fill"
         }
     }
 }

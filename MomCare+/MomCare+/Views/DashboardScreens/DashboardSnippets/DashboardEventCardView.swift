@@ -2,37 +2,15 @@ import EventKit
 import SwiftUI
 import TipKit
 
-struct DashboardEventCardView: View {
+struct DashboardEventCardView<TipContent: Tip>: View {
     // MARK: Internal
 
     let upcomingEvent: EKEvent?
-
-    let tip: (any Tip)?
+    let tip: TipContent?
 
     var body: some View {
         VStack(spacing: 0) {
-            VStack(alignment: .leading, spacing: 6) {
-                if let event = upcomingEvent {
-                    Text(event.title)
-                        .font(.title2)
-                        .fontWeight(.semibold)
-                        .lineLimit(2)
-                        .minimumScaleFactor(0.9)
-                        .contentTransition(reduceMotion ? .identity : .interpolate)
-                        .animation(reduceMotion ? nil : .easeInOut, value: eventKitHandler.eventStore)
-
-                    if let startDate = event.startDate {
-                        Text(startDate, format: .relative(presentation: .numeric))
-                            .contentTransition(reduceMotion ? .identity : .numericText())
-                            .animation(reduceMotion ? nil : .easeInOut, value: startDate)
-                    }
-
-                } else {
-                    Text("No Upcoming Events")
-                        .font(.title3)
-                        .fontWeight(.semibold)
-                }
-            }
+            upcommingEventView
             .frame(maxWidth: .infinity, alignment: .leading)
             .padding(.horizontal, 16)
             .padding(.top, 24)
@@ -54,7 +32,7 @@ struct DashboardEventCardView: View {
                             .foregroundStyle(.secondary)
                             .lineLimit(1)
                             .minimumScaleFactor(0.85)
-                            .popoverTip(tip, arrowEdge: .top)
+                            .compatPopoverTip(tip, arrowEdge: .top)
                     }
                     .padding(.leading, 16)
                     .buttonStyle(.plain)
@@ -80,7 +58,7 @@ struct DashboardEventCardView: View {
         .background(Color(.systemBackground))
         .dashboardCardStyle()
         .accessibilityElement(children: .ignore)
-        .accessibilityLabel(upcomingEvent.map { "Upcoming event: \($0.title ?? "untitled")" } ?? "No upcoming events")
+        .accessibilityLabel(accessiblityLabel)
         .accessibilityValue(
             upcomingEvent?.startDate.map { date in
                 "In \(date.formatted(.relative(presentation: .numeric)))"
@@ -114,9 +92,38 @@ struct DashboardEventCardView: View {
 
     @State private var date: Date = .init()
 
+    private var accessiblityLabel: String {
+        upcomingEvent.map { "Upcoming event: \($0.title ?? "untitled")" } ?? "No upcoming events"
+    }
+
     @EnvironmentObject private var eventKitHandler: EventKitHandler
     @EnvironmentObject private var controlState: ControlState
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     @State private var showEventSheet: Bool = false
+
+    private var upcommingEventView: some View {
+        VStack(alignment: .leading, spacing: 6) {
+            if let event = upcomingEvent {
+                Text(event.title)
+                    .font(.title2)
+                    .fontWeight(.semibold)
+                    .lineLimit(2)
+                    .minimumScaleFactor(0.9)
+                    .contentTransition(reduceMotion ? .identity : .interpolate)
+                    .animation(reduceMotion ? nil : .easeInOut, value: eventKitHandler.eventStore)
+
+                if let startDate = event.startDate {
+                    Text(startDate, format: .relative(presentation: .numeric))
+                        .contentTransition(reduceMotion ? .identity : .numericText())
+                        .animation(reduceMotion ? nil : .easeInOut, value: startDate)
+                }
+
+            } else {
+                Text("No Upcoming Events")
+                    .font(.title3)
+                    .fontWeight(.semibold)
+            }
+        }
+    }
 }

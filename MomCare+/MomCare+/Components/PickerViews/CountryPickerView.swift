@@ -28,7 +28,7 @@ struct CountryPickerView: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
-                    Button(role: .cancel) {
+                    MCCancelButton {
                         dismiss()
                     }
                     .foregroundStyle(.primary)

@@ -68,14 +68,13 @@ struct ForgetPasswordView: View {
             }
 
             .navigationTitle("Forgot Password")
-            .navigationSubtitle("Enter your email to receive a password reset code.")
             .navigationBarTitleDisplayMode(.inline)
             .navigationDestination(isPresented: $navigate) {
                 ForgetPasswordOTPView(showingForgetPasswordSheet: $showingForgetPasswordSheet, emailAddress: $emailAddress)
             }
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
-                    Button(role: .cancel) {
+                    MCCancelButton {
                         dismiss()
                     }
                     .accessibilityLabel("Cancel")
@@ -174,7 +173,6 @@ struct ForgetPasswordOTPView: View {
         }
         .scrollDismissesKeyboard(.immediately)
         .navigationTitle("Verify OTP")
-        .navigationSubtitle("Enter the OTP sent to your email address.")
         .navigationBarTitleDisplayMode(.inline)
         .navigationDestination(isPresented: $navigate) {
             ResetPasswordView(showingForgetPasswordSheet: $showingForgetPasswordSheet, emailAddress: $emailAddress, otpCode: $otpCode)
@@ -263,7 +261,6 @@ struct ResetPasswordView: View {
         }
         .navigationTitle("Reset Password")
         .navigationBarTitleDisplayMode(.inline)
-        .navigationSubtitle("Enter your new password below.")
         .toolbar {
             ToolbarItem(placement: .bottomBar) {
                 Button {

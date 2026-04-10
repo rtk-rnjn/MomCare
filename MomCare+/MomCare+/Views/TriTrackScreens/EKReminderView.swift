@@ -47,7 +47,7 @@ struct EKReminderView: View {
             }
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
-                    Button(role: .cancel) {
+                    MCCancelButton {
                         if hasChanges {
                             showDiscardAlert = true
                         } else {
@@ -64,7 +64,7 @@ struct EKReminderView: View {
                 }
 
                 ToolbarItem(placement: .confirmationAction) {
-                    Button(role: .confirm) {
+                    MCDoneButton {
                         saveChanges()
                     }
                     .accessibilityLabel("Save")

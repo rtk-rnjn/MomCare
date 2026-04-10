@@ -18,23 +18,34 @@ struct MyPlanView: View {
 
             switch controlState.myPlanSegment {
             case .diet:
-                MyPlanDietPlanView(tips: dietPlanTips)
+                MyPlanDietPlanView(currentTip: currentTip)
             case .exercise:
                 MyPlanExercisePlanView()
             }
         }
         .ignoresSafeArea(edges: .bottom)
         .background(MomCareAccent.secondary.ignoresSafeArea())
-        .navigationTitle("My Plan")
+        .navigationTitle(AppTab.myPlan.title)
         .navigationBarTitleDisplayMode(forceUseLargeTitle ? .large : .inline)
     }
 
     // MARK: Private
 
-    @State private var dietPlanTips = TipGroup {
-        MomCareTips.DietPlan.ProgressCardSlideOrTapTip()
-        MomCareTips.DietPlan.HeaderRowAddTip()
-        MomCareTips.DietPlan.ItemRowSlideTip()
+    @available(iOS 18.0, *)
+    private var dietPlanTips: TipGroup {
+        TipGroup {
+            MomCareTips.DietPlan.ProgressCardSlideOrTapTip()
+            MomCareTips.DietPlan.HeaderRowAddTip()
+            MomCareTips.DietPlan.ItemRowSlideTip()
+        }
+    }
+
+    private var currentTip: (any Tip)? {
+        if #available(iOS 18.0, *) {
+            return dietPlanTips.currentTip
+        } else {
+            return nil
+        }
     }
 
     @AppStorage(FeatureFlagState.forceUseLargeTitle.rawValue, store: Database.shared.userDefaults) private var forceUseLargeTitle: Bool = false

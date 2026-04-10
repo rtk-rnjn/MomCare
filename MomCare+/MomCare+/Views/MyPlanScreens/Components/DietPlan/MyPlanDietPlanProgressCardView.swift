@@ -1,11 +1,11 @@
 import SwiftUI
 import TipKit
 
-struct MyPlanDietPlanProgressCardView: View {
+struct MyPlanDietPlanProgressCardView<TipContent: Tip>: View {
     // MARK: Internal
 
     let plan: MealPlanModel?
-    let tip: (any Tip)?
+    let tip: TipContent?
 
     let calorieIntake: Measurement<UnitEnergy>?
     let calorieGoal: Measurement<UnitEnergy>?
@@ -34,7 +34,7 @@ struct MyPlanDietPlanProgressCardView: View {
     var body: some View {
         VStack(spacing: 0) {
             collapsedHeader
-                .popoverTip(tip, arrowEdge: .top)
+                .compatPopoverTip(tip, arrowEdge: .top)
 
             if isExpanded {
                 expandedSection
@@ -208,8 +208,15 @@ struct MyPlanDietPlanProgressCardView: View {
     }
 
     private var cardBackground: some View {
-        ConcentricRectangle()
-            .fill(Color(.systemBackground))
+        Group {
+            if #available(iOS 26.0, *) {
+                ConcentricRectangle()
+                    .fill(Color(.systemBackground))
+            } else {
+                RoundedRectangle(cornerRadius: 16)
+                    .fill(Color(.systemBackground))
+            }
+        }
     }
 
     private func handleDragEnd(_ value: DragGesture.Value) {
@@ -684,10 +691,24 @@ private struct ProgressRingView: View {
     }
 
     private var modificationColor: Color {
-        switch targetModification {
-        case .increased: .secondary.mix(with: .black, by: 0.2)
-        case .decreased: .secondary.mix(with: .white, by: 0.35)
-        case .none: .secondary
+        if #available(iOS 18, *) {
+            switch targetModification {
+            case .increased:
+                return .secondary.mix(with: .black, by: 0.2)
+            case .decreased:
+                return .secondary.mix(with: .white, by: 0.35)
+            case .none:
+                return .secondary
+            }
+        } else {
+            switch targetModification {
+            case .increased:
+                return .secondary.opacity(0.8)
+            case .decreased:
+                return .secondary.opacity(0.65)
+            case .none:
+                return .secondary
+            }
         }
     }
 
@@ -901,10 +922,24 @@ private struct MacroBarRow: View {
     }
 
     private var modificationColor: Color {
-        switch targetModification {
-        case .increased: .secondary.mix(with: .black, by: 0.2)
-        case .decreased: .secondary.mix(with: .white, by: 0.35)
-        case .none: .secondary
+        if #available(iOS 18, *) {
+            switch targetModification {
+            case .increased:
+                return .secondary.mix(with: .black, by: 0.2)
+            case .decreased:
+                return .secondary.mix(with: .white, by: 0.35)
+            case .none:
+                return .secondary
+            }
+        } else {
+            switch targetModification {
+            case .increased:
+                return .secondary.opacity(0.8)
+            case .decreased:
+                return .secondary.opacity(0.65)
+            case .none:
+                return .secondary
+            }
         }
     }
 

@@ -23,14 +23,14 @@ struct ValuePickerSheet<UnitType: Dimension>: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
-                    Button(role: .cancel) {
+                    MCCancelButton {
                         dismiss()
                     }
                     .keyboardShortcut(.cancelAction)
                 }
 
                 ToolbarItem(placement: .confirmationAction) {
-                    Button(role: .confirm) {
+                    MCDoneButton {
                         selection = tempSelection
                         dismiss()
                     }

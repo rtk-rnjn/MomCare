@@ -12,7 +12,14 @@ struct MapPickerView: View {
             MapReader { proxy in
                 Map(position: $cameraPosition, interactionModes: .all) {
                     if let item = selectedMapItem {
-                        Marker(item.name ?? "", coordinate: item.location.coordinate)
+                        if #available(iOS 26.0, *) {
+                            Marker(item.name ?? "", coordinate: item.location.coordinate)
+                        } else {
+                            Marker(item.name ?? "", coordinate: .init(
+                                latitude: item.placemark.coordinate.latitude,
+                                longitude: item.placemark.coordinate.longitude)
+                            )
+                        }
                     }
                 }
                 .ignoresSafeArea()
@@ -25,7 +32,11 @@ struct MapPickerView: View {
                             longitude: coordinate.longitude
                         )
 
-                        selectedMapItem = MKMapItem(location: location, address: nil)
+                        if #available(iOS 26.0, *) {
+                            selectedMapItem = MKMapItem(location: location, address: nil)
+                        } else {
+                            selectedMapItem = MKMapItem(placemark: MKPlacemark(coordinate: coordinate))
+                        }
 
                         withAnimation(reduceMotion ? nil : .easeInOut(duration: 0.3)) {
                             cameraPosition = .region(
@@ -43,22 +54,34 @@ struct MapPickerView: View {
             }
             .ignoresSafeArea()
             .searchable(text: $searchService.searchText, placement: .automatic)
-            .searchFocused($isSearchFieldFocused)
             .searchSuggestions {
                 ForEach(searchService.results, id: \.self) { item in
                     Button {
                         isSearchFieldFocused = false
                         selectedMapItem = item
-                        cameraPosition = .region(MKCoordinateRegion(center: item.location.coordinate, span: MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05)))
+                        if #available(iOS 26, *) {
+                            cameraPosition = .region(MKCoordinateRegion(center: item.location.coordinate, span: MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05)))
+                        } else {
+                            cameraPosition = .region(MKCoordinateRegion(center: item.placemark.coordinate, span: MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05)))
+                        }
                     } label: {
                         VStack(alignment: .leading) {
                             Text(item.name ?? "Unknown Place")
                                 .font(.headline)
-                            if let address = item.address?.fullAddress {
-                                Text(address)
-                                    .font(.subheadline)
-                                    .foregroundStyle(.secondary)
-                                    .lineLimit(2)
+                            if #available(iOS 26.0, *) {
+                                if let address = item.address?.fullAddress {
+                                    Text(address)
+                                        .font(.subheadline)
+                                        .foregroundStyle(.secondary)
+                                        .lineLimit(2)
+                                }
+                            } else {
+                                if let address = item.placemark.title {
+                                    Text(address)
+                                        .font(.subheadline)
+                                        .foregroundStyle(.secondary)
+                                        .lineLimit(2)
+                                }
                             }
                         }
                     }
@@ -68,7 +91,7 @@ struct MapPickerView: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
-                    Button(role: .cancel) {
+                    MCCancelButton {
                         selectedMapItem = nil
                         dismiss()
                     }
@@ -76,7 +99,7 @@ struct MapPickerView: View {
                 }
 
                 ToolbarItem(placement: .confirmationAction) {
-                    Button(role: .confirm) {
+                    MCDoneButton {
                         dismiss()
                     }
                     .disabled(selectedMapItem == nil)

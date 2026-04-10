@@ -123,7 +123,7 @@ struct OTPScreenView: View {
                 .submitLabel(.done)
                 .toolbar {
                     ToolbarItem(placement: .keyboard) {
-                        Button(role: .confirm) {
+                        MCDoneButton {
                             Task {
                                 do {
                                     try await handleSubmit()

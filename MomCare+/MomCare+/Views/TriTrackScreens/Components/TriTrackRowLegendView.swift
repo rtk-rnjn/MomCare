@@ -31,7 +31,7 @@ struct TriTrackRowLegendView: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
-                    Button(role: .close) { dismiss() }
+                    MCCloseButton { dismiss() }
                         .accessibilityLabel("Close legend")
                         .accessibilityHint("Dismisses this guide")
                 }

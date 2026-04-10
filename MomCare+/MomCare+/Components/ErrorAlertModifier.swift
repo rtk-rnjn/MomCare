@@ -61,7 +61,7 @@ extension View {
     func errorAlert(error: Binding<(any Error)?>) -> some View {
         modifier(
             ErrorAlertModifier(error: error) { _ in
-                Button(role: .close) {
+                MCCloseButton {
                     error.wrappedValue = nil
                 }
             }

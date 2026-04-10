@@ -142,10 +142,10 @@ struct OverviewOfServicesView: View {
                 .foregroundStyle(.primary)
 
             VStack(alignment: .leading, spacing: 12) {
-                ServiceDetail(title: "Progress", description: "A comprehensive summary of your daily/weekly exercise and diet progress, with daily insights and tips.")
-                ServiceDetail(title: "MyPlan", description: "Personalized daily recommendations for diet and exercise based on your health input.")
-                ServiceDetail(title: "TriTrack", description: "A “Me & Baby” view, highlighting your stage of pregnancy with size comparisons and week-by-week summaries.")
-                ServiceDetail(title: "Mood", description: "A mood-based audio experience with tunes tailored to your emotional state.")
+                ServiceDetail(title: AppTab.progress.title, description: "A comprehensive summary of your daily/weekly exercise and diet progress, with daily insights and tips.")
+                ServiceDetail(title: AppTab.myPlan.title, description: "Personalized daily recommendations for diet and exercise based on your health input.")
+                ServiceDetail(title: AppTab.triTrack.title, description: "A “Me & Baby” view, highlighting your stage of pregnancy with size comparisons and week-by-week summaries.")
+                ServiceDetail(title: AppTab.mood.title, description: "A mood-based audio experience with tunes tailored to your emotional state.")
             }
         }
     }

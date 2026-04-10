@@ -5,13 +5,13 @@ import TipKit
 struct MyPlanDietPlanView: View {
     // MARK: Internal
 
-    let tips: TipGroup
+    let currentTip: (any Tip)?
 
     var body: some View {
         VStack(spacing: 12) {
             MyPlanDietPlanProgressCardView(
                 plan: contentServiceHandler.myPlanModel,
-                tip: tips.currentTip as? MomCareTips.DietPlan.ProgressCardSlideOrTapTip,
+                tip: currentTip as? MomCareTips.DietPlan.ProgressCardSlideOrTapTip,
 
                 calorieIntake: contentServiceHandler.nutritionIntakeTotals?.energy,
                 calorieGoal: contentServiceHandler.nutritionGoalTotals?.energy,
@@ -49,8 +49,8 @@ struct MyPlanDietPlanView: View {
 
             MyPlanDietPlanMealTimelineCardView(
                 plan: contentServiceHandler.myPlanModel,
-                addFoodItemTip: tips.currentTip as? MomCareTips.DietPlan.HeaderRowAddTip,
-                slideFoodItemRowTip: tips.currentTip as? MomCareTips.DietPlan.ItemRowSlideTip
+                addFoodItemTip: currentTip as? MomCareTips.DietPlan.HeaderRowAddTip,
+                slideFoodItemRowTip: currentTip as? MomCareTips.DietPlan.ItemRowSlideTip
             )
                 .refreshable {
                     do {
@@ -186,7 +186,7 @@ private struct NutritionGraphRootView: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
-                    Button(role: .cancel) { dismiss() }
+                    MCCancelButton { dismiss() }
                         .fontWeight(.semibold)
                 }
             }

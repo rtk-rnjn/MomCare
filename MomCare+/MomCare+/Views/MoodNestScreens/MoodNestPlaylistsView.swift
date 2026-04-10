@@ -44,7 +44,7 @@ struct MoodNestPlaylistsView: View {
             }
         }
         .background(Color(.systemBackground))
-        .navigationTitle("Mood")
+        .navigationTitle(AppTab.mood.title)
         .navigationBarTitleDisplayMode(.inline)
         .task {
             do {
@@ -53,7 +53,9 @@ struct MoodNestPlaylistsView: View {
                 controlState.error = error
             }
 
-            try? await contentService.logMoodToHealthKit(mood: mood)
+            if #available(iOS 18.0, *) {
+                try? await contentService.logMoodToHealthKit(mood: mood)
+            }
 
             if let heroPlaylist = contentService.playlists.randomElement() {
                 self.heroPlaylist = heroPlaylist

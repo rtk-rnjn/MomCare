@@ -137,7 +137,7 @@ struct ExerciseCardView: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
-                    Button(role: .cancel) {
+                    MCCancelButton {
                         defer { startExercisePlayer = false }
                         guard let avPlayer else {
                             return

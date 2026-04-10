@@ -26,7 +26,6 @@ struct ReAuthenticationSheetView: View {
             .scrollContentBackground(.hidden)
             .scrollDismissesKeyboard(.immediately)
             .navigationTitle("Refresh Token Expired")
-            .navigationSubtitle("HTTP 401 Unauthorized")
             .navigationBarTitleDisplayMode(.inline)
             .sheet(isPresented: $showAppleLoginSheet) {
                 NavigationStack {
@@ -93,7 +92,7 @@ struct ReAuthenticationSheetView: View {
             }
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
-                    Button(role: .cancel) {
+                    MCCancelButton {
                         dismiss()
                     }
                 }

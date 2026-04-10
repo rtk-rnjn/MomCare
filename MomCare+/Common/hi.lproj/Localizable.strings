@@ -1,1 +1,184 @@
+"Save" = "सहेजें";
+"Cancel" = "रद्द करें";
+"Delete" = "हटाएँ";
+"Done" = "पूर्ण";
+"Confirm" = "पुष्टि करें";
+"Continue" = "जारी रखें";
+"Next" = "आगे";
+"Back" = "वापस";
+"Retry" = "फिर से प्रयास करें";
+"Submit" = "जमा करें";
+"Close" = "बंद करें";
+"Open" = "खोलें";
+"Skip" = "छोड़ें";
+"Finish" = "समाप्त करें";
+"Start" = "शुरू करें";
+"Stop" = "रोकें";
+"Pause" = "रोकें";
+"Resume" = "फिर से शुरू करें";
 
+"Add" = "जोड़ें";
+"Remove" = "हटाएँ";
+"Edit" = "संपादित करें";
+"Update" = "अपडेट करें";
+"Change" = "बदलें";
+"Clear" = "साफ़ करें";
+"Reset" = "रीसेट करें";
+"Apply" = "लागू करें";
+"Refresh" = "रीफ़्रेश करें";
+"Search" = "खोजें";
+"Filter" = "फ़िल्टर";
+"Sort" = "क्रमबद्ध करें";
+"Upload" = "अपलोड करें";
+"Download" = "डाउनलोड करें";
+"Share" = "साझा करें";
+"Copy" = "कॉपी करें";
+"Paste" = "पेस्ट करें";
+"Select" = "चुनें";
+"Select All" = "सभी चुनें";
+"Deselect" = "चयन हटाएँ";
+
+
+"Home" = "होम";
+"Menu" = "मेनू";
+"Dashboard" = "डैशबोर्ड";
+"Profile" = "प्रोफ़ाइल";
+"Settings" = "सेटिंग्स";
+"Account" = "खाता";
+"Notifications" = "सूचनाएँ";
+"Help" = "सहायता";
+"Support" = "सपोर्ट";
+"About" = "के बारे में";
+"Feedback" = "प्रतिक्रिया";
+
+
+"Login" = "लॉग इन";
+"Logout" = "लॉग आउट";
+"Sign In" = "साइन इन";
+"Sign Up" = "साइन अप";
+"Sign Out" = "साइन आउट";
+"Register" = "पंजीकरण करें";
+"Username" = "उपयोगकर्ता नाम";
+"Password" = "पासवर्ड";
+"Confirm Password" = "पासवर्ड की पुष्टि करें";
+"Email Address" = "ईमेल पता";
+"Phone" = "फ़ोन";
+"Phone Number" = "फ़ोन नंबर";
+"Verify" = "सत्यापित करें";
+"Verification Code" = "सत्यापन कोड";
+//"Forget Password?" = "पासवर्ड भूल गए?"
+"Don't have an account?" = "खाता नहीं है?";
+
+
+"Loading" = "लोड हो रहा है";
+"Processing" = "प्रक्रिया जारी है";
+"Completed" = "पूरा हुआ";
+"Success" = "सफल";
+"Error" = "त्रुटि";
+"Failed" = "असफल";
+"Warning" = "चेतावनी";
+"Pending" = "लंबित";
+"Active" = "सक्रिय";
+"Inactive" = "निष्क्रिय";
+"Enabled" = "सक्रिय";
+"Disabled" = "अक्षम";
+"Online" = "ऑनलाइन";
+"Offline" = "ऑफ़लाइन";
+
+
+"No Data" = "कोई डेटा नहीं";
+"No Results" = "कोई परिणाम नहीं";
+"Empty" = "खाली";
+"Unavailable" = "उपलब्ध नहीं";
+"Available" = "उपलब्ध";
+
+
+"Today" = "आज";
+"Tomorrow" = "कल";
+"Yesterday" = "बीता हुआ कल";
+"Now" = "अभी";
+"Later" = "बाद में";
+"Morning" = "सुबह";
+"Afternoon" = "दोपहर";
+"Evening" = "शाम";
+"Night" = "रात";
+"Week" = "सप्ताह";
+"Day" = "दिन";
+"Month" = "महीना";
+"Year" = "वर्ष";
+"Schedule" = "अनुसूची";
+
+
+"Allow" = "अनुमति दें";
+"Deny" = "अस्वीकार करें";
+"Grant Access" = "पहुँच दें";
+"Permission Required" = "अनुमति आवश्यक है";
+
+"Play" = "चलाएँ";
+"Stop" = "रोकें";
+"Pause" = "रोकें";
+"Record" = "रिकॉर्ड करें";
+"Camera" = "कैमरा";
+"Gallery" = "गैलरी";
+"Microphone" = "माइक्रोफ़ोन";
+
+"Reminder" = "रिमाइंडर";
+"Alert" = "अलर्ट";
+"Notification" = "सूचना";
+"Mark as Read" = "पढ़ा हुआ चिह्नित करें";
+
+
+"Health" = "स्वास्थ्य";
+"Exercise" = "व्यायाम";
+"Steps" = "कदम";
+"Calories" = "कैलोरी";
+"Sleep" = "नींद";
+"Water" = "पानी";
+"Diet" = "आहार";
+"Nutrition" = "पोषण";
+"Weight" = "वजन";
+"Heart Rate" = "हृदय गति";
+
+
+"Baby" = "शिशु";
+"Mother" = "माँ";
+"Pregnancy" = "गर्भावस्था";
+"Trimester" = "त्रैमासिक";
+"Doctor" = "डॉक्टर";
+"Appointment" = "अपॉइंटमेंट";
+"Symptoms" = "लक्षण";
+"Medication" = "दवा";
+"Hospital" = "अस्पताल";
+"Checkup" = "जाँच";
+
+"Are you sure?" = "क्या आप निश्चित हैं?";
+"Something went wrong" = "कुछ गलत हो गया";
+"Please try again" = "कृपया फिर से प्रयास करें";
+"Action cannot be undone" = "यह क्रिया वापस नहीं की जा सकती";
+"Operation successful" = "कार्य सफल रहा";
+
+"Yes" = "हाँ";
+"No" = "नहीं";
+"OK" = "ठीक है";
+"OR" = "या";
+"More" = "और";
+"Less" = "कम";
+"View" = "देखें";
+"Details" = "विवरण";
+"Information" = "जानकारी";
+
+"MomCare+" = "मॉमकेयर+";
+
+"Continue with Email" = "ईमेल के साथ जारी रखें";
+"Personalised plans curated just for you" = "आपके लिए विशेष रूप से तैयार की गई व्यक्तिगत योजनाएं";
+"Receive insights from every trimester" = "हर तिमाही से जानकारी पाएं";
+"Track your progress effortlessly" = "अपनी प्रगति को आसानी से ट्रैक करें";
+"Never miss a moment with reminders" = "रिमाइंडर के साथ कभी भी एक पल न चूकें";
+
+"Progress" = "प्रगति";
+"Trimester I" = "त्रैमासिक I";
+"Trimester II" = "त्रैमासिक II";
+"Trimester III" = "त्रैमासिक III";
+"No Upcoming Events" = "कोई आगामी अपॉइंटमेंट या इवेंट नहीं";
+"Today's Focus" = "आज का ध्यान";
+"Daily Tip" = "दैनिक सुझाव";

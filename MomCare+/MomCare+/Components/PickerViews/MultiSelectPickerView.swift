@@ -37,14 +37,14 @@ struct MultiSelectPickerView<T: Hashable & CaseIterable & RawRepresentable>: Vie
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
-                    Button(role: .cancel) {
+                    MCCancelButton {
                         dismiss()
                     }
                     .foregroundStyle(.primary)
                 }
 
                 ToolbarItem(placement: .confirmationAction) {
-                    Button(role: .confirm) {
+                    MCDoneButton {
                         selection = temporarySelections
                         dismiss()
                     }

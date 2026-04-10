@@ -50,7 +50,7 @@ struct TriTrackSymptomsSheetView: View {
             .searchable(text: $searchText, prompt: "Search symptoms")
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
-                    Button(role: .cancel) {
+                    MCCancelButton {
                         dismiss()
                     }
                     .accessibilityHint("Dismisses without selecting a symptom")

@@ -11,7 +11,6 @@ struct MyPlanFoodItemSearchView: View {
             .navigationTitle("Add Food")
             .navigationBarTitleDisplayMode(.inline)
             .searchable(text: $searchText, prompt: "Search foods…")
-            .searchFocused($searchFocus)
             .onChange(of: searchText) { _, newValue in
                 Task {
                     try? await debounceSearch(query: newValue)
@@ -53,7 +52,7 @@ struct MyPlanFoodItemSearchView: View {
             }
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
-                    Button(role: .cancel) {
+                    MCCancelButton {
                         dismiss()
                     }
                 }
@@ -241,7 +240,7 @@ private struct NutritionDetailSheet: View {
         }
         .toolbar {
             ToolbarItem(placement: .cancellationAction) {
-                Button(role: .cancel) {
+                MCCancelButton {
                     dismiss()
                 }
             }

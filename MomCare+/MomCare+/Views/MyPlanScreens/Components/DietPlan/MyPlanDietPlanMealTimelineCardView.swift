@@ -1,12 +1,12 @@
 import SwiftUI
 import TipKit
 
-struct MyPlanDietPlanMealTimelineCardView: View {
+struct MyPlanDietPlanMealTimelineCardView<AddFoodItemTip: Tip, SlideFoodItemRowTip: Tip>: View {
     // MARK: Internal
 
     let plan: MealPlanModel?
-    let addFoodItemTip: (any Tip)?
-    let slideFoodItemRowTip: (any Tip)?
+    let addFoodItemTip: AddFoodItemTip?
+    let slideFoodItemRowTip: SlideFoodItemRowTip?
 
     var body: some View {
         List {
@@ -70,8 +70,7 @@ struct MyPlanDietPlanMealTimelineCardView: View {
                 }
             }
             .listRowSeparator(.hidden)
-            .listRowInsets(.top, 0)
-            .listRowInsets(.bottom, 0)
+            .compatListRowVerticalInsets(top: 0, bottom: 0)
 
             if contentServiceHandler.isFetchingMealPlan {
                 HStack(alignment: .center) {
@@ -80,8 +79,7 @@ struct MyPlanDietPlanMealTimelineCardView: View {
                     Spacer()
                 }
                 .listRowSeparator(.hidden)
-                .listRowInsets(.top, 0)
-                .listRowInsets(.bottom, 0)
+                .compatListRowVerticalInsets(top: 0, bottom: 0)
                 .accessibilityElement(children: .combine)
                 .accessibilityLabel("Loading meal items")
             } else {
@@ -106,7 +104,7 @@ struct MyPlanDietPlanMealTimelineCardView: View {
                             }
                         }
                     )
-                    .popoverTip(slideFoodItemRowTip, arrowEdge: .top)
+                    .compatPopoverTip(slideFoodItemRowTip, arrowEdge: .top)
                     .background {
                         LinearGradient(
                             colors: [
@@ -124,8 +122,7 @@ struct MyPlanDietPlanMealTimelineCardView: View {
                         .animation(reduceMotion ? nil : .easeInOut(duration: 0.3), value: originalItems)
                     }
                     .listRowSeparator(.hidden)
-                    .listRowInsets(.top, 0)
-                    .listRowInsets(.bottom, 0)
+                    .compatListRowVerticalInsets(top: 0, bottom: 0)
                 }
             }
         }
@@ -133,14 +130,14 @@ struct MyPlanDietPlanMealTimelineCardView: View {
     }
 }
 
-private struct MealTimelineHeaderRow: View {
+private struct MealTimelineHeaderRow<TipContent: Tip>: View {
     // MARK: Internal
 
     let section: MealSection
     let hideTopLine: Bool
     let hideBottomLine: Bool
     let mealType: MealType
-    let tip: (any Tip)?
+    let tip: TipContent?
     let onToggle: (Bool) async -> Void
 
     var body: some View {
@@ -182,7 +179,7 @@ private struct MealTimelineHeaderRow: View {
                     .font(.title3)
                     .foregroundStyle(MomCareAccent.primary)
             }
-            .popoverTip(tip, arrowEdge: .trailing)
+            .compatPopoverTip(tip, arrowEdge: .trailing)
             .accessibilityLabel("Add food to \(section.title)")
             .frame(minWidth: 44, minHeight: 44)
         }
@@ -509,5 +506,29 @@ private struct MealSection: Identifiable {
 
     var isCompleted: Bool {
         items.allSatisfy(\.isConsumed)
+    }
+}
+
+extension View {
+    @ViewBuilder
+    func compatListRowVerticalInsets(
+        top: CGFloat,
+        bottom: CGFloat
+    ) -> some View {
+        if #available(iOS 26, *) {
+            self
+                .listRowInsets(.top, top)
+                .listRowInsets(.bottom, bottom)
+        } else {
+            self
+                .listRowInsets(
+                    EdgeInsets(
+                        top: top,
+                        leading: 16,
+                        bottom: bottom,
+                        trailing: 16
+                    )
+                )
+        }
     }
 }

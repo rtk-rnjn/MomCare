@@ -23,7 +23,7 @@ struct WaterLogListView: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
-                    Button(role: .cancel) { dismiss() }
+                    MCCancelButton { dismiss() }
                 }
                 ToolbarItem(placement: .topBarTrailing) {
                     Button {
@@ -404,10 +404,10 @@ struct EditWaterEntrySheet: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
-                    Button(role: .cancel) { dismiss() }
+                    MCCancelButton { dismiss() }
                 }
                 ToolbarItem(placement: .confirmationAction) {
-                    Button(role: .confirm) {
+                    MCSaveButton {
                         Task {
                             await store.delete(entry: entry)
                             await store.log(milliliters: amount, at: selectedDate)

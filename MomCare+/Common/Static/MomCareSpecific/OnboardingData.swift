@@ -1,12 +1,13 @@
 import Foundation
+import SwiftUI
 
 struct OnboardingPage: Identifiable {
     let id: UUID = .init()
     let imageName: String
-    let title: String
+    let title: LocalizedStringKey
 }
 
-let onboardingPages: [OnboardingPage] = [
+@MainActor let onboardingPages: [OnboardingPage] = [
     OnboardingPage(
         imageName: "OnboardingImage1",
         title: "Personalised plans curated just for you"
