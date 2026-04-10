@@ -99,7 +99,6 @@ struct LicenseCardView: View {
                 .padding()
                 .background(.white)
                 .cornerRadius(16)
-                .shadow(color: Color.black.opacity(0.04), radius: 8, x: 0, y: 4)
             }
             .accessibilityLabel("\(name), \(license)")
             .accessibilityHint("Opens in browser")

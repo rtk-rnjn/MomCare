@@ -670,7 +670,6 @@ struct PopupInfoCard: View {
                         path.addLine(to: CGPoint(x: 0, y: 0))
                     }
                     .fill(Color(hex: "FBE8E5"))
-                    .shadow(color: Color.black.opacity(0.1), radius: 3, x: 0, y: -2)
                     .accessibilityHidden(true)
 
                     Text(title)
@@ -734,7 +733,6 @@ struct PopupInfoCard: View {
             .background(
                 RoundedRectangle(cornerRadius: 20)
                     .fill(Color(hex: "FBE8E5"))
-                    .shadow(color: Color.black.opacity(0.15), radius: 10, x: 0, y: 5)
             )
             .cornerRadius(20)
             .scaleEffect(scale)

@@ -4,7 +4,7 @@ import UIKit
 struct InfoRowDate: View {
     // MARK: Internal
 
-    let title: String
+    let title: LocalizedStringKey
     let date: Date
     let isEditing: Bool
     let onTap: () -> Void
@@ -28,7 +28,9 @@ struct InfoRowDate: View {
             onTap()
         }
         .accessibilityElement(children: .combine)
-        .accessibilityLabel("\(title): \(formatted)")
+        .accessibilityLabel(
+            Text(title) + Text(", ") + Text(formatted)
+        )
         .accessibilityAddTraits(isEditing ? .isButton : [])
         .accessibilityHint(isEditing ? "Activates date picker" : "")
     }

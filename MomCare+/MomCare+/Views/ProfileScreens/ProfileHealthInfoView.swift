@@ -142,7 +142,7 @@ struct ProfileHealthInfoView: View {
     }
 
     func pickerRow(
-        title: String,
+        title: LocalizedStringKey,
         value: String,
         action: @escaping () -> Void
     ) -> some View {
@@ -168,7 +168,7 @@ struct ProfileHealthInfoView: View {
             }
         }
         .buttonStyle(.plain)
-        .accessibilityHint(isEditing ? "Tap to change \(title)" : "")
+        .accessibilityHint(isEditing ? Text("Tap to change ") + Text(title) : Text(""))
     }
 
     func displayCount<T>(_ set: Set<T>) -> String {

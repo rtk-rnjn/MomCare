@@ -370,7 +370,7 @@ struct ProfileAccountSecurityView: View {
 }
 
 struct SecureFieldRow: View {
-    let title: String
+    let title: LocalizedStringKey
 
     @Binding var text: String
 

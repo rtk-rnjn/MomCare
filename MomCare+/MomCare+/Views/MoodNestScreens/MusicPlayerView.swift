@@ -15,7 +15,6 @@ struct MusicPlayerView: View {
                 .aspectRatio(contentMode: .fit)
                 .popupTransitionTarget()
                 .clipShape(RoundedRectangle(cornerRadius: 30, style: .continuous))
-                .shadow(color: .black.opacity(0.4), radius: 20, x: 0, y: 10)
                 .padding(.horizontal, 24)
                 .padding(.top, 40)
                 .accessibilityLabel("\(musicPlayerHandler.currentSong?.metadata?.title ?? "Song") album artwork")

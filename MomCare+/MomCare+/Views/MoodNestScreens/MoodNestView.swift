@@ -109,7 +109,7 @@ struct MoodNestView: View {
                         .padding()
                         .background(reduceTransparency ? primary : primary.opacity(0.95))
                         .foregroundStyle(.white)
-                        .clipShape(Capsule())
+                        .clipShape(RoundedRectangle(cornerRadius: CornerRadius.outer, style: .continuous))
                 }
                 .padding(.horizontal, 24)
                 .accessibilityLabel("Next step for \(selectedMood.rawValue) mood")

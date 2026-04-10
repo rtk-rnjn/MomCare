@@ -2,22 +2,14 @@ import SwiftUI
 import TipKit
 
 struct ProfilePersonalInfoView: View {
-    init(name: String, dateOfBirth: Date, height: Int? = nil, currentWeight: Int? = nil, prePregnancyWeight: Int? = nil) {
-        self.name = name
-        self.dateOfBirth = dateOfBirth
-        self.height = height
-        self.currentWeight = currentWeight
-        self.prePregnancyWeight = prePregnancyWeight
-    }
-
     // MARK: Internal
 
-    @State var name: String
-    @State var dateOfBirth: Date
+    @State private var name: String = ""
+    @State private var dateOfBirth: Date = .init()
 
-    @State var height: Int?
-    @State var currentWeight: Int?
-    @State var prePregnancyWeight: Int?
+    @State private var height: Int?
+    @State private var currentWeight: Int?
+    @State private var prePregnancyWeight: Int?
 
     var body: some View {
         List {
@@ -100,6 +92,13 @@ struct ProfilePersonalInfoView: View {
                 .buttonStyle(.borderedProminent)
                 .tint(MomCareAccent.primary)
             }
+        }
+        .task {
+            name = authenticationService.userModel?.fullName ?? "Not Set"
+            dateOfBirth = authenticationService.userModel?.dateOfBirth ?? .init()
+            height = authenticationService.userModel?.height
+            currentWeight = authenticationService.userModel?.currentWeight
+            prePregnancyWeight = authenticationService.userModel?.prePregnancyWeight
         }
         .onChange(of: isEditing) {
             if !isEditing {

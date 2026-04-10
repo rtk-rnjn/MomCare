@@ -41,8 +41,6 @@ struct MyPlanDietPlanProgressCardView<TipContent: Tip>: View {
             }
         }
         .background(cardBackground)
-        .clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
-        .shadow(color: .black.opacity(0.07), radius: 12, x: 0, y: 4)
         .scaleEffect(isPressed ? 0.97 : 1.0)
         .onTapGesture(perform: toggleExpansion)
         .gesture(pressGesture)
@@ -213,7 +211,7 @@ struct MyPlanDietPlanProgressCardView<TipContent: Tip>: View {
                 ConcentricRectangle()
                     .fill(Color(.systemBackground))
             } else {
-                RoundedRectangle(cornerRadius: 16)
+                RoundedRectangle(cornerRadius: CornerRadius.outer)
                     .fill(Color(.systemBackground))
             }
         }

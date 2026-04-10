@@ -1,6 +1,16 @@
 import SwiftUI
-import TipKit
 import UIKit
+
+enum ProfileDestination: Hashable {
+    case personalInfo
+    case healthInfo
+    case accountSecurity
+    case notifications
+    case legal
+    case about
+    case whatsNew
+    case accountManagement
+}
 
 struct ProfileView: View {
     // MARK: Internal
@@ -8,63 +18,41 @@ struct ProfileView: View {
     var body: some View {
         List {
             Section {
-                NavigationLink {
-                    ProfilePersonalInfoView(
-                        name: authenticationService.userModel?.fullName ?? "Not Set",
-                        dateOfBirth: authenticationService.userModel?.dateOfBirth ?? .init(),
-                        height: authenticationService.userModel?.height,
-                        currentWeight: authenticationService.userModel?.currentWeight,
-                        prePregnancyWeight: authenticationService.userModel?.prePregnancyWeight
-                    )
-                } label: {
+                NavigationLink(value: ProfileDestination.personalInfo) {
                     Label("Personal Information", systemImage: "person.crop.circle")
                 }
 
-                NavigationLink {
-                    ProfileHealthInfoView()
-                } label: {
+                NavigationLink(value: ProfileDestination.healthInfo) {
                     Label("Health Information", systemImage: "heart.text.square")
                 }
             }
 
             Section {
-                NavigationLink {
-                    ProfileAccountSecurityView()
-                } label: {
+                NavigationLink(value: ProfileDestination.accountSecurity) {
                     Label("Account & Security", systemImage: "lock.shield")
                 }
 
-                NavigationLink {
-                    ProfileNotificationsView()
-                } label: {
+                NavigationLink(value: ProfileDestination.notifications) {
                     Label("Notifications", systemImage: "bell")
                 }
 
-                NavigationLink {
-                    LegalComplianceView()
-                } label: {
+                NavigationLink(value: ProfileDestination.legal) {
                     Label("Legal & Compliance", systemImage: "doc.text")
                 }
             }
 
             Section {
-                NavigationLink {
-                    AboutMomCareView()
-                } label: {
+                NavigationLink(value: ProfileDestination.about) {
                     Label("About MomCare+", systemImage: "info.circle")
                 }
 
-                NavigationLink {
-                    WhatsNewView()
-                } label: {
+                NavigationLink(value: ProfileDestination.whatsNew) {
                     Label("What's New", systemImage: "sparkles")
                 }
             }
 
             Section {
-                NavigationLink {
-                    ProfileAccountManagementView()
-                } label: {
+                NavigationLink(value: ProfileDestination.accountManagement) {
                     Label("Account Management", systemImage: "gearshape")
                 }
             }
@@ -90,6 +78,26 @@ struct ProfileView: View {
         .listStyle(.insetGrouped)
         .scrollContentBackground(.hidden)
         .background(Color(.systemGroupedBackground))
+        .navigationDestination(for: ProfileDestination.self) { destination in
+            switch destination {
+            case .personalInfo:
+                ProfilePersonalInfoView()
+            case .healthInfo:
+                ProfileHealthInfoView()
+            case .accountSecurity:
+                ProfileAccountSecurityView()
+            case .notifications:
+                ProfileNotificationsView()
+            case .legal:
+                LegalComplianceView()
+            case .about:
+                AboutMomCareView()
+            case .whatsNew:
+                WhatsNewView()
+            case .accountManagement:
+                ProfileAccountManagementView()
+            }
+        }
         .alert("Sign Out?", isPresented: $showSignOutAlert) {
             MCCancelButton {}
 
@@ -98,7 +106,6 @@ struct ProfileView: View {
                     await authenticationService.logout()
                 }
             }
-
         } message: {
             Text("You will need to log in again to access your MomCare+ account. All Events and data will remain intact.")
         }

@@ -2,7 +2,6 @@ import SwiftUI
 
 struct WhatsNewFeature: Identifiable {
     let id: UUID = .init()
-    let icon: String
     let iconColor: Color
     let iconBackgroundColor: Color
     let title: String
@@ -14,8 +13,6 @@ struct WhatsNewConfiguration {
     let headline: String
     let subheadline: String
     let features: [WhatsNewFeature]
-    let continueButtonTitle: String
-    let footnote: String?
 }
 
 struct WhatsNewView: View {
@@ -26,7 +23,7 @@ struct WhatsNewView: View {
     var body: some View {
         featureList
         .navigationTitle("\(configuration.headline) \(configuration.appVersion)")
-        .navigationBarTitleDisplayMode(.large)
+        .navigationBarTitleDisplayMode(.inline)
     }
 
     // MARK: Private
@@ -49,16 +46,6 @@ struct FeatureRow: View {
 
     var body: some View {
         HStack(alignment: .top, spacing: 18) {
-            ZStack {
-                RoundedRectangle(cornerRadius: 14, style: .continuous)
-                    .fill(feature.iconBackgroundColor)
-                    .frame(width: 56, height: 56)
-
-                Image(systemName: feature.icon)
-                    .font(.title2.weight(.semibold))
-                    .foregroundColor(feature.iconColor)
-            }
-
             VStack(alignment: .leading, spacing: 4) {
                 Text(feature.title)
                     .font(.headline)

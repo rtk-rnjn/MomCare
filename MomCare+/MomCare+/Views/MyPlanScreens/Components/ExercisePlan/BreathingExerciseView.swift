@@ -161,7 +161,6 @@ struct BreathingExerciseView: View {
                 )
                 .frame(width: 200, height: 200)
                 .scaleEffect(circleScale)
-                .shadow(color: accent.opacity(0.3), radius: 20, x: 0, y: 5)
 
             Circle()
                 .fill(Color.white.opacity(0.6))

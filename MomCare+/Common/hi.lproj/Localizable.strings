@@ -204,3 +204,43 @@
 "Height" = "कद";
 "Current Weight" = "वर्तमान वजन";
 "Pre Pregnancy Weight" = "गर्भावस्था से पहले वजन";
+
+// Settings -> Health Information
+
+"Due Date" = "गर्भावस्था की नियत तारीख";
+"Dietary Preferences" = "आहार वरीयताएँ";
+"Allergies" = "प्रत्यूर्जता";
+
+// Settings -> Account & Security
+
+"Account Information" = "खाता जानकारी";
+"Security" = "सुरक्षा";
+"Change Password" = "पासवर्ड बदलें";
+"Old Password" = "पुराना पासवर्ड";
+"New Password" = "नया पासवर्ड";
+"Confirm Password" = "पासवर्ड की पुष्टि करें";
+"Third Party Integration" = "तृतीय पक्ष एकीकरण";
+"Connect" = "कनेक्ट करें";
+
+// Settings -> Notifications
+
+"Enable Notifications" = "सूचनाओं को सक्षम करें";
+"Promotional Notifications" = "प्रचार सूचनाएं";
+
+// Settings -> Legal
+
+"Privacy Policy" = "गोपनीयता नीति";
+"Terms of Service" = "सेवा की शर्तें";
+"Disclaimers & Citations" = "अस्वीकरण और उद्धरण";
+"GDRP Rights" = "GDRP अधिकार";
+
+// Settings -> About
+
+"About Us" = "हमारे बारे में";
+"App Version" = "ऐप संस्करण";
+"Credits" = "आभार सूची";
+"Open Source" = "ओपन सोर्स";
+
+// Settings -> Account Management
+
+"Delete Account" = "खाता हटाएं";

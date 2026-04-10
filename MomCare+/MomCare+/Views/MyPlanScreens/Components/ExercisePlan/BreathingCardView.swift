@@ -79,7 +79,6 @@ struct BreathingCardView: View {
             RoundedRectangle(cornerRadius: 20)
                 .fill(Color(hex: "D0E1F0"))
         )
-        .shadow(color: darkAccentColor.opacity(0.08), radius: 8, x: 0, y: 4)
         .accessibilityElement(children: .contain)
         .accessibilityLabel("Breathing exercise, Beginner")
         .accessibilityValue("\(Int(max(0, min(completionProgress, 1)) * 100)) percent completed")

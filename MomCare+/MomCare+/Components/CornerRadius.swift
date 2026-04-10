@@ -30,8 +30,8 @@ enum CornerRadius {
     // MARK: Private
 
     private enum Base {
-        static let outer_iOS17: CGFloat = 20
-        static let inner_iOS17: CGFloat = 16
+        static let outer_iOS17: CGFloat = 12
+        static let inner_iOS17: CGFloat = 8
 
         static let outer_iOS26: CGFloat = 24
         static let inner_iOS26: CGFloat = 20

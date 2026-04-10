@@ -95,7 +95,6 @@ struct ExerciseCardView: View {
             RoundedRectangle(cornerRadius: 20)
                 .fill(Color(hex: "F0D5C8"))
         )
-        .shadow(color: darkAccentColor.opacity(0.08), radius: 8, x: 0, y: 4)
         .accessibilityElement(children: .contain)
         .accessibilityLabel(exercise.map { "\($0.name), \($0.level.rawValue)" } ?? "Exercise")
         .accessibilityValue("\(Int(completionProgress * 100)) percent completed")

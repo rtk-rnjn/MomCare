@@ -203,14 +203,12 @@ struct MyPlanExercisePlanView: View {
                 unsafe ExerciseInfoSheet(userExerciseModel: selectedExerciseInfo, isPresented: $showingExerciseInfo)
                     .frame(maxWidth: 360)
                     .frame(maxHeight: 500)
-                    .shadow(color: .black.opacity(0.15), radius: 20, y: 10)
                     .padding(.horizontal, 24)
                     .transition(.scale(scale: 0.9).combined(with: .opacity))
             } else if showingBreathingInfo {
                 unsafe BreathingInfoSheet(isPresented: $showingBreathingInfo)
                     .frame(maxWidth: 360)
                     .frame(maxHeight: 500)
-                    .shadow(color: .black.opacity(0.15), radius: 20, y: 10)
                     .padding(.horizontal, 24)
                     .transition(.scale(scale: 0.9).combined(with: .opacity))
             }
