@@ -179,10 +179,10 @@ struct MoodNestPlaylistsView: View {
                 .frame(width: geometry.size.width, height: geometry.size.width * 0.6)
             }
             .aspectRatio(5 / 3, contentMode: .fit)
-            .clipShape(RoundedRectangle(cornerRadius: 24, style: .continuous))
+            .clipShape(RoundedRectangle(cornerRadius: CornerRadius.outer, style: .continuous))
             .shadow(color: .black.opacity(0.25), radius: 16, x: 0, y: 8)
             .overlay(
-                RoundedRectangle(cornerRadius: 24, style: .continuous)
+                RoundedRectangle(cornerRadius: CornerRadius.outer, style: .continuous)
                     .stroke(Color.white.opacity(0.1), lineWidth: 1)
             )
         }

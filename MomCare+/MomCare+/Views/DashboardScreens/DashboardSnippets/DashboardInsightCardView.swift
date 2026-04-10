@@ -3,9 +3,9 @@ import SwiftUI
 struct DashboardInsightCardView: View {
     // MARK: Internal
 
-    let title: String
+    let title: LocalizedStringKey
     let message: String
-    let icon: String
+    let systemImageName: String
 
     var body: some View {
         VStack(spacing: 0) {
@@ -42,7 +42,7 @@ struct DashboardInsightCardView: View {
                         .fill(Color("secondaryAppColor"))
                         .frame(width: 38, height: 38)
 
-                    Image(systemName: icon)
+                    Image(systemName: systemImageName)
                         .foregroundStyle(.primary)
                         .font(.title3)
                 }

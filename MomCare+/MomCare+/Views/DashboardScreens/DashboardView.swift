@@ -146,7 +146,7 @@ struct DashboardView: View {
                 DashboardInsightCardView(
                     title: "Today's Focus",
                     message: contentServiceHandler.todayFocusText,
-                    icon: "target"
+                    systemImageName: "target"
                 )
                 .contextMenu {
                     Button {
@@ -171,7 +171,7 @@ struct DashboardView: View {
                 DashboardInsightCardView(
                     title: "Daily Tip",
                     message: contentServiceHandler.dailyTipText,
-                    icon: "lightbulb"
+                    systemImageName: "lightbulb"
                 )
                 .contextMenu {
                     Button {
@@ -199,22 +199,6 @@ struct DashboardView: View {
 
     // MARK: Private
 
-    @available(iOS 18, *)
-    private var tips: TipGroup {
-        TipGroup {
-            MomCareTips.Dashboard.DashboardWeekCardTip()
-            MomCareTips.Dashboard.DashboardEventCardTip()
-        }
-    }
-
-    private var currentTip: (any Tip)? {
-        if #available(iOS 18.0, *) {
-            return tips.currentTip
-        } else {
-            return nil
-        }
-    }
-
     @EnvironmentObject private var contentServiceHandler: ContentServiceHandler
     @EnvironmentObject private var eventKitHandler: EventKitHandler
     @EnvironmentObject private var authenticationService: MCAuthenticationService
@@ -227,15 +211,27 @@ struct DashboardView: View {
 
     @State private var show2048Game: Bool = false
     @State private var showWaterSortGame: Bool = false
+
+    @available(iOS 18, *)
+    private var tips: TipGroup {
+        TipGroup {
+            MomCareTips.Dashboard.DashboardWeekCardTip()
+            MomCareTips.Dashboard.DashboardEventCardTip()
+        }
+    }
+
+    private var currentTip: (any Tip)? {
+        if #available(iOS 18.0, *) {
+            tips.currentTip
+        } else {
+            nil
+        }
+    }
 }
 
 extension View {
     func dashboardCardStyle() -> some View {
-        clipShape(RoundedRectangle(cornerRadius: 24, style: .continuous))
-            .overlay(
-                RoundedRectangle(cornerRadius: 24, style: .continuous)
-                    .stroke(Color.primary.opacity(0.06), lineWidth: 0.5)
-            )
+        clipShape(RoundedRectangle(cornerRadius: CornerRadius.outer, style: .continuous))
             .shadow(color: .black.opacity(0.06), radius: 10, y: 4)
     }
 }

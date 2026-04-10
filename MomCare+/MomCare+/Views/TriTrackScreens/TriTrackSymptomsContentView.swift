@@ -23,7 +23,6 @@ struct TriTrackSymptomsContentView: View {
                             openDetails(for: symptomModel)
                         }
                     )
-                    .listRowBackground(Color.clear)
                     .listRowSeparator(.hidden)
                 }
             } header: {
@@ -43,6 +42,10 @@ struct TriTrackSymptomsContentView: View {
             }
         }
         .listStyle(.plain)
+        .background(RoundedRectangle(cornerRadius: 16).fill(Color(.systemBackground)))
+        .frame(maxWidth: .infinity)
+
+        // Utils
         .sheet(isPresented: $controlState.showingAddSymptomSheet) {
             TriTrackAddEditSymptomSheetView(selectedDate: selectedDate)
                 .presentationDetents([.medium, .large])
@@ -57,11 +60,6 @@ struct TriTrackSymptomsContentView: View {
                 .scrollDismissesKeyboard(.immediately)
                 .interactiveDismissDisabled(true)
         }
-        .frame(maxWidth: .infinity)
-        .background(
-            RoundedRectangle(cornerRadius: 16)
-                .fill(Color(.systemBackground))
-        )
         .navigationDestination(isPresented: $showDetail) {
             if let selectedSymptom {
                 TriTrackSymptomDetailView(symptom: selectedSymptom)

@@ -28,7 +28,7 @@ struct MyPlanExercisePlanView: View {
             }
             .frame(maxHeight: .infinity)
             .background(Color(.systemBackground))
-            .clipShape(RoundedCorner(radius: 24, corners: [.topLeft, .topRight]))
+            .clipShape(RoundedCorner(radius: CornerRadius.outer, corners: [.topLeft, .topRight]))
             .padding(.horizontal, 16)
         }
         .sheet(isPresented: $showHelp) {

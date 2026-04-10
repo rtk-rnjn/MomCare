@@ -176,9 +176,31 @@
 "Never miss a moment with reminders" = "रिमाइंडर के साथ कभी भी एक पल न चूकें";
 
 "Progress" = "प्रगति";
-"Trimester I" = "त्रैमासिक I";
-"Trimester II" = "त्रैमासिक II";
-"Trimester III" = "त्रैमासिक III";
-"No Upcoming Events" = "कोई आगामी अपॉइंटमेंट या इवेंट नहीं";
+"Trimester" = "त्रैमासिक";
+"No Upcoming Events" = "कोई आगामी इवेंट नहीं";
+"Daily Insights" = "दैनिक जानकारी";
 "Today's Focus" = "आज का ध्यान";
 "Daily Tip" = "दैनिक सुझाव";
+"Add Event" = "इवेंट जोड़ें";
+
+// Settings
+
+"Personal Information" = "व्यक्तिगत जानकारी";
+"Health Information" = "स्वास्थ्य जानकारी";
+"Account & Security" = "खाता और सुरक्षा";
+"Legal & Compliance" = "कानूनी और अनुपालन";
+"About MomCare+" = "मॉमकेयर+ के बारे में";
+"What's New" = "क्या नया है";
+"Account Management" = "खाता प्रबंधन";
+"Your experience matters to us" = "आपका अनुभव हमारे लिए महत्वपूर्ण है";
+"Connect with Us" = "हमसे जुड़ें";
+
+// Settings -> Personal Information
+
+"Basic Information" = "मूल जानकारी";
+"Full name" = "पूरा नाम";
+"Date of Birth" = "जन्म तिथि";
+"Measurements" = "माप";
+"Height" = "कद";
+"Current Weight" = "वर्तमान वजन";
+"Pre Pregnancy Weight" = "गर्भावस्था से पहले वजन";

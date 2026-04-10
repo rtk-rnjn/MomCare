@@ -152,7 +152,7 @@ struct OverviewOfServicesView: View {
 }
 
 struct ServiceDetail: View {
-    let title: String
+    let title: LocalizedStringKey
     let description: String
 
     var body: some View {

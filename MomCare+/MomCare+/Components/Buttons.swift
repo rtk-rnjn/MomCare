@@ -1,6 +1,5 @@
 import SwiftUI
 
-
 typealias MCEditButton = EditButton
 
 struct MCSaveButton: View {
@@ -34,7 +33,7 @@ struct MCDoneButton: View {
         if #available(iOS 26.0, *) {
             Button(role: .confirm, action: action)
         } else {
-            Button("Done", systemImage: "checkmark.circle", role: nil, action: action)
+            Button("Done", systemImage: "checkmark", role: nil, action: action)
         }
     }
 }
@@ -46,7 +45,7 @@ struct MCCloseButton: View {
         if #available(iOS 26.0, *) {
             Button(role: .cancel, action: action)
         } else {
-            Button("Cancel", systemImage: "xmark.circle", role: .cancel, action: action)
+            Button("Cancel", systemImage: "xmark", role: .cancel, action: action)
         }
     }
 }

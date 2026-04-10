@@ -251,7 +251,7 @@ struct PermissionsOnboardingSheet: View {
                         MomCareAccent.primary.opacity(
                             (allPermissionsGranted && !isAnyPermissionRequestInFlight) ? 1 : 0.35
                         ),
-                        in: RoundedRectangle(cornerRadius: 24, style: .continuous)
+                        in: RoundedRectangle(cornerRadius: CornerRadius.outer, style: .continuous)
                     )
             }
             .padding(.horizontal, 20)

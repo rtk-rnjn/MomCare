@@ -53,7 +53,7 @@ enum ValidDatabaseKeys {
             }
         }
 
-        return "MomCare_\(value.capitalized)"
+        return "MomCare_\(value)"
     }
 }
 

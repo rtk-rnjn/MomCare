@@ -31,6 +31,10 @@ struct MyPlanView: View {
 
     // MARK: Private
 
+    @AppStorage(FeatureFlagState.forceUseLargeTitle.rawValue, store: Database.shared.userDefaults) private var forceUseLargeTitle: Bool = false
+
+    @EnvironmentObject private var controlState: ControlState
+
     @available(iOS 18.0, *)
     private var dietPlanTips: TipGroup {
         TipGroup {
@@ -42,13 +46,9 @@ struct MyPlanView: View {
 
     private var currentTip: (any Tip)? {
         if #available(iOS 18.0, *) {
-            return dietPlanTips.currentTip
+            dietPlanTips.currentTip
         } else {
-            return nil
+            nil
         }
     }
-
-    @AppStorage(FeatureFlagState.forceUseLargeTitle.rawValue, store: Database.shared.userDefaults) private var forceUseLargeTitle: Bool = false
-
-    @EnvironmentObject private var controlState: ControlState
 }

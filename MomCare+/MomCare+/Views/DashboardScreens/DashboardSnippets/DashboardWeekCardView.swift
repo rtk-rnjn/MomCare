@@ -2,6 +2,8 @@ import SwiftUI
 import TipKit
 
 struct DashboardWeekCardView<TipContent: Tip>: View {
+    // MARK: Internal
+
     let week: Int?
     let day: Int?
     let trimester: String?
@@ -44,12 +46,17 @@ struct DashboardWeekCardView<TipContent: Tip>: View {
                     .frame(height: 52)
 
                 HStack {
-                    Text("Trimester \(trimester ?? "-")")
-                        .font(.title3.weight(.semibold))
-                        .lineLimit(1)
-                        .minimumScaleFactor(0.85)
-                        .padding(.leading, 16)
-                        .compatPopoverTip(tip, arrowEdge: .top)
+                    HStack {
+                        Text("Trimester")
+                        if let trimester {
+                            Text(trimester)
+                        }
+                    }
+                    .font(.title3.weight(.semibold))
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.85)
+                    .padding(.leading, 16)
+                    .compatPopoverTip(tip, arrowEdge: .top)
 
                     Spacer()
 
@@ -79,27 +86,9 @@ struct DashboardWeekCardView<TipContent: Tip>: View {
         .accessibilityIdentifier("dashboardWeekCard")
     }
 
+    // MARK: Private
+
     private var accessiblityValue: String {
         "Week \(week ?? 0), Day \(day ?? 0), Trimester \(trimester ?? "unknown")"
     }
 }
-
-extension View {
-
-    @ViewBuilder
-    func compatPopoverTip<TipContent>(
-        _ tip: TipContent?,
-        arrowEdge: Edge = .top
-    ) -> some View where TipContent: Tip {
-        if #available(iOS 26.0, *) {
-            self.popoverTip(tip, arrowEdge: arrowEdge)
-        } else {
-            if let tip {
-                self.popoverTip(tip, arrowEdge: arrowEdge)
-            } else {
-                self
-            }
-        }
-    }
-}
-

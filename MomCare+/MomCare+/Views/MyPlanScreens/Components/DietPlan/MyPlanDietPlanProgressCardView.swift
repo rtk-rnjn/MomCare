@@ -694,20 +694,20 @@ private struct ProgressRingView: View {
         if #available(iOS 18, *) {
             switch targetModification {
             case .increased:
-                return .secondary.mix(with: .black, by: 0.2)
+                .secondary.mix(with: .black, by: 0.2)
             case .decreased:
-                return .secondary.mix(with: .white, by: 0.35)
+                .secondary.mix(with: .white, by: 0.35)
             case .none:
-                return .secondary
+                .secondary
             }
         } else {
             switch targetModification {
             case .increased:
-                return .secondary.opacity(0.8)
+                .secondary.opacity(0.8)
             case .decreased:
-                return .secondary.opacity(0.65)
+                .secondary.opacity(0.65)
             case .none:
-                return .secondary
+                .secondary
             }
         }
     }
@@ -925,20 +925,20 @@ private struct MacroBarRow: View {
         if #available(iOS 18, *) {
             switch targetModification {
             case .increased:
-                return .secondary.mix(with: .black, by: 0.2)
+                .secondary.mix(with: .black, by: 0.2)
             case .decreased:
-                return .secondary.mix(with: .white, by: 0.35)
+                .secondary.mix(with: .white, by: 0.35)
             case .none:
-                return .secondary
+                .secondary
             }
         } else {
             switch targetModification {
             case .increased:
-                return .secondary.opacity(0.8)
+                .secondary.opacity(0.8)
             case .decreased:
-                return .secondary.opacity(0.65)
+                .secondary.opacity(0.65)
             case .none:
-                return .secondary
+                .secondary
             }
         }
     }

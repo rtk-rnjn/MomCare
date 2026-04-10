@@ -2,82 +2,88 @@ import SwiftUI
 import TipKit
 import UIKit
 
-struct ProfileSection: Identifiable {
-    var id: UUID = .init()
-    let rows: [ProfileRow]
-}
-
-struct ProfileRow: Identifiable {
-    var id: UUID = .init()
-
-    let title: String
-    let systemImage: String
-    let type: ProfileRowType
-}
-
-private let sections: [ProfileSection] = [
-    ProfileSection(rows: [
-        ProfileRow(title: "Personal Information", systemImage: "person.crop.circle", type: .personalInformation),
-        ProfileRow(title: "Health Information", systemImage: "heart.text.square", type: .healthInformation)
-    ]),
-
-    ProfileSection(rows: [
-        ProfileRow(title: "Account and Security", systemImage: "lock.shield", type: .security),
-        ProfileRow(title: "Notifications", systemImage: "bell", type: .notifications),
-        ProfileRow(title: "Legal & Compliance", systemImage: "doc.text", type: .legal)
-    ]),
-
-    ProfileSection(rows: [
-        ProfileRow(title: "About MomCare+", systemImage: "info.circle", type: .aboutApplication),
-        ProfileRow(title: "What's New", systemImage: "sparkles", type: .whatsNew)
-    ]),
-
-    ProfileSection(rows: [
-        ProfileRow(title: "Account Management", systemImage: "gearshape", type: .accountManagement)
-    ]),
-    ProfileSection(rows: [
-        ProfileRow(title: "Sign Out", systemImage: "", type: .signOut)
-    ]),
-
-    ProfileSection(rows: [
-        ProfileRow(title: "footer", systemImage: "", type: .footerText)
-    ])
-]
-
 struct ProfileView: View {
     // MARK: Internal
 
     var body: some View {
         List {
-            ForEach(sections.indices, id: \.self) { sectionIndex in
-                Section {
-                    ForEach(sections[sectionIndex].rows) { row in
-                        switch row.type {
-                        case .footerText:
-                            footerView
-
-                        case .signOut:
-                            Button {
-                                showSignOutAlert = true
-                            } label: {
-                                Text("Sign Out")
-                                    .fontWeight(.semibold)
-                                    .foregroundStyle(.red)
-                                    .frame(maxWidth: .infinity)
-                            }
-                            .accessibilityLabel("Sign out")
-                            .accessibilityHint("Signs you out of your MomCare+ account")
-
-                        default:
-                            NavigationLink {
-                                destinationView(for: row.type)
-                            } label: {
-                                rowView(row)
-                            }
-                            .accessibilityHint("Navigate to \(row.title)")
-                        }
-                    }
+            Section {
+                NavigationLink {
+                    ProfilePersonalInfoView(
+                        name: authenticationService.userModel?.fullName ?? "Not Set",
+                        dateOfBirth: authenticationService.userModel?.dateOfBirth ?? .init(),
+                        height: authenticationService.userModel?.height,
+                        currentWeight: authenticationService.userModel?.currentWeight,
+                        prePregnancyWeight: authenticationService.userModel?.prePregnancyWeight
+                    )
+                } label: {
+                    Label("Personal Information", systemImage: "person.crop.circle")
                 }
+
+                NavigationLink {
+                    ProfileHealthInfoView()
+                } label: {
+                    Label("Health Information", systemImage: "heart.text.square")
+                }
+            }
+
+            Section {
+                NavigationLink {
+                    ProfileAccountSecurityView()
+                } label: {
+                    Label("Account & Security", systemImage: "lock.shield")
+                }
+
+                NavigationLink {
+                    ProfileNotificationsView()
+                } label: {
+                    Label("Notifications", systemImage: "bell")
+                }
+
+                NavigationLink {
+                    LegalComplianceView()
+                } label: {
+                    Label("Legal & Compliance", systemImage: "doc.text")
+                }
+            }
+
+            Section {
+                NavigationLink {
+                    AboutMomCareView()
+                } label: {
+                    Label("About MomCare+", systemImage: "info.circle")
+                }
+
+                NavigationLink {
+                    WhatsNewView()
+                } label: {
+                    Label("What's New", systemImage: "sparkles")
+                }
+            }
+
+            Section {
+                NavigationLink {
+                    ProfileAccountManagementView()
+                } label: {
+                    Label("Account Management", systemImage: "gearshape")
+                }
+            }
+
+            Section {
+                Button {
+                    showSignOutAlert = true
+                } label: {
+                    Text("Sign Out")
+                        .fontWeight(.semibold)
+                        .foregroundStyle(.red)
+                        .frame(maxWidth: .infinity)
+                }
+                .accessibilityLabel("Sign out")
+                .accessibilityHint("Signs you out of your MomCare+ account")
+            }
+
+            Section {
+                footerView
             }
         }
         .navigationTitle(AppTab.settings.title)
@@ -88,7 +94,9 @@ struct ProfileView: View {
             MCCancelButton {}
 
             Button("Sign Out", role: .destructive) {
-                performSignOut()
+                Task {
+                    await authenticationService.logout()
+                }
             }
 
         } message: {
@@ -105,7 +113,7 @@ struct ProfileView: View {
 
     private var footerView: some View {
         VStack(spacing: 4) {
-            Text("Your experience matters to us.")
+            Text("Your experience matters to us")
                 .foregroundStyle(.secondary)
 
             Text("Connect with Us")
@@ -131,59 +139,5 @@ struct ProfileView: View {
         .multilineTextAlignment(.center)
         .padding(.vertical, 8)
         .listRowBackground(Color.clear)
-    }
-
-    private func rowView(_ row: ProfileRow) -> some View {
-        HStack(spacing: 12) {
-            Image(systemName: row.systemImage)
-                .foregroundStyle(Color("primaryAppColor"))
-                .accessibilityHidden(true)
-
-            Text(row.title)
-        }
-    }
-
-    @ViewBuilder
-    private func destinationView(for type: ProfileRowType) -> some View {
-        switch type {
-        case .personalInformation:
-            ProfilePersonalInfoView(
-                name: authenticationService.userModel?.fullName ?? "Not Set",
-                dateOfBirth: authenticationService.userModel?.dateOfBirth ?? .init(),
-                height: authenticationService.userModel?.height,
-                currentWeight: authenticationService.userModel?.currentWeight,
-                prePregnancyWeight: authenticationService.userModel?.prePregnancyWeight
-            )
-
-        case .healthInformation:
-            ProfileHealthInfoView()
-
-        case .security:
-            ProfileAccountSecurityView()
-
-        case .legal:
-            LegalComplianceView()
-
-        case .aboutApplication:
-            AboutMomCareView()
-
-        case .accountManagement:
-            ProfileAccountManagementView()
-
-        case .notifications:
-            ProfileNotificationsView()
-
-        case .whatsNew:
-            WhatsNewView()
-
-        default:
-            EmptyView()
-        }
-    }
-
-    private func performSignOut() {
-        Task {
-            await authenticationService.logout()
-        }
     }
 }

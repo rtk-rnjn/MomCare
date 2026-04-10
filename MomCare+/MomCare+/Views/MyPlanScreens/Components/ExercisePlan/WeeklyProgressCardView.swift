@@ -80,7 +80,7 @@ struct WeeklyProgressCardView: View {
         }
         .padding(18)
         .background(
-            RoundedRectangle(cornerRadius: 24, style: .continuous)
+            RoundedRectangle(cornerRadius: CornerRadius.outer, style: .continuous)
                 .fill(Color(.systemBackground))
         )
     }

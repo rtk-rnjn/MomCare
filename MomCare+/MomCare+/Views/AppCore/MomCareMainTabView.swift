@@ -124,42 +124,6 @@ struct MomCareMainTabView: View {
         }
     }
 
-    private func refreshAccessToken() async {
-        isRefreshing = true
-        defer { isRefreshing = false }
-
-        do {
-            try await authenticationService.refresh()
-        } catch {
-            let refresh = await authenticationService.autoLogin()
-            if refresh != nil {
-                return
-            }
-            refreshError = RefreshError()
-        }
-    }
-
-    private func fetchDailyInsights() async throws {
-        while true {
-            do {
-
-                let networkResponse = try await MCContentRepository.shared.generateDailyInsights()
-
-                contentServiceHandler.todayFocusText = networkResponse.data.todaysFocus
-                contentServiceHandler.dailyTipText = networkResponse.data.dailyTip
-
-                return
-
-            } catch {
-                if error is LongPolling {
-                    continue
-                } else {
-                    throw error
-                }
-            }
-        }
-    }
-
     @available(iOS 18, *)
     private func modernTabView(bottomPadding: CGFloat) -> some View {
         TabView(selection: $controlState.selectedTab) {
@@ -194,7 +158,6 @@ struct MomCareMainTabView: View {
 
     private func legacyTabView(bottomPadding: CGFloat) -> some View {
         TabView(selection: $controlState.selectedTab) {
-
             NavigationStack {
                 DashboardView()
                     .safeAreaPadding(bottomPadding)
@@ -241,13 +204,48 @@ struct MomCareMainTabView: View {
             .tag(AppTab.settings)
         }
     }
+
+    private func refreshAccessToken() async {
+        isRefreshing = true
+        defer { isRefreshing = false }
+
+        do {
+            try await authenticationService.refresh()
+        } catch {
+            let refresh = await authenticationService.autoLogin()
+            if refresh != nil {
+                return
+            }
+            refreshError = RefreshError()
+        }
+    }
+
+    private func fetchDailyInsights() async throws {
+        while true {
+            do {
+                let networkResponse = try await MCContentRepository.shared.generateDailyInsights()
+
+                contentServiceHandler.todayFocusText = networkResponse.data.todaysFocus
+                contentServiceHandler.dailyTipText = networkResponse.data.dailyTip
+
+                return
+
+            } catch {
+                if error is LongPolling {
+                    continue
+                } else {
+                    throw error
+                }
+            }
+        }
+    }
 }
 
 extension View {
     @ViewBuilder
     func compatTabBarMinimizeOnScroll() -> some View {
         if #available(iOS 26, *) {
-            self.tabBarMinimizeBehavior(.onScrollDown)
+            tabBarMinimizeBehavior(.onScrollDown)
         } else {
             self
         }

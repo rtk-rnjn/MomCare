@@ -31,7 +31,7 @@ struct BaseInfoSheetLayout<HeaderIcon: View>: View {
                 .padding(.bottom, 16)
             }
             .background(Color(.systemBackground))
-            .clipShape(RoundedRectangle(cornerRadius: 24, style: .continuous))
+            .clipShape(RoundedRectangle(cornerRadius: CornerRadius.outer, style: .continuous))
 
             Button(action: onClose) {
                 Image(systemName: "xmark")

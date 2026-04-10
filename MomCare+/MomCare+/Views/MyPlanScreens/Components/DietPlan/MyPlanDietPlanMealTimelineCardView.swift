@@ -516,12 +516,10 @@ extension View {
         bottom: CGFloat
     ) -> some View {
         if #available(iOS 26, *) {
-            self
-                .listRowInsets(.top, top)
+            listRowInsets(.top, top)
                 .listRowInsets(.bottom, bottom)
         } else {
-            self
-                .listRowInsets(
+            listRowInsets(
                     EdgeInsets(
                         top: top,
                         leading: 16,

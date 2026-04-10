@@ -37,7 +37,7 @@ struct MyPlanDietPlanView: View {
                 sodiumGoal: contentServiceHandler.nutritionGoalTotals?.sodiumMass,
                 recommendedSodiumGoal: contentServiceHandler.recommendedNutritionGoalTotals?.sodiumMass
             )
-            .containerShape(RoundedRectangle(cornerRadius: 24, style: .continuous))
+            .containerShape(RoundedRectangle(cornerRadius: CornerRadius.outer, style: .continuous))
             .padding(.horizontal, 16)
             .contextMenu {
                 Button {
@@ -62,7 +62,7 @@ struct MyPlanDietPlanView: View {
 
                 .padding(.bottom, 8)
                 .frame(maxHeight: .infinity)
-                .clipShape(RoundedCorner(radius: 24, corners: [.topLeft, .topRight]))
+                .clipShape(RoundedCorner(radius: CornerRadius.outer, corners: [.topLeft, .topRight]))
                 .padding(.horizontal, 16)
         }
         .padding(.top, 8)

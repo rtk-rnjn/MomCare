@@ -2,19 +2,15 @@ import SwiftUI
 import TipKit
 
 struct ProfilePersonalInfoView: View {
-    // MARK: Internal
-
-    enum SheetType: Identifiable {
-        case height
-        case currentWeight
-        case prePregnancyWeight
-
-        // MARK: Internal
-
-        var id: Int {
-            hashValue
-        }
+    init(name: String, dateOfBirth: Date, height: Int? = nil, currentWeight: Int? = nil, prePregnancyWeight: Int? = nil) {
+        self.name = name
+        self.dateOfBirth = dateOfBirth
+        self.height = height
+        self.currentWeight = currentWeight
+        self.prePregnancyWeight = prePregnancyWeight
     }
+
+    // MARK: Internal
 
     @State var name: String
     @State var dateOfBirth: Date
@@ -26,19 +22,30 @@ struct ProfilePersonalInfoView: View {
     var body: some View {
         List {
             Section {
-                ProfileEditableTextRow(title: "Full name", text: $name, isEditing: isEditing, displayText: name)
+                HStack {
+                    Text("Full name")
+                        .foregroundStyle(.primary)
+
+                    Spacer()
+
+                    TextField(name, text: $name)
+                        .multilineTextAlignment(.trailing)
+                        .foregroundStyle(isEditing ? MomCareAccent.primary : .secondary)
+                        .disabled(!isEditing)
+                        .accessibilityLabel("Full name")
+                }
+                .accessibilityElement(children: .combine)
+                .accessibilityLabel(
+                    Text("Full name") + Text(": ") + Text(name)
+                )
 
                 InfoRowDate(
                     title: "Date of Birth",
                     date: dateOfBirth,
                     isEditing: isEditing
                 ) {
-                    if reduceMotion {
+                    withAnimation(reduceMotion ? nil : .default) {
                         showDateOfBirthPicker.toggle()
-                    } else {
-                        withAnimation {
-                            showDateOfBirthPicker.toggle()
-                        }
                     }
                 }
 
@@ -57,21 +64,21 @@ struct ProfilePersonalInfoView: View {
             }
 
             Section {
-                pickerRow("Height", value: measurementFormatter.string(from: Measurement(value: Double(height ?? 0), unit: UnitLength.centimeters))) {
+                pickerRow("Height", value: Self.measurementFormatter.string(from: Measurement(value: Double(height ?? 0), unit: UnitLength.centimeters))) {
                     activeSheet = .height
                 }
 
-                pickerRow("Current Weight", value: measurementFormatter.string(from: Measurement(value: Double(currentWeight ?? 0), unit: UnitMass.kilograms))) {
+                pickerRow("Current Weight", value: Self.measurementFormatter.string(from: Measurement(value: Double(currentWeight ?? 0), unit: UnitMass.kilograms))) {
                     activeSheet = .currentWeight
                 }
 
-                pickerRow("Pre Pregnancy Weight", value: measurementFormatter.string(from: Measurement(value: Double(prePregnancyWeight ?? 0), unit: UnitMass.kilograms))) {
+                pickerRow("Pre Pregnancy Weight", value: Self.measurementFormatter.string(from: Measurement(value: Double(prePregnancyWeight ?? 0), unit: UnitMass.kilograms))) {
                     activeSheet = .prePregnancyWeight
                 }
             } header: {
                 Text("Measurements")
             } footer: {
-                Text("This information will help us provide you with personalized insights and recommendations throughout your pregnancy journey.")
+                Text("This information will help us provide you with personalized insights and recommendations throughout your pregnancy journey")
                     .font(.footnote)
             }
         }
@@ -97,24 +104,19 @@ struct ProfilePersonalInfoView: View {
         .onChange(of: isEditing) {
             if !isEditing {
                 showDateOfBirthPicker = false
-            }
-        }
-        .onChange(of: isEditing) {
-            if isEditing {
-                return
-            }
 
-            Task {
-                do {
-                    try await makeChanges()
-                } catch {
-                    showingAlert = true
-                    alertMessage = error.localizedDescription
+                Task {
+                    do {
+                        try await makeChanges()
+                    } catch {
+                        showingAlert = true
+                        alertMessage = error.localizedDescription
+                    }
                 }
             }
         }
-        .alert(isPresented: $showingAlert) {
-            Alert(title: Text("Error"), message: Text(alertMessage), dismissButton: .default(Text("OK")))
+        .alert("Error", isPresented: $showingAlert) {
+            Button("OK", role: .cancel) {}
         }
         .sheet(item: $activeSheet) { sheet in
             switch sheet {
@@ -145,7 +147,7 @@ struct ProfilePersonalInfoView: View {
         }
     }
 
-    func pickerRow(_ title: String, value: String, action: @escaping () -> Void) -> some View {
+    func pickerRow(_ title: LocalizedStringKey, value: String, action: @escaping () -> Void) -> some View {
         Button {
             guard isEditing else {
                 return
@@ -156,7 +158,9 @@ struct ProfilePersonalInfoView: View {
             InfoRow(title: title, value: value, isEditing: isEditing)
         }
         .buttonStyle(.plain)
-        .accessibilityHint(isEditing ? "Tap to change \(title)" : "")
+        .accessibilityHint(
+            isEditing ? Text("Tap to change ") + Text(title) : Text("")
+        )
     }
 
     func makeChanges() async throws {
@@ -200,6 +204,24 @@ struct ProfilePersonalInfoView: View {
 
     // MARK: Private
 
+    private enum SheetType: Int, Identifiable {
+        case height
+        case currentWeight
+        case prePregnancyWeight
+
+        // MARK: Internal
+
+        var id: Int {
+            rawValue
+        }
+    }
+
+    private static let measurementFormatter: MeasurementFormatter = {
+        let formatter = MeasurementFormatter()
+        formatter.unitOptions = .providedUnit
+        return formatter
+    }()
+
     @Environment(\.accessibilityReduceMotion) private var reduceMotion: Bool
     @EnvironmentObject private var authenticationService: MCAuthenticationService
     @EnvironmentObject private var contentService: ContentServiceHandler
@@ -210,12 +232,6 @@ struct ProfilePersonalInfoView: View {
     @State private var activeSheet: SheetType?
     @State private var showingAlert = false
     @State private var alertMessage = ""
-
-    private var measurementFormatter: MeasurementFormatter {
-        let formatter = MeasurementFormatter()
-        formatter.unitOptions = .providedUnit
-        return formatter
-    }
 
     private var allowedDateOfBirthRange: ClosedRange<Date> {
         let calendar = Calendar.current
@@ -229,7 +245,7 @@ struct ProfilePersonalInfoView: View {
 }
 
 private struct InfoRow: View {
-    let title: String
+    let title: LocalizedStringKey
     let value: String
     let isEditing: Bool
 
@@ -244,31 +260,8 @@ private struct InfoRow: View {
                 .foregroundStyle(isEditing ? Color("primaryAppColor") : .secondary)
         }
         .accessibilityElement(children: .combine)
-        .accessibilityLabel("\(title): \(value)")
-    }
-}
-
-private struct ProfileEditableTextRow: View {
-    let title: String
-    @Binding var text: String
-
-    let isEditing: Bool
-    let displayText: String
-
-    var body: some View {
-        HStack {
-            Text(title)
-                .foregroundStyle(.primary)
-
-            Spacer()
-
-            TextField(displayText, text: $text)
-                .multilineTextAlignment(.trailing)
-                .foregroundStyle(isEditing ? MomCareAccent.primary : .secondary)
-                .disabled(!isEditing)
-                .accessibilityLabel(title)
-        }
-        .accessibilityElement(children: .combine)
-        .accessibilityLabel("\(title): \(displayText)")
+        .accessibilityLabel(
+            Text(title) + Text(": ") + Text(value)
+        )
     }
 }

@@ -207,7 +207,7 @@ struct TriTrackView: View {
             tabContent
         }
         .background(Color(.systemBackground))
-        .clipShape(RoundedCorner(radius: 24, corners: [.topLeft, .topRight]))
+        .clipShape(RoundedCorner(radius: CornerRadius.outer, corners: [.topLeft, .topRight]))
     }
 
     @ViewBuilder
@@ -299,9 +299,9 @@ struct PregnancyProgressView: View {
 
     private var currentTip: (any Tip)? {
         if #available(iOS 18.0, *) {
-            return tips.currentTip
+            tips.currentTip
         } else {
-            return nil
+            nil
         }
     }
 

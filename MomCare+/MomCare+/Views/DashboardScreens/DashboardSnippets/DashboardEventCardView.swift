@@ -92,15 +92,15 @@ struct DashboardEventCardView<TipContent: Tip>: View {
 
     @State private var date: Date = .init()
 
-    private var accessiblityLabel: String {
-        upcomingEvent.map { "Upcoming event: \($0.title ?? "untitled")" } ?? "No upcoming events"
-    }
-
     @EnvironmentObject private var eventKitHandler: EventKitHandler
     @EnvironmentObject private var controlState: ControlState
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     @State private var showEventSheet: Bool = false
+
+    private var accessiblityLabel: String {
+        upcomingEvent.map { "Upcoming event: \($0.title ?? "untitled")" } ?? "No upcoming events"
+    }
 
     private var upcommingEventView: some View {
         VStack(alignment: .leading, spacing: 6) {
