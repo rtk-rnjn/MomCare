@@ -1,6 +1,7 @@
 import OSLog
 
 private let bundleIdentifier = Bundle.main.bundleIdentifier ?? "com.MomCare"
+
 enum MomCareLogger {
     enum ViewModel {
         static let authentication: Logger = .init(subsystem: bundleIdentifier, category: "ViewModel.Authentication")

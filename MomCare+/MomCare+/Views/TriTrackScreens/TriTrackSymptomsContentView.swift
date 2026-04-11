@@ -44,7 +44,6 @@ struct TriTrackSymptomsContentView: View {
         .listStyle(.plain)
         .background(RoundedRectangle(cornerRadius: 16).fill(Color(.systemBackground)))
         .frame(maxWidth: .infinity)
-
         // Utils
         .sheet(isPresented: $controlState.showingAddSymptomSheet) {
             TriTrackAddEditSymptomSheetView(selectedDate: selectedDate)

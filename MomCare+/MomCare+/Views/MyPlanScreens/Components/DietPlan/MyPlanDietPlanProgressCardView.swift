@@ -1,5 +1,5 @@
-import SwiftUI
 import HealthKit
+import SwiftUI
 import TipKit
 
 struct MyPlanDietPlanProgressCardView<TipContent: Tip>: View {

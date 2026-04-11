@@ -64,7 +64,7 @@
 "Phone Number" = "फ़ोन नंबर";
 "Verify" = "सत्यापित करें";
 "Verification Code" = "सत्यापन कोड";
-//"Forget Password?" = "पासवर्ड भूल गए?"
+"Forget Password?" = "पासवर्ड भूल गए?";
 "Don't have an account?" = "खाता नहीं है?";
 
 
@@ -105,7 +105,6 @@
 "Month" = "महीना";
 "Year" = "वर्ष";
 "Schedule" = "अनुसूची";
-
 
 "Allow" = "अनुमति दें";
 "Deny" = "अस्वीकार करें";

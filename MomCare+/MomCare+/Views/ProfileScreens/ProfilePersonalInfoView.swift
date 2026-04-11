@@ -4,13 +4,6 @@ import TipKit
 struct ProfilePersonalInfoView: View {
     // MARK: Internal
 
-    @State private var name: String = ""
-    @State private var dateOfBirth: Date = .init()
-
-    @State private var height: Int?
-    @State private var currentWeight: Int?
-    @State private var prePregnancyWeight: Int?
-
     var body: some View {
         List {
             Section {
@@ -220,6 +213,13 @@ struct ProfilePersonalInfoView: View {
         formatter.unitOptions = .providedUnit
         return formatter
     }()
+
+    @State private var name: String = ""
+    @State private var dateOfBirth: Date = .init()
+
+    @State private var height: Int?
+    @State private var currentWeight: Int?
+    @State private var prePregnancyWeight: Int?
 
     @Environment(\.accessibilityReduceMotion) private var reduceMotion: Bool
     @EnvironmentObject private var authenticationService: MCAuthenticationService

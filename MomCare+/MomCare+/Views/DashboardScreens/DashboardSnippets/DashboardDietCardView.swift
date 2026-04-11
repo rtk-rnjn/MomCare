@@ -31,6 +31,8 @@ struct DashboardDietCardView: View {
         }
     }
 
+    // MARK: Private
+
     @State private var animatedProgress: Double = 0
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @Environment(\.accessibilityReduceTransparency) private var reduceTransparency

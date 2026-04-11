@@ -30,9 +30,7 @@ struct DebugMenuView: View {
                         case .crashSimulator: Image(systemName: "exclamationmark.triangle")
                         }
                     }
-
                 }
-
             }
         }
         .navigationTitle("Debug Menu")

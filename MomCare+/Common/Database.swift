@@ -1,10 +1,10 @@
 import CryptoKit
 import EventKit
 import Foundation
-import UIKit
 import OSLog
+import UIKit
 
-private let logger = MomCareLogger.database
+private let logger: Logger = MomCareLogger.database
 
 private let appGroup = "group.MomCare"
 
