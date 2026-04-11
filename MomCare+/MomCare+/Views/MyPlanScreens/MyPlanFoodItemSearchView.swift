@@ -257,7 +257,7 @@ private struct NutritionDetailSheet: View {
 }
 
 private struct NutritionCell: View {
-    let label: String
+    let label: LocalizedStringKey
     let value: String
     let unit: String
 
@@ -278,6 +278,12 @@ private struct NutritionCell: View {
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(.vertical, 14)
         .accessibilityElement(children: .combine)
-        .accessibilityLabel("\(label), \(value) \(unit)")
+        .accessibilityLabel(
+            Text(label) +
+            Text(", ") +
+            Text("\(value)") +
+            Text(" ") +
+            Text(unit)
+        )
     }
 }

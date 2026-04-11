@@ -232,5 +232,6 @@ struct DashboardView: View {
 extension View {
     func dashboardCardStyle() -> some View {
         clipShape(RoundedRectangle(cornerRadius: CornerRadius.outer, style: .continuous))
+            .shadow(color: .black.opacity(0.06), radius: 10, y: 4)
     }
 }

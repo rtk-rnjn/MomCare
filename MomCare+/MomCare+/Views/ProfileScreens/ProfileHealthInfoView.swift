@@ -48,7 +48,6 @@ struct ProfileHealthInfoView: View {
             } footer: {
                 Text("This information helps us provide you with more personalized content and recommendations.")
                     .font(.footnote)
-                    .foregroundStyle(.secondary)
             }
 
             Section {

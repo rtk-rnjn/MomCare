@@ -54,7 +54,7 @@ struct MyPlanDietPlanMealTimelineCardView<AddFoodItemTip: Tip, SlideFoodItemRowT
 
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
-    private func mealSection(title: String, items: [FoodReferenceModel], originalItems: [FoodReferenceModel], mealType: MealType) -> some View {
+    private func mealSection(title: LocalizedStringKey, items: [FoodReferenceModel], originalItems: [FoodReferenceModel], mealType: MealType) -> some View {
         Section {
             MealTimelineHeaderRow(
                 section: MealSection(title: title, items: items),
@@ -153,7 +153,11 @@ private struct MealTimelineHeaderRow<TipContent: Tip>: View {
                     await onToggle(section.isCompleted)
                 }
             }
-            .accessibilityLabel(section.isCompleted ? "Mark \(section.title) as not completed" : "Mark \(section.title) as completed")
+            .accessibilityLabel(
+                Text("Mark ") +
+                Text(section.title) +
+                Text(section.isCompleted ? " as not completed" : " as completed")
+            )
             .accessibilityAddTraits(.isButton)
             .accessibilityAction(.default) {
                 Task {
@@ -180,7 +184,9 @@ private struct MealTimelineHeaderRow<TipContent: Tip>: View {
                     .foregroundStyle(MomCareAccent.primary)
             }
             .compatPopoverTip(tip, arrowEdge: .trailing)
-            .accessibilityLabel("Add food to \(section.title)")
+            .accessibilityLabel(
+                Text("Add food to ") + Text(section.title)
+            )
             .frame(minWidth: 44, minHeight: 44)
         }
         .frame(height: 66)
@@ -441,7 +447,7 @@ private struct NutritionPreview: View {
 
     // MARK: Private
 
-    private func nutrientLabel(_ label: String, _ value: String) -> some View {
+    private func nutrientLabel(_ label: LocalizedStringKey, _ value: String) -> some View {
         HStack(spacing: 4) {
             Text(label).font(.caption2).foregroundStyle(.secondary)
             Text(value).font(.caption2.weight(.semibold))
@@ -501,7 +507,7 @@ private struct TimelineCircle: View {
 
 private struct MealSection: Identifiable {
     let id: UUID = .init()
-    let title: String
+    let title: LocalizedStringKey
     var items: [FoodReferenceModel]
 
     var isCompleted: Bool {

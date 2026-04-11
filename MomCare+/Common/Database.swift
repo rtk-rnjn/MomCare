@@ -2,6 +2,9 @@ import CryptoKit
 import EventKit
 import Foundation
 import UIKit
+import OSLog
+
+private let logger = MomCareLogger.database
 
 private let appGroup = "group.MomCare"
 
@@ -108,6 +111,7 @@ final class Database {
         let keysToDeletePrefix = "MomCare_"
 
         for key in userDefaults.dictionaryRepresentation().keys where key.hasPrefix(keysToDeletePrefix) && !keysNotToDeletePrefix.contains(where: { key.hasPrefix($0) }) {
+            logger.info("Purging key: \(key, privacy: .public)")
             userDefaults.removeObject(forKey: key)
         }
     }
@@ -130,6 +134,7 @@ final class Database {
                 return
             }
 
+            logger.debug("Storing value for key: \(key.rawValue, privacy: .public)")
             userDefaults.set(data, forKey: key.rawValue)
         }
     }

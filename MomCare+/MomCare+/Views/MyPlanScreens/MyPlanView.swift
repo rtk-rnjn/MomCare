@@ -8,7 +8,7 @@ struct MyPlanView: View {
         VStack(spacing: 0) {
             Picker("", selection: $controlState.myPlanSegment) {
                 ForEach(MyPlanSegment.allCases) { segment in
-                    Text(segment.rawValue).tag(segment)
+                    Text(LocalizedStringKey(stringLiteral: segment.rawValue)).tag(segment)
                 }
             }
             .pickerStyle(.segmented)

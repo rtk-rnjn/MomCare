@@ -1,4 +1,5 @@
 import SwiftUI
+import HealthKit
 import TipKit
 
 struct MyPlanDietPlanProgressCardView<TipContent: Tip>: View {
@@ -821,7 +822,7 @@ private struct ProgressRingView: View {
 private struct MacroBarRow: View {
     // MARK: Internal
 
-    let title: String
+    let title: LocalizedStringKey
     let intake: Measurement<UnitMass>?
     let goal: Measurement<UnitMass>?
     let recommendedGoal: Measurement<UnitMass>?

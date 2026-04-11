@@ -43,7 +43,6 @@ struct AboutMomCareView: View {
                 } footer: {
                     Text("Debug options are intended for developers and testers to diagnose issues. Avoid using them unless you know what you're doing.")
                         .font(.footnote)
-                        .foregroundStyle(.secondary)
                 }
                 .transition(.opacity.combined(with: .move(edge: .bottom)))
             }

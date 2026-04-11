@@ -243,23 +243,32 @@ struct PregnancyProgressView: View {
     var body: some View {
         VStack(spacing: 16) {
             VStack(spacing: 2) {
-                Text("Trimester \(pregnancyData.trimester)")
-                    .font(.title3)
-                    .fontWeight(.semibold)
-                    .accessibilityAddTraits(.isHeader)
-                    .contentTransition(reduceMotion ? .identity : .interpolate)
-                    .animation(reduceMotion ? nil : .easeInOut, value: pregnancyData.trimester)
+                HStack {
+                    Text("Trimester")
+                    Text(pregnancyData.trimester)
+                        .contentTransition(reduceMotion ? .identity : .interpolate)
+                        .animation(reduceMotion ? nil : .easeInOut, value: pregnancyData.trimester)
+                }
+                .font(.title3)
+                .fontWeight(.semibold)
+                .accessibilityAddTraits(.isHeader)
 
                 HStack(spacing: 6) {
-                    Text("Week \(pregnancyData.week)")
-                        .contentTransition(reduceMotion ? .identity : .numericText())
-                        .animation(reduceMotion ? nil : .easeInOut, value: pregnancyData.week)
+                    HStack {
+                        Text("Week")
+                        Text(pregnancyData.week, format: .number)
+                            .contentTransition(reduceMotion ? .identity : .numericText())
+                            .animation(reduceMotion ? nil : .easeInOut, value: pregnancyData.week)
+                    }
 
                     Text(" - ")
 
-                    Text("Day \(pregnancyData.day)")
-                        .contentTransition(reduceMotion ? .identity : .numericText())
-                        .animation(reduceMotion ? nil : .easeInOut, value: pregnancyData.day)
+                    HStack {
+                        Text("Day")
+                        Text(pregnancyData.day, format: .number)
+                            .contentTransition(reduceMotion ? .identity : .numericText())
+                            .animation(reduceMotion ? nil : .easeInOut, value: pregnancyData.day)
+                    }
                 }
                 .font(.title)
                 .fontWeight(.bold)

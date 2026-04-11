@@ -232,7 +232,7 @@
 "Privacy Policy" = "गोपनीयता नीति";
 "Terms of Service" = "सेवा की शर्तें";
 "Disclaimers & Citations" = "अस्वीकरण और उद्धरण";
-"GDRP Rights" = "GDRP अधिकार";
+"GDPR Rights" = "जी.डी.पी.आर अधिकार";
 
 // Settings -> About
 
@@ -244,3 +244,42 @@
 // Settings -> Account Management
 
 "Delete Account" = "खाता हटाएं";
+
+// TriTrack
+
+"TriTrack" = "ट्राइट्रैक";
+"Me & Baby" = "मैं और शिशु";
+"Events" = "इवेंट्स";
+"Event" = "इवेंट";
+"Reminders" = "अनुस्मारकियाँ";
+"Reminder" = "अनुस्मारक";
+"New" = "नया";
+"Title" = "शीर्षक";
+"Notes" = "टिप्पणियाँ";
+"All Day" = "सारा दिन";
+"Starts" = "शुरू होता है";
+"Ends" = "खत्म होता है";
+"Repeat Monthly" = "हर महीने दोहराएँ";
+"Select Location" = "स्थान चुनें";
+"Alert Before" = "पहले से चेतावनी";
+"Remind Me On" = "मुझे याद दिलाएं";
+"Repeat Daily" = "हर दिन दोहराएँ";
+"Baby This Week" = "इस सप्ताह का शिशु";
+"Mom This Week" = "इस सप्ताह की माँ";
+
+// MyPlan
+"My Plan" = "मेरी योजना";
+"Diet" = "आहार";
+"Exercise" = "व्यायाम";
+
+// Diet
+"Breakfast" = "सुबह का नाश्ता";
+"Lunch" = "दोपहर का भोजन";
+"Dinner" = "रात का खाना";
+"Snacks" = "शाम का नाश्ता";
+
+"Protein" = "प्रोटीन";
+"Carbs" = "कार्ब्स";
+"Fats" = "वसा";
+"Sugar" = "चीनी";
+"Sodium" = "सोडियम";
