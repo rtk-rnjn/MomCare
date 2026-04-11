@@ -7,14 +7,33 @@ struct PolicySectionItem: Identifiable {
 }
 
 enum PrivacyPolicyText {
-    static var headerTitle: String { String(localized: "privacy_header_title") }
-    static var headerSubtitle: String { String(localized: "privacy_header_subtitle") }
+    static var headerTitle: String {
+        String(localized: "privacy_header_title")
+    }
 
-    static var contactTitle: String { String(localized: "privacy_contact_title") }
-    static var contactSubtitle: String { String(localized: "privacy_contact_subtitle") }
-    static var contactEmail: String { String(localized: "privacy_contact_email") }
-    static var contactWebsite: String { String(localized: "privacy_contact_website") }
-    static var contactFooter: String { String(localized: "privacy_contact_footer") }
+    static var headerSubtitle: String {
+        String(localized: "privacy_header_subtitle")
+    }
+
+    static var contactTitle: String {
+        String(localized: "privacy_contact_title")
+    }
+
+    static var contactSubtitle: String {
+        String(localized: "privacy_contact_subtitle")
+    }
+
+    static var contactEmail: String {
+        String(localized: "privacy_contact_email")
+    }
+
+    static var contactWebsite: String {
+        String(localized: "privacy_contact_website")
+    }
+
+    static var contactFooter: String {
+        String(localized: "privacy_contact_footer")
+    }
 
     static var policySections: [PolicySectionItem] {
         [
