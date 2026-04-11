@@ -55,7 +55,7 @@ struct TriTrackAllCalendarItemView: View {
                             systemImage: showDetails ? "list.bullet" : "list.bullet.below.rectangle"
                         )
                     }
-                    .accessibilityLabel(showDetails ? "Switch to compact view" : "Switch to detailed view")
+                    .accessibilityLabel(showDetails ? String(localized: "a11y_compact_view_label") : String(localized: "a11y_detailed_view_label"))
                     .accessibilityHint(String(localized: "a11y_event_detail_toggle_hint"))
                 }
             }

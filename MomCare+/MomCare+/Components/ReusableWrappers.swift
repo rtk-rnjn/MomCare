@@ -32,7 +32,7 @@ struct InfoRowDate: View {
             Text(title) + Text(", ") + Text(formatted)
         )
         .accessibilityAddTraits(isEditing ? .isButton : [])
-        .accessibilityHint(isEditing ? "Activates date picker" : "")
+        .accessibilityHint(isEditing ? String(localized: "a11y_activates_date_picker_hint") : "")
     }
 
     // MARK: Private

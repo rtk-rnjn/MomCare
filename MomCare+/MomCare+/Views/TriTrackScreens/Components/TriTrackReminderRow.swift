@@ -212,7 +212,7 @@ extension TriTrackReminderRow {
                 : (dueDate ?? Date() < Date() ? .red : .gray.opacity(0.6))
             )
             .onTapGesture { toggleReminder() }
-            .accessibilityLabel(reminder.isCompleted ? "Mark as incomplete" : "Mark as complete")
+            .accessibilityLabel(reminder.isCompleted ? String(localized: "a11y_mark_incomplete_label") : String(localized: "a11y_mark_complete_label"))
             .accessibilityHint(String(localized: "a11y_reminder_completion_hint"))
             .accessibilityAddTraits(.isButton)
             .accessibilityAction(.default) { toggleReminder() }

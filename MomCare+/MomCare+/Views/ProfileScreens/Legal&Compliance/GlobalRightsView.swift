@@ -17,14 +17,14 @@ struct GlobalRightsView: View {
                     }
                     .accessibilityHidden(true)
 
-                    Text("Your Data, Your Rights, Your Trust")
+                    Text("gdpr_header_title")
                         .font(.title.weight(.semibold))
                         .tracking(-0.5)
                         .multilineTextAlignment(.center)
                         .lineSpacing(0)
                         .accessibilityAddTraits(.isHeader)
 
-                    Text("We are committed to safeguarding your privacy. You have the right to control your personal information, and we make it easy for you to do so.")
+                    Text("gdpr_header_subtitle")
                         .font(.subheadline)
                         .foregroundStyle(.primary)
                         .multilineTextAlignment(.center)
@@ -49,13 +49,13 @@ struct GlobalRightsView: View {
                     }
                 }
                 VStack(alignment: .center, spacing: 16) {
-                    Text("How to Exercise Your Rights")
+                    Text("gdpr_exercise_rights_title")
                         .font(.title3)
                         .fontWeight(.bold)
                         .frame(maxWidth: .infinity, alignment: .center)
                         .accessibilityAddTraits(.isHeader)
 
-                    Text("To exercise any of these rights, please send a clear request to our dedicated privacy team. We will respond to your request in a timely manner, in accordance with applicable law.")
+                    Text("gdpr_exercise_rights_body")
                         .font(.subheadline)
                         .foregroundStyle(.secondary)
                         .multilineTextAlignment(.center)
@@ -68,7 +68,7 @@ struct GlobalRightsView: View {
                         .padding(.horizontal, 24)
                         .background(Color.gray.opacity(0.1))
                         .clipShape(Capsule())
-                        .accessibilityLabel("Contact email: support.momcare@vision-labs.site")
+                        .accessibilityLabel(String(localized: "gdpr_contact_email_label"))
                 }
                 .padding(.vertical, 24)
             }

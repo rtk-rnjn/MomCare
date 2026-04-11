@@ -60,7 +60,7 @@ struct EKReminderView: View {
                         }
                     }
                     .accessibilityLabel(String(localized: "Cancel"))
-                    .accessibilityHint(hasChanges ? "Prompts to discard unsaved changes" : "Dismisses this screen")
+                    .accessibilityHint(hasChanges ? String(localized: "a11y_discard_changes_hint") : String(localized: "a11y_dismiss_screen_hint"))
                 }
 
                 ToolbarItem(placement: .confirmationAction) {
@@ -82,7 +82,7 @@ struct EKReminderView: View {
                         .font(.title2)
                         .foregroundStyle(isCompleted ? .green : Color(.tertiaryLabel))
                 }
-                .accessibilityLabel(isCompleted ? "Mark as incomplete" : "Mark as complete")
+                .accessibilityLabel(isCompleted ? String(localized: "a11y_mark_incomplete_label") : String(localized: "a11y_mark_complete_label"))
                 .accessibilityHint(String(localized: "a11y_reminder_done_toggle_hint"))
 
                 TextField("Title", text: $title)

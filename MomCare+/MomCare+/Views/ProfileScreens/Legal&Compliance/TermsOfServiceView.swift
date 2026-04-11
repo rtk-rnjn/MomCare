@@ -17,14 +17,14 @@ struct TermsOfServiceView: View {
                     }
                     .accessibilityHidden(true)
 
-                    Text("Good rules create a space where everyone can feel safe and respected.")
+                    Text("terms_header_title")
                         .font(.title.weight(.semibold))
                         .tracking(-0.5)
                         .multilineTextAlignment(.center)
                         .lineSpacing(0)
                         .accessibilityAddTraits(.isHeader)
 
-                    Text("Clarity is the foundation of trust. Our terms are designed to be clear, so our relationship can be strong.")
+                    Text("terms_header_subtitle")
                         .font(.subheadline)
                         .foregroundStyle(.primary)
                         .multilineTextAlignment(.center)
@@ -102,18 +102,18 @@ struct EligibilitySectionView: View {
                     .foregroundStyle(accentColor)
                     .frame(width: 24, alignment: .center)
                     .accessibilityHidden(true)
-                Text("Eligibility – Who Can Use MomCare")
+                Text("terms_eligibility_title")
                     .font(.title3.weight(.semibold))
                     .accessibilityAddTraits(.isHeader)
             }
 
             VStack(alignment: .leading, spacing: 10) {
-                BulletPoint(text: "You must be **at least 18 years old** or the legal age of majority in your country.")
-                BulletPoint(text: "You must be **pregnant**, planning a pregnancy, or a caregiver/support person.")
-                BulletPoint(text: "You must **agree to and comply** with these Terms of Service and our Privacy Policy.")
+                BulletPoint(text: String(localized: "terms_eligibility_bullet_1"))
+                BulletPoint(text: String(localized: "terms_eligibility_bullet_2"))
+                BulletPoint(text: String(localized: "terms_eligibility_bullet_3"))
             }
 
-            Text("The MomCare app is **not intended for use by children**, nor is it a tool for professional medical personnel to manage patient records.")
+            Text(.init(String(localized: "terms_eligibility_footer")))
                 .font(.subheadline)
                 .foregroundStyle(.primary)
                 .padding(.top, 8)
@@ -132,20 +132,20 @@ struct OverviewOfServicesView: View {
                     .foregroundStyle(accentColor)
                     .frame(width: 24, alignment: .center)
                     .accessibilityHidden(true)
-                Text("Overview of Services")
+                Text("terms_overview_title")
                     .font(.title3.weight(.semibold))
                     .accessibilityAddTraits(.isHeader)
             }
 
-            Text("MomCare offers a range of tools designed to enhance your pregnancy journey:")
+            Text("terms_overview_intro")
                 .font(.subheadline)
                 .foregroundStyle(.primary)
 
             VStack(alignment: .leading, spacing: 12) {
-                ServiceDetail(title: AppTab.progress.title, description: "A comprehensive summary of your daily/weekly exercise and diet progress, with daily insights and tips.")
-                ServiceDetail(title: AppTab.myPlan.title, description: "Personalized daily recommendations for diet and exercise based on your health input.")
-                ServiceDetail(title: AppTab.triTrack.title, description: "A “Me & Baby” view, highlighting your stage of pregnancy with size comparisons and week-by-week summaries.")
-                ServiceDetail(title: AppTab.mood.title, description: "A mood-based audio experience with tunes tailored to your emotional state.")
+                ServiceDetail(title: AppTab.progress.title, description: String(localized: "terms_progress_description"))
+                ServiceDetail(title: AppTab.myPlan.title, description: String(localized: "terms_myplan_description"))
+                ServiceDetail(title: AppTab.triTrack.title, description: String(localized: "terms_tritrack_description"))
+                ServiceDetail(title: AppTab.mood.title, description: String(localized: "terms_mood_description"))
             }
         }
     }
@@ -178,41 +178,41 @@ struct ThirdPartyServicesView: View {
                     .foregroundStyle(accentColor)
                     .frame(width: 24, alignment: .center)
                     .accessibilityHidden(true)
-                Text("Third-Party Services and Frameworks")
+                Text("terms_third_party_title")
                     .font(.title3.weight(.semibold))
                     .accessibilityAddTraits(.isHeader)
             }
 
-            Text("To deliver a personalized and feature-rich experience, MomCare integrates with a number of third-party services, frameworks, and APIs. These services may handle or process certain types of data to enable app functionality.")
+            Text("terms_third_party_intro")
                 .font(.subheadline)
                 .foregroundStyle(.primary)
 
             VStack(alignment: .leading, spacing: 12) {
-                Text("Apple Frameworks & Services")
+                Text("terms_apple_frameworks")
                     .font(.subheadline)
                     .fontWeight(.bold)
                     .foregroundStyle(.primary)
                     .padding(.top, 8)
 
-                ServiceBulletPoint(title: "HealthKit", description: "To collect and analyze health data such as activity, steps, and other metrics, if access is granted by the user.")
-                ServiceBulletPoint(title: "EventKit", description: "To allow appointment logging, calendar integration, and management of pregnancy-related reminders and events.")
-                ServiceBulletPoint(title: "UserNotifications", description: "For delivering local notifications about reminders, tips, hydration alerts, exercise tracking, and more.")
-                ServiceBulletPoint(title: "AVFoundation & MediaPlayer", description: "To power audio playback features in Mood, including mood-specific calming soundtracks.")
+                ServiceBulletPoint(title: "HealthKit", description: String(localized: "terms_healthkit_description"))
+                ServiceBulletPoint(title: "EventKit", description: String(localized: "terms_eventkit_description"))
+                ServiceBulletPoint(title: "UserNotifications", description: String(localized: "terms_notifications_description"))
+                ServiceBulletPoint(title: "AVFoundation & MediaPlayer", description: String(localized: "terms_avfoundation_description"))
             }
 
             VStack(alignment: .leading, spacing: 12) {
-                Text("AI Services")
+                Text("terms_ai_services")
                     .font(.subheadline)
                     .fontWeight(.bold)
                     .foregroundStyle(.primary)
                     .padding(.top, 8)
 
-                ServiceBulletPoint(title: "Generative AI (GenAI)", description: "Utilized for powering certain smart recommendations, personalized wellness suggestions, or adaptive daily tips. All outputs are generated in response to user-provided context and inputs.")
+                ServiceBulletPoint(title: "Generative AI (GenAI)", description: String(localized: "terms_genai_description"))
             }
 
             VStack(alignment: .leading, spacing: 10) {
-                Text("Use of these services is subject to their respective privacy policies and terms of use. By using MomCare, you acknowledge and consent to the processing of relevant data by these services, solely for the purposes of enhancing your experience and delivering the app’s features.")
-                Text("We do not share or sell your data to third parties for advertising or marketing purposes.")
+                Text("terms_third_party_footer_1")
+                Text("terms_third_party_footer_2")
             }
             .font(.subheadline)
             .foregroundStyle(.primary)

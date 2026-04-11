@@ -171,7 +171,7 @@ struct CompactCalendarView: View {
             }
             .buttonStyle(.plain)
             .accessibilityLabel(calendarToggleAccessibilityLabel)
-            .accessibilityHint(isExpanded ? "Collapses the calendar view" : "Expands the calendar view")
+            .accessibilityHint(isExpanded ? String(localized: "a11y_collapses_calendar_hint") : String(localized: "a11y_expands_calendar_hint"))
 
             Spacer()
         }

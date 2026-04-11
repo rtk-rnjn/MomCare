@@ -30,7 +30,7 @@ struct MultiSelectPickerView<T: Hashable & CaseIterable & RawRepresentable>: Vie
                 }
                 .tint(.primary)
                 .accessibilityLabel(item.rawValue.capitalized)
-                .accessibilityValue(temporarySelections.contains(item) ? "Selected" : "Not selected")
+                .accessibilityValue(temporarySelections.contains(item) ? String(localized: "a11y_selected_value") : String(localized: "a11y_not_selected_value"))
                 .accessibilityHint(String(localized: "a11y_toggle_selection_hint"))
             }
             .navigationTitle(title)

@@ -16,14 +16,14 @@ struct DisclaimersView: View {
                             .foregroundStyle(accentColor)
                     }
                     .accessibilityHidden(true)
-                    Text("MomCare supports you, but your doctor knows you best!")
+                    Text("disclaimer_header_title")
                         .font(.title.weight(.semibold))
                         .tracking(-0.5)
                         .multilineTextAlignment(.center)
                         .lineSpacing(0)
                         .accessibilityAddTraits(.isHeader)
 
-                    Text("Your safety and understanding are important to us. Please review the information below before using MomCare+.")
+                    Text("disclaimer_header_subtitle")
                         .font(.subheadline)
                         .foregroundStyle(.primary)
                         .multilineTextAlignment(.center)
@@ -47,7 +47,7 @@ struct DisclaimersView: View {
                 }
 
                 VStack(spacing: 16) {
-                    Text("By using MomCare+, you acknowledge that you have read and understood these disclaimers.")
+                    Text("disclaimer_footer")
                         .font(.footnote)
                         .foregroundStyle(accentColor)
                 }

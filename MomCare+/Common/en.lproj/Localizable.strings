@@ -190,3 +190,129 @@
 "a11y_progress_ring_label" = "Progress ring";
 "a11y_toggle_selection_hint" = "Double tap to toggle selection";
 "a11y_select_date_hint" = "Selects this date";
+
+// Privacy Policy
+"privacy_header_title" = "Because Every Mom Deserves Care — Including for Her Data";
+"privacy_header_subtitle" = "Learn how we respect and protect your privacy at Momcare+";
+"privacy_contact_title" = "Contact Us";
+"privacy_contact_subtitle" = "If you have any questions, concerns, or requests, feel free to reach out to us:";
+"privacy_contact_email" = "Email: support.momcare@vision-labs.site";
+"privacy_contact_website" = "Website: momcare.vision-labs.site";
+"privacy_contact_footer" = "We're here to protect your wellness — both physical and digital.";
+"privacy_section_works_title" = "How Momcare+ Works";
+"privacy_section_works_content" = "• Momcare+ helps you navigate pregnancy with peace of mind. Our features include:\n• Trimester-specific guidance delivered weekly\n• Mood, diet, hydration, symptom & exercise tracking\n• Reminders for scans, checkups, supplements, and self-care\n• Mental wellness tools like guided breathing and Mood\n\nTo provide this experience, we collect certain information that you choose to share. Here's what we collect and why.";
+"privacy_section_collect_title" = "What Information We Collect";
+"privacy_section_collect_content" = "• Profile & Pregnancy Info: Age, due date, pregnancy start date (for trimester tracking), name (optional)\n• Health Data: Symptoms, allergies, pre-existing conditions (e.g., gestational diabetes), medical notes\n• Daily Logs: Mood, hydration, food intake, energy levels, exercise tracking\n• Reminders & Notes: Appointment entries, calendar events, scan dates (if synced with iOS calendar)\n\nDevice & Diagnostic Data:\n• Device type, iOS version (e.g., iPhone 14, iOS 17.2)\n• App version and usage analytics\n• Crash logs and error reporting (anonymous and aggregated)";
+"privacy_section_why_title" = "Why We Collect Your Data";
+"privacy_section_why_content" = "• Generate weekly updates based on your pregnancy stage\n• Track diet/exercise progress and show health trends in Progress\n• Send custom reminders for hydration, supplements, or medical checkups\n• Suggest calming music, exercises, and mindfulness tools\n• Enhance motivation through streaks and rewards\n• Improve app performance and reduce bugs\n\nWe do not sell, rent, or monetize your data in any way. Ever.";
+"privacy_section_protect_title" = "How We Protect Your Data";
+"privacy_section_protect_content" = "• On-device encryption of sensitive health and mood data\n• Encrypted cloud storage via GDPR-compliant platforms (e.g., AWS, Firebase, MongoDB Atlas) if sync is enabled\n• Token-based authentication and secure APIs\n• Access controls limiting who can see your data, even internally\n\nYou retain full ownership of your data at all times.";
+"privacy_section_rights_title" = "Your Privacy Rights";
+"privacy_section_rights_content" = "• Right to Access – See what data we've collected about you\n• Right to Correct – Update inaccurate or outdated profile info\n• Right to Delete – Request deletion of your entire account and associated data\n• Right to Withdraw Consent – Disable features like tracking, notifications, or cloud sync at any time\n• Right to Export – GDPR-compliant data export available upon request";
+
+// About Us
+"about_story" = "The world of pregnancy apps can be a loud, cluttered, and overwhelming place. We know, because we've been there.\n\nOur journey began when we saw a loved one navigating her pregnancy from miles away, relying on daily phone calls home for the trusted support she couldn't find online. This sparked a mission for us—Aryan, Khushi, Ritik, and Nupur—to ask a simple question: **What if an app could feel like a calm companion, not a marketplace?**\n\nWe dove into research and found that most apps were focused on selling products, while the actual person at the center of the journey—the mother—was often an afterthought. We knew we had to build a better alternative.\n\nMomCare+ is our answer.\n\nIt was designed from the ground up to provide calm, clarity, and genuine care.\n\n• Instead of clutter, we offer focus. You'll only find what you truly need: personalized meal and exercise plans, an intuitive symptom tracker, and calming audio to support your peace of mind.\n• Instead of a sales pitch, we offer support. Our goal isn't to sell you things; it's to empower you with evidence-based tools that put your health and well-being first.\n• Instead of being baby-focused, we are mother-centered. We believe that a healthy, supported, and celebrated mother is the foundation for everything.\n\nEvery feature in MomCare+ comes from a single observation, a team discussion, and a shared mission to create the app we wished existed for every expecting mother. Welcome to the calm.";
+"about_mission" = "To empower expecting mothers with a single, calm, and comprehensive tool for their prenatal journey, focusing on their well-being every step of the way.";
+"about_quote" = "Every pregnancy has its own story, its own rhythm, its own needs. Our mission is to provide the personal, unwavering support that honors yours.";
+
+// Terms of Service - Data
+"terms_acceptance_title" = "Acceptance of Terms";
+"terms_acceptance_content" = "By downloading, installing, accessing, or using the MomCare mobile application and related services, you acknowledge that you have read, understood, and agreed to be bound by these Terms of Service and our Privacy Policy.\n\nIf you do not agree with these Terms, or any future updates to them, you must not access or use the App. Your continued use of the App after any changes or updates to these Terms constitutes your acceptance of those changes.";
+"terms_disclaimer_title" = "Disclaimers and Emergency Guidance";
+"terms_disclaimer_content" = "All content and features are for informational purposes only and are not a substitute for professional medical advice. In case of any medical emergency, immediately call your doctor or go to the nearest hospital. Use of the MomCare app is at your own discretion and risk.";
+"terms_responsibilities_title" = "User Responsibilities";
+"terms_responsibilities_content" = "You agree not to use the app in any unlawful manner, tamper with its functionalities, or submit misleading health data.";
+"terms_license_title" = "License and Intellectual Property";
+"terms_license_content" = "MomCare and all associated content, features, and branding are the exclusive intellectual property of MomCare and are protected by law. You are granted a limited, non-exclusive license for personal, non-commercial use only. You may not copy, modify, distribute, or reverse engineer any part of the app.";
+"terms_data_consent_title" = "Data Consent & Privacy";
+"terms_data_consent_content" = "By using our Services, you grant MomCare the right to collect, store, and process your data in accordance with our Privacy Policy. We use anonymized and aggregated data to improve our services and will never sell your personal data.";
+"terms_subscriptions_title" = "Subscriptions";
+"terms_subscriptions_content" = "Some advanced features may require a subscription. Payments are processed via the App Store, and you can manage or cancel your subscription in your account settings.";
+"terms_liability_title" = "Limitation of Liability";
+"terms_liability_content" = "MomCare provides the app \u201cas-is\u201d without warranties. We are not liable for indirect damages from your use of the app and do not guarantee it will be error-free.";
+"terms_law_title" = "Governing Law";
+"terms_law_content" = "These terms are governed by the laws of India. Any disputes shall be resolved in the courts of Gautam Budh Nagar.";
+"terms_contact_us_title" = "Contact Us";
+"terms_contact_us_content" = "For questions or feedback, please contact us at:\n**Email:** support.momcare@vision-labs.site\n**Website: momcare.vision-labs.site**";
+
+// Terms of Service - View strings
+"terms_header_title" = "Good rules create a space where everyone can feel safe and respected.";
+"terms_header_subtitle" = "Clarity is the foundation of trust. Our terms are designed to be clear, so our relationship can be strong.";
+"terms_eligibility_title" = "Eligibility \u2013 Who Can Use MomCare";
+"terms_eligibility_bullet_1" = "You must be **at least 18 years old** or the legal age of majority in your country.";
+"terms_eligibility_bullet_2" = "You must be **pregnant**, planning a pregnancy, or a caregiver/support person.";
+"terms_eligibility_bullet_3" = "You must **agree to and comply** with these Terms of Service and our Privacy Policy.";
+"terms_eligibility_footer" = "The MomCare app is **not intended for use by children**, nor is it a tool for professional medical personnel to manage patient records.";
+"terms_overview_title" = "Overview of Services";
+"terms_overview_intro" = "MomCare offers a range of tools designed to enhance your pregnancy journey:";
+"terms_progress_description" = "A comprehensive summary of your daily/weekly exercise and diet progress, with daily insights and tips.";
+"terms_myplan_description" = "Personalized daily recommendations for diet and exercise based on your health input.";
+"terms_tritrack_description" = "A \u201cMe & Baby\u201d view, highlighting your stage of pregnancy with size comparisons and week-by-week summaries.";
+"terms_mood_description" = "A mood-based audio experience with tunes tailored to your emotional state.";
+"terms_third_party_title" = "Third-Party Services and Frameworks";
+"terms_third_party_intro" = "To deliver a personalized and feature-rich experience, MomCare integrates with a number of third-party services, frameworks, and APIs. These services may handle or process certain types of data to enable app functionality.";
+"terms_apple_frameworks" = "Apple Frameworks & Services";
+"terms_healthkit_description" = "To collect and analyze health data such as activity, steps, and other metrics, if access is granted by the user.";
+"terms_eventkit_description" = "To allow appointment logging, calendar integration, and management of pregnancy-related reminders and events.";
+"terms_notifications_description" = "For delivering local notifications about reminders, tips, hydration alerts, exercise tracking, and more.";
+"terms_avfoundation_description" = "To power audio playback features in Mood, including mood-specific calming soundtracks.";
+"terms_ai_services" = "AI Services";
+"terms_genai_description" = "Utilized for powering certain smart recommendations, personalized wellness suggestions, or adaptive daily tips. All outputs are generated in response to user-provided context and inputs.";
+"terms_third_party_footer_1" = "Use of these services is subject to their respective privacy policies and terms of use. By using MomCare, you acknowledge and consent to the processing of relevant data by these services, solely for the purposes of enhancing your experience and delivering the app\u2019s features.";
+"terms_third_party_footer_2" = "We do not share or sell your data to third parties for advertising or marketing purposes.";
+
+// Disclaimers
+"disclaimer_header_title" = "MomCare supports you, but your doctor knows you best!";
+"disclaimer_header_subtitle" = "Your safety and understanding are important to us. Please review the information below before using MomCare+.";
+"disclaimer_footer" = "By using MomCare+, you acknowledge that you have read and understood these disclaimers.";
+"disclaimer_medical_title" = "1. General Medical Disclaimer";
+"disclaimer_medical_content" = "This application is not a substitute for professional medical advice, diagnosis, or treatment.\nThe content provided in MomCare+, including all text, graphics, images, and other material, is for informational and educational purposes only. It is not intended to be a substitute for professional medical advice from your doctor, midwife, or other qualified healthcare provider.\nAlways seek the advice of your physician or another qualified health professional with any questions you may have regarding a medical condition or your pregnancy. Never disregard professional medical advice or delay in seeking it because of something you have read in this application. If you think you may have a medical emergency, call your doctor or emergency services immediately.";
+"disclaimer_tips_title" = "2. Daily Tips";
+"disclaimer_tips_content" = "DISCLAIMER: The daily tips provided on the dashboard are intended as general guidance and for informational purposes. While we strive to provide accurate and useful information, we make no representation or warranty of any kind regarding the accuracy, validity, or completeness of these tips.";
+"disclaimer_meals_title" = "3. Personalized Meal Plans";
+"disclaimer_meals_content" = "DISCLAIMER: The meal plans provided in this app are personalized based on the health conditions, allergies, and dietary preferences that you provide.\nHowever, this automated plan is not a substitute for a direct, one-on-one consultation with a registered dietitian or your healthcare provider. It is your responsibility to ensure that all information you enter into the app is accurate and complete. MomCare+ is not liable for any adverse outcomes resulting from the meal plans.";
+"disclaimer_meals_source" = "CITATION: The nutritional data and meal plan structures are based on the dataset provided by [Kaggle](https://www.kaggle.com/datasets/sayyamsancheti/indian-state-wise-meals-with-nutritional-values).";
+"disclaimer_exercise_title" = "4. Exercise & Yoga Plans";
+"disclaimer_exercise_content" = "DISCLAIMER: The exercise and yoga videos in this app have been carefully curated to be generally safe and appropriate for the specific week of pregnancy you are in.\nHowever, every pregnancy is unique. Your individual health status or specific medical conditions may require modifications. It remains essential to consult with your doctor before beginning this or any exercise regimen. Listen to your body and stop immediately if you feel pain, dizziness, or discomfort. By participating in these exercises, you agree that you are doing so at your own risk.";
+"disclaimer_exercise_source" = "CITATION: The yoga and exercise video content is provided courtesy of [Pexels.com](https://www.pexels.com/search/videos/pregnancy%20yogas/).";
+"disclaimer_baby_growth_title" = "5. Baby Growth and Development Tracker";
+"disclaimer_baby_growth_content" = "DISCLAIMER: The week-by-week baby size comparisons are illustrative approximations meant to provide a fun and relatable way to visualize your baby\u2019s growth. Fetal development is unique to each pregnancy and can be influenced by various factors. The data used in this app is based on general averages. These comparisons are not a medical tool and should not be used for diagnostic purposes.";
+"disclaimer_articles_title" = "6. Pregnancy Articles";
+"disclaimer_articles_content" = "Disclaimer: To provide you with reliable and helpful information, we have made a significant effort to carefully select and aggregate articles from highly reputable sources.\nHowever, MomCare+ does not independently verify every single fact within these articles. This content is presented for educational purposes and does not necessarily reflect the views of MomCare+. This information is not a substitute for direct, professional medical advice from your healthcare provider.";
+"disclaimer_articles_source" = "CITATION:\n\u2022 [American College of Obstetricians and Gynecologists](https://www.acog.org/womens-health/patient-education)\n\u2022 [BabyCenter](https://www.babycenter.com/pregnancy-week-by-week)\n\u2022 [What to Expect](https://www.whattoexpect.com/pregnancy/week-by-week/)\n\u2022 [WomensHealth.gov](https://www.womenshealth.gov/pregnancy/)";
+"disclaimer_mood_title" = "7. Mood Tracking and Music Suggestions";
+"disclaimer_mood_content" = "DISCLAIMER: The mood tracking feature is designed to help you maintain your emotional well-being. Based on the mood you log, our system suggests music that has been thoughtfully selected to provide comfort, calm, or upliftment.\nIt is crucial to understand that this is an automated wellness feature intended for comfort and entertainment only. It is not a diagnostic tool and cannot detect or treat conditions such as prenatal or postpartum depression. If you are experiencing persistent low moods or anxiety, it is essential that you speak with your healthcare provider.";
+"disclaimer_mood_source" = "CITATION: Images and Tunes are taken from [Free To Use](https://freetouse.com).";
+
+// GDPR
+"gdpr_header_title" = "Your Data, Your Rights, Your Trust";
+"gdpr_header_subtitle" = "We are committed to safeguarding your privacy. You have the right to control your personal information, and we make it easy for you to do so.";
+"gdpr_exercise_rights_title" = "How to Exercise Your Rights";
+"gdpr_exercise_rights_body" = "To exercise any of these rights, please send a clear request to our dedicated privacy team. We will respond to your request in a timely manner, in accordance with applicable law.";
+"gdpr_contact_email_label" = "Contact email: support.momcare@vision-labs.site";
+"gdpr_right_access_title" = "The Right to Access";
+"gdpr_right_access_description" = "You have the right to request a copy of the personal data we hold about you.";
+"gdpr_right_rectification_title" = "The Right to Rectification";
+"gdpr_right_rectification_description" = "If you believe any of the data we hold about you is inaccurate or incomplete, you have the right to have it corrected.";
+"gdpr_right_erasure_title" = "The Right to Erasure";
+"gdpr_right_erasure_description" = "You can request that we delete your personal data from our systems. This is also known as the 'Right to be Forgotten'.";
+"gdpr_right_restrict_title" = "The Right to Restrict Processing";
+"gdpr_right_restrict_description" = "You have the right to request that we temporarily or permanently stop processing all or some of your personal data.";
+"gdpr_right_portability_title" = "The Right to Data Portability";
+"gdpr_right_portability_description" = "You can request a copy of your personal data in a common, machine-readable format to transfer to another service.";
+"gdpr_right_object_title" = "The Right to Object";
+"gdpr_right_object_description" = "You have the right to object to us processing your personal data for specific purposes, such as direct marketing.";
+
+// Missing accessibility strings
+"a11y_activates_date_picker_hint" = "Activates date picker";
+"a11y_selected_value" = "Selected";
+"a11y_not_selected_value" = "Not selected";
+"a11y_collapses_calendar_hint" = "Collapses the calendar view";
+"a11y_expands_calendar_hint" = "Expands the calendar view";
+"a11y_compact_view_label" = "Switch to compact view";
+"a11y_detailed_view_label" = "Switch to detailed view";
+"a11y_mark_incomplete_label" = "Mark as incomplete";
+"a11y_mark_complete_label" = "Mark as complete";
+"a11y_discard_changes_hint" = "Prompts to discard unsaved changes";
+"a11y_dismiss_screen_hint" = "Dismisses this screen";
+"a11y_select_symptom_label" = "Select symptom";
