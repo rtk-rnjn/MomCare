@@ -372,7 +372,7 @@ private struct CaloriesSummaryView: View {
             Text("No data")
                 .font(.caption)
                 .foregroundStyle(.tertiary)
-                .accessibilityLabel("Calorie data unavailable")
+                .accessibilityLabel(String(localized: "a11y_calorie_unavailable_label"))
         }
     }
 }
@@ -620,13 +620,13 @@ private struct ProgressRingView: View {
         .fixedSize(horizontal: false, vertical: true)
         .contentShape(Circle())
         .accessibilityElement(children: .ignore)
-        .accessibilityLabel("Calorie intake")
+        .accessibilityLabel(String(localized: "a11y_calorie_intake_summary_label"))
         .accessibilityValue(
             showPercentage
             ? "\(percentage)%"
             : "\(Int(consumed?.converted(to: target?.unit ?? .kilocalories).value ?? 0)) / \(Int(target?.value ?? 0)) calories"
         )
-        .accessibilityHint("Double tap to toggle percentage view")
+        .accessibilityHint(String(localized: "a11y_toggle_percent_hint"))
         .accessibilityAddTraits([.isButton, .updatesFrequently])
         .accessibilityAction(.default) {
             togglePercentageDisplay()
@@ -890,7 +890,7 @@ private struct MacroBarRow: View {
                 return "\(intakeText) consumed out of \(goalText) goal"
             }()
         )
-        .accessibilityHint("Double tap to toggle percentage view")
+        .accessibilityHint(String(localized: "a11y_toggle_percent_hint"))
         .accessibilityAddTraits([.isButton, .updatesFrequently])
     }
 

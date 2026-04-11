@@ -79,10 +79,10 @@ struct DashboardWeekCardView<TipContent: Tip>: View {
         .background(Color(.systemBackground))
         .dashboardCardStyle()
         .accessibilityElement(children: .ignore)
-        .accessibilityLabel("Pregnancy progress")
+        .accessibilityLabel(String(localized: "a11y_pregnancy_progress_label"))
         .accessibilityValue(accessiblityValue)
         .accessibilityAddTraits([.isButton, .updatesFrequently])
-        .accessibilityHint("Double tap to view detailed pregnancy progress")
+        .accessibilityHint(String(localized: "a11y_pregnancy_progress_hint"))
         .accessibilityIdentifier("dashboardWeekCard")
     }
 

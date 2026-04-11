@@ -83,7 +83,7 @@ struct PreferencesSignUpView: View {
                     )
             }
             .frame(height: 6)
-            .accessibilityLabel("Step 3 of 3, complete")
+            .accessibilityLabel(String(localized: "a11y_step3_progress_label"))
             .accessibilityAddTraits(.updatesFrequently)
 
             Text("Enter or calculate your details to help us create a plan curated just for you.")
@@ -166,8 +166,8 @@ struct PreferencesSignUpView: View {
             .controlSize(.large)
             .padding(.horizontal)
             .padding(.bottom, 20)
-            .accessibilityLabel("Finish")
-            .accessibilityHint("Completes profile setup and takes you to the dashboard")
+            .accessibilityLabel(String(localized: "a11y_finish_label"))
+            .accessibilityHint(String(localized: "a11y_complete_setup_hint"))
             .navigationDestination(isPresented: $navigateToDashboard) {
                 MomCareMainTabView()
             }

@@ -90,7 +90,7 @@ struct HealthMetricsSignUpView: View {
                     )
             }
             .frame(height: 6)
-            .accessibilityLabel("Step 2 of 3, 50% complete")
+            .accessibilityLabel(String(localized: "a11y_step2_progress_label"))
             .accessibilityAddTraits(.updatesFrequently)
 
             Text("Answer a few questions to help us create your profile")
@@ -176,8 +176,8 @@ struct HealthMetricsSignUpView: View {
             .controlSize(.large)
             .padding(.horizontal)
             .padding(.bottom, 20)
-            .accessibilityLabel("Next")
-            .accessibilityHint("Proceed to the next step")
+            .accessibilityLabel(String(localized: "a11y_next_label"))
+            .accessibilityHint(String(localized: "a11y_next_step_hint"))
         }
     }
 

@@ -86,14 +86,14 @@ struct OSLogsView: View {
                     }
                 }
                 .disabled(isLoading)
-                .accessibilityLabel("Refresh logs")
-                .accessibilityHint("Fetches the latest OS log entries")
+                .accessibilityLabel(String(localized: "a11y_refresh_logs_label"))
+                .accessibilityHint(String(localized: "a11y_fetch_logs_hint"))
             }
             ToolbarItem(placement: .topBarLeading) {
                 Button("Clear") { entries.removeAll() }
                     .foregroundStyle(.red)
-                    .accessibilityLabel("Clear logs")
-                    .accessibilityHint("Removes all currently displayed log entries")
+                    .accessibilityLabel(String(localized: "a11y_clear_logs_label"))
+                    .accessibilityHint(String(localized: "a11y_clear_logs_hint"))
             }
         }
         .onAppear { try? fetchLogs() }

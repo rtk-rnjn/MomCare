@@ -54,8 +54,8 @@ struct ForgetPasswordView: View {
                             }
                         }
                         .submitLabel(.continue)
-                        .accessibilityLabel("Email address")
-                        .accessibilityHint("Enter the email address associated with your account")
+                        .accessibilityLabel(String(localized: "a11y_email_label"))
+                        .accessibilityHint(String(localized: "a11y_forget_email_hint"))
                 } footer: {
                     Text("If you know your Apple Relay Email, you can use it to reset your password.")
                         .font(.footnote)
@@ -77,8 +77,8 @@ struct ForgetPasswordView: View {
                     MCCancelButton {
                         dismiss()
                     }
-                    .accessibilityLabel("Cancel")
-                    .accessibilityHint("Closes the forgot password sheet")
+                    .accessibilityLabel(String(localized: "Cancel"))
+                    .accessibilityHint(String(localized: "a11y_close_forget_password_hint"))
                 }
 
                 ToolbarItem(placement: .bottomBar) {
@@ -95,8 +95,8 @@ struct ForgetPasswordView: View {
                     .frame(maxWidth: .infinity, alignment: .center)
                     .buttonStyle(.borderedProminent)
                     .tint(MomCareAccent.primary)
-                    .accessibilityLabel("Continue")
-                    .accessibilityHint("Sends a password reset code to your email address")
+                    .accessibilityLabel(String(localized: "a11y_continue_label"))
+                    .accessibilityHint(String(localized: "a11y_send_reset_code_hint"))
                 }
             }
         }
@@ -153,8 +153,8 @@ struct ForgetPasswordOTPView: View {
                         }
                         otpCode = otpCode.filter { $0.isNumber }
                     }
-                    .accessibilityLabel("One-time password")
-                    .accessibilityHint("Enter the 6-digit code sent to your email address")
+                    .accessibilityLabel(String(localized: "a11y_otp_field_label"))
+                    .accessibilityHint(String(localized: "a11y_enter_otp_hint"))
             } footer: {
                 Text("A 6-digit OTP has been sent to \(emailAddress). Please enter it above to continue.")
                     .font(.footnote)
@@ -192,8 +192,8 @@ struct ForgetPasswordOTPView: View {
                 .frame(maxWidth: .infinity, alignment: .center)
                 .buttonStyle(.borderedProminent)
                 .tint(MomCareAccent.primary)
-                .accessibilityLabel("Continue")
-                .accessibilityHint("Verifies your one-time password and proceeds to reset your password")
+                .accessibilityLabel(String(localized: "a11y_continue_label"))
+                .accessibilityHint(String(localized: "a11y_verify_otp_proceed_hint"))
             }
         }
     }
@@ -230,8 +230,8 @@ struct ResetPasswordView: View {
                         focusedField = .confirmPassword
                     }
                     .autocapitalization(.none)
-                    .accessibilityLabel("New password")
-                    .accessibilityHint("Enter your new password")
+                    .accessibilityLabel(String(localized: "a11y_new_password_label"))
+                    .accessibilityHint(String(localized: "a11y_new_password_hint"))
 
                 SecureField("Confirm Password", text: $confirmPassword)
                     .focused($focusedField, equals: .confirmPassword)
@@ -240,8 +240,8 @@ struct ResetPasswordView: View {
                         focusedField = nil
                     }
                     .autocapitalization(.none)
-                    .accessibilityLabel("Confirm password")
-                    .accessibilityHint("Re-enter your new password to confirm it matches")
+                    .accessibilityLabel(String(localized: "a11y_confirm_password_label"))
+                    .accessibilityHint(String(localized: "a11y_confirm_new_password_hint"))
             } footer: {
                 Text("Your new password must be at least 8 characters long and include a mix of letters, numbers, and special characters.")
                     .font(.footnote)
@@ -274,8 +274,8 @@ struct ResetPasswordView: View {
                 .frame(maxWidth: .infinity, alignment: .center)
                 .buttonStyle(.borderedProminent)
                 .tint(MomCareAccent.primary)
-                .accessibilityLabel("Reset password")
-                .accessibilityHint("Saves your new password")
+                .accessibilityLabel(String(localized: "a11y_reset_password_label"))
+                .accessibilityHint(String(localized: "a11y_save_new_password_hint"))
             }
         }
     }

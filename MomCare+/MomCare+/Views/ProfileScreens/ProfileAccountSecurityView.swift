@@ -183,8 +183,8 @@ struct ProfileAccountSecurityView: View {
                                 oldPassword = password
                             }
                         }
-                        .accessibilityLabel("Change password")
-                        .accessibilityHint("Submits the new password")
+                        .accessibilityLabel(String(localized: "a11y_change_password_label"))
+                        .accessibilityHint(String(localized: "a11y_submit_password_hint"))
                     }
                 } header: {
                     Text("Security")
@@ -259,7 +259,7 @@ struct ProfileAccountSecurityView: View {
                     .padding(.top, 32)
                     .padding(.horizontal, 28)
                     .accessibilityElement(children: .combine)
-                    .accessibilityLabel("Connect with Apple. Link your Apple ID to sign in quickly and keep your account secure.")
+                    .accessibilityLabel(String(localized: "a11y_apple_connect_label"))
 
                     VStack(spacing: 12) {
                         SignInWithAppleButton(.continue) { request in
@@ -270,7 +270,7 @@ struct ProfileAccountSecurityView: View {
                         .signInWithAppleButtonStyle(.black)
                         .frame(height: 50)
                         .cornerRadius(24)
-                        .accessibilityLabel("Sign in with Apple")
+                        .accessibilityLabel(String(localized: "a11y_apple_signin_label"))
 
                         Button("Cancel") {
                             showAppleConnectSheet = false
@@ -278,7 +278,7 @@ struct ProfileAccountSecurityView: View {
                         .font(.subheadline)
                         .foregroundStyle(.secondary)
                         .padding(.bottom, 8)
-                        .accessibilityHint("Closes this sheet")
+                        .accessibilityHint(String(localized: "a11y_close_sheet_hint"))
                     }
                     .padding(.horizontal, 28)
                     .padding(.bottom, 24)

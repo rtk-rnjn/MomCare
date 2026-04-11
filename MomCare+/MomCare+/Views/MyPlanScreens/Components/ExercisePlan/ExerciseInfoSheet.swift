@@ -40,7 +40,7 @@ struct BaseInfoSheetLayout<HeaderIcon: View>: View {
                     .padding(8)
                     .background(Circle().fill(Color(.systemGray6)))
             }
-            .accessibilityLabel("Close")
+            .accessibilityLabel(String(localized: "a11y_close_label"))
             .frame(minWidth: 44, minHeight: 44)
             .padding()
         }

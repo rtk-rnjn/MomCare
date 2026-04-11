@@ -50,7 +50,7 @@ struct BreathingExerciseView: View {
                         }
                         dismiss()
                     }
-                    .accessibilityLabel("Close breathing exercise")
+                    .accessibilityLabel(String(localized: "a11y_close_breathing_label"))
                 }
 
                 ToolbarItem(placement: .principal) {
@@ -309,7 +309,7 @@ struct BreathingExerciseView: View {
             .accessibilityHidden(true)
         }
         .accessibilityElement(children: .ignore)
-        .accessibilityLabel("Session progress")
+        .accessibilityLabel(String(localized: "a11y_session_progress_label"))
         .accessibilityValue("\(formatTime(totalElapsed)) of \(formatTime(totalDuration))")
         .accessibilityAddTraits(.updatesFrequently)
     }
@@ -325,7 +325,7 @@ struct BreathingExerciseView: View {
             .modifier(CompatGlassButton())
             .buttonBorderShape(.circle)
             .tint(darkAccent)
-            .accessibilityLabel("Reset session")
+            .accessibilityLabel(String(localized: "a11y_reset_session_label"))
 
             Button {
                 if phase == .done {
@@ -354,7 +354,7 @@ struct BreathingExerciseView: View {
             .modifier(CompatGlassButton())
             .buttonBorderShape(.circle)
             .tint(darkAccent)
-            .accessibilityLabel("Skip to next phase")
+            .accessibilityLabel(String(localized: "a11y_skip_phase_label"))
         }
     }
 

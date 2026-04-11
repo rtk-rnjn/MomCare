@@ -71,8 +71,8 @@ struct BreathingCardView: View {
                     .font(.title3)
                     .foregroundStyle(darkAccentColor.opacity(0.5))
             }
-            .accessibilityLabel("Breathing exercise information")
-            .accessibilityHint("Shows details about this breathing exercise")
+            .accessibilityLabel(String(localized: "a11y_breathing_info_label"))
+            .accessibilityHint(String(localized: "a11y_breathing_details_hint"))
             .frame(width: 44, height: 44)
         }
         .background(
@@ -80,7 +80,7 @@ struct BreathingCardView: View {
                 .fill(Color(hex: "D0E1F0"))
         )
         .accessibilityElement(children: .contain)
-        .accessibilityLabel("Breathing exercise, Beginner")
+        .accessibilityLabel(String(localized: "a11y_breathing_beginner_label"))
         .accessibilityValue("\(Int(max(0, min(completionProgress, 1)) * 100)) percent completed")
     }
 

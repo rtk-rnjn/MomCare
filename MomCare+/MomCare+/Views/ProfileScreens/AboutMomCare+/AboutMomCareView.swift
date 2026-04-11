@@ -22,7 +22,7 @@ struct AboutMomCareView: View {
                 }
                 .accessibilityElement(children: .combine)
                 .accessibilityLabel("App version \(appVersion)")
-                .accessibilityHint("Long press to reveal debug options")
+                .accessibilityHint(String(localized: "a11y_debug_options_hint"))
             }
 
             Section {

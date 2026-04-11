@@ -23,8 +23,8 @@ struct MapPickerView: View {
                     }
                 }
                 .ignoresSafeArea()
-                .accessibilityLabel("Map. Tap to select a location")
-                .accessibilityHint("Double tap to place a marker at the tapped location")
+                .accessibilityLabel(String(localized: "a11y_map_select_location_label"))
+                .accessibilityHint(String(localized: "a11y_map_tap_marker_hint"))
                 .onTapGesture { screenPoint in
                     if let coordinate = proxy.convert(screenPoint, from: .local) {
                         let location = CLLocation(

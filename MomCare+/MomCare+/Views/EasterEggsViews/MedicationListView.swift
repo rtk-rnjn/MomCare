@@ -250,7 +250,7 @@ struct MedicationListView: View {
                     .symbolRenderingMode(.hierarchical)
                     .font(.system(size: 22))
             }
-            .accessibilityLabel("Add new medication")
+            .accessibilityLabel(String(localized: "a11y_add_medication_label"))
         }
 
         ToolbarItem(placement: .topBarLeading) {
@@ -260,7 +260,7 @@ struct MedicationListView: View {
                 Image(systemName: "calendar.day.timeline.left")
                     .font(.system(size: 18))
             }
-            .accessibilityLabel("View timeline")
+            .accessibilityLabel(String(localized: "a11y_view_timeline_label"))
         }
     }
 
@@ -501,7 +501,7 @@ struct MedicationCard: View {
         .contentShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
         .accessibilityElement(children: .combine)
         .accessibilityLabel("\(reminder.medicationName), \(reminder.strength)\(reminder.unit.displayName) \(reminder.form.displayName)\(reminder.isAsNeeded ? ", as needed" : ", \(reminder.upcomingDoses.count) upcoming doses")")
-        .accessibilityHint("Tap to view details")
+        .accessibilityHint(String(localized: "a11y_view_details_hint"))
     }
 }
 

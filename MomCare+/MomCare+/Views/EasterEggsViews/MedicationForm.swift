@@ -539,7 +539,7 @@ struct DrugInfoStep: View {
                     .padding(.horizontal, 14)
                     .padding(.vertical, 12)
                     .background(Color(.secondarySystemGroupedBackground), in: RoundedRectangle(cornerRadius: 10, style: .continuous))
-                    .accessibilityLabel("Medication name")
+                    .accessibilityLabel(String(localized: "a11y_medication_name_label"))
             }
 
             // Form
@@ -570,7 +570,7 @@ struct DrugInfoStep: View {
                         .padding(.vertical, 12)
                         .background(Color(.secondarySystemGroupedBackground), in: RoundedRectangle(cornerRadius: 10, style: .continuous))
                         .frame(maxWidth: .infinity)
-                        .accessibilityLabel("Strength value")
+                        .accessibilityLabel(String(localized: "a11y_strength_value_label"))
 
                     Picker("Unit", selection: $entry.unit) {
                         ForEach(StrengthUnit.allCases) { unit in
@@ -746,7 +746,7 @@ struct ScheduleStep: View {
                                 .background(Color.accentColor.opacity(0.08), in: RoundedRectangle(cornerRadius: 10, style: .continuous))
                         }
                         .buttonStyle(.plain)
-                        .accessibilityLabel("Add another dose time")
+                        .accessibilityLabel(String(localized: "a11y_add_dose_time_label"))
                     }
                 }
             } else {
@@ -842,7 +842,7 @@ struct DoseTile: View {
                     displayedComponents: .hourAndMinute
                 )
                 .labelsHidden()
-                .accessibilityLabel("Dose time")
+                .accessibilityLabel(String(localized: "a11y_dose_time_label"))
 
                 HStack(spacing: 8) {
                     Text("Qty:")
@@ -866,7 +866,7 @@ struct DoseTile: View {
                     .symbolRenderingMode(.multicolor)
             }
             .buttonStyle(.plain)
-            .accessibilityLabel("Remove this dose")
+            .accessibilityLabel(String(localized: "a11y_remove_dose_label"))
         }
         .padding(12)
         .background(Color(.secondarySystemGroupedBackground), in: RoundedRectangle(cornerRadius: 10, style: .continuous))
@@ -913,7 +913,7 @@ struct DurationStep: View {
                             .background(Color.accentColor.opacity(0.08), in: RoundedRectangle(cornerRadius: 10, style: .continuous))
                     }
                     .buttonStyle(.plain)
-                    .accessibilityLabel("Add another date range")
+                    .accessibilityLabel(String(localized: "a11y_add_date_range_label"))
                 }
             }
         }
@@ -943,16 +943,16 @@ struct DurationTile: View {
                         .symbolRenderingMode(.hierarchical)
                 }
                 .buttonStyle(.plain)
-                .accessibilityLabel("Remove date range")
+                .accessibilityLabel(String(localized: "a11y_remove_date_range_label"))
             }
 
             Divider()
 
             DatePicker("Start Date", selection: $duration.startDate, displayedComponents: .date)
-                .accessibilityLabel("Start date")
+                .accessibilityLabel(String(localized: "a11y_start_date_label"))
 
             DatePicker("End Date", selection: $duration.endDate, in: duration.startDate..., displayedComponents: .date)
-                .accessibilityLabel("End date")
+                .accessibilityLabel(String(localized: "a11y_end_date_label"))
 
             // Duration summary badge
             let days = Calendar.current.dateComponents([.day], from: duration.startDate, to: duration.endDate).day ?? 0
@@ -999,7 +999,7 @@ struct DetailsStep: View {
                             .padding(.horizontal, 14)
                             .padding(.vertical, 12)
                             .background(Color(.secondarySystemGroupedBackground), in: RoundedRectangle(cornerRadius: 10, style: .continuous))
-                            .accessibilityLabel("Nickname for this medication")
+                            .accessibilityLabel(String(localized: "a11y_medication_nickname_label"))
                     }
 
                     VStack(alignment: .leading, spacing: 6) {
@@ -1022,7 +1022,7 @@ struct DetailsStep: View {
                                 },
                                 alignment: .topLeading
                             )
-                            .accessibilityLabel("Notes")
+                            .accessibilityLabel(String(localized: "a11y_notes_label"))
                     }
                 }
             }

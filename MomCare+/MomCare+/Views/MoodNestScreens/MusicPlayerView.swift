@@ -97,7 +97,7 @@ struct MusicPlayerView: View {
                             value: musicPlayerHandler.player?.timeControlStatus
                         )
                 }
-                .accessibilityLabel(musicPlayerHandler.player?.timeControlStatus == .playing ? "Pause" : "Play")
+                .accessibilityLabel(musicPlayerHandler.player?.timeControlStatus == .playing ? String(localized: "Pause") : String(localized: "Play"))
                 .accessibilityIdentifier("playPauseButton")
 
                 Button {
@@ -193,7 +193,7 @@ struct MusicPlayerView: View {
                         }
                     }
                     .disabled(musicPlayerHandler.isWaiting)
-                    .accessibilityLabel(musicPlayerHandler.isPlaying ? "Pause" : "Play")
+                    .accessibilityLabel(musicPlayerHandler.isPlaying ? String(localized: "Pause") : String(localized: "Play"))
 
                     if popupBarPlacement == .regular {
                         Button {

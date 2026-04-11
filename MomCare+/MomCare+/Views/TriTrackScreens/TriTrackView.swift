@@ -55,7 +55,7 @@ struct TriTrackView: View {
                         .foregroundStyle(Color.CustomColors.mutedRaspberry)
                         .symbolEffect(.bounce, value: controlState.showingExpandedCalendar)
                 }
-                .accessibilityLabel(controlState.showingExpandedCalendar ? "Collapse calendar" : "Expand calendar")
+                .accessibilityLabel(controlState.showingExpandedCalendar ? String(localized: "a11y_collapse_calendar_label") : String(localized: "a11y_expand_calendar_label"))
                 .accessibilityIdentifier("expandCalendarButton")
             }
 
@@ -106,7 +106,7 @@ struct TriTrackView: View {
                             .accessibilityHidden(true)
                     }
                     .menuStyle(.button)
-                    .accessibilityLabel("More options")
+                    .accessibilityLabel(String(localized: "a11y_more_options_label"))
 
                     Button {
                         controlState.showingAddEventSheet = true
@@ -116,7 +116,7 @@ struct TriTrackView: View {
                             .foregroundStyle(Color.CustomColors.mutedRaspberry)
                             .transition(.scale.combined(with: .opacity))
                     }
-                    .accessibilityLabel("Add event")
+                    .accessibilityLabel(String(localized: "a11y_add_event_label"))
                     .accessibilityIdentifier("addEventButton")
 
                 case .symptoms:
@@ -145,7 +145,7 @@ struct TriTrackView: View {
                             .accessibilityHidden(true)
                     }
                     .menuStyle(.button)
-                    .accessibilityLabel("More options")
+                    .accessibilityLabel(String(localized: "a11y_more_options_label"))
 
                     Button {
                         controlState.showingAddSymptomSheet = true
@@ -156,7 +156,7 @@ struct TriTrackView: View {
                             .transition(.scale.combined(with: .opacity))
                     }
                     .disabled(selectedDate > Date())
-                    .accessibilityLabel("Add symptom")
+                    .accessibilityLabel(String(localized: "a11y_add_symptom_label"))
                     .accessibilityIdentifier("addSymptomButton")
                 }
             }
@@ -202,7 +202,7 @@ struct TriTrackView: View {
             .padding(.horizontal, 16)
             .padding(.top, 16)
             .padding(.bottom, 4)
-            .accessibilityLabel("TriTrack section")
+            .accessibilityLabel(String(localized: "a11y_tritrack_section_label"))
 
             tabContent
         }
@@ -377,7 +377,7 @@ struct PregnancyProgressView: View {
                 }
             )
             .accessibilityElement(children: .ignore)
-            .accessibilityLabel("Baby height")
+            .accessibilityLabel(String(localized: "a11y_baby_height_label"))
             .accessibilityValue(
                 trimesterData.babyHeight.map { h in
                     h.formatted(.measurement(width: .wide, usage: .asProvided, numberFormatStyle: .number.precision(.fractionLength(2))))
@@ -418,7 +418,7 @@ struct PregnancyProgressView: View {
                 }
             )
             .accessibilityElement(children: .ignore)
-            .accessibilityLabel("Baby weight")
+            .accessibilityLabel(String(localized: "a11y_baby_weight_label"))
             .accessibilityValue(
                 trimesterData.babyWeight.map { weight in
                     weight.formatted(.measurement(width: .wide, usage: .personWeight, numberFormatStyle: .number.precision(.fractionLength(2))))
@@ -644,7 +644,7 @@ struct CompactInfoCard: View {
         )
         .accessibilityElement(children: .combine)
         .accessibilityLabel("\(title). \(previewText)")
-        .accessibilityHint("Double tap to read more information")
+        .accessibilityHint(String(localized: "a11y_read_more_hint"))
     }
 
     // MARK: Private

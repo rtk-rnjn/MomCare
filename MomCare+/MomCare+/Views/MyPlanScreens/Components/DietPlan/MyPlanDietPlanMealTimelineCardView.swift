@@ -81,7 +81,7 @@ struct MyPlanDietPlanMealTimelineCardView<AddFoodItemTip: Tip, SlideFoodItemRowT
                 .listRowSeparator(.hidden)
                 .compatListRowVerticalInsets(top: 0, bottom: 0)
                 .accessibilityElement(children: .combine)
-                .accessibilityLabel("Loading meal items")
+                .accessibilityLabel(String(localized: "a11y_loading_meal_items_label"))
             } else {
                 ForEach(items) { item in
                     MealTimelineFoodItemRow(
@@ -280,7 +280,7 @@ private struct MealTimelineFoodItemRow: View {
             "\(food?.name.capitalized ?? "Food item"), \(item.count) serving, \(food?.calories.formattedOneDecimal ?? "")"
         )
         .accessibilityValue(item.isConsumed ? "consumed" : "not consumed")
-        .accessibilityHint("Long press for more options.")
+        .accessibilityHint(String(localized: "a11y_long_press_options_hint"))
         .accessibilityAction(named: item.isConsumed ? "Undo" : "Consume") {
             Task {
                 await onToggle(item.isConsumed)

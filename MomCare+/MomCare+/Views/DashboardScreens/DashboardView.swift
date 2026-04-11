@@ -103,7 +103,7 @@ struct DashboardView: View {
                 controlState.myPlanSegment = .diet
             }
             .accessibilityAddTraits(.isButton)
-            .accessibilityHint("Double tap to view your diet plan")
+            .accessibilityHint(String(localized: "a11y_view_diet_plan_hint"))
             .accessibilityAction(.default) {
                 controlState.selectedTab = .myPlan
                 controlState.myPlanSegment = .diet
@@ -126,7 +126,7 @@ struct DashboardView: View {
                 contentServiceHandler.fetchTodaySteps()
             }
             .accessibilityAddTraits(.isButton)
-            .accessibilityHint("Double tap to view your exercise plan")
+            .accessibilityHint(String(localized: "a11y_view_exercise_plan_hint"))
             .accessibilityAction(.default) {
                 controlState.selectedTab = .myPlan
                 controlState.myPlanSegment = .exercise

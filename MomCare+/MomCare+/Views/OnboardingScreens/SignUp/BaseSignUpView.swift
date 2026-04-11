@@ -103,8 +103,8 @@ struct BaseSignUpView: View {
                     .buttonStyle(.borderedProminent)
                     .tint(MomCareAccent.primary)
                     .controlSize(.large)
-                    .accessibilityLabel("Create account")
-                    .accessibilityHint("Creates your new account")
+                    .accessibilityLabel(String(localized: "a11y_create_account_label"))
+                    .accessibilityHint(String(localized: "a11y_create_account_hint"))
                 }
             }
         }
@@ -154,8 +154,8 @@ struct BaseSignUpView: View {
                             isFocused = .email
                         }
                         .submitLabel(.next)
-                        .accessibilityLabel("Full name")
-                        .accessibilityHint("Enter your full name")
+                        .accessibilityLabel(String(localized: "a11y_full_name_label"))
+                        .accessibilityHint(String(localized: "a11y_enter_full_name_hint"))
                 }
 
                 Section {
@@ -169,13 +169,13 @@ struct BaseSignUpView: View {
                             isFocused = .password
                         }
                         .submitLabel(.next)
-                        .accessibilityLabel("Email address")
-                        .accessibilityHint("Enter your email address")
+                        .accessibilityLabel(String(localized: "a11y_email_label"))
+                        .accessibilityHint(String(localized: "a11y_enter_email_hint"))
                 } footer: {
                     if !email.isEmpty, !isValidEmail(email), isFocused != .email {
                         Text("Please enter a valid email address")
                             .foregroundStyle(.red)
-                            .accessibilityLabel("Email error: Please enter a valid email address")
+                            .accessibilityLabel(String(localized: "a11y_email_error_label"))
                     }
                 }
                 .animation(reduceMotion ? nil : .easeInOut, value: email)
@@ -196,11 +196,11 @@ struct BaseSignUpView: View {
                     if !password.isEmpty, password.count < 8, isFocused != .password {
                         Text("Password must be at least 8 characters long")
                             .foregroundStyle(.red)
-                            .accessibilityLabel("Password error: Password must be at least 8 characters long")
+                            .accessibilityLabel(String(localized: "a11y_password_length_error_label"))
                     } else if !confirmPassword.isEmpty, confirmPassword != password, isFocused != .confirmPassword {
                         Text("Passwords do not match")
                             .foregroundStyle(.red)
-                            .accessibilityLabel("Password error: Passwords do not match")
+                            .accessibilityLabel(String(localized: "a11y_password_mismatch_error_label"))
                     }
                 }
                 .contentTransition(reduceMotion ? .identity : .interpolate)

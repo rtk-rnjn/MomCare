@@ -66,8 +66,8 @@ struct ProfileView: View {
                         .foregroundStyle(.red)
                         .frame(maxWidth: .infinity)
                 }
-                .accessibilityLabel("Sign out")
-                .accessibilityHint("Signs you out of your MomCare+ account")
+                .accessibilityLabel(String(localized: "a11y_sign_out_label"))
+                .accessibilityHint(String(localized: "a11y_sign_out_hint"))
             }
 
             Section {
@@ -132,8 +132,8 @@ struct ProfileView: View {
                         openURL(mailURL)
                     }
                 }
-                .accessibilityLabel("Connect with Us")
-                .accessibilityHint("Opens email to contact support")
+                .accessibilityLabel(String(localized: "a11y_connect_with_us_label"))
+                .accessibilityHint(String(localized: "a11y_contact_email_hint"))
                 .accessibilityAddTraits(.isButton)
                 .accessibilityAction(.default) {
                     let url = "mailto:support.momcare@vision-labs.site"

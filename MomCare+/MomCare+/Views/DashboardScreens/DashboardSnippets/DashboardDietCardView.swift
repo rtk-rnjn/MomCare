@@ -14,10 +14,10 @@ struct DashboardDietCardView: View {
         .background(Color("secondaryAppColor"))
         .dashboardCardStyle()
         .accessibilityElement(children: .ignore)
-        .accessibilityLabel("Calorie intake")
+        .accessibilityLabel(String(localized: "a11y_calorie_intake_label"))
         .accessibilityValue("\(Int(consumed)) of \(Int(recommended)) calories consumed, \(Int(animatedProgress * 100)) percent")
         .accessibilityAddTraits([.isButton, .updatesFrequently])
-        .accessibilityHint("Double tap to view diet plan")
+        .accessibilityHint(String(localized: "a11y_diet_card_hint"))
         .accessibilityIdentifier("dashboardDietCard")
         .onAppear {
             withAnimation(reduceMotion ? nil : .easeInOut) {

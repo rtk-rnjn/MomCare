@@ -31,7 +31,7 @@ struct MultiSelectPickerView<T: Hashable & CaseIterable & RawRepresentable>: Vie
                 .tint(.primary)
                 .accessibilityLabel(item.rawValue.capitalized)
                 .accessibilityValue(temporarySelections.contains(item) ? "Selected" : "Not selected")
-                .accessibilityHint("Double tap to toggle selection")
+                .accessibilityHint(String(localized: "a11y_toggle_selection_hint"))
             }
             .navigationTitle(title)
             .navigationBarTitleDisplayMode(.inline)

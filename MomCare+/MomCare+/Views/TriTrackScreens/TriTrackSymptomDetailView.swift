@@ -51,7 +51,7 @@ struct TriTrackSymptomDetailView: View {
                     }
                     .font(.headline)
                     .accessibilityElement(children: .combine)
-                    .accessibilityLabel("What you can do")
+                    .accessibilityLabel(String(localized: "a11y_what_you_can_do_label"))
                     .accessibilityAddTraits(.isHeader)
 
                     VStack(alignment: .leading, spacing: 10) {

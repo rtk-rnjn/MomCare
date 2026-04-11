@@ -14,7 +14,7 @@ struct MyPlanView: View {
             .pickerStyle(.segmented)
             .padding(.horizontal, 16)
             .padding(.vertical, 8)
-            .accessibilityLabel("Plan type")
+            .accessibilityLabel(String(localized: "a11y_plan_type_label"))
 
             switch controlState.myPlanSegment {
             case .diet:

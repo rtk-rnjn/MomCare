@@ -50,8 +50,8 @@ struct MyPlanExercisePlanView: View {
                 } label: {
                     Image(systemName: "clock.arrow.circlepath")
                 }
-                .accessibilityLabel("Exercise history")
-                .accessibilityHint("Opens your exercise history")
+                .accessibilityLabel(String(localized: "a11y_exercise_history_list_label"))
+                .accessibilityHint(String(localized: "a11y_exercise_history_hint"))
             }
 
             ToolbarItem(placement: .topBarTrailing) {
@@ -76,7 +76,7 @@ struct MyPlanExercisePlanView: View {
                     Image(systemName: "ellipsis")
                         .accessibilityHidden(true)
                 }
-                .accessibilityLabel("More options")
+                .accessibilityLabel(String(localized: "a11y_more_options_label"))
             }
         }
         .padding(.top, 8)
@@ -123,7 +123,7 @@ struct MyPlanExercisePlanView: View {
                 .onTapGesture {
                     showWalkingHistory = true
                 }
-                .accessibilityHint("Double tap to view walking history")
+                .accessibilityHint(String(localized: "a11y_walking_history_hint"))
                 .accessibilityAddTraits(.isButton)
                 .accessibilityAction(.default) {
                     showWalkingHistory = true

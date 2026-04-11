@@ -24,7 +24,7 @@ struct ProfilePersonalInfoView: View {
                         .multilineTextAlignment(.trailing)
                         .foregroundStyle(isEditing ? MomCareAccent.primary : .secondary)
                         .disabled(!isEditing)
-                        .accessibilityLabel("Full name")
+                        .accessibilityLabel(String(localized: "a11y_full_name_label"))
                 }
                 .accessibilityElement(children: .combine)
                 .accessibilityLabel(

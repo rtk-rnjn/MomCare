@@ -44,7 +44,7 @@ struct MoodNestView: View {
                                 .foregroundStyle(Color.CustomColors.mutedRaspberry)
                                 .symbolEffect(.bounce, value: controlState.showingExpandedCalendar)
                         }
-                        .accessibilityLabel(controlState.showingExpandedCalendar ? "Collapse calendar" : "Expand calendar")
+                        .accessibilityLabel(controlState.showingExpandedCalendar ? String(localized: "a11y_collapse_calendar_label") : String(localized: "a11y_expand_calendar_label"))
                         .accessibilityIdentifier("expandCalendarButton")
                     }
 

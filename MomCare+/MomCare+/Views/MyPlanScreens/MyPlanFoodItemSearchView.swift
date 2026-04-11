@@ -167,7 +167,7 @@ private struct FoodRowView: View {
         .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
         .accessibilityElement(children: .combine)
         .accessibilityLabel("\(food.name.capitalized), \(Int(food.totalCalories)) kilocalories, \(food.type.displayLabel)")
-        .accessibilityHint("Double tap to view nutrition details")
+        .accessibilityHint(String(localized: "a11y_food_nutrition_hint"))
     }
 }
 

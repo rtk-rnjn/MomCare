@@ -26,7 +26,7 @@ struct DayCell: View {
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(accessibilityDateLabel)
         .accessibilityAddTraits(.isButton)
-        .accessibilityHint("Selects this date")
+        .accessibilityHint(String(localized: "a11y_select_date_hint"))
         .onTapGesture {
             withAnimation(reduceMotion ? nil : .easeInOut(duration: 0.2)) {
                 selectedDate = date

@@ -26,8 +26,8 @@ struct TriTrackSymptomsSheetView: View {
                         Text("Other")
                             .foregroundStyle(.primary)
                     })
-                    .accessibilityLabel("Other symptom")
-                    .accessibilityHint("Double tap to log a custom symptom")
+                    .accessibilityLabel(String(localized: "a11y_other_symptom_label"))
+                    .accessibilityHint(String(localized: "a11y_log_custom_symptom_hint"))
                 }
 
                 Section {
@@ -39,7 +39,7 @@ struct TriTrackSymptomsSheetView: View {
                             Text(symptom.name)
                                 .foregroundStyle(.primary)
                         })
-                        .accessibilityHint("Double tap to select this symptom")
+                        .accessibilityHint(String(localized: "a11y_select_symptom_hint"))
                     }
                 }
             }
@@ -53,7 +53,7 @@ struct TriTrackSymptomsSheetView: View {
                     MCCancelButton {
                         dismiss()
                     }
-                    .accessibilityHint("Dismisses without selecting a symptom")
+                    .accessibilityHint(String(localized: "a11y_dismiss_no_selection_hint"))
                 }
             }
         }

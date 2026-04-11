@@ -68,7 +68,7 @@ struct EKReminderView: View {
                         saveChanges()
                     }
                     .accessibilityLabel(String(localized: "Save"))
-                    .accessibilityHint("Saves changes to this reminder")
+                    .accessibilityHint(String(localized: "a11y_save_reminder_hint"))
                 }
             }
         }
@@ -83,7 +83,7 @@ struct EKReminderView: View {
                         .foregroundStyle(isCompleted ? .green : Color(.tertiaryLabel))
                 }
                 .accessibilityLabel(isCompleted ? "Mark as incomplete" : "Mark as complete")
-                .accessibilityHint("Toggles the completion status of this reminder")
+                .accessibilityHint(String(localized: "a11y_reminder_done_toggle_hint"))
 
                 TextField("Title", text: $title)
                     .onChange(of: title) { hasChanges = true }
@@ -156,7 +156,7 @@ struct EKReminderView: View {
                     .keyboardType(.numberPad)
                     .multilineTextAlignment(.trailing)
                     .frame(width: 60)
-                    .accessibilityLabel("Repeat interval")
+                    .accessibilityLabel(String(localized: "a11y_repeat_interval_label"))
                 }
             }
 
@@ -203,8 +203,8 @@ struct EKReminderView: View {
                     deleteReminder()
                 }
             }
-            .accessibilityLabel("Delete reminder")
-            .accessibilityHint("Permanently removes this reminder")
+            .accessibilityLabel(String(localized: "a11y_delete_reminder_label"))
+            .accessibilityHint(String(localized: "a11y_permanently_remove_reminder_hint"))
         }
     }
 

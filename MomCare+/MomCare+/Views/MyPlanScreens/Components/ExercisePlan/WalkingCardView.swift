@@ -85,7 +85,7 @@ struct WalkingCardView: View {
                 .fill(Color(hex: "D4EDDA"))
         )
         .accessibilityElement(children: .ignore)
-        .accessibilityLabel("Walking")
+        .accessibilityLabel(String(localized: "a11y_walking_label"))
         .accessibilityValue(
             stepsToday >= stepsGoal
                 ? "Goal completed, \(Int(stepsToday)) steps"

@@ -17,7 +17,7 @@ struct MyPlanDietPlanHistory: View {
                         }
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
                         .accessibilityElement(children: .combine)
-                        .accessibilityLabel("Loading meal plan")
+                        .accessibilityLabel(String(localized: "a11y_loading_meal_plan_label"))
                     } else if let plan {
                         List {
                             FoodReferenceSection(type: .breakfast, items: plan.breakfast)
@@ -55,7 +55,7 @@ struct MyPlanDietPlanHistory: View {
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
                     MCCloseButton { dismiss() }
-                        .accessibilityLabel("Close")
+                        .accessibilityLabel(String(localized: "a11y_close_label"))
                 }
 
                 ToolbarItem(placement: .topBarTrailing) {
@@ -145,7 +145,7 @@ private struct ProgressPill: View {
                 Capsule()
                     .strokeBorder(complete ? tint.opacity(0.35) : Color.secondary.opacity(0.25), lineWidth: 1)
             )
-            .accessibilityLabel("Progress")
+            .accessibilityLabel(String(localized: "a11y_progress_label"))
             .accessibilityValue("\(consumed) of \(total) consumed")
     }
 }

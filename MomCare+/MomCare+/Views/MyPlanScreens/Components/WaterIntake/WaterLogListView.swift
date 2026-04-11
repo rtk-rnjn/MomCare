@@ -80,7 +80,7 @@ struct WaterLogListView: View {
         )
         .shadow(color: Color(hex: "924350").opacity(0.05), radius: 8, x: 0, y: 3)
         .accessibilityElement(children: .ignore)
-        .accessibilityLabel("Water intake summary")
+        .accessibilityLabel(String(localized: "a11y_water_intake_summary_label"))
         .accessibilityValue(
             store.remaining <= 0
                 ? "Goal met. Drank \(formatMl(store.todayTotal)), goal \(formatMl(store.dailyTarget))"
@@ -233,7 +233,7 @@ struct WaterLogListView: View {
         .contentShape(Rectangle())
         .accessibilityElement(children: .ignore)
         .accessibilityLabel("\(entry.formattedAmount) at \(entry.formattedDateTime)")
-        .accessibilityHint("Double tap to edit")
+        .accessibilityHint(String(localized: "a11y_edit_entry_hint"))
         .accessibilityAddTraits(.isButton)
         .accessibilityAction(.default) { editingEntry = entry }
         .onTapGesture { editingEntry = entry }

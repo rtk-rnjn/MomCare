@@ -145,7 +145,7 @@ struct OTPScreenView: View {
             }
         }
         .accessibilityElement(children: .ignore)
-        .accessibilityLabel("Verification code input")
+        .accessibilityLabel(String(localized: "a11y_otp_input_label"))
         .accessibilityValue("\(otpString.count) of \(otpLength) digits entered")
         .accessibilityHint("Tap to enter your \(otpLength)-digit verification code")
         .accessibilityAddTraits(.isButton)
@@ -191,8 +191,8 @@ struct OTPScreenView: View {
         .tint(MomCareAccent.primary)
         .controlSize(.large)
         .disabled(otpString.count != otpLength || isLoading)
-        .accessibilityLabel("Verify code")
-        .accessibilityHint("Verifies the 6-digit code you entered")
+        .accessibilityLabel(String(localized: "a11y_verify_code_label"))
+        .accessibilityHint(String(localized: "a11y_verify_otp_hint"))
         .accessibilityIdentifier("verifyButton")
         .navigationDestination(isPresented: $navigate) {
             switch destination {

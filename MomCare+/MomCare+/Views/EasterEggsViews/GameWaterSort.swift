@@ -190,7 +190,7 @@ struct GameWaterSortView: View {
                     } label: {
                         Label("Difficulty", systemImage: "gearshape.fill")
                     }
-                    .accessibilityLabel("Settings")
+                    .accessibilityLabel(String(localized: "a11y_game_settings_label"))
                 }
             }
         }
@@ -250,6 +250,6 @@ struct BottleView: View {
         }
         .accessibilityElement(children: .ignore)
         .accessibilityLabel("Bottle with \(colors.count) layers. Top color is \(colors.last?.name ?? "empty")")
-        .accessibilityHint("Tap to select or pour.")
+        .accessibilityHint(String(localized: "a11y_tap_to_pour_hint"))
     }
 }

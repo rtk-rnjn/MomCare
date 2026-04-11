@@ -48,7 +48,7 @@ struct ExerciseCardView: View {
                         )
                     }
                     .accessibilityLabel(completionProgress >= 1 ? "Replay \(exercise?.name ?? "exercise")" : "Start \(exercise?.name ?? "exercise")")
-                    .accessibilityHint("Double tap to play the exercise video")
+                    .accessibilityHint(String(localized: "a11y_play_exercise_video_hint"))
                     .accessibilityIdentifier("startExerciseButton")
                     .fullScreenCover(isPresented: $startExercisePlayer) {
                         NavigationStack {
@@ -86,8 +86,8 @@ struct ExerciseCardView: View {
                     .font(.title3)
                     .foregroundStyle(darkAccentColor.opacity(0.5))
             }
-            .accessibilityLabel("Exercise information")
-            .accessibilityHint("Shows details about this exercise")
+            .accessibilityLabel(String(localized: "a11y_exercise_information_label"))
+            .accessibilityHint(String(localized: "a11y_exercise_details_hint"))
             .frame(width: 44, height: 44)
             .padding(.trailing, 8)
         }
@@ -131,7 +131,7 @@ struct ExerciseCardView: View {
     private var playerView: some View {
         VideoPlayer(player: avPlayer)
             .onAppear { avPlayer?.play() }
-            .accessibilityLabel("Exercise video player")
+            .accessibilityLabel(String(localized: "a11y_exercise_video_player_label"))
             .navigationTitle(exercise?.name ?? "Exercise")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
@@ -150,7 +150,7 @@ struct ExerciseCardView: View {
                             completionProgress = currentTime / (exercise?.videoDurationSeconds ?? 0)
                         }
                     }
-                    .accessibilityLabel("Close video")
+                    .accessibilityLabel(String(localized: "a11y_close_video_label"))
                     .accessibilityIdentifier("closeVideoButton")
                     .padding(.top, 20)
                 }

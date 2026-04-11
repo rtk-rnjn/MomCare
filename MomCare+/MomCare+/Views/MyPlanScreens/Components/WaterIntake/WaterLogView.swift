@@ -195,7 +195,7 @@ struct WaterLogView: View {
         .aspectRatio(0.78, contentMode: .fit)
         .shadow(color: Color(hex: "5B9BD5").opacity(0.18), radius: 20, x: 0, y: 10)
         .accessibilityElement(children: .ignore)
-        .accessibilityLabel("Water intake progress")
+        .accessibilityLabel(String(localized: "a11y_water_intake_progress_label"))
         .accessibilityValue("\(Int(store.progress * 100)) percent, \(Int(store.todayTotal)) of \(Int(store.dailyTarget)) millilitres")
     }
 
@@ -214,7 +214,7 @@ struct WaterLogView: View {
                         .foregroundStyle(Color(hex: "924350"))
                         .frame(width: 28, height: 28)
                 }
-                .accessibilityLabel("Previous week")
+                .accessibilityLabel(String(localized: "a11y_previous_week_label"))
 
                 Text(monthYearString(for: selectedDate))
                     .font(.subheadline.weight(.bold))
@@ -249,7 +249,7 @@ struct WaterLogView: View {
                         toGranularity: .weekOfYear
                     )
                 )
-                .accessibilityLabel("Next week")
+                .accessibilityLabel(String(localized: "a11y_next_week_label"))
             }
 
             HStack(spacing: 0) {

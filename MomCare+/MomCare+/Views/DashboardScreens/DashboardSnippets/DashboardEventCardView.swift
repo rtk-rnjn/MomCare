@@ -65,7 +65,7 @@ struct DashboardEventCardView<TipContent: Tip>: View {
             } ?? ""
         )
         .accessibilityAddTraits(.isButton)
-        .accessibilityHint("Double tap to add a new event")
+        .accessibilityHint(String(localized: "a11y_add_event_hint"))
         .accessibilityAction(.default) {
             showEventSheet = true
         }

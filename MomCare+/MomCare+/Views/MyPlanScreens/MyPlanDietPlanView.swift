@@ -87,8 +87,8 @@ struct MyPlanDietPlanView: View {
                 } label: {
                     Image(systemName: "clock.arrow.circlepath")
                 }
-                .accessibilityLabel("Meal plan history")
-                .accessibilityHint("Opens your meal plan history")
+                .accessibilityLabel(String(localized: "a11y_meal_plan_history_label"))
+                .accessibilityHint(String(localized: "a11y_meal_history_hint"))
             }
 
             ToolbarItem(placement: .topBarTrailing) {
@@ -113,7 +113,7 @@ struct MyPlanDietPlanView: View {
                     Image(systemName: "ellipsis")
                         .accessibilityHidden(true)
                 }
-                .accessibilityLabel("More options")
+                .accessibilityLabel(String(localized: "a11y_more_options_label"))
             }
         }
         .sheet(isPresented: $showHelp) {
@@ -239,7 +239,7 @@ private struct NutritionGraphRootView: View {
         .padding(.vertical, 14)
         .background(Color(.secondarySystemBackground), in: RoundedRectangle(cornerRadius: 16, style: .continuous))
         .accessibilityElement(children: .ignore)
-        .accessibilityLabel("Calorie summary")
+        .accessibilityLabel(String(localized: "a11y_calorie_summary_label"))
         .accessibilityValue({
             let intake = calorieIntake.formatted(.measurement(width: .wide, usage: .food))
             let goal = calorieGoal.formatted(.measurement(width: .wide, usage: .food))
@@ -363,7 +363,7 @@ private struct VitalCardRow: View {
                 ? "\(formattedValue(todayValue)) \(kind.unitLabel), \(progressLabel) of target"
                 : "\(formattedValue(todayValue)) \(kind.unitLabel)"
         )
-        .accessibilityHint("Double tap to view detailed history")
+        .accessibilityHint(String(localized: "a11y_diet_history_hint"))
         .accessibilityAddTraits(.isButton)
     }
 

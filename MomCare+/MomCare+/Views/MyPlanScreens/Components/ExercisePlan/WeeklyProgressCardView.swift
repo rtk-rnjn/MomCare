@@ -74,7 +74,7 @@ struct WeeklyProgressCardView: View {
                 .accessibilityHidden(true)
             }
             .accessibilityElement(children: .ignore)
-            .accessibilityLabel("Overall progress")
+            .accessibilityLabel(String(localized: "a11y_overall_progress_label"))
             .accessibilityValue("\(completedCount) of \(totalCount) exercises completed, \(Int(overallProgress * 100)) percent")
             .accessibilityAddTraits(.updatesFrequently)
         }

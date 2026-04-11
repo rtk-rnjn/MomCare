@@ -32,8 +32,8 @@ struct TriTrackRowLegendView: View {
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
                     MCCloseButton { dismiss() }
-                        .accessibilityLabel("Close legend")
-                        .accessibilityHint("Dismisses this guide")
+                        .accessibilityLabel(String(localized: "a11y_close_legend_label"))
+                        .accessibilityHint(String(localized: "a11y_dismiss_guide_hint"))
                 }
             }
             .background(Color(.systemGroupedBackground))

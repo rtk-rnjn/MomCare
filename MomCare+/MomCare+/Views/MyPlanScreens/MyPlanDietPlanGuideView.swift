@@ -31,8 +31,8 @@ struct MyPlanDietPlanGuideView: View {
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
                     MCCloseButton { dismiss() }
-                        .accessibilityLabel("Close guide")
-                        .accessibilityHint("Dismisses this help screen")
+                        .accessibilityLabel(String(localized: "a11y_close_guide_label"))
+                        .accessibilityHint(String(localized: "a11y_dismiss_help_hint"))
                 }
             }
             .background(Color(.systemGroupedBackground))

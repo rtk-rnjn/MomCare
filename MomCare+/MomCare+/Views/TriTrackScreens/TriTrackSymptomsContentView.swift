@@ -192,7 +192,7 @@ struct TriTrackSymptomRow: View {
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(symptom.title ?? "Symptom")
         .accessibilityValue(symptom.notes.flatMap { $0.isEmpty ? nil : $0 } ?? "No notes")
-        .accessibilityHint("Double tap to edit, long press for more options")
+        .accessibilityHint(String(localized: "a11y_symptom_edit_hint"))
         .accessibilityAddTraits(.isButton)
         .accessibilityAction(.default) { onEdit() }
         .accessibilityAction(named: "View Details") { onViewDetails() }

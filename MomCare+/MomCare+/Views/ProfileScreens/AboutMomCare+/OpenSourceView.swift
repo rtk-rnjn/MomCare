@@ -101,7 +101,7 @@ struct LicenseCardView: View {
                 .cornerRadius(16)
             }
             .accessibilityLabel("\(name), \(license)")
-            .accessibilityHint("Opens in browser")
+            .accessibilityHint(String(localized: "a11y_open_browser_hint"))
         }
     }
 }

@@ -76,8 +76,8 @@ struct OnboardingView: View {
                             .cornerRadius(24)
                     }
                     .padding(.horizontal, 20)
-                    .accessibilityLabel("Continue with Email")
-                    .accessibilityHint("Sign in using your email address and password")
+                    .accessibilityLabel(String(localized: "a11y_continue_email_label"))
+                    .accessibilityHint(String(localized: "a11y_sign_in_email_hint"))
                     .accessibilityIdentifier("continueWithEmailButton")
 
                     HStack(spacing: 4) {
@@ -89,7 +89,7 @@ struct OnboardingView: View {
                         }
                         .font(.body.weight(.semibold))
                         .foregroundStyle(MomCareAccent.primary)
-                        .accessibilityHint("Creates a new MomCare account")
+                        .accessibilityHint(String(localized: "a11y_create_account_onboarding_hint"))
                     }
                     .font(.subheadline)
                     .padding(.top, 4)

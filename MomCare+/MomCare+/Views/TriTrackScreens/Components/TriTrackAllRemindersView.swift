@@ -66,7 +66,7 @@ struct TriTrackAllRemindersView: View {
                         )
                     }
                     .accessibilityLabel(showDetails ? "Switch to compact view" : "Switch to detailed view")
-                    .accessibilityHint("Toggles the amount of detail shown for each reminder")
+                    .accessibilityHint(String(localized: "a11y_reminder_detail_toggle_hint"))
                 }
             }
             .overlay {
@@ -289,7 +289,7 @@ struct ReminderRow: View {
                 }
                 .buttonStyle(.plain)
                 .accessibilityLabel(isCompleted ? "Mark as incomplete" : "Mark as complete")
-                .accessibilityHint("Toggles the completion status of this reminder")
+                .accessibilityHint(String(localized: "a11y_reminder_completion_hint"))
                 .accessibilityAddTraits(.isButton)
 
                 Rectangle()
@@ -414,7 +414,7 @@ struct ReminderRow: View {
         }
         .opacity(isCompleted ? 0.5 : 1.0)
         .accessibilityElement(children: .combine)
-        .accessibilityHint("Double tap to view reminder details")
+        .accessibilityHint(String(localized: "a11y_reminder_view_details_hint"))
         .accessibilityAddTraits(.isButton)
     }
 
