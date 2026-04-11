@@ -60,7 +60,7 @@ struct MoodNestView: View {
                                 }
                             }
                         }
-                        .accessibilityLabel("Jump to today")
+                        .accessibilityLabel(String(localized: "a11y_jump_to_today_label"))
                         .accessibilityIdentifier("jumpToTodayButton")
                     }
 
@@ -171,8 +171,8 @@ struct MoodNestView: View {
 
             moodArc
                 .offset(y: -25)
-                .accessibilityLabel("Mood selector")
-                .accessibilityHint("Select your current mood")
+                .accessibilityLabel(String(localized: "a11y_mood_selector_label"))
+                .accessibilityHint(String(localized: "a11y_mood_selector_hint"))
         }
     }
 

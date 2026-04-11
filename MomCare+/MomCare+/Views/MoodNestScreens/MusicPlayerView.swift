@@ -43,7 +43,7 @@ struct MusicPlayerView: View {
                         .foregroundStyle(.white.opacity(0.6))
                         .symbolRenderingMode(.hierarchical)
                 }
-                .accessibilityLabel("Song options")
+                .accessibilityLabel(String(localized: "a11y_song_options_label"))
                 .frame(minWidth: 44, minHeight: 44)
             }
             .padding(.horizontal, 32)
@@ -55,9 +55,9 @@ struct MusicPlayerView: View {
                     set: { musicPlayerHandler.seek(by: $0) }
                 ), in: 0 ... (musicPlayerHandler.totalDuration))
                     .tint(.white.opacity(0.8))
-                    .accessibilityLabel("Playback progress")
+                    .accessibilityLabel(String(localized: "a11y_playback_progress_label"))
                     .accessibilityValue(Utils.formattedTime(musicPlayerHandler.player?.currentTime().seconds ?? 0))
-                    .accessibilityHint("Drag to seek")
+                    .accessibilityHint(String(localized: "a11y_drag_to_seek_hint"))
                     .accessibilityAddTraits(.updatesFrequently)
 
                 HStack {
@@ -81,7 +81,7 @@ struct MusicPlayerView: View {
                         .font(.title)
                         .foregroundStyle(.white)
                 }
-                .accessibilityLabel("Previous track")
+                .accessibilityLabel(String(localized: "a11y_previous_track_label"))
                 .frame(minWidth: 44, minHeight: 44)
 
                 Button {
@@ -107,7 +107,7 @@ struct MusicPlayerView: View {
                         .font(.title)
                         .foregroundStyle(.white)
                 }
-                .accessibilityLabel("Next track")
+                .accessibilityLabel(String(localized: "a11y_next_track_label"))
                 .frame(minWidth: 44, minHeight: 44)
             }
             .animation(nil, value: musicPlayerHandler.player?.timeControlStatus == .playing)
@@ -123,7 +123,7 @@ struct MusicPlayerView: View {
                         .layoutPriority(1)
                         .frame(maxWidth: .infinity)
                         .frame(height: 20)
-                        .accessibilityLabel("Volume")
+                        .accessibilityLabel(String(localized: "a11y_volume_label"))
 
                     Image(systemName: "speaker.wave.3.fill")
                         .foregroundStyle(.white.opacity(0.7))
@@ -131,7 +131,7 @@ struct MusicPlayerView: View {
 
                     SystemRoutePicker()
                         .frame(width: 30, height: 30)
-                        .accessibilityLabel("Audio output")
+                        .accessibilityLabel(String(localized: "a11y_audio_output_label"))
                 }
             }
             .padding(.horizontal, 32)
@@ -178,7 +178,7 @@ struct MusicPlayerView: View {
                             Image(systemName: "backward.fill")
                                 .foregroundStyle(.black)
                         }
-                        .accessibilityLabel("Previous track")
+                        .accessibilityLabel(String(localized: "a11y_previous_track_label"))
                     }
 
                     Button {
@@ -202,7 +202,7 @@ struct MusicPlayerView: View {
                             Image(systemName: "forward.fill")
                                 .foregroundStyle(.black)
                         }
-                        .accessibilityLabel("Next track")
+                        .accessibilityLabel(String(localized: "a11y_next_track_label"))
                     }
 
                     Button {
@@ -213,7 +213,7 @@ struct MusicPlayerView: View {
                         Image(systemName: "x.circle.fill")
                             .foregroundStyle(.black)
                     }
-                    .accessibilityLabel("Stop and close player")
+                    .accessibilityLabel(String(localized: "a11y_stop_close_player_label"))
                 }
             }
         }

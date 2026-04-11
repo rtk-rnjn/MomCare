@@ -34,7 +34,7 @@ struct TriTrackAddEditSymptomSheetView: View {
                         }
                     }
                     .accessibilityLabel(selectedSymptom.map { "Selected symptom: \($0.name)" } ?? "Select symptom")
-                    .accessibilityHint("Opens symptom picker")
+                    .accessibilityHint(String(localized: "a11y_symptom_picker_hint"))
                     .accessibilityIdentifier("selectSymptomButton")
                 }
 
@@ -71,8 +71,8 @@ struct TriTrackAddEditSymptomSheetView: View {
                     MCCancelButton {
                         dismiss()
                     }
-                    .accessibilityLabel("Cancel")
-                    .accessibilityHint("Dismisses this screen without saving changes")
+                    .accessibilityLabel(String(localized: "Cancel"))
+                    .accessibilityHint(String(localized: "a11y_dismiss_hint"))
                     .accessibilityAddTraits(.isButton)
                 }
 
@@ -81,8 +81,8 @@ struct TriTrackAddEditSymptomSheetView: View {
                         saveOrEdit()
                     }
                     .disabled(title.isEmpty)
-                    .accessibilityLabel("Save symptom")
-                    .accessibilityHint("Saves the symptom entry to your log")
+                    .accessibilityLabel(String(localized: "a11y_save_symptom_label"))
+                    .accessibilityHint(String(localized: "a11y_save_symptom_hint"))
                     .accessibilityAddTraits(.isButton)
                 }
             }

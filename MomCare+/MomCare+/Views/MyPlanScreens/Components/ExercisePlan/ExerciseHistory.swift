@@ -102,7 +102,7 @@ struct ExerciseHistory: View {
                             }
                         }
                     }
-                    .accessibilityLabel("Jump to today")
+                    .accessibilityLabel(String(localized: "a11y_jump_to_today_label"))
                     .accessibilityIdentifier("jumpToTodayButton")
                 }
             }

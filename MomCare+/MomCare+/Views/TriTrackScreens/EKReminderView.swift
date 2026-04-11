@@ -59,7 +59,7 @@ struct EKReminderView: View {
                             dismiss()
                         }
                     }
-                    .accessibilityLabel("Cancel")
+                    .accessibilityLabel(String(localized: "Cancel"))
                     .accessibilityHint(hasChanges ? "Prompts to discard unsaved changes" : "Dismisses this screen")
                 }
 
@@ -67,7 +67,7 @@ struct EKReminderView: View {
                     MCDoneButton {
                         saveChanges()
                     }
-                    .accessibilityLabel("Save")
+                    .accessibilityLabel(String(localized: "Save"))
                     .accessibilityHint("Saves changes to this reminder")
                 }
             }

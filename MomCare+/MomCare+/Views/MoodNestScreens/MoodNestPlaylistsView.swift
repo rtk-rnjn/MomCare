@@ -170,7 +170,7 @@ struct MoodNestPlaylistsView: View {
                             .shadow(color: .black.opacity(0.3), radius: 10, x: 0, y: 5)
                         }
                         .accessibilityLabel("Play \(hero.name)")
-                        .accessibilityHint("Starts playing this playlist")
+                        .accessibilityHint(String(localized: "a11y_play_playlist_hint"))
                         .accessibilityIdentifier("playNowButton")
                     }
                     .padding(.horizontal, 20)

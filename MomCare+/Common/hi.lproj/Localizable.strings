@@ -13,8 +13,6 @@
 "Skip" = "छोड़ें";
 "Finish" = "समाप्त करें";
 "Start" = "शुरू करें";
-"Stop" = "रोकें";
-"Pause" = "रोकें";
 "Resume" = "फिर से शुरू करें";
 
 "Add" = "जोड़ें";
@@ -122,7 +120,6 @@
 "Gallery" = "गैलरी";
 "Microphone" = "माइक्रोफ़ोन";
 
-"Reminder" = "रिमाइंडर";
 "Alert" = "अलर्ट";
 "Notification" = "सूचना";
 "Mark as Read" = "पढ़ा हुआ चिह्नित करें";
@@ -176,7 +173,6 @@
 "Never miss a moment with reminders" = "रिमाइंडर के साथ कभी भी एक पल न चूकें";
 
 "Progress" = "प्रगति";
-"Trimester" = "त्रैमासिक";
 "No Upcoming Events" = "कोई आगामी इवेंट नहीं";
 "Daily Insights" = "दैनिक जानकारी";
 "Today's Focus" = "आज का ध्यान";
@@ -218,7 +214,6 @@
 "Change Password" = "पासवर्ड बदलें";
 "Old Password" = "पुराना पासवर्ड";
 "New Password" = "नया पासवर्ड";
-"Confirm Password" = "पासवर्ड की पुष्टि करें";
 "Third Party Integration" = "तृतीय पक्ष एकीकरण";
 "Connect" = "कनेक्ट करें";
 
@@ -269,8 +264,6 @@
 
 // MyPlan
 "My Plan" = "मेरी योजना";
-"Diet" = "आहार";
-"Exercise" = "व्यायाम";
 
 // Diet
 "Breakfast" = "सुबह का नाश्ता";
@@ -283,3 +276,102 @@
 "Fats" = "वसा";
 "Sugar" = "चीनी";
 "Sodium" = "सोडियम";
+
+// TriTrack additional
+"None" = "कोई नहीं";
+"15 minutes before" = "15 मिनट पहले";
+"1 hour before" = "1 घंटे पहले";
+"1 day before" = "1 दिन पहले";
+"All-day" = "पूरा दिन";
+"Ended" = "समाप्त";
+"Upcoming" = "आगामी";
+"Past" = "पिछला";
+"TODAY" = "आज";
+"No Due Date" = "कोई नियत तारीख नहीं";
+"From" = "से";
+"To" = "तक";
+"Other" = "अन्य";
+"Low" = "कम";
+"Medium" = "मध्यम";
+"High" = "उच्च";
+"Never" = "कभी नहीं";
+"Daily" = "दैनिक";
+"Weekly" = "साप्ताहिक";
+"Monthly" = "मासिक";
+"Custom" = "कस्टम";
+"Every" = "हर";
+"On Date" = "तारीख पर";
+"New Symptom" = "नया लक्षण";
+"Edit Symptom" = "लक्षण संपादित करें";
+"Start logging symptoms to see them here." = "यहाँ देखने के लिए लक्षण दर्ज करना शुरू करें।";
+"You don't have any reminders." = "आपके पास कोई अनुस्मारक नहीं है।";
+"You don't have any scheduled events." = "आपके पास कोई निर्धारित इवेंट नहीं है।";
+"Each row in your calendar uses colors and symbols to give you instant context — no tapping required." = "आपके कैलेंडर की प्रत्येक पंक्ति रंगों और प्रतीकों का उपयोग करके आपको तुरंत संदर्भ देती है।";
+"What you can do" = "आप क्या कर सकते हैं";
+
+// MoodNest
+"More Playlists" = "और प्लेलिस्ट";
+"Play Now" = "अभी चलाएं";
+"Shuffle" = "शफ़ल करें";
+"Mood History" = "मूड इतिहास";
+"Mood history details and insights will be available in a future update. Stay tuned!" = "मूड इतिहास विवरण और जानकारी भविष्य के अपडेट में उपलब्ध होगी।";
+"Next Step" = "अगला कदम";
+"What is your mood?" = "आपका मूड कैसा है?";
+
+// MyPlan
+"Loading meal plan\u{2026}" = "भोजन योजना लोड हो रही है\u{2026}";
+"Beginner" = "शुरुआती";
+"Breathing Exercise" = "श्वास व्यायाम";
+"Loading exercise history\u{2026}" = "व्यायाम इतिहास लोड हो रही है\u{2026}";
+"Walking" = "चलना";
+"Weekly Progress" = "साप्ताहिक प्रगति";
+"Entries" = "प्रविष्टियां";
+"Today's Exercises" = "आज के व्यायाम";
+"The Nutrition Card gives you a live snapshot of today's calories and macros \u{2014} all from a single glance. This guide explains every visual, gesture, and shortcut available." = "पोषण कार्ड आपको आज की कैलोरी और मैक्रो का लाइव स्नैपशॉट देता है।";
+"Your exercise plan brings together walking, breathing, and guided workouts in one place. This guide explains every card, indicator, and action available." = "आपकी व्यायाम योजना चलना, श्वास और निर्देशित वर्कआउट को एक जगह एक साथ लाती है।";
+
+// Onboarding
+"Create" = "बनाएं";
+"Answer a few questions to help us create your profile" = "अपनी प्रोफ़ाइल बनाने में हमारी सहायता के लिए कुछ प्रश्नों के उत्तर दें";
+"Enter or calculate your details to help us create a plan curated just for you." = "अपने लिए बनाई गई एक विशेष योजना बनाने में हमारी सहायता के लिए अपना विवरण दर्ज करें या गणना करें।";
+"If you know your Apple Relay Email, you can use it to reset your password." = "यदि आप अपना Apple Relay ईमेल जानते हैं, तो आप इसका उपयोग पासवर्ड रीसेट करने के लिए कर सकते हैं।";
+
+// Profile
+"Crafted with care. Informed by evidence. Focused on you." = "देखभाल के साथ बनाया। साक्ष्य से सूचित। आप पर केंद्रित।";
+"Our Team" = "हमारी टीम";
+"MomCare+ is proudly built using open-source software. We are grateful to the developers and communities who create and maintain these essential tools." = "मॉमकेयर+ को ओपन-सोर्स सॉफ़्टवेयर का उपयोग करके बनाया गया है। हम उन डेवलपर्स और समुदायों के आभारी हैं जो इन आवश्यक उपकरणों को बनाते और बनाए रखते हैं।";
+"MomCare supports you, but your doctor knows you best!" = "मॉमकेयर आपका समर्थन करता है, लेकिन आपका डॉक्टर आपको सबसे अच्छी तरह जानता है!";
+"Your Data, Your Rights, Your Trust" = "आपका डेटा, आपके अधिकार, आपका विश्वास";
+"Good rules create a space where everyone can feel safe and respected." = "अच्छे नियम एक ऐसी जगह बनाते हैं जहाँ हर कोई सुरक्षित और सम्मानित महसूस कर सके।";
+"This information helps us provide you with more personalized content and recommendations." = "यह जानकारी हमें आपको अधिक व्यक्तिगत सामग्री और सुझाव प्रदान करने में मदद करती है।";
+"This information will help us provide you with personalized insights and recommendations throughout your pregnancy journey" = "यह जानकारी हमें आपकी गर्भावस्था यात्रा के दौरान व्यक्तिगत जानकारी और सिफारिशें प्रदान करने में मदद करेगी।";
+"Activation State" = "सक्रियण स्थिति";
+"Please enable notifications in Settings to receive reminders." = "अनुस्मारक प्राप्त करने के लिए सेटिंग्स में सूचनाएं सक्षम करें।";
+
+// AppCore
+"You can change these permissions anytime from the Settings tab." = "आप सेटिंग्स टैब से कभी भी इन अनुमतियों को बदल सकते हैं।";
+"Client-Server out of sync" = "क्लाइंट-सर्वर असमकालिक है";
+
+// Accessibility labels and hints
+"a11y_dismiss_hint" = "बिना परिवर्तन सहेजे इस स्क्रीन को बंद करता है";
+"a11y_all_day_toggle_hint" = "इस इवेंट के लिए पूरे दिन की सेटिंग टॉगल करता है";
+"a11y_monthly_recurrence_hint" = "इस इवेंट के लिए मासिक पुनरावृत्ति सक्षम या अक्षम करता है";
+"a11y_location_picker_hint" = "मानचित्र खोलने और स्थान चुनने के लिए दो बार टैप करें";
+"a11y_daily_recurrence_hint" = "इस अनुस्मारक के लिए दैनिक पुनरावृत्ति सक्षम या अक्षम करता है";
+"a11y_open_playlist_hint" = "इस प्लेलिस्ट को खोलता है";
+"a11y_play_playlist_hint" = "यह प्लेलिस्ट चलाना शुरू करता है";
+"a11y_double_tap_play_hint" = "चलाने के लिए दो बार टैप करें";
+"a11y_song_options_label" = "गाने के विकल्प";
+"a11y_playback_progress_label" = "प्लेबैक प्रगति";
+"a11y_drag_to_seek_hint" = "खोजने के लिए खींचें";
+"a11y_previous_track_label" = "पिछला ट्रैक";
+"a11y_next_track_label" = "अगला ट्रैक";
+"a11y_volume_label" = "वॉल्यूम";
+"a11y_audio_output_label" = "ऑडियो आउटपुट";
+"a11y_stop_close_player_label" = "प्लेयर बंद करें";
+"a11y_jump_to_today_label" = "आज पर जाएं";
+"a11y_mood_selector_label" = "मूड चयनकर्ता";
+"a11y_mood_selector_hint" = "अपना वर्तमान मूड चुनें";
+"a11y_save_symptom_label" = "लक्षण सहेजें";
+"a11y_save_symptom_hint" = "लक्षण प्रविष्टि आपके लॉग में सहेजती है";
+"a11y_symptom_picker_hint" = "लक्षण चयनकर्ता खोलता है";

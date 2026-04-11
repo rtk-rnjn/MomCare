@@ -55,7 +55,7 @@ struct PlaylistCard: View {
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(playlist.name)
         .accessibilityAddTraits(.isButton)
-        .accessibilityHint("Opens this playlist")
+        .accessibilityHint(String(localized: "a11y_open_playlist_hint"))
         .task {
             uiImage = await playlist.image
         }

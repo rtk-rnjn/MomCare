@@ -274,7 +274,7 @@ struct PlaylistTrackRow: View {
             "\(songModel.metadata?.title ?? songModel.songName) by \(songModel.metadata?.author ?? "Unknown Artist")\(musicKitHandler.currentSong == songModel ? ", now playing" : "")"
         )
         .accessibilityValue(Utils.formattedTime(songModel.metadata?.duration ?? 0))
-        .accessibilityHint("Double tap to play")
+        .accessibilityHint(String(localized: "a11y_double_tap_play_hint"))
         .accessibilityAddTraits(musicKitHandler.currentSong == songModel ? [.isSelected] : [])
         .task {
             url = await songModel.url
