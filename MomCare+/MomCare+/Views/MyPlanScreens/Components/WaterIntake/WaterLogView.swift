@@ -221,7 +221,7 @@ struct WaterLogView: View {
                             .shadow(color: Color(hex: "5B9BD5").opacity(0.28), radius: 6, x: 0, y: 3)
                     }
                     .buttonStyle(.plain)
-                    .accessibilityLabel(String(format: String(localized: "a11y_add_water_ml_label"), Int(preset.ml)))
+                    .accessibilityLabel(unsafe String(format: String(localized: "a11y_add_water_ml_label"), Int(preset.ml)))
                 }
             }
         }
