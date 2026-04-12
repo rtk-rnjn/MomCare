@@ -101,7 +101,7 @@ enum SudokuGenerator {
             return false
         }
         // Col
-        if (0..<9).map({ grid[$0][col] }).contains(val) {
+        if (0..<9).contains(where: { grid[$0][col] == val }) {
             return false
         }
         // Box
@@ -543,9 +543,10 @@ struct GameSudokuView: View {
     }
 
     private var numberPad: some View {
-        HStack(spacing: 6) {
+        let counts = digitCounts
+        return HStack(spacing: 6) {
             ForEach(1...9, id: \.self) { d in
-                let count = filledCount(for: d)
+                let count = counts[d, default: 0]
                 Button {
                     withAnimation(reduceMotion ? .none : .easeOut(duration: 0.1)) {
                         engine.enterDigit(d)
@@ -668,8 +669,10 @@ struct GameSudokuView: View {
         unsafe String(format: "%02d:%02d", s / 60, s % 60)
     }
 
-    private func filledCount(for digit: Int) -> Int {
-        engine.cells.flatMap { $0 }.filter { $0.value == digit }.count
+    private var digitCounts: [Int: Int] {
+        engine.cells.flatMap { $0 }.reduce(into: [:]) { counts, cell in
+            if cell.value > 0 { counts[cell.value, default: 0] += 1 }
+        }
     }
 
     private func digitBg(for digit: Int) -> Color {

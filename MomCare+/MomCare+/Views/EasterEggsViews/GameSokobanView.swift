@@ -462,6 +462,10 @@ class SokobanEngine: ObservableObject {
         return base
     }
 
+    var boxesOnGoalCount: Int {
+        goals.intersection(boxes).count
+    }
+
     // MARK: Private
 
     private var undoStack: [SokoSnapshot] = []
@@ -631,7 +635,7 @@ struct GameSokobanView: View {
             Spacer()
 
             // Boxes on goal
-            let onGoal = engine.goals.filter { engine.boxes.contains($0) }.count
+            let onGoal = engine.boxesOnGoalCount
             Label("\(onGoal)/\(engine.goals.count)", systemImage: "shippingbox.fill")
                 .font(.system(size: 13, weight: .semibold, design: .monospaced))
                 .foregroundStyle(onGoal == engine.goals.count ? .green : .primary)
