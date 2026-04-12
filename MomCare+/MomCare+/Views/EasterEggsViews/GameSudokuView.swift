@@ -450,6 +450,14 @@ struct GameSudokuView: View {
 
     @StateObject private var engine: SudokuEngine = .init()
 
+    private var digitCounts: [Int: Int] {
+        engine.cells.flatMap { $0 }.reduce(into: [:]) { counts, cell in
+            if cell.value > 0 {
+                counts[cell.value, default: 0] += 1
+            }
+        }
+    }
+
     private var hudBar: some View {
         HStack {
             // Timer
@@ -667,12 +675,6 @@ struct GameSudokuView: View {
 
     private func timeString(_ s: Int) -> String {
         unsafe String(format: "%02d:%02d", s / 60, s % 60)
-    }
-
-    private var digitCounts: [Int: Int] {
-        engine.cells.flatMap { $0 }.reduce(into: [:]) { counts, cell in
-            if cell.value > 0 { counts[cell.value, default: 0] += 1 }
-        }
     }
 
     private func digitBg(for digit: Int) -> Color {

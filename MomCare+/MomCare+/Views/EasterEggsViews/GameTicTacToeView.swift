@@ -139,9 +139,15 @@ class TicTacToeEngine: ObservableObject {
     }
 
     private func minimax(board: [TTTPlayer?], depth: Int, isMaximizing: Bool) -> Int {
-        if checkWin(for: .computer, in: board) != nil { return 10 - depth }
-        if checkWin(for: .human, in: board) != nil { return depth - 10 }
-        if board.allSatisfy({ $0 != nil }) { return 0 }
+        if checkWin(for: .computer, in: board) != nil {
+            return 10 - depth
+        }
+        if checkWin(for: .human, in: board) != nil {
+            return depth - 10
+        }
+        if board.allSatisfy({ $0 != nil }) {
+            return 0
+        }
 
         var localBoard = board
 

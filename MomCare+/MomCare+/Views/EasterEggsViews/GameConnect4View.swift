@@ -105,6 +105,12 @@ class Connect4Engine: ObservableObject {
 
     // MARK: Private
 
+    private lazy var cachedColumnOrder: [Int] = {
+        let cols = Connect4Engine.columns
+        let center = cols / 2
+        return (0..<cols).sorted { abs($0 - center) < abs($1 - center) }
+    }()
+
     private static func emptyBoard() -> [[C4Player?]] {
         Array(repeating: Array(repeating: nil, count: columns), count: rows)
     }
@@ -256,12 +262,6 @@ class Connect4Engine: ObservableObject {
     private func columnOrder() -> [Int] {
         cachedColumnOrder
     }
-
-    private lazy var cachedColumnOrder: [Int] = {
-        let cols = Connect4Engine.columns
-        let center = cols / 2
-        return (0..<cols).sorted { abs($0 - center) < abs($1 - center) }
-    }()
 
     private func lowestEmpty(column: Int, board: [[C4Player?]]) -> Int? {
         for r in stride(from: Connect4Engine.rows - 1, through: 0, by: -1) {

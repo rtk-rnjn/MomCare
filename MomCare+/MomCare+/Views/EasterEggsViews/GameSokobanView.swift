@@ -328,6 +328,10 @@ class SokobanEngine: ObservableObject {
         map.first?.count ?? 0
     }
 
+    var boxesOnGoalCount: Int {
+        goals.intersection(boxes).count
+    }
+
     func loadLevel(_ index: Int) {
         guard index < SokobanLevel.all.count else {
             return
@@ -460,10 +464,6 @@ class SokobanEngine: ObservableObject {
             return goals.contains(pos) ? .playerOnGoal : .player
         }
         return base
-    }
-
-    var boxesOnGoalCount: Int {
-        goals.intersection(boxes).count
     }
 
     // MARK: Private
