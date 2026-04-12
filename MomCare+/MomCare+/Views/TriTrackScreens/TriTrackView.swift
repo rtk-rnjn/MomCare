@@ -37,11 +37,8 @@ struct TriTrackView: View {
         .sheet(isPresented: $controlState.showingTriTrackHelp) {
             TriTrackRowLegendView()
         }
-        .sheet(isPresented: $showingAddMedication) {
-            AddMedicationView()
-        }
-        .sheet(isPresented: $showingMedicationList) {
-            MedicationListView()
+        .sheet(isPresented: $showingMedicationView) {
+            MedicationView()
         }
         .toolbar {
             ToolbarItem(placement: .topBarLeading) {
@@ -127,17 +124,11 @@ struct TriTrackView: View {
                             Label("Show all symptoms", systemImage: "calendar")
                         }
 
-                        if experimentalFeaturesEnabled {
+                        if #available(iOS 26.0, *) {
                             Button {
-                                showingAddMedication = true
+                                showingMedicationView = true
                             } label: {
-                                Label("Add Medication", systemImage: "pills")
-                            }
-
-                            Button {
-                                showingMedicationList = true
-                            } label: {
-                                Label("Medication List", systemImage: "list.bullet")
+                                Label("Medications", systemImage: "pills")
                             }
                         }
                     } label: {
@@ -166,14 +157,11 @@ struct TriTrackView: View {
     // MARK: Private
 
     @AppStorage(FeatureFlagState.forceUseLargeTitle.rawValue, store: Database.shared.userDefaults) private var forceUseLargeTitle: Bool = false
-    @AppStorage(FeatureFlagState.experimentalFeatures.rawValue, store: Database.shared.userDefaults) private var experimentalFeaturesEnabled: Bool = false
-
     @EnvironmentObject private var controlState: ControlState
     @EnvironmentObject private var authenticationService: MCAuthenticationService
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
-    @State private var showingAddMedication: Bool = false
-    @State private var showingMedicationList: Bool = false
+    @State private var showingMedicationView: Bool = false
     @State private var selectedDate: Date = Calendar.current.startOfDay(for: .init())
     @State private var showingAllEvents: Bool = false
     @State private var showingAllReminders: Bool = false

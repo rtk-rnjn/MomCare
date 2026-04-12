@@ -34,6 +34,11 @@ final class ContentServiceHandler: ObservableObject {
     @Published var stepsToday: Double = 0
     @Published var stepsGoal: Double = 4200
 
+    @Published var waterIntakeTodayInMilliliters: Double = 0
+    @Published var waterIntakeGoalInMilliliters: Double = 2500
+    @Published var todayWaterIntakeLogs: [WaterLogEntry] = []
+    @Published var queryWaterIntakeEntries: [WaterLogEntry] = []
+
     @Published var breathingTodayInSeconds: TimeInterval = 0
     @Published var breathingGoalInSeconds: TimeInterval = 300
 

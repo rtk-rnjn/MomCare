@@ -4,14 +4,13 @@ import TipKit
 struct WaterLogListView: View {
     // MARK: Internal
 
-    @ObservedObject var store: WaterStore
+    @Binding var selectedDate: Date
 
     var body: some View {
         NavigationStack {
             ScrollView(showsIndicators: false) {
                 VStack(spacing: 14) {
                     summaryHeader
-                    tipsSection
                     logSection
                     Spacer(minLength: 32)
                 }
@@ -19,57 +18,70 @@ struct WaterLogListView: View {
                 .padding(.top, 12)
             }
             .background(Color(hex: "FAE8E4").opacity(0.25))
-            .navigationTitle("Today's Log")
+            .navigationTitle(navigationTitle)
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
                     MCCancelButton { dismiss() }
                 }
                 ToolbarItem(placement: .topBarTrailing) {
-                    Button {
+                    MCAddButton {
                         showAddEntry = true
-                    } label: {
-                        Label("Add Water Entry", systemImage: "plus.circle.fill")
                     }
                 }
             }
             .sheet(isPresented: $showAddEntry) {
-                AddWaterEntrySheet(store: store)
+                AddWaterEntrySheet()
                     .presentationDetents([.medium])
                     .presentationDragIndicator(.visible)
             }
             .sheet(item: $editingEntry) { entry in
-                EditWaterEntrySheet(store: store, entry: entry)
+                EditWaterEntrySheet(entry: entry)
                     .presentationDetents([.medium])
                     .presentationDragIndicator(.visible)
-            }
-            .onAppear {
-                tipIndex = Int.random(in: 0..<WaterStore.waterTips.count)
             }
         }
     }
 
     // MARK: Private
 
+    @EnvironmentObject private var contentService: ContentServiceHandler
+
     @Environment(\.dismiss) private var dismiss
-    @Environment(\.accessibilityReduceTransparency) private var reduceTransparency
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     @State private var editingEntry: WaterLogEntry?
     @State private var showAddEntry = false
-    @State private var tipIndex = 0
+
+    private var navigationTitle: String {
+        let formatter = DateFormatter()
+        formatter.dateStyle = .medium
+        return "Water Intake - \(formatter.string(from: selectedDate))"
+    }
+
+    private var remaining: Double {
+        let remaining = contentService.waterIntakeGoalInMilliliters - contentService.waterIntakeTodayInMilliliters
+        return min(0, remaining)
+    }
+
+    private var accessibilityValue: String {
+        let todayTotal = contentService.waterIntakeTodayInMilliliters
+        let todayGoal = contentService.waterIntakeGoalInMilliliters
+
+        return remaining <= 0 ? "Goal met. Drank \(formatMl(todayTotal)), goal \(formatMl(todayGoal))" : "Drank \(formatMl(todayTotal)), goal \(formatMl(todayGoal)), \(formatMl(remaining)) remaining"
+    }
 
     private var summaryHeader: some View {
         HStack(spacing: 0) {
-            statPill(icon: "drop.fill", label: "Drank", value: formatMl(store.todayTotal), color: Color(hex: "5B9BD5"))
+            statPill(icon: "drop.fill", label: "Drank", value: formatMl(contentService.waterIntakeTodayInMilliliters), color: Color(hex: "5B9BD5"))
             pillDivider
-            statPill(icon: "target", label: "Goal", value: formatMl(store.dailyTarget), color: Color(hex: "924350").opacity(0.65))
+            statPill(icon: "target", label: "Goal", value: formatMl(contentService.waterIntakeGoalInMilliliters), color: Color(hex: "924350").opacity(0.65))
             pillDivider
             statPill(
-                icon: store.remaining <= 0 ? "checkmark.circle.fill" : "arrow.up.circle.fill",
-                label: store.remaining <= 0 ? "Done! 🌸" : "Left",
-                value: store.remaining <= 0 ? "All good" : formatMl(store.remaining),
-                color: store.remaining <= 0 ? .green : Color(hex: "924350")
+                icon: remaining <= 0 ? "checkmark.circle.fill" : "arrow.up.circle.fill",
+                label: remaining <= 0 ? "Done! 🌸" : "Left",
+                value: remaining <= 0 ? "All good" : formatMl(remaining),
+                color: remaining <= 0 ? .green : Color(hex: "924350")
             )
         }
         .padding(.vertical, 14)
@@ -81,11 +93,7 @@ struct WaterLogListView: View {
         .shadow(color: Color(hex: "924350").opacity(0.05), radius: 8, x: 0, y: 3)
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(String(localized: "a11y_water_intake_summary_label"))
-        .accessibilityValue(
-            store.remaining <= 0
-                ? "Goal met. Drank \(formatMl(store.todayTotal)), goal \(formatMl(store.dailyTarget))"
-                : "Drank \(formatMl(store.todayTotal)), goal \(formatMl(store.dailyTarget)), \(formatMl(store.remaining)) remaining"
-        )
+        .accessibilityValue(accessibilityValue)
     }
 
     private var pillDivider: some View {
@@ -93,44 +101,6 @@ struct WaterLogListView: View {
             .frame(height: 36)
             .background(Color(hex: "924350").opacity(0.1))
             .accessibilityHidden(true)
-    }
-
-    private var tipsSection: some View {
-        VStack(spacing: 8) {
-            HStack(alignment: .top, spacing: 10) {
-                Image(systemName: "quote.bubble.fill")
-                    .foregroundStyle(Color(hex: "924350").opacity(0.65))
-                    .font(.subheadline)
-                    .padding(.top, 1)
-                    .accessibilityHidden(true)
-            }
-            .padding(12)
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .background(
-                reduceTransparency ? Color(hex: "FAE8E4") : Color(hex: "FAE8E4").opacity(0.55),
-                in: RoundedRectangle(cornerRadius: 14, style: .continuous))
-            .accessibilityHidden(true)
-
-            let tip = WaterStore.waterTips[tipIndex]
-            HStack(alignment: .top, spacing: 10) {
-                Image(systemName: tip.icon)
-                    .foregroundStyle(Color(hex: "5B9BD5"))
-                    .font(.subheadline)
-                    .frame(width: 20)
-                    .padding(.top, 1)
-                    .accessibilityHidden(true)
-                Text(tip.tip)
-                    .font(.footnote)
-                    .foregroundStyle(.secondary)
-                    .fixedSize(horizontal: false, vertical: true)
-                    .lineSpacing(3)
-            }
-            .padding(12)
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .background(Color(hex: "EAF5FB"),
-                        in: RoundedRectangle(cornerRadius: 14, style: .continuous))
-            .accessibilityElement(children: .combine)
-        }
     }
 
     private var logSection: some View {
@@ -141,51 +111,30 @@ struct WaterLogListView: View {
                     .foregroundStyle(Color(hex: "924350"))
                     .accessibilityAddTraits(.isHeader)
                 Spacer()
-                Text("\(store.todayLogs.count) today")
+                Text("\(contentService.queryWaterIntakeEntries.count) today")
                     .font(.caption)
                     .foregroundStyle(.secondary)
             }
             .padding(.horizontal, 2)
 
-            if store.todayLogs.isEmpty {
-                emptyState
-            } else {
-                VStack(spacing: 0) {
-                    ForEach(store.todayLogs) { entry in
-                        logRow(entry: entry)
-                        if entry.id != store.todayLogs.last?.id {
-                            Divider().padding(.leading, 52)
-                        }
+            VStack(spacing: 0) {
+                ForEach(contentService.queryWaterIntakeEntries) { entry in
+                    logRow(entry: entry)
+                    if entry.id != contentService.queryWaterIntakeEntries.last?.id {
+                        Divider().padding(.leading, 52)
                     }
                 }
-                .background(Color.white, in: RoundedRectangle(cornerRadius: 16, style: .continuous))
-                .overlay(
-                    RoundedRectangle(cornerRadius: 16, style: .continuous)
-                        .stroke(Color(hex: "924350").opacity(0.08), lineWidth: 1)
-                )
-                .shadow(color: Color(hex: "924350").opacity(0.04), radius: 6, x: 0, y: 2)
             }
+            .background(Color.white, in: RoundedRectangle(cornerRadius: 16, style: .continuous))
+            .overlay(
+                RoundedRectangle(cornerRadius: 16, style: .continuous)
+                    .stroke(Color(hex: "924350").opacity(0.08), lineWidth: 1)
+            )
+            .shadow(color: Color(hex: "924350").opacity(0.04), radius: 6, x: 0, y: 2)
         }
-    }
-
-    private var emptyState: some View {
-        VStack(spacing: 10) {
-            Image(systemName: "drop.slash")
-                .font(.largeTitle.weight(.ultraLight))
-                .foregroundStyle(Color(hex: "B8DCF0"))
-                .accessibilityHidden(true)
-            Text("Nothing logged yet")
-                .font(.subheadline)
-                .foregroundStyle(.secondary)
-            Text("Use the quick-add buttons on the main screen\nto start tracking your intake.")
-                .font(.caption)
-                .foregroundStyle(Color(.systemGray3))
-                .multilineTextAlignment(.center)
+        .onAppear {
+            contentService.fetchWaterIntake(for: selectedDate)
         }
-        .frame(maxWidth: .infinity)
-        .padding(36)
-        .background(Color.white, in: RoundedRectangle(cornerRadius: 16, style: .continuous))
-        .accessibilityElement(children: .combine)
     }
 
     private func statPill(icon: String, label: String, value: String, color: Color) -> some View {
@@ -239,14 +188,14 @@ struct WaterLogListView: View {
         .onTapGesture { editingEntry = entry }
         .swipeActions(edge: .trailing, allowsFullSwipe: true) {
             Button(role: .destructive) {
-                Task { await store.delete(entry: entry) }
+                Task { try? await contentService.deleteWaterIntake(entry) }
             } label: { Label("Delete", systemImage: "trash") }
         }
         .contextMenu {
             Button { editingEntry = entry } label: { Label("Edit", systemImage: "pencil") }
             Divider()
             Button(role: .destructive) {
-                Task { await store.delete(entry: entry) }
+                Task { try? await contentService.deleteWaterIntake(entry) }
             } label: { Label("Delete", systemImage: "trash") }
         }
     }
@@ -267,31 +216,13 @@ struct WaterLogListView: View {
 struct AddWaterEntrySheet: View {
     // MARK: Internal
 
-    @ObservedObject var store: WaterStore
-
     var body: some View {
         NavigationStack {
             Form {
                 Section("Amount") {
                     ScrollView(.horizontal, showsIndicators: false) {
                         HStack(spacing: 8) {
-                            ForEach(presets, id: \.self) { p in
-                                Button {
-                                    amount = p
-                                    customText = ""
-                                } label: {
-                                    Text("\(Int(p))ml")
-                                        .font(.subheadline.weight(.semibold))
-                                        .foregroundStyle(amount == p ? .white : Color(hex: "924350"))
-                                        .padding(.horizontal, 14)
-                                        .padding(.vertical, 8)
-                                        .background(amount == p ? Color(hex: "924350") : Color(hex: "FAE8E4"),
-                                                    in: Capsule())
-                                }
-                                .buttonStyle(.plain)
-                                .accessibilityLabel("\(Int(p)) millilitres")
-                                .accessibilityAddTraits(amount == p ? .isSelected : [])
-                            }
+                            amountPanelView
                         }
                         .padding(.vertical, 4)
                     }
@@ -338,7 +269,7 @@ struct AddWaterEntrySheet: View {
                 ToolbarItem(placement: .confirmationAction) {
                     Button("Add") {
                         Task {
-                            await store.log(milliliters: amount, at: selectedDate)
+                            _ = try? await contentService.logWaterIntake(milliliters: amount, at: selectedDate)
                             dismiss()
                         }
                     }
@@ -352,6 +283,8 @@ struct AddWaterEntrySheet: View {
 
     // MARK: Private
 
+    @EnvironmentObject private var contentService: ContentServiceHandler
+
     @Environment(\.dismiss) private var dismiss
 
     @State private var amount: Double = 250
@@ -360,13 +293,32 @@ struct AddWaterEntrySheet: View {
     @FocusState private var focused: Bool
 
     private let presets: [Double] = [150, 200, 250, 300, 500]
+
+    private var amountPanelView: some View {
+        ForEach(presets, id: \.self) { p in
+            Button {
+                amount = p
+                customText = ""
+            } label: {
+                Text("\(Int(p))ml")
+                    .font(.subheadline.weight(.semibold))
+                    .foregroundStyle(amount == p ? .white : Color(hex: "924350"))
+                    .padding(.horizontal, 14)
+                    .padding(.vertical, 8)
+                    .background(amount == p ? Color(hex: "924350") : Color(hex: "FAE8E4"),
+                                in: Capsule())
+            }
+            .buttonStyle(.plain)
+            .accessibilityLabel("\(Int(p)) millilitres")
+            .accessibilityAddTraits(amount == p ? .isSelected : [])
+        }
+    }
 }
 
 struct EditWaterEntrySheet: View {
     // MARK: Lifecycle
 
-    init(store: WaterStore, entry: WaterLogEntry) {
-        self.store = store
+    init(entry: WaterLogEntry) {
         self.entry = entry
         _amount = State(initialValue: entry.milliliters)
         _selectedDate = State(initialValue: entry.date)
@@ -374,8 +326,6 @@ struct EditWaterEntrySheet: View {
     }
 
     // MARK: Internal
-
-    @ObservedObject var store: WaterStore
 
     let entry: WaterLogEntry
 
@@ -409,8 +359,8 @@ struct EditWaterEntrySheet: View {
                 ToolbarItem(placement: .confirmationAction) {
                     MCSaveButton {
                         Task {
-                            await store.delete(entry: entry)
-                            await store.log(milliliters: amount, at: selectedDate)
+                            try? await contentService.deleteWaterIntake(entry)
+                            _ = try? await contentService.logWaterIntake(milliliters: amount, at: selectedDate)
                             dismiss()
                         }
                     }
@@ -421,6 +371,7 @@ struct EditWaterEntrySheet: View {
 
     // MARK: Private
 
+    @EnvironmentObject private var contentService: ContentServiceHandler
     @Environment(\.dismiss) private var dismiss
 
     @State private var amount: Double

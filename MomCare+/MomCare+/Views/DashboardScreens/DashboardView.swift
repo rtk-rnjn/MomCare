@@ -156,16 +156,42 @@ struct DashboardView: View {
                     }
 
                     if experimentalFeatures {
-                        // Hehehehe.
                         Button {
                             show2048Game = true
                         } label: {
                             Label("Play 2048", systemImage: "gamecontroller")
                         }
+
+                        Button {
+                            showSokobanGame = true
+                        } label: {
+                            Label("Play Sokoban", systemImage: "gamecontroller")
+                        }
+
+                        Button {
+                            showMinesweeperGame = true
+                        } label: {
+                            Label("Play Minesweeper", systemImage: "gamecontroller")
+                        }
+
+                        Button {
+                            showTetrisGame = true
+                        } label: {
+                            Label("Play Tetris", systemImage: "gamecontroller")
+                        }
                     }
                 }
                 .fullScreenCover(isPresented: $show2048Game) {
                     Game2048View()
+                }
+                .fullScreenCover(isPresented: $showSokobanGame) {
+                    GameSokobanView()
+                }
+                .fullScreenCover(isPresented: $showMinesweeperGame) {
+                    GameMinesweeperView()
+                }
+                .fullScreenCover(isPresented: $showTetrisGame) {
+                    GameTetrisView()
                 }
 
                 DashboardInsightCardView(
@@ -181,16 +207,42 @@ struct DashboardView: View {
                     }
 
                     if experimentalFeatures {
-                        // UwU
                         Button {
                             showWaterSortGame = true
                         } label: {
                             Label("Play Water Sort", systemImage: "gamecontroller")
                         }
+
+                        Button {
+                            showConnect4Game = true
+                        } label: {
+                            Label("Play Connect 4", systemImage: "gamecontroller")
+                        }
+
+                        Button {
+                            showTickTacToeGame = true
+                        } label: {
+                            Label("Play TicTacToe", systemImage: "gamecontroller")
+                        }
+
+                        Button {
+                            showSudokuGame = true
+                        } label: {
+                            Label("Play Sudoku", systemImage: "gamecontroller")
+                        }
                     }
                 }
                 .fullScreenCover(isPresented: $showWaterSortGame) {
                     GameWaterSortView()
+                }
+                .fullScreenCover(isPresented: $showConnect4Game) {
+                    GameConnect4View()
+                }
+                .fullScreenCover(isPresented: $showTickTacToeGame) {
+                    GameTicTacToeView()
+                }
+                .fullScreenCover(isPresented: $showSudokuGame) {
+                    GameSudokuView()
                 }
             }
             .padding(.horizontal)
@@ -211,6 +263,12 @@ struct DashboardView: View {
 
     @State private var show2048Game: Bool = false
     @State private var showWaterSortGame: Bool = false
+    @State private var showConnect4Game: Bool = false
+    @State private var showSokobanGame: Bool = false
+    @State private var showTickTacToeGame: Bool = false
+    @State private var showMinesweeperGame: Bool = false
+    @State private var showSudokuGame: Bool = false
+    @State private var showTetrisGame: Bool = false
 
     @available(iOS 18, *)
     private var tips: TipGroup {
