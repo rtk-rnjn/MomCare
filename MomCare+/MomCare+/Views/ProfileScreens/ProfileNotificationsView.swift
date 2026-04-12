@@ -67,17 +67,35 @@ struct ProfileNotificationsView: View {
             )
     }
 
+    private func requestAuthorizationIfNeeded() async -> Bool {
+        let currentStatus = await currentAuthorizationStatus()
+        if currentStatus == .notDetermined {
+            do {
+                let granted = try await UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound])
+                return granted
+            } catch {
+                return false
+            }
+        } else {
+            return currentStatus == .authorized || currentStatus == .provisional
+        }
+    }
+
+    private func currentAuthorizationStatus() async -> UNAuthorizationStatus {
+        await UNUserNotificationCenter.current().notificationSettings().authorizationStatus
+    }
+
     private var globalToggleBinding: Binding<Bool> {
         Binding(
             get: { globallyEnabled },
             set: { enabled in
                 Task {
                     if enabled {
-                        let granted = await manager.requestAuthorizationIfNeeded()
+                        let granted = await requestAuthorizationIfNeeded()
                         if granted {
                             globallyEnabled = true
                         } else {
-                            let status = await manager.currentAuthorizationStatus()
+                            let status = await currentAuthorizationStatus()
                             if status == .denied {
                                 showSettingsAlert = true
                             }
