@@ -67,24 +67,6 @@ struct ProfileNotificationsView: View {
             )
     }
 
-    private func requestAuthorizationIfNeeded() async -> Bool {
-        let currentStatus = await currentAuthorizationStatus()
-        if currentStatus == .notDetermined {
-            do {
-                let granted = try await UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound])
-                return granted
-            } catch {
-                return false
-            }
-        } else {
-            return currentStatus == .authorized || currentStatus == .provisional
-        }
-    }
-
-    private func currentAuthorizationStatus() async -> UNAuthorizationStatus {
-        await UNUserNotificationCenter.current().notificationSettings().authorizationStatus
-    }
-
     private var globalToggleBinding: Binding<Bool> {
         Binding(
             get: { globallyEnabled },
@@ -123,6 +105,23 @@ struct ProfileNotificationsView: View {
                 }
             }
         )
+    }
+
+    private func requestAuthorizationIfNeeded() async -> Bool {
+        let currentStatus = await currentAuthorizationStatus()
+        if currentStatus == .notDetermined {
+            do {
+                return try await UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound])
+            } catch {
+                return false
+            }
+        } else {
+            return currentStatus == .authorized || currentStatus == .provisional
+        }
+    }
+
+    private func currentAuthorizationStatus() async -> UNAuthorizationStatus {
+        await UNUserNotificationCenter.current().notificationSettings().authorizationStatus
     }
 
     private func unRegister() async {
