@@ -419,7 +419,7 @@ struct AddMedicationScheduleView: View {
                                 .clipShape(Circle())
                         }
                         .buttonStyle(.plain)
-                        .accessibilityLabel(weekdaySymbols[day - 1])
+                        .accessibilityLabel(Calendar.current.weekdaySymbols[day - 1])
                         .accessibilityValue(isSelected ? String(localized: "a11y_selected_value") : String(localized: "a11y_not_selected_value"))
                     }
                 }
