@@ -70,6 +70,7 @@ struct WaterLogView: View {
                     } label: {
                         Label("Log", systemImage: "list.bullet")
                     }
+                    .accessibilityLabel(String(localized: "a11y_view_water_log_label"))
 
                     Menu {
                         Button {
@@ -118,6 +119,7 @@ struct WaterLogView: View {
                     } label: {
                         Label("More options", systemImage: "ellipsis")
                     }
+                    .accessibilityLabel(String(localized: "a11y_more_options_label"))
                 }
             }
             .navigationTitle("Water Log")
@@ -219,7 +221,7 @@ struct WaterLogView: View {
                             .shadow(color: Color(hex: "5B9BD5").opacity(0.28), radius: 6, x: 0, y: 3)
                     }
                     .buttonStyle(.plain)
-                    .accessibilityLabel("Add \(Int(preset.ml)) millilitres")
+                    .accessibilityLabel(String(format: String(localized: "a11y_add_water_ml_label"), Int(preset.ml)))
                 }
             }
         }

@@ -54,6 +54,7 @@ struct MedicationView: View {
                     MCAddButton {
                         showAddMedicationView = true
                     }
+                    .accessibilityLabel(String(localized: "a11y_add_medication_label"))
                 }
             }
         }
@@ -191,6 +192,7 @@ struct AddMedicationStrengthView: View {
                         }
                     }
                     .buttonStyle(.plain)
+                    .accessibilityValue(selectedUnit == unit ? String(localized: "a11y_selected_value") : String(localized: "a11y_not_selected_value"))
                 }
             }
         }
@@ -264,6 +266,7 @@ struct AddMedicationScheduleView: View {
                         .contentShape(Rectangle())
                     }
                     .buttonStyle(.plain)
+                    .accessibilityValue(scheduleType == type ? String(localized: "a11y_selected_value") : String(localized: "a11y_not_selected_value"))
                 }
             } header: {
                 Text("When will you take this?")
@@ -416,6 +419,8 @@ struct AddMedicationScheduleView: View {
                                 .clipShape(Circle())
                         }
                         .buttonStyle(.plain)
+                        .accessibilityLabel(weekdaySymbols[day - 1])
+                        .accessibilityValue(isSelected ? String(localized: "a11y_selected_value") : String(localized: "a11y_not_selected_value"))
                     }
                 }
                 .padding(.vertical, 4)

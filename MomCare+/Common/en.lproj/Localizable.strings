@@ -316,3 +316,8 @@
 "a11y_discard_changes_hint" = "Prompts to discard unsaved changes";
 "a11y_dismiss_screen_hint" = "Dismisses this screen";
 "a11y_select_symptom_label" = "Select symptom";
+
+// Medication & Water - Accessibility
+"a11y_add_water_ml_label" = "Add %d millilitres";
+"a11y_water_amount_ml_label" = "%d millilitres";
+"a11y_view_water_log_label" = "View water intake log";

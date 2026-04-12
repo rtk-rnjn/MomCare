@@ -309,7 +309,7 @@ struct AddWaterEntrySheet: View {
                                 in: Capsule())
             }
             .buttonStyle(.plain)
-            .accessibilityLabel("\(Int(p)) millilitres")
+            .accessibilityLabel(String(format: String(localized: "a11y_water_amount_ml_label"), Int(p)))
             .accessibilityAddTraits(amount == p ? .isSelected : [])
         }
     }
