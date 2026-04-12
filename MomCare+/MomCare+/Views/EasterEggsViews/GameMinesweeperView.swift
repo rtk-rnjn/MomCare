@@ -211,11 +211,11 @@ class MinesweeperEngine: ObservableObject {
     private var chunkCache: [ChunkCoord: Chunk] = [:]
 
     private func floodReveal(from start: CellCoord) {
-        var queue = [start]
+        var stack = [start]
         var visited = Set<CellCoord>()
 
-        while !queue.isEmpty {
-            let cell = queue.removeFirst()
+        while !stack.isEmpty {
+            let cell = stack.removeLast()
             guard !visited.contains(cell) else {
                 continue
             }
@@ -234,7 +234,7 @@ class MinesweeperEngine: ObservableObject {
             revealCount += 1
 
             if count == 0 {
-                queue.append(contentsOf: neighbors(of: cell).filter { !visited.contains($0) })
+                stack.append(contentsOf: neighbors(of: cell).filter { !visited.contains($0) })
             }
         }
     }

@@ -328,6 +328,10 @@ class SokobanEngine: ObservableObject {
         map.first?.count ?? 0
     }
 
+    var boxesOnGoalCount: Int {
+        goals.intersection(boxes).count
+    }
+
     func loadLevel(_ index: Int) {
         guard index < SokobanLevel.all.count else {
             return
@@ -631,7 +635,7 @@ struct GameSokobanView: View {
             Spacer()
 
             // Boxes on goal
-            let onGoal = engine.goals.filter { engine.boxes.contains($0) }.count
+            let onGoal = engine.boxesOnGoalCount
             Label("\(onGoal)/\(engine.goals.count)", systemImage: "shippingbox.fill")
                 .font(.system(size: 13, weight: .semibold, design: .monospaced))
                 .foregroundStyle(onGoal == engine.goals.count ? .green : .primary)

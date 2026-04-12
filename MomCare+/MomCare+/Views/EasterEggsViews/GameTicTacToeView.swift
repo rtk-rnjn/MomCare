@@ -124,11 +124,12 @@ class TicTacToeEngine: ObservableObject {
     private func bestMove() -> Int {
         var bestScore = Int.min
         var bestIndex = -1
+        var localBoard = board
 
-        for i in 0..<9 where board[i] == nil {
-            board[i] = .computer
-            let score = minimax(board: board, depth: 0, isMaximizing: false)
-            board[i] = nil
+        for i in 0..<9 where localBoard[i] == nil {
+            localBoard[i] = .computer
+            let score = minimax(board: localBoard, depth: 0, isMaximizing: false)
+            localBoard[i] = nil
             if score > bestScore {
                 bestScore = score
                 bestIndex = i
@@ -138,13 +139,13 @@ class TicTacToeEngine: ObservableObject {
     }
 
     private func minimax(board: [TTTPlayer?], depth: Int, isMaximizing: Bool) -> Int {
-        if checkWin(for: .computer) != nil {
+        if checkWin(for: .computer, in: board) != nil {
             return 10 - depth
         }
-        if checkWin(for: .human) != nil {
+        if checkWin(for: .human, in: board) != nil {
             return depth - 10
         }
-        if isBoardFull() {
+        if board.allSatisfy({ $0 != nil }) {
             return 0
         }
 
@@ -170,6 +171,10 @@ class TicTacToeEngine: ObservableObject {
     }
 
     private func checkWin(for player: TTTPlayer) -> [Int]? {
+        checkWin(for: player, in: board)
+    }
+
+    private func checkWin(for player: TTTPlayer, in board: [TTTPlayer?]) -> [Int]? {
         for line in winLines {
             if line.allSatisfy({ board[$0] == player }) {
                 return line
