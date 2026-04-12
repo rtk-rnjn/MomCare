@@ -23,7 +23,7 @@ struct TriTrackView: View {
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .ignoresSafeArea(edges: .bottom)
         .background(MomCareAccent.secondary.ignoresSafeArea())
-        .navigationTitle("TriTrack")
+        .navigationTitle(AppTab.triTrack.title)
         .navigationBarTitleDisplayMode(forceUseLargeTitle ? .large : .inline)
         .navigationDestination(isPresented: $showingAllEvents) {
             TriTrackAllCalendarItemView(selectedDate: $selectedDate)
@@ -37,11 +37,8 @@ struct TriTrackView: View {
         .sheet(isPresented: $controlState.showingTriTrackHelp) {
             TriTrackRowLegendView()
         }
-        .sheet(isPresented: $showingAddMedication) {
-            AddMedicationView()
-        }
-        .sheet(isPresented: $showingMedicationList) {
-            MedicationListView()
+        .sheet(isPresented: $showingMedicationView) {
+            MedicationView()
         }
         .toolbar {
             ToolbarItem(placement: .topBarLeading) {
@@ -55,7 +52,7 @@ struct TriTrackView: View {
                         .foregroundStyle(Color.CustomColors.mutedRaspberry)
                         .symbolEffect(.bounce, value: controlState.showingExpandedCalendar)
                 }
-                .accessibilityLabel(controlState.showingExpandedCalendar ? "Collapse calendar" : "Expand calendar")
+                .accessibilityLabel(controlState.showingExpandedCalendar ? String(localized: "a11y_collapse_calendar_label") : String(localized: "a11y_expand_calendar_label"))
                 .accessibilityIdentifier("expandCalendarButton")
             }
 
@@ -63,11 +60,15 @@ struct TriTrackView: View {
                 Button {
                     selectedDate = Date()
                 } label: {
-                    Image(systemName: "\(Calendar.current.component(.day, from: Date())).calendar")
-                        .font(.body)
-                        .foregroundStyle(Color.CustomColors.mutedRaspberry)
+                    Label {
+                        Text("Today")
+                    } icon: {
+                        if #available(iOS 26.0, *) {
+                            Image(systemName: "\(Calendar.current.component(.day, from: Date())).calendar")
+                        }
+                    }
                 }
-                .accessibilityLabel("Jump to today")
+                .accessibilityLabel(String(localized: "a11y_jump_to_today_label"))
                 .accessibilityIdentifier("jumpToTodayButton")
             }
 
@@ -102,7 +103,7 @@ struct TriTrackView: View {
                             .accessibilityHidden(true)
                     }
                     .menuStyle(.button)
-                    .accessibilityLabel("More options")
+                    .accessibilityLabel(String(localized: "a11y_more_options_label"))
 
                     Button {
                         controlState.showingAddEventSheet = true
@@ -112,7 +113,7 @@ struct TriTrackView: View {
                             .foregroundStyle(Color.CustomColors.mutedRaspberry)
                             .transition(.scale.combined(with: .opacity))
                     }
-                    .accessibilityLabel("Add event")
+                    .accessibilityLabel(String(localized: "a11y_add_event_label"))
                     .accessibilityIdentifier("addEventButton")
 
                 case .symptoms:
@@ -123,17 +124,11 @@ struct TriTrackView: View {
                             Label("Show all symptoms", systemImage: "calendar")
                         }
 
-                        if experimentalFeaturesEnabled {
+                        if #available(iOS 26.0, *) {
                             Button {
-                                showingAddMedication = true
+                                showingMedicationView = true
                             } label: {
-                                Label("Add Medication", systemImage: "pills")
-                            }
-
-                            Button {
-                                showingMedicationList = true
-                            } label: {
-                                Label("Medication List", systemImage: "list.bullet")
+                                Label("Medications", systemImage: "pills")
                             }
                         }
                     } label: {
@@ -141,7 +136,7 @@ struct TriTrackView: View {
                             .accessibilityHidden(true)
                     }
                     .menuStyle(.button)
-                    .accessibilityLabel("More options")
+                    .accessibilityLabel(String(localized: "a11y_more_options_label"))
 
                     Button {
                         controlState.showingAddSymptomSheet = true
@@ -152,7 +147,7 @@ struct TriTrackView: View {
                             .transition(.scale.combined(with: .opacity))
                     }
                     .disabled(selectedDate > Date())
-                    .accessibilityLabel("Add symptom")
+                    .accessibilityLabel(String(localized: "a11y_add_symptom_label"))
                     .accessibilityIdentifier("addSymptomButton")
                 }
             }
@@ -162,14 +157,11 @@ struct TriTrackView: View {
     // MARK: Private
 
     @AppStorage(FeatureFlagState.forceUseLargeTitle.rawValue, store: Database.shared.userDefaults) private var forceUseLargeTitle: Bool = false
-    @AppStorage(FeatureFlagState.experimentalFeatures.rawValue, store: Database.shared.userDefaults) private var experimentalFeaturesEnabled: Bool = false
-
     @EnvironmentObject private var controlState: ControlState
     @EnvironmentObject private var authenticationService: MCAuthenticationService
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
-    @State private var showingAddMedication: Bool = false
-    @State private var showingMedicationList: Bool = false
+    @State private var showingMedicationView: Bool = false
     @State private var selectedDate: Date = Calendar.current.startOfDay(for: .init())
     @State private var showingAllEvents: Bool = false
     @State private var showingAllReminders: Bool = false
@@ -198,12 +190,12 @@ struct TriTrackView: View {
             .padding(.horizontal, 16)
             .padding(.top, 16)
             .padding(.bottom, 4)
-            .accessibilityLabel("TriTrack section")
+            .accessibilityLabel(String(localized: "a11y_tritrack_section_label"))
 
             tabContent
         }
         .background(Color(.systemBackground))
-        .clipShape(RoundedCorner(radius: 24, corners: [.topLeft, .topRight]))
+        .clipShape(RoundedCorner(radius: CornerRadius.outer, corners: [.topLeft, .topRight]))
     }
 
     @ViewBuilder
@@ -239,23 +231,32 @@ struct PregnancyProgressView: View {
     var body: some View {
         VStack(spacing: 16) {
             VStack(spacing: 2) {
-                Text("Trimester \(pregnancyData.trimester)")
-                    .font(.title3)
-                    .fontWeight(.semibold)
-                    .accessibilityAddTraits(.isHeader)
-                    .contentTransition(reduceMotion ? .identity : .interpolate)
-                    .animation(reduceMotion ? nil : .easeInOut, value: pregnancyData.trimester)
+                HStack {
+                    Text("Trimester")
+                    Text(pregnancyData.trimester)
+                        .contentTransition(reduceMotion ? .identity : .interpolate)
+                        .animation(reduceMotion ? nil : .easeInOut, value: pregnancyData.trimester)
+                }
+                .font(.title3)
+                .fontWeight(.semibold)
+                .accessibilityAddTraits(.isHeader)
 
                 HStack(spacing: 6) {
-                    Text("Week \(pregnancyData.week)")
-                        .contentTransition(reduceMotion ? .identity : .numericText())
-                        .animation(reduceMotion ? nil : .easeInOut, value: pregnancyData.week)
+                    HStack {
+                        Text("Week")
+                        Text(pregnancyData.week, format: .number)
+                            .contentTransition(reduceMotion ? .identity : .numericText())
+                            .animation(reduceMotion ? nil : .easeInOut, value: pregnancyData.week)
+                    }
 
                     Text(" - ")
 
-                    Text("Day \(pregnancyData.day)")
-                        .contentTransition(reduceMotion ? .identity : .numericText())
-                        .animation(reduceMotion ? nil : .easeInOut, value: pregnancyData.day)
+                    HStack {
+                        Text("Day")
+                        Text(pregnancyData.day, format: .number)
+                            .contentTransition(reduceMotion ? .identity : .numericText())
+                            .animation(reduceMotion ? nil : .easeInOut, value: pregnancyData.day)
+                    }
                 }
                 .font(.title)
                 .fontWeight(.bold)
@@ -285,9 +286,20 @@ struct PregnancyProgressView: View {
     @State private var showingMomInfo = false
     @State private var selectedCardPosition: CGRect = .zero
 
-    @State private var tips: TipGroup = TipGroup {
-        MomCareTips.TriTrack.TriTrackBabyTip()
-        MomCareTips.TriTrack.TriTrackMomTip()
+    @available(iOS 18.0, *)
+    private var tips: TipGroup {
+        TipGroup {
+            MomCareTips.TriTrack.TriTrackBabyTip()
+            MomCareTips.TriTrack.TriTrackMomTip()
+        }
+    }
+
+    private var currentTip: (any Tip)? {
+        if #available(iOS 18.0, *) {
+            tips.currentTip
+        } else {
+            nil
+        }
     }
 
     private var babySizeComparisonView: some View {
@@ -353,7 +365,7 @@ struct PregnancyProgressView: View {
                 }
             )
             .accessibilityElement(children: .ignore)
-            .accessibilityLabel("Baby height")
+            .accessibilityLabel(String(localized: "a11y_baby_height_label"))
             .accessibilityValue(
                 trimesterData.babyHeight.map { h in
                     h.formatted(.measurement(width: .wide, usage: .asProvided, numberFormatStyle: .number.precision(.fractionLength(2))))
@@ -394,7 +406,7 @@ struct PregnancyProgressView: View {
                 }
             )
             .accessibilityElement(children: .ignore)
-            .accessibilityLabel("Baby weight")
+            .accessibilityLabel(String(localized: "a11y_baby_weight_label"))
             .accessibilityValue(
                 trimesterData.babyWeight.map { weight in
                     weight.formatted(.measurement(width: .wide, usage: .personWeight, numberFormatStyle: .number.precision(.fractionLength(2))))
@@ -412,7 +424,7 @@ struct PregnancyProgressView: View {
                 backgroundColor: Color(hex: "FBE8E5"),
                 accentColor: .CustomColors.mutedRaspberry
             )
-            .popoverTip(tips.currentTip as? MomCareTips.TriTrack.TriTrackBabyTip, arrowEdge: .bottom)
+            .compatPopoverTip(currentTip as? MomCareTips.TriTrack.TriTrackBabyTip, arrowEdge: .bottom)
             .background(
                 GeometryReader { geo in
                     Color.clear
@@ -436,7 +448,7 @@ struct PregnancyProgressView: View {
                 backgroundColor: Color(hex: "FBE8E5"),
                 accentColor: .CustomColors.mutedRaspberry
             )
-            .popoverTip(tips.currentTip as? MomCareTips.TriTrack.TriTrackMomTip, arrowEdge: .bottom)
+            .compatPopoverTip(currentTip as? MomCareTips.TriTrack.TriTrackMomTip, arrowEdge: .bottom)
             .background(
                 GeometryReader { geo in
                     Color.clear
@@ -620,7 +632,7 @@ struct CompactInfoCard: View {
         )
         .accessibilityElement(children: .combine)
         .accessibilityLabel("\(title). \(previewText)")
-        .accessibilityHint("Double tap to read more information")
+        .accessibilityHint(String(localized: "a11y_read_more_hint"))
     }
 
     // MARK: Private
@@ -655,7 +667,6 @@ struct PopupInfoCard: View {
                         path.addLine(to: CGPoint(x: 0, y: 0))
                     }
                     .fill(Color(hex: "FBE8E5"))
-                    .shadow(color: Color.black.opacity(0.1), radius: 3, x: 0, y: -2)
                     .accessibilityHidden(true)
 
                     Text(title)
@@ -719,7 +730,6 @@ struct PopupInfoCard: View {
             .background(
                 RoundedRectangle(cornerRadius: 20)
                     .fill(Color(hex: "FBE8E5"))
-                    .shadow(color: Color.black.opacity(0.15), radius: 10, x: 0, y: 5)
             )
             .cornerRadius(20)
             .scaleEffect(scale)

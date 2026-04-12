@@ -23,7 +23,7 @@ struct NotificationTesterView: View {
                     if permissionStatus == .notDetermined {
                         Button("Request") { requestPermission() }
                             .font(.caption.bold())
-                            .accessibilityLabel("Request notification permission")
+                            .accessibilityLabel(String(localized: "a11y_notification_permission_label"))
                     }
                 }
             }

@@ -7,24 +7,24 @@ struct LegalComplianceView: View {
                 NavigationLink("Privacy Policy") {
                     PrivacyPolicyView()
                 }
-                .accessibilityHint("View the MomCare+ privacy policy")
+                .accessibilityHint(String(localized: "a11y_privacy_policy_hint"))
 
                 NavigationLink("Terms of Service") {
                     TermsOfServiceView()
                 }
-                .accessibilityHint("View the MomCare+ terms of service")
+                .accessibilityHint(String(localized: "a11y_terms_of_service_hint"))
             }
 
             Section {
                 NavigationLink("Disclaimers & Citations") {
                     DisclaimersView()
                 }
-                .accessibilityHint("View medical disclaimers and citations")
+                .accessibilityHint(String(localized: "a11y_disclaimer_hint"))
 
                 NavigationLink("GDPR Rights") {
                     GlobalRightsView()
                 }
-                .accessibilityHint("View your data privacy rights under GDPR")
+                .accessibilityHint(String(localized: "a11y_gdpr_hint"))
             }
         }
         .listStyle(.insetGrouped)

@@ -20,7 +20,7 @@ struct TriTrackEventRow: View {
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(event.title)
         .accessibilityValue(event.startDate.formatted(.dateTime.weekday().day().month().hour().minute()))
-        .accessibilityHint("Double tap to view event details, long press for more options")
+        .accessibilityHint(String(localized: "a11y_event_row_hint"))
         .accessibilityAddTraits(.isButton)
     }
 

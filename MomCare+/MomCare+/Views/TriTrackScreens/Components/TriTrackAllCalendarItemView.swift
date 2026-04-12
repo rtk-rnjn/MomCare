@@ -55,8 +55,8 @@ struct TriTrackAllCalendarItemView: View {
                             systemImage: showDetails ? "list.bullet" : "list.bullet.below.rectangle"
                         )
                     }
-                    .accessibilityLabel(showDetails ? "Switch to compact view" : "Switch to detailed view")
-                    .accessibilityHint("Toggles the amount of detail shown for each event")
+                    .accessibilityLabel(showDetails ? String(localized: "a11y_compact_view_label") : String(localized: "a11y_detailed_view_label"))
+                    .accessibilityHint(String(localized: "a11y_event_detail_toggle_hint"))
                 }
             }
             .overlay {
@@ -255,7 +255,7 @@ struct TimelineRow: View {
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(event.title ?? "Untitled event")
         .accessibilityValue(timeLabel + (durationLabel.map { ", \($0)" } ?? "") + (event.location.map { ", at \($0)" } ?? ""))
-        .accessibilityHint("Double tap to view event details")
+        .accessibilityHint(String(localized: "a11y_event_view_details_hint"))
         .accessibilityAddTraits(.isButton)
     }
 

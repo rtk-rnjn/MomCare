@@ -33,7 +33,7 @@ struct DashboardExerciseCard: View {
         .background(Color("secondaryAppColor"))
         .dashboardCardStyle()
         .accessibilityElement(children: .contain)
-        .accessibilityLabel("Exercise activity")
+        .accessibilityLabel(String(localized: "a11y_exercise_activity_label"))
         .accessibilityIdentifier("dashboardExerciseCard")
     }
 
@@ -130,7 +130,7 @@ struct ActivityRingView: View {
             }
             .frame(width: size, height: size)
             .accessibilityElement(children: .ignore)
-            .accessibilityLabel("Activity rings")
+            .accessibilityLabel(String(localized: "a11y_activity_rings_label"))
             .accessibilityValue("Steps goal is \(Int(stepsGoalProgress * 100)) percent complete, exercise goal is \(Int(exerciseGoalProgress * 100)) percent complete, and stand goal is \(Int(caloriesGoalProgress * 100)) percent complete.")
             .accessibilityAddTraits(.updatesFrequently)
         }

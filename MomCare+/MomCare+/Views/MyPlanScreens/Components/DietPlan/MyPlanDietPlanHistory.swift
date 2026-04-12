@@ -17,7 +17,7 @@ struct MyPlanDietPlanHistory: View {
                         }
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
                         .accessibilityElement(children: .combine)
-                        .accessibilityLabel("Loading meal plan")
+                        .accessibilityLabel(String(localized: "a11y_loading_meal_plan_label"))
                     } else if let plan {
                         List {
                             FoodReferenceSection(type: .breakfast, items: plan.breakfast)
@@ -54,8 +54,8 @@ struct MyPlanDietPlanHistory: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
-                    Button(role: .close) { dismiss() }
-                        .accessibilityLabel("Close")
+                    MCCloseButton { dismiss() }
+                        .accessibilityLabel(String(localized: "a11y_close_label"))
                 }
 
                 ToolbarItem(placement: .topBarTrailing) {
@@ -77,11 +77,15 @@ struct MyPlanDietPlanHistory: View {
                     Button {
                         selectedDate = Date()
                     } label: {
-                        Image(systemName: "\(Calendar.current.component(.day, from: Date())).calendar")
-                            .font(.body)
-                            .foregroundStyle(Color.CustomColors.mutedRaspberry)
+                        Label {
+                            Text("Today")
+                        } icon: {
+                            if #available(iOS 26.0, *) {
+                                Image(systemName: "\(Calendar.current.component(.day, from: Date())).calendar")
+                            }
+                        }
                     }
-                    .accessibilityLabel("Jump to today")
+                    .accessibilityLabel(String(localized: "a11y_jump_to_today_label"))
                     .accessibilityIdentifier("jumpToTodayButton")
                 }
             }
@@ -141,7 +145,7 @@ private struct ProgressPill: View {
                 Capsule()
                     .strokeBorder(complete ? tint.opacity(0.35) : Color.secondary.opacity(0.25), lineWidth: 1)
             )
-            .accessibilityLabel("Progress")
+            .accessibilityLabel(String(localized: "a11y_progress_label"))
             .accessibilityValue("\(consumed) of \(total) consumed")
     }
 }

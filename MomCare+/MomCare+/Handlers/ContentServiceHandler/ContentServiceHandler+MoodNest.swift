@@ -26,6 +26,7 @@ extension ContentServiceHandler {
         return networkResponse.data
     }
 
+    @available(iOS 18.0, *)
     func logMoodToHealthKit(mood: MoodType) async throws {
         let kind = HKStateOfMind.Kind.momentaryEmotion
         let valence: Double = mood.valence

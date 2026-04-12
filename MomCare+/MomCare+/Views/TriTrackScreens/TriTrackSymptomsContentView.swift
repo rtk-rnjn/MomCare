@@ -23,7 +23,6 @@ struct TriTrackSymptomsContentView: View {
                             openDetails(for: symptomModel)
                         }
                     )
-                    .listRowBackground(Color.clear)
                     .listRowSeparator(.hidden)
                 }
             } header: {
@@ -43,6 +42,9 @@ struct TriTrackSymptomsContentView: View {
             }
         }
         .listStyle(.plain)
+        .background(RoundedRectangle(cornerRadius: 16).fill(Color(.systemBackground)))
+        .frame(maxWidth: .infinity)
+        // Utils
         .sheet(isPresented: $controlState.showingAddSymptomSheet) {
             TriTrackAddEditSymptomSheetView(selectedDate: selectedDate)
                 .presentationDetents([.medium, .large])
@@ -57,11 +59,6 @@ struct TriTrackSymptomsContentView: View {
                 .scrollDismissesKeyboard(.immediately)
                 .interactiveDismissDisabled(true)
         }
-        .frame(maxWidth: .infinity)
-        .background(
-            RoundedRectangle(cornerRadius: 16)
-                .fill(Color(.systemBackground))
-        )
         .navigationDestination(isPresented: $showDetail) {
             if let selectedSymptom {
                 TriTrackSymptomDetailView(symptom: selectedSymptom)
@@ -194,7 +191,7 @@ struct TriTrackSymptomRow: View {
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(symptom.title ?? "Symptom")
         .accessibilityValue(symptom.notes.flatMap { $0.isEmpty ? nil : $0 } ?? "No notes")
-        .accessibilityHint("Double tap to edit, long press for more options")
+        .accessibilityHint(String(localized: "a11y_symptom_edit_hint"))
         .accessibilityAddTraits(.isButton)
         .accessibilityAction(.default) { onEdit() }
         .accessibilityAction(named: "View Details") { onViewDetails() }

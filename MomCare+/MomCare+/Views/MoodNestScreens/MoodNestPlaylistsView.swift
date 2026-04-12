@@ -44,7 +44,7 @@ struct MoodNestPlaylistsView: View {
             }
         }
         .background(Color(.systemBackground))
-        .navigationTitle("Mood")
+        .navigationTitle(AppTab.mood.title)
         .navigationBarTitleDisplayMode(.inline)
         .task {
             do {
@@ -53,7 +53,9 @@ struct MoodNestPlaylistsView: View {
                 controlState.error = error
             }
 
-            try? await contentService.logMoodToHealthKit(mood: mood)
+            if #available(iOS 18.0, *) {
+                try? await contentService.logMoodToHealthKit(mood: mood)
+            }
 
             if let heroPlaylist = contentService.playlists.randomElement() {
                 self.heroPlaylist = heroPlaylist
@@ -168,7 +170,7 @@ struct MoodNestPlaylistsView: View {
                             .shadow(color: .black.opacity(0.3), radius: 10, x: 0, y: 5)
                         }
                         .accessibilityLabel("Play \(hero.name)")
-                        .accessibilityHint("Starts playing this playlist")
+                        .accessibilityHint(String(localized: "a11y_play_playlist_hint"))
                         .accessibilityIdentifier("playNowButton")
                     }
                     .padding(.horizontal, 20)
@@ -177,10 +179,10 @@ struct MoodNestPlaylistsView: View {
                 .frame(width: geometry.size.width, height: geometry.size.width * 0.6)
             }
             .aspectRatio(5 / 3, contentMode: .fit)
-            .clipShape(RoundedRectangle(cornerRadius: 24, style: .continuous))
+            .clipShape(RoundedRectangle(cornerRadius: CornerRadius.outer, style: .continuous))
             .shadow(color: .black.opacity(0.25), radius: 16, x: 0, y: 8)
             .overlay(
-                RoundedRectangle(cornerRadius: 24, style: .continuous)
+                RoundedRectangle(cornerRadius: CornerRadius.outer, style: .continuous)
                     .stroke(Color.white.opacity(0.1), lineWidth: 1)
             )
         }

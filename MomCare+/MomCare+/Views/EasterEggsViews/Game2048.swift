@@ -148,7 +148,6 @@ struct Game2048View: View {
             .padding(.horizontal)
             .navigationTitle("2048")
             .navigationBarTitleDisplayMode(.large)
-            .navigationSubtitle("Score: \(engine.score) | High Score: \(highScore)")
             .toolbar {
                 ToolbarItem(placement: .bottomBar) {
                     Button {
@@ -163,7 +162,7 @@ struct Game2048View: View {
             }
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
-                    Button(role: .cancel) {
+                    MCCancelButton {
                         dismiss()
                     }
                 }

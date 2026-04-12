@@ -24,7 +24,7 @@ struct ProfileMomCareWatchView: View {
                 Button("Ping Watch") {
                     connector.ping()
                 }
-                .accessibilityHint("Sends a ping message to the paired Apple Watch")
+                .accessibilityHint(String(localized: "a11y_watch_ping_hint"))
             }
         }
         .navigationTitle("Watch Settings")

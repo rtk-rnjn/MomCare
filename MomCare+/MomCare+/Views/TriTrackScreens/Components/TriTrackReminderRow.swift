@@ -21,7 +21,7 @@ struct TriTrackReminderRow: View {
         .opacity(reminder.isCompleted ? 0.6 : 1)
         .accessibilityElement(children: .contain)
         .accessibilityLabel(reminder.title ?? "Reminder")
-        .accessibilityHint("Double tap to view reminder details")
+        .accessibilityHint(String(localized: "a11y_reminder_view_details_hint"))
         .accessibilityAddTraits(.isButton)
         .accessibilityAction(.default) { onTap() }
     }
@@ -212,8 +212,8 @@ extension TriTrackReminderRow {
                 : (dueDate ?? Date() < Date() ? .red : .gray.opacity(0.6))
             )
             .onTapGesture { toggleReminder() }
-            .accessibilityLabel(reminder.isCompleted ? "Mark as incomplete" : "Mark as complete")
-            .accessibilityHint("Toggles the completion status of this reminder")
+            .accessibilityLabel(reminder.isCompleted ? String(localized: "a11y_mark_incomplete_label") : String(localized: "a11y_mark_complete_label"))
+            .accessibilityHint(String(localized: "a11y_reminder_completion_hint"))
             .accessibilityAddTraits(.isButton)
             .accessibilityAction(.default) { toggleReminder() }
     }

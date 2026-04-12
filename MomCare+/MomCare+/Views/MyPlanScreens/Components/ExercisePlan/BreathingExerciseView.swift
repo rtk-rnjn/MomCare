@@ -41,7 +41,7 @@ struct BreathingExerciseView: View {
             }
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
-                    Button(role: .cancel) {
+                    MCCancelButton {
                         stopAllTimers()
                         Task {
                             let now = Date()
@@ -50,7 +50,7 @@ struct BreathingExerciseView: View {
                         }
                         dismiss()
                     }
-                    .accessibilityLabel("Close breathing exercise")
+                    .accessibilityLabel(String(localized: "a11y_close_breathing_label"))
                 }
 
                 ToolbarItem(placement: .principal) {
@@ -61,12 +61,12 @@ struct BreathingExerciseView: View {
                 }
             }
             .navigationBarTitleDisplayMode(.inline)
-            .navigationSubtitle(
-                Text(formatTime(totalElapsed))
-                    .font(.title3.weight(.semibold))
-                    .foregroundStyle(darkAccent)
-                    .monospacedDigit()
-            )
+//            .navigationSubtitle(
+//                Text(formatTime(totalElapsed))
+//                    .font(.title3.weight(.semibold))
+//                    .foregroundStyle(darkAccent)
+//                    .monospacedDigit()
+//            )
         }
         .onAppear {
             setupAudioSession()
@@ -161,7 +161,6 @@ struct BreathingExerciseView: View {
                 )
                 .frame(width: 200, height: 200)
                 .scaleEffect(circleScale)
-                .shadow(color: accent.opacity(0.3), radius: 20, x: 0, y: 5)
 
             Circle()
                 .fill(Color.white.opacity(0.6))
@@ -310,7 +309,7 @@ struct BreathingExerciseView: View {
             .accessibilityHidden(true)
         }
         .accessibilityElement(children: .ignore)
-        .accessibilityLabel("Session progress")
+        .accessibilityLabel(String(localized: "a11y_session_progress_label"))
         .accessibilityValue("\(formatTime(totalElapsed)) of \(formatTime(totalDuration))")
         .accessibilityAddTraits(.updatesFrequently)
     }
@@ -323,10 +322,10 @@ struct BreathingExerciseView: View {
                 Image(systemName: "arrow.counterclockwise")
                     .font(.title3.weight(.medium))
             }
-            .buttonStyle(.glass)
+            .modifier(CompatGlassButton())
             .buttonBorderShape(.circle)
             .tint(darkAccent)
-            .accessibilityLabel("Reset session")
+            .accessibilityLabel(String(localized: "a11y_reset_session_label"))
 
             Button {
                 if phase == .done {
@@ -340,7 +339,7 @@ struct BreathingExerciseView: View {
                 Image(systemName: phase == .done ? "arrow.counterclockwise" : (isPaused ? "play.fill" : "pause.fill"))
                     .font(.title2.weight(.semibold))
             }
-            .buttonStyle(.glassProminent)
+            .modifier(CompatGlassButton())
             .buttonBorderShape(.circle)
             .tint(darkAccent)
             .controlSize(.large)
@@ -352,10 +351,10 @@ struct BreathingExerciseView: View {
                 Image(systemName: "forward.fill")
                     .font(.title3.weight(.medium))
             }
-            .buttonStyle(.glass)
+            .modifier(CompatGlassButton())
             .buttonBorderShape(.circle)
             .tint(darkAccent)
-            .accessibilityLabel("Skip to next phase")
+            .accessibilityLabel(String(localized: "a11y_skip_phase_label"))
         }
     }
 
@@ -585,6 +584,16 @@ enum BreathingPhase: String {
             "Get ready..."
         case .done:
             "Well done. Session complete."
+        }
+    }
+}
+
+struct CompatGlassButton: ViewModifier {
+    func body(content: Content) -> some View {
+        if #available(iOS 26, *) {
+            content.buttonStyle(.glass)
+        } else {
+            content.buttonStyle(.borderedProminent)
         }
     }
 }

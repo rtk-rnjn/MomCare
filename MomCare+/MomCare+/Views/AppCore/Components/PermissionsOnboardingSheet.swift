@@ -202,8 +202,8 @@ struct PermissionsOnboardingSheet: View {
         .accessibilityElement(children: .combine)
         .accessibilityLabel(
             fetchingDataFromServer
-                ? "Downloading content from the server"
-                : "Content downloaded and ready"
+                ? String(localized: "a11y_downloading_content_label")
+                : String(localized: "a11y_content_ready_label")
         )
     }
 
@@ -251,15 +251,15 @@ struct PermissionsOnboardingSheet: View {
                         MomCareAccent.primary.opacity(
                             (allPermissionsGranted && !isAnyPermissionRequestInFlight) ? 1 : 0.35
                         ),
-                        in: RoundedRectangle(cornerRadius: 24, style: .continuous)
+                        in: RoundedRectangle(cornerRadius: CornerRadius.outer, style: .continuous)
                     )
             }
             .padding(.horizontal, 20)
             .padding(.bottom, 32)
             .buttonStyle(.plain)
             .disabled(!allPermissionsGranted || isAnyPermissionRequestInFlight)
-            .accessibilityLabel("Continue")
-            .accessibilityHint("Continues after all permissions are enabled.")
+            .accessibilityLabel(String(localized: "a11y_continue_label"))
+            .accessibilityHint(String(localized: "a11y_continue_hint"))
             .background(
                 Color(reduceTransparency ? .secondary : MomCareAccent.secondary)
             )

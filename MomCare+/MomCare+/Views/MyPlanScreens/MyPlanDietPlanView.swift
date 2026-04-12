@@ -5,13 +5,13 @@ import TipKit
 struct MyPlanDietPlanView: View {
     // MARK: Internal
 
-    let tips: TipGroup
+    let currentTip: (any Tip)?
 
     var body: some View {
         VStack(spacing: 12) {
             MyPlanDietPlanProgressCardView(
                 plan: contentServiceHandler.myPlanModel,
-                tip: tips.currentTip as? MomCareTips.DietPlan.ProgressCardSlideOrTapTip,
+                tip: currentTip as? MomCareTips.DietPlan.ProgressCardSlideOrTapTip,
 
                 calorieIntake: contentServiceHandler.nutritionIntakeTotals?.energy,
                 calorieGoal: contentServiceHandler.nutritionGoalTotals?.energy,
@@ -37,7 +37,7 @@ struct MyPlanDietPlanView: View {
                 sodiumGoal: contentServiceHandler.nutritionGoalTotals?.sodiumMass,
                 recommendedSodiumGoal: contentServiceHandler.recommendedNutritionGoalTotals?.sodiumMass
             )
-            .containerShape(RoundedRectangle(cornerRadius: 24, style: .continuous))
+            .containerShape(RoundedRectangle(cornerRadius: CornerRadius.outer, style: .continuous))
             .padding(.horizontal, 16)
             .contextMenu {
                 Button {
@@ -49,8 +49,8 @@ struct MyPlanDietPlanView: View {
 
             MyPlanDietPlanMealTimelineCardView(
                 plan: contentServiceHandler.myPlanModel,
-                addFoodItemTip: tips.currentTip as? MomCareTips.DietPlan.HeaderRowAddTip,
-                slideFoodItemRowTip: tips.currentTip as? MomCareTips.DietPlan.ItemRowSlideTip
+                addFoodItemTip: currentTip as? MomCareTips.DietPlan.HeaderRowAddTip,
+                slideFoodItemRowTip: currentTip as? MomCareTips.DietPlan.ItemRowSlideTip
             )
                 .refreshable {
                     do {
@@ -62,7 +62,7 @@ struct MyPlanDietPlanView: View {
 
                 .padding(.bottom, 8)
                 .frame(maxHeight: .infinity)
-                .clipShape(RoundedCorner(radius: 24, corners: [.topLeft, .topRight]))
+                .clipShape(RoundedCorner(radius: CornerRadius.outer, corners: [.topLeft, .topRight]))
                 .padding(.horizontal, 16)
         }
         .padding(.top, 8)
@@ -87,8 +87,8 @@ struct MyPlanDietPlanView: View {
                 } label: {
                     Image(systemName: "clock.arrow.circlepath")
                 }
-                .accessibilityLabel("Meal plan history")
-                .accessibilityHint("Opens your meal plan history")
+                .accessibilityLabel(String(localized: "a11y_meal_plan_history_label"))
+                .accessibilityHint(String(localized: "a11y_meal_history_hint"))
             }
 
             ToolbarItem(placement: .topBarTrailing) {
@@ -113,7 +113,7 @@ struct MyPlanDietPlanView: View {
                     Image(systemName: "ellipsis")
                         .accessibilityHidden(true)
                 }
-                .accessibilityLabel("More options")
+                .accessibilityLabel(String(localized: "a11y_more_options_label"))
             }
         }
         .sheet(isPresented: $showHelp) {
@@ -186,7 +186,7 @@ private struct NutritionGraphRootView: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
-                    Button(role: .cancel) { dismiss() }
+                    MCCancelButton { dismiss() }
                         .fontWeight(.semibold)
                 }
             }
@@ -239,7 +239,7 @@ private struct NutritionGraphRootView: View {
         .padding(.vertical, 14)
         .background(Color(.secondarySystemBackground), in: RoundedRectangle(cornerRadius: 16, style: .continuous))
         .accessibilityElement(children: .ignore)
-        .accessibilityLabel("Calorie summary")
+        .accessibilityLabel(String(localized: "a11y_calorie_summary_label"))
         .accessibilityValue({
             let intake = calorieIntake.formatted(.measurement(width: .wide, usage: .food))
             let goal = calorieGoal.formatted(.measurement(width: .wide, usage: .food))
@@ -363,7 +363,7 @@ private struct VitalCardRow: View {
                 ? "\(formattedValue(todayValue)) \(kind.unitLabel), \(progressLabel) of target"
                 : "\(formattedValue(todayValue)) \(kind.unitLabel)"
         )
-        .accessibilityHint("Double tap to view detailed history")
+        .accessibilityHint(String(localized: "a11y_diet_history_hint"))
         .accessibilityAddTraits(.isButton)
     }
 

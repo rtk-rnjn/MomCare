@@ -1,12 +1,12 @@
 import SwiftUI
 import TipKit
 
-struct MyPlanDietPlanMealTimelineCardView: View {
+struct MyPlanDietPlanMealTimelineCardView<AddFoodItemTip: Tip, SlideFoodItemRowTip: Tip>: View {
     // MARK: Internal
 
     let plan: MealPlanModel?
-    let addFoodItemTip: (any Tip)?
-    let slideFoodItemRowTip: (any Tip)?
+    let addFoodItemTip: AddFoodItemTip?
+    let slideFoodItemRowTip: SlideFoodItemRowTip?
 
     var body: some View {
         List {
@@ -54,7 +54,7 @@ struct MyPlanDietPlanMealTimelineCardView: View {
 
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
-    private func mealSection(title: String, items: [FoodReferenceModel], originalItems: [FoodReferenceModel], mealType: MealType) -> some View {
+    private func mealSection(title: LocalizedStringKey, items: [FoodReferenceModel], originalItems: [FoodReferenceModel], mealType: MealType) -> some View {
         Section {
             MealTimelineHeaderRow(
                 section: MealSection(title: title, items: items),
@@ -70,8 +70,7 @@ struct MyPlanDietPlanMealTimelineCardView: View {
                 }
             }
             .listRowSeparator(.hidden)
-            .listRowInsets(.top, 0)
-            .listRowInsets(.bottom, 0)
+            .compatListRowVerticalInsets(top: 0, bottom: 0)
 
             if contentServiceHandler.isFetchingMealPlan {
                 HStack(alignment: .center) {
@@ -80,10 +79,9 @@ struct MyPlanDietPlanMealTimelineCardView: View {
                     Spacer()
                 }
                 .listRowSeparator(.hidden)
-                .listRowInsets(.top, 0)
-                .listRowInsets(.bottom, 0)
+                .compatListRowVerticalInsets(top: 0, bottom: 0)
                 .accessibilityElement(children: .combine)
-                .accessibilityLabel("Loading meal items")
+                .accessibilityLabel(String(localized: "a11y_loading_meal_items_label"))
             } else {
                 ForEach(items) { item in
                     MealTimelineFoodItemRow(
@@ -106,7 +104,7 @@ struct MyPlanDietPlanMealTimelineCardView: View {
                             }
                         }
                     )
-                    .popoverTip(slideFoodItemRowTip, arrowEdge: .top)
+                    .compatPopoverTip(slideFoodItemRowTip, arrowEdge: .top)
                     .background {
                         LinearGradient(
                             colors: [
@@ -124,8 +122,7 @@ struct MyPlanDietPlanMealTimelineCardView: View {
                         .animation(reduceMotion ? nil : .easeInOut(duration: 0.3), value: originalItems)
                     }
                     .listRowSeparator(.hidden)
-                    .listRowInsets(.top, 0)
-                    .listRowInsets(.bottom, 0)
+                    .compatListRowVerticalInsets(top: 0, bottom: 0)
                 }
             }
         }
@@ -133,14 +130,14 @@ struct MyPlanDietPlanMealTimelineCardView: View {
     }
 }
 
-private struct MealTimelineHeaderRow: View {
+private struct MealTimelineHeaderRow<TipContent: Tip>: View {
     // MARK: Internal
 
     let section: MealSection
     let hideTopLine: Bool
     let hideBottomLine: Bool
     let mealType: MealType
-    let tip: (any Tip)?
+    let tip: TipContent?
     let onToggle: (Bool) async -> Void
 
     var body: some View {
@@ -156,7 +153,11 @@ private struct MealTimelineHeaderRow: View {
                     await onToggle(section.isCompleted)
                 }
             }
-            .accessibilityLabel(section.isCompleted ? "Mark \(section.title) as not completed" : "Mark \(section.title) as completed")
+            .accessibilityLabel(
+                Text("Mark ") +
+                Text(section.title) +
+                Text(section.isCompleted ? " as not completed" : " as completed")
+            )
             .accessibilityAddTraits(.isButton)
             .accessibilityAction(.default) {
                 Task {
@@ -182,8 +183,10 @@ private struct MealTimelineHeaderRow: View {
                     .font(.title3)
                     .foregroundStyle(MomCareAccent.primary)
             }
-            .popoverTip(tip, arrowEdge: .trailing)
-            .accessibilityLabel("Add food to \(section.title)")
+            .compatPopoverTip(tip, arrowEdge: .trailing)
+            .accessibilityLabel(
+                Text("Add food to ") + Text(section.title)
+            )
             .frame(minWidth: 44, minHeight: 44)
         }
         .frame(height: 66)
@@ -277,7 +280,7 @@ private struct MealTimelineFoodItemRow: View {
             "\(food?.name.capitalized ?? "Food item"), \(item.count) serving, \(food?.calories.formattedOneDecimal ?? "")"
         )
         .accessibilityValue(item.isConsumed ? "consumed" : "not consumed")
-        .accessibilityHint("Long press for more options.")
+        .accessibilityHint(String(localized: "a11y_long_press_options_hint"))
         .accessibilityAction(named: item.isConsumed ? "Undo" : "Consume") {
             Task {
                 await onToggle(item.isConsumed)
@@ -444,7 +447,7 @@ private struct NutritionPreview: View {
 
     // MARK: Private
 
-    private func nutrientLabel(_ label: String, _ value: String) -> some View {
+    private func nutrientLabel(_ label: LocalizedStringKey, _ value: String) -> some View {
         HStack(spacing: 4) {
             Text(label).font(.caption2).foregroundStyle(.secondary)
             Text(value).font(.caption2.weight(.semibold))
@@ -504,10 +507,32 @@ private struct TimelineCircle: View {
 
 private struct MealSection: Identifiable {
     let id: UUID = .init()
-    let title: String
+    let title: LocalizedStringKey
     var items: [FoodReferenceModel]
 
     var isCompleted: Bool {
         items.allSatisfy(\.isConsumed)
+    }
+}
+
+extension View {
+    @ViewBuilder
+    func compatListRowVerticalInsets(
+        top: CGFloat,
+        bottom: CGFloat
+    ) -> some View {
+        if #available(iOS 26, *) {
+            listRowInsets(.top, top)
+                .listRowInsets(.bottom, bottom)
+        } else {
+            listRowInsets(
+                    EdgeInsets(
+                        top: top,
+                        leading: 16,
+                        bottom: bottom,
+                        trailing: 16
+                    )
+                )
+        }
     }
 }

@@ -55,8 +55,6 @@ extension ContentServiceHandler {
              .hairLoss
         ]
 
-        let stateOfMind = HKStateOfMindType.stateOfMindType()
-
         let readQuantityTypes = readQuantityIdentifiers.compactMap { HKQuantityType.quantityType(forIdentifier: $0) }
         let writeQuantityTypes = writeQuantityIdentifiers.compactMap { HKQuantityType.quantityType(forIdentifier: $0) }
 
@@ -68,18 +66,22 @@ extension ContentServiceHandler {
         let readSymptomTypes = symptomsReadWrite.compactMap { HKObjectType.categoryType(forIdentifier: $0) }
         let writeSymptomTypes = symptomsReadWrite.compactMap { HKObjectType.categoryType(forIdentifier: $0) }
 
-        let readTypes: Set<HKObjectType> =
+        var readTypes: Set<HKObjectType> =
             Set(readQuantityTypes)
             .union(readCategoryTypes)
             .union(readCharacteristicTypes)
-            .union([stateOfMind])
             .union(readSymptomTypes)
 
-        let writeTypes: Set<HKSampleType> =
+        var writeTypes: Set<HKSampleType> =
             Set(writeQuantityTypes)
             .union(writeCategoryTypes)
-            .union([stateOfMind])
             .union(writeSymptomTypes)
+
+        if #available(iOS 18.0, *) {
+            let stateOfMind = HKStateOfMindType.stateOfMindType()
+            readTypes.insert(stateOfMind)
+            writeTypes.insert(stateOfMind)
+        }
 
         try await healthStore.requestAuthorization(toShare: writeTypes, read: readTypes)
     }

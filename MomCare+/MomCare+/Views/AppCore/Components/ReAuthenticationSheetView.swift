@@ -26,7 +26,6 @@ struct ReAuthenticationSheetView: View {
             .scrollContentBackground(.hidden)
             .scrollDismissesKeyboard(.immediately)
             .navigationTitle("Refresh Token Expired")
-            .navigationSubtitle("HTTP 401 Unauthorized")
             .navigationBarTitleDisplayMode(.inline)
             .sheet(isPresented: $showAppleLoginSheet) {
                 NavigationStack {
@@ -52,7 +51,7 @@ struct ReAuthenticationSheetView: View {
                         .padding(.top, 32)
                         .padding(.horizontal, 28)
                         .accessibilityElement(children: .combine)
-                        .accessibilityLabel("If you have an Apple ID linked to your account, you can use it to sign in quickly and securely without needing to enter your password.")
+                        .accessibilityLabel(String(localized: "a11y_apple_signin_existing_hint"))
 
                         VStack(spacing: 12) {
                             SignInWithAppleButton(.continue) { request in
@@ -65,7 +64,7 @@ struct ReAuthenticationSheetView: View {
                             .signInWithAppleButtonStyle(.black)
                             .frame(height: 50)
                             .cornerRadius(24)
-                            .accessibilityLabel("Sign in with Apple")
+                            .accessibilityLabel(String(localized: "a11y_apple_signin_label"))
 
                             Button("Cancel") {
                                 showAppleLoginSheet = false
@@ -73,7 +72,7 @@ struct ReAuthenticationSheetView: View {
                             .font(.subheadline)
                             .foregroundStyle(.secondary)
                             .padding(.bottom, 8)
-                            .accessibilityHint("Closes this sheet")
+                            .accessibilityHint(String(localized: "a11y_close_sheet_reauth_hint"))
                         }
                         .padding(.horizontal, 28)
                         .padding(.bottom, 24)
@@ -93,7 +92,7 @@ struct ReAuthenticationSheetView: View {
             }
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
-                    Button(role: .cancel) {
+                    MCCancelButton {
                         dismiss()
                     }
                 }
@@ -127,8 +126,8 @@ struct ReAuthenticationSheetView: View {
                     .buttonStyle(.borderedProminent)
                     .tint(MomCareAccent.primary)
                     .controlSize(.large)
-                    .accessibilityLabel("Sign In")
-                    .accessibilityHint("Signs you in to your account")
+                    .accessibilityLabel(String(localized: "a11y_sign_in_label"))
+                    .accessibilityHint(String(localized: "a11y_sign_in_hint"))
                 }
             }
         }
@@ -158,16 +157,16 @@ struct ReAuthenticationSheetView: View {
             .focused($focusedField, equals: .email)
             .autocorrectionDisabled()
             .listRowBackground(Color(.secondarySystemBackground))
-            .accessibilityLabel("Email address")
-            .accessibilityHint("Enter your email address")
+            .accessibilityLabel(String(localized: "a11y_email_label"))
+            .accessibilityHint(String(localized: "a11y_enter_email_hint"))
     }
 
     private var passwordField: some View {
         SecureField("Password", text: $password)
             .listRowBackground(Color(.secondarySystemBackground))
-            .accessibilityLabel("Password")
+            .accessibilityLabel(String(localized: "a11y_password_label"))
             .focused($focusedField, equals: .password)
-            .accessibilityHint("Enter your password")
+            .accessibilityHint(String(localized: "a11y_enter_password_hint"))
     }
 
     private func submitEmailLogin() async throws {

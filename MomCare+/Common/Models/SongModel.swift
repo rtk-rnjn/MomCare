@@ -32,6 +32,7 @@ enum MoodType: String, Codable, CaseIterable, Identifiable {
         }
     }
 
+    @available(iOS 18.0, *)
     var label: HKStateOfMind.Label {
         switch self {
         case .angry: .angry

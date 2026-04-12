@@ -1,11 +1,12 @@
+import HealthKit
 import SwiftUI
 import TipKit
 
-struct MyPlanDietPlanProgressCardView: View {
+struct MyPlanDietPlanProgressCardView<TipContent: Tip>: View {
     // MARK: Internal
 
     let plan: MealPlanModel?
-    let tip: (any Tip)?
+    let tip: TipContent?
 
     let calorieIntake: Measurement<UnitEnergy>?
     let calorieGoal: Measurement<UnitEnergy>?
@@ -34,15 +35,13 @@ struct MyPlanDietPlanProgressCardView: View {
     var body: some View {
         VStack(spacing: 0) {
             collapsedHeader
-                .popoverTip(tip, arrowEdge: .top)
+                .compatPopoverTip(tip, arrowEdge: .top)
 
             if isExpanded {
                 expandedSection
             }
         }
         .background(cardBackground)
-        .clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
-        .shadow(color: .black.opacity(0.07), radius: 12, x: 0, y: 4)
         .scaleEffect(isPressed ? 0.97 : 1.0)
         .onTapGesture(perform: toggleExpansion)
         .gesture(pressGesture)
@@ -208,8 +207,15 @@ struct MyPlanDietPlanProgressCardView: View {
     }
 
     private var cardBackground: some View {
-        ConcentricRectangle()
-            .fill(Color(.systemBackground))
+        Group {
+            if #available(iOS 26.0, *) {
+                ConcentricRectangle()
+                    .fill(Color(.systemBackground))
+            } else {
+                RoundedRectangle(cornerRadius: CornerRadius.outer)
+                    .fill(Color(.systemBackground))
+            }
+        }
     }
 
     private func handleDragEnd(_ value: DragGesture.Value) {
@@ -366,7 +372,7 @@ private struct CaloriesSummaryView: View {
             Text("No data")
                 .font(.caption)
                 .foregroundStyle(.tertiary)
-                .accessibilityLabel("Calorie data unavailable")
+                .accessibilityLabel(String(localized: "a11y_calorie_unavailable_label"))
         }
     }
 }
@@ -614,13 +620,13 @@ private struct ProgressRingView: View {
         .fixedSize(horizontal: false, vertical: true)
         .contentShape(Circle())
         .accessibilityElement(children: .ignore)
-        .accessibilityLabel("Calorie intake")
+        .accessibilityLabel(String(localized: "a11y_calorie_intake_summary_label"))
         .accessibilityValue(
             showPercentage
             ? "\(percentage)%"
             : "\(Int(consumed?.converted(to: target?.unit ?? .kilocalories).value ?? 0)) / \(Int(target?.value ?? 0)) calories"
         )
-        .accessibilityHint("Double tap to toggle percentage view")
+        .accessibilityHint(String(localized: "a11y_toggle_percent_hint"))
         .accessibilityAddTraits([.isButton, .updatesFrequently])
         .accessibilityAction(.default) {
             togglePercentageDisplay()
@@ -684,10 +690,24 @@ private struct ProgressRingView: View {
     }
 
     private var modificationColor: Color {
-        switch targetModification {
-        case .increased: .secondary.mix(with: .black, by: 0.2)
-        case .decreased: .secondary.mix(with: .white, by: 0.35)
-        case .none: .secondary
+        if #available(iOS 18, *) {
+            switch targetModification {
+            case .increased:
+                .secondary.mix(with: .black, by: 0.2)
+            case .decreased:
+                .secondary.mix(with: .white, by: 0.35)
+            case .none:
+                .secondary
+            }
+        } else {
+            switch targetModification {
+            case .increased:
+                .secondary.opacity(0.8)
+            case .decreased:
+                .secondary.opacity(0.65)
+            case .none:
+                .secondary
+            }
         }
     }
 
@@ -802,7 +822,7 @@ private struct ProgressRingView: View {
 private struct MacroBarRow: View {
     // MARK: Internal
 
-    let title: String
+    let title: LocalizedStringKey
     let intake: Measurement<UnitMass>?
     let goal: Measurement<UnitMass>?
     let recommendedGoal: Measurement<UnitMass>?
@@ -870,7 +890,7 @@ private struct MacroBarRow: View {
                 return "\(intakeText) consumed out of \(goalText) goal"
             }()
         )
-        .accessibilityHint("Double tap to toggle percentage view")
+        .accessibilityHint(String(localized: "a11y_toggle_percent_hint"))
         .accessibilityAddTraits([.isButton, .updatesFrequently])
     }
 
@@ -901,10 +921,24 @@ private struct MacroBarRow: View {
     }
 
     private var modificationColor: Color {
-        switch targetModification {
-        case .increased: .secondary.mix(with: .black, by: 0.2)
-        case .decreased: .secondary.mix(with: .white, by: 0.35)
-        case .none: .secondary
+        if #available(iOS 18, *) {
+            switch targetModification {
+            case .increased:
+                .secondary.mix(with: .black, by: 0.2)
+            case .decreased:
+                .secondary.mix(with: .white, by: 0.35)
+            case .none:
+                .secondary
+            }
+        } else {
+            switch targetModification {
+            case .increased:
+                .secondary.opacity(0.8)
+            case .decreased:
+                .secondary.opacity(0.65)
+            case .none:
+                .secondary
+            }
         }
     }
 

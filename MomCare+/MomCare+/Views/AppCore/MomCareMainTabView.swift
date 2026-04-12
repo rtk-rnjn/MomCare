@@ -47,40 +47,14 @@ struct MomCareMainTabView: View {
     @State private var fetchingDataFromServer = true
 
     private func tabViewContent(bottomPadding: CGFloat) -> some View {
-        TabView(selection: $controlState.selectedTab) {
-            TabSection {
-                Tab(AppTab.progress.title, systemImage: AppTab.progress.systemImage, value: AppTab.progress) {
-                    NavigationStack { DashboardView() }
-                        .safeAreaPadding(bottomPadding)
-                        .tag(AppTab.progress)
-                }
-
-                Tab(AppTab.myPlan.title, systemImage: AppTab.myPlan.systemImage, value: AppTab.myPlan) {
-                    NavigationStack { MyPlanView() }
-                        .safeAreaPadding(bottomPadding)
-                        .tag(AppTab.myPlan)
-                }
-
-                Tab(AppTab.triTrack.title, systemImage: AppTab.triTrack.systemImage, value: AppTab.triTrack) {
-                    NavigationStack { TriTrackView() }
-                        .safeAreaPadding(bottomPadding)
-                        .tag(AppTab.triTrack)
-                }
-
-                Tab(AppTab.mood.title, systemImage: AppTab.mood.systemImage, value: AppTab.mood) {
-                    NavigationStack { MoodNestView() }
-                        .safeAreaPadding(bottomPadding)
-                        .tag(AppTab.mood)
-                }
-            }
-
-            Tab(AppTab.profile.title, systemImage: AppTab.profile.systemImage, value: AppTab.profile) {
-                NavigationStack { ProfileView() }
-                    .safeAreaPadding(bottomPadding)
-                    .tag(AppTab.profile)
+        Group {
+            if #available(iOS 18, *) {
+                modernTabView(bottomPadding: bottomPadding)
+            } else {
+                legacyTabView(bottomPadding: bottomPadding)
             }
         }
-        .tabBarMinimizeBehavior(.onScrollDown)
+        .compatTabBarMinimizeOnScroll()
         .task {
             await refreshAccessToken()
         }
@@ -150,6 +124,87 @@ struct MomCareMainTabView: View {
         }
     }
 
+    @available(iOS 18, *)
+    private func modernTabView(bottomPadding: CGFloat) -> some View {
+        TabView(selection: $controlState.selectedTab) {
+            TabSection {
+                Tab(AppTab.progress.title, systemImage: AppTab.progress.systemImage, value: AppTab.progress) {
+                    NavigationStack { DashboardView() }
+                        .safeAreaPadding(bottomPadding)
+                }
+
+                Tab(AppTab.myPlan.title, systemImage: AppTab.myPlan.systemImage, value: AppTab.myPlan) {
+                    NavigationStack { MyPlanView() }
+                        .safeAreaPadding(bottomPadding)
+                }
+
+                Tab(AppTab.triTrack.title, systemImage: AppTab.triTrack.systemImage, value: AppTab.triTrack) {
+                    NavigationStack { TriTrackView() }
+                        .safeAreaPadding(bottomPadding)
+                }
+
+                Tab(AppTab.mood.title, systemImage: AppTab.mood.systemImage, value: AppTab.mood) {
+                    NavigationStack { MoodNestView() }
+                        .safeAreaPadding(bottomPadding)
+                }
+            }
+
+            Tab(AppTab.settings.title, systemImage: AppTab.settings.systemImage, value: AppTab.settings) {
+                NavigationStack { ProfileView() }
+                    .safeAreaPadding(bottomPadding)
+            }
+        }
+    }
+
+    private func legacyTabView(bottomPadding: CGFloat) -> some View {
+        TabView(selection: $controlState.selectedTab) {
+            NavigationStack {
+                DashboardView()
+                    .safeAreaPadding(bottomPadding)
+            }
+            .tabItem {
+                Label(AppTab.progress.title, systemImage: AppTab.progress.systemImage)
+            }
+            .tag(AppTab.progress)
+
+            NavigationStack {
+                MyPlanView()
+                    .safeAreaPadding(bottomPadding)
+            }
+            .tabItem {
+                Label(AppTab.myPlan.title, systemImage: AppTab.myPlan.systemImage)
+            }
+            .tag(AppTab.myPlan)
+
+            NavigationStack {
+                TriTrackView()
+                    .safeAreaPadding(bottomPadding)
+            }
+            .tabItem {
+                Label(AppTab.triTrack.title, systemImage: AppTab.triTrack.systemImage)
+            }
+            .tag(AppTab.triTrack)
+
+            NavigationStack {
+                MoodNestView()
+                    .safeAreaPadding(bottomPadding)
+            }
+            .tabItem {
+                Label(AppTab.mood.title, systemImage: AppTab.mood.systemImage)
+            }
+            .tag(AppTab.mood)
+
+            NavigationStack {
+                ProfileView()
+                    .safeAreaPadding(bottomPadding)
+            }
+            .tabItem {
+                Label(AppTab.settings.title, systemImage: AppTab.settings.systemImage)
+            }
+            .tag(AppTab.settings)
+        }
+    }
+
     private func refreshAccessToken() async {
         isRefreshing = true
         defer { isRefreshing = false }
@@ -166,9 +221,33 @@ struct MomCareMainTabView: View {
     }
 
     private func fetchDailyInsights() async throws {
-        let networkResponse = try await MCContentRepository.shared.generateDailyInsights()
+        while true {
+            do {
+                let networkResponse = try await MCContentRepository.shared.generateDailyInsights()
 
-        contentServiceHandler.todayFocusText = networkResponse.data.todaysFocus
-        contentServiceHandler.dailyTipText = networkResponse.data.dailyTip
+                contentServiceHandler.todayFocusText = networkResponse.data.todaysFocus
+                contentServiceHandler.dailyTipText = networkResponse.data.dailyTip
+
+                return
+
+            } catch {
+                if error is LongPolling {
+                    continue
+                } else {
+                    throw error
+                }
+            }
+        }
+    }
+}
+
+extension View {
+    @ViewBuilder
+    func compatTabBarMinimizeOnScroll() -> some View {
+        if #available(iOS 26, *) {
+            tabBarMinimizeBehavior(.onScrollDown)
+        } else {
+            self
+        }
     }
 }

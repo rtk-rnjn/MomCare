@@ -16,13 +16,12 @@ struct ProfileAccountManagementView: View {
                     } label: {
                         Text("Delete")
                     }
-                    .accessibilityLabel("Delete account")
-                    .accessibilityHint("Permanently deletes your MomCare+ account and all associated data")
+                    .accessibilityLabel(String(localized: "a11y_delete_account_label"))
+                    .accessibilityHint(String(localized: "a11y_delete_account_hint"))
                 }
             } footer: {
                 Text("Deleting your account will permanently remove all your data from MomCare+. This action cannot be undone.")
                     .font(.footnote)
-                    .foregroundStyle(.secondary)
             }
         }
         .listStyle(.insetGrouped)
@@ -35,7 +34,7 @@ struct ProfileAccountManagementView: View {
                 }
             }
 
-            Button(role: .cancel) {}
+            MCCancelButton {}
 
         } message: {
             Text("Are you sure you want to permanently delete your MomCare+ account and all associated data?")

@@ -28,7 +28,7 @@ struct MyPlanExercisePlanView: View {
             }
             .frame(maxHeight: .infinity)
             .background(Color(.systemBackground))
-            .clipShape(RoundedCorner(radius: 24, corners: [.topLeft, .topRight]))
+            .clipShape(RoundedCorner(radius: CornerRadius.outer, corners: [.topLeft, .topRight]))
             .padding(.horizontal, 16)
         }
         .sheet(isPresented: $showHelp) {
@@ -50,8 +50,8 @@ struct MyPlanExercisePlanView: View {
                 } label: {
                     Image(systemName: "clock.arrow.circlepath")
                 }
-                .accessibilityLabel("Exercise history")
-                .accessibilityHint("Opens your exercise history")
+                .accessibilityLabel(String(localized: "a11y_exercise_history_list_label"))
+                .accessibilityHint(String(localized: "a11y_exercise_history_hint"))
             }
 
             ToolbarItem(placement: .topBarTrailing) {
@@ -76,7 +76,7 @@ struct MyPlanExercisePlanView: View {
                     Image(systemName: "ellipsis")
                         .accessibilityHidden(true)
                 }
-                .accessibilityLabel("More options")
+                .accessibilityLabel(String(localized: "a11y_more_options_label"))
             }
         }
         .padding(.top, 8)
@@ -123,7 +123,7 @@ struct MyPlanExercisePlanView: View {
                 .onTapGesture {
                     showWalkingHistory = true
                 }
-                .accessibilityHint("Double tap to view walking history")
+                .accessibilityHint(String(localized: "a11y_walking_history_hint"))
                 .accessibilityAddTraits(.isButton)
                 .accessibilityAction(.default) {
                     showWalkingHistory = true
@@ -203,14 +203,12 @@ struct MyPlanExercisePlanView: View {
                 unsafe ExerciseInfoSheet(userExerciseModel: selectedExerciseInfo, isPresented: $showingExerciseInfo)
                     .frame(maxWidth: 360)
                     .frame(maxHeight: 500)
-                    .shadow(color: .black.opacity(0.15), radius: 20, y: 10)
                     .padding(.horizontal, 24)
                     .transition(.scale(scale: 0.9).combined(with: .opacity))
             } else if showingBreathingInfo {
                 unsafe BreathingInfoSheet(isPresented: $showingBreathingInfo)
                     .frame(maxWidth: 360)
                     .frame(maxHeight: 500)
-                    .shadow(color: .black.opacity(0.15), radius: 20, y: 10)
                     .padding(.horizontal, 24)
                     .transition(.scale(scale: 0.9).combined(with: .opacity))
             }

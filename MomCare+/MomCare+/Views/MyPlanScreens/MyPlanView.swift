@@ -8,36 +8,47 @@ struct MyPlanView: View {
         VStack(spacing: 0) {
             Picker("", selection: $controlState.myPlanSegment) {
                 ForEach(MyPlanSegment.allCases) { segment in
-                    Text(segment.rawValue).tag(segment)
+                    Text(LocalizedStringKey(stringLiteral: segment.rawValue)).tag(segment)
                 }
             }
             .pickerStyle(.segmented)
             .padding(.horizontal, 16)
             .padding(.vertical, 8)
-            .accessibilityLabel("Plan type")
+            .accessibilityLabel(String(localized: "a11y_plan_type_label"))
 
             switch controlState.myPlanSegment {
             case .diet:
-                MyPlanDietPlanView(tips: dietPlanTips)
+                MyPlanDietPlanView(currentTip: currentTip)
             case .exercise:
                 MyPlanExercisePlanView()
             }
         }
         .ignoresSafeArea(edges: .bottom)
         .background(MomCareAccent.secondary.ignoresSafeArea())
-        .navigationTitle("My Plan")
+        .navigationTitle(AppTab.myPlan.title)
         .navigationBarTitleDisplayMode(forceUseLargeTitle ? .large : .inline)
     }
 
     // MARK: Private
 
-    @State private var dietPlanTips = TipGroup {
-        MomCareTips.DietPlan.ProgressCardSlideOrTapTip()
-        MomCareTips.DietPlan.HeaderRowAddTip()
-        MomCareTips.DietPlan.ItemRowSlideTip()
-    }
-
     @AppStorage(FeatureFlagState.forceUseLargeTitle.rawValue, store: Database.shared.userDefaults) private var forceUseLargeTitle: Bool = false
 
     @EnvironmentObject private var controlState: ControlState
+
+    @available(iOS 18.0, *)
+    private var dietPlanTips: TipGroup {
+        TipGroup {
+            MomCareTips.DietPlan.ProgressCardSlideOrTapTip()
+            MomCareTips.DietPlan.HeaderRowAddTip()
+            MomCareTips.DietPlan.ItemRowSlideTip()
+        }
+    }
+
+    private var currentTip: (any Tip)? {
+        if #available(iOS 18.0, *) {
+            dietPlanTips.currentTip
+        } else {
+            nil
+        }
+    }
 }

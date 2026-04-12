@@ -38,7 +38,7 @@ struct PercentageRing: View {
         }
         .padding(ringWidth / 2)
         .accessibilityElement(children: .ignore)
-        .accessibilityLabel("Progress ring")
+        .accessibilityLabel(String(localized: "a11y_progress_ring_label"))
         .accessibilityValue("\(Int(percent.clamped(to: 0...100)))%")
         .accessibilityAddTraits(.updatesFrequently)
     }

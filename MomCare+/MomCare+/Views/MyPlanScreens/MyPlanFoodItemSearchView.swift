@@ -11,7 +11,6 @@ struct MyPlanFoodItemSearchView: View {
             .navigationTitle("Add Food")
             .navigationBarTitleDisplayMode(.inline)
             .searchable(text: $searchText, prompt: "Search foods…")
-            .searchFocused($searchFocus)
             .onChange(of: searchText) { _, newValue in
                 Task {
                     try? await debounceSearch(query: newValue)
@@ -53,7 +52,7 @@ struct MyPlanFoodItemSearchView: View {
             }
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
-                    Button(role: .cancel) {
+                    MCCancelButton {
                         dismiss()
                     }
                 }
@@ -168,7 +167,7 @@ private struct FoodRowView: View {
         .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
         .accessibilityElement(children: .combine)
         .accessibilityLabel("\(food.name.capitalized), \(Int(food.totalCalories)) kilocalories, \(food.type.displayLabel)")
-        .accessibilityHint("Double tap to view nutrition details")
+        .accessibilityHint(String(localized: "a11y_food_nutrition_hint"))
     }
 }
 
@@ -241,7 +240,7 @@ private struct NutritionDetailSheet: View {
         }
         .toolbar {
             ToolbarItem(placement: .cancellationAction) {
-                Button(role: .cancel) {
+                MCCancelButton {
                     dismiss()
                 }
             }
@@ -258,7 +257,7 @@ private struct NutritionDetailSheet: View {
 }
 
 private struct NutritionCell: View {
-    let label: String
+    let label: LocalizedStringKey
     let value: String
     let unit: String
 
@@ -279,6 +278,12 @@ private struct NutritionCell: View {
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(.vertical, 14)
         .accessibilityElement(children: .combine)
-        .accessibilityLabel("\(label), \(value) \(unit)")
+        .accessibilityLabel(
+            Text(label) +
+            Text(", ") +
+            Text("\(value)") +
+            Text(" ") +
+            Text(unit)
+        )
     }
 }

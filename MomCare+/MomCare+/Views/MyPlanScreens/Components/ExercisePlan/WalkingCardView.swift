@@ -84,9 +84,8 @@ struct WalkingCardView: View {
             RoundedRectangle(cornerRadius: 20, style: .continuous)
                 .fill(Color(hex: "D4EDDA"))
         )
-        .shadow(color: Color(hex: "4A8A62").opacity(0.08), radius: 8, x: 0, y: 4)
         .accessibilityElement(children: .ignore)
-        .accessibilityLabel("Walking")
+        .accessibilityLabel(String(localized: "a11y_walking_label"))
         .accessibilityValue(
             stepsToday >= stepsGoal
                 ? "Goal completed, \(Int(stepsToday)) steps"

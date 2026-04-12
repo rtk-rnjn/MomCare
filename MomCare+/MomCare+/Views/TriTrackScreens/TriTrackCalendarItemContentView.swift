@@ -60,6 +60,8 @@ struct TriTrackCalendarItemContentView: View {
         }
         .listStyle(.plain)
         .background(RoundedRectangle(cornerRadius: 16).fill(Color(.systemBackground)))
+        .frame(maxWidth: .infinity)
+        // Utils
         .onReceive(NotificationCenter.default.publisher(for: .EKEventStoreChanged)) { _ in
             Task { await refreshData() }
         }

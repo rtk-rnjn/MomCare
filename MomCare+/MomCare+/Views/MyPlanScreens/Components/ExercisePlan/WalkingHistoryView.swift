@@ -40,7 +40,7 @@ struct WalkingHistoryView: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
-                    Button(role: .cancel) { dismiss() }
+                    MCCancelButton { dismiss() }
                 }
 
                 ToolbarItem(placement: .topBarTrailing) {
@@ -62,11 +62,15 @@ struct WalkingHistoryView: View {
                     Button {
                         selectedDate = Date()
                     } label: {
-                        Image(systemName: "\(Calendar.current.component(.day, from: Date())).calendar")
-                            .font(.body)
-                            .foregroundStyle(Color.CustomColors.mutedRaspberry)
+                        Label {
+                            Text("Today")
+                        } icon: {
+                            if #available(iOS 26.0, *) {
+                                Image(systemName: "\(Calendar.current.component(.day, from: Date())).calendar")
+                            }
+                        }
                     }
-                    .accessibilityLabel("Jump to today")
+                    .accessibilityLabel(String(localized: "a11y_jump_to_today_label"))
                     .accessibilityIdentifier("jumpToTodayButton")
                 }
             }
@@ -201,7 +205,6 @@ struct WalkingHistoryView: View {
             Spacer()
         }
         .padding(18)
-        .shadow(color: Color(hex: "4A8A62").opacity(0.08), radius: 10, x: 0, y: 4)
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(isToday ? "Today's steps" : "Steps on \(formattedDate(selectedDate))")
         .accessibilityValue(
@@ -302,7 +305,6 @@ struct WalkingHistoryView: View {
             }
         }
         .padding(18)
-        .shadow(color: Color.black.opacity(0.04), radius: 8, x: 0, y: 3)
     }
 
     private var statsGrid: some View {
@@ -366,7 +368,6 @@ struct WalkingHistoryView: View {
             Spacer()
         }
         .padding(14)
-        .shadow(color: Color.black.opacity(0.03), radius: 6, x: 0, y: 2)
     }
 
     private func barLabel(_ pt: StepDataPoint) -> String {

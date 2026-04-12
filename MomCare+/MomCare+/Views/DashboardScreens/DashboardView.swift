@@ -24,7 +24,7 @@ struct DashboardView: View {
             } catch {}
         }
         .background(Color(.secondarySystemGroupedBackground))
-        .navigationTitle("Progress")
+        .navigationTitle(AppTab.progress.title)
         .navigationBarTitleDisplayMode(.large)
     }
 
@@ -34,7 +34,7 @@ struct DashboardView: View {
                 week: authenticationService.userModel?.pregnancyProgress.week,
                 day: authenticationService.userModel?.pregnancyProgress.day,
                 trimester: authenticationService.userModel?.pregnancyProgress.trimester,
-                tip: tips.currentTip as? MomCareTips.Dashboard.DashboardWeekCardTip
+                tip: currentTip as? MomCareTips.Dashboard.DashboardWeekCardTip
             )
                 .frame(maxWidth: .infinity)
                 .onTapGesture {
@@ -47,7 +47,10 @@ struct DashboardView: View {
                 }
 
             if let event = eventKitHandler.onGoingOrMostRecentUpcomingEvent {
-                DashboardEventCardView(upcomingEvent: event, tip: tips.currentTip as? MomCareTips.Dashboard.DashboardEventCardTip)
+                DashboardEventCardView(
+                    upcomingEvent: event,
+                    tip: currentTip as? MomCareTips.Dashboard.DashboardEventCardTip
+                )
                     .frame(maxWidth: .infinity)
                     .contextMenu {
                         Button {
@@ -59,7 +62,10 @@ struct DashboardView: View {
                         TriTrackEventDetailsContextView(event: event)
                     }
             } else {
-                DashboardEventCardView(upcomingEvent: eventKitHandler.onGoingOrMostRecentUpcomingEvent, tip: tips.currentTip as? MomCareTips.Dashboard.DashboardEventCardTip)
+                DashboardEventCardView(
+                    upcomingEvent: eventKitHandler.onGoingOrMostRecentUpcomingEvent,
+                    tip: currentTip as? MomCareTips.Dashboard.DashboardEventCardTip
+                )
                     .frame(maxWidth: .infinity)
             }
         }
@@ -97,7 +103,7 @@ struct DashboardView: View {
                 controlState.myPlanSegment = .diet
             }
             .accessibilityAddTraits(.isButton)
-            .accessibilityHint("Double tap to view your diet plan")
+            .accessibilityHint(String(localized: "a11y_view_diet_plan_hint"))
             .accessibilityAction(.default) {
                 controlState.selectedTab = .myPlan
                 controlState.myPlanSegment = .diet
@@ -120,7 +126,7 @@ struct DashboardView: View {
                 contentServiceHandler.fetchTodaySteps()
             }
             .accessibilityAddTraits(.isButton)
-            .accessibilityHint("Double tap to view your exercise plan")
+            .accessibilityHint(String(localized: "a11y_view_exercise_plan_hint"))
             .accessibilityAction(.default) {
                 controlState.selectedTab = .myPlan
                 controlState.myPlanSegment = .exercise
@@ -140,7 +146,7 @@ struct DashboardView: View {
                 DashboardInsightCardView(
                     title: "Today's Focus",
                     message: contentServiceHandler.todayFocusText,
-                    icon: "target"
+                    systemImageName: "target"
                 )
                 .contextMenu {
                     Button {
@@ -150,22 +156,48 @@ struct DashboardView: View {
                     }
 
                     if experimentalFeatures {
-                        // Hehehehe.
                         Button {
                             show2048Game = true
                         } label: {
                             Label("Play 2048", systemImage: "gamecontroller")
+                        }
+
+                        Button {
+                            showSokobanGame = true
+                        } label: {
+                            Label("Play Sokoban", systemImage: "gamecontroller")
+                        }
+
+                        Button {
+                            showMinesweeperGame = true
+                        } label: {
+                            Label("Play Minesweeper", systemImage: "gamecontroller")
+                        }
+
+                        Button {
+                            showTetrisGame = true
+                        } label: {
+                            Label("Play Tetris", systemImage: "gamecontroller")
                         }
                     }
                 }
                 .fullScreenCover(isPresented: $show2048Game) {
                     Game2048View()
                 }
+                .fullScreenCover(isPresented: $showSokobanGame) {
+                    GameSokobanView()
+                }
+                .fullScreenCover(isPresented: $showMinesweeperGame) {
+                    GameMinesweeperView()
+                }
+                .fullScreenCover(isPresented: $showTetrisGame) {
+                    GameTetrisView()
+                }
 
                 DashboardInsightCardView(
                     title: "Daily Tip",
                     message: contentServiceHandler.dailyTipText,
-                    icon: "lightbulb"
+                    systemImageName: "lightbulb"
                 )
                 .contextMenu {
                     Button {
@@ -175,16 +207,42 @@ struct DashboardView: View {
                     }
 
                     if experimentalFeatures {
-                        // UwU
                         Button {
                             showWaterSortGame = true
                         } label: {
                             Label("Play Water Sort", systemImage: "gamecontroller")
                         }
+
+                        Button {
+                            showConnect4Game = true
+                        } label: {
+                            Label("Play Connect 4", systemImage: "gamecontroller")
+                        }
+
+                        Button {
+                            showTickTacToeGame = true
+                        } label: {
+                            Label("Play TicTacToe", systemImage: "gamecontroller")
+                        }
+
+                        Button {
+                            showSudokuGame = true
+                        } label: {
+                            Label("Play Sudoku", systemImage: "gamecontroller")
+                        }
                     }
                 }
                 .fullScreenCover(isPresented: $showWaterSortGame) {
                     GameWaterSortView()
+                }
+                .fullScreenCover(isPresented: $showConnect4Game) {
+                    GameConnect4View()
+                }
+                .fullScreenCover(isPresented: $showTickTacToeGame) {
+                    GameTicTacToeView()
+                }
+                .fullScreenCover(isPresented: $showSudokuGame) {
+                    GameSudokuView()
                 }
             }
             .padding(.horizontal)
@@ -192,11 +250,6 @@ struct DashboardView: View {
     }
 
     // MARK: Private
-
-    @State private var tips = TipGroup {
-        MomCareTips.Dashboard.DashboardWeekCardTip()
-        MomCareTips.Dashboard.DashboardEventCardTip()
-    }
 
     @EnvironmentObject private var contentServiceHandler: ContentServiceHandler
     @EnvironmentObject private var eventKitHandler: EventKitHandler
@@ -210,15 +263,33 @@ struct DashboardView: View {
 
     @State private var show2048Game: Bool = false
     @State private var showWaterSortGame: Bool = false
+    @State private var showConnect4Game: Bool = false
+    @State private var showSokobanGame: Bool = false
+    @State private var showTickTacToeGame: Bool = false
+    @State private var showMinesweeperGame: Bool = false
+    @State private var showSudokuGame: Bool = false
+    @State private var showTetrisGame: Bool = false
+
+    @available(iOS 18, *)
+    private var tips: TipGroup {
+        TipGroup {
+            MomCareTips.Dashboard.DashboardWeekCardTip()
+            MomCareTips.Dashboard.DashboardEventCardTip()
+        }
+    }
+
+    private var currentTip: (any Tip)? {
+        if #available(iOS 18.0, *) {
+            tips.currentTip
+        } else {
+            nil
+        }
+    }
 }
 
 extension View {
     func dashboardCardStyle() -> some View {
-        clipShape(RoundedRectangle(cornerRadius: 24, style: .continuous))
-            .overlay(
-                RoundedRectangle(cornerRadius: 24, style: .continuous)
-                    .stroke(Color.primary.opacity(0.06), lineWidth: 0.5)
-            )
+        clipShape(RoundedRectangle(cornerRadius: CornerRadius.outer, style: .continuous))
             .shadow(color: .black.opacity(0.06), radius: 10, y: 4)
     }
 }

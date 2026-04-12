@@ -44,11 +44,9 @@ struct PlaylistCard: View {
                 .foregroundStyle(.white)
                 .padding(12)
                 .lineLimit(2)
-                .shadow(color: reduceTransparency ? .clear : .black.opacity(0.3), radius: 3, x: 0, y: 2)
         }
         .frame(height: 130)
         .clipShape(RoundedRectangle(cornerRadius: 18, style: .continuous))
-        .shadow(color: .black.opacity(0.2), radius: 12, x: 0, y: 6)
         .overlay(
             RoundedRectangle(cornerRadius: 18, style: .continuous)
                 .stroke(Color.white.opacity(0.1), lineWidth: 1)
@@ -57,7 +55,7 @@ struct PlaylistCard: View {
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(playlist.name)
         .accessibilityAddTraits(.isButton)
-        .accessibilityHint("Opens this playlist")
+        .accessibilityHint(String(localized: "a11y_open_playlist_hint"))
         .task {
             uiImage = await playlist.image
         }

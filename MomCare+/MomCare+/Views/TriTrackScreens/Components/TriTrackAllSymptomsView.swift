@@ -37,7 +37,6 @@ struct TriTrackAllSymptomsView: View {
                 }
             }
             .searchable(text: $searchText, placement: .automatic, prompt: "Search symptoms or notes…")
-            .searchToolbarBehavior(.minimize)
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button {
@@ -209,7 +208,7 @@ struct SymptomRow: View {
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(displayTitle)
         .accessibilityValue(model.notes.flatMap { $0.isEmpty ? nil : $0 } ?? model.date.formatted(date: .omitted, time: .shortened))
-        .accessibilityHint("Double tap to view symptom details")
+        .accessibilityHint(String(localized: "a11y_symptom_details_hint"))
         .accessibilityAddTraits(.isButton)
     }
 

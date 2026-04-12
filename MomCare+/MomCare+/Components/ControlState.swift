@@ -2,50 +2,33 @@ import Combine
 import SwiftUI
 
 enum AppTab: Int, CaseIterable {
-    case onboarding
     case progress
     case myPlan
     case triTrack
     case mood
-    case profile
+    case settings
 
     // MARK: Internal
 
-    var title: String {
+    var title: LocalizedStringKey {
         switch self {
-        case .onboarding: "MomCare+"
         case .progress: "Progress"
         case .myPlan: "My Plan"
         case .triTrack: "TriTrack"
         case .mood: "Mood"
-        case .profile: "Profile"
+        case .settings: "Settings"
         }
     }
 
     var systemImage: String {
         switch self {
-        case .onboarding: ""
         case .progress: "trophy.fill"
         case .myPlan: "list.bullet.clipboard.fill"
         case .triTrack: "calendar"
         case .mood: "face.dashed.fill"
-        case .profile: "person.crop.circle"
+        case .settings: "gearshape.fill"
         }
     }
-}
-
-enum ProfileRowType: Int {
-    case personalInformation
-    case healthInformation
-    case notifications
-    case security
-    case legal
-    case aboutApplication
-    case watch
-    case accountManagement
-    case signOut
-    case footerText
-    case whatsNew
 }
 
 enum MyPlanSegment: String, CaseIterable, Identifiable {
@@ -70,7 +53,7 @@ enum TriTrackSegment: String, CaseIterable, Identifiable {
         rawValue
     }
 
-    var title: String {
+    var title: LocalizedStringKey {
         switch self {
         case .meAndBaby: "Me & Baby"
         case .events: "Events"

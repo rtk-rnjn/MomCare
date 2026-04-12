@@ -7,60 +7,56 @@ struct PolicySectionItem: Identifiable {
 }
 
 enum PrivacyPolicyText {
-    static let headerTitle = "Because Every Mom Deserves Care — Including for Her Data"
-    static let headerSubtitle = "Learn how we respect and protect your privacy at Momcare+"
+    static var headerTitle: String {
+        String(localized: "privacy_header_title")
+    }
 
-    static let contactTitle = "Contact Us"
-    static let contactSubtitle = "If you have any questions, concerns, or requests, feel free to reach out to us:"
-    static let contactEmail = "Email: support.momcare@vision-labs.site"
-    static let contactWebsite = "Website: momcare.vision-labs.site"
-    static let contactFooter = "We’re here to protect your wellness — both physical and digital."
+    static var headerSubtitle: String {
+        String(localized: "privacy_header_subtitle")
+    }
 
-    static let policySections: [PolicySectionItem] = [
-        PolicySectionItem(title: "How Momcare+ Works", content: """
-        • Momcare+ helps you navigate pregnancy with peace of mind. Our features include:
-        • Trimester-specific guidance delivered weekly
-        • Mood, diet, hydration, symptom & exercise tracking
-        • Reminders for scans, checkups, supplements, and self-care
-        • Mental wellness tools like guided breathing and Mood
+    static var contactTitle: String {
+        String(localized: "privacy_contact_title")
+    }
 
-        To provide this experience, we collect certain information that you choose to share. Here's what we collect and why.
-        """),
-        PolicySectionItem(title: "What Information We Collect", content: """
-        • Profile & Pregnancy Info: Age, due date, pregnancy start date (for trimester tracking), name (optional)
-        • Health Data: Symptoms, allergies, pre-existing conditions (e.g., gestational diabetes), medical notes
-        • Daily Logs: Mood, hydration, food intake, energy levels, exercise tracking
-        • Reminders & Notes: Appointment entries, calendar events, scan dates (if synced with iOS calendar)
+    static var contactSubtitle: String {
+        String(localized: "privacy_contact_subtitle")
+    }
 
-        Device & Diagnostic Data:
-        • Device type, iOS version (e.g., iPhone 14, iOS 17.2)
-        • App version and usage analytics
-        • Crash logs and error reporting (anonymous and aggregated)
-        """),
-        PolicySectionItem(title: "Why We Collect Your Data", content: """
-        • Generate weekly updates based on your pregnancy stage
-        • Track diet/exercise progress and show health trends in Progress
-        • Send custom reminders for hydration, supplements, or medical checkups
-        • Suggest calming music, exercises, and mindfulness tools
-        • Enhance motivation through streaks and rewards
-        • Improve app performance and reduce bugs
+    static var contactEmail: String {
+        String(localized: "privacy_contact_email")
+    }
 
-        We do not sell, rent, or monetize your data in any way. Ever.
-        """),
-        PolicySectionItem(title: "How We Protect Your Data", content: """
-        • On-device encryption of sensitive health and mood data
-        • Encrypted cloud storage via GDPR-compliant platforms (e.g., AWS, Firebase, MongoDB Atlas) if sync is enabled
-        • Token-based authentication and secure APIs
-        • Access controls limiting who can see your data, even internally
+    static var contactWebsite: String {
+        String(localized: "privacy_contact_website")
+    }
 
-        You retain full ownership of your data at all times.
-        """),
-        PolicySectionItem(title: "Your Privacy Rights", content: """
-        • Right to Access – See what data we’ve collected about you
-        • Right to Correct – Update inaccurate or outdated profile info
-        • Right to Delete – Request deletion of your entire account and associated data
-        • Right to Withdraw Consent – Disable features like tracking, notifications, or cloud sync at any time
-        • Right to Export – GDPR-compliant data export available upon request
-        """)
-    ]
+    static var contactFooter: String {
+        String(localized: "privacy_contact_footer")
+    }
+
+    static var policySections: [PolicySectionItem] {
+        [
+            PolicySectionItem(
+                title: String(localized: "privacy_section_works_title"),
+                content: String(localized: "privacy_section_works_content")
+            ),
+            PolicySectionItem(
+                title: String(localized: "privacy_section_collect_title"),
+                content: String(localized: "privacy_section_collect_content")
+            ),
+            PolicySectionItem(
+                title: String(localized: "privacy_section_why_title"),
+                content: String(localized: "privacy_section_why_content")
+            ),
+            PolicySectionItem(
+                title: String(localized: "privacy_section_protect_title"),
+                content: String(localized: "privacy_section_protect_content")
+            ),
+            PolicySectionItem(
+                title: String(localized: "privacy_section_rights_title"),
+                content: String(localized: "privacy_section_rights_content")
+            )
+        ]
+    }
 }

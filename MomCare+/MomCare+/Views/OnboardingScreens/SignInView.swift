@@ -64,8 +64,8 @@ struct SignInView: View {
                     .buttonStyle(.borderedProminent)
                     .tint(MomCareAccent.primary)
                     .controlSize(.large)
-                    .accessibilityLabel("Sign In")
-                    .accessibilityHint("Signs you in to your account")
+                    .accessibilityLabel(String(localized: "a11y_sign_in_button_label"))
+                    .accessibilityHint(String(localized: "a11y_sign_in_hint_v2"))
                 }
             }
             .navigationDestination(isPresented: $navigateToHealthMetricsSignUp) {
@@ -151,7 +151,7 @@ struct SignInView: View {
                         Text("Forget Password?")
                             .foregroundStyle(.primaryApp)
                     }
-                    .accessibilityHint("Reset your password")
+                    .accessibilityHint(String(localized: "a11y_reset_password_hint"))
                 }
             }
         }
@@ -173,8 +173,8 @@ struct SignInView: View {
                 focusedField = .password
             }
             .submitLabel(.next)
-            .accessibilityLabel("Email address")
-            .accessibilityHint("Enter your email address")
+            .accessibilityLabel(String(localized: "a11y_email_label"))
+            .accessibilityHint(String(localized: "a11y_enter_email_hint"))
     }
 
     private var passwordField: some View {
@@ -185,8 +185,8 @@ struct SignInView: View {
                 Task { await handleSubmit() }
             }
             .submitLabel(.go)
-            .accessibilityLabel("Password")
-            .accessibilityHint("Enter your password")
+            .accessibilityLabel(String(localized: "a11y_password_label"))
+            .accessibilityHint(String(localized: "a11y_enter_password_hint"))
     }
 
     private func isValidEmail(_ email: String) -> Bool {

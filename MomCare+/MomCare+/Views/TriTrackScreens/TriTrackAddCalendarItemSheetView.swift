@@ -45,7 +45,7 @@ struct TriTrackAddCalendarItemSheetView: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
-                    Button(role: .cancel) {
+                    MCCancelButton {
                         if hasData {
                             showConfirmationDialog = true
                         } else {
@@ -57,17 +57,17 @@ struct TriTrackAddCalendarItemSheetView: View {
                             dismiss()
                         }
                     }
-                    .accessibilityLabel("Cancel")
-                    .accessibilityHint("Dismisses this screen without saving changes")
+                    .accessibilityLabel(String(localized: "Cancel"))
+                    .accessibilityHint(String(localized: "a11y_dismiss_hint"))
                     .accessibilityAddTraits(.isButton)
                 }
 
                 ToolbarItem(placement: .confirmationAction) {
-                    Button(role: .confirm) {
+                    MCSaveButton {
                         save()
                     }
                     .disabled(title.isEmpty)
-                    .accessibilityLabel("Save")
+                    .accessibilityLabel(String(localized: "Save"))
                     .accessibilityHint(
                         title.isEmpty ? "Enter a title to enable saving" : "Saves this item"
                     )
@@ -147,8 +147,7 @@ struct TriTrackAddCalendarItemSheetView: View {
                             endDate = startDate.addingTimeInterval(3600)
                         }
                     }
-                    .accessibilityHint("Toggles all day setting for this event")
-
+                    .accessibilityHint(String(localized: "a11y_all_day_toggle_hint"))
                 DatePicker("Starts", selection: $startDate, in: dateRange(), displayedComponents: isAllDay ? [.date] : [.date, .hourAndMinute])
                 DatePicker("Ends", selection: $endDate, in: startDate...Date.distantFuture, displayedComponents: isAllDay ? [.date] : [.date, .hourAndMinute])
 
@@ -158,7 +157,7 @@ struct TriTrackAddCalendarItemSheetView: View {
                             hasData = true
                         }
                     }
-                    .accessibilityHint("Enables or disables monthly recurrence for this event")
+                    .accessibilityHint(String(localized: "a11y_monthly_recurrence_hint"))
             }
 
             Section {
@@ -173,7 +172,7 @@ struct TriTrackAddCalendarItemSheetView: View {
                     }
                 }
                 .accessibilityLabel(selectedMapItem?.name ?? "Select Location")
-                .accessibilityHint("Double tap to open the map and pick a location")
+                .accessibilityHint(String(localized: "a11y_location_picker_hint"))
             }
 
             alarmSection
@@ -192,7 +191,7 @@ struct TriTrackAddCalendarItemSheetView: View {
                         hasData = true
                     }
                 }
-                .accessibilityHint("Enables or disables daily recurrence for this reminder")
+                .accessibilityHint(String(localized: "a11y_daily_recurrence_hint"))
 
             alarmSection
         }
@@ -233,7 +232,14 @@ struct TriTrackAddCalendarItemSheetView: View {
                     location: selectedMapItem?.name,
                     structuredLocation: selectedMapItem.map {
                         let loc = EKStructuredLocation(title: $0.name ?? "")
-                        loc.geoLocation = $0.location
+                        if #available(iOS 26.0, *) {
+                            loc.geoLocation = $0.location
+                        } else {
+                            loc.geoLocation = CLLocation(
+                                latitude: $0.placemark.coordinate.latitude,
+                                longitude: $0.placemark.coordinate.latitude
+                            )
+                        }
                         return loc
                     },
                     alarm: alarm

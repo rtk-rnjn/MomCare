@@ -18,7 +18,7 @@ struct ExerciseHistory: View {
                         }
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
                         .accessibilityElement(children: .combine)
-                        .accessibilityLabel("Loading exercise history")
+                        .accessibilityLabel(String(localized: "a11y_loading_exercise_history_label"))
                     } else if let errorMessage {
                         ContentUnavailableView(
                             "Couldn’t load exercises",
@@ -31,8 +31,8 @@ struct ExerciseHistory: View {
                             }
                             .buttonStyle(.borderedProminent)
                             .padding(.bottom, 24)
-                            .accessibilityLabel("Retry")
-                            .accessibilityHint("Retries loading the exercise history for this date")
+                            .accessibilityLabel(String(localized: "a11y_retry_label"))
+                            .accessibilityHint(String(localized: "a11y_retry_load_hint"))
                         }
                     } else if let exercises, exercises.isEmpty {
                         ContentUnavailableView(
@@ -72,7 +72,7 @@ struct ExerciseHistory: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
-                    Button(role: .close) { dismiss() }
+                    MCCloseButton { dismiss() }
                 }
 
                 ToolbarItem(placement: .topBarTrailing) {
@@ -94,11 +94,15 @@ struct ExerciseHistory: View {
                     Button {
                         selectedDate = Date()
                     } label: {
-                        Image(systemName: "\(Calendar.current.component(.day, from: Date())).calendar")
-                            .font(.body)
-                            .foregroundStyle(Color.CustomColors.mutedRaspberry)
+                        Label {
+                            Text("Today")
+                        } icon: {
+                            if #available(iOS 26.0, *) {
+                                Image(systemName: "\(Calendar.current.component(.day, from: Date())).calendar")
+                            }
+                        }
                     }
-                    .accessibilityLabel("Jump to today")
+                    .accessibilityLabel(String(localized: "a11y_jump_to_today_label"))
                     .accessibilityIdentifier("jumpToTodayButton")
                 }
             }
@@ -164,7 +168,7 @@ private struct ExerciseDaySummaryRow: View {
             await computeStats()
         }
         .accessibilityElement(children: .ignore)
-        .accessibilityLabel("Day summary")
+        .accessibilityLabel(String(localized: "a11y_day_summary_label"))
         .accessibilityValue("\(completedCount) of \(exercises.count) exercises completed, \(formattedDuration) total time")
     }
 

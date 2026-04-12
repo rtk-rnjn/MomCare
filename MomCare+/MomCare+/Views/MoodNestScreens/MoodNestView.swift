@@ -44,7 +44,7 @@ struct MoodNestView: View {
                                 .foregroundStyle(Color.CustomColors.mutedRaspberry)
                                 .symbolEffect(.bounce, value: controlState.showingExpandedCalendar)
                         }
-                        .accessibilityLabel(controlState.showingExpandedCalendar ? "Collapse calendar" : "Expand calendar")
+                        .accessibilityLabel(controlState.showingExpandedCalendar ? String(localized: "a11y_collapse_calendar_label") : String(localized: "a11y_expand_calendar_label"))
                         .accessibilityIdentifier("expandCalendarButton")
                     }
 
@@ -52,16 +52,20 @@ struct MoodNestView: View {
                         Button {
                             selectedDateForHistory = Date()
                         } label: {
-                            Image(systemName: "\(Calendar.current.component(.day, from: Date())).calendar")
-                                .font(.body)
-                                .foregroundStyle(Color.CustomColors.mutedRaspberry)
+                            Label {
+                                Text("Today")
+                            } icon: {
+                                if #available(iOS 26.0, *) {
+                                    Image(systemName: "\(Calendar.current.component(.day, from: Date())).calendar")
+                                }
+                            }
                         }
-                        .accessibilityLabel("Jump to today")
+                        .accessibilityLabel(String(localized: "a11y_jump_to_today_label"))
                         .accessibilityIdentifier("jumpToTodayButton")
                     }
 
                     ToolbarItem(placement: .cancellationAction) {
-                        Button(role: .close) {
+                        MCCloseButton {
                             showHistorySheet = false
                         }
                     }
@@ -76,12 +80,14 @@ struct MoodNestView: View {
                     Label("History", systemImage: "clock.arrow.circlepath")
                 }
             }
-            ToolbarItem(placement: .navigationBarTrailing) {
-                if stateOfMindPermission == .notDetermined {
-                    Button {
-                        askForPermission()
-                    } label: {
-                        Label("Permission Error", systemImage: "exclamationmark.triangle")
+            if #available(iOS 18.0, *) {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    if stateOfMindPermission == .notDetermined {
+                        Button {
+                            askForPermission()
+                        } label: {
+                            Label("Permission Error", systemImage: "exclamationmark.triangle")
+                        }
                     }
                 }
             }
@@ -92,7 +98,9 @@ struct MoodNestView: View {
                     HapticsHandler.impact(.soft)
                     controlState.showingMoodnestPlaylistsView = true
                     Task {
-                        try? await contentService.logMoodToHealthKit(mood: selectedMood)
+                        if #available(iOS 18.0, *) {
+                            try? await contentService.logMoodToHealthKit(mood: selectedMood)
+                        }
                     }
                 } label: {
                     Text("Next Step")
@@ -101,7 +109,7 @@ struct MoodNestView: View {
                         .padding()
                         .background(reduceTransparency ? primary : primary.opacity(0.95))
                         .foregroundStyle(.white)
-                        .clipShape(Capsule())
+                        .clipShape(RoundedRectangle(cornerRadius: CornerRadius.outer, style: .continuous))
                 }
                 .padding(.horizontal, 24)
                 .accessibilityLabel("Next step for \(selectedMood.rawValue) mood")
@@ -163,8 +171,8 @@ struct MoodNestView: View {
 
             moodArc
                 .offset(y: -25)
-                .accessibilityLabel("Mood selector")
-                .accessibilityHint("Select your current mood")
+                .accessibilityLabel(String(localized: "a11y_mood_selector_label"))
+                .accessibilityHint(String(localized: "a11y_mood_selector_hint"))
         }
     }
 
@@ -308,10 +316,12 @@ struct MoodNestView: View {
     private let primary: Color = .init(hex: "#924350")
     private let secondary: Color = .init(hex: "#FBE8E5")
 
+    @available(iOS 18.0, *)
     private var stateOfMindPermission: HKAuthorizationStatus {
         contentService.healthStore.authorizationStatus(for: .stateOfMindType())
     }
 
+    @available(iOS 18.0, *)
     private func askForPermission() {
         contentService.healthStore.requestAuthorization(toShare: [.stateOfMindType()], read: [.stateOfMindType()]) { _, _ in
         }
