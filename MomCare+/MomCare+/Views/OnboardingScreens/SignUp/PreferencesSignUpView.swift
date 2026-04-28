@@ -16,22 +16,21 @@ struct PreferencesSignUpView: View {
     }
 
     var body: some View {
-        NavigationStack {
-            VStack(spacing: 0) {
-                progressHeader
 
-                formContent
+        VStack(spacing: 0) {
+            progressHeader
 
-                finishButton
-            }
-            .background(Color(.systemBackground).ignoresSafeArea())
-            .navigationTitle("Create Profile")
-            .navigationBarTitleDisplayMode(.inline)
-            .sheet(item: $activeSheet) { sheet in
-                sheetView(sheet)
-            }
-            .presentationDetents([.medium, .large])
+            formContent
+
+            finishButton
         }
+        .background(Color(.systemBackground).ignoresSafeArea())
+        .navigationTitle("Create Profile")
+        .navigationBarTitleDisplayMode(.inline)
+        .sheet(item: $activeSheet) { sheet in
+            sheetView(sheet)
+        }
+        .presentationDetents([.medium, .large])
         .alert("Invalid Information", isPresented: $showAlert) {
             Button("OK", role: .cancel) {}
         } message: {

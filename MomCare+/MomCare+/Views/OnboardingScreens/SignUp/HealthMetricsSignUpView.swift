@@ -18,23 +18,22 @@ struct HealthMetricsSignUpView: View {
     }
 
     var body: some View {
-        NavigationStack {
-            VStack(spacing: 0) {
-                progressHeader
 
-                formContent
+        VStack(spacing: 0) {
+            progressHeader
 
-                nextButton
-            }
-            .background(Color(.systemBackground).ignoresSafeArea())
-            .navigationTitle("Create Profile")
-            .navigationBarTitleDisplayMode(.inline)
-            .sheet(item: $activePicker) { picker in
-                pickerSheet(for: picker)
-            }
-            .navigationDestination(isPresented: $navigateToThirdStep) {
-                PreferencesSignUpView()
-            }
+            formContent
+
+            nextButton
+        }
+        .background(Color(.systemBackground).ignoresSafeArea())
+        .navigationTitle("Create Profile")
+        .navigationBarTitleDisplayMode(.inline)
+        .sheet(item: $activePicker) { picker in
+            pickerSheet(for: picker)
+        }
+        .navigationDestination(isPresented: $navigateToThirdStep) {
+            PreferencesSignUpView()
         }
         .alert("Missing Information", isPresented: $showAlert) {
             Button("OK", role: .cancel) {}
