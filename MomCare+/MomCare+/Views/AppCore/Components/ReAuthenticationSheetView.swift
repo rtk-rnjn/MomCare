@@ -63,7 +63,7 @@ struct ReAuthenticationSheetView: View {
                             }
                             .signInWithAppleButtonStyle(.black)
                             .frame(height: 50)
-                            .cornerRadius(24)
+                            .cornerRadius(CornerRadius.outer)
                             .accessibilityLabel(String(localized: "a11y_apple_signin_label"))
 
                             Button("Cancel") {

@@ -32,53 +32,51 @@ struct SignInView: View {
     // MARK: Internal
 
     var body: some View {
-        NavigationStack {
-            signInForm
-                .safeAreaInset(edge: .top) {
-                    Color.clear.frame(height: 16)
-                }
+        signInForm
+            .safeAreaInset(edge: .top) {
+                Color.clear.frame(height: 16)
+            }
 
-            .background(
-                Color(.systemBackground)
-                    .ignoresSafeArea()
-            )
-            .navigationTitle("Sign In")
-            .errorAlert(error: $controlState.error)
-            .navigationBarTitleDisplayMode(.large)
-            .toolbar {
-                ToolbarItem(placement: .bottomBar) {
-                    Button {
-                        Task { await handleSubmit() }
-                    } label: {
-                        if isLoading {
-                            ProgressView()
-                                .progressViewStyle(.circular)
-                                .tint(.white)
-                        } else {
-                            Text("Sign In")
-                                .frame(maxWidth: .infinity)
-                        }
+        .background(
+            Color(.systemBackground)
+                .ignoresSafeArea()
+        )
+        .navigationTitle("Sign In")
+        .errorAlert(error: $controlState.error)
+        .navigationBarTitleDisplayMode(.large)
+        .toolbar {
+            ToolbarItem(placement: .bottomBar) {
+                Button {
+                    Task { await handleSubmit() }
+                } label: {
+                    if isLoading {
+                        ProgressView()
+                            .progressViewStyle(.circular)
+                            .tint(.white)
+                    } else {
+                        Text("Sign In")
+                            .frame(maxWidth: .infinity)
                     }
-                    .disabled(isLoading)
-                    .frame(maxWidth: .infinity)
-                    .buttonStyle(.borderedProminent)
-                    .tint(MomCareAccent.primary)
-                    .controlSize(.large)
-                    .accessibilityLabel(String(localized: "a11y_sign_in_button_label"))
-                    .accessibilityHint(String(localized: "a11y_sign_in_hint_v2"))
                 }
+                .disabled(isLoading)
+                .frame(maxWidth: .infinity)
+                .buttonStyle(.borderedProminent)
+                .tint(MomCareAccent.primary)
+                .controlSize(.large)
+                .accessibilityLabel(String(localized: "a11y_sign_in_button_label"))
+                .accessibilityHint(String(localized: "a11y_sign_in_hint_v2"))
             }
-            .navigationDestination(isPresented: $navigateToHealthMetricsSignUp) {
-                HealthMetricsSignUpView()
-            }
-            .navigationDestination(isPresented: $navigateToOTPVerification) {
-                OTPScreenView()
-            }
-            .sheet(isPresented: $showForgetPasswordSheet) {
-                ForgetPasswordView(showingForgetPasswordSheet: $showForgetPasswordSheet)
-                    .presentationDetents([.medium, .large])
-                    .interactiveDismissDisabled()
-            }
+        }
+        .navigationDestination(isPresented: $navigateToHealthMetricsSignUp) {
+            HealthMetricsSignUpView()
+        }
+        .navigationDestination(isPresented: $navigateToOTPVerification) {
+            OTPScreenView()
+        }
+        .sheet(isPresented: $showForgetPasswordSheet) {
+            ForgetPasswordView(showingForgetPasswordSheet: $showForgetPasswordSheet)
+                .presentationDetents([.medium, .large])
+                .interactiveDismissDisabled()
         }
     }
 

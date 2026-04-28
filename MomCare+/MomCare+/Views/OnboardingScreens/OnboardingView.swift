@@ -46,7 +46,7 @@ struct OnboardingView: View {
                     }
                     .signInWithAppleButtonStyle(.black)
                     .frame(height: 52)
-                    .cornerRadius(24)
+                    .cornerRadius(CornerRadius.outer)
                     .padding(.horizontal, 20)
 
                     HStack {
@@ -73,7 +73,7 @@ struct OnboardingView: View {
                             .frame(maxWidth: .infinity)
                             .frame(height: 52)
                             .background(MomCareAccent.primary)
-                            .cornerRadius(24)
+                            .cornerRadius(CornerRadius.outer)
                     }
                     .padding(.horizontal, 20)
                     .accessibilityLabel(String(localized: "a11y_continue_email_label"))

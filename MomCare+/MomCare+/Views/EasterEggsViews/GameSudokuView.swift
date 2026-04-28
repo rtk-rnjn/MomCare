@@ -83,14 +83,12 @@ enum SudokuGenerator {
         if shuffle {
             digits.shuffle()
         }
-        for d in digits {
-            if isLegal(grid, row: r, col: c, val: d) {
-                grid[r][c] = d
-                if solve(&grid, shuffle: shuffle) {
-                    return true
-                }
-                grid[r][c] = 0
+        for d in digits where isLegal(grid, row: r, col: c, val: d) {
+            grid[r][c] = d
+            if solve(&grid, shuffle: shuffle) {
+                return true
             }
+            grid[r][c] = 0
         }
         return false
     }
@@ -108,10 +106,10 @@ enum SudokuGenerator {
         let br = (row / 3) * 3
         let bc = (col / 3) * 3
         for r in br..<br+3 {
-            for c in bc..<bc+3 {
-                if grid[r][c] == val {
-            return false
-        } } }
+            for c in bc..<bc+3 where grid[r][c] == val {
+                return false
+            }
+        }
         return true
     }
 
@@ -124,14 +122,12 @@ enum SudokuGenerator {
         }
 
         var count = 0
-        for d in 1...9 {
-            if isLegal(grid, row: r, col: c, val: d) {
-                grid[r][c] = d
-                count += countSolutions(&grid, limit: limit)
-                grid[r][c] = 0
-                if count >= limit {
-                    return count
-                }
+        for d in 1...9 where isLegal(grid, row: r, col: c, val: d) {
+            grid[r][c] = d
+            count += countSolutions(&grid, limit: limit)
+            grid[r][c] = 0
+            if count >= limit {
+                return count
             }
         }
         return count
@@ -139,10 +135,10 @@ enum SudokuGenerator {
 
     private static func firstEmpty(_ grid: [[Int]]) -> (Int, Int)? {
         for r in 0..<9 {
-            for c in 0..<9 {
-                if grid[r][c] == 0 {
-            return (r, c)
-        } } }
+            for c in 0..<9 where grid[r][c] == 0 {
+                return (r, c)
+            }
+        }
         return nil
     }
 }

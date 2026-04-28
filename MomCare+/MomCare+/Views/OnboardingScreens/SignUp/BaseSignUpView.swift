@@ -62,50 +62,48 @@ struct BaseSignUpView: View {
     // MARK: Internal
 
     var body: some View {
-        NavigationStack {
-            VStack(spacing: 0) {
-                signUpForm
-                    .safeAreaInset(edge: .top) {
-                        Color.clear.frame(height: 16)
-                    }
-            }
-            .background(
-                Color(.systemBackground)
-                    .ignoresSafeArea()
-            )
-            .navigationTitle("Sign Up")
-            .navigationBarTitleDisplayMode(.large)
-            .errorAlert(error: $controlState.error)
-            .navigationDestination(isPresented: $navigateToOTP) {
-                OTPScreenView()
-            }
-            .toolbar {
-                ToolbarItem(placement: .bottomBar) {
-                    Button {
-                        Task {
-                            do {
-                                try await handleCreate()
-                            } catch {
-                                controlState.error = error
-                            }
-                        }
-                    } label: {
-                        if isLoading {
-                            ProgressView()
-                                .progressViewStyle(.circular)
-                                .tint(.white)
-                        } else {
-                            Text("Create")
-                                .frame(maxWidth: .infinity)
-                        }
-                    }
-                    .frame(maxWidth: .infinity)
-                    .buttonStyle(.borderedProminent)
-                    .tint(MomCareAccent.primary)
-                    .controlSize(.large)
-                    .accessibilityLabel(String(localized: "a11y_create_account_label"))
-                    .accessibilityHint(String(localized: "a11y_create_account_hint"))
+        VStack(spacing: 0) {
+            signUpForm
+                .safeAreaInset(edge: .top) {
+                    Color.clear.frame(height: 16)
                 }
+        }
+        .background(
+            Color(.systemBackground)
+                .ignoresSafeArea()
+        )
+        .navigationTitle("Sign Up")
+        .navigationBarTitleDisplayMode(.large)
+        .errorAlert(error: $controlState.error)
+        .navigationDestination(isPresented: $navigateToOTP) {
+            OTPScreenView()
+        }
+        .toolbar {
+            ToolbarItem(placement: .bottomBar) {
+                Button {
+                    Task {
+                        do {
+                            try await handleCreate()
+                        } catch {
+                            controlState.error = error
+                        }
+                    }
+                } label: {
+                    if isLoading {
+                        ProgressView()
+                            .progressViewStyle(.circular)
+                            .tint(.white)
+                    } else {
+                        Text("Create")
+                            .frame(maxWidth: .infinity)
+                    }
+                }
+                .frame(maxWidth: .infinity)
+                .buttonStyle(.borderedProminent)
+                .tint(MomCareAccent.primary)
+                .controlSize(.large)
+                .accessibilityLabel(String(localized: "a11y_create_account_label"))
+                .accessibilityHint(String(localized: "a11y_create_account_hint"))
             }
         }
     }
