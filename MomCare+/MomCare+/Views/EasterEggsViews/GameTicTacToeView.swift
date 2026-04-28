@@ -175,10 +175,8 @@ class TicTacToeEngine: ObservableObject {
     }
 
     private func checkWin(for player: TTTPlayer, in board: [TTTPlayer?]) -> [Int]? {
-        for line in winLines {
-            if line.allSatisfy({ board[$0] == player }) {
-                return line
-            }
+        for line in winLines where line.allSatisfy({ board[$0] == player }) {
+            return line
         }
         return nil
     }

@@ -264,10 +264,8 @@ class Connect4Engine: ObservableObject {
     }
 
     private func lowestEmpty(column: Int, board: [[C4Player?]]) -> Int? {
-        for r in stride(from: Connect4Engine.rows - 1, through: 0, by: -1) {
-            if board[r][column] == nil {
-                return r
-            }
+        for row in stride(from: Connect4Engine.rows - 1, through: 0, by: -1) where board[row][column] == nil {
+            return row
         }
         return nil
     }

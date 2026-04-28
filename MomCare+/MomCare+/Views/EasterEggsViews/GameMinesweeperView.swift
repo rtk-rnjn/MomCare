@@ -243,12 +243,10 @@ class MinesweeperEngine: ObservableObject {
         // Reveal mines in already-loaded chunks only (performance)
         for (chunkCoord, chunk) in chunkCache {
             for r in 0..<MSConst.chunkSize {
-                for c in 0..<MSConst.chunkSize {
-                    if chunk.mines[r][c] {
-                        let world = worldCoord(chunkCoord: chunkCoord, localRow: r, localCol: c)
-                        if cellStates[world] != .flagged {
-                            cellStates[world] = .mine
-                        }
+                for c in 0..<MSConst.chunkSize where chunk.mines[r][c] {
+                    let world = worldCoord(chunkCoord: chunkCoord, localRow: r, localCol: c)
+                    if cellStates[world] != .flagged {
+                        cellStates[world] = .mine
                     }
                 }
             }
@@ -495,10 +493,7 @@ struct GameMinesweeperView: View {
         )
     }
 
-    private func chunkGrid(
-        minCR: Int, maxCR: Int, minCC: Int, maxCC: Int,
-        offset: CGSize, cs: CGFloat
-    ) -> some View {
+    private func chunkGrid(minCR: Int, maxCR: Int, minCC: Int, maxCC: Int, offset: CGSize, cs: CGFloat) -> some View { // swiftlint:disable:this function_parameter_count
         Canvas { ctx, size in
             let chunkPx = cs * CGFloat(MSConst.chunkSize)
             ctx.stroke(
