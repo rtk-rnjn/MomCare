@@ -2,7 +2,7 @@ import SwiftUI
 
 private let appVersion = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "Unknown"
 private let appName = Bundle.main.infoDictionary?["CFBundleName"] as? String ?? "MomCare+"
-private let expectedVersion = "1.0.1"
+private let expectedVersion = "1.1.0"
 
 struct MomCareRootView: View {
     // MARK: Internal
