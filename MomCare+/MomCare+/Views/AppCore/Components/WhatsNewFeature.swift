@@ -18,7 +18,7 @@ struct WhatsNewConfiguration {
 struct WhatsNewView: View {
     // MARK: Internal
 
-    let configuration: WhatsNewConfiguration = .v1_0_1
+    let configuration: WhatsNewConfiguration = .v1_1_0
 
     var body: some View {
         featureList
