@@ -171,7 +171,7 @@ struct OSLogsView: View {
 
     private func fetchLogs() throws {
         isLoading = true
-        Task.detached {
+        _ = Task.detached {
             let store = try OSLogStore(scope: .currentProcessIdentifier)
             let position = store.position(timeIntervalSinceLatestBoot: -300)
             for entry in try store.getEntries(at: position) {
