@@ -228,10 +228,10 @@ struct HTTPErrorResponse: Codable, LocalizedError {
                     let locations = error.loc.map { loc -> String in
                         switch loc {
                         case let .string(value):
-                            return value
+                            value
 
                         case let .int(index):
-                            return "[\(index)]"
+                            "[\(index)]"
                         }
                     }
 

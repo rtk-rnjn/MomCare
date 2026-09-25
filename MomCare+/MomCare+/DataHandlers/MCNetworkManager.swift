@@ -244,9 +244,11 @@ actor MCNetworkManager {
         logger.info("Received response with status code \(httpResponse.statusCode) for request to \(url)")
 
         if httpResponse.statusCode >= 400 {
-            await MainActor.run { if isNetworkHapticsEnabled {
-                HapticsHandler.notification(.error)
-            } }
+            await MainActor.run {
+                if isNetworkHapticsEnabled {
+                    HapticsHandler.notification(.error)
+                }
+            }
 
             if let errorResponse: HTTPErrorResponse = try? data.decodeUsingJSONDecoder() {
                 let osLogMessage = errorResponse.detail.toOSLogMessageString()
@@ -264,9 +266,11 @@ actor MCNetworkManager {
         }
 
         let maybeData: T = try data.decodeUsingJSONDecoder()
-        await MainActor.run { if isNetworkHapticsEnabled {
-            HapticsHandler.notification(.success)
-        } }
+        await MainActor.run {
+            if isNetworkHapticsEnabled {
+                HapticsHandler.notification(.success)
+            }
+        }
         return NetworkResponse(data: maybeData, statusCode: httpResponse.statusCode)
     }
 }
