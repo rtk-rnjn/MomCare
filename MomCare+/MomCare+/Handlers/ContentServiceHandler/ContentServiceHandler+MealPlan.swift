@@ -66,7 +66,7 @@ extension ContentServiceHandler {
 
     func markFoodsAs(consumed: Bool, mealType: MealType) async throws {
         for foodReference in myPlanModel?[mealType] ?? [] {
-            Task { // I know what I am doing.
+            _ = Task { // I know what I am doing.
                 try await markFoodAs(consumed: consumed, in: mealType, foodReference: foodReference)
             }
         }

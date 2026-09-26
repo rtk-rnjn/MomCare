@@ -83,7 +83,7 @@ struct TeamMemberCard: View {
             if let imageName {
                 Image(imageName)
                     .resizable()
-                    .aspectRatio(contentMode: .fill)
+                    .scaledToFill()
                     .frame(width: 90, height: 90)
                     .clipShape(Circle())
                     .accessibilityHidden(true)

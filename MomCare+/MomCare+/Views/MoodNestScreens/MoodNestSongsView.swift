@@ -56,7 +56,7 @@ struct MoodNestSongsView: View {
             if let uiImage {
                 Image(uiImage: uiImage)
                     .resizable()
-                    .aspectRatio(contentMode: .fill)
+                    .scaledToFill()
                     .blur(radius: reduceTransparency ? 0 : 80)
                     .overlay(reduceTransparency ? Color.black.opacity(0.5) : Color.clear)
                     .ignoresSafeArea()
@@ -75,7 +75,7 @@ struct MoodNestSongsView: View {
             if let uiImage {
                 Image(uiImage: uiImage)
                     .resizable()
-                    .aspectRatio(contentMode: .fill)
+                    .scaledToFill()
                     .frame(width: 140, height: 140)
                     .clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
                     .shadow(color: .black.opacity(0.4), radius: 12, x: 0, y: 6)
@@ -83,7 +83,7 @@ struct MoodNestSongsView: View {
             } else {
                 Image(systemName: "music.quarternote.3")
                     .resizable()
-                    .aspectRatio(contentMode: .fill)
+                    .scaledToFill()
                     .frame(width: 140, height: 140)
                     .clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
                     .shadow(color: .black.opacity(0.4), radius: 12, x: 0, y: 6)

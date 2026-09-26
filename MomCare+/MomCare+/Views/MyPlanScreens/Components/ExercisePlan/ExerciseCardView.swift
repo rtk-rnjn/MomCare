@@ -20,7 +20,7 @@ struct ExerciseCardView: View {
                     Text(exercise?.name ?? "Exercise")
                         .font(.title3.weight(.bold))
 
-                    Text("\(Int(completionProgress * 100))% completed")
+                    Text("\(completionProgress, format: .percent.precision(.fractionLength(0))) completed")
                         .font(.caption.weight(.medium))
                         .foregroundStyle(.secondary)
                         .padding(.bottom, 12)
@@ -97,7 +97,7 @@ struct ExerciseCardView: View {
         )
         .accessibilityElement(children: .contain)
         .accessibilityLabel(exercise.map { "\($0.name), \($0.level.rawValue)" } ?? "Exercise")
-        .accessibilityValue("\(Int(completionProgress * 100)) percent completed")
+        .accessibilityValue("\(completionProgress, format: .percent.precision(.fractionLength(0))) percent completed")
         .task { await loadExercise() }
         .alert("Error", isPresented: $showErrorAlert) {
             Button("OK", role: .cancel) {}

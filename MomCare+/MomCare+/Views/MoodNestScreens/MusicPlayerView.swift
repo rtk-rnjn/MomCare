@@ -12,7 +12,7 @@ struct MusicPlayerView: View {
         VStack(spacing: 0) {
             Image(uiImage: musicPlayerHandler.currentSongUIImage ?? UIImage())
                 .resizable()
-                .aspectRatio(contentMode: .fit)
+                .scaledToFit()
                 .popupTransitionTarget()
                 .clipShape(RoundedRectangle(cornerRadius: 30, style: .continuous))
                 .padding(.horizontal, 24)
@@ -144,7 +144,7 @@ struct MusicPlayerView: View {
             if let uiImage = musicPlayerHandler.currentSongUIImage {
                 Image(uiImage: uiImage)
                     .resizable()
-                    .aspectRatio(contentMode: .fill)
+                    .scaledToFill()
                     .blur(radius: reduceTransparency ? 0 : 60)
                     .overlay(Color.black.opacity(reduceTransparency ? 0.6 : 0.3))
                     .ignoresSafeArea()
