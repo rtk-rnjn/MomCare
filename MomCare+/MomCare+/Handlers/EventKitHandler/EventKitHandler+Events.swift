@@ -58,21 +58,34 @@ extension EventKitHandler {
         }
 
         try eventStore.save(event, span: .thisEvent, commit: true)
+        try? fetchAllEvents()
         return event
     }
 
     func deleteEvent(_ event: EKEvent) throws {
         try eventStore.remove(event, span: .thisEvent, commit: true)
+        try? fetchAllEvents()
+    }
+
+    var allDistinctEvents: [EKEvent] {
+        var seen = Set<String>()
+        return (events + allEvents).filter { seen.insert($0.calendarItemIdentifier).inserted }
+    }
+
+    var upcomingEvents: [EKEvent] {
+        let now = Date()
+        return allDistinctEvents
+            .filter { ($0.startDate <= now && $0.endDate >= now) || $0.startDate > now }
+            .sorted { $0.startDate < $1.startDate }
     }
 
     var onGoingOrMostRecentUpcomingEvent: EKEvent? {
-        let events = events + allEvents
-
+        let distinct = allDistinctEvents
         let now = Date()
-        if let ongoing = events.first(where: { $0.startDate <= now && $0.endDate >= now }) {
+        if let ongoing = distinct.first(where: { $0.startDate <= now && $0.endDate >= now }) {
             return ongoing
         }
-        return events
+        return distinct
             .filter { $0.startDate > now }
             .min(by: { $0.startDate < $1.startDate })
     }

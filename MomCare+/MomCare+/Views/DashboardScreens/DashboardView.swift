@@ -21,7 +21,17 @@ struct DashboardView: View {
             HapticsHandler.impact(.medium)
             do {
                 _ = try await authenticationService.refresh()
+                try eventKitHandler.fetchAllEvents()
             } catch {}
+        }
+        .task {
+            do {
+                _ = try await eventKitHandler.requestAccess(for: .event)
+                try eventKitHandler.fetchAllEvents()
+            } catch {}
+        }
+        .onReceive(NotificationCenter.default.publisher(for: .EKEventStoreChanged)) { _ in
+            try? eventKitHandler.fetchAllEvents()
         }
         .background(Color(.secondarySystemGroupedBackground))
         .navigationTitle(AppTab.progress.title)

@@ -64,6 +64,7 @@ extension EventKitHandler {
             reminder.priority = Int(priority.rawValue)
         }
         try eventStore.save(reminder, commit: true)
+        try? fetchAllReminders()
     }
 
     @discardableResult
@@ -71,17 +72,42 @@ extension EventKitHandler {
         reminder.isCompleted = complete
         reminder.completionDate = complete ? Date() : nil
         try eventStore.save(reminder, commit: true)
+        try? fetchAllReminders()
         return reminder
     }
 
     @discardableResult
     func updateReminder(_ reminder: EKReminder) throws -> EKReminder {
         try eventStore.save(reminder, commit: true)
+        try? fetchAllReminders()
         return reminder
     }
 
     func deleteReminder(_ reminder: EKReminder) throws {
         try eventStore.remove(reminder, commit: true)
+        try? fetchAllReminders()
+    }
+
+    var allDistinctReminders: [EKReminder] {
+        var seen = Set<String>()
+        return (reminders + allReminders).filter { seen.insert($0.calendarItemIdentifier).inserted }
+    }
+
+    var upcomingIncompleteReminders: [EKReminder] {
+        let incomplete = allDistinctReminders.filter { !$0.isCompleted }
+
+        let withDueDate = incomplete.compactMap { reminder -> (EKReminder, Date)? in
+            guard let comps = reminder.dueDateComponents,
+                  let date = Calendar.current.date(from: comps) else { return nil }
+            return (reminder, date)
+        }
+
+        let sortedWithDue = withDueDate
+            .sorted { $0.1 < $1.1 }
+            .map { $0.0 }
+
+        let withoutDue = incomplete.filter { $0.dueDateComponents == nil }
+        return sortedWithDue + withoutDue
     }
 
     private func reminderMatchesDate(_ reminder: EKReminder, date: Date) -> Bool {

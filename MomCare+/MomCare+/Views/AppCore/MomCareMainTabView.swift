@@ -63,6 +63,8 @@ struct MomCareMainTabView: View {
                 try? await contentServiceHandler.requestHealthKitAccess()
                 _ = try? await eventKitHandler.requestAccess(for: .reminder)
                 _ = try? await eventKitHandler.requestAccess(for: .event)
+                try? eventKitHandler.fetchAllEvents()
+                try? eventKitHandler.fetchAllReminders()
             }
         }
         .permissionsOnboardingSheet(showingSheet: $firstTime, fetchingData: $fetchingDataFromServer)

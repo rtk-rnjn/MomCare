@@ -214,7 +214,11 @@ struct TriTrackView: View {
             .padding(.top, 16)
 
         case .events:
-            TriTrackCalendarItemContentView(selectedDate: $selectedDate)
+            TriTrackCalendarItemContentView(
+                selectedDate: $selectedDate,
+                showingAllEvents: $showingAllEvents,
+                showingAllReminders: $showingAllReminders
+            )
 
         case .symptoms:
             TriTrackSymptomsContentView(selectedDate: $selectedDate)
