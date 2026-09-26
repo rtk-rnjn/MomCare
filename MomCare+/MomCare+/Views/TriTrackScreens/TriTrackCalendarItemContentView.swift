@@ -137,33 +137,33 @@ struct TriTrackCalendarItemContentView: View {
 
     private var displayedEvents: [EKEvent] {
         if isTodaySelected {
-            return Array(eventKitHandler.upcomingEvents.prefix(2))
+            Array(eventKitHandler.upcomingEvents.prefix(2))
         } else {
-            return eventKitHandler.events
+            eventKitHandler.events
         }
     }
 
     private var displayedEventsCount: Int {
         if isTodaySelected {
-            return eventKitHandler.upcomingEvents.count
+            eventKitHandler.upcomingEvents.count
         } else {
-            return eventKitHandler.events.count
+            eventKitHandler.events.count
         }
     }
 
     private var displayedReminders: [EKReminder] {
         if isTodaySelected {
-            return Array(eventKitHandler.upcomingIncompleteReminders.prefix(2))
+            Array(eventKitHandler.upcomingIncompleteReminders.prefix(2))
         } else {
-            return eventKitHandler.reminders
+            eventKitHandler.reminders
         }
     }
 
     private var displayedRemindersCount: Int {
         if isTodaySelected {
-            return eventKitHandler.upcomingIncompleteReminders.count
+            eventKitHandler.upcomingIncompleteReminders.count
         } else {
-            return eventKitHandler.reminders.count
+            eventKitHandler.reminders.count
         }
     }
 
@@ -393,6 +393,54 @@ struct TriTrackCalendarItemContentView: View {
         }
     }
 
+    @ViewBuilder
+    private var undoToastView: some View {
+        if showUndoToast, let backup = lastDeletedItem {
+            HStack(spacing: 12) {
+                Image(systemName: "arrow.uturn.backward.circle.fill")
+                    .font(.title3)
+                    .foregroundStyle(Color.CustomColors.mutedRaspberry)
+
+                Text("\(backup.itemTypeDescription) deleted")
+                    .font(.subheadline.weight(.medium))
+                    .foregroundStyle(.primary)
+
+                Spacer()
+
+                Button {
+                    performUndo()
+                } label: {
+                    Text("Undo")
+                        .font(.subheadline.weight(.bold))
+                        .foregroundStyle(Color.CustomColors.mutedRaspberry)
+                }
+                .buttonStyle(.plain)
+
+                Button {
+                    withAnimation(reduceMotion ? nil : .easeOut(duration: 0.2)) {
+                        showUndoToast = false
+                    }
+                } label: {
+                    Image(systemName: "xmark")
+                        .font(.caption2.weight(.bold))
+                        .foregroundStyle(.secondary)
+                        .padding(4)
+                }
+                .buttonStyle(.plain)
+            }
+            .padding(.horizontal, 16)
+            .padding(.vertical, 12)
+            .background(
+                RoundedRectangle(cornerRadius: 14, style: .continuous)
+                    .fill(Color(.secondarySystemBackground))
+                    .shadow(color: .black.opacity(0.12), radius: 10, y: 4)
+            )
+            .padding(.horizontal, 20)
+            .padding(.bottom, 90)
+            .transition(unsafe reduceMotion ? .opacity : .move(edge: .bottom).combined(with: .opacity))
+        }
+    }
+
     private func refreshData() async {
         do {
             try eventKitHandler.fetchAppointments(selectedDate: selectedDate)
@@ -454,14 +502,12 @@ struct TriTrackCalendarItemContentView: View {
     }
 
     private func deleteReminder(_ reminder: EKReminder) {
-        let priorityEnum: EKReminderPriority = {
-            switch reminder.priority {
-            case 1...4: return .high
-            case 5: return .medium
-            case 6...9: return .low
-            default: return EKReminderPriority.none
+        let priorityEnum: EKReminderPriority = switch reminder.priority {
+            case 1...4: .high
+            case 5: .medium
+            case 6...9: .low
+            default: EKReminderPriority.none
             }
-        }()
 
         let backup = DeletedReminderBackup(
             title: reminder.title ?? "Reminder",
@@ -536,12 +582,14 @@ struct TriTrackCalendarItemContentView: View {
 
     private func performUndo() {
         undoTimerTask?.cancel()
-        guard let backup = lastDeletedItem else { return }
+        guard let backup = lastDeletedItem else {
+            return
+        }
 
         switch backup {
-        case .event(let eventBackup):
+        case let .event(eventBackup):
             restoreEvent(eventBackup)
-        case .reminder(let reminderBackup):
+        case let .reminder(reminderBackup):
             restoreReminder(reminderBackup)
         }
 
@@ -586,54 +634,6 @@ struct TriTrackCalendarItemContentView: View {
             controlState.error = error
         }
     }
-
-    @ViewBuilder
-    private var undoToastView: some View {
-        if showUndoToast, let backup = lastDeletedItem {
-            HStack(spacing: 12) {
-                Image(systemName: "arrow.uturn.backward.circle.fill")
-                    .font(.title3)
-                    .foregroundStyle(Color.CustomColors.mutedRaspberry)
-
-                Text("\(backup.itemTypeDescription) deleted")
-                    .font(.subheadline.weight(.medium))
-                    .foregroundStyle(.primary)
-
-                Spacer()
-
-                Button {
-                    performUndo()
-                } label: {
-                    Text("Undo")
-                        .font(.subheadline.weight(.bold))
-                        .foregroundStyle(Color.CustomColors.mutedRaspberry)
-                }
-                .buttonStyle(.plain)
-
-                Button {
-                    withAnimation(reduceMotion ? nil : .easeOut(duration: 0.2)) {
-                        showUndoToast = false
-                    }
-                } label: {
-                    Image(systemName: "xmark")
-                        .font(.caption2.weight(.bold))
-                        .foregroundStyle(.secondary)
-                        .padding(4)
-                }
-                .buttonStyle(.plain)
-            }
-            .padding(.horizontal, 16)
-            .padding(.vertical, 12)
-            .background(
-                RoundedRectangle(cornerRadius: 14, style: .continuous)
-                    .fill(Color(.secondarySystemBackground))
-                    .shadow(color: .black.opacity(0.12), radius: 10, y: 4)
-            )
-            .padding(.horizontal, 20)
-            .padding(.bottom, 90)
-            .transition(unsafe reduceMotion ? .opacity : .move(edge: .bottom).combined(with: .opacity))
-        }
-    }
 }
 
 struct DeletedEventBackup {
@@ -662,10 +662,12 @@ enum DeletedItemBackup {
     case event(DeletedEventBackup)
     case reminder(DeletedReminderBackup)
 
+    // MARK: Internal
+
     var itemTypeDescription: String {
         switch self {
-        case .event: return "Event"
-        case .reminder: return "Reminder"
+        case .event: "Event"
+        case .reminder: "Reminder"
         }
     }
 }

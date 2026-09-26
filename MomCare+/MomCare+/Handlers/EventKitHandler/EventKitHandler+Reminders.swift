@@ -98,7 +98,10 @@ extension EventKitHandler {
 
         let withDueDate = incomplete.compactMap { reminder -> (EKReminder, Date)? in
             guard let comps = reminder.dueDateComponents,
-                  let date = Calendar.current.date(from: comps) else { return nil }
+                  let date = Calendar.current.date(from: comps) else {
+                      return nil
+                  }
+
             return (reminder, date)
         }
 
