@@ -339,8 +339,8 @@ struct EditWaterEntrySheet: View {
                         TextField("Amount", text: $customText)
                             .keyboardType(.numberPad)
                             .multilineTextAlignment(.trailing)
-                            .onChange(of: customText) {
-                                _, v in if let d = Double(v) {
+                            .onChange(of: customText) { _, v in
+                                if let d = Double(v) {
                                     amount = d
                                 }
                             }

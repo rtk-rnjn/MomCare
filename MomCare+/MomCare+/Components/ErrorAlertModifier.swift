@@ -27,7 +27,9 @@ struct ErrorAlertModifier<ActionView: View>: ViewModifier {
             get: { error != nil },
             set: { newValue in
                 if newValue == false {
-                    error = nil
+                    Task { @MainActor in
+                        error = nil
+                    }
                 }
             }
         )
